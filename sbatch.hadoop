@@ -73,7 +73,9 @@ export HADOOP_MODE="terasort"
 #          cluster.  Be careful running this in a cluster environment.
 #          The next time you execute your job, if a different set of
 #          nodes are allocated to you, the HDFS data you wrote from a
-#          previous job may not be there.
+#          previous job may not be there.  This option is primarily
+#          for benchmarking and probably shouldn't be used in the
+#          general case.
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
