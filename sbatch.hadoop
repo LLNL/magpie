@@ -109,7 +109,7 @@ export HADOOP_VERSION="2.1.0-beta"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_BUILD_HOME="/home/achu/hadoop/hadoop-${HADOOP_VERSION}"
+export HADOOP_BUILD_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 
 # Terasort size
 #
@@ -139,7 +139,7 @@ export HADOOP_BUILD_HOME="/home/achu/hadoop/hadoop-${HADOOP_VERSION}"
 # export HADOOP_TERASORT_CLEAR_CACHE=no
 
 # Directory your launching scripts/files are stored
-export HADOOP_SCRIPTS_HOME="/home/achu/hadoop/hadoop-launch"
+export HADOOP_SCRIPTS_HOME="/home/username/hadoop-launch"
 
 # Directory where script configuration templates are stored
 #
@@ -155,7 +155,7 @@ export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-job"
 
 # Path for HDFS when using local disk
 #
-export HADOOP_HDFS_PATH="/ssd/tmp1/achu/hdfs/"
+export HADOOP_HDFS_PATH="/ssd/username/"
 
 # Lustre mount to do Hadoop HDFS out of
 #
@@ -163,11 +163,11 @@ export HADOOP_HDFS_PATH="/ssd/tmp1/achu/hdfs/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERLUSTRE_PATH="/p/lscratchg/achu/hadoop/hdfsoverlustre/"
+export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 
 # Path for rawnetworkfs 
 #
-export HADOOP_RAWNETWORKFS_PATH="/p/lscratchg/achu/hadoop/rawnetworkfs/"
+export HADOOP_RAWNETWORKFS_PATH="/lustre/username/rawnetworkfs/"
 
 # If you have a local SSD, performance may be better to store
 # intermediate data on it rather than Lustre (or some other networked
@@ -179,7 +179,7 @@ export HADOOP_RAWNETWORKFS_PATH="/p/lscratchg/achu/hadoop/rawnetworkfs/"
 # Be wary, local SSDs stores may have less space than HDDs or
 # networked file systems.  It can be easy to run out of space.
 #
-# export HADOOP_LOCALSTORE="/ssd/tmp1/achu/localstore/"
+# export HADOOP_LOCALSTORE="/ssd/username/localstore/"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -187,7 +187,7 @@ export HADOOP_RAWNETWORKFS_PATH="/p/lscratchg/achu/hadoop/rawnetworkfs/"
 # This will not be used for storing intermediate files or
 # distributedcache files.  See HADOOP_LOCALSTORE above for that.
 #
-export HADOOP_LOCAL_DIR="/tmp/achu/hadoop"
+export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 
 # HDFS Block Size
 #

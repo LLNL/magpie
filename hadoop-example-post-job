@@ -5,12 +5,12 @@
 # variable.  See the sbatch.hadoop file for details.
  
 # Cleanup some stuff
-# rm -rf /ssd/tmp1/achu/
+# rm -rf /ssd/username/path
 
 # Cleaning up on networked directory, only do on one node
 if [ "${HADOOP_CLUSTER_NODERANK}" == "0" ]
 then
-    # rm -rf /p/lscratchg/achu/hadoop/hdfsoverlustre/
+    # rm -rf /lustre/username/hdfsoverlustre/
 fi
 
 exit 0
