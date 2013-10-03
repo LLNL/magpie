@@ -107,8 +107,7 @@ Basic Instructions
    w/ 'script' or 'interactive' mode, as that is the more likely way
    to run.
 
-   HADOOP_FILESYSTEM_MODE : most will likely you'll want
-   "hdfsoverlustre".
+   HADOOP_FILESYSTEM_MODE : most will likely want "hdfsoverlustre".
 
    HADOOP_HDFSOVERLUSTRE_PATH : For hdfs over lustre, need to set this
 
