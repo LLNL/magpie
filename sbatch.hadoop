@@ -141,7 +141,7 @@ export HADOOP_BUILD_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 # export HADOOP_TERASORT_CLEAR_CACHE=no
 
 # Directory your launching scripts/files are stored
-export HADOOP_SCRIPTS_HOME="/home/username/hadoop-launch"
+export HADOOP_SCRIPTS_HOME="/home/username/magpie"
 
 # Directory where script configuration templates are stored
 #
