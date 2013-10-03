@@ -236,6 +236,12 @@ master=`head -1 ${HADOOP_CONF_DIR}/masters`
 
 slave_count=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 
+cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
+hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
+hostsincludefile=`echo "${hostsincludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+hostsexcludefiletmp=""
+hostsexcludefile=`echo "${hostsexcludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+
 #
 # Calculate values for various config file variables, based on
 # recommendtions, rules of thumb, or based on what user input.
@@ -675,6 +681,8 @@ then
 	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
 	-e "s/IOSORTMB/${iosortmb}/g" \
 	-e "s/HADOOPCOMPRESSION/${compression}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
 	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
     
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
@@ -737,6 +745,8 @@ then
 	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
 	-e "s/HDFSDATANODEHANDLERCLOUNT/${datanodehandlercount}/g" \
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
 	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
     
     cat ${hadoopconffiledir}/log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties

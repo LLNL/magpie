@@ -174,5 +174,21 @@
   </description>
 </property>
 
+<property>
+  <name>mapred.hosts</name>
+  <value>HADOOPHOSTSINCLUDEFILENAME</value>
+  <description>Names a file that contains the list of nodes that may
+  connect to the jobtracker.  If the value is empty, all hosts are
+  permitted.</description>
+</property>
+
+<property>
+  <name>mapred.hosts.exclude</name>
+  <value>HADOOPHOSTSEXCLUDEFILENAME</value>
+  <description>Names a file that contains the list of hosts that
+  should be excluded by the jobtracker.  If the value is empty, no
+  hosts are excluded.</description>
+</property>
+
 </configuration>
 
