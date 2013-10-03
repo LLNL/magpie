@@ -1,0 +1,352 @@
+#!/bin/sh
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+## SLURM Customizations
+
+# Node count.  Node count should include one node for the
+# head/managemnet node.  For example, if you want 8 compute nodes to
+# process data, specify 9 nodes below.
+#SBATCH --nodes=9
+
+# Time to run the job
+export SBATCH_TIMELIMIT=60
+
+# Job name.  This will be used in naming directories for the job.
+#SBATCH --job-name=myhadoopjob
+
+# Partition to launch job in 
+#SBATCH --partition=pbatch
+
+## SLURM Values
+# Generally speaking, don't touch these, just need to configure slurm
+
+#SBATCH --ntasks-per-node=1
+#SBATCH --exclusive
+#SBATCH --no-kill
+
+############################################################################
+# Hadoop Configurations
+############################################################################
+
+# Set how Hadoop should run
+#
+# "terasort" - run terasort.  Useful for making sure things are setup
+#              the way you like.
+#
+# "script" - execute a script that lists all of your Hadoop jobs.
+#
+# "interactive" - manually interact to submit jobs, peruse HDFS, etc.
+#                 also useful for moving data in/out of HDFS.  In this
+#                 mode you'll login to the cluster node that is your
+#                 'master' node and interact with Hadoop directly
+#                 (e.g. bin/hadoop ...)
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+export HADOOP_MODE="terasort"
+
+# Set how the filesystem should be setup
+#
+# "hdfs" - Normal straight up HDFS if you have local disk in your
+#          cluster.  Be careful running this in a cluster environment.
+#          The next time you execute your job, if a different set of
+#          nodes are allocated to you, the HDFS data you wrote from a
+#          previous job may not be there.
+#
+# "hdfsoverlustre" - HDFS over Lustre.  See README for description.
+#
+# "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),
+#           to use networked file system directly.  It could be a
+#           Lustre mount or NFS mount.  Whatever you please.
+#
+export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+
+# Set Hadoop Setup Type
+#
+# Will inform scripts on how to setup config files and what daemons to
+# launch/setup.  The hadoop build/binaries set by HADOOP_BUILD_HOME
+# needs to match up with what you set here.
+#
+# MR1 - MapReduce/Hadoop 1.0 w/ HDFS
+# MR2 - MapReduce/Hadoop 2.0 w/ HDFS
+#
+export HADOOP_SETUP_TYPE="MR2"
+
+# Version
+#
+# Make sure the version for Mapreduce version 1 or 2 matches whatever
+# you set in HADOOP_SETUP_TYPE
+#
+export HADOOP_VERSION="2.1.0-beta"
+
+# Path to your Hadoop build/binaries
+#
+# Make sure the build for Mapredeuce version 1 or 2 matches whatever
+# you set in HADOOP_SETUP_TYPE.
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+export HADOOP_BUILD_HOME="/home/achu/hadoop/hadoop-${HADOOP_VERSION}"
+
+# Terasort size
+#
+# For "terasort" mode.
+#
+# Specify 10000000000 for terabyte, for actual benchmarking
+#
+# Specify something small, like 50000000 for basic sanity tests.
+# Defaults to 50000000.
+#
+# export HADOOP_TERASORT_SIZE=50000000
+
+# Terasort reducer count
+#
+# For "terasort" mode.
+#
+# If not specified, will be compute node count * 2.
+#
+# export HADOOP_TERASORT_REDUCER_COUNT=4
+
+# Terasort cache
+#
+# For "real benchmarking" you should flush page cache between a
+# teragen and a terasort.  You can disable this for sanity runs/tests
+# to make things go faster.  Specify yes or no.  Defaults to yes.
+#
+# export HADOOP_TERASORT_CLEAR_CACHE=no
+
+# Directory your launching scripts/files are stored
+export HADOOP_SCRIPTS_HOME="/home/achu/hadoop/hadoop-launch"
+
+# Directory where script configuration templates are stored
+#
+# If not specified, assumed to be $HADOOP_SCRIPTS_HOME/conf
+#
+# export HADOOP_CONF_FILES="${HADOOP_SCRIPTS_HOME}/conf"
+
+# Specify script to execute for "script" mode
+#
+# See hadoop-example-job for example of what to put in the script.
+#
+export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-job"
+
+# Path for HDFS when using local disk
+#
+export HADOOP_HDFS_PATH="/ssd/tmp1/achu/hdfs/"
+
+# Lustre mount to do Hadoop HDFS out of
+#
+# Note that different versions of Hadoop may not be compatible with
+# your current HDFS data.  If you're going to switch around to
+# different versions, perhaps set different paths for different data.
+#
+export HADOOP_HDFSOVERLUSTRE_PATH="/p/lscratchg/achu/hadoop/hdfsoverlustre/"
+
+# Path for rawnetworkfs 
+#
+export HADOOP_RAWNETWORKFS_PATH="/p/lscratchg/achu/hadoop/rawnetworkfs/"
+
+# If you have a local SSD, performance may be better to store
+# intermediate data on it rather than Lustre (or some other networked
+# fs).  If the below environment variable is specified, local
+# intermediate data will be stored in the specified directory.
+# Otherwise it will go to an appropriate directory in Lustre/networked
+# FS.
+#
+# Be wary, local SSDs stores may have less space than HDDs or
+# networked file systems.  It can be easy to run out of space.
+#
+# export HADOOP_LOCALSTORE="/ssd/tmp1/achu/localstore/"
+
+# Path local to each cluster node, typically something in /tmp.
+# This will store local conf files and log files for your job. 
+#
+# This will not be used for storing intermediate files or
+# distributedcache files.  See HADOOP_LOCALSTORE above for that.
+#
+export HADOOP_LOCAL_DIR="/tmp/achu/hadoop"
+
+# HDFS Block Size
+#
+# Commonly 134217728, 268435456, 536870912 (i.e. 128m, 256m, 512m)
+#
+# If not specified, defaults to 134217728
+#
+# export HADOOP_HDFS_BLOCKSIZE=134217728
+
+# HDFS Replication
+#
+# HDFS commonly uses 3.  It's not necessary if doing HDFS over Lustre,
+# but higher replication can help w/ Hadoop task scheduling and job
+# performance at the cost of increased disk usage.
+#
+# If not specified, defaults to 3 for HDFS, defaults 1 for HDFS over
+# Lustre.
+#
+# export HADOOP_HDFS_REPLICATION=3
+
+# Tasks per Node
+#
+# If not specified, defaults to #cores - 1 (i.e. leave 1 processor for
+# system daemons).    
+#
+# export HADOOP_MAX_TASKS_PER_NODE=8
+
+# Default Map tasks for Job
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
+# nodes.
+#
+# export HADOOP_DEFAULT_MAP_TASKS=8
+
+# Default Reduce tasks for Job
+#
+# If not specified, defaults to # compute nodes (i.e. 1 reducer per
+# node)
+#
+# export HADOOP_DEFAULT_REDUCE_TASKS=8
+
+# Max Map tasks for Task Tracker
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
+#
+# export HADOOP_MAX_MAP_TASKS=8
+
+# Max Reduce tasks for Task Tracker
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
+#
+# export HADOOP_MAX_REDUCE_TASKS=8
+
+# Heap size for JVM 
+#
+# Specified in K.  If not specified, a reasonable estimate will be
+# calculated based on total memory available and number of CPUs on the
+# system.
+#
+# HADOOP_CHILD_MAP_HEAPSIZE and HADOOP_CHILD_REDUCE_HEAPSIZE are for
+# Yarn (i.e. HADOOP_SETUP_TYPE = MR2)
+#
+# If HADOOP_CHILD_MAP_HEAPSIZE and/or HADOOP_CHILD_REDUCE_HEAPSIZE are
+# not specified, they are assumed to be HADOOP_CHILD_HEAPSIZE.
+#
+# export HADOOP_CHILD_HEAPSIZE=2048
+# export HADOOP_CHILD_MAP_HEAPSIZE=2048
+# export HADOOP_CHILD_REDUCE_HEAPSIZE=2048
+
+# Mapreduce Slowstart, indicating percent of maps that should complete
+# before reducers begin.
+#
+# If not specified, defaults to 0.25 (Hadoop default is 0.05, really low)
+#
+# export HADOOP_MAPREDUCE_SLOWSTART=0.25
+
+# Container Memory
+#
+# Memory on compute nodes for containers.  Typically "nice-chunk" less
+# than actual memory on machine, b/c machine needs memory for its own
+# needs (kernel, daemons, etc.).  Specified in megs.
+#
+# If not specified, a reasonable estimate will be calculated based on
+# total memory on the system.
+# export YARN_RESOURCE_MEMORY=32768
+
+# Daemon Heap Max
+#
+# Heap maximum for Hadoop daemons (i.e. Resource Manger, NodeManager,
+# etc.), specified in megs.
+#
+# If not specified, defaults to 1000 (which is Hadoop default)
+#
+# May need to be increased if you are scaling large.
+#
+# export HADOOP_DAEMON_HEAP_MAX=2000
+
+# Compression
+#
+# Should compression of outputs and intermediate data be enabled.
+# Specify yes or no.
+#
+# Effectively, is time spend compressing data going to save you time
+# on I/O.  Sometimes yes, sometimes no.
+#
+# export HADOOP_COMPRESSION=yes
+
+# IO Sort Factors + MB
+#
+# The number of streams of files to sort while reducing and the memory
+# amount to use while sorting.  This is a quite advanced mechanism
+# taking into account many factors.  If not specified, some reasonable
+# number will be assumed.
+#
+# export HADOOP_IO_SORT_FACTOR=10
+# export HADOOP_IO_SORT_MB=100
+
+# Environment Extra
+#
+# Specify extra environment information that should be passed into
+# Hadoop.  This file will simply be appended into the hadoop-env.sh
+# (and if appropriate) yarn-env.sh.
+#
+# By default, a reasonable estimate for max user processes and open
+# file descriptors will be calculated and put into hadoop-env.sh (and
+# if appropriate) yarn-env.sh.  However, it's always possible they may
+# need to be set differently. Everyone's cluster/situation can be
+# slightly different.
+#
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-environment-extra"
+
+# Convenience Scripts
+#
+# Specify script to be executed to before / after your job.  It is run
+# on all nodes.
+#
+# Typically the pre-job is used to set something up or get debugging
+# info.  The post-job script is used for cleaning up something.
+# 
+# See examples for ideas of what you can do w/ these scripts
+#
+# export HADOOP_PRE_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-pre-job"
+# export HADOOP_POST_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-post-job"
+
+# Specify ssh-equivalent remote command if ssh is not available on
+# your cluster
+# export HADOOP_REMOTE_CMD="mrsh"
+
+# Necessary for various Hadoop execution
+export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+
+############################################################################
+# Hadoop Run
+############################################################################
+
+srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-run
+srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-post-run
+
+# Gather configuration and log files after your job is done for
+# debugging.  Data will be stored in $HADOOP_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID
+
+# srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-gather

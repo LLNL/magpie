@@ -1,0 +1,5 @@
+# This is an example of extra stuff you may wish to put into your
+# environment.
+
+ulimit -n 8192
+ulimit -u 4096

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- Site specific YARN configuration properties -->
+
+<property>
+  <description>The address of the applications manager interface in the RM.</description>
+  <name>yarn.resourcemanager.address</name>
+  <value>HADOOP_MASTER_HOST:8032</value>
+</property>
+
+<property>
+  <description>The address of the scheduler interface.</description>
+  <name>yarn.resourcemanager.scheduler.address</name>
+  <value>HADOOP_MASTER_HOST:8030</value>
+</property>
+
+<property>
+  <description>The address of the RM web application.</description>
+  <name>yarn.resourcemanager.webapp.address</name>
+  <value>HADOOP_MASTER_HOST:8088</value>
+</property>
+
+<property>
+  <name>yarn.resourcemanager.resource-tracker.address</name>
+  <value>HADOOP_MASTER_HOST:8031</value>
+</property>
+
+<property>
+  <description>The address of the RM admin interface.</description>
+  <name>yarn.resourcemanager.admin.address</name>
+  <value>HADOOP_MASTER_HOST:8033</value>
+</property>
+
+<property>
+  <description>The minimum allocation for every container request at the RM,
+    in MBs. Memory requests lower than this won't take effect,
+    and the specified value will get allocated at minimum.</description>
+  <name>yarn.scheduler.minimum-allocation-mb</name>
+  <value>YARNMINCONTAINER</value>
+</property>
+
+<property>
+  <description>The maximum allocation for every container request at the RM,
+    in MBs. Memory requests higher than this won't take effect,
+    and will get capped to this value.</description>
+  <name>yarn.scheduler.maximum-allocation-mb</name>
+  <value>YARNMAXCONTAINER</value>
+</property>
+
+<property>
+  <description>Amount of physical memory, in MB, that can be allocated 
+  for containers.</description>
+  <name>yarn.nodemanager.resource.memory-mb</name>
+  <value>YARNRESOURCEMEMORY</value>
+</property>
+
+<property>
+  <name>yarn.nodemanager.aux-services</name>
+  <value>mapreduce.shuffle</value>
+</property>
+
+<property>
+  <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+  <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+<property>
+  <description>List of directories to store localized files in. An
+    application's localized file directory will be found in:
+    ${yarn.nodemanager.local-dirs}/usercache/${user}/appcache/application_${appid}.
+    Individual containers' work directories, called container_${contid}, will
+    be subdirectories of this.
+  </description>
+  <name>yarn.nodemanager.local-dirs</name>
+  <value>LOCALSTOREDIR/yarn-nm/</value>
+</property>
+
+<property>
+  <name>yarn.scheduler.capacity.root.queues</name>
+  <value>default</value>
+  <description>The queues at the this level (root is the root queue).
+  </description>
+</property>
+
+<property>
+  <name>yarn.scheduler.capacity.root.default.capacity</name>
+  <value>100</value>
+</property>
+
+</configuration>

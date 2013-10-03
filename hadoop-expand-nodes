@@ -1,0 +1,75 @@
+#!/usr/bin/perl -w
+
+# Most of this code is cut & pasted from Hostlist.pm in the Genders
+# project.  See http://sourceforge.net/projects/genders/
+
+use strict;
+
+# expand_quadrics_range
+#
+# expand nodelist in quadrics form 
+#
+sub expand_quadrics_range 
+{
+    my ($list) = @_;
+        my ($pfx, $ranges, $suffix) = split(/[\[\]]/, $list, 3);
+
+    return $list if (!defined $ranges);
+
+    return map {"$pfx$_$suffix"}
+    map { s/^(\d+)-(\d+)$/"$1".."$2"/ ? eval : $_ }
+    split(/,|:/, $ranges);
+}
+
+# expand()
+# turn a hostname range into a list of hostnames. Try to autodetect whether
+# a quadrics-style range or a normal hostname range was passed in.
+#
+sub expand
+{
+    my ($list) = @_;
+
+        if ($list =~ /\[/ && $list !~ /[^[]*\[.+\]/) {
+            # Handle case of no closing bracket - just return
+            return ($list);
+        }
+
+        # matching "[" "]" pair with stuff inside will be considered a quadrics
+        # range:
+        if ($list =~ /[^[]*\[.+\]/) {
+                # quadrics ranges are separated by whitespace in RMS -
+                # try to support that here
+                $list =~ s/\s+/,/g;
+
+                # 
+                # Replace ',' chars internal to "[]" with ':"
+                #
+                while ($list =~ s/(\[[^\]]*),([^\[]*\])/$1:$2/) {}
+
+                return map { expand_quadrics_range($_) } split /,/, $list;
+
+        } else {
+	    return map {
+                            s/(\w*?)(\d+)-(\1|)(\d+)/"$2".."$4"/
+                                               ||
+                                          s/(.+)/""/;
+                            map {"$1$_"} eval;
+	    } split /,/, $list;
+        }
+}
+
+if (@ARGV != 1) {
+    my $prog = `basename $0`;
+
+    chomp($prog);
+    print "Usage: $prog <noderange>\n";
+    print "  e.g. $prog mynodes[0-200]\n";
+    exit 1;
+} 
+
+my @nodes = expand($ARGV[0]);
+
+foreach my $node (@nodes)
+{
+    print "$node\n";
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<property>
+  <name>dfs.secondary.http.address</name>
+  <value>HADOOP_MASTER_HOST:50090</value>
+  <description>
+    The secondary namenode http server address and port.
+    If the port is 0 then the server will start on a free port.
+  </description>
+</property>
+
+<property>
+  <name>dfs.name.dir</name>
+  <value>${hadoop.tmp.dir}/dfs/name</value>
+  <description>Determines where on the local filesystem the DFS name node
+      should store the name table(fsimage).  If this is a comma-delimited list
+      of directories then the name table is replicated in all of the
+      directories, for redundancy. </description>
+</property>
+
+<property>
+  <name>dfs.data.dir</name>
+  <value>${hadoop.tmp.dir}/dfs/data</value>
+  <description>Determines where on the local filesystem an DFS data node
+  should store its blocks.  If this is a comma-delimited
+  list of directories, then data will be stored in all named
+  directories, typically on different devices.
+  Directories that do not exist are ignored.
+  </description>
+</property>
+
+<property>
+  <name>dfs.replication</name>
+  <value>HDFSREPLICATION</value>
+  <description>Default block replication. 
+  The actual number of replications can be specified when the file is created.
+  The default is used if replication is not specified in create time.
+  </description>
+</property>
+
+<property>
+  <name>dfs.block.size</name>
+  <value>HDFSBLOCKSIZE</value>
+  <description>The default block size for new files.</description>
+</property>
+
+<!-- Script will calculate based on recommendation of Cloudera/Experience -->
+<property>
+  <name>dfs.namenode.handler.count</name>
+  <value>HDFSNAMENODEHANDLERCLOUNT</value>
+  <description>The number of server threads for the namenode.</description>
+</property>
+
+<!-- Script will calculate based on recommendation of Cloudera/Experience -->
+<property>
+  <name>dfs.datanode.handler.count</name>
+  <value>HDFSDATANODEHANDLERCLOUNT</value>
+  <description>The number of server threads for the datanode.</description>
+</property>
+
+</configuration>
+

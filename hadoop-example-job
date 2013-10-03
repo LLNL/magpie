@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# This script executes a teragen and terasort with Hadoop 2.0.  It is
+# an example of how you can setup of script to run Hadoop job.  It is
+# set via the HADOOP_SCRIPT_PATH environment variable and setting the
+# HADOOP_MODE to 'script'.  See the sbatch.hadoop file for details.
+#
+# Please adjust to whatever you would want to do with Hadoop
+
+cd ${HADOOP_BUILD_HOME}
+
+command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar teragen 50000000 terasort-example-job-teragen"
+echo "Running $command" >&2
+$command
+    
+command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar terasort -Dmapred.reduce.tasks=1 terasort-example-job-teragen terasort-example-job-sort"
+
+echo "Running $command" >&2
+$command
+
+command="bin/hadoop fs -rm -r terasort-example-job-teragen"
+$command
+command="bin/hadoop fs -rm -r terasort-example-job-sort"
+$command
+
+exit 0

@@ -1,0 +1,1015 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+
+# This script is the core processing script for running Hadoop jobs.
+# For the most part, it shouldn't be editted.  See sbatch.hadoop for
+# configuration details.
+
+#
+# Check a variety of input variables
+#
+
+if [ "${HADOOP_MODE}" != "terasort" ] \
+    && [ "${HADOOP_MODE}" != "script" ] \
+    && [ "${HADOOP_MODE}" != "interactive" ] \
+    && [ "${HADOOP_MODE}" != "setuponly" ]
+then
+    echo "HADOOP_MODE must be set to terasort, script, interactive, setuponly"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ]
+then
+    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or rawnetworkfs"
+    exit 1
+fi
+
+if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
+    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+then
+    echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2"
+    exit 1
+fi
+
+if [ "${HADOOP_BUILD_HOME}X" == "X" ]
+then
+    echo "HADOOP_BUILD_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${HADOOP_BUILD_HOME} ]
+then
+    echo "${HADOOP_BUILD_HOME} does not point to a directory"
+    exit 1
+fi
+
+if [ "${HADOOP_SCRIPTS_HOME}X" == "X" ]
+then
+    echo "HADOOP_SCRIPTS_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${HADOOP_SCRIPTS_HOME} ]
+then
+    echo "${HADOOP_SCRIPTS_HOME} does not point to a directory"
+    exit 1
+fi
+
+if [ "${JAVA_HOME}X" == "X" ]
+then
+    echo "JAVA_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${JAVA_HOME} ]
+then
+    echo "${JAVA_HOME} does not point to a directory"
+    exit 1
+fi
+
+if [ "${HADOOP_MODE}" == "terasort" ]
+then
+    if [ "${HADOOP_VERSION}X" == "X" ]
+    then
+	echo "HADOOP_VERSION must be set for terasort mode"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_MODE}" == "interactive" ] \
+    || [ "${HADOOP_MODE}" == "setuponly" ]
+then
+    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
+    then
+	echo "SBATCH_TIMELIMIT environment variable must be set for interactive or setuponly mode"
+	exit 1
+    fi
+
+    if [ ${SBATCH_TIMELIMIT} -lt 10 ]
+    then
+	echo "timelimit must be atleast 10 for interactive or setuponly mode"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_MODE}" == "script" ]
+then
+    if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
+    then
+	echo "Script HADOOP_SCRIPT_PATH must be specified"
+	exit 1
+    fi
+    
+    if [ ! -x ${HADOOP_SCRIPT_PATH} ]
+    then
+	echo "Script HADOOP_SCRIPT_PATH \"$HADOOP_SCRIPT_PATH\" does not have execute permissions"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    && [ "${HADOOP_HDFS_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_HDFS_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    && [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+    && [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_PRE_JOB_RUN}X" != "X" ] \
+    && [    ! -x "${HADOOP_PRE_JOB_RUN}" ]
+then 
+    echo "Script HADOOP_PRE_JOB_RUN=\"${HADOOP_PRE_JOB_RUN}\" is not executable"
+    exit 1
+fi
+
+if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
+    && ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
+then
+    echo "HADOOP_TERASORT_CLEAR_CACHE must be set to yes or no"
+    exit 1
+fi
+
+if [ "${HADOOP_COMPRESSION}X" != "X" ] \
+    && ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
+then
+    echo "HADOOP_COMPRESSION must be set to yes or no"
+    exit 1
+fi
+
+#
+# Setup a whole bunch of directories
+# 
+
+export HADOOP_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
+
+mkdir -p $HADOOP_LOCAL_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_LOCAL_DIR}"
+    exit 1
+fi
+
+cd $HADOOP_LOCAL_DIR
+
+export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
+mkdir -p $HADOOP_LOCAL_JOB_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_LOCAL_JOB_DIR}"
+    exit 1
+fi
+
+export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
+mkdir -p $HADOOP_CONF_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_CONF_DIR}"
+    exit 1
+fi
+
+export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
+mkdir -p $HADOOP_LOG_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_LOG_DIR}"
+    exit 1
+fi
+
+export YARN_CONF_DIR=${HADOOP_CONF_DIR}
+export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+
+# Create master and slave files
+
+hash hostlist 2>/dev/null
+if [ $? -eq 0 ]
+then
+    hostrangescript="hostlist"
+    hostrangescriptoptions="-e -d \n"
+else
+    if [ -x ${HADOOP_SCRIPTS_HOME}/hadoop-expand-nodes ]
+    then
+	hostrangescript="${HADOOP_SCRIPTS_HOME}/hadoop-expand-nodes"
+	hostrangescriptoptions=""
+    else
+	echo "Cannot find tool to expand host ranges"
+	exit 1
+    fi
+fi
+
+${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | head -1 > ${HADOOP_CONF_DIR}/masters
+${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 > ${HADOOP_CONF_DIR}/slaves
+
+master=`head -1 ${HADOOP_CONF_DIR}/masters`
+
+slave_count=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
+
+#
+# Calculate values for various config file variables, based on
+# recommendtions, rules of thumb, or based on what user input.
+#
+
+# Recommendation from Cloudera, parallel copies sqrt(number of nodes), floor of ten
+parallelcopies=$(echo "sqrt ( ${slave_count} )" | bc -l | xargs printf "%1.0f")
+if [ "${parallelcopies}" -lt "10" ]
+then
+    parallelcopies=10
+fi
+
+# Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200
+# My experience this is low b/c of high core counts, so bump higher to 50% 
+namenodehandlercount=$(echo "${slave_count} * .5" | bc -l | xargs printf "%1.0f")
+if [ "${namenodehandlercount}" -lt "10" ]
+then
+    namenodehandlercount=10
+fi
+
+if [ "${namenodehandlercount}" -gt "200" ]
+then
+    namenodehandlercount=200
+fi
+
+# General rule of thumb is half namenode handler count, so * .25 instead of * .5
+datanodehandlercount=$(echo "${slave_count} * .25" | bc -l | xargs printf "%1.0f")
+if [ "${datanodehandlercount}" -lt "10" ]
+then
+    datanodehandlercount=10
+fi
+
+if [ "${datanodehandlercount}" -gt "200" ]
+then
+    datanodehandlercount=200
+fi
+
+# Per description, about 4% of nodes but w/ floor of 10
+jobtrackerhandlercount=$(echo "${slave_count} * .04" | bc -l | xargs printf "%1.0f")
+if [ "${jobtrackerhandlercount}" -lt "10" ]
+then
+    jobtrackerhandlercount=10
+fi
+
+# Optimal depends on file system
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
+then
+    iobuffersize=65536
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+then
+    # Default block size is 1M in Lustre
+    # XXX: If not default, can get from lctl or similar?
+    iobuffersize=1048576
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+then
+    # Assuming Lustre, so copy above 1M
+    iobuffersize=1048576
+fi 
+
+javahometmp=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
+proccounttmp=`cat /proc/cpuinfo | grep processor | wc -l`
+# subtract one, leave 1 processor for daemons
+proccount=`expr ${proccounttmp} - 1`
+
+if [ "${HADOOP_MAX_TASKS_PER_NODE}X" != "X" ]
+then
+    maxtaskspernode=${HADOOP_MAX_TASKS_PER_NODE}
+else
+    maxtaskspernode=${proccount}
+fi
+
+if [ "${YARN_RESOURCE_MEMORY}X" != "X" ]
+then
+    yarnresourcememory=${YARN_RESOURCE_MEMORY}
+else
+    # 80% of system memory seems like a good estimate
+    tmp1=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    yarnresourcememory=$(echo "${tmp1} * 1024" | bc -l | xargs printf "%1.0f")
+fi
+
+if [ "${HADOOP_CHILD_HEAPSIZE}X" != "X" ]
+then
+    allchildheapsize=${HADOOP_CHILD_HEAPSIZE}
+else
+# achu: This is my stupid bash way to round to the nearest 256M.  I'm
+# sure there is something smarter I just don't know.  Sorry, not a
+# bash expert
+#
+# For MapReduce1, yarn resource memory makes no sense, but we can use
+# the value for some of the calculations below.
+#
+    tmp1=$(echo "(${yarnresourcememory} / 1024) / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
+    tmp2=$(echo "(${tmp1} * 100) / 25" | bc -l | xargs printf "%1.0f")
+    tmp3=$(echo "${tmp2} * .25" | bc -l | xargs printf "%1.2f")
+    allchildheapsize=$(echo "${tmp3} * 1024" | bc -l | xargs printf "%1.0f")
+fi
+
+if [ "${HADOOP_CHILD_MAP_HEAPSIZE}X" != "X" ]
+then
+    mapchildheapsize=${HADOOP_CHILD_MAP_HEAPSIZE}
+else
+    mapchildheapsize=${allchildheapsize}
+fi
+
+if [ "${HADOOP_CHILD_REDUCE_HEAPSIZE}X" != "X" ]
+then
+    reducechildheapsize=${HADOOP_CHILD_REDUCE_HEAPSIZE}
+else
+    reducechildheapsize=${allchildheapsize}
+fi
+
+# Cloudera recommends 256 for io.sort.mb.  Cloudera blog suggests
+# io.sort.factor * 10 ~= io.sort.mb.
+
+if [ "${HADOOP_IO_SORT_MB}X" != "X" ]
+then
+    iosortmb=${HADOOP_IO_SORT_MB}
+else
+    iosortmb=256
+fi
+
+if [ "${HADOOP_IO_SORT_FACTOR}X" != "X" ]
+then
+    iosortfactor=${HADOOP_IO_SORT_FACTOR}
+else
+    iosortfactor=`expr ${iosortmb} \/ 10`
+fi
+
+mapcontainermb=`expr ${mapchildheapsize} + 256`
+reducecontainermb=`expr ${reducechildheapsize} + 256`
+
+yarnmincontainer=1024
+if [ ${mapcontainermb} -lt ${yarnmincontainer} ]
+then
+    yarnmincontainer=${mapcontainermb}
+fi
+
+if [ ${reducecontainermb} -lt ${yarnmincontainer} ]
+then
+    yarnmincontainer=${reducecontainermb}
+fi
+
+yarnmaxcontainer=8192
+if [ ${mapcontainermb} -gt ${yarnmaxcontainer} ]
+then
+    yarnmaxcontainer=${mapcontainermb}
+fi
+
+if [ ${reducecontainermb} -gt ${yarnmaxcontainer} ]
+then
+    yarnmaxcontainer=${reducecontainermb}
+fi
+ 
+if [ "${HADOOP_MAPREDUCE_SLOWSTART}X" != "X" ]
+then
+    mapredslowstart=${HADOOP_MAPREDUCE_SLOWSTART}
+else
+    # Hadoop default is 0.05, which is normally ridiculously low.
+    mapredslowstart="0.25"
+fi
+
+if [ "${HADOOP_DEFAULT_MAP_TASKS}X" != "X" ]
+then
+    defaultmaptasks=${HADOOP_DEFAULT_MAP_TASKS}
+else
+    defaultmaptasks=`expr ${maxtaskspernode} \* ${slave_count}`
+fi
+
+if [ "${HADOOP_DEFAULT_REDUCE_TASKS}X" != "X" ]
+then
+    defaultreducetasks=${HADOOP_DEFAULT_REDUCE_TASKS}
+else
+    defaultreducetasks=${slave_count}
+fi
+
+if [ "${HADOOP_MAX_MAP_TASKS}X" != "X" ]
+then
+    maxmaptasks=${HADOOP_MAX_MAP_TASKS}
+else
+    maxmaptasks=${maxtaskspernode}
+fi
+
+if [ "${HADOOP_MAX_REDUCE_TASKS}X" != "X" ]
+then
+    maxreducetasks=${HADOOP_MAX_REDUCE_TASKS}
+else
+    maxreducetasks=${maxtaskspernode}
+fi
+
+if [ "${HADOOP_HDFS_BLOCKSIZE}X" != "X" ]
+then
+    hdfsblocksize=${HADOOP_HDFS_BLOCKSIZE}
+else
+    # 64M is Hadoop default, widely considered bad choice, we'll use 128M as default
+    hdfsblocksize=134217728
+fi
+
+if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
+then
+    hdfsreplication=${HADOOP_HDFS_REPLICATION}
+else
+    # replication of 1 instead of 3 in HDFS over Lustre can cause some
+    # extra file transfers and slow down jobs, however it's been
+    # observed as not a "huge factor". 
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+    then
+	hdfsreplication=1
+    else
+	hdfsreplication=3
+    fi
+fi
+
+if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hadoopdaemonheapmax="${HADOOP_DAEMON_HEAP_MAX}"
+else
+    hadoopdaemonheapmax="1000"
+fi 
+
+if [ "${HADOOP_COMPRESSION}X" != "X" ]
+then
+    if [ "${HADOOP_COMPRESSION}" == "yes" ]
+    then
+	compression=true
+    else
+	compression=false
+    fi
+else
+    compression=false
+fi
+
+openfiles=`ulimit -n`
+if [ "${openfiles}" != "unlimited" ]
+then
+    openfileshardlimit=`ulimit -H -n`
+
+    # we estimate 1024 per 100 nodes.  Obviously depends on many
+    # factors such as core count, but it's a reasonble and safe
+    # over-estimate calculated based on experience.
+    openfilescount=`expr ${slave_count} \/ 100 `
+    if [ "${openfilescount}" == "0" ]
+    then
+        openfilescount=1
+    fi
+    openfilescount=`expr ${openfilescount} \* 1024`
+    
+    if [ "${openfileshardlimit}" != "unlimited" ]
+    then
+        if [ ${openfilescount} -gt ${openfileshardlimit} ]
+        then
+            openfilescount=${openfileshardlimit}
+        fi
+    fi
+else
+    openfilescount="unlimited"
+fi
+
+userprocesses=`ulimit -u`
+if [ "${userprocesses}" != "unlimited" ]
+then
+    userprocesseshardlimit=`ulimit -H -n`
+
+    # we estimate 1024 per 100 nodes.
+    userprocessescount=`expr ${slave_count} \/ 100 `
+    if [ "${userprocessescount}" == "0" ]
+    then
+        userprocessescount=1
+    fi
+    userprocessescount=`expr ${userprocessescount} \* 1024`
+    
+    if [ "${userprocesseshardlimit}" != "unlimited" ]
+    then
+        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
+        then
+            userprocessescount=${userprocesseshardlimit}
+        fi
+    fi
+else
+    userprocessescount="unlimited"
+fi
+
+#
+# Setup file system
+#
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
+then
+    # Setup node directory per node 
+    fspath="${HADOOP_HDFS_PATH}"
+    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
+
+    # Assume if path doesn't exist must format
+    if [ -d "${fspath}" ]
+    then
+	format=0
+    else
+	format=1
+	mkdir -p ${fspath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${fspath}"
+	    exit 1
+	fi
+    fi
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+then
+    # Setup node directory per node 
+    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/${SLURM_JOB_NAME}/node-${HADOOP_CLUSTER_NODERANK}"
+    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
+
+    # Assume if path doesn't exist must format
+    if [ -d "${fspath}" ]
+    then
+	format=0
+    else
+	format=1
+	mkdir -p ${fspath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${fspath}"
+	    exit 1
+	fi
+	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
+    fi
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+then
+    # Setup node directory per node, still need for "local" files
+    fspath="${HADOOP_RAWNETWORKFS_PATH}"
+    pernodepath="${fspath}/${SLURM_JOB_NAME}/node-${HADOOP_CLUSTER_NODERANK}"
+    hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "file:///" | sed "s/\\//\\\\\\\\\//g"`
+
+    if [ ! -d "${fspath}" ]
+    then
+        mkdir -p ${fspath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${fspath}"
+            exit 1
+        fi
+        /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
+    fi
+
+    if [ ! -d "${pernodepath}" ]
+    then
+        mkdir -p ${pernodepath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${pernodepath}"
+            exit 1
+        fi
+    fi
+
+    format=0
+else
+    echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+    exit 1
+fi
+
+if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]) \
+    && [ "${HADOOP_LOCALSTORE}X" != "X" ]
+then
+    localstoredirtmp=${HADOOP_LOCALSTORE}
+    localstoredir=`echo "${localstoredirtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    
+    if [ -d "${localstoredirtmp}" ]
+    then
+	mkdir -p ${localstoredirtmp}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${localstoredirtmp}"
+	    exit 1
+	fi
+    fi
+else
+    localstoredir="\$\{hadoop.tmp.dir\}"
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${HADOOP_CONF_FILES}X" == "X" ]
+then
+    hadoopconffiledir=${HADOOP_SCRIPTS_HOME}/conf
+else
+    hadoopconffiledir=${HADOOP_CONF_FILES}
+fi
+
+if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+then
+    coresitexml=${hadoopconffiledir}/core-site-1.0.xml
+    mapredsitexml=${hadoopconffiledir}/mapred-site-1.0.xml
+    hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.0.sh
+    hdfssitexml=${hadoopconffiledir}/hdfs-site-1.0.xml
+elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+    coresitexml=${hadoopconffiledir}/core-site-2.0.xml
+    mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
+    hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.0.sh
+    yarnsitexml=${hadoopconffiledir}/yarn-site-2.0.xml
+    yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
+    hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
+else
+    echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
+    exit 1
+fi
+
+#
+# Setup configuration files and environment files
+#
+
+if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
+    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+
+    sed -e "s/HADOOPTMPDIR/${hadooptmpdir}/g" \
+	-e "s/FSDEFAULT/${fsdefault}/g" \
+	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
+
+    sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
+	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
+	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
+	-e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \
+	-e "s/MAPCHILDHEAPSIZE/${mapchildheapsize}/g" \
+	-e "s/MAPCONTAINERMB/${mapcontainermb}/g" \
+	-e "s/REDUCECHILDHEAPSIZE/${reducechildheapsize}/g" \
+	-e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
+	-e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
+	-e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
+	-e "s/MAXMAPTASKS/${maxmaptasks}/g" \
+	-e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
+	-e "s/LOCALSTOREDIR/${localstoredir}/g" \
+	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
+	-e "s/IOSORTMB/${iosortmb}/g" \
+	-e "s/HADOOPCOMPRESSION/${compression}/g" \
+	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
+    
+    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
+    
+    echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    echo "export HADOOP_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+
+    if [ "${HADOOP_REMOTE_CMD:-ssh}" != "ssh" ]
+    then
+	echo "export HADOOP_SSH_CMD=\"${HADOOP_REMOTE_CMD}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    fi
+
+    if [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
+    then
+	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    else
+	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    fi
+fi
+    
+if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+	sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
+	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
+	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
+	-e "s/LOCALSTOREDIR/${localstoredir}/g" \
+	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
+    
+    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
+
+    echo "export YARN_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    echo "export YARN_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+
+    if [ "${HADOOP_REMOTE_CMD:-ssh}" != "ssh" ]
+    then
+	echo "export YARN_SSH_CMD=\"$HADOOP_REMOTE_CMD\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    fi
+
+    if [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
+    then
+	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    else
+	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    fi
+fi
+
+if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+then
+    sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
+	-e "s/HDFSREPLICATION/${hdfsreplication}/g" \
+	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
+	-e "s/HDFSDATANODEHANDLERCLOUNT/${datanodehandlercount}/g" \
+	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
+    
+    cat ${hadoopconffiledir}/log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
+fi
+
+#
+# Perform format if necessary
+#
+
+if [ "${format}" -eq "1" ]
+then
+    # Only HADOOP_CLUSTER_NODERANK 0 will format the node
+    if [ "$HADOOP_CLUSTER_NODERANK" -eq "0" ]
+    then
+	cd $HADOOP_BUILD_HOME
+	echo 'Y' | bin/hadoop namenode -format
+    else
+	# If this is the first time running, make everyone else wait
+	# until the format is complete
+	sleep 30
+    fi
+fi
+
+#
+# Launch pre-run script just before run
+#
+
+if [ "${HADOOP_PRE_JOB_RUN}X" != "X" ]
+then    
+    ${HADOOP_PRE_JOB_RUN}
+fi
+
+#
+# Run the job
+#
+
+if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+then
+    scriptprefix="bin"
+    terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
+    rmoption="-rmr"
+elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+then
+    scriptprefix="sbin"
+    terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
+    rmoption="-rm -r"
+fi
+remotecmd="${HADOOP_REMOTE_CMD:=ssh}" 
+
+if [ "$HADOOP_CLUSTER_NODERANK" -eq "0" ]
+then
+    cd ${HADOOP_BUILD_HOME}
+
+    if [ ${HADOOP_MODE} != "setuponly" ]
+    then
+	echo "Starting hadoop"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	then
+	    ${scriptprefix}/start-dfs.sh 
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    ${scriptprefix}/start-mapred.sh
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    ${scriptprefix}/start-yarn.sh
+	fi
+
+	# My rough estimate for setup time is 30 seconds per 64 nodes
+	sleepwait=`expr ${slave_count} \/ 64 \* 30`
+	if [ ${sleepwait} -lt 30 ]
+	then
+	    sleepwait=30
+	fi
+	echo "Waiting ${sleepwait} seconds to allows daemons to setup"
+	sleep ${sleepwait}
+
+	echo "*******************************************************"
+	echo "*"
+	echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
+	echo "*"
+	if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
+	then
+	    echo "* Jobtracker: http://$master:50030"
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	then
+	    echo "* Yarn Resource Manager: http://$master:8088"
+	fi
+	echo "*" 
+	echo "* HDFS Namenode: http://$master:50070"
+	echo "*"
+	echo "* To interact with Hadoop:"
+	echo "*   ${remotecmd} $master"
+	echo "*   Set HADOOP_CONF_DIR, such as ..."
+	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	echo "*     or"
+	echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	echo "*   cd $HADOOP_BUILD_HOME"
+	echo "*" 
+	echo "*   then do as you please, e.g. bin/hadoop fs ..."
+	echo "*" 
+	echo "*   To end your session early, kill the daemons via:"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	then
+            echo "*   ${scriptprefix}/stop-dfs.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    echo "*   ${scriptprefix}/stop-mapred.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "*   ${scriptprefix}/stop-yarn.sh"
+	fi
+	echo "*******************************************************"
+    fi
+
+    if [ "${HADOOP_MODE}" == "terasort" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Terasort"
+	echo "*******************************************************"
+
+	if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
+	then
+	    terasortsize=50000000
+	else
+	    terasortsize=$HADOOP_TERASORT_SIZE
+	fi
+
+	if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+	then
+	    pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
+	fi
+
+	if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
+	then
+	    if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
+	    then
+		clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+	    else
+		clearcache=""
+	    fi
+	else
+	    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+	fi
+
+	cd ${HADOOP_BUILD_HOME}
+
+	command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+	echo "Running $command" >&2
+	$command
+	
+	sleep 30
+	
+	if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
+	then
+	    rtasks=$HADOOP_TERASORT_REDUCER_COUNT
+	else
+	    rtasks=`expr $slave_count \* 2`
+	fi
+
+	command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+	
+	echo "Running $command" >&2
+	$command
+
+	command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+	$command
+	command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+	$command
+    elif [ "${HADOOP_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $HADOOP_SCRIPT_PATH"
+	echo "*******************************************************"
+	${HADOOP_SCRIPT_PATH}
+    elif [ "${HADOOP_MODE}" == "interactive" ] \
+	|| [ "${HADOOP_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering ${HADOOP_MODE} mode"
+	echo "*"
+
+	if [ "${HADOOP_MODE}" == "setuponly" ]
+	then
+	    echo "* To setup, you likely want to goto:"
+	    echo "*   ${remotecmd} $master"
+	    echo "*   Set HADOOP_CONF_DIR, such as ..."
+	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	    echo "*     or"
+	    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	    echo "*   cd $HADOOP_BUILD_HOME"
+	    echo "*"
+	    echo "* You probably want to run run:" 
+	    echo "*"
+	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	    then
+		echo "*   ${scriptprefix}/start-dfs.sh" 
+	    fi
+	    
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	    then
+		echo "*   ${scriptprefix}/start-mapred.sh"
+	    fi
+	
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	    then
+		echo "*   ${scriptprefix}/start-yarn.sh"
+	    fi
+	    echo "*"
+	fi
+	echo "* To launch jobs:"
+	echo "*   ${remotecmd} $master"
+	echo "*   Set HADOOP_CONF_DIR, such as ..."
+	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	echo "*     or"
+	echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	echo "*   cd $HADOOP_BUILD_HOME"
+	echo "*   bin/hadoop jar ..."
+	echo "*" 
+	
+	if [ "${HADOOP_MODE}" == "setuponly" ]
+	then
+	    echo "*   To cleanup your session, kill deamons likely like:" 
+	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	    then
+		echo "*   ${scriptprefix}/stop-dfs.sh"
+	    fi
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	    then
+		echo "*   ${scriptprefix}/stop-mapred.sh"
+	    fi
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	    then
+		echo "*   ${scriptprefix}/stop-yarn.sh"
+	    fi
+	fi
+	echo "*" 
+	echo "*******************************************************"
+	hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 5`
+	hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
+	sleep ${hadoopsleepseconds}
+    fi
+
+    cd ${HADOOP_BUILD_HOME}
+
+    if [ ${HADOOP_MODE} != "setuponly" ]
+    then
+	echo "Stopping hadoop"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	then
+	    ${scriptprefix}/stop-dfs.sh 
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    ${scriptprefix}/stop-mapred.sh
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    ${scriptprefix}/stop-yarn.sh
+	fi
+    fi
+fi
+
+exit 0

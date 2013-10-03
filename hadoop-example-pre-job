@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# This script is an example of something you might like to do before a
+# job is run.  It is set by the HADOOP_PRE_JOB_RUN environment
+# variable.  See the sbatch.hadoop file for details.
+ 
+# Get some debugging info before I run
+
+# Run only on one node, no need to do it on all nodes
+if [ "${HADOOP_CLUSTER_NODERANK}" == "0" ]
+then
+    ulimit -a
+
+    # Cat conf files for documentation
+    echo "**** mapred-site.xml ****"
+    cat ${HADOOP_CONF_DIR}/mapred-site.xml
+
+    echo "**** core-site.xml ****"
+    cat ${HADOOP_CONF_DIR}/core-site.xml
+
+    if [ -f "${HADOOP_CONF_DIR}/hdfs-site.xml" ] 
+    then
+	echo "**** hdfs-site.xml ****"
+	cat ${HADOOP_CONF_DIR}/hdfs-site.xml
+    fi
+
+    if [ -f "${HADOOP_CONF_DIR}/yarn-site.xml" ] 
+    then
+	echo "**** yarn-site.xml ****"
+	cat ${HADOOP_CONF_DIR}/yarn-site.xml
+    fi
+fi
+
+exit 0
