@@ -219,9 +219,9 @@ then
     hostrangescript="hostlist"
     hostrangescriptoptions="-e -d \n"
 else
-    if [ -x ${HADOOP_SCRIPTS_HOME}/hadoop-expand-nodes ]
+    if [ -x ${HADOOP_SCRIPTS_HOME}/bin/hadoop-expand-nodes ]
     then
-	hostrangescript="${HADOOP_SCRIPTS_HOME}/hadoop-expand-nodes"
+	hostrangescript="${HADOOP_SCRIPTS_HOME}/bin/hadoop-expand-nodes"
 	hostrangescriptoptions=""
     else
 	echo "Cannot find tool to expand host ranges"
