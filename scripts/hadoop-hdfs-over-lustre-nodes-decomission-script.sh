@@ -21,8 +21,6 @@
 # Edit this number
 nodecounttodecomission=0
 
-# This only runs on the namenode
-
 if [ "${nodecounttodecomission}" == "0" ]
 then
     echo "No nodes specified for decomission"
