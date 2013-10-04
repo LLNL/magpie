@@ -151,9 +151,9 @@ export HADOOP_SCRIPTS_HOME="/home/username/magpie"
 
 # Specify script to execute for "script" mode
 #
-# See hadoop-example-job for example of what to put in the script.
+# See hadoop-example-job-script for example of what to put in the script.
 #
-export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-job"
+export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-job-script"
 
 # Path for HDFS when using local disk
 #
@@ -326,13 +326,14 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # Specify script to be executed to before / after your job.  It is run
 # on all nodes.
 #
-# Typically the pre-job is used to set something up or get debugging
-# info.  The post-job script is used for cleaning up something.
+# Typically the pre-job script is used to set something up or get
+# debugging info.  The post-job script is used for cleaning up
+# something.
 # 
 # See examples for ideas of what you can do w/ these scripts
 #
-# export HADOOP_PRE_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-pre-job"
-# export HADOOP_POST_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-post-job"
+# export HADOOP_PRE_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-pre-job-script"
+# export HADOOP_POST_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-post-job-script"
 
 # Specify ssh-equivalent remote command if ssh is not available on
 # your cluster

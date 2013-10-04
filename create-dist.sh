@@ -14,9 +14,9 @@ cp -a --parents \
     README \
     TODO \
     hadoop-example-environment-extra \
-    hadoop-example-job \
-    hadoop-example-post-job \
-    hadoop-example-pre-job \
+    hadoop-example-job-script \
+    hadoop-example-post-job-script \
+    hadoop-example-pre-job-script \
     hadoop-expand-nodes \
     hadoop-gather \
     hadoop-post-run \
