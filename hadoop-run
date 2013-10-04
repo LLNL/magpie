@@ -234,7 +234,7 @@ ${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 >
 
 master=`head -1 ${HADOOP_CONF_DIR}/masters`
 
-slave_count=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
+export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 
 cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
 hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
@@ -251,7 +251,7 @@ hostsexcludefile=`echo "${hostsexcludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
 #
 
 # Recommendation from Cloudera, parallel copies sqrt(number of nodes), floor of ten
-parallelcopies=$(echo "sqrt ( ${slave_count} )" | bc -l | xargs printf "%1.0f")
+parallelcopies=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
 if [ "${parallelcopies}" -lt "10" ]
 then
     parallelcopies=10
@@ -259,7 +259,7 @@ fi
 
 # Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200
 # My experience this is low b/c of high core counts, so bump higher to 50% 
-namenodehandlercount=$(echo "${slave_count} * .5" | bc -l | xargs printf "%1.0f")
+namenodehandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .5" | bc -l | xargs printf "%1.0f")
 if [ "${namenodehandlercount}" -lt "10" ]
 then
     namenodehandlercount=10
@@ -271,7 +271,7 @@ then
 fi
 
 # General rule of thumb is half namenode handler count, so * .25 instead of * .5
-datanodehandlercount=$(echo "${slave_count} * .25" | bc -l | xargs printf "%1.0f")
+datanodehandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .25" | bc -l | xargs printf "%1.0f")
 if [ "${datanodehandlercount}" -lt "10" ]
 then
     datanodehandlercount=10
@@ -283,11 +283,14 @@ then
 fi
 
 # Per description, about 4% of nodes but w/ floor of 10
-jobtrackerhandlercount=$(echo "${slave_count} * .04" | bc -l | xargs printf "%1.0f")
+jobtrackerhandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .04" | bc -l | xargs printf "%1.0f")
 if [ "${jobtrackerhandlercount}" -lt "10" ]
 then
     jobtrackerhandlercount=10
 fi
+
+# Per descrption, about square root number of nodes
+submitfilereplication=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
 
 # Optimal depends on file system
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
@@ -413,14 +416,14 @@ if [ "${HADOOP_DEFAULT_MAP_TASKS}X" != "X" ]
 then
     defaultmaptasks=${HADOOP_DEFAULT_MAP_TASKS}
 else
-    defaultmaptasks=`expr ${maxtaskspernode} \* ${slave_count}`
+    defaultmaptasks=`expr ${maxtaskspernode} \* ${HADOOP_SLAVE_COUNT}`
 fi
 
 if [ "${HADOOP_DEFAULT_REDUCE_TASKS}X" != "X" ]
 then
     defaultreducetasks=${HADOOP_DEFAULT_REDUCE_TASKS}
 else
-    defaultreducetasks=${slave_count}
+    defaultreducetasks=${HADOOP_SLAVE_COUNT}
 fi
 
 if [ "${HADOOP_MAX_MAP_TASKS}X" != "X" ]
@@ -487,7 +490,7 @@ then
     # we estimate 1024 per 100 nodes.  Obviously depends on many
     # factors such as core count, but it's a reasonble and safe
     # over-estimate calculated based on experience.
-    openfilescount=`expr ${slave_count} \/ 100 `
+    openfilescount=`expr ${HADOOP_SLAVE_COUNT} \/ 100 `
     if [ "${openfilescount}" == "0" ]
     then
         openfilescount=1
@@ -511,7 +514,7 @@ then
     userprocesseshardlimit=`ulimit -H -n`
 
     # we estimate 1024 per 100 nodes.
-    userprocessescount=`expr ${slave_count} \/ 100 `
+    userprocessescount=`expr ${HADOOP_SLAVE_COUNT} \/ 100 `
     if [ "${userprocessescount}" == "0" ]
     then
         userprocessescount=1
@@ -686,6 +689,7 @@ then
 	-e "s/HADOOPCOMPRESSION/${compression}/g" \
 	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
 	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
     
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
@@ -823,7 +827,7 @@ then
 	fi
 
 	# My rough estimate for setup time is 30 seconds per 64 nodes
-	sleepwait=`expr ${slave_count} \/ 64 \* 30`
+	sleepwait=`expr ${HADOOP_SLAVE_COUNT} \/ 64 \* 30`
 	if [ ${sleepwait} -lt 30 ]
 	then
 	    sleepwait=30
@@ -914,7 +918,7 @@ then
 	then
 	    rtasks=$HADOOP_TERASORT_REDUCER_COUNT
 	else
-	    rtasks=`expr $slave_count \* 2`
+	    rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
 	fi
 
 	command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"

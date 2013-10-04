@@ -94,5 +94,16 @@
   excluded.</description>
 </property>
 
+<!-- Defaults to 1M, which is ridiculous, 64M seems decent -->
+<property>
+  <name>dfs.datanode.balance.bandwidthPerSec</name>
+  <value>67108864</value>
+  <description>
+        Specifies the maximum amount of bandwidth that each datanode
+	can utilize for the balancing purpose in term of
+        the number of bytes per second.
+  </description>
+</property>
+
 </configuration>
 

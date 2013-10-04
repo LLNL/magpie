@@ -122,25 +122,30 @@ A: No, using Slurm/MPI ranks, "disk-paths" can be consistently
    assigned to nodes so that all your HDFS files from a previous run
    can exist on a later run.
 
-Q: But I'll have to consistently use the same number of cluster nodes?
+Q: But that'll mean I have to consistently use the same number of
+   cluster nodes?
 
-A: Generally speaking yes.  If you want to increase/decrease the
-   number of nodes you use, you'll have to adjust just as though you were
-   commissioning/decommissioning nodes within a traditional Hadoop
-   cluster.
+A: Generally speaking no, but you can hit issues.  Just imagine how
+   HDFS issues if you were on a traditional Hadoop cluster and added or
+   removed nodes.
 
-   Increasing the number of nodes in your job is generally ok.  You
-   may wish to rebalance the HDFS blocks though.  The
-   start-balancer.sh that is normally used probably will not work.
-   Because all of the paths are in Lustre, "free space" on each
-   "local" location is pretty much identical, messing up calculations
-   for balancing.  The script
+   Generally speaking, increasing the number of nodes you use for a
+   job is fine.  Data you currently have in HDFS is still there and
+   readable, but it is not viewed as "local" according to HDFS and
+   more network transfers will have to happen.  You may wish to
+   rebalance the HDFS blocks though.  The start-balancer.sh that is
+   normally used probably will not work.  Because all of the paths are
+   in Lustre, "free space" on each "local" location is pretty much
+   identical, messing up calculations for balancing.  The script
    hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh can
    be used instead.
 
-   If you try to scale down the number of nodes, you should go through
-   the process of "decomissioning" nodes like on a real cluster,
-   otherwise you may lose data.
+   Decreasing nodes is a bit more dangerous, as data can "disappear"
+   just like if it were on a traditional Hadoop cluster.  If you try
+   to scale down the number of nodes, you should go through the
+   process of "decomissioning" nodes like on a real cluster, otherwise
+   you may lose data.  You can decomission nodes through the
+   hadoop-hdfs-over-lustre-nodes-decomission-script.sh script.
 
 Advanced
 --------
@@ -167,6 +172,8 @@ then
 fi
 
 To only do something on one node of your allocation.
+
+HADOOP_SLAVE_COUNT : number of compute/data nodes in your allocation
 
 HADOOP_CONF_DIR : the directory that configuration files local to the
                   node are stored.

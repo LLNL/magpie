@@ -212,5 +212,13 @@
   hosts are excluded.</description>
 </property>
 
+<property>
+  <name>mapreduce.client.submit.file.replication</name>
+  <value>SUBMITFILEREPLICATION</value>
+  <description>The replication level for submitted job files.  This
+  should be around the square root of the number of nodes.
+  </description>
+</property>
+
 </configuration>
 
