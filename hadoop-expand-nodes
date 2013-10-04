@@ -73,3 +73,5 @@ foreach my $node (@nodes)
 {
     print "$node\n";
 }
+
+exit 0;
