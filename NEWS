@@ -1,5 +1,14 @@
 magpie 1.1
 ----------
+Add ability to rebalance HDFS data on HDFS over Lustre if user changes
+node count.
+
+Added convenience script
+hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh and
+hadoop-hdfs-over-lustre-nodes-decomission-script.sh.
+
+export new environment variable HADOOP_SLAVE_COUNT
+
 Various code cleanup, file organization, and documentation updates
 
 magpie 1.0
