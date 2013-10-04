@@ -54,7 +54,8 @@ export SBATCH_TIMELIMIT=60
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
 #
-# "script" - execute a script that lists all of your Hadoop jobs.
+# "script" - execute a script that lists all of your Hadoop jobs.  Be
+#            sure to set HADOOP_SCRIPT_PATH to your script.
 #
 # "interactive" - manually interact to submit jobs, peruse HDFS, etc.
 #                 also useful for moving data in/out of HDFS.  In this
@@ -153,7 +154,7 @@ export HADOOP_SCRIPTS_HOME="/home/username/magpie"
 #
 # See hadoop-example-job-script for example of what to put in the script.
 #
-export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-job-script"
+# export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/my-job-script"
 
 # Path for HDFS when using local disk
 #
@@ -319,7 +320,10 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # need to be set differently. Everyone's cluster/situation can be
 # slightly different.
 #
-# export HADOOP_ENVIRONMENT_EXTRA_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-example-environment-extra"
+# See the example hadoop-example-environment extra for examples on
+# what you can/should do with adding extra environment settings.
+#
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-my-environment"
 
 # Convenience Scripts
 #
@@ -330,10 +334,12 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # debugging info.  The post-job script is used for cleaning up
 # something.
 # 
-# See examples for ideas of what you can do w/ these scripts
+# See example hadoop-example-pre-job-script and
+# hadoop-example-post-job-script for ideas of what you can do w/ these
+# scripts
 #
-# export HADOOP_PRE_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-pre-job-script"
-# export HADOOP_POST_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-example-post-job-script"
+# export HADOOP_PRE_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-my-pre-job-script"
+# export HADOOP_POST_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-my-post-job-script"
 
 # Specify ssh-equivalent remote command if ssh is not available on
 # your cluster
