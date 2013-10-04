@@ -27,7 +27,7 @@ then
     exit 0
 fi
 
-if [ "${nodecounttodecomission}" -gt "${HADOOP_SLAVE_COUNT}" ]
+if [ "${nodecounttodecomission}" -ge "${HADOOP_SLAVE_COUNT}" ]
 then
     echo "Cannot decomission more nodes than are available"
     exit 1
