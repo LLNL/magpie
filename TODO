@@ -8,8 +8,3 @@ Minor feature support
 ---------------------
 o multiple lustre directories for dfs.data.dir
   - allowing "parallel" writes to lustre from 1 node
-
-o document rebalancing if you increase/decrease nodes
-  - handle include/exclude files for balancing
-  - or just have script to do it for you
- 
