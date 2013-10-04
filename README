@@ -45,42 +45,6 @@ The basic idea behind these scripts are to:
 
 Now you have a mini Hadoop cluster to do whatever you want.
 
-Basics of HDFS over Lustre
---------------------------
-
-Instead of using local disk, designate a lustre directory to "emulate"
-local disk for each compute node.  For example, lets say you have 4
-compute nodes.  If we create the following paths in Lustre,
-
-/lustre/myusername/node-0
-/lustre/myusername/node-1
-/lustre/myusername/node-2
-/lustre/myusername/node-3
-
-We can give each of these paths to one of the compute nodes, which
-they can treat like a local disk.
-
-Q: Does that mean I have to constantly rebuild HDFS everytime I start
-  a job?
-
-A: No, using Slurm/MPI ranks, "disk-paths" can be consistently
-   assigned to nodes so that all your HDFS files from a previous run
-   can exist on a later run.
-
-Q: But I'll have to consistently use the same number of cluster nodes?
-
-A: Generally speaking yes.  If you decide to change the number of
-   nodes you run on, you may need to rebalance HDFS blocks or fix
-   HDFS.  Imagine you had a traditional Hadoop cluster and you were
-   increasing the number of nodes in your cluster or decreasing the
-   number of nodes in your cluster.  How would you have to handle it?
-
-   Increasing the number of nodes in your job is generally "more ok"
-   than decreasing it.  HDFS should be able to find your data and
-   rebalance it.  Be careful if you try to scale down the number of
-   nodes you use w/o handling it first.  Within HDFS respects, you may
-   have "lost data".
-
 Basic Instructions
 ------------------
 
@@ -108,6 +72,7 @@ Basic Instructions
    to run.
 
    HADOOP_FILESYSTEM_MODE : most will likely want "hdfsoverlustre".
+   See below for details on HDFS over Lustre.
 
    HADOOP_HDFSOVERLUSTRE_PATH : For hdfs over lustre, need to set this
 
@@ -134,6 +99,48 @@ Basic Instructions
 6) Look at your slurm output file to see your output.  There will also
    be some notes/instructions/tips in the slurm output file for
    viewing the status of your job, how to interact, etc..
+
+Basics of HDFS over Lustre
+--------------------------
+
+Instead of using local disk, designate a lustre directory to "emulate"
+local disk for each compute node.  For example, lets say you have 4
+compute nodes.  If we create the following paths in Lustre,
+
+/lustre/myusername/node-0
+/lustre/myusername/node-1
+/lustre/myusername/node-2
+/lustre/myusername/node-3
+
+We can give each of these paths to one of the compute nodes, which
+they can treat like a local disk.
+
+Q: Does that mean I have to constantly rebuild HDFS everytime I start
+  a job?
+
+A: No, using Slurm/MPI ranks, "disk-paths" can be consistently
+   assigned to nodes so that all your HDFS files from a previous run
+   can exist on a later run.
+
+Q: But I'll have to consistently use the same number of cluster nodes?
+
+A: Generally speaking yes.  If you want to increase/decrease the
+   number of nodes you use, you'll have to adjust just as though you were
+   commissioning/decommissioning nodes within a traditional Hadoop
+   cluster.
+
+   Increasing the number of nodes in your job is generally ok.  You
+   may wish to rebalance the HDFS blocks though.  The
+   start-balancer.sh that is normally used probably will not work.
+   Because all of the paths are in Lustre, "free space" on each
+   "local" location is pretty much identical, messing up calculations
+   for balancing.  The script
+   hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh can
+   be used instead.
+
+   If you try to scale down the number of nodes, you should go through
+   the process of "decomissioning" nodes like on a real cluster,
+   otherwise you may lose data.
 
 Advanced
 --------
