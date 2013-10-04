@@ -239,7 +239,10 @@ slave_count=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
 hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
 hostsincludefile=`echo "${hostsincludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
-hostsexcludefiletmp=""
+
+# By default leave exclude file empty
+touch ${HADOOP_CONF_DIR}/hosts-exclude
+hostsexcludefiletmp="${HADOOP_CONF_DIR}/hosts-exclude"
 hostsexcludefile=`echo "${hostsexcludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
 
 #
