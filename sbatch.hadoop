@@ -22,7 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-## SLURM Customizations
+############################################################################
+# SLURM Customizations
+############################################################################
 
 # Node count.  Node count should include one node for the
 # head/managemnet node.  For example, if you want 8 compute nodes to
@@ -30,6 +32,7 @@
 #SBATCH --nodes=9
 
 # Time to run the job
+# Do not use --time, environment variable needed w/n hadoop-run
 export SBATCH_TIMELIMIT=60
 
 # Job name.  This will be used in naming directories for the job.
@@ -332,7 +335,7 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # Typically the pre-job script is used to set something up or get
 # debugging info.  The post-job script is used for cleaning up
-# something.
+# something or gathering info for post-debugging/analysis.
 # 
 # See example hadoop-example-pre-job-script and
 # hadoop-example-post-job-script for ideas of what you can do w/ these
