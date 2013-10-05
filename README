@@ -134,9 +134,10 @@ A: Generally speaking no, but you can hit issues.  Just imagine how
    readable, but it is not viewed as "local" according to HDFS and
    more network transfers will have to happen.  You may wish to
    rebalance the HDFS blocks though.  The start-balancer.sh that is
-   normally used probably will not work.  Because all of the paths are
-   in Lustre, "free space" on each "local" location is pretty much
-   identical, messing up calculations for balancing.  The script
+   normally used probably will not work.  All of the paths are in
+   Lustre, so the "free space" on each "local" path is identical,
+   messing up calculations for balancing (i.e. no "local disk" is
+   more/less utilized than another).  The script
    hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh can
    be used instead.
 
@@ -153,15 +154,16 @@ Advanced
 There are many advanced options and other scripting options.  Please
 see sbatch.hadoop for details.
 
-The scripts make decent guesstimates on what would be best, but it
-always depends on your job and your hardware.  Many options in
-sbatch.hadoop are available to help you adjust your performance.
+The scripts make decent guesstimates on what would be best for
+performance, but it always depends on your job and your hardware.
+Many options in sbatch.hadoop are available to help you adjust your
+performance.
 
 Exported Environment Variables
 ------------------------------
 
 The following environment variables are exported by the sbatch
-hadoop-run script and may be useful.
+hadoop-run script and may be useful in scripts.
 
 HADOOP_CLUSTER_NODERANK : the rank of the node you are on.  It's often
                           convenient to do something like
