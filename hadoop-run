@@ -558,7 +558,7 @@ then
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
     # Setup node directory per node 
-    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/${SLURM_JOB_NAME}/node-${HADOOP_CLUSTER_NODERANK}"
+    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${HADOOP_CLUSTER_NODERANK}"
     hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -579,7 +579,7 @@ elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     # Setup node directory per node, still need for "local" files
     fspath="${HADOOP_RAWNETWORKFS_PATH}"
-    pernodepath="${fspath}/${SLURM_JOB_NAME}/node-${HADOOP_CLUSTER_NODERANK}"
+    pernodepath="${fspath}/node-${HADOOP_CLUSTER_NODERANK}"
     hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefault=`echo "file:///" | sed "s/\\//\\\\\\\\\//g"`
 
