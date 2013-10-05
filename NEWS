@@ -1,3 +1,12 @@
+magpie 1.2
+----------
+Move hadoop-gather into generic post run script
+hadoop-gather-config-files-and-logs-script.sh.
+
+Fix environment variable export in post scripts
+
+General documentation updates.
+
 magpie 1.1
 ----------
 Add ability to rebalance HDFS data on HDFS over Lustre if user changes

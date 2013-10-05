@@ -214,6 +214,23 @@ Con: Difficulty changing job size on clusters.
 
 Con: If HDFS replication > 1, more space used up.
 
+Convenience Scripts
+-------------------
+
+A number of convenience scripts are included in the scripts/
+directory, both for possible usefulness and as examples.  Notable ones
+worth mentioning:
+
+hadoop-gather-config-files-and-logs-script.sh - This script will get
+all of the conf files and log files from your Hadoop job and store it
+in a location for post-analysis of your job.  It's convenient for
+debugging.
+
+hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See HDFS over
+Lustre section above for details.
+
+hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh - See
+HDFS over Lustre section above for details.
 
 Patching Hadoop
 ---------------

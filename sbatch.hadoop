@@ -355,7 +355,3 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-run
 srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-post-run
 
-# Gather configuration and log files after your job is done for
-# debugging.  Data will be stored in $HADOOP_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID
-
-# srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-gather
