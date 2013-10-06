@@ -206,11 +206,13 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # HDFS Replication
 #
 # HDFS commonly uses 3.  It's not necessary if doing HDFS over Lustre,
-# but higher replication can help w/ Hadoop task scheduling and job
-# performance at the cost of increased disk usage.
+# but replication > 1 can help w/ Hadoop task scheduling and job read
+# performance at the cost of increased disk usage and write
+# performance.  Higher replication can also help with resilience if
+# nodes fail.  You may wish to set this to < 3 or even 1 if you want
+# to save space.
 #
-# If not specified, defaults to 3 for HDFS, defaults 1 for HDFS over
-# Lustre.
+# If not specified, defaults to 3
 #
 # export HADOOP_HDFS_REPLICATION=3
 

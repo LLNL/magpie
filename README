@@ -148,6 +148,20 @@ A: Generally speaking no, but you can hit issues.  Just imagine how
    you may lose data.  You can decomission nodes through the
    hadoop-hdfs-over-lustre-nodes-decomission-script.sh script.
 
+Q: What should HDFS replication be?
+
+A: The scripts in this package default to HDFS replication of 3 when
+   HDFS over Lustre is done.  If HDFS replication is > 1, it can
+   improve performance of your job reading in HDFS input b/c there
+   will be fewer network transfer of data (i.e. Hadoop may need to
+   transfer "non-local" data to another node).  In addition, if a
+   datanode were to die (i.e. a node crashes) Hadoop has the ability
+   to survive the crash just like in a traditional Hadoop cluster.
+
+   The trade-off is space and HDFS writes.  With HDFS replication of
+   1, you can save space, but replication also increases the time for
+   writes.
+
 Advanced
 --------
 

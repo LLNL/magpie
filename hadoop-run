@@ -452,15 +452,7 @@ if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
 then
     hdfsreplication=${HADOOP_HDFS_REPLICATION}
 else
-    # replication of 1 instead of 3 in HDFS over Lustre can cause some
-    # extra file transfers and slow down jobs, however it's been
-    # observed as not a "huge factor". 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
-    then
-	hdfsreplication=1
-    else
-	hdfsreplication=3
-    fi
+    hdfsreplication=3
 fi
 
 if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
