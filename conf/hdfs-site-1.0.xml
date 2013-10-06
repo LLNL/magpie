@@ -94,10 +94,10 @@
   excluded.</description>
 </property>
 
-<!-- Defaults to 1M, which is ridiculous, 256M seems decent -->
+<!-- Defaults to 1M, which is ridiculous, 4G is good, it's QDR IB speed -->
 <property>
   <name>dfs.datanode.balance.bandwidthPerSec</name>
-  <value>268435456</value>
+  <value>4294967296</value>
   <description>
         Specifies the maximum amount of bandwidth that each datanode
 	can utilize for the balancing purpose in term of

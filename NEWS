@@ -1,3 +1,7 @@
+magpie 1.5
+----------
+Increase HDFS bandwidthPerSec to 4G, which is ~QDR ipoib speed.
+
 magpie 1.4
 ----------
 Make default HDFS over Lustre replication 3
