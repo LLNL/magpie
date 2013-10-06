@@ -72,7 +72,7 @@ then
     while [ "${count}" -lt "${nodecounttodecomission}" ]
     do
 	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
-	rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/${SLURM_JOB_NAME}/node-$noderank"
+	rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-$noderank"
 	echo "Removing path ${rmpath} ..."
 	rm -rf ${rmpath}
 	count=`expr $count + 1`

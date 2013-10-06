@@ -3,6 +3,7 @@ magpie 1.4
 Make default HDFS over Lustre replication 3
 Document trade offs of replication.
 Increase HDFS bandwidthPerSec.
+Fix hadoop-hdfs-over-lustre-nodes-decomission-script.sh path bug.
 
 magpie 1.3
 ----------
