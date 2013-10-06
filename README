@@ -285,6 +285,12 @@ can't connect to the namenode, etc., badness all around.
 If you have root privileges, starting up the rngd daemon is another
 way to solve this problem without resorting to patching.
 
+Testing
+-------
+
+While I did some testing w/ Hadoop 1.0, b/c of the problem mentioned
+above, I did most development and testing against Hadoop 2.1.0-beta.
+
 Dependency
 ----------
 
