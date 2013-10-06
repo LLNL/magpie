@@ -1,3 +1,9 @@
+magpie 1.4
+----------
+Make default HDFS over Lustre replication 3
+Document trade offs of replication.
+Increase HDFS bandwidthPerSec.
+
 magpie 1.3
 ----------
 Remove slurm job name from hdfs over lustre created path. Use path
