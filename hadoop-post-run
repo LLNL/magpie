@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script executes setup scripts on behalf of the user.  For the
-# most part, it shouldn't be editted.  See sbatch.hadoop for
-# configuration details.
+# This script executes scripts on behalf of the user.  For the most
+# part, it shouldn't be editted.  See sbatch.hadoop for configuration
+# details.
 
 if [ "${HADOOP_POST_JOB_RUN}X" != "X" ] \
     && [    ! -x "${HADOOP_POST_JOB_RUN}" ]

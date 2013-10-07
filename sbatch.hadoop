@@ -337,7 +337,8 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # Typically the pre-job script is used to set something up or get
 # debugging info.  The post-job script is used for cleaning up
-# something or gathering info for post-debugging/analysis.
+# something or gathering info (such as logs) for
+# post-debugging/analysis.
 # 
 # See example hadoop-example-pre-job-script and
 # hadoop-example-post-job-script for ideas of what you can do w/ these
