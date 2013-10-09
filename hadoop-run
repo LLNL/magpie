@@ -55,15 +55,15 @@ then
     exit 1
 fi
 
-if [ "${HADOOP_BUILD_HOME}X" == "X" ]
+if [ "${HADOOP_HOME}X" == "X" ]
 then
-    echo "HADOOP_BUILD_HOME must be set"
+    echo "HADOOP_HOME must be set"
     exit 1
 fi
 
-if [ ! -d ${HADOOP_BUILD_HOME} ]
+if [ ! -d ${HADOOP_HOME} ]
 then
-    echo "${HADOOP_BUILD_HOME} does not point to a directory"
+    echo "${HADOOP_HOME} does not point to a directory"
     exit 1
 fi
 
@@ -761,7 +761,7 @@ then
     # Only HADOOP_CLUSTER_NODERANK 0 will format the node
     if [ "$HADOOP_CLUSTER_NODERANK" -eq "0" ]
     then
-	cd $HADOOP_BUILD_HOME
+	cd $HADOOP_HOME
 	echo 'Y' | bin/hadoop namenode -format
     else
 	# If this is the first time running, make everyone else wait
@@ -798,7 +798,7 @@ remotecmd="${HADOOP_REMOTE_CMD:=ssh}"
 
 if [ "$HADOOP_CLUSTER_NODERANK" -eq "0" ]
 then
-    cd ${HADOOP_BUILD_HOME}
+    cd ${HADOOP_HOME}
 
     if [ ${HADOOP_MODE} != "setuponly" ]
     then
@@ -848,7 +848,7 @@ then
 	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	echo "*     or"
 	echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	echo "*   cd $HADOOP_BUILD_HOME"
+	echo "*   cd $HADOOP_HOME"
 	echo "*" 
 	echo "*   then do as you please, e.g. bin/hadoop fs ..."
 	echo "*" 
@@ -899,7 +899,7 @@ then
 	    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
 	fi
 
-	cd ${HADOOP_BUILD_HOME}
+	cd ${HADOOP_HOME}
 
 	command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 	echo "Running $command" >&2
@@ -944,7 +944,7 @@ then
 	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	    echo "*     or"
 	    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	    echo "*   cd $HADOOP_BUILD_HOME"
+	    echo "*   cd $HADOOP_HOME"
 	    echo "*"
 	    echo "* You probably want to run run:" 
 	    echo "*"
@@ -971,7 +971,7 @@ then
 	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	echo "*     or"
 	echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	echo "*   cd $HADOOP_BUILD_HOME"
+	echo "*   cd $HADOOP_HOME"
 	echo "*   bin/hadoop jar ..."
 	echo "*" 
 	
@@ -999,7 +999,7 @@ then
 	sleep ${hadoopsleepseconds}
     fi
 
-    cd ${HADOOP_BUILD_HOME}
+    cd ${HADOOP_HOME}
 
     if [ ${HADOOP_MODE} != "setuponly" ]
     then

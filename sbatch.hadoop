@@ -92,7 +92,7 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 # Set Hadoop Setup Type
 #
 # Will inform scripts on how to setup config files and what daemons to
-# launch/setup.  The hadoop build/binaries set by HADOOP_BUILD_HOME
+# launch/setup.  The hadoop build/binaries set by HADOOP_HOME
 # needs to match up with what you set here.
 #
 # MR1 - MapReduce/Hadoop 1.0 w/ HDFS
@@ -115,7 +115,7 @@ export HADOOP_VERSION="2.1.0-beta"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_BUILD_HOME="/home/username/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 
 # Terasort size
 #

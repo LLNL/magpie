@@ -7,7 +7,7 @@
 #
 # Please adjust to whatever you would want to do with Hadoop
 
-cd ${HADOOP_BUILD_HOME}
+cd ${HADOOP_HOME}
 
 command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar teragen 50000000 terasort-example-job-teragen"
 echo "Running $command" >&2

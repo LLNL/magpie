@@ -4,7 +4,7 @@
 #
 # Convenient for just looking to see what's in there, perhaps after a job
 
-cd ${HADOOP_BUILD_HOME}
+cd ${HADOOP_HOME}
 
 command="bin/hadoop fs -ls"
 echo "Running $command" >&2

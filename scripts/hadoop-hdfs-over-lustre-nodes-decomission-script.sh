@@ -47,7 +47,7 @@ fi
 echo "Creating ${HADOOP_CONF_DIR}/hosts-exclude"
 tail -n ${nodecounttodecomission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
 
-cd ${HADOOP_BUILD_HOME}
+cd ${HADOOP_HOME}
 
 echo "Refreshing nodes in namenode"
 bin/hadoop dfsadmin -refreshNodes

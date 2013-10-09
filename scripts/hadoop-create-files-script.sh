@@ -3,7 +3,7 @@
 # This script executes some teragens.  It is convenient for putting
 # data into your file system for some tests.
 
-cd ${HADOOP_BUILD_HOME}
+cd ${HADOOP_HOME}
 
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 then

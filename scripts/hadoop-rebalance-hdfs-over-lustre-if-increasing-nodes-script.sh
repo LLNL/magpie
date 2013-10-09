@@ -16,7 +16,7 @@
 # disks, therefore the "local" disk utilization and global "free
 # space" numbers don't make much sense in HDFS over Lustre.
  
-FILES=`${HADOOP_BUILD_HOME}/bin/hadoop fs -ls 2> /dev/null | grep -v Found | awk '{print $8}'`
+FILES=`${HADOOP_HOME}/bin/hadoop fs -ls 2> /dev/null | grep -v Found | awk '{print $8}'`
 
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 then
@@ -30,11 +30,11 @@ for file in $FILES
 do
     echo "Rebalancing $file"
     echo "Copying $file to $file-backup" 
-    ${HADOOP_BUILD_HOME}/bin/hadoop fs -cp $file $file-backup
+    ${HADOOP_HOME}/bin/hadoop fs -cp $file $file-backup
     echo "Removing $file"
-    ${HADOOP_BUILD_HOME}/bin/hadoop fs ${rmoption} $file
+    ${HADOOP_HOME}/bin/hadoop fs ${rmoption} $file
     echo "Moving $file-backup to $file"
-    ${HADOOP_BUILD_HOME}/bin/hadoop fs -mv $file-backup $file
+    ${HADOOP_HOME}/bin/hadoop fs -mv $file-backup $file
 done
 
 exit 0
