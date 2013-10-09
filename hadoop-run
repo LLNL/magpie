@@ -79,6 +79,12 @@ then
     exit 1
 fi
 
+if [ ! -f "${HADOOP_SCRIPTS_HOME}/hadoop-common-exports" ]
+then
+    echo "${HADOOP_SCRIPTS_HOME}/hadoop-common-exports cannot be found"
+    exit 1
+fi
+
 if [ "${JAVA_HOME}X" == "X" ]
 then
     echo "JAVA_HOME must be set"
@@ -174,10 +180,8 @@ then
 fi
 
 #
-# Setup a whole bunch of directories
+# Setup a whole bunch of environment variables and directories
 # 
-
-export HADOOP_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
 
 mkdir -p $HADOOP_LOCAL_DIR
 if [ $? -ne 0 ] ; then
@@ -185,23 +189,20 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
-cd $HADOOP_LOCAL_DIR
+source ${HADOOP_SCRIPTS_HOME}/hadoop-common-exports
 
-export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 mkdir -p $HADOOP_LOCAL_JOB_DIR
 if [ $? -ne 0 ] ; then
     echo "mkdir failed making ${HADOOP_LOCAL_JOB_DIR}"
     exit 1
 fi
 
-export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
 mkdir -p $HADOOP_CONF_DIR
 if [ $? -ne 0 ] ; then
     echo "mkdir failed making ${HADOOP_CONF_DIR}"
     exit 1
 fi
 
-export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
 mkdir -p $HADOOP_LOG_DIR
 if [ $? -ne 0 ] ; then
     echo "mkdir failed making ${HADOOP_LOG_DIR}"

@@ -1,3 +1,7 @@
+magpie 1.6
+----------
+Code re-org, move common exports to new file hadoop-common-exports.
+
 magpie 1.5
 ----------
 Increase HDFS bandwidthPerSec to 4G, which is ~QDR ipoib speed.

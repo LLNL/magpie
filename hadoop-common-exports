@@ -1,4 +1,3 @@
-#!/bin/bash
 #############################################################################
 #  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
@@ -22,22 +21,19 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script executes scripts on behalf of the user.  For the most
-# part, it shouldn't be editted.  See sbatch.hadoop for configuration
-# details.
+# Export environment variables we promised to export in documentation
+#
+# This is used by scripts, don't edit this
 
-if [ "${HADOOP_POST_JOB_RUN}X" != "X" ] \
-    && [    ! -x "${HADOOP_POST_JOB_RUN}" ]
-then 
-    echo "Script HADOOP_POST_JOB_RUN=\"${HADOOP_POST_JOB_RUN}\" is not executable"
-    exit 1
+export HADOOP_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
+export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
+export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
+export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
+
+# In main script, if slaves hasn't been created yet, environment
+# variable set in there.
+
+if [ -f "${HADOOP_CONF_DIR}/slaves" ]
+then
+    export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 fi
-
-source ${HADOOP_SCRIPTS_HOME}/hadoop-common-exports
-
-if [ "${HADOOP_POST_JOB_RUN}X" != "X" ]
-then    
-    ${HADOOP_POST_JOB_RUN}
-fi
-
-exit 0
