@@ -525,6 +525,14 @@ else
     userprocessescount="unlimited"
 fi
 
+if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+then
+    datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
+elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+    datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+fi
+
 #
 # Setup file system
 #
@@ -747,6 +755,7 @@ then
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
 	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
 	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
     
     cat ${hadoopconffiledir}/log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
