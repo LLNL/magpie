@@ -1,5 +1,6 @@
 magpie 1.6
 ----------
+Support inputting multiple paths for HDFS and local store fs.
 Code re-org, move common exports to new file hadoop-common-exports.
 Rename HADOOP_BUILD_HOME to HADOOP_HOME for legacy purposes.
 
