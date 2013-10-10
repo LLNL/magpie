@@ -614,7 +614,8 @@ if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     && [ "${HADOOP_LOCALSTORE}X" != "X" ]
 then
     localstoredirtmp=${HADOOP_LOCALSTORE}
-    localstoredir=`echo "${localstoredirtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    mapredlocalstoredir=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+    yarnlocalstoredir=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
     
     if [ -d "${localstoredirtmp}" ]
     then
@@ -625,7 +626,8 @@ then
 	fi
     fi
 else
-    localstoredir="\$\{hadoop.tmp.dir\}"
+    mapredlocalstoredir="\$\{hadoop.tmp.dir\}\/mapred\/local"
+    yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
 fi
 
 #
@@ -684,7 +686,7 @@ then
 	-e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
 	-e "s/MAXMAPTASKS/${maxmaptasks}/g" \
 	-e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
-	-e "s/LOCALSTOREDIR/${localstoredir}/g" \
+	-e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
 	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
 	-e "s/IOSORTMB/${iosortmb}/g" \
 	-e "s/HADOOPCOMPRESSION/${compression}/g" \
@@ -720,7 +722,7 @@ then
 	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
 	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
 	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
-	-e "s/LOCALSTOREDIR/${localstoredir}/g" \
+	-e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \

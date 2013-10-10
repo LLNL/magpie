@@ -73,7 +73,7 @@
     be subdirectories of this.
   </description>
   <name>yarn.nodemanager.local-dirs</name>
-  <value>LOCALSTOREDIR/yarn-nm/</value>
+  <value>LOCALSTOREDIR</value>
 </property>
 
 <property>
