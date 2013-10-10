@@ -161,6 +161,12 @@ export HADOOP_SCRIPTS_HOME="/home/username/magpie"
 
 # Path for HDFS when using local disk
 #
+# If you want to specify multiple paths (such as multiple drives),
+# make them comma separated (e.g. /dir1,/dir2,/dir3).  The multiple
+# paths will be used for local intermediate data and HDFS.  The first
+# path will also store daemon data, such as namenode or jobtracker
+# data.
+#
 export HADOOP_HDFS_PATH="/ssd/username/"
 
 # Lustre mount to do Hadoop HDFS out of

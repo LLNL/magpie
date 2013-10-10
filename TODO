@@ -9,8 +9,6 @@ Minor feature support
 o multiple lustre directories for dfs.data.dir
   - allowing "parallel" writes to lustre from 1 node
 
-o multiple data directories for dfs.data.dir w/ HDFS mode
-
 o allow multiple HDFS over Lustres to be run
   - different paths in Lustre 
   - need to use different ports???

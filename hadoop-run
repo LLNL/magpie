@@ -525,22 +525,15 @@ else
     userprocessescount="unlimited"
 fi
 
-if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
-then
-    datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
-then
-    datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
-fi
-
 #
 # Setup file system
 #
 
+pathcount=0
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then
     # Setup node directory per node 
-    fspath="${HADOOP_HDFS_PATH}"
+    fspath=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
     hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -550,12 +543,43 @@ then
 	format=0
     else
 	format=1
-	mkdir -p ${fspath}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${fspath}"
-	    exit 1
-	fi
     fi
+
+    IFSORIG=${IFS}
+    IFS=","
+    datanodedirtmp=""
+    for hdfspath in ${HADOOP_HDFS_PATH}
+    do
+	if [ ! -d "${hdfspath}" ]
+	then
+	    mkdir -p ${hdfspath}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${hdfspath}"
+		exit 1
+	    fi
+	fi
+
+	if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+	then
+	    if [ "${datanodedirtmp}X" == "X" ]
+	    then
+		datanodedirtmp="${hdfspath}/dfs/data"
+	    else
+		datanodedirtmp="${datanodedirtmp},${hdfspath}/dfs/data"
+	    fi
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	then
+	    if [ "${datanodedirtmp}X" == "X" ]
+	    then
+		datanodedirtmp="file://${hdfspath}/dfs/data"
+	    else
+		datanodedirtmp="${datanodedirtmp},file://${hdfspath}/dfs/data"
+	    fi
+	fi
+	pathcount=$((pathcount+1))
+    done
+    IFS=${IFSORIG}
+    datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
     # Setup node directory per node 
@@ -576,6 +600,17 @@ then
 	fi
 	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
     fi
+
+    if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+    then
+	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
+    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+    then
+	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+    fi
+
+    pathcount=1
+
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     # Setup node directory per node, still need for "local" files
@@ -604,6 +639,16 @@ then
     fi
 
     format=0
+
+    if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+    then
+	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
+    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+    then
+	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+    fi
+
+    pathcount=1
 else
     echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
     exit 1
@@ -632,6 +677,29 @@ then
 	    fi
 	fi
 
+	if [ "${mapredlocalstoredir}X" == "X" ]
+	then
+	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
+	else
+	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
+	fi
+    done
+    IFS=${IFSORIG}
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    && [ ${pathcount} -gt 1 ] 
+then
+    IFSORIG=${IFS}
+    IFS=","
+    mapredlocalstoredir=""
+    yarnlocalstoredir=""
+    for localstorefile in ${HADOOP_HDFS_PATH}
+    do
+	localstoredirtmp=${localstorefile}
+	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+	
 	if [ "${mapredlocalstoredir}X" == "X" ]
 	then
 	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
