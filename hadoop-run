@@ -613,18 +613,35 @@ if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]) \
     && [ "${HADOOP_LOCALSTORE}X" != "X" ]
 then
-    localstoredirtmp=${HADOOP_LOCALSTORE}
-    mapredlocalstoredir=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
-    yarnlocalstoredir=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
-    
-    if [ -d "${localstoredirtmp}" ]
-    then
-	mkdir -p ${localstoredirtmp}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${localstoredirtmp}"
-	    exit 1
+    IFSORIG=${IFS}
+    IFS=","
+    mapredlocalstoredir=""
+    yarnlocalstoredir=""
+    for localstorefile in ${HADOOP_LOCALSTORE}
+    do
+	localstoredirtmp=${localstorefile}
+	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+	
+	if [ -d "${localstoredirtmp}" ]
+	then
+	    mkdir -p ${localstoredirtmp}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${localstoredirtmp}"
+		exit 1
+	    fi
 	fi
-    fi
+
+	if [ "${mapredlocalstoredir}X" == "X" ]
+	then
+	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
+	else
+	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
+	fi
+    done
+    IFS=${IFSORIG}
 else
     mapredlocalstoredir="\$\{hadoop.tmp.dir\}\/mapred\/local"
     yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
