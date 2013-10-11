@@ -230,6 +230,14 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_HDFS_REPLICATION=3
 
+# RawNetworkFS Block Size
+#
+# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_RAWNETWORKFS_BLOCKSIZE=33554432
+
 # Tasks per Node
 #
 # If not specified, defaults to #cores - 1 (i.e. leave 1 processor for

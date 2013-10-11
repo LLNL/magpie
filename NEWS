@@ -1,3 +1,7 @@
+magpie 1.7
+----------
+Support HADOOP_RAWNETWORKFS_BLOCKSIZE option.
+
 magpie 1.6
 ----------
 Support inputting multiple paths for HDFS and local store fs.

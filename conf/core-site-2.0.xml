@@ -52,4 +52,10 @@
   buffered during read and write operations.</description>
 </property>
 
+<property>
+  <name>fs.local.block.size</name>
+  <value>LOCALBLOCKSIZE</value>
+  <description>Block size to use when writing files to local.</description>
+</property>
+
 </configuration>
