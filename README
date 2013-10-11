@@ -297,8 +297,9 @@ https://issues.apache.org/jira/browse/MAPREDUCE-5528
 Testing
 -------
 
-While I did some testing w/ Hadoop 1.0, b/c of the problem mentioned
-above, I did most development and testing against Hadoop 2.1.0-beta.
+While I did some testing w/ Hadoop 1.2.1, b/c of the problem mentioned
+above (HDFS-1835), I did most development and testing against Hadoop
+2.1.0-beta.
 
 Dependency
 ----------
