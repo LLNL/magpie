@@ -250,10 +250,10 @@ Patching Hadoop
 ---------------
 
 Generally speaking, no modifications to Hadoop are necessary, however
-tweaks may be necessary depending on your environment.  In some
-environments, passwordless ssh is disabled, therefore requiring a
-modification to Hadoop to allow you to use non-ssh mechanisms for
-launching daemons.
+tweaks may be necessary depending on your environment and some special
+cases are listed below.  In some environments, passwordless ssh is
+disabled, therefore requiring a modification to Hadoop to allow you to
+use non-ssh mechanisms for launching daemons.
 
 I have submitted a patch for adjusting this at this JIRA:
 
@@ -284,6 +284,15 @@ can't connect to the namenode, etc., badness all around.
 
 If you have root privileges, starting up the rngd daemon is another
 way to solve this problem without resorting to patching.
+
+Special Note about Terasort over Raw Network FS
+-----------------------------------------------
+
+I believe there is a bug in the Terasort example, leading to issues
+with running Terasort against a parallel file system directly.  I
+submitted a patch in this Jira.
+
+https://issues.apache.org/jira/browse/MAPREDUCE-5528
 
 Testing
 -------
