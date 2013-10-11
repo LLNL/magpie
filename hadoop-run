@@ -336,17 +336,14 @@ if [ "${HADOOP_CHILD_HEAPSIZE}X" != "X" ]
 then
     allchildheapsize=${HADOOP_CHILD_HEAPSIZE}
 else
-# achu: This is my stupid bash way to round to the nearest 256M.  I'm
-# sure there is something smarter I just don't know.  Sorry, not a
-# bash expert
+# achu: We round down to nearest 256 here b/c we add up 256 for container
 #
 # For MapReduce1, yarn resource memory makes no sense, but we can use
 # the value for some of the calculations below.
 #
-    tmp1=$(echo "(${yarnresourcememory} / 1024) / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
-    tmp2=$(echo "(${tmp1} * 100) / 25" | bc -l | xargs printf "%1.0f")
-    tmp3=$(echo "${tmp2} * .25" | bc -l | xargs printf "%1.2f")
-    allchildheapsize=$(echo "${tmp3} * 1024" | bc -l | xargs printf "%1.0f")
+    tmp1=$(echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
+    tmp2=$(echo "${tmp1} / 256" | bc -l | xargs printf "%1.0f")
+    allchildheapsize=$(echo "${tmp2} * 256" | bc -l | xargs printf "%1.0f")
 fi
 
 if [ "${HADOOP_CHILD_MAP_HEAPSIZE}X" != "X" ]
