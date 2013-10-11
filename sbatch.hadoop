@@ -74,12 +74,16 @@ export HADOOP_MODE="terasort"
 # Set how the filesystem should be setup
 #
 # "hdfs" - Normal straight up HDFS if you have local disk in your
-#          cluster.  Be careful running this in a cluster environment.
-#          The next time you execute your job, if a different set of
-#          nodes are allocated to you, the HDFS data you wrote from a
-#          previous job may not be there.  This option is primarily
-#          for benchmarking and probably shouldn't be used in the
-#          general case.
+#          cluster.  This option is primarily for benchmarking and
+#          probably shouldn't be used in the general case.
+#
+#          Be careful running this in a cluster environment.  The next
+#          time you execute your job, if a different set of nodes are
+#          allocated to you, the HDFS data you wrote from a previous
+#          job may not be there.  Using the --nodelist in sbatch may
+#          be a way to alleviate this, if you work in an environment
+#          where you have high confidence you will also get the same
+#          nodes on each run.
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
