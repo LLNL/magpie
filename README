@@ -1,7 +1,7 @@
 Running Hadoop on Clusters w/ Slurm & Lustre
 
 Albert Chu
-Updated October 3rd, 2013
+Updated October 21st, 2013
 chu11@llnl.gov
 
 What is this project
@@ -37,6 +37,10 @@ The basic idea behind these scripts are to:
    is the "master".  All compute nodes will have configuration files
    created that point to the node designated as the jobtracker/yarn
    server.
+
+   The Hadoop configuration files will be populated with values that
+   are deemed optimal (or atleast pretty decent values better than the
+   defaults) given your cluster hardware.
 
 3) Launch Hadoop daemons on all nodes.  The Slurm/MPI rank 0 node will
    run the JobTracker/NameNode (or Yarn Server in Hadoop 2.0).  All
