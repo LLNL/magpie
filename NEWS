@@ -1,3 +1,7 @@
+magpie 1.8
+----------
+General code cleanup/code-reorg and documentation fixes.
+
 magpie 1.7
 ----------
 Support HADOOP_RAWNETWORKFS_BLOCKSIZE option.
