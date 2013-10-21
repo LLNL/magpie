@@ -24,7 +24,7 @@
 
 
 # This script is the core processing script for running Hadoop jobs.
-# For the most part, it shouldn't be editted.  See sbatch.hadoop for
+# For the most part, it shouldn't be editted.  See hadoop.sbatch for
 # configuration details.
 
 #

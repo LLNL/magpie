@@ -2,7 +2,7 @@
 
 # This script is an example of something you might like to do before a
 # job is run.  It is set by the HADOOP_PRE_JOB_RUN environment
-# variable.  See the sbatch.hadoop file for details.
+# variable.  See the hadoop.sbatch file for details.
  
 # Get some debugging info before I run
 

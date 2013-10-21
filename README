@@ -57,7 +57,7 @@ Basic Instructions
    Usually this is on a NFS home directory.  Adjust HADOOP_VERSION and
    HADOOP_HOME appropriately for the install.
 
-2) Open up sbatch.hadoop and setup Slurm essentials for your job.
+2) Open up hadoop.sbatch and setup Slurm essentials for your job.
    Here are the essentials for the setup:
 
    #SBATCH --nodes : Set how many nodes you want in your job
@@ -94,10 +94,10 @@ Basic Instructions
 
 4) If you are happy with the configuration files provided by this
    project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust HADOOP_CONF_FILES in sbatch.hadoop as
+   to a new directory, adjust HADOOP_CONF_FILES in hadoop.sbatch as
    needed.
 
-5) Run "sbatch -k ./sbatch.hadoop" ... and any other options you see
+5) Run "sbatch -k ./hadoop.sbatch" ... and any other options you see
    fit.
 
 6) Look at your slurm output file to see your output.  There will also
@@ -170,11 +170,11 @@ Advanced
 --------
 
 There are many advanced options and other scripting options.  Please
-see sbatch.hadoop for details.
+see hadoop.sbatch for details.
 
 The scripts make decent guesstimates on what would be best for
 performance, but it always depends on your job and your hardware.
-Many options in sbatch.hadoop are available to help you adjust your
+Many options in hadoop.sbatch are available to help you adjust your
 performance.
 
 Exported Environment Variables

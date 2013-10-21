@@ -5,7 +5,7 @@
 #
 # It is a convenient script to use in the post of your job.  You can
 # set it with the HADOOP_POST_JOB_RUN environment variable in
-# sbatch.hadoop.
+# hadoop.sbatch.
 #
 # By default it stores into
 # $HADOOP_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID, but you may wish
