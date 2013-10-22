@@ -211,8 +211,8 @@ Rawnetworkfs/Lustre directly:
 Pro: You can read/write files to Lustre without Hadoop/HDFS running.
 
 Con: User must "manage" and organize their files with Lustre directly,
-not gaining the block advantages of HDFS.  In some cases, this can
-lead to performance issues w/ Lustre directly.
+not gaining the block advantages of HDFS.  If not handled well, this
+can lead to performance issues w/ Lustre directly.
 
 Con: Possible portability issues w/ code that usually runs on HDFS.
 
