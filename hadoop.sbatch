@@ -273,7 +273,7 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 
 # Heap size for JVM 
 #
-# Specified in K.  If not specified, a reasonable estimate will be
+# Specified in M.  If not specified, a reasonable estimate will be
 # calculated based on total memory available and number of CPUs on the
 # system.
 #
