@@ -344,6 +344,10 @@ else
     tmp1=$(echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
     tmp2=$(echo "${tmp1} / 256" | bc -l | xargs printf "%1.0f")
     allchildheapsize=$(echo "${tmp2} * 256" | bc -l | xargs printf "%1.0f")
+    if [ "${allchildheapsize}" -lt "256" ]
+    then
+	allchildheapsize=256
+    fi
 fi
 
 if [ "${HADOOP_CHILD_MAP_HEAPSIZE}X" != "X" ]
