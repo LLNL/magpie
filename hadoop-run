@@ -42,9 +42,10 @@ fi
 
 if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
     && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ]
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ]
 then
-    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or rawnetworkfs"
+    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, rawnetworkfs, or intellustre"
     exit 1
 fi
 
@@ -52,6 +53,13 @@ if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
 then
     echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+then
+    echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
     exit 1
 fi
 
@@ -155,6 +163,13 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
     && [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
 then
     echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    && [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH"
     exit 1
 fi
 
@@ -303,6 +318,10 @@ then
     # XXX: If not default, can get from lctl or similar?
     iobuffersize=1048576
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+then
+    # Assuming Lustre, so copy above 1M
+    iobuffersize=1048576
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
 then
     # Assuming Lustre, so copy above 1M
     iobuffersize=1048576
@@ -464,6 +483,27 @@ then
 else
     # 32M is Hadoop default for local
     rawnetworkfsblocksize=33554432
+fi
+
+if [ "${HADOOP_INTELLUSTRE_BLOCKSIZE}X" != "X" ]
+then
+    intellustreblocksize=${HADOOP_INTELLUSTRE_BLOCKSIZE}
+else
+    intellustreblocksize=536870912
+fi
+
+if [ "${HADOOP_INTELLUSTRE_STRIPESIZE}X" != "X" ]
+then
+    intellustrestripesize=${HADOOP_INTELLUSTRE_STRIPESIZE}
+else
+    intellustrestripesize=33554432
+fi
+
+if [ "${HADOOP_INTELLUSTRE_STRIPECOUNT}X" != "X" ]
+then
+    intellustrestripecount=${HADOOP_INTELLUSTRE_STRIPECOUNT}
+else
+    intellustrestripecount=-1
 fi
 
 if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
@@ -650,13 +690,35 @@ then
     format=0
 
     pathcount=1
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+then
+    # Setup node directory per node, still need for "local" files
+    fspath="${HADOOP_INTELLUSTRE_PATH}"
+    fspathtmp="${HADOOP_INTELLUSTRE_PATH}/tmp"
+    intellustrerootdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdir=`echo "${fspathtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "lustre:///" | sed "s/\\//\\\\\\\\\//g"`
+
+    if [ ! -d "${fspathtmp}" ]
+    then
+        mkdir -p ${fspathtmp}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${fspathtmp}"
+            exit 1
+        fi
+    fi
+
+    format=0
+
+    pathcount=1
 else
     echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
     exit 1
 fi
 
 if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]) \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]) \
     && [ "${HADOOP_LOCALSTORE}X" != "X" ]
 then
     IFSORIG=${IFS}
@@ -758,6 +820,10 @@ then
 	-e "s/FSDEFAULT/${fsdefault}/g" \
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
 	-e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
+	-e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
+	-e "s/INTELLUSTREBLOCKSIZE/${intellustreblocksize}/g" \
+	-e "s/INTELLUSTRESTRIPESIZE/${intellustrestripesize}/g" \
+	-e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
 	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
 
     sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
@@ -984,6 +1050,9 @@ then
 	if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 	then
 	    pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
+	elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+	then
+	    pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
 	fi
 
 	if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]

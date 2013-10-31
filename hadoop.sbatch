@@ -91,6 +91,8 @@ export HADOOP_MODE="terasort"
 #           to use networked file system directly.  It could be a
 #           Lustre mount or NFS mount.  Whatever you please.
 #
+# "intellustre" - Use the Lustre plugin developed by Intel for IDH.
+#
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 # Set Hadoop Setup Type
@@ -185,6 +187,10 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/username/rawnetworkfs/"
 
+# Path for intellustre 
+#
+export HADOOP_INTELLUSTRE_PATH="/lustre/username/intellustre/"
+
 # If you have a local SSD, performance may be better to store
 # intermediate data on it rather than Lustre (or some other networked
 # fs).  If the below environment variable is specified, local
@@ -237,6 +243,26 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # If not specified, defaults to 33554432
 #
 # export HADOOP_RAWNETWORKFS_BLOCKSIZE=33554432
+
+# IntelLustre Block Size
+#
+# Commonly 134217728, 268435456, 536870912 (i.e. 128m, 256m, 512m)
+#
+# If not specified, defaults to 536870912
+#
+# export HADOOP_INTELLUSTRE_BLOCKSIZE=536870912
+
+# IntelLustre Stripe Size
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_INTELLUSTRE_STRIPESIZE=33554432
+
+# IntelLustre Stripe Count
+#
+# If not specified, defaults to -1
+#
+# export HADOOP_INTELLUSTRE_STRIPECOUNT=-1
 
 # Tasks per Node
 #
