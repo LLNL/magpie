@@ -636,7 +636,6 @@ then
             echo "mkdir failed making ${fspath}"
             exit 1
         fi
-        /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
     fi
 
     if [ ! -d "${pernodepath}" ]
