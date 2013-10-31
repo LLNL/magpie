@@ -649,14 +649,6 @@ then
 
     format=0
 
-    if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
-    then
-	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
-    then
-	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
-    fi
-
     pathcount=1
 else
     echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
