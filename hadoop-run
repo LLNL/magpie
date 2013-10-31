@@ -833,8 +833,9 @@ then
     fi
 fi
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
     sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
 	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
