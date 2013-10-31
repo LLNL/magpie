@@ -172,6 +172,14 @@
 </property>
 
 <property>
+  <name>mapreduce.job.map.output.collector.class</name>
+  <value>org.apache.hadoop.mapred.MapTask$MapOutputBuffer</value>
+  <description>
+    It defines the MapOutputCollector implementation to use.
+  </description>
+</property>
+
+<property>
   <name>mapreduce.job.reduce.shuffle.consumer.plugin.class</name>
   <value>org.apache.hadoop.mapreduce.task.reduce.Shuffle</value>
   <description>
