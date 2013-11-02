@@ -264,6 +264,13 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_INTELLUSTRE_STRIPECOUNT=-1
 
+# IntelLustre Shuffle
+#
+# Utilize Lustre specific shuffling.  May improve performance of some
+# jobs.  Specify yes or no.  Defaults to no.
+#
+# export HADOOP_INTELLUSTRE_SHUFFLE=no
+
 # Tasks per Node
 #
 # If not specified, defaults to #cores - 1 (i.e. leave 1 processor for

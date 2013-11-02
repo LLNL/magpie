@@ -173,6 +173,13 @@ then
     exit 1
 fi
 
+if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
+    && ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
+then
+    echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
+    exit 1
+fi
+
 if [ "${HADOOP_PRE_JOB_RUN}X" != "X" ] \
     && [    ! -x "${HADOOP_PRE_JOB_RUN}" ]
 then 
@@ -504,6 +511,21 @@ then
     intellustrestripecount=${HADOOP_INTELLUSTRE_STRIPECOUNT}
 else
     intellustrestripecount=-1
+fi
+
+if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ]
+then
+    if [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
+    then
+	mapoutputcollectorclass="org.apache.hadoop.mapred.SharedFsPlugins\$MapOutputBuffer"
+	reduceshuffleconsumerplugin="org.apache.hadoop.mapred.SharedFsPlugins\$Shuffle"
+    else
+	mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
+	reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
+    fi
+else
+    mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
+    reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
 fi
 
 if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
@@ -846,6 +868,8 @@ then
 	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
 	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
+    	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
+    	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
 	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
     
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \

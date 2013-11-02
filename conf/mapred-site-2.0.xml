@@ -173,7 +173,7 @@
 
 <property>
   <name>mapreduce.job.map.output.collector.class</name>
-  <value>org.apache.hadoop.mapred.MapTask$MapOutputBuffer</value>
+  <value>MAPOUTPUTCOLLECTORCLASS</value>
   <description>
     It defines the MapOutputCollector implementation to use.
   </description>
@@ -181,7 +181,7 @@
 
 <property>
   <name>mapreduce.job.reduce.shuffle.consumer.plugin.class</name>
-  <value>org.apache.hadoop.mapreduce.task.reduce.Shuffle</value>
+  <value>REDUCESHUFFLECONSUMERPLUGIN</value>
   <description>
   Name of the class whose instance will be used
   to send shuffle requests by reducetasks of this job.
