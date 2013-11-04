@@ -183,7 +183,9 @@ export HADOOP_HDFS_PATH="/ssd/username/"
 #
 export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 
-# Path for rawnetworkfs 
+# Path for rawnetworkfs
+#
+# This path is used for creating local per-node paths.
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/username/rawnetworkfs/"
 
