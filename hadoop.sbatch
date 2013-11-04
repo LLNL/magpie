@@ -93,6 +93,9 @@ export HADOOP_MODE="terasort"
 #
 # "intellustre" - Use the Lustre plugin developed by Intel for IDH.
 #
+# "magpienetworkfs" - Use the Magpie Network FS plugin.  See README for
+#                     details.
+#
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 # Set Hadoop Setup Type
@@ -193,6 +196,12 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/username/rawnetworkfs/"
 #
 export HADOOP_INTELLUSTRE_PATH="/lustre/username/intellustre/"
 
+# Path for magpienetworkfs 
+#
+# This path must be an absolute path.
+#
+export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
+
 # If you have a local SSD, performance may be better to store
 # intermediate data on it rather than Lustre (or some other networked
 # fs).  If the below environment variable is specified, local
@@ -272,6 +281,14 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # jobs.  Specify yes or no.  Defaults to no.
 #
 # export HADOOP_INTELLUSTRE_SHUFFLE=no
+
+# MagpieNetworkFS Block Size
+#
+# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
 
 # Tasks per Node
 #
