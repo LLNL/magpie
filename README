@@ -14,7 +14,8 @@ This project allows you to:
 
 - Run Hadoop interactively or via scripts.
 - Run Mapreduce 1.0 or 2.0 jobs (i.e. Hadoop 1.0 or 2.0)
-- Run against HDFS, HDFS over Lustre, or Lustre raw
+- Run against a number of filesystem options, such as HDFS, HDFS over
+  Lustre, or Lustre directly
 - Take advantage of SSDs for local caching if available
 - Make decent optimizations of Hadoop for your hardware
 
@@ -38,16 +39,18 @@ The basic idea behind these scripts are to:
    created that point to the node designated as the jobtracker/yarn
    server.
 
-   The Hadoop configuration files will be populated with values that
-   are deemed optimal (or atleast pretty decent values better than the
-   defaults) given your cluster hardware.
+   The Hadoop configuration files will be populated with values for
+   your filesystem choice and the hardware that exists in your
+   cluster.  Reasonable attempts are made to determine optimal values
+   (and they are almost certainly better than the default values for
+   Hadoop).
 
 3) Launch Hadoop daemons on all nodes.  The Slurm/MPI rank 0 node will
    run the JobTracker/NameNode (or Yarn Server in Hadoop 2.0).  All
    remaining nodes will run DataNodes/Tasktrackers (or NodeManager in
    Hadoop 2.0).
 
-Now you have a mini Hadoop cluster to do whatever you want.
+4) Now you have a mini Hadoop cluster to do whatever you want.
 
 Basic Instructions
 ------------------
