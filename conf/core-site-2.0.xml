@@ -72,19 +72,16 @@
 <property>
   <name>fs.block.size</name>
   <value>INTELLUSTREBLOCKSIZE</value>
-  <description>A base for other temporary directories.</description>
 </property>
 
 <property>
   <name>lustre.stripe.size</name>
   <value>INTELLUSTRESTRIPESIZE</value>
-  <description>A base for other temporary directories.</description>
 </property>
 
 <property>
   <name>lustre.stripe.count</name>
   <value>INTELLUSTRESTRIPECOUNT</value>
-  <description>A base for other temporary directories.</description>
 </property>
 
 </configuration>
