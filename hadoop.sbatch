@@ -30,6 +30,7 @@
 # head/managemnet node.  For example, if you want 8 compute nodes to
 # process data, specify 9 nodes below.
 #SBATCH --nodes=9
+#SBATCH --output="slurm-%j.out"
 
 # Time to run the job
 # Do not use --time, environment variable needed w/n hadoop-run
