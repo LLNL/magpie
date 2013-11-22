@@ -1,25 +1,9 @@
-From dd88f858345f48a4cdc20501f4bc8c78fcbacd6a Mon Sep 17 00:00:00 2001
-From: Albert Chu <chu11@llnl.gov>
-Date: Fri, 22 Nov 2013 12:02:27 -0800
-Subject: [PATCH] Add magpienetworkfs support
-
-
-Signed-off-by: Albert Chu <chu11@llnl.gov>
----
- .../apache/hadoop/fs/MagpieNetworkFileSystem.java  |  179 ++++++++++++++++++++
- .../org/apache/hadoop/fs/RawLocalFileSystem.java   |    2 +-
- .../org/apache/hadoop/fs/local/RawLocalFs.java     |    7 +
- .../hadoop/fs/magpienetworkfs/MagpieNetworkFs.java |   93 ++++++++++
- 4 files changed, 280 insertions(+), 1 deletions(-)
- create mode 100644 hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/MagpieNetworkFileSystem.java
- create mode 100644 hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/magpienetworkfs/MagpieNetworkFs.java
-
 diff --git a/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/MagpieNetworkFileSystem.java b/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/MagpieNetworkFileSystem.java
 new file mode 100644
-index 0000000..b96e5c1
+index 0000000..1d10013
 --- /dev/null
 +++ b/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/MagpieNetworkFileSystem.java
-@@ -0,0 +1,179 @@
+@@ -0,0 +1,188 @@
 +/**
 + * Licensed to the Apache Software Foundation (ASF) under one
 + * or more contributor license agreements.  See the NOTICE file
@@ -169,7 +153,6 @@ index 0000000..b96e5c1
 +    Path ftmp = pathWithBase(f);
 +    return super.mkdirs(ftmp, permission); 
 +  }
-+  
 +
 +  @Override
 +  protected boolean primitiveMkdir(Path f, FsPermission absolutePermission)
@@ -188,6 +171,16 @@ index 0000000..b96e5c1
 +    }
 +  }
 +  
++  @Override
++  public long getDefaultBlockSize() {
++    return getConf().getLong("fs.magpienetworkfs.block.size", 32 * 1024 * 1024);
++  }
++
++  @Override
++  public long getDefaultBlockSize(Path f) {
++    return getDefaultBlockSize();
++  }
++
 +  @Override
 +  public FsStatus getStatus(Path p) throws IOException {
 +    Path ptmp = pathWithBase(p);
@@ -336,6 +329,3 @@ index 0000000..4785faf
 +    return super.getFileLinkStatus(ftmp);
 +  }
 +}
--- 
-1.7.1
-
