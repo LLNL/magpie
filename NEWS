@@ -1,3 +1,7 @@
+magpie 1.11
+-----------
+Support magpie network fs scheme.
+
 magpie 1.10
 -----------
 Support Intel Lustre scheme in IDH.
