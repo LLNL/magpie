@@ -23,21 +23,21 @@
 #############################################################################
 
 # This script executes scripts on behalf of the user.  For the most
-# part, it shouldn't be editted.  See hadoop.sbatch for configuration
+# part, it shouldn't be editted.  See magpie.sbatch for configuration
 # details.
 
-if [ "${HADOOP_POST_JOB_RUN}X" != "X" ] \
-    && [    ! -x "${HADOOP_POST_JOB_RUN}" ]
+if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] \
+    && [    ! -x "${MAGPIE_POST_JOB_RUN}" ]
 then 
-    echo "Script HADOOP_POST_JOB_RUN=\"${HADOOP_POST_JOB_RUN}\" is not executable"
+    echo "Script MAGPIE_POST_JOB_RUN=\"${MAGPIE_POST_JOB_RUN}\" is not executable"
     exit 1
 fi
 
-source ${HADOOP_SCRIPTS_HOME}/hadoop-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
-if [ "${HADOOP_POST_JOB_RUN}X" != "X" ]
+if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then    
-    ${HADOOP_POST_JOB_RUN}
+    ${MAGPIE_POST_JOB_RUN}
 fi
 
 exit 0

@@ -24,12 +24,37 @@
 
 
 # This script is the core processing script for running Hadoop jobs.
-# For the most part, it shouldn't be editted.  See hadoop.sbatch for
+# For the most part, it shouldn't be editted.  See magpie.sbatch for
 # configuration details.
 
 #
 # Check a variety of input variables
 #
+
+if [ "${MAGPIE_SCRIPTS_HOME}X" == "X" ]
+then
+    echo "MAGPIE_SCRIPTS_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${MAGPIE_SCRIPTS_HOME} ]
+then
+    echo "${MAGPIE_SCRIPTS_HOME} does not point to a directory"
+    exit 1
+fi
+
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-common-exports" ]
+then
+    echo "${MAGPIE_SCRIPTS_HOME}/magpie-common-exports cannot be found"
+    exit 1
+fi
+
+if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ] \
+    && [    ! -x "${MAGPIE_PRE_JOB_RUN}" ]
+then 
+    echo "Script MAGPIE_PRE_JOB_RUN=\"${MAGPIE_PRE_JOB_RUN}\" is not executable"
+    exit 1
+fi
 
 if [ "${HADOOP_MODE}" != "terasort" ] \
     && [ "${HADOOP_MODE}" != "script" ] \
@@ -73,36 +98,6 @@ fi
 if [ ! -d ${HADOOP_HOME} ]
 then
     echo "${HADOOP_HOME} does not point to a directory"
-    exit 1
-fi
-
-if [ "${HADOOP_SCRIPTS_HOME}X" == "X" ]
-then
-    echo "HADOOP_SCRIPTS_HOME must be set"
-    exit 1
-fi
-
-if [ ! -d ${HADOOP_SCRIPTS_HOME} ]
-then
-    echo "${HADOOP_SCRIPTS_HOME} does not point to a directory"
-    exit 1
-fi
-
-if [ ! -f "${HADOOP_SCRIPTS_HOME}/hadoop-common-exports" ]
-then
-    echo "${HADOOP_SCRIPTS_HOME}/hadoop-common-exports cannot be found"
-    exit 1
-fi
-
-if [ "${JAVA_HOME}X" == "X" ]
-then
-    echo "JAVA_HOME must be set"
-    exit 1
-fi
-
-if [ ! -d ${JAVA_HOME} ]
-then
-    echo "${JAVA_HOME} does not point to a directory"
     exit 1
 fi
 
@@ -196,13 +191,6 @@ then
     exit 1
 fi
 
-if [ "${HADOOP_PRE_JOB_RUN}X" != "X" ] \
-    && [    ! -x "${HADOOP_PRE_JOB_RUN}" ]
-then 
-    echo "Script HADOOP_PRE_JOB_RUN=\"${HADOOP_PRE_JOB_RUN}\" is not executable"
-    exit 1
-fi
-
 if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
     && ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
 then
@@ -217,6 +205,18 @@ then
     exit 1
 fi
 
+if [ "${JAVA_HOME}X" == "X" ]
+then
+    echo "JAVA_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${JAVA_HOME} ]
+then
+    echo "${JAVA_HOME} does not point to a directory"
+    exit 1
+fi
+
 #
 # Setup a whole bunch of environment variables and directories
 # 
@@ -227,7 +227,7 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
-source ${HADOOP_SCRIPTS_HOME}/hadoop-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 mkdir -p $HADOOP_LOCAL_JOB_DIR
 if [ $? -ne 0 ] ; then
@@ -258,9 +258,9 @@ then
     hostrangescript="hostlist"
     hostrangescriptoptions="-e -d \n"
 else
-    if [ -x ${HADOOP_SCRIPTS_HOME}/bin/hadoop-expand-nodes ]
+    if [ -x ${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ]
     then
-	hostrangescript="${HADOOP_SCRIPTS_HOME}/bin/hadoop-expand-nodes"
+	hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
 	hostrangescriptoptions=""
     else
 	echo "Cannot find tool to expand host ranges"
@@ -681,7 +681,7 @@ then
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
     # Setup node directory per node 
-    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${HADOOP_CLUSTER_NODERANK}"
+    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${MAGPIE_CLUSTER_NODERANK}"
     hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -713,7 +713,7 @@ elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     # Setup node directory per node, still need for "local" files
     fspath="${HADOOP_RAWNETWORKFS_PATH}"
-    pernodepath="${fspath}/node-${HADOOP_CLUSTER_NODERANK}"
+    pernodepath="${fspath}/node-${MAGPIE_CLUSTER_NODERANK}"
     hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefault=`echo "file:///" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -763,7 +763,7 @@ elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
 then
     # Setup node directory per node, still need for "local" files
     fspath="${HADOOP_MAGPIENETWORKFS_PATH}"
-    pernodepath="${fspath}/node-${HADOOP_CLUSTER_NODERANK}"
+    pernodepath="${fspath}/node-${MAGPIE_CLUSTER_NODERANK}"
     hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefault=`echo "magpienetworkfs:///" | sed "s/\\//\\\\\\\\\//g"`
     magpienetworkfsbase=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
@@ -863,7 +863,7 @@ fi
 
 if [ "${HADOOP_CONF_FILES}X" == "X" ]
 then
-    hadoopconffiledir=${HADOOP_SCRIPTS_HOME}/conf
+    hadoopconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
 else
     hadoopconffiledir=${HADOOP_CONF_FILES}
 fi
@@ -1006,8 +1006,8 @@ fi
 
 if [ "${format}" -eq "1" ]
 then
-    # Only HADOOP_CLUSTER_NODERANK 0 will format the node
-    if [ "$HADOOP_CLUSTER_NODERANK" -eq "0" ]
+    # Only MAGPIE_CLUSTER_NODERANK 0 will format the node
+    if [ "$MAGPIE_CLUSTER_NODERANK" -eq "0" ]
     then
 	cd $HADOOP_HOME
 	echo 'Y' | bin/hadoop namenode -format
@@ -1022,9 +1022,9 @@ fi
 # Launch pre-run script just before run
 #
 
-if [ "${HADOOP_PRE_JOB_RUN}X" != "X" ]
+if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then    
-    ${HADOOP_PRE_JOB_RUN}
+    ${MAGPIE_PRE_JOB_RUN}
 fi
 
 #
@@ -1044,7 +1044,7 @@ then
 fi
 remotecmd="${HADOOP_REMOTE_CMD:=ssh}" 
 
-if [ "$HADOOP_CLUSTER_NODERANK" -eq "0" ]
+if [ "$MAGPIE_CLUSTER_NODERANK" -eq "0" ]
 then
     cd ${HADOOP_HOME}
 

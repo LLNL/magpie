@@ -4,16 +4,16 @@
 # completed.
 #
 # It is a convenient script to use in the post of your job.  You can
-# set it with the HADOOP_POST_JOB_RUN environment variable in
-# hadoop.sbatch.
+# set it with the MAGPIE_POST_JOB_RUN environment variable in
+# magpie.sbatch.
 #
 # By default it stores into
-# $HADOOP_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID, but you may wish
+# $MAGPIE_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID, but you may wish
 # to change that.
 
 export NODENAME=`hostname`
 
-targetdir=${HADOOP_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/nodes/${NODENAME}
+targetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/nodes/${NODENAME}
 mkdir -p ${targetdir}/conf
 mkdir -p ${targetdir}/log
 

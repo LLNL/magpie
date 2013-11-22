@@ -33,7 +33,7 @@
 #SBATCH --output="slurm-%j.out"
 
 # Time to run the job
-# Do not use --time, environment variable needed w/n hadoop-run
+# Do not use --time, environment variable needed w/n magpie-run
 export SBATCH_TIMELIMIT=60
 
 # Job name.  This will be used in naming directories for the job.
@@ -48,6 +48,30 @@ export SBATCH_TIMELIMIT=60
 #SBATCH --ntasks-per-node=1
 #SBATCH --exclusive
 #SBATCH --no-kill
+
+############################################################################
+# Magpie Configurations
+############################################################################
+
+# Directory your launching scripts/files are stored
+export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
+
+# Convenience Scripts
+#
+# Specify script to be executed to before / after your job.  It is run
+# on all nodes.
+#
+# Typically the pre-job script is used to set something up or get
+# debugging info.  The post-job script is used for cleaning up
+# something or gathering info (such as logs) for
+# post-debugging/analysis.
+# 
+# See example magpie-example-pre-job-script and
+# magpie-example-post-job-script for ideas of what you can do w/ these
+# scripts
+#
+# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
 
 ############################################################################
 # Hadoop Configurations
@@ -127,6 +151,12 @@ export HADOOP_VERSION="2.1.0-beta"
 #
 export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 
+# Directory where Hadoop configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export HADOOP_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+
 # Terasort size
 #
 # For "terasort" mode.
@@ -154,20 +184,11 @@ export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 #
 # export HADOOP_TERASORT_CLEAR_CACHE=no
 
-# Directory your launching scripts/files are stored
-export HADOOP_SCRIPTS_HOME="/home/username/magpie"
-
-# Directory where script configuration templates are stored
-#
-# If not specified, assumed to be $HADOOP_SCRIPTS_HOME/conf
-#
-# export HADOOP_CONF_FILES="${HADOOP_SCRIPTS_HOME}/conf"
-
 # Specify script to execute for "script" mode
 #
 # See hadoop-example-job-script for example of what to put in the script.
 #
-# export HADOOP_SCRIPT_PATH="${HADOOP_SCRIPTS_HOME}/my-job-script"
+# export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
 
 # Path for HDFS when using local disk
 #
@@ -403,28 +424,15 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # See the example hadoop-example-environment extra for examples on
 # what you can/should do with adding extra environment settings.
 #
-# export HADOOP_ENVIRONMENT_EXTRA_PATH="${HADOOP_SCRIPTS_HOME}/hadoop-my-environment"
-
-# Convenience Scripts
-#
-# Specify script to be executed to before / after your job.  It is run
-# on all nodes.
-#
-# Typically the pre-job script is used to set something up or get
-# debugging info.  The post-job script is used for cleaning up
-# something or gathering info (such as logs) for
-# post-debugging/analysis.
-# 
-# See example hadoop-example-pre-job-script and
-# hadoop-example-post-job-script for ideas of what you can do w/ these
-# scripts
-#
-# export HADOOP_PRE_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-my-pre-job-script"
-# export HADOOP_POST_JOB_RUN="${HADOOP_SCRIPTS_HOME}/hadoop-my-post-job-script"
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
 
 # Specify ssh-equivalent remote command if ssh is not available on
 # your cluster
 # export HADOOP_REMOTE_CMD="mrsh"
+
+############################################################################
+# General Configuration
+############################################################################
 
 # Necessary for various Hadoop execution
 export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
@@ -433,6 +441,6 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 # Hadoop Run
 ############################################################################
 
-srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-run
-srun --no-kill -W 0 $HADOOP_SCRIPTS_HOME/hadoop-post-run
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-post-run
 
