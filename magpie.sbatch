@@ -151,6 +151,14 @@ export HADOOP_VERSION="2.1.0-beta"
 #
 export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 
+# Path local to each cluster node, typically something in /tmp.
+# This will store local conf files and log files for your job. 
+#
+# This will not be used for storing intermediate files or
+# distributedcache files.  See HADOOP_LOCALSTORE above for that.
+#
+export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
+
 # Directory where Hadoop configuration templates are stored
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
@@ -239,14 +247,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # paths will be used for local intermediate data.
 #
 # export HADOOP_LOCALSTORE="/ssd/username/localstore/"
-
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
-#
-# This will not be used for storing intermediate files or
-# distributedcache files.  See HADOOP_LOCALSTORE above for that.
-#
-export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 
 # HDFS Block Size
 #
@@ -438,7 +438,7 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 
 ############################################################################
-# Hadoop Run
+# Run
 ############################################################################
 
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run
