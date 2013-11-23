@@ -101,6 +101,12 @@ then
     exit 1
 fi
 
+if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
+then
+    echo "HADOOP_LOCAL_DIR must be set"
+    exit 1
+fi
+
 if [ "${HADOOP_MODE}" == "terasort" ]
 then
     if [ "${HADOOP_VERSION}X" == "X" ]
