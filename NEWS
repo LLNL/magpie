@@ -1,3 +1,8 @@
+magpie 1.12
+-----------
+Clarify text and rename many files/environment files.
+Add sbatch --output to make sbatch file.
+
 magpie 1.11
 -----------
 Support magpie network fs scheme.
