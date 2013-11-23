@@ -74,6 +74,13 @@ export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
 # export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
 
 ############################################################################
+# General Configuration
+############################################################################
+
+# Necessary for various Hadoop execution
+export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+
+############################################################################
 # Hadoop Configurations
 ############################################################################
 
@@ -429,13 +436,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # Specify ssh-equivalent remote command if ssh is not available on
 # your cluster
 # export HADOOP_REMOTE_CMD="mrsh"
-
-############################################################################
-# General Configuration
-############################################################################
-
-# Necessary for various Hadoop execution
-export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 
 ############################################################################
 # Run

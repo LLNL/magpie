@@ -28,7 +28,7 @@
 # configuration details.
 
 #
-# Check a variety of input variables
+# Check Magpie Inputs 
 #
 
 if [ "${MAGPIE_SCRIPTS_HOME}X" == "X" ]
@@ -55,6 +55,26 @@ then
     echo "Script MAGPIE_PRE_JOB_RUN=\"${MAGPIE_PRE_JOB_RUN}\" is not executable"
     exit 1
 fi
+
+#
+# Check General Inputs
+#
+
+if [ "${JAVA_HOME}X" == "X" ]
+then
+    echo "JAVA_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${JAVA_HOME} ]
+then
+    echo "${JAVA_HOME} does not point to a directory"
+    exit 1
+fi
+
+#
+# Check Hadoop Inputs 
+#
 
 if [ "${HADOOP_MODE}" != "terasort" ] \
     && [ "${HADOOP_MODE}" != "script" ] \
@@ -175,6 +195,13 @@ then
     exit 1
 fi
 
+if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
+    && ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
+then
+    echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
+    exit 1
+fi
+
 if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
     && [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
 then
@@ -190,13 +217,6 @@ then
     fi
 fi
 
-if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
-    && ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
-then
-    echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
-    exit 1
-fi
-
 if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
     && ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
 then
@@ -208,18 +228,6 @@ if [ "${HADOOP_COMPRESSION}X" != "X" ] \
     && ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
 then
     echo "HADOOP_COMPRESSION must be set to yes or no"
-    exit 1
-fi
-
-if [ "${JAVA_HOME}X" == "X" ]
-then
-    echo "JAVA_HOME must be set"
-    exit 1
-fi
-
-if [ ! -d ${JAVA_HOME} ]
-then
-    echo "${JAVA_HOME} does not point to a directory"
     exit 1
 fi
 
