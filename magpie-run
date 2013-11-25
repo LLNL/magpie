@@ -964,6 +964,8 @@ then
 	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
 	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
     fi
+
+    cat ${hadoopconffiledir}/hadoop.log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
 fi
     
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
@@ -1010,8 +1012,6 @@ then
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
 	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
 	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
-    
-    cat ${hadoopconffiledir}/log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
 fi
 
 #
