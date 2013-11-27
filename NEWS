@@ -1,3 +1,8 @@
+magpie 1.14
+-----------
+Add hadoop-env.sh output to magpie-example-pre-job-script.
+Update comments/documentation.
+
 magpie 1.13
 -----------
 Split magpie-run into numerous run files.
