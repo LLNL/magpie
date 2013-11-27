@@ -1,0 +1,226 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is checks environment variable setup. For the most part,
+# it shouldn't be editted.  See magpie.sbatch for configuration
+# details.
+
+#
+# Check Magpie Inputs
+#
+
+if [ "${MAGPIE_SCRIPTS_HOME}X" == "X" ]
+then
+    echo "MAGPIE_SCRIPTS_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${MAGPIE_SCRIPTS_HOME} ]
+then
+    echo "${MAGPIE_SCRIPTS_HOME} does not point to a directory"
+    exit 1
+fi
+
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-common-exports" ]
+then
+    echo "${MAGPIE_SCRIPTS_HOME}/magpie-common-exports cannot be found"
+    exit 1
+fi
+
+#
+# Check General Inputs
+#
+
+if [ "${JAVA_HOME}X" == "X" ]
+then
+    echo "JAVA_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${JAVA_HOME} ]
+then
+    echo "${JAVA_HOME} does not point to a directory"
+    exit 1
+fi
+
+#
+# Check Hadoop Inputs 
+#
+
+if [ "${HADOOP_MODE}" != "terasort" ] \
+    && [ "${HADOOP_MODE}" != "script" ] \
+    && [ "${HADOOP_MODE}" != "interactive" ] \
+    && [ "${HADOOP_MODE}" != "setuponly" ]
+then
+    echo "HADOOP_MODE must be set to terasort, script, interactive, setuponly"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "magpienetworkfs" ]
+then
+    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, rawnetworkfs, intellustre, or magpienetworkfs"
+    exit 1
+fi
+
+if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
+    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+then
+    echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+then
+    echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
+    exit 1
+fi
+
+if [ "${HADOOP_HOME}X" == "X" ]
+then
+    echo "HADOOP_HOME must be set"
+    exit 1
+fi
+
+if [ ! -d ${HADOOP_HOME} ]
+then
+    echo "${HADOOP_HOME} does not point to a directory"
+    exit 1
+fi
+
+if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
+then
+    echo "HADOOP_LOCAL_DIR must be set"
+    exit 1
+fi
+
+if [ "${HADOOP_MODE}" == "terasort" ]
+then
+    if [ "${HADOOP_VERSION}X" == "X" ]
+    then
+	echo "HADOOP_VERSION must be set for terasort mode"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_MODE}" == "interactive" ] \
+    || [ "${HADOOP_MODE}" == "setuponly" ]
+then
+    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
+    then
+	echo "SBATCH_TIMELIMIT environment variable must be set for interactive or setuponly mode"
+	exit 1
+    fi
+
+    if [ ${SBATCH_TIMELIMIT} -lt 10 ]
+    then
+	echo "timelimit must be atleast 10 for interactive or setuponly mode"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_MODE}" == "script" ]
+then
+    if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
+    then
+	echo "Script HADOOP_SCRIPT_PATH must be specified"
+	exit 1
+    fi
+    
+    if [ ! -x ${HADOOP_SCRIPT_PATH} ]
+    then
+	echo "Script HADOOP_SCRIPT_PATH \"$HADOOP_SCRIPT_PATH\" does not have execute permissions"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    && [ "${HADOOP_HDFS_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_HDFS_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    && [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+    && [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    && [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH"
+    exit 1
+fi
+
+if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
+    && ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
+then
+    echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
+    exit 1
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
+    && [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
+then
+    echo "Must specify environment variable HADOOP_MAGPIENETWORKFS_PATH"
+    exit 1
+
+    firstchar="$(echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1)"
+
+    if [ "${firstchar}" != "/" ]
+    then
+	echo "HADOOP_MAGPIENETWORKFS_PATH must be an absolute path"
+	exit 1
+    fi
+fi
+
+if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
+    && ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
+then
+    echo "HADOOP_TERASORT_CLEAR_CACHE must be set to yes or no"
+    exit 1
+fi
+
+if [ "${HADOOP_COMPRESSION}X" != "X" ] \
+    && ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
+then
+    echo "HADOOP_COMPRESSION must be set to yes or no"
+    exit 1
+fi
+
+exit 0

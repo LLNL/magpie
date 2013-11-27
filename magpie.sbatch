@@ -441,6 +441,13 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # Run
 ############################################################################
 
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-check-inputs
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-post-run
 

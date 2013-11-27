@@ -1,3 +1,8 @@
+magpie 1.13
+-----------
+Split magpie-run into numerous run files.
+Exit on input errors and don't run rest of job.
+
 magpie 1.12
 -----------
 Clarify text and rename many files/environment files.

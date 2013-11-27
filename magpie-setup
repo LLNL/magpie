@@ -1,0 +1,830 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is checks environment sets up configuration files for
+# Hadoop jobs.  For the most part, it shouldn't be editted.  See
+# magpie.sbatch for configuration details.
+
+#
+# Setup a whole bunch of environment variables and directories
+# 
+
+mkdir -p $HADOOP_LOCAL_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_LOCAL_DIR}"
+    exit 1
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+
+mkdir -p $HADOOP_LOCAL_JOB_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_LOCAL_JOB_DIR}"
+    exit 1
+fi
+
+mkdir -p $HADOOP_CONF_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_CONF_DIR}"
+    exit 1
+fi
+
+mkdir -p $HADOOP_LOG_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${HADOOP_LOG_DIR}"
+    exit 1
+fi
+
+export YARN_CONF_DIR=${HADOOP_CONF_DIR}
+export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+
+# Create master and slave files
+
+hash hostlist 2>/dev/null
+if [ $? -eq 0 ]
+then
+    hostrangescript="hostlist"
+    hostrangescriptoptions="-e -d \n"
+else
+    if [ -x ${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ]
+    then
+	hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
+	hostrangescriptoptions=""
+    else
+	echo "Cannot find tool to expand host ranges"
+	exit 1
+    fi
+fi
+
+${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | head -1 > ${HADOOP_CONF_DIR}/masters
+${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 > ${HADOOP_CONF_DIR}/slaves
+
+master=`head -1 ${HADOOP_CONF_DIR}/masters`
+
+export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
+
+cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
+hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
+hostsincludefile=`echo "${hostsincludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+
+# By default leave exclude file empty
+touch ${HADOOP_CONF_DIR}/hosts-exclude
+hostsexcludefiletmp="${HADOOP_CONF_DIR}/hosts-exclude"
+hostsexcludefile=`echo "${hostsexcludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+
+#
+# Calculate values for various config file variables, based on
+# recommendtions, rules of thumb, or based on what user input.
+#
+
+# Recommendation from Cloudera, parallel copies sqrt(number of nodes), floor of ten
+parallelcopies=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
+if [ "${parallelcopies}" -lt "10" ]
+then
+    parallelcopies=10
+fi
+
+# Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200
+# My experience this is low b/c of high core counts, so bump higher to 50% 
+namenodehandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .5" | bc -l | xargs printf "%1.0f")
+if [ "${namenodehandlercount}" -lt "10" ]
+then
+    namenodehandlercount=10
+fi
+
+if [ "${namenodehandlercount}" -gt "200" ]
+then
+    namenodehandlercount=200
+fi
+
+# General rule of thumb is half namenode handler count, so * .25 instead of * .5
+datanodehandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .25" | bc -l | xargs printf "%1.0f")
+if [ "${datanodehandlercount}" -lt "10" ]
+then
+    datanodehandlercount=10
+fi
+
+if [ "${datanodehandlercount}" -gt "200" ]
+then
+    datanodehandlercount=200
+fi
+
+# Per description, about 4% of nodes but w/ floor of 10
+jobtrackerhandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .04" | bc -l | xargs printf "%1.0f")
+if [ "${jobtrackerhandlercount}" -lt "10" ]
+then
+    jobtrackerhandlercount=10
+fi
+
+# Per descrption, about square root number of nodes
+submitfilereplication=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
+
+# Optimal depends on file system
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
+then
+    iobuffersize=65536
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+then
+    # Default block size is 1M in Lustre
+    # XXX: If not default, can get from lctl or similar?
+    iobuffersize=1048576
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+then
+    # Assuming Lustre, so copy above 1M
+    iobuffersize=1048576
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+then
+    # Assuming Lustre, so copy above 1M
+    iobuffersize=1048576
+fi 
+
+javahometmp=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
+proccounttmp=`cat /proc/cpuinfo | grep processor | wc -l`
+# subtract one, leave 1 processor for daemons
+proccount=`expr ${proccounttmp} - 1`
+
+if [ "${HADOOP_MAX_TASKS_PER_NODE}X" != "X" ]
+then
+    maxtaskspernode=${HADOOP_MAX_TASKS_PER_NODE}
+else
+    maxtaskspernode=${proccount}
+fi
+
+if [ "${YARN_RESOURCE_MEMORY}X" != "X" ]
+then
+    yarnresourcememory=${YARN_RESOURCE_MEMORY}
+else
+    # 80% of system memory seems like a good estimate
+    tmp1=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    yarnresourcememory=$(echo "${tmp1} * 1024" | bc -l | xargs printf "%1.0f")
+fi
+
+if [ "${HADOOP_CHILD_HEAPSIZE}X" != "X" ]
+then
+    allchildheapsize=${HADOOP_CHILD_HEAPSIZE}
+else
+# achu: We round down to nearest 256 here b/c we add up 256 for container
+#
+# For MapReduce1, yarn resource memory makes no sense, but we can use
+# the value for some of the calculations below.
+#
+    tmp1=$(echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
+    tmp2=$(echo "${tmp1} / 256" | bc -l | xargs printf "%1.0f")
+    allchildheapsize=$(echo "${tmp2} * 256" | bc -l | xargs printf "%1.0f")
+    if [ "${allchildheapsize}" -lt "256" ]
+    then
+	allchildheapsize=256
+    fi
+fi
+
+if [ "${HADOOP_CHILD_MAP_HEAPSIZE}X" != "X" ]
+then
+    mapchildheapsize=${HADOOP_CHILD_MAP_HEAPSIZE}
+else
+    mapchildheapsize=${allchildheapsize}
+fi
+
+if [ "${HADOOP_CHILD_REDUCE_HEAPSIZE}X" != "X" ]
+then
+    reducechildheapsize=${HADOOP_CHILD_REDUCE_HEAPSIZE}
+else
+    reducechildheapsize=${allchildheapsize}
+fi
+
+# Cloudera recommends 256 for io.sort.mb.  Cloudera blog suggests
+# io.sort.factor * 10 ~= io.sort.mb.
+
+if [ "${HADOOP_IO_SORT_MB}X" != "X" ]
+then
+    iosortmb=${HADOOP_IO_SORT_MB}
+else
+    iosortmb=256
+fi
+
+if [ "${HADOOP_IO_SORT_FACTOR}X" != "X" ]
+then
+    iosortfactor=${HADOOP_IO_SORT_FACTOR}
+else
+    iosortfactor=`expr ${iosortmb} \/ 10`
+fi
+
+mapcontainermb=`expr ${mapchildheapsize} + 256`
+reducecontainermb=`expr ${reducechildheapsize} + 256`
+
+yarnmincontainer=1024
+if [ ${mapcontainermb} -lt ${yarnmincontainer} ]
+then
+    yarnmincontainer=${mapcontainermb}
+fi
+
+if [ ${reducecontainermb} -lt ${yarnmincontainer} ]
+then
+    yarnmincontainer=${reducecontainermb}
+fi
+
+yarnmaxcontainer=8192
+if [ ${mapcontainermb} -gt ${yarnmaxcontainer} ]
+then
+    yarnmaxcontainer=${mapcontainermb}
+fi
+
+if [ ${reducecontainermb} -gt ${yarnmaxcontainer} ]
+then
+    yarnmaxcontainer=${reducecontainermb}
+fi
+ 
+if [ "${HADOOP_MAPREDUCE_SLOWSTART}X" != "X" ]
+then
+    mapredslowstart=${HADOOP_MAPREDUCE_SLOWSTART}
+else
+    # Hadoop default is 0.05, which is normally ridiculously low.
+    mapredslowstart="0.25"
+fi
+
+if [ "${HADOOP_DEFAULT_MAP_TASKS}X" != "X" ]
+then
+    defaultmaptasks=${HADOOP_DEFAULT_MAP_TASKS}
+else
+    defaultmaptasks=`expr ${maxtaskspernode} \* ${HADOOP_SLAVE_COUNT}`
+fi
+
+if [ "${HADOOP_DEFAULT_REDUCE_TASKS}X" != "X" ]
+then
+    defaultreducetasks=${HADOOP_DEFAULT_REDUCE_TASKS}
+else
+    defaultreducetasks=${HADOOP_SLAVE_COUNT}
+fi
+
+if [ "${HADOOP_MAX_MAP_TASKS}X" != "X" ]
+then
+    maxmaptasks=${HADOOP_MAX_MAP_TASKS}
+else
+    maxmaptasks=${maxtaskspernode}
+fi
+
+if [ "${HADOOP_MAX_REDUCE_TASKS}X" != "X" ]
+then
+    maxreducetasks=${HADOOP_MAX_REDUCE_TASKS}
+else
+    maxreducetasks=${maxtaskspernode}
+fi
+
+if [ "${HADOOP_HDFS_BLOCKSIZE}X" != "X" ]
+then
+    hdfsblocksize=${HADOOP_HDFS_BLOCKSIZE}
+else
+    # 64M is Hadoop default, widely considered bad choice, we'll use 128M as default
+    hdfsblocksize=134217728
+fi
+
+if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
+then
+    hdfsreplication=${HADOOP_HDFS_REPLICATION}
+else
+    hdfsreplication=3
+fi
+
+if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+then
+    rawnetworkfsblocksize=${HADOOP_RAWNETWORKFS_BLOCKSIZE}
+else
+    # 32M is Hadoop default for local
+    rawnetworkfsblocksize=33554432
+fi
+
+if [ "${HADOOP_INTELLUSTRE_BLOCKSIZE}X" != "X" ]
+then
+    intellustreblocksize=${HADOOP_INTELLUSTRE_BLOCKSIZE}
+else
+    intellustreblocksize=536870912
+fi
+
+if [ "${HADOOP_INTELLUSTRE_STRIPESIZE}X" != "X" ]
+then
+    intellustrestripesize=${HADOOP_INTELLUSTRE_STRIPESIZE}
+else
+    intellustrestripesize=33554432
+fi
+
+if [ "${HADOOP_INTELLUSTRE_STRIPECOUNT}X" != "X" ]
+then
+    intellustrestripecount=${HADOOP_INTELLUSTRE_STRIPECOUNT}
+else
+    intellustrestripecount=-1
+fi
+
+if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ]
+then
+    if [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
+    then
+	mapoutputcollectorclass="org.apache.hadoop.mapred.SharedFsPlugins\$MapOutputBuffer"
+	reduceshuffleconsumerplugin="org.apache.hadoop.mapred.SharedFsPlugins\$Shuffle"
+    else
+	mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
+	reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
+    fi
+else
+    mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
+    reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
+fi
+
+if [ "${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}X" != "X" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+then
+    magpienetworkfsblocksize=${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}
+else
+    # 32M is Hadoop default for local
+    magpienetworkfsblocksize=33554432
+fi
+
+if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hadoopdaemonheapmax="${HADOOP_DAEMON_HEAP_MAX}"
+else
+    hadoopdaemonheapmax="1000"
+fi 
+
+if [ "${HADOOP_COMPRESSION}X" != "X" ]
+then
+    if [ "${HADOOP_COMPRESSION}" == "yes" ]
+    then
+	compression=true
+    else
+	compression=false
+    fi
+else
+    compression=false
+fi
+
+openfiles=`ulimit -n`
+if [ "${openfiles}" != "unlimited" ]
+then
+    openfileshardlimit=`ulimit -H -n`
+
+    # we estimate 1024 per 100 nodes.  Obviously depends on many
+    # factors such as core count, but it's a reasonble and safe
+    # over-estimate calculated based on experience.
+    openfilescount=`expr ${HADOOP_SLAVE_COUNT} \/ 100 `
+    if [ "${openfilescount}" == "0" ]
+    then
+        openfilescount=1
+    fi
+    openfilescount=`expr ${openfilescount} \* 1024`
+    
+    if [ "${openfileshardlimit}" != "unlimited" ]
+    then
+        if [ ${openfilescount} -gt ${openfileshardlimit} ]
+        then
+            openfilescount=${openfileshardlimit}
+        fi
+    fi
+else
+    openfilescount="unlimited"
+fi
+
+userprocesses=`ulimit -u`
+if [ "${userprocesses}" != "unlimited" ]
+then
+    userprocesseshardlimit=`ulimit -H -n`
+
+    # we estimate 1024 per 100 nodes.
+    userprocessescount=`expr ${HADOOP_SLAVE_COUNT} \/ 100 `
+    if [ "${userprocessescount}" == "0" ]
+    then
+        userprocessescount=1
+    fi
+    userprocessescount=`expr ${userprocessescount} \* 1024`
+    
+    if [ "${userprocesseshardlimit}" != "unlimited" ]
+    then
+        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
+        then
+            userprocessescount=${userprocesseshardlimit}
+        fi
+    fi
+else
+    userprocessescount="unlimited"
+fi
+
+#
+# Setup file system
+#
+
+pathcount=0
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
+then
+    # Setup node directory per node 
+    fspath=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
+    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
+
+    # Assume if path doesn't exist must format
+    if [ -d "${fspath}" ]
+    then
+	format=0
+    else
+	format=1
+    fi
+
+    IFSORIG=${IFS}
+    IFS=","
+    datanodedirtmp=""
+    for hdfspath in ${HADOOP_HDFS_PATH}
+    do
+	if [ ! -d "${hdfspath}" ]
+	then
+	    mkdir -p ${hdfspath}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${hdfspath}"
+		exit 1
+	    fi
+	fi
+
+	if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+	then
+	    if [ "${datanodedirtmp}X" == "X" ]
+	    then
+		datanodedirtmp="${hdfspath}/dfs/data"
+	    else
+		datanodedirtmp="${datanodedirtmp},${hdfspath}/dfs/data"
+	    fi
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	then
+	    if [ "${datanodedirtmp}X" == "X" ]
+	    then
+		datanodedirtmp="file://${hdfspath}/dfs/data"
+	    else
+		datanodedirtmp="${datanodedirtmp},file://${hdfspath}/dfs/data"
+	    fi
+	fi
+	pathcount=$((pathcount+1))
+    done
+    IFS=${IFSORIG}
+    datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+then
+    # Setup node directory per node 
+    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${MAGPIE_CLUSTER_NODERANK}"
+    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
+
+    # Assume if path doesn't exist must format
+    if [ -d "${fspath}" ]
+    then
+	format=0
+    else
+	format=1
+	mkdir -p ${fspath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${fspath}"
+	    exit 1
+	fi
+	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
+    fi
+
+    if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+    then
+	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
+    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+    then
+	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+    fi
+
+    pathcount=1
+
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+then
+    # Setup node directory per node, still need for "local" files
+    fspath="${HADOOP_RAWNETWORKFS_PATH}"
+    pernodepath="${fspath}/node-${MAGPIE_CLUSTER_NODERANK}"
+    hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "file:///" | sed "s/\\//\\\\\\\\\//g"`
+
+    if [ ! -d "${fspath}" ]
+    then
+        mkdir -p ${fspath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${fspath}"
+            exit 1
+        fi
+    fi
+
+    if [ ! -d "${pernodepath}" ]
+    then
+        mkdir -p ${pernodepath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${pernodepath}"
+            exit 1
+        fi
+    fi
+
+    format=0
+
+    pathcount=1
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+then
+    # Setup node directory per node, still need for "local" files
+    fspath="${HADOOP_INTELLUSTRE_PATH}"
+    fspathtmp="${HADOOP_INTELLUSTRE_PATH}/tmp"
+    intellustrerootdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdir=`echo "${fspathtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "lustre:///" | sed "s/\\//\\\\\\\\\//g"`
+
+    if [ ! -d "${fspathtmp}" ]
+    then
+        mkdir -p ${fspathtmp}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${fspathtmp}"
+            exit 1
+        fi
+    fi
+
+    format=0
+
+    pathcount=1
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+then
+    # Setup node directory per node, still need for "local" files
+    fspath="${HADOOP_MAGPIENETWORKFS_PATH}"
+    pernodepath="${fspath}/node-${MAGPIE_CLUSTER_NODERANK}"
+    hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "magpienetworkfs:///" | sed "s/\\//\\\\\\\\\//g"`
+    magpienetworkfsbase=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+
+    if [ ! -d "${fspath}" ]
+    then
+        mkdir -p ${fspath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${fspath}"
+            exit 1
+        fi
+    fi
+
+    if [ ! -d "${pernodepath}" ]
+    then
+        mkdir -p ${pernodepath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${pernodepath}"
+            exit 1
+        fi
+    fi
+
+    format=0
+
+    pathcount=1
+else
+    echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+    exit 1
+fi
+
+if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]) \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
+    && [ "${HADOOP_LOCALSTORE}X" != "X" ]
+then
+    IFSORIG=${IFS}
+    IFS=","
+    mapredlocalstoredir=""
+    yarnlocalstoredir=""
+    for localstorefile in ${HADOOP_LOCALSTORE}
+    do
+	localstoredirtmp=${localstorefile}
+	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+	
+	if [ -d "${localstoredirtmp}" ]
+	then
+	    mkdir -p ${localstoredirtmp}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${localstoredirtmp}"
+		exit 1
+	    fi
+	fi
+
+	if [ "${mapredlocalstoredir}X" == "X" ]
+	then
+	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
+	else
+	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
+	fi
+    done
+    IFS=${IFSORIG}
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    && [ ${pathcount} -gt 1 ] 
+then
+    IFSORIG=${IFS}
+    IFS=","
+    mapredlocalstoredir=""
+    yarnlocalstoredir=""
+    for localstorefile in ${HADOOP_HDFS_PATH}
+    do
+	localstoredirtmp=${localstorefile}
+	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+	
+	if [ "${mapredlocalstoredir}X" == "X" ]
+	then
+	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
+	else
+	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
+	fi
+    done
+    IFS=${IFSORIG}
+else
+    mapredlocalstoredir="\$\{hadoop.tmp.dir\}\/mapred\/local"
+    yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${HADOOP_CONF_FILES}X" == "X" ]
+then
+    hadoopconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    hadoopconffiledir=${HADOOP_CONF_FILES}
+fi
+
+if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+then
+    coresitexml=${hadoopconffiledir}/core-site-1.0.xml
+    mapredsitexml=${hadoopconffiledir}/mapred-site-1.0.xml
+    hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.0.sh
+    hdfssitexml=${hadoopconffiledir}/hdfs-site-1.0.xml
+elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+    coresitexml=${hadoopconffiledir}/core-site-2.0.xml
+    mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
+    hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.0.sh
+    yarnsitexml=${hadoopconffiledir}/yarn-site-2.0.xml
+    yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
+    hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
+else
+    echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
+    exit 1
+fi
+
+#
+# Setup configuration files and environment files
+#
+
+if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
+    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+
+    sed -e "s/HADOOPTMPDIR/${hadooptmpdir}/g" \
+	-e "s/FSDEFAULT/${fsdefault}/g" \
+	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+	-e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
+	-e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
+	-e "s/INTELLUSTREBLOCKSIZE/${intellustreblocksize}/g" \
+	-e "s/INTELLUSTRESTRIPESIZE/${intellustrestripesize}/g" \
+	-e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
+	-e "s/MAGPIENETWORKFSBASEDIR/${magpienetworkfsbase}/g" \
+	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
+	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
+
+    sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
+	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
+	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
+	-e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \
+	-e "s/MAPCHILDHEAPSIZE/${mapchildheapsize}/g" \
+	-e "s/MAPCONTAINERMB/${mapcontainermb}/g" \
+	-e "s/REDUCECHILDHEAPSIZE/${reducechildheapsize}/g" \
+	-e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
+	-e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
+	-e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
+	-e "s/MAXMAPTASKS/${maxmaptasks}/g" \
+	-e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
+	-e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
+	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
+	-e "s/IOSORTMB/${iosortmb}/g" \
+	-e "s/HADOOPCOMPRESSION/${compression}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
+    	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
+    	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
+	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
+    
+    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
+    
+    echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    echo "export HADOOP_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+
+    if [ "${HADOOP_REMOTE_CMD:-ssh}" != "ssh" ]
+    then
+	echo "export HADOOP_SSH_CMD=\"${HADOOP_REMOTE_CMD}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    fi
+
+    if [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
+    then
+	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    else
+	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    fi
+
+    cat ${hadoopconffiledir}/hadoop.log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
+fi
+    
+if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+	sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
+	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
+	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
+	-e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
+	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
+    
+    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
+
+    echo "export YARN_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    echo "export YARN_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+
+    if [ "${HADOOP_REMOTE_CMD:-ssh}" != "ssh" ]
+    then
+	echo "export YARN_SSH_CMD=\"$HADOOP_REMOTE_CMD\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    fi
+
+    if [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
+    then
+	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    else
+	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    fi
+fi
+
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+then
+    sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
+	-e "s/HDFSREPLICATION/${hdfsreplication}/g" \
+	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
+	-e "s/HDFSDATANODEHANDLERCLOUNT/${datanodehandlercount}/g" \
+	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
+	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
+fi
+
+#
+# Perform format if necessary
+#
+
+if [ "${format}" -eq "1" ]
+then
+    # Only MAGPIE_CLUSTER_NODERANK 0 will format the node
+    if [ "$MAGPIE_CLUSTER_NODERANK" -eq "0" ]
+    then
+	cd $HADOOP_HOME
+	echo 'Y' | bin/hadoop namenode -format
+    else
+	# If this is the first time running, make everyone else wait
+	# until the format is complete
+	sleep 30
+    fi
+fi
+
+exit 0
