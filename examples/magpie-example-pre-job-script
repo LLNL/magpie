@@ -12,6 +12,10 @@ then
     ulimit -a
 
     # Cat conf files for documentation
+
+    echo "**** hadoop-env.sh ****"
+    cat ${HADOOP_CONF_DIR}/hadoop-env.sh
+
     echo "**** mapred-site.xml ****"
     cat ${HADOOP_CONF_DIR}/mapred-site.xml
 
