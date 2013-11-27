@@ -43,7 +43,7 @@ then
     terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
     rmoption="-rm -r"
 fi
-remotecmd="${HADOOP_REMOTE_CMD:=ssh}" 
+remotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
 
 if [ "$MAGPIE_CLUSTER_NODERANK" -eq "0" ]
 then

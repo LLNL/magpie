@@ -73,6 +73,10 @@ export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
 # export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
 # export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
 
+# Specify ssh-equivalent remote command if ssh is not available on
+# your cluster
+# export MAGPIE_REMOTE_CMD="mrsh"
+
 ############################################################################
 # General Configuration
 ############################################################################
@@ -432,10 +436,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # what you can/should do with adding extra environment settings.
 #
 # export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
-
-# Specify ssh-equivalent remote command if ssh is not available on
-# your cluster
-# export HADOOP_REMOTE_CMD="mrsh"
 
 ############################################################################
 # Run
