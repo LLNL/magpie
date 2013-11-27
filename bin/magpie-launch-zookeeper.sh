@@ -1,3 +1,4 @@
+#!/bin/bash
 #############################################################################
 #  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
@@ -21,30 +22,48 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export environment variables we promised to export in documentation
-#
-# This is used by scripts, don't edit this
+# This script launches Zookeeper for the user
 
-export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
-export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
+# First argument is path to Zookeeper config
 
-export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
-export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
-export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
+# Second argument is path to Zookeeper
 
-export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
-export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
-export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
+# Third argument is start or stop
 
-# In main script, if master/slaves haven't been created yet, environment
-# variable set in there.
-
-if [ -f "${HADOOP_CONF_DIR}/masters" ]
-then 
-     export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-fi
-
-if [ -f "${HADOOP_CONF_DIR}/slaves" ]
+if [ "$1X" == "X" ]
 then
-    export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
+    echo "User must specify path to Zookeeper config as first argument"
+    exit 1
 fi
+
+if [ ! -d $1 ]
+then
+    echo "Zookeeper config path is not a directory"
+fi
+
+if [ "$2X" == "X" ]
+then
+    echo "User must specify path to Zookeeper as second argument"
+    exit 1
+fi
+
+if [ ! -d $2 ]
+then
+    echo "Zookeeper path is not a directory"
+fi
+
+if [ "$3X" == "X" ]
+then
+    echo "User must start or stop as third argument"
+    exit 1
+fi
+
+if [ "$3" != "start" ] && [ "$3" != "stop" ]
+then
+    echo "User must start or stop as third argument"
+    exit 1
+fi
+
+source $1/zookeeper-env.sh
+
+$2/bin/zkServer.sh $3

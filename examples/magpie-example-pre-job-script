@@ -35,4 +35,21 @@ then
     fi
 fi
 
+if [ "${MAGPIE_CLUSTER_NODERANK}" == "1" ]
+then
+    # Cat conf files for documentation
+
+    if [ -f "${ZOOKEEPER_CONF_DIR}/zoo.cfg" ] 
+    then
+	echo "**** zoo.cfg ****"
+	cat ${ZOOKEEPER_CONF_DIR}/zoo.cfg
+    fi
+
+    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh" ] 
+    then
+	echo "**** zookeeper-env.sh ****"
+	cat ${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh
+    fi
+fi
+
 exit 0

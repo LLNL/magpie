@@ -3,7 +3,6 @@ Major feature support
 Spark
 Hbase
 Storm
-Zookeeper (needed for Hbase, Storm)
 UDA
 
 Minor feature support
