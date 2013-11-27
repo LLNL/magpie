@@ -2,6 +2,7 @@ magpie 1.13
 -----------
 Split magpie-run into numerous run files.
 Exit on input errors and don't run rest of job.
+Rename some scripts/examples as needed.
 
 magpie 1.12
 -----------
