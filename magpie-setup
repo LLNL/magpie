@@ -80,7 +80,7 @@ fi
 ${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | head -1 > ${HADOOP_CONF_DIR}/masters
 ${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 > ${HADOOP_CONF_DIR}/slaves
 
-master=`head -1 ${HADOOP_CONF_DIR}/masters`
+export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
 
 export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 
@@ -442,7 +442,7 @@ then
     # Setup node directory per node 
     fspath=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
     hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${HADOOP_MASTER_NODE}:54310" | sed "s/\\//\\\\\\\\\//g"`
 
     # Assume if path doesn't exist must format
     if [ -d "${fspath}" ]
@@ -492,7 +492,7 @@ then
     # Setup node directory per node 
     fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${MAGPIE_CLUSTER_NODERANK}"
     hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "hdfs://${master}:54310" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${HADOOP_MASTER_NODE}:54310" | sed "s/\\//\\\\\\\\\//g"`
 
     # Assume if path doesn't exist must format
     if [ -d "${fspath}" ]
@@ -716,7 +716,7 @@ then
 	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
 	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
 
-    sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
 	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
 	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
@@ -769,7 +769,7 @@ fi
     
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
-	sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+	sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
 	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
 	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
@@ -805,7 +805,7 @@ fi
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
-    sed -e "s/HADOOP_MASTER_HOST/${master}/g" \
+    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
 	-e "s/HDFSREPLICATION/${hdfsreplication}/g" \
 	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \

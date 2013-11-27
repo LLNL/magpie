@@ -83,16 +83,16 @@ then
 	echo "*"
 	if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
 	then
-	    echo "* Jobtracker: http://$master:50030"
+	    echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:50030"
 	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 	then
-	    echo "* Yarn Resource Manager: http://$master:8088"
+	    echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
 	fi
 	echo "*" 
-	echo "* HDFS Namenode: http://$master:50070"
+	echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
 	echo "*"
 	echo "* To interact with Hadoop:"
-	echo "*   ${remotecmd} $master"
+	echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
 	echo "*   Set HADOOP_CONF_DIR, such as ..."
 	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	echo "*     or"
@@ -191,7 +191,7 @@ then
 	if [ "${HADOOP_MODE}" == "setuponly" ]
 	then
 	    echo "* To setup, you likely want to goto:"
-	    echo "*   ${remotecmd} $master"
+	    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
 	    echo "*   Set HADOOP_CONF_DIR, such as ..."
 	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	    echo "*     or"
@@ -218,7 +218,7 @@ then
 	    echo "*"
 	fi
 	echo "* To launch jobs:"
-	echo "*   ${remotecmd} $master"
+	echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
 	echo "*   Set HADOOP_CONF_DIR, such as ..."
 	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	echo "*     or"

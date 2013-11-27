@@ -31,8 +31,13 @@ export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID
 export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
 export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
 
-# In main script, if slaves hasn't been created yet, environment
+# In main script, if master/slaves haven't been created yet, environment
 # variable set in there.
+
+if [ -f "${HADOOP_CONF_DIR}/masters" ]
+then 
+     export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
+fi
 
 if [ -f "${HADOOP_CONF_DIR}/slaves" ]
 then

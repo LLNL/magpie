@@ -2,6 +2,7 @@ magpie 1.14
 -----------
 Add hadoop-env.sh output to magpie-example-pre-job-script.
 Fix corner case in HADOOP_ENVIRONMENT_EXTRA_PATH setting
+Create new HADOOP_MASTER_NODE envrionment variable.
 Update comments/documentation.
 
 magpie 1.13

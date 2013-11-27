@@ -198,6 +198,8 @@ fi
 
 To only do something on one node of your allocation.
 
+HADOOP_MASTER_NODE : the master node of the Hadoop allocation
+
 HADOOP_SLAVE_COUNT : number of compute/data nodes in your allocation
 
 HADOOP_CONF_DIR : the directory that configuration files local to the
