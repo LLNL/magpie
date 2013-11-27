@@ -397,7 +397,8 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 #
 # If not specified, defaults to 1000 (which is Hadoop default)
 #
-# May need to be increased if you are scaling large.
+# May need to be increased if you are scaling large, get OutofMemory
+# errors, or perhaps have a lot of cores on a node.
 #
 # export HADOOP_DAEMON_HEAP_MAX=2000
 
