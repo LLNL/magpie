@@ -751,6 +751,10 @@ then
     then
 	echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
     fi
+    if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+    then
+	echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+    fi
 
     if [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
     then
@@ -782,6 +786,10 @@ then
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
 	echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+    fi
+    if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+    then
+	echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
     fi
 
     if [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
