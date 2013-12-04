@@ -2,8 +2,15 @@ Major feature support
 ---------------------
 Spark
 Hbase
+- w/ thrift server?
 Storm
 UDA
 
 Minor feature support
 ---------------------
+Hadoop
+- namenode failover w/ shared dir mechanism
+- rework code to work off slave files instead of noderank
+- hdfs only option
+  - for hbase
+- crank up limits a lot
