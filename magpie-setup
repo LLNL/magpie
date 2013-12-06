@@ -440,15 +440,19 @@ if [ "${openfiles}" != "unlimited" ]
 then
     openfileshardlimit=`ulimit -H -n`
 
-    # we estimate 1024 per 100 nodes.  Obviously depends on many
-    # factors such as core count, but it's a reasonble and safe
-    # over-estimate calculated based on experience.
-    openfilescount=`expr ${HADOOP_SLAVE_COUNT} \/ 100 `
-    if [ "${openfilescount}" == "0" ]
+    # we estimate 4096 per 100 nodes, minimum 8192, max 65536.
+    # Obviously depends on many factors such as core count, but it's a
+    # reasonble and safe over-estimate calculated based on experience.
+    openfilesslavecount=`expr ${HADOOP_SLAVE_COUNT} \/ 100`
+    openfilescount=`expr ${openfilesslavecount} \* 4096`
+    if [ "${openfilescount}" -lt "8192" ]
     then
-        openfilescount=1
+	openfilescount=8192
     fi
-    openfilescount=`expr ${openfilescount} \* 1024`
+    if [ "${openfilescount}" -gt "65536" ]
+    then
+	openfilescount=65536
+    fi
     
     if [ "${openfileshardlimit}" != "unlimited" ]
     then
@@ -466,13 +470,17 @@ if [ "${userprocesses}" != "unlimited" ]
 then
     userprocesseshardlimit=`ulimit -H -n`
 
-    # we estimate 1024 per 100 nodes.
-    userprocessescount=`expr ${HADOOP_SLAVE_COUNT} \/ 100 `
-    if [ "${userprocessescount}" == "0" ]
+    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
+    userprocessesslavecount=`expr ${HADOOP_SLAVE_COUNT} \/ 100`
+    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
+    if [ "${userprocessescount}" -lt "4096" ]
     then
-        userprocessescount=1
+	userprocessescount=4096
     fi
-    userprocessescount=`expr ${userprocessescount} \* 1024`
+    if [ "${userprocessescount}" -gt "32768" ]
+    then
+	userprocessescount=32768
+    fi
     
     if [ "${userprocesseshardlimit}" != "unlimited" ]
     then

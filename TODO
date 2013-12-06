@@ -13,4 +13,3 @@ Hadoop
 - rework code to work off slave files instead of noderank
 - hdfs only option
   - for hbase
-- crank up limits a lot
