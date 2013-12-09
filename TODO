@@ -10,6 +10,5 @@ Minor feature support
 ---------------------
 Hadoop
 - namenode failover w/ shared dir mechanism
-- rework code to work off slave files instead of noderank
 - hdfs only option
   - for hbase

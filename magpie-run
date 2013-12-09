@@ -41,7 +41,8 @@ then
 fi
 remotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
 
-if [ "$MAGPIE_CLUSTER_NODERANK" -eq "0" ]
+myhostname=`hostname`
+if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters) ]
 then
 
 # Setup/Run ZooKeeper
