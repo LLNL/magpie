@@ -26,116 +26,7 @@
 # part, it shouldn't be editted.  See magpie.sbatch for configuration
 # details.
 
-#
-# Setup a whole bunch of environment variables and directories
-# 
-
-mkdir -p $HADOOP_LOCAL_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_LOCAL_DIR}"
-    exit 1
-fi
-
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-
-#
-# Setup Hadoop directories
-#
-
-mkdir -p $HADOOP_LOCAL_JOB_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_LOCAL_JOB_DIR}"
-    exit 1
-fi
-
-mkdir -p $HADOOP_CONF_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_CONF_DIR}"
-    exit 1
-fi
-
-mkdir -p $HADOOP_LOG_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_LOG_DIR}"
-    exit 1
-fi
-
-export YARN_CONF_DIR=${HADOOP_CONF_DIR}
-export YARN_LOG_DIR=${HADOOP_LOG_DIR}
-
-#
-# Setup Zookeeper directories
-#
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    mkdir -p $ZOOKEEPER_LOCAL_JOB_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_LOCAL_JOB_DIR}"
-	exit 1
-    fi
-    
-    mkdir -p $ZOOKEEPER_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $ZOOKEEPER_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_LOG_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup/Calculate Hadoop Config
-#
-
-# Create master and slave files
-
-hash hostlist 2>/dev/null
-if [ $? -eq 0 ]
-then
-    hostrangescript="hostlist"
-    hostrangescriptoptions="-e -d \n"
-else
-    if [ -x ${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ]
-    then
-	hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
-	hostrangescriptoptions=""
-    else
-	echo "Cannot find tool to expand host ranges"
-	exit 1
-    fi
-fi
-
-${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | head -1 > ${HADOOP_CONF_DIR}/masters
-${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 > ${HADOOP_CONF_DIR}/tmp_slaves
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    tmpslavecount=`cat ${HADOOP_CONF_DIR}/tmp_slaves | wc -l`
-    hadoopslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
-    zookeeperslavestart=`expr ${hadoopslavecount} + 1`
-
-    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] 
-    then
-	head -${hadoopslavecount} ${HADOOP_CONF_DIR}/tmp_slaves > ${HADOOP_CONF_DIR}/slaves
-	tail -n+${zookeeperslavestart} ${HADOOP_CONF_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
-    else
-	cp ${HADOOP_CONF_DIR}/tmp_slaves ${HADOOP_CONF_DIR}/slaves
-	tail -n+${zookeeperslavestart} ${HADOOP_CONF_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
-    fi
-else
-    cp ${HADOOP_CONF_DIR}/tmp_slaves ${HADOOP_CONF_DIR}/slaves
-fi
-
-rm -f ${HADOOP_CONF_DIR}/tmp_slaves
-
-export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-
-export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 
 cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
 hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
@@ -746,63 +637,6 @@ else
 fi
 
 #
-# Setup/Calculate Zookeeper Config
-#
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    # zookeepernoderank set if succeed
-    if Magpie_am_I_a_zookeeper_node
-    then
-	if [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "networkfs" ]
-	then
-            # Setup node directory per node 
-            zookeeperdatadirpathtmp="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
-            zookeeperdatadirpath=`echo "${zookeeperdatadirpathtmp}" | sed "s/\\//\\\\\\\\\//g"`
-            
-            mkdir -p ${zookeeperdatadirpathtmp}
-            if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${zookeeperdatadirpathtmp}"
-		exit 1
-            fi
-	elif [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "local" ]
-	then
-            zookeeperdatadirpathtmp="${ZOOKEEPER_DATA_DIR}"
-            zookeeperdatadirpath=`echo "${zookeeperdatadirpathtmp}" | sed "s/\\//\\\\\\\\\//g"`
-            
-            mkdir -p ${zookeeperdatadirpathtmp}
-            if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${zookeeperdatadirpathtmp}"
-		exit 1
-            fi
-	fi
-	
-	echo "${zookeepernoderank}" > ${zookeeperdatadirpathtmp}/myid
-
-	if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
-	then
-	    zookeeperticktime=${ZOOKEEPER_TICKTIME}
-	else
-	    zookeeperticktime=2000
-	fi
-
-	if [ "${ZOOKEEPER_INITLIMIT}X" != "X" ]
-	then
-	    zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
-	else
-	    zookeeperinitlimit=10
-	fi
-
-	if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
-	then
-	    zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
-	else
-	    zookeepersynclimit=5
-	fi
-    fi
-fi
-
-#
 # Get config files for setup
 #
 
@@ -811,13 +645,6 @@ then
     hadoopconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
 else
     hadoopconffiledir=${HADOOP_CONF_FILES}
-fi
-
-if [ "${ZOOKEEPER_CONF_FILES}X" == "X" ]
-then
-    zookeeperconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    zookeeperconffiledir=${ZOOKEEPER_CONF_FILES}
 fi
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
@@ -838,9 +665,6 @@ else
     echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
     exit 1
 fi
-
-zookeepercfg=${zookeeperconffiledir}/zoo.cfg
-zookeeperenvsh=${zookeeperconffiledir}/zookeeper-env.sh
 
 #
 # Setup Hadoop configuration files and environment files
@@ -965,42 +789,6 @@ then
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
 	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
 	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
-fi
-
-#
-# Setup Zookeeper configuration files and environment files
-#
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    if Magpie_am_I_a_zookeeper_node
-    then
-	sed -e "s/ZOOKEEPERDATADIR/${zookeeperdatadirpath}/g" \
-	    -e "s/ZOOKEEPERTICKTIME/${zookeeperticktime}/g" \
-	    -e "s/ZOOKEEPERINITLIMIT/${zookeeperinitlimit}/g" \
-	    -e "s/ZOOKEEPERSYNCLIMIT/${zookeepersynclimit}/g" \
-            $zookeepercfg > ${ZOOKEEPER_CONF_DIR}/zoo.cfg
-
-	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
-	
-	servercount=1
-	for zookeepernode in ${zookeepernodes}
-	do
-            echo "server.${servercount}=${zookeepernode}:2888:3888" >> ${ZOOKEEPER_CONF_DIR}/zoo.cfg
-            servercount=$((servercount+1))
-	done
-	
-	zookeeperjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-	zookeeperlogdirsubst=`echo "${ZOOKEEPER_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-	zookeeperconfdirsubst=`echo "${ZOOKEEPER_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-
-	sed -e "s/MAGPIEJAVAHOME/${zookeeperjavahomesubst}/g" \
-	    -e "s/ZOOKEEPERLOGDIR/${zookeeperlogdirsubst}/g" \
-	    -e "s/ZOOKEEPERCONFDIR/${zookeeperconfdirsubst}/g" \
-	    $zookeeperenvsh > ${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh
-
-	cat ${zookeeperconffiledir}/zookeeper.log4j.properties > ${ZOOKEEPER_CONF_DIR}/log4j.properties
-    fi
 fi
 
 #

@@ -557,7 +557,9 @@ if [ $? -ne 0 ]
 then
     exit 1
 fi
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-post-run
