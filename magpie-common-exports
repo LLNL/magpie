@@ -28,7 +28,7 @@
 #
 # This is used by scripts, don't edit this
 
-Magpie_am_I_a_hadoop_master () {
+Magpie_am_I_hadoop_master () {
     local myhostname=`hostname`
     if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters) ]
     then 

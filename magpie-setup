@@ -1010,8 +1010,7 @@ fi
 if [ "${format}" -eq "1" ]
 then
     # Only master will format the node
-    myhostname=`hostname`
-    if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters) ]
+    if Magpie_am_I_hadoop_master
     then
 	cd $HADOOP_HOME
 	echo 'Y' | bin/hadoop namenode -format
