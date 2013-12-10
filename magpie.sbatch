@@ -90,7 +90,7 @@ export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
 export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 
 ############################################################################
-# Hadoop Configurations
+# Hadoop Core Configurations
 ############################################################################
 
 # Set how Hadoop should run
@@ -188,6 +188,10 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
 
+############################################################################
+# Hadoop Terasort Configurations
+############################################################################
+
 # Terasort size
 #
 # For "terasort" mode.
@@ -215,11 +219,19 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_TERASORT_CLEAR_CACHE=no
 
+############################################################################
+# Hadoop Script Configurations
+############################################################################
+
 # Specify script to execute for "script" mode
 #
 # See hadoop-example-job-script for example of what to put in the script.
 #
 # export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+
+############################################################################
+# Hadoop Filesystem Mode Configurations
+############################################################################
 
 # Path for HDFS when using local disk
 #
@@ -334,6 +346,10 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # If not specified, defaults to 33554432
 #
 # export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
+
+############################################################################
+# Hadoop General Configurations
+############################################################################
 
 # Tasks per Node
 #
@@ -510,6 +526,12 @@ export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
 #
 export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
 
+# Directory where Zookeeper configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+
 # Path base for local data to each cluster node
 #
 export ZOOKEEPER_DATA_DIR="/lustre/username/zookeeper"  
@@ -541,12 +563,6 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/username/zookeeper"
 # Defaults to 5
 #
 # export ZOOKEEPER_SYNCLIMIT=5
-
-# Directory where Zookeeper configuration templates are stored
-#
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
-#
-# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
 
 ############################################################################
 # Run
