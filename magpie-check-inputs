@@ -105,6 +105,14 @@ then
     exit 1
 fi
 
+if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
+    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+    && [ "${HADOOP_MODE}" == "terasort" ]
+then
+    echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
+    exit 1
+fi
+
 if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
 then
