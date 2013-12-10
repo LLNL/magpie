@@ -1,3 +1,4 @@
+#!/bin/bash
 #############################################################################
 #  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
@@ -23,7 +24,36 @@
 
 # Export environment variables we promised to export in documentation
 #
+# Export common functions
+#
 # This is used by scripts, don't edit this
+
+Magpie_am_I_a_hadoop_node () {
+    local myhostname=`hostname`
+    if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves) ] \
+	|| [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters) ]
+    then 
+	if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters) ]
+	then
+	    hadoopnoderank=0
+	else
+	    hadoopnoderank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
+	fi
+	return 0
+    fi
+    return 1
+}
+
+Magpie_am_I_a_zookeeper_node () {
+    local myhostname=`hostname`
+    if [ $(grep -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves) ]
+    then 
+	zookeepernoderank=`grep -n -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves | awk --field-separator=':' '{print $1}'`
+	return 0
+    fi
+    return 1
+}
+
 
 export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
 export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
