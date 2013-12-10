@@ -64,9 +64,14 @@ then
     exit 1
 fi
 
+nodecount=${SLURM_NNODES}
+
 #
 # Check Hadoop Inputs 
 #
+
+# Subtract 1 for Hadoop Master
+nodecount=$((nodecount-1))
 
 if [ "${HADOOP_MODE}" != "terasort" ] \
     && [ "${HADOOP_MODE}" != "script" ] \
@@ -242,6 +247,12 @@ then
     exit 1
 fi
 
+if [ ${nodecount} -le "0" ]
+then
+    echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
+    exit 1
+fi
+
 #
 # Check Zookeeper Inputs 
 #
@@ -285,11 +296,13 @@ then
        exit 1
     fi
 
-    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -lt "${SLURM_NNODES}" ]
+    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "${nodecount}" ]
     then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be less than job node count"
+       echo "Not enough nodes for ZOOKEEPER_REPLICATION_COUNT"
        exit 1
     fi
+
+    nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
 
     if [ "${ZOOKEEPER_SHARE_NODES}X" != "X" ]
     then
@@ -297,15 +310,6 @@ then
 	then
 	    echo "ZOOKEEPER_SHARE_NODES must be set to yes or no"
 	    exit 1
-	fi
-    fi
-
-    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
-    then
-	hadoopslavecount=`expr ${SLURM_NNODES} - 1`
-	if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -lt ${hadoopslavecount} ]
-	then
-	    echo "ZOOKEEPER_REPLICATION_COUNT must be less job Hadoop slave count"
 	fi
     fi
 
@@ -339,6 +343,12 @@ then
        echo "ZOOKEEPER_LOCAL_DIR must be set"
        exit 1
     fi
+fi
+
+if [ ${nodecount} -le "0" ]
+then
+    echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
+    exit 1
 fi
 
 exit 0
