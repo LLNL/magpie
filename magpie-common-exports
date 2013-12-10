@@ -28,6 +28,15 @@
 #
 # This is used by scripts, don't edit this
 
+Magpie_am_I_a_hadoop_master () {
+    local myhostname=`hostname`
+    if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters) ]
+    then 
+	return 0
+    fi
+    return 1
+}
+
 Magpie_am_I_a_hadoop_node () {
     local myhostname=`hostname`
     if [ $(grep -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves) ] \
