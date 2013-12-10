@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is checks environment sets up configuration files for
-# Hadoop jobs.  For the most part, it shouldn't be editted.  See
-# magpie.sbatch for configuration details.
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See magpie.sbatch for configuration
+# details.
 
 #
 # Setup a whole bunch of environment variables and directories
