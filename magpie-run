@@ -28,12 +28,12 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     scriptprefix="bin"
     terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
     rmoption="-rmr"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
 then
     scriptprefix="sbin"
     terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
@@ -153,7 +153,9 @@ then
 	echo "*******************************************************"
     fi
 
-    if [ "${HADOOP_MODE}" == "terasort" ]
+    if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+	|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
+	&& [ "${HADOOP_MODE}" == "terasort" ]
     then
 	echo "*******************************************************"
 	echo "* Running Terasort"
@@ -252,15 +254,19 @@ then
 	    fi
 	    echo "*"
 	fi
-	echo "* To launch jobs:"
-	echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
-	echo "*   Set HADOOP_CONF_DIR, such as ..."
-	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-	echo "*     or"
-	echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	echo "*   cd $HADOOP_HOME"
-	echo "*   bin/hadoop jar ..."
-	echo "*" 
+
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "* To launch jobs:"
+	    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
+	    echo "*   Set HADOOP_CONF_DIR, such as ..."
+	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	    echo "*     or"
+	    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	    echo "*   cd $HADOOP_HOME"
+	    echo "*   bin/hadoop jar ..."
+	    echo "*" 
+	fi
 	
 	if [ "${HADOOP_MODE}" == "setuponly" ]
 	then

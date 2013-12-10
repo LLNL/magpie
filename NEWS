@@ -1,6 +1,7 @@
 magpie 1.15
 -----------
 Increase file and process limit default calculation. 
+Support HADOOP_SETUP_TYPE HDFS1 or HDFS2.
 
 magpie 1.14
 -----------

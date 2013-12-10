@@ -527,7 +527,7 @@ then
 	    fi
 	fi
 
-	if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+	if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 	then
 	    if [ "${datanodedirtmp}X" == "X" ]
 	    then
@@ -535,7 +535,7 @@ then
 	    else
 		datanodedirtmp="${datanodedirtmp},${hdfspath}/dfs/data"
 	    fi
-	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 	then
 	    if [ "${datanodedirtmp}X" == "X" ]
 	    then
@@ -572,10 +572,10 @@ then
 	    /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
 	fi
 
-	if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+	if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 	then
 	    datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 	then
 	    datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
 	fi
@@ -820,13 +820,13 @@ else
     zookeeperconffiledir=${ZOOKEEPER_CONF_FILES}
 fi
 
-if [ ${HADOOP_SETUP_TYPE} == "MR1" ]
+if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 then
     coresitexml=${hadoopconffiledir}/core-site-1.0.xml
     mapredsitexml=${hadoopconffiledir}/mapred-site-1.0.xml
     hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.0.sh
     hdfssitexml=${hadoopconffiledir}/hdfs-site-1.0.xml
-elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 then
     coresitexml=${hadoopconffiledir}/core-site-2.0.xml
     mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
@@ -847,11 +847,12 @@ zookeeperenvsh=${zookeeperconffiledir}/zookeeper-env.sh
 #
 
 if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
-    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ] \
+    || [ ${HADOOP_SETUP_TYPE}  == "HDFS1" ] \
+    || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
 then
-
     sed -e "s/HADOOPTMPDIR/${hadooptmpdir}/g" \
-               	-e "s/FSDEFAULT/${fsdefault}/g" \
+        -e "s/FSDEFAULT/${fsdefault}/g" \
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
 	-e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
 	-e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
@@ -862,30 +863,6 @@ then
 	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
 	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
 
-    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
-	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
-	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
-	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
-	-e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \
-	-e "s/MAPCHILDHEAPSIZE/${mapchildheapsize}/g" \
-	-e "s/MAPCONTAINERMB/${mapcontainermb}/g" \
-	-e "s/REDUCECHILDHEAPSIZE/${reducechildheapsize}/g" \
-	-e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
-	-e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
-	-e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
-	-e "s/MAXMAPTASKS/${maxmaptasks}/g" \
-	-e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
-	-e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
-	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
-	-e "s/IOSORTMB/${iosortmb}/g" \
-	-e "s/HADOOPCOMPRESSION/${compression}/g" \
-	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
-	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
-	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
-    	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
-    	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
-	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
-    
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
@@ -911,6 +888,34 @@ then
     fi
 
     cat ${hadoopconffiledir}/hadoop.log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
+fi
+
+if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
+    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
+	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
+	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
+	-e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \
+	-e "s/MAPCHILDHEAPSIZE/${mapchildheapsize}/g" \
+	-e "s/MAPCONTAINERMB/${mapcontainermb}/g" \
+	-e "s/REDUCECHILDHEAPSIZE/${reducechildheapsize}/g" \
+	-e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
+	-e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
+	-e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
+	-e "s/MAXMAPTASKS/${maxmaptasks}/g" \
+	-e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
+	-e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
+	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
+	-e "s/IOSORTMB/${iosortmb}/g" \
+	-e "s/HADOOPCOMPRESSION/${compression}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
+    	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
+    	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
+	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
 fi
 
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
@@ -946,7 +951,6 @@ then
 	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
     fi
 fi
-
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]

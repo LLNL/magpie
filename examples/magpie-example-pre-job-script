@@ -13,14 +13,23 @@ then
 
     # Cat conf files for documentation
 
-    echo "**** hadoop-env.sh ****"
-    cat ${HADOOP_CONF_DIR}/hadoop-env.sh
+    if [ -f "${HADOOP_CONF_DIR}/hadoop-env.sh" ] 
+    then
+	echo "**** hadoop-env.sh ****"
+	cat ${HADOOP_CONF_DIR}/hadoop-env.sh
+    fi
 
-    echo "**** mapred-site.xml ****"
-    cat ${HADOOP_CONF_DIR}/mapred-site.xml
+    if [ -f "${HADOOP_CONF_DIR}/mapred-site.xml" ]
+    then
+	echo "**** mapred-site.xml ****"
+	cat ${HADOOP_CONF_DIR}/mapred-site.xml
+    fi
 
-    echo "**** core-site.xml ****"
-    cat ${HADOOP_CONF_DIR}/core-site.xml
+    if [ -f "${HADOOP_CONF_DIR}/core-site.xml" ]
+    then
+	echo "**** core-site.xml ****"
+	cat ${HADOOP_CONF_DIR}/core-site.xml
+    fi
 
     if [ -f "${HADOOP_CONF_DIR}/hdfs-site.xml" ] 
     then

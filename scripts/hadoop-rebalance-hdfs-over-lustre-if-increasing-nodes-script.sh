@@ -18,10 +18,10 @@
  
 FILES=`${HADOOP_HOME}/bin/hadoop fs -ls 2> /dev/null | grep -v Found | awk '{print $8}'`
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     rmoption="-rmr"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
 then
     rmoption="-rm -r"
 fi

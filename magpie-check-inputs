@@ -88,9 +88,20 @@ then
 fi
 
 if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
-    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
+    && [ "${HADOOP_SETUP_TYPE}" != "HDFS1" ] \
+    && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
 then
-    echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2"
+    echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2 or HDFS1 or HDFS2"
+    exit 1
+fi
+
+if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
+    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+    && ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ])
+then
+    echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre"
     exit 1
 fi
 

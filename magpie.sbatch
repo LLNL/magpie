@@ -147,6 +147,13 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 #
 # MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
+# HDFS1 - HDFS only w/ Hadoop 1.0 
+# HDFS2 - HDFS only w/ Hadoop 2.0
+#
+# Note that the HDFS only options are normally for convenience,
+# perhaps to move files in/out of HDFS.  It only works with the
+# HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre.  It makes no sense
+# otherwise.
 #
 export HADOOP_SETUP_TYPE="MR2"
 

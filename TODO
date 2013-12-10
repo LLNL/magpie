@@ -10,5 +10,3 @@ Minor feature support
 ---------------------
 Hadoop
 - namenode failover w/ shared dir mechanism
-- hdfs only option
-  - for hbase
