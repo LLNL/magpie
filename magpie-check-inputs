@@ -118,7 +118,8 @@ then
     exit 1
 fi
 
-if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+if ([ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
     && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
 then
     echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
