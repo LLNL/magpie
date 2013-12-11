@@ -11,3 +11,6 @@ Minor feature support
 Hadoop
 - namenode failover w/ shared dir mechanism
 - start w/ 2.1.1-beta 
+Ganglia
+- if user wants aid in monitoring
+ 
