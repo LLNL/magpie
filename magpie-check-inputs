@@ -258,7 +258,8 @@ fi
 # Check Zookeeper Inputs 
 #
 
-if [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ]
+if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
+    && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
 then
     echo "ZOOKEEPER_SETUP must be set to yes or no"
     exit 1
