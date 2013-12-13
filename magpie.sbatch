@@ -449,6 +449,10 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # export HADOOP_IO_SORT_FACTOR=10
 # export HADOOP_IO_SORT_MB=100
 
+############################################################################
+# Hadoop Environment Configurations
+############################################################################
+
 # Environment Extra
 #
 # Specify extra environment information that should be passed into
