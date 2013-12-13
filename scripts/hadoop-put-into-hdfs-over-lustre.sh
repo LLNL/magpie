@@ -4,8 +4,8 @@
  
 cd ${HADOOP_HOME}
 
-# hadoop fs -copyFromLocal <lustre-dir> <hdfs-dir>
-command="hadoop fs -copyFromLocal FOO BAR"
+# bin/hadoop fs -copyFromLocal <lustre-dir> <hdfs-dir>
+command="bin/hadoop fs -copyFromLocal FOO BAR"
 echo "Running $command" >&2
 $command
 
