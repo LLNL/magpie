@@ -387,6 +387,36 @@ Basic Instructions For Running Zookeeper
    with Hadoop.  Now Zookeeper will be started along with your Hadoop
    job.
 
+Running under Moab
+------------------
+
+If you are running with the Moab scheduler, with Slurm as the resource
+manager, some small changes to the main sbatch script will allow you
+to run under Moab.
+
+Replace the Slurm Customizations in the magpie.sbatch file with the
+following Moab/Slurm customizations 
+
+#MSUB -l nodes=<my node count>
+#MSUB -o ./moab-%j.out
+#MSUB -l partition=<my partition> 
+#MSUB -q <my batch queue>
+#MSUB -l walltime=<my time in seconds or HH:MM:SS>
+#MSUB -l resfailpolicy=ignore
+#MSUB -V
+
+export MOAB_JOBNAME="<my job name>"
+export SLURM_JOB_NAME="<my job name>"
+
+export SLURM_TASKS_PER_NODE=1
+export SBATCH_EXCLUSIVE="yes"
+
+export SBATCH_TIMELIMIT=<time in minutes>
+
+Note that SBATCH_TIMELIMIT must be specified in minutes and match the
+Moab walltime.  Unfortunately, Moab does not export an environment
+variables for walltime, so SBATCH_TIMELIMIT has to be set manually.
+
 Testing
 -------
 
