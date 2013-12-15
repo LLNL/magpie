@@ -304,8 +304,6 @@ then
        exit 1
     fi
 
-    nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
-
     if [ "${ZOOKEEPER_SHARE_NODES}X" != "X" ]
     then
 	if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] && [ "${ZOOKEEPER_SHARE_NODES}" != "no" ]
@@ -313,6 +311,11 @@ then
 	    echo "ZOOKEEPER_SHARE_NODES must be set to yes or no"
 	    exit 1
 	fi
+    fi
+
+    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
+    then
+	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
     fi
 
     if [ "${ZOOKEEPER_HOME}X" == "X" ]
