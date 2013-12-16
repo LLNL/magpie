@@ -287,7 +287,7 @@ then
 	fi
 	echo "*" 
 	echo "*******************************************************"
-	hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 5`
+	hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
 	hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
 	sleep ${hadoopsleepseconds}
     fi

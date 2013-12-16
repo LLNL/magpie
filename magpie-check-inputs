@@ -162,9 +162,9 @@ then
 	exit 1
     fi
 
-    if [ ${SBATCH_TIMELIMIT} -lt 10 ]
+    if [ ${SBATCH_TIMELIMIT} -lt 30 ]
     then
-	echo "timelimit must be atleast 10 for interactive or setuponly mode"
+	echo "timelimit must be atleast 30 for interactive or setuponly mode"
 	exit 1
     fi
 fi
