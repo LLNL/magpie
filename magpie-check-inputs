@@ -82,16 +82,6 @@ then
     exit 1
 fi
 
-if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "magpienetworkfs" ]
-then
-    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, rawnetworkfs, intellustre, or magpienetworkfs"
-    exit 1
-fi
-
 if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "HDFS1" ] \
@@ -103,26 +93,9 @@ fi
 
 if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
     || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-    && ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ])
-then
-    echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre"
-    exit 1
-fi
-
-if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
-    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
     && [ "${HADOOP_MODE}" == "terasort" ]
 then
     echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
-    exit 1
-fi
-
-if ([ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
-    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
-then
-    echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
     exit 1
 fi
 
@@ -178,6 +151,33 @@ then
 	echo "Script HADOOP_SCRIPT_PATH \"$HADOOP_SCRIPT_PATH\" does not have execute permissions"
 	exit 1
     fi
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ] \
+    && [ "${HADOOP_FILESYSTEM_MODE}" != "magpienetworkfs" ]
+then
+    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, rawnetworkfs, intellustre, or magpienetworkfs"
+    exit 1
+fi
+
+if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
+    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+    && ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ])
+then
+    echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre"
+    exit 1
+fi
+
+if ([ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
+    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+then
+    echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
+    exit 1
 fi
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \

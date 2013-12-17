@@ -84,9 +84,6 @@ Basic Instructions For Running Hadoop
    w/ 'script' or 'interactive' mode, as that is the more likely way
    to run.
 
-   HADOOP_FILESYSTEM_MODE : most will likely want "hdfsoverlustre".
-   See below for details on HDFS over Lustre.
-
    HADOOP_SETUP_TYPE : Are you running Mapreduce version 1 or 2
 
    HADOOP_VERSION : Make sure your build matches HADOOP_SETUP_TYPE
@@ -96,6 +93,9 @@ Basic Instructions For Running Hadoop
 
    HADOOP_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
+
+   HADOOP_FILESYSTEM_MODE : most will likely want "hdfsoverlustre".
+   See below for details on HDFS over Lustre.
 
    HADOOP_HDFSOVERLUSTRE_PATH : For hdfs over lustre, need to set
    this.  If not using HDFS over Lustre, set the appropriate path for

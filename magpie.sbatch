@@ -112,33 +112,6 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 #
 export HADOOP_MODE="terasort"
 
-# Set how the filesystem should be setup
-#
-# "hdfs" - Normal straight up HDFS if you have local disk in your
-#          cluster.  This option is primarily for benchmarking and
-#          probably shouldn't be used in the general case.
-#
-#          Be careful running this in a cluster environment.  The next
-#          time you execute your job, if a different set of nodes are
-#          allocated to you, the HDFS data you wrote from a previous
-#          job may not be there.  Using the --nodelist in sbatch may
-#          be a way to alleviate this, if you work in an environment
-#          where you have high confidence you will also get the same
-#          nodes on each run.
-#
-# "hdfsoverlustre" - HDFS over Lustre.  See README for description.
-#
-# "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),
-#           to use networked file system directly.  It could be a
-#           Lustre mount or NFS mount.  Whatever you please.
-#
-# "intellustre" - Use the Lustre plugin developed by Intel for IDH.
-#
-# "magpienetworkfs" - Use the Magpie Network FS plugin.  See README for
-#                     details.
-#
-export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
-
 # Set Hadoop Setup Type
 #
 # Will inform scripts on how to setup config files and what daemons to
@@ -232,6 +205,33 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 ############################################################################
 # Hadoop Filesystem Mode Configurations
 ############################################################################
+
+# Set how the filesystem should be setup
+#
+# "hdfs" - Normal straight up HDFS if you have local disk in your
+#          cluster.  This option is primarily for benchmarking and
+#          probably shouldn't be used in the general case.
+#
+#          Be careful running this in a cluster environment.  The next
+#          time you execute your job, if a different set of nodes are
+#          allocated to you, the HDFS data you wrote from a previous
+#          job may not be there.  Using the --nodelist in sbatch may
+#          be a way to alleviate this, if you work in an environment
+#          where you have high confidence you will also get the same
+#          nodes on each run.
+#
+# "hdfsoverlustre" - HDFS over Lustre.  See README for description.
+#
+# "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),
+#           to use networked file system directly.  It could be a
+#           Lustre mount or NFS mount.  Whatever you please.
+#
+# "intellustre" - Use the Lustre plugin developed by Intel for IDH.
+#
+# "magpienetworkfs" - Use the Magpie Network FS plugin.  See README for
+#                     details.
+#
+export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 # Path for HDFS when using local disk
 #
