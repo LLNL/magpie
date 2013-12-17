@@ -798,7 +798,7 @@ fi
 if [ "${format}" -eq "1" ]
 then
     # Only master will format the node
-    if Magpie_am_I_hadoop_master
+    if Magpie_am_I_master
     then
 	cd $HADOOP_HOME
 	echo 'Y' | bin/hadoop namenode -format

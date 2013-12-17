@@ -43,7 +43,7 @@ then
 fi
 remotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
 
-if Magpie_am_I_hadoop_master
+if Magpie_am_I_master
 then
 
 # Setup/Run ZooKeeper
