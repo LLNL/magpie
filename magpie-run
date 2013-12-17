@@ -146,7 +146,7 @@ then
 	else
 	    insafemode=0
 	fi
-
+	
 	if [ ${insafemode} != "1" ]
 	then
 	    echo "*******************************************************"
@@ -188,148 +188,148 @@ then
 		echo "*   ${scriptprefix}/stop-yarn.sh"
 	    fi
 	    echo "*******************************************************"
-	fi
-
-	if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-	    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
-	    && [ "${HADOOP_MODE}" == "terasort" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Terasort"
-	    echo "*******************************************************"
-
-	    if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
+	    
+	    if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+		|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
+		&& [ "${HADOOP_MODE}" == "terasort" ]
 	    then
-		terasortsize=50000000
-	    else
-		terasortsize=$HADOOP_TERASORT_SIZE
-	    fi
+		echo "*******************************************************"
+		echo "* Running Terasort"
+		echo "*******************************************************"
 
-	    if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
-	    then
-		pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
-	    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-	    then
-		pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
-	    fi
-
-	    if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
-	    then
-		if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
+		if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
 		then
-		    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+		    terasortsize=50000000
 		else
-		    clearcache=""
+		    terasortsize=$HADOOP_TERASORT_SIZE
 		fi
-	    else
-		clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
-	    fi
 
-	    cd ${HADOOP_HOME}
-
-	    command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
-	    echo "Running $command" >&2
-	    $command
-	    
-	    sleep 30
-	    
-	    if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
-	    then
-		rtasks=$HADOOP_TERASORT_REDUCER_COUNT
-	    else
-		rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
-	    fi
-
-	    command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
-	    
-	    echo "Running $command" >&2
-	    $command
-
-	    command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
-	    $command
-	    command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
-	    $command
-	elif [ "${HADOOP_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing script $HADOOP_SCRIPT_PATH"
-	    echo "*******************************************************"
-	    ${HADOOP_SCRIPT_PATH}
-	elif [ "${HADOOP_MODE}" == "interactive" ] \
-	    || [ "${HADOOP_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	    echo "*"
-
-	    if [ "${HADOOP_MODE}" == "setuponly" ]
-	    then
-		echo "* To setup, you likely want to goto:"
-		echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
-		echo "*   Set HADOOP_CONF_DIR, such as ..."
-		echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-		echo "*     or"
-		echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-		echo "*   cd $HADOOP_HOME"
-		echo "*"
-		echo "* You probably want to run run:" 
-		echo "*"
-		if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-		    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+		if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 		then
-		    echo "*   ${scriptprefix}/start-dfs.sh" 
+		    pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
+		elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+		then
+		    pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
+		fi
+
+		if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
+		then
+		    if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
+		    then
+			clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+		    else
+			clearcache=""
+		    fi
+		else
+		    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+		fi
+
+		cd ${HADOOP_HOME}
+
+		command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+		echo "Running $command" >&2
+		$command
+		
+		sleep 30
+		
+		if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
+		then
+		    rtasks=$HADOOP_TERASORT_REDUCER_COUNT
+		else
+		    rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
+		fi
+
+		command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+		
+		echo "Running $command" >&2
+		$command
+
+		command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+		$command
+		command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+		$command
+	    elif [ "${HADOOP_MODE}" == "script" ]
+	    then
+		echo "*******************************************************"
+		echo "* Executing script $HADOOP_SCRIPT_PATH"
+		echo "*******************************************************"
+		${HADOOP_SCRIPT_PATH}
+	    elif [ "${HADOOP_MODE}" == "interactive" ] \
+		|| [ "${HADOOP_MODE}" == "setuponly" ]
+	    then
+		echo "*******************************************************"
+		echo "* Entering Hadoop ${HADOOP_MODE} mode"
+		echo "*"
+
+		if [ "${HADOOP_MODE}" == "setuponly" ]
+		then
+		    echo "* To setup, you likely want to goto:"
+		    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
+		    echo "*   Set HADOOP_CONF_DIR, such as ..."
+		    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+		    echo "*     or"
+		    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+		    echo "*   cd $HADOOP_HOME"
+		    echo "*"
+		    echo "* You probably want to run run:" 
+		    echo "*"
+		    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+			|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+		    then
+			echo "*   ${scriptprefix}/start-dfs.sh" 
+		    fi
+		    
+		    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+		    then
+			echo "*   ${scriptprefix}/start-mapred.sh"
+		    fi
+		    
+		    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+		    then
+			echo "*   ${scriptprefix}/start-yarn.sh"
+		    fi
+		    echo "*"
+		fi
+
+		if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+		then
+		    echo "* To launch jobs:"
+		    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
+		    echo "*   Set HADOOP_CONF_DIR, such as ..."
+		    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+		    echo "*     or"
+		    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+		    echo "*   cd $HADOOP_HOME"
+		    echo "*   bin/hadoop jar ..."
+		    echo "*" 
 		fi
 		
-		if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+		if [ "${HADOOP_MODE}" == "setuponly" ]
 		then
-		    echo "*   ${scriptprefix}/start-mapred.sh"
+		    echo "*   To cleanup your session, kill deamons likely like:" 
+		    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+			|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+		    then
+			echo "*   ${scriptprefix}/stop-dfs.sh"
+		    fi
+		    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+		    then
+			echo "*   ${scriptprefix}/stop-mapred.sh"
+		    fi
+		    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+		    then
+			echo "*   ${scriptprefix}/stop-yarn.sh"
+		    fi
 		fi
-		
-		if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-		then
-		    echo "*   ${scriptprefix}/start-yarn.sh"
-		fi
-		echo "*"
-	    fi
-
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	    then
-		echo "* To launch jobs:"
-		echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
-		echo "*   Set HADOOP_CONF_DIR, such as ..."
-		echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-		echo "*     or"
-		echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-		echo "*   cd $HADOOP_HOME"
-		echo "*   bin/hadoop jar ..."
 		echo "*" 
+		echo "*******************************************************"
+		hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
+		hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
+		sleep ${hadoopsleepseconds}
 	    fi
-	    
-	    if [ "${HADOOP_MODE}" == "setuponly" ]
-	    then
-		echo "*   To cleanup your session, kill deamons likely like:" 
-		if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-		    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-		then
-		    echo "*   ${scriptprefix}/stop-dfs.sh"
-		fi
-		if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-		then
-		    echo "*   ${scriptprefix}/stop-mapred.sh"
-		fi
-		if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-		then
-		    echo "*   ${scriptprefix}/stop-yarn.sh"
-		fi
-	    fi
-	    echo "*" 
-	    echo "*******************************************************"
-	    hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
-	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
-	    sleep ${hadoopsleepseconds}
 	fi
     fi
-
+    
     if [ ${HADOOP_MODE} != "setuponly" ]
     then
 	cd ${HADOOP_HOME}
