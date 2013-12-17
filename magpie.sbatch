@@ -58,6 +58,8 @@ export SBATCH_TIMELIMIT=60
 ############################################################################
 
 # Directory your launching scripts/files are stored
+#
+# Normally an NFS mount, someplace magpie can be reached on all nodes.
 export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
 
 # Convenience Scripts
