@@ -28,21 +28,6 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-then
-    scriptprefix="bin"
-    terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
-    rmoption="-rmr"
-    dfsadminscript="hadoop"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-then
-    scriptprefix="sbin"
-    terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
-    rmoption="-rm -r"
-    dfsadminscript="hdfs"
-fi
-remotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
-
 if Magpie_am_I_master
 then
 
@@ -75,7 +60,7 @@ then
 	    
 	    for zookeepernode in ${zookeepernodes}
 	    do
-		${remotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} start
+		${magpieremotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} start
 	    done
 	fi
     fi
@@ -92,17 +77,17 @@ then
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	then
-	    ${scriptprefix}/start-dfs.sh 
+	    ${hadoopscriptprefix}/start-dfs.sh 
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    ${scriptprefix}/start-mapred.sh
+	    ${hadoopscriptprefix}/start-mapred.sh
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    ${scriptprefix}/start-yarn.sh
+	    ${hadoopscriptprefix}/start-yarn.sh
 	fi
 
         # My rough estimate for setup time is 30 seconds per 64 nodes
@@ -123,6 +108,14 @@ then
 	    namenodemaxwaittimes=`expr ${namenodemaxwaitminutes} \* 2`
 
 	    cd ${HADOOP_HOME}
+
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+	    then
+		dfsadminscript="hadoop"
+	    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
+	    then
+		dfsadminscript="hdfs"
+	    fi
 
 	    for ((i = 1; i <= ${namenodemaxwaittimes}; i++)); do
 
@@ -164,7 +157,7 @@ then
 	    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
 	    echo "*"
 	    echo "* To interact with Hadoop:"
-	    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
+	    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
 	    echo "*   Set HADOOP_CONF_DIR, such as ..."
 	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	    echo "*     or"
@@ -177,15 +170,15 @@ then
 	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	    then
-		echo "*   ${scriptprefix}/stop-dfs.sh"
+		echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
 	    fi
 	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	    then
-		echo "*   ${scriptprefix}/stop-mapred.sh"
+		echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
 	    fi
 	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	    then
-		echo "*   ${scriptprefix}/stop-yarn.sh"
+		echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
 	    fi
 	    echo "*******************************************************"
 	    
@@ -196,6 +189,16 @@ then
 		echo "*******************************************************"
 		echo "* Running Terasort"
 		echo "*******************************************************"
+
+		if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+		then
+		    terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
+		    rmoption="-rmr"
+		elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
+		then
+		    terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
+		    rmoption="-rm -r"
+		fi
 
 		if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
 		then
@@ -264,7 +267,7 @@ then
 		if [ "${HADOOP_MODE}" == "setuponly" ]
 		then
 		    echo "* To setup, you likely want to goto:"
-		    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
+		    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
 		    echo "*   Set HADOOP_CONF_DIR, such as ..."
 		    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 		    echo "*     or"
@@ -276,17 +279,17 @@ then
 		    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 			|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 		    then
-			echo "*   ${scriptprefix}/start-dfs.sh" 
+			echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
 		    fi
 		    
 		    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 		    then
-			echo "*   ${scriptprefix}/start-mapred.sh"
+			echo "*   ${hadoopscriptprefix}/start-mapred.sh"
 		    fi
 		    
 		    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 		    then
-			echo "*   ${scriptprefix}/start-yarn.sh"
+			echo "*   ${hadoopscriptprefix}/start-yarn.sh"
 		    fi
 		    echo "*"
 		fi
@@ -294,7 +297,7 @@ then
 		if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 		then
 		    echo "* To launch jobs:"
-		    echo "*   ${remotecmd} ${HADOOP_MASTER_NODE}"
+		    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
 		    echo "*   Set HADOOP_CONF_DIR, such as ..."
 		    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 		    echo "*     or"
@@ -310,15 +313,15 @@ then
 		    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 			|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 		    then
-			echo "*   ${scriptprefix}/stop-dfs.sh"
+			echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
 		    fi
 		    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 		    then
-			echo "*   ${scriptprefix}/stop-mapred.sh"
+			echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
 		    fi
 		    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 		    then
-			echo "*   ${scriptprefix}/stop-yarn.sh"
+			echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
 		    fi
 		fi
 		echo "*" 
@@ -338,17 +341,17 @@ then
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	then
-	    ${scriptprefix}/stop-dfs.sh 
+	    ${hadoopscriptprefix}/stop-dfs.sh 
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    ${scriptprefix}/stop-mapred.sh
+	    ${hadoopscriptprefix}/stop-mapred.sh
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    ${scriptprefix}/stop-yarn.sh
+	    ${hadoopscriptprefix}/stop-yarn.sh
 	fi
     fi
     
@@ -360,7 +363,7 @@ then
 	    
 	    for zookeepernode in ${zookeepernodes}
 	    do
-		${remotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} stop
+		${magpieremotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} stop
 	    done
 	fi
     fi
