@@ -99,6 +99,47 @@ then
 	echo "Waiting ${sleepwait} seconds to allows daemons to setup"
 	sleep ${sleepwait}
 
+	echo "*******************************************************"
+	echo "*"
+	echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
+	echo "*"
+	if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
+	then
+	    echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:50030"
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	then
+	    echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
+	fi
+	echo "*" 
+	echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
+	echo "*"
+	echo "* To interact with Hadoop:"
+	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+	echo "*   Set HADOOP_CONF_DIR, such as ..."
+	echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	echo "*     or"
+	echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	echo "*   cd $HADOOP_HOME"
+	echo "*" 
+	echo "*   then do as you please, e.g. bin/hadoop fs ..."
+	echo "*" 
+	echo "* To end your session early (or if issues arise in"
+	echo "* startup), kill the daemons via:"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
+	fi
+	echo "*******************************************************"
+
 	# Ensure namenode isn't in safe mode.  Wait up to
 	# SBATCH_TIMELIMIT minus 20 minutes.
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
@@ -142,46 +183,6 @@ then
 	
 	if [ ${insafemode} != "1" ]
 	then
-	    echo "*******************************************************"
-	    echo "*"
-	    echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
-	    echo "*"
-	    if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
-	    then
-		echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:50030"
-	    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
-	    then
-		echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
-	    fi
-	    echo "*" 
-	    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
-	    echo "*"
-	    echo "* To interact with Hadoop:"
-	    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-	    echo "*   Set HADOOP_CONF_DIR, such as ..."
-	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-	    echo "*     or"
-	    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	    echo "*   cd $HADOOP_HOME"
-	    echo "*" 
-	    echo "*   then do as you please, e.g. bin/hadoop fs ..."
-	    echo "*" 
-	    echo "*   To end your session early, kill the daemons via:"
-	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
-	    fi
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
-	    fi
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
-	    fi
-	    echo "*******************************************************"
-	    
 	    if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
 		|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
 		&& [ "${HADOOP_MODE}" == "terasort" ]
