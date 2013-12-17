@@ -79,11 +79,6 @@ Basic Instructions For Running Hadoop
 
 3) Now setup the essentials for Hadoop.  Here are the essentials:
 
-   HADOOP_MODE : The first time you'll probably want to run w/
-   'terasort' mode just to try things out.  Later you may want to run
-   w/ 'script' or 'interactive' mode, as that is the more likely way
-   to run.
-
    HADOOP_SETUP_TYPE : Are you running Mapreduce version 1 or 2
 
    HADOOP_VERSION : Make sure your build matches HADOOP_SETUP_TYPE
@@ -93,6 +88,11 @@ Basic Instructions For Running Hadoop
 
    HADOOP_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
+
+   HADOOP_MODE : The first time you'll probably want to run w/
+   'terasort' mode just to try things out.  Later you may want to run
+   w/ 'script' or 'interactive' mode, as that is the more likely way
+   to run.
 
    HADOOP_FILESYSTEM_MODE : most will likely want "hdfsoverlustre".
    See below for details on HDFS over Lustre.

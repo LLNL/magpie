@@ -93,25 +93,6 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 # Hadoop Core Configurations
 ############################################################################
 
-# Set how Hadoop should run
-#
-# "terasort" - run terasort.  Useful for making sure things are setup
-#              the way you like.
-#
-# "script" - execute a script that lists all of your Hadoop jobs.  Be
-#            sure to set HADOOP_SCRIPT_PATH to your script.
-#
-# "interactive" - manually interact to submit jobs, peruse HDFS, etc.
-#                 also useful for moving data in/out of HDFS.  In this
-#                 mode you'll login to the cluster node that is your
-#                 'master' node and interact with Hadoop directly
-#                 (e.g. bin/hadoop ...)
-#
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup daemons themselves, etc.
-#
-export HADOOP_MODE="terasort"
-
 # Set Hadoop Setup Type
 #
 # Will inform scripts on how to setup config files and what daemons to
@@ -172,6 +153,115 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # errors, or perhaps have a lot of cores on a node.
 #
 # export HADOOP_DAEMON_HEAP_MAX=2000
+
+############################################################################
+# Hadoop Job/Run Configurations
+############################################################################
+
+# Set how Hadoop should run
+#
+# "terasort" - run terasort.  Useful for making sure things are setup
+#              the way you like.
+#
+# "script" - execute a script that lists all of your Hadoop jobs.  Be
+#            sure to set HADOOP_SCRIPT_PATH to your script.
+#
+# "interactive" - manually interact to submit jobs, peruse HDFS, etc.
+#                 also useful for moving data in/out of HDFS.  In this
+#                 mode you'll login to the cluster node that is your
+#                 'master' node and interact with Hadoop directly
+#                 (e.g. bin/hadoop ...)
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+export HADOOP_MODE="terasort"
+
+# Tasks per Node
+#
+# If not specified, defaults to #cores - 1 (i.e. leave 1 processor for
+# system daemons).    
+#
+# export HADOOP_MAX_TASKS_PER_NODE=8
+
+# Default Map tasks for Job
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
+# nodes.
+#
+# export HADOOP_DEFAULT_MAP_TASKS=8
+
+# Default Reduce tasks for Job
+#
+# If not specified, defaults to # compute nodes (i.e. 1 reducer per
+# node)
+#
+# export HADOOP_DEFAULT_REDUCE_TASKS=8
+
+# Max Map tasks for Task Tracker
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
+#
+# export HADOOP_MAX_MAP_TASKS=8
+
+# Max Reduce tasks for Task Tracker
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
+#
+# export HADOOP_MAX_REDUCE_TASKS=8
+
+# Heap size for JVM 
+#
+# Specified in M.  If not specified, a reasonable estimate will be
+# calculated based on total memory available and number of CPUs on the
+# system.
+#
+# HADOOP_CHILD_MAP_HEAPSIZE and HADOOP_CHILD_REDUCE_HEAPSIZE are for
+# Yarn (i.e. HADOOP_SETUP_TYPE = MR2)
+#
+# If HADOOP_CHILD_MAP_HEAPSIZE and/or HADOOP_CHILD_REDUCE_HEAPSIZE are
+# not specified, they are assumed to be HADOOP_CHILD_HEAPSIZE.
+#
+# export HADOOP_CHILD_HEAPSIZE=2048
+# export HADOOP_CHILD_MAP_HEAPSIZE=2048
+# export HADOOP_CHILD_REDUCE_HEAPSIZE=2048
+
+# Mapreduce Slowstart, indicating percent of maps that should complete
+# before reducers begin.
+#
+# If not specified, defaults to 0.25 (Hadoop default is 0.05, really low)
+#
+# export HADOOP_MAPREDUCE_SLOWSTART=0.25
+
+# Container Memory
+#
+# Memory on compute nodes for containers.  Typically "nice-chunk" less
+# than actual memory on machine, b/c machine needs memory for its own
+# needs (kernel, daemons, etc.).  Specified in megs.
+#
+# If not specified, a reasonable estimate will be calculated based on
+# total memory on the system.
+# export YARN_RESOURCE_MEMORY=32768
+
+# Compression
+#
+# Should compression of outputs and intermediate data be enabled.
+# Specify yes or no.
+#
+# Effectively, is time spend compressing data going to save you time
+# on I/O.  Sometimes yes, sometimes no.
+#
+# export HADOOP_COMPRESSION=yes
+
+# IO Sort Factors + MB
+#
+# The number of streams of files to sort while reducing and the memory
+# amount to use while sorting.  This is a quite advanced mechanism
+# taking into account many factors.  If not specified, some reasonable
+# number will be assumed.
+#
+# export HADOOP_IO_SORT_FACTOR=10
+# export HADOOP_IO_SORT_MB=100
 
 ############################################################################
 # Hadoop Terasort Configurations
@@ -358,96 +448,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # If not specified, defaults to 33554432
 #
 # export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
-
-############################################################################
-# Hadoop General Configurations
-############################################################################
-
-# Tasks per Node
-#
-# If not specified, defaults to #cores - 1 (i.e. leave 1 processor for
-# system daemons).    
-#
-# export HADOOP_MAX_TASKS_PER_NODE=8
-
-# Default Map tasks for Job
-#
-# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
-# nodes.
-#
-# export HADOOP_DEFAULT_MAP_TASKS=8
-
-# Default Reduce tasks for Job
-#
-# If not specified, defaults to # compute nodes (i.e. 1 reducer per
-# node)
-#
-# export HADOOP_DEFAULT_REDUCE_TASKS=8
-
-# Max Map tasks for Task Tracker
-#
-# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
-#
-# export HADOOP_MAX_MAP_TASKS=8
-
-# Max Reduce tasks for Task Tracker
-#
-# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
-#
-# export HADOOP_MAX_REDUCE_TASKS=8
-
-# Heap size for JVM 
-#
-# Specified in M.  If not specified, a reasonable estimate will be
-# calculated based on total memory available and number of CPUs on the
-# system.
-#
-# HADOOP_CHILD_MAP_HEAPSIZE and HADOOP_CHILD_REDUCE_HEAPSIZE are for
-# Yarn (i.e. HADOOP_SETUP_TYPE = MR2)
-#
-# If HADOOP_CHILD_MAP_HEAPSIZE and/or HADOOP_CHILD_REDUCE_HEAPSIZE are
-# not specified, they are assumed to be HADOOP_CHILD_HEAPSIZE.
-#
-# export HADOOP_CHILD_HEAPSIZE=2048
-# export HADOOP_CHILD_MAP_HEAPSIZE=2048
-# export HADOOP_CHILD_REDUCE_HEAPSIZE=2048
-
-# Mapreduce Slowstart, indicating percent of maps that should complete
-# before reducers begin.
-#
-# If not specified, defaults to 0.25 (Hadoop default is 0.05, really low)
-#
-# export HADOOP_MAPREDUCE_SLOWSTART=0.25
-
-# Container Memory
-#
-# Memory on compute nodes for containers.  Typically "nice-chunk" less
-# than actual memory on machine, b/c machine needs memory for its own
-# needs (kernel, daemons, etc.).  Specified in megs.
-#
-# If not specified, a reasonable estimate will be calculated based on
-# total memory on the system.
-# export YARN_RESOURCE_MEMORY=32768
-
-# Compression
-#
-# Should compression of outputs and intermediate data be enabled.
-# Specify yes or no.
-#
-# Effectively, is time spend compressing data going to save you time
-# on I/O.  Sometimes yes, sometimes no.
-#
-# export HADOOP_COMPRESSION=yes
-
-# IO Sort Factors + MB
-#
-# The number of streams of files to sort while reducing and the memory
-# amount to use while sorting.  This is a quite advanced mechanism
-# taking into account many factors.  If not specified, some reasonable
-# number will be assumed.
-#
-# export HADOOP_IO_SORT_FACTOR=10
-# export HADOOP_IO_SORT_MB=100
 
 ############################################################################
 # Hadoop Environment Configurations

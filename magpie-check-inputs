@@ -73,29 +73,12 @@ nodecount=${SLURM_NNODES}
 # Subtract 1 for Hadoop Master
 nodecount=$((nodecount-1))
 
-if [ "${HADOOP_MODE}" != "terasort" ] \
-    && [ "${HADOOP_MODE}" != "script" ] \
-    && [ "${HADOOP_MODE}" != "interactive" ] \
-    && [ "${HADOOP_MODE}" != "setuponly" ]
-then
-    echo "HADOOP_MODE must be set to terasort, script, interactive, setuponly"
-    exit 1
-fi
-
 if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "HDFS1" ] \
     && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
 then
     echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2 or HDFS1 or HDFS2"
-    exit 1
-fi
-
-if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
-    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-    && [ "${HADOOP_MODE}" == "terasort" ]
-then
-    echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
     exit 1
 fi
 
@@ -114,6 +97,23 @@ fi
 if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
 then
     echo "HADOOP_LOCAL_DIR must be set"
+    exit 1
+fi
+
+if [ "${HADOOP_MODE}" != "terasort" ] \
+    && [ "${HADOOP_MODE}" != "script" ] \
+    && [ "${HADOOP_MODE}" != "interactive" ] \
+    && [ "${HADOOP_MODE}" != "setuponly" ]
+then
+    echo "HADOOP_MODE must be set to terasort, script, interactive, setuponly"
+    exit 1
+fi
+
+if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
+    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+    && [ "${HADOOP_MODE}" == "terasort" ]
+then
+    echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
     exit 1
 fi
 
