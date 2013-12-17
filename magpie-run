@@ -330,10 +330,10 @@ then
 	fi
     fi
 
-    cd ${HADOOP_HOME}
-
     if [ ${HADOOP_MODE} != "setuponly" ]
     then
+	cd ${HADOOP_HOME}
+
 	echo "Stopping hadoop"
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
