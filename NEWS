@@ -2,6 +2,7 @@ magpie 1.16
 -----------
 Add new example script hadoop-put-into-hdfs-over-lustre.sh.
 Add convenience script zookeeper-ruok-script.sh.
+Add convenience script hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh.
 Do not require ZOOKEEPER_SETUP to be set.
 Enable autopurging in zookeeper by default.
 Add documentation on using Moab.

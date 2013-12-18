@@ -270,6 +270,9 @@ Lustre section above for details.
 hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh - See
 HDFS over Lustre section above for details.
 
+hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh - Cleanup/remove
+corrupted blocks in HDFS.
+
 Patching Hadoop
 ---------------
 
