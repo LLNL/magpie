@@ -165,15 +165,15 @@ then
 	    if [ $? -ne 0 ] 
 	    then
 		echo "Namenode never exited safe mode, consider increasing your job time"
-		insafemode=1
+		hadoopsetuppass=0
 	    else
-		insafemode=0
+		hadoopsetuppass=1
 	    fi
 	else
-	    insafemode=0
+	    hadoopsetuppass=1
 	fi
 	
-	if [ ${insafemode} != "1" ]
+	if [ "${hadoopsetuppass}" == "1" ]
 	then
 	    if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
 		|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
