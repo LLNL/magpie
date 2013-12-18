@@ -142,6 +142,9 @@ then
 
 	# Ensure namenode isn't in safe mode.  Wait up to
 	# SBATCH_TIMELIMIT minus 20 minutes.
+        #
+        # We do not use "-safemode wait", b/c we want to inform the user
+        # as we're waiting.
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	then
