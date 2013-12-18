@@ -18,4 +18,4 @@ templates
 - also hadoop only + hadoop + zookeepr, etc. files
 run-job
 - run Hadoop or random script, need not be hadoop job
-fsck script
+under script mode, kill script after X time?
