@@ -150,14 +150,6 @@ then
 
 	    cd ${HADOOP_HOME}
 
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-	    then
-		dfsadminscript="hadoop"
-	    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-	    then
-		dfsadminscript="hdfs"
-	    fi
-
 	    for ((i = 1; i <= ${namenodemaxwaittimes}; i++)); do
 
 		bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"

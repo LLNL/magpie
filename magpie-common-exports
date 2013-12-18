@@ -91,9 +91,11 @@ fi
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     hadoopscriptprefix="bin"
+    dfsadminscript="hadoop"
 elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
 then
     hadoopscriptprefix="sbin"
+    dfsadminscript="hdfs"
 fi
 
 magpieremotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
