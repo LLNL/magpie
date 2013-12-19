@@ -324,6 +324,16 @@ then
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	then
+	    echo "Saving namespace before shutting down hdfs ..."
+
+	    command="bin/${dfsadminscript} dfsadmin -safemode enter"
+	    echo "Running $command" >&2
+	    $command
+
+	    command="bin/${dfsadminscript} dfsadmin -saveNamespace"
+	    echo "Running $command" >&2
+	    $command
+
 	    ${hadoopscriptprefix}/stop-dfs.sh 
 	fi
 	

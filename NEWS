@@ -13,6 +13,7 @@ Add documentation on using Moab.
 Require interactive/setup job length to be a minimum of 30 minutes. 
 Make teardown window 10 minutes instead of 5.
 Require SBATCH_TIMELIMIT to be set.
+Before shutting down HDFS, execute dfsadmin -saveNamespace to prevent potential corruption on shutdown .
 Do not start job until after namenode has exited safe mode.
 Various re-org and cleanup. 
 
