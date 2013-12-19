@@ -67,6 +67,24 @@ export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
 #
 export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 
+# Magpie job type
+#
+# "hadoop" - Run a Hadoop job according to the settings of HADOOP_MODE.
+#
+# "script" - Run an arbitraty script, as specified by
+#            MAGPIE_JOB_SCRIPT.  This functionally is very similar to
+#            setting "script" in HADOOP_MODE.
+#
+#            It is primarily used if you want to launch without Hadoop
+#            (such as Zookeeper only) and are experimeting with
+#            things..
+#
+export MAGPIE_JOB_TYPE="hadoop"
+
+# Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
+#
+# export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+
 # Convenience Scripts
 #
 # Specify script to be executed to before / after your job.  It is run

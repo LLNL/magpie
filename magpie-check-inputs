@@ -70,6 +70,34 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_JOB_TYPE}X" == "X" ]
+then
+    echo "MAGPIE_JOB_TYPE must be set"
+    exit 1
+fi 
+
+if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "script" ]
+then
+    echo "MAGPIE_JOB_TYPE must be set to hadoop or script"
+    exit 1
+fi
+
+if [ "${MAGPIE_JOB_TYPE}" == "script" ]
+then
+    if [ "${MAGPIE_SCRIPT_PATH}X" == "X" ]
+    then
+       echo "Script MAGPIE_SCRIPT_PATH must be specified"
+       exit 1
+    fi
+
+    if [ ! -x ${MAGPIE_SCRIPT_PATH} ]
+    then
+       echo "Script MAGPIE_SCRIPT_PATH \"$MAGPIE_SCRIPT_PATH\" does not have execute permissions"
+       exit 1
+    fi
+fi
+
 #
 # Check General Inputs
 #
@@ -108,6 +136,15 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
     echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    exit 1
+fi
+
+# Did user turn on something matching job run type
+
+if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
+    && [ "${HADOOP_SETUP}" != "yes" ]
+then
+    echo "Cannot run hadoop job type if HADOOP_SETUP is not enabled"
     exit 1
 fi
    

@@ -214,12 +214,21 @@ then
     else
 	hadoopsetuppass=1
     fi
+fi
 
+if [ "${MAGPIE_JOB_TYPE}" == "script" ]
+then
+    echo "*******************************************************"
+    echo "* Executing script $MAGPIE_SCRIPT_PATH"
+    echo "*******************************************************"
+    ${MAGPIE_SCRIPT_PATH}
+elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
+then
     if [ "${hadoopsetuppass}" == "1" ]
     then
-	if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-	    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
-	    && [ "${HADOOP_MODE}" == "terasort" ]
+	cd ${HADOOP_HOME}
+
+	if [ "${HADOOP_MODE}" == "terasort" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Running Terasort"

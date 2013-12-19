@@ -77,6 +77,8 @@ Basic Instructions For Running Hadoop
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
+   MAGPIE_JOB_TYPE : Set to "hadoop" most likely.
+
    JAVA_HOME : B/c you need to ...
 
 3) Now setup the essentials for Hadoop.  Here are the essentials:
