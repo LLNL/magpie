@@ -62,6 +62,11 @@ export SBATCH_TIMELIMIT=60
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
 export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
 
+# Path local to each cluster node, typically something in /tmp.
+# This will store local scratch files for Magpie.
+#
+export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
+
 # Convenience Scripts
 #
 # Specify script to be executed to before / after your job.  It is run

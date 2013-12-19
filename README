@@ -73,7 +73,9 @@ Basic Instructions For Running Hadoop
 
    #SBATCH --partition : Set the job partition
 
-   MAGPIE_SCRIPTS_HOME - Set where your scripts are.
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are.
+
+   MAGPIE_LOCAL_DIR : For scratch space files
 
    JAVA_HOME : B/c you need to ...
 

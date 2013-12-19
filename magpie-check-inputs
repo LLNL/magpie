@@ -64,6 +64,12 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_LOCAL_DIR}X" == "X" ]
+then
+    echo "MAGPIE_LOCAL_DIR must be set"
+    exit 1
+fi
+
 #
 # Check General Inputs
 #
