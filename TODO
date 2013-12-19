@@ -16,6 +16,3 @@ Ganglia
 templates
 - create "templates" allowing creation of moab/sbatch files.
 - also hadoop only + hadoop + zookeepr, etc. files
-run-job
-- run Hadoop or random script, need not be hadoop job
-under script mode, kill script after X time?

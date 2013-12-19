@@ -63,6 +63,30 @@ Magpie_am_I_a_zookeeper_node () {
     return 1
 }
 
+Magpie_wait_script () {
+    scriptpid=$1
+
+    scriptsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
+
+    # We sleep in 30 second chunks, so times 2
+    scriptsleepiterations=`expr ${scriptsleepamount}  \* 2`
+    scriptexitted=0
+    for ((i = 1; i <= ${scriptsleepiterations}; i++)); do
+	if kill -0 ${scriptpid} 2&> /dev/null
+	then
+	    sleep 30
+	else
+	    scriptexitted=1
+	    break
+	fi
+    done
+
+    if [ "${scriptexitted}" == "0" ]
+    then
+	kill ${scriptpid}
+    fi
+    return 0
+}
 
 export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
 export MAGPIE_NODE_COUNT="${SLURM_NNODES}"

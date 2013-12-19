@@ -221,7 +221,9 @@ then
     echo "*******************************************************"
     echo "* Executing script $MAGPIE_SCRIPT_PATH"
     echo "*******************************************************"
-    ${MAGPIE_SCRIPT_PATH}
+    ${MAGPIE_SCRIPT_PATH} &
+    scriptpid=$!
+    Magpie_wait_script ${scriptpid}
 elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
 then
     if [ "${hadoopsetuppass}" == "1" ]
@@ -300,7 +302,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Executing script $HADOOP_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${HADOOP_SCRIPT_PATH}
+	    ${HADOOP_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "interactive" ] \
 	    || [ "${HADOOP_MODE}" == "setuponly" ]
 	then
