@@ -115,19 +115,53 @@ then
 fi
 echo "*" 
 echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
-echo "*"
-echo "* To interact with Hadoop:"
+echo "*" 
+echo "* To access Hadoop directly, you'll want to:"
 echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
 echo "*   Set HADOOP_CONF_DIR, such as ..."
 echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 echo "*     or"
 echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
 echo "*   cd $HADOOP_HOME"
+echo "*"
+echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
 echo "*" 
-echo "*   then do as you please, e.g. bin/hadoop fs ..."
+echo "*   bin/hadoop fs ..."
+
+if [ "${HADOOP_MODE}" == "interactive" ] \
+    && ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ])
+then
+    echo "*" 
+    echo "* To launch jobs you'll want to:"
+    echo "*" 
+    echo "*   bin/hadoop jar ..."
+    echo "*" 
+fi
+
+if [ "${HADOOP_MODE}" == "setuponly" ]
+then
+    echo "*" 
+    echo "* To setup, you probably want to run:" 
+    echo "*"
+    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+    then
+	echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
+    fi
+    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+    then
+	echo "*   ${hadoopscriptprefix}/start-mapred.sh"
+    fi
+    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+	echo "*   ${hadoopscriptprefix}/start-yarn.sh"
+    fi
+fi
+
 echo "*" 
-echo "* To end your session early (or if issues arise in"
-echo "* startup), kill the daemons via:"
+echo "* To end/cleanup your session, kill the daemons via:"
+echo "*" 
 if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
     || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 then
@@ -262,69 +296,6 @@ then
     then
 	echo "*******************************************************"
 	echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	echo "*"
-	
-	if [ "${HADOOP_MODE}" == "setuponly" ]
-	then
-	    echo "* To setup, you likely want to goto:"
-	    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-	    echo "*   Set HADOOP_CONF_DIR, such as ..."
-	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-	    echo "*     or"
-	    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	    echo "*   cd $HADOOP_HOME"
-	    echo "*"
-	    echo "* You probably want to run run:" 
-	    echo "*"
-	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
-	    fi
-	    
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/start-mapred.sh"
-	    fi
-	    
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/start-yarn.sh"
-	    fi
-	    echo "*"
-	fi
-	
-	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	then
-	    echo "* To launch jobs:"
-	    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-	    echo "*   Set HADOOP_CONF_DIR, such as ..."
-	    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-	    echo "*     or"
-	    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-	    echo "*   cd $HADOOP_HOME"
-	    echo "*   bin/hadoop jar ..."
-	    echo "*" 
-	fi
-	
-	if [ "${HADOOP_MODE}" == "setuponly" ]
-	then
-	    echo "*   To cleanup your session, kill deamons likely like:" 
-	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
-	    fi
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
-	    fi
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	    then
-		echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
-	    fi
-	fi
-	echo "*" 
 	echo "*******************************************************"
 	hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
 	hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
