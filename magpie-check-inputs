@@ -88,181 +88,12 @@ fi
 
 nodecount=${SLURM_NNODES}
 
-#
-# Check Hadoop Inputs 
-#
-
-# Subtract 1 for Hadoop Master
-nodecount=$((nodecount-1))
-
-if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
-    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
-    && [ "${HADOOP_SETUP_TYPE}" != "HDFS1" ] \
-    && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
+if [ "${HADOOP_SETUP}X" != "X" ] \
+    && ( [ "${HADOOP_SETUP}" != "yes" ] && [ "${HADOOP_SETUP}" != "no" ] )
 then
-    echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2 or HDFS1 or HDFS2"
+    echo "HADOOP_SETUP must be set to yes or no"
     exit 1
 fi
-
-if [ "${HADOOP_HOME}X" == "X" ]
-then
-    echo "HADOOP_HOME must be set"
-    exit 1
-fi
-
-if [ ! -d ${HADOOP_HOME} ]
-then
-    echo "${HADOOP_HOME} does not point to a directory"
-    exit 1
-fi
-
-if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
-then
-    echo "HADOOP_LOCAL_DIR must be set"
-    exit 1
-fi
-
-if [ "${HADOOP_MODE}" != "terasort" ] \
-    && [ "${HADOOP_MODE}" != "script" ] \
-    && [ "${HADOOP_MODE}" != "interactive" ] \
-    && [ "${HADOOP_MODE}" != "setuponly" ]
-then
-    echo "HADOOP_MODE must be set to terasort, script, interactive, setuponly"
-    exit 1
-fi
-
-if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
-    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-    && [ "${HADOOP_MODE}" == "terasort" ]
-then
-    echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
-    exit 1
-fi
-
-if [ "${HADOOP_MODE}" == "terasort" ]
-then
-    if [ "${HADOOP_VERSION}X" == "X" ]
-    then
-	echo "HADOOP_VERSION must be set for terasort mode"
-	exit 1
-    fi
-fi
-
-if [ "${HADOOP_MODE}" == "script" ]
-then
-    if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
-    then
-	echo "Script HADOOP_SCRIPT_PATH must be specified"
-	exit 1
-    fi
-    
-    if [ ! -x ${HADOOP_SCRIPT_PATH} ]
-    then
-	echo "Script HADOOP_SCRIPT_PATH \"$HADOOP_SCRIPT_PATH\" does not have execute permissions"
-	exit 1
-    fi
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" != "magpienetworkfs" ]
-then
-    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, rawnetworkfs, intellustre, or magpienetworkfs"
-    exit 1
-fi
-
-if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
-    || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-    && ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ])
-then
-    echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre"
-    exit 1
-fi
-
-if ([ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
-    && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
-then
-    echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
-    exit 1
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-    && [ "${HADOOP_HDFS_PATH}X" == "X" ]
-then
-    echo "Must specify environment variable HADOOP_HDFS_PATH"
-    exit 1
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-    && [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
-then
-    echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH"
-    exit 1
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
-    && [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
-then
-    echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH"
-    exit 1
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-    && [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
-then
-    echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH"
-    exit 1
-fi
-
-if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
-    && ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
-then
-    echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
-    exit 1
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
-    && [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
-then
-    echo "Must specify environment variable HADOOP_MAGPIENETWORKFS_PATH"
-    exit 1
-
-    firstchar="$(echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1)"
-
-    if [ "${firstchar}" != "/" ]
-    then
-	echo "HADOOP_MAGPIENETWORKFS_PATH must be an absolute path"
-	exit 1
-    fi
-fi
-
-if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
-    && ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
-then
-    echo "HADOOP_TERASORT_CLEAR_CACHE must be set to yes or no"
-    exit 1
-fi
-
-if [ "${HADOOP_COMPRESSION}X" != "X" ] \
-    && ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
-then
-    echo "HADOOP_COMPRESSION must be set to yes or no"
-    exit 1
-fi
-
-if [ ${nodecount} -le "0" ]
-then
-    echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
-    exit 1
-fi
-
-#
-# Check Zookeeper Inputs 
-#
 
 if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
     && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
@@ -270,6 +101,194 @@ then
     echo "ZOOKEEPER_SETUP must be set to yes or no"
     exit 1
 fi
+
+# Did user turn on SOMETHING to run
+
+if [ "${HADOOP_SETUP}" != "yes" ] \
+    && [ "${ZOOKEEPER_SETUP}" != "yes" ]
+then
+    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    exit 1
+fi
+   
+#
+# Check Hadoop Inputs 
+#
+
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+# Subtract 1 for Hadoop Master
+    nodecount=$((nodecount-1))
+
+    if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
+	&& [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
+	&& [ "${HADOOP_SETUP_TYPE}" != "HDFS1" ] \
+	&& [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
+    then
+	echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2 or HDFS1 or HDFS2"
+	exit 1
+    fi
+
+    if [ "${HADOOP_HOME}X" == "X" ]
+    then
+	echo "HADOOP_HOME must be set"
+	exit 1
+    fi
+
+    if [ ! -d ${HADOOP_HOME} ]
+    then
+	echo "${HADOOP_HOME} does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
+    then
+	echo "HADOOP_LOCAL_DIR must be set"
+	exit 1
+    fi
+
+    if [ "${HADOOP_MODE}" != "terasort" ] \
+	&& [ "${HADOOP_MODE}" != "script" ] \
+	&& [ "${HADOOP_MODE}" != "interactive" ] \
+	&& [ "${HADOOP_MODE}" != "setuponly" ]
+    then
+	echo "HADOOP_MODE must be set to terasort, script, interactive, setuponly"
+	exit 1
+    fi
+
+    if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
+	|| [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+	&& [ "${HADOOP_MODE}" == "terasort" ]
+    then
+	echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
+	exit 1
+    fi
+
+    if [ "${HADOOP_MODE}" == "terasort" ]
+    then
+	if [ "${HADOOP_VERSION}X" == "X" ]
+	then
+	    echo "HADOOP_VERSION must be set for terasort mode"
+	    exit 1
+	fi
+    fi
+
+    if [ "${HADOOP_MODE}" == "script" ]
+    then
+	if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script HADOOP_SCRIPT_PATH must be specified"
+	    exit 1
+	fi
+	
+	if [ ! -x ${HADOOP_SCRIPT_PATH} ]
+	then
+	    echo "Script HADOOP_SCRIPT_PATH \"$HADOOP_SCRIPT_PATH\" does not have execute permissions"
+	    exit 1
+	fi
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+	&& [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
+	&& [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ] \
+	&& [ "${HADOOP_FILESYSTEM_MODE}" != "magpienetworkfs" ]
+    then
+	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, rawnetworkfs, intellustre, or magpienetworkfs"
+	exit 1
+    fi
+
+    if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
+	|| [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+	&& ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ])
+    then
+	echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre"
+	exit 1
+    fi
+
+    if ([ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+	|| [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
+	&& [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+    then
+	echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+	&& [ "${HADOOP_HDFS_PATH}X" == "X" ]
+    then
+	echo "Must specify environment variable HADOOP_HDFS_PATH"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+	&& [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
+    then
+	echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+	&& [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
+    then
+	echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+	&& [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
+    then
+	echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH"
+	exit 1
+    fi
+
+    if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
+	&& ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
+    then
+	echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
+	&& [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
+    then
+	echo "Must specify environment variable HADOOP_MAGPIENETWORKFS_PATH"
+	exit 1
+
+	firstchar="$(echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1)"
+
+	if [ "${firstchar}" != "/" ]
+	then
+	    echo "HADOOP_MAGPIENETWORKFS_PATH must be an absolute path"
+	    exit 1
+	fi
+    fi
+
+    if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
+	&& ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
+    then
+	echo "HADOOP_TERASORT_CLEAR_CACHE must be set to yes or no"
+	exit 1
+    fi
+
+    if [ "${HADOOP_COMPRESSION}X" != "X" ] \
+	&& ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
+    then
+	echo "HADOOP_COMPRESSION must be set to yes or no"
+	exit 1
+    fi
+
+    if [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
+	exit 1
+    fi
+fi
+
+#
+# Check Zookeeper Inputs 
+#
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
@@ -354,12 +373,14 @@ then
        echo "ZOOKEEPER_LOCAL_DIR must be set"
        exit 1
     fi
+
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Hadoop slave nodes after Zookeeper allocation"
+	echo "Please increase node count or adjust node allocations"
+	exit 1
+    fi
 fi
 
-if [ ${nodecount} -le "0" ]
-then
-    echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
-    exit 1
-fi
 
 exit 0

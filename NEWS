@@ -1,5 +1,6 @@
 magpie 1.16
 -----------
+Support new HADOOP_SETUP option, to run Hadoop or not.
 Require new local dir variable MAGPIE_LOCAL_DIR.
 Add new example script hadoop-put-into-hdfs-over-lustre.sh.
 Add convenience script zookeeper-ruok-script.sh.

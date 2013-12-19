@@ -100,6 +100,12 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 # Hadoop Core Configurations
 ############################################################################
 
+# Should Hadoop be run
+#
+# Specify yes or no.  Defaults to no.
+# 
+export HADOOP_SETUP=yes
+
 # Set Hadoop Setup Type
 #
 # Will inform scripts on how to setup config files and what daemons to

@@ -42,26 +42,29 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 # Setup Hadoop directories
 #
 
-mkdir -p $HADOOP_LOCAL_JOB_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_LOCAL_JOB_DIR}"
-    exit 1
-fi
+if [ "${HADOOP_SETUP}" == "yes" ]                                                                                                                                                                                 
+then  
+    mkdir -p $HADOOP_LOCAL_JOB_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HADOOP_LOCAL_JOB_DIR}"
+	exit 1
+    fi
 
-mkdir -p $HADOOP_CONF_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_CONF_DIR}"
-    exit 1
-fi
+    mkdir -p $HADOOP_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HADOOP_CONF_DIR}"
+	exit 1
+    fi
 
-mkdir -p $HADOOP_LOG_DIR
-if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${HADOOP_LOG_DIR}"
-    exit 1
-fi
+    mkdir -p $HADOOP_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HADOOP_LOG_DIR}"
+	exit 1
+    fi
 
-export YARN_CONF_DIR=${HADOOP_CONF_DIR}
-export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+    export YARN_CONF_DIR=${HADOOP_CONF_DIR}
+    export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+fi
 
 #
 # Setup Zookeeper directories
@@ -111,23 +114,35 @@ fi
 ${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | head -1 > ${MAGPIE_LOCAL_DIR}/tmp_masters
 ${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_DIR}/tmp_slaves
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+if [ "${HADOOP_SETUP}" == "yes" ] && [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     tmpslavecount=`cat ${MAGPIE_LOCAL_DIR}/tmp_slaves | wc -l`
     hadoopslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
     zookeeperslavestart=`expr ${hadoopslavecount} + 1`
 
+    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${HADOOP_CONF_DIR}/masters
+
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] 
     then
 	head -${hadoopslavecount} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${HADOOP_CONF_DIR}/slaves
-	tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
     else
 	cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${HADOOP_CONF_DIR}/slaves
-	tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
     fi
-else
+
+    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
+
+elif [ "${HADOOP_SETUP}" == "yes" ] && [ "${ZOOKEEPER_SETUP}" != "yes" ]
+then
     cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${HADOOP_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${HADOOP_CONF_DIR}/slaves
+else
+# [ "${HADOOP_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" == "yes" ]
+    tmpslavecount=`cat ${MAGPIE_LOCAL_DIR}/tmp_slaves | wc -l`
+    hadoopslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
+    zookeeperslavestart=`expr ${hadoopslavecount} + 1`
+
+    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${HADOOP_CONF_DIR}/masters
+    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
 fi
 
 rm -f ${MAGPIE_LOCAL_DIR}/tmp_masters

@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core processing script for running Hadoop jobs.
-# For the most part, it shouldn't be editted.  See magpie.sbatch for
-# configuration details.
+# This script is the core processing script for setting up daemons and
+# running jobs.  For the most part, it shouldn't be editted.  See
+# magpie.sbatch for configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
@@ -33,9 +33,8 @@ then
     exit 0
 fi
 
-# Setup/Run ZooKeeper
 #
-# We start this first, as Hadoop jobs may require Zookeeper
+# Setup ZooKeeper
 #
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
@@ -68,260 +67,266 @@ then
 fi
 
 #
-# Setup/Run Hadoop
+# Setup Hadoop
 #
 
-cd ${HADOOP_HOME}
-
-if [ ${HADOOP_MODE} != "setuponly" ]
+if [ "${HADOOP_SETUP}" == "yes" ]
 then
-    echo "Starting hadoop"
-    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-    then
-	${hadoopscriptprefix}/start-dfs.sh 
-    fi
-    
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-	${hadoopscriptprefix}/start-mapred.sh
-    fi
-    
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-	${hadoopscriptprefix}/start-yarn.sh
-    fi
-    
-    # My rough estimate for setup time is 30 seconds per 64 nodes
-    sleepwait=`expr ${HADOOP_SLAVE_COUNT} \/ 64 \* 30`
-    if [ ${sleepwait} -lt 30 ]
-    then
-        sleepwait=30
-    fi
-    echo "Waiting ${sleepwait} seconds to allows daemons to setup"
-    sleep ${sleepwait}
-fi
-
-echo "*******************************************************"
-echo "*"
-echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
-echo "*"
-if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
-then
-    echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:50030"
-elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
-then
-    echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
-fi
-echo "*" 
-echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
-echo "*" 
-echo "* To access Hadoop directly, you'll want to:"
-echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-echo "*   Set HADOOP_CONF_DIR, such as ..."
-echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-echo "*     or"
-echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-echo "*   cd $HADOOP_HOME"
-echo "*"
-echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
-echo "*" 
-echo "*   bin/hadoop fs ..."
-
-if [ "${HADOOP_MODE}" == "interactive" ] \
-    && ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ])
-then
-    echo "*" 
-    echo "* To launch jobs you'll want to:"
-    echo "*" 
-    echo "*   bin/hadoop jar ..."
-    echo "*" 
-fi
-
-if [ "${HADOOP_MODE}" == "setuponly" ]
-then
-    echo "*" 
-    echo "* To setup, you probably want to run:" 
-    echo "*"
-    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-    then
-	echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
-    fi
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-	echo "*   ${hadoopscriptprefix}/start-mapred.sh"
-    fi
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-	echo "*   ${hadoopscriptprefix}/start-yarn.sh"
-    fi
-fi
-
-echo "*" 
-echo "* To end/cleanup your session, kill the daemons via:"
-echo "*" 
-if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-then
-    echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
-fi
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-then
-    echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
-fi
-if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-then
-    echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
-fi
-echo "*******************************************************"
-
-# Ensure namenode isn't in safe mode.  Wait up to
-# SBATCH_TIMELIMIT minus 20 minutes.
-#
-# We do not use "-safemode wait", b/c we want to inform the user
-# as we're waiting.
-if [ ${HADOOP_MODE} != "setuponly" ] \
-    && ([ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ])
-then
-    namenodemaxwaitminutes=`expr ${SBATCH_TIMELIMIT} - 20`
-    namenodemaxwaittimes=`expr ${namenodemaxwaitminutes} \* 2`
-    
     cd ${HADOOP_HOME}
-    
-    for ((i = 1; i <= ${namenodemaxwaittimes}; i++)); do
-	
-	bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
-	if [ $? -eq 0 ]
-	then
-	    break
-	fi
-	echo "Waiting 30 more seconds for namenode to exit safe mode"
-	sleep 30
-    done
-    
-    bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
-    if [ $? -ne 0 ] 
-    then
-	echo "Namenode never exited safe mode, consider increasing your job time"
-	hadoopsetuppass=0
-    else
-	hadoopsetuppass=1
-    fi
-else
-    hadoopsetuppass=1
-fi
 
-if [ "${hadoopsetuppass}" == "1" ]
-then
-    if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-	|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
-	&& [ "${HADOOP_MODE}" == "terasort" ]
+    if [ ${HADOOP_MODE} != "setuponly" ]
     then
-	echo "*******************************************************"
-	echo "* Running Terasort"
-	echo "*******************************************************"
-	
-	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+	echo "Starting hadoop"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	then
-	    terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
-	    rmoption="-rmr"
-	elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-	then
-	    terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
-	    rmoption="-rm -r"
+	    ${hadoopscriptprefix}/start-dfs.sh 
 	fi
 	
-	if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    terasortsize=50000000
-	else
-	    terasortsize=$HADOOP_TERASORT_SIZE
+	    ${hadoopscriptprefix}/start-mapred.sh
 	fi
 	
-	if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
-	elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-	then
-	    pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
+	    ${hadoopscriptprefix}/start-yarn.sh
 	fi
 	
-	if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
+        # My rough estimate for setup time is 30 seconds per 64 nodes
+	sleepwait=`expr ${HADOOP_SLAVE_COUNT} \/ 64 \* 30`
+	if [ ${sleepwait} -lt 30 ]
 	then
-	    if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
-	    then
-		clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
-	    else
-		clearcache=""
-	    fi
-	else
-	    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+            sleepwait=30
 	fi
+	echo "Waiting ${sleepwait} seconds to allows daemons to setup"
+	sleep ${sleepwait}
+    fi
+
+    echo "*******************************************************"
+    echo "*"
+    echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
+    echo "*"
+    if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
+    then
+	echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:50030"
+    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+    then
+	echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
+    fi
+    echo "*" 
+    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
+    echo "*" 
+    echo "* To access Hadoop directly, you'll want to:"
+    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+    echo "*   Set HADOOP_CONF_DIR, such as ..."
+    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+    echo "*     or"
+    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+    echo "*   cd $HADOOP_HOME"
+    echo "*"
+    echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
+    echo "*" 
+    echo "*   bin/hadoop fs ..."
+
+    if [ "${HADOOP_MODE}" == "interactive" ] \
+	&& ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+	|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ])
+    then
+	echo "*" 
+	echo "* To launch jobs you'll want to:"
+	echo "*" 
+	echo "*   bin/hadoop jar ..."
+	echo "*" 
+    fi
+
+    if [ "${HADOOP_MODE}" == "setuponly" ]
+    then
+	echo "*" 
+	echo "* To setup, you probably want to run:" 
+	echo "*"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/start-mapred.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/start-yarn.sh"
+	fi
+    fi
+
+    echo "*" 
+    echo "* To end/cleanup your session, kill the daemons via:"
+    echo "*" 
+    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+    then
+	echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
+    fi
+    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+    then
+	echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
+    fi
+    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+	echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
+    fi
+    echo "*******************************************************"
+
+    # Ensure namenode isn't in safe mode.  Wait up to
+    # SBATCH_TIMELIMIT minus 20 minutes.
+    #
+    # We do not use "-safemode wait", b/c we want to inform the user
+    # as we're waiting.
+    if [ ${HADOOP_MODE} != "setuponly" ] \
+	&& ([ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ])
+    then
+	namenodemaxwaitminutes=`expr ${SBATCH_TIMELIMIT} - 20`
+	namenodemaxwaittimes=`expr ${namenodemaxwaitminutes} \* 2`
 	
 	cd ${HADOOP_HOME}
 	
-	command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
-	echo "Running $command" >&2
-	$command
+	for ((i = 1; i <= ${namenodemaxwaittimes}; i++)); do
+	    
+	    bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
+	    if [ $? -eq 0 ]
+	    then
+		break
+	    fi
+	    echo "Waiting 30 more seconds for namenode to exit safe mode"
+	    sleep 30
+	done
 	
-	sleep 30
-	
-	if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
+	bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
+	if [ $? -ne 0 ] 
 	then
-	    rtasks=$HADOOP_TERASORT_REDUCER_COUNT
+	    echo "Namenode never exited safe mode, consider increasing your job time"
+	    hadoopsetuppass=0
 	else
-	    rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
+	    hadoopsetuppass=1
 	fi
+    else
+	hadoopsetuppass=1
+    fi
 
-	command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
-	
-	echo "Running $command" >&2
-	$command
-	
-	command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
-	$command
-	command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
-	$command
-    elif [ "${HADOOP_MODE}" == "script" ]
+    if [ "${hadoopsetuppass}" == "1" ]
     then
-	echo "*******************************************************"
-	echo "* Executing script $HADOOP_SCRIPT_PATH"
-	echo "*******************************************************"
-	${HADOOP_SCRIPT_PATH}
-    elif [ "${HADOOP_MODE}" == "interactive" ] \
-	|| [ "${HADOOP_MODE}" == "setuponly" ]
-    then
-	echo "*******************************************************"
-	echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	echo "*******************************************************"
-	hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
-	hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
-	sleep ${hadoopsleepseconds}
+	if ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+	    || [ "${HADOOP_SETUP_TYPE}" == "MR2" ]) \
+	    && [ "${HADOOP_MODE}" == "terasort" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Terasort"
+	    echo "*******************************************************"
+	    
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+	    then
+		terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
+		rmoption="-rmr"
+	    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
+	    then
+		terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
+		rmoption="-rm -r"
+	    fi
+	    
+	    if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
+	    then
+		terasortsize=50000000
+	    else
+		terasortsize=$HADOOP_TERASORT_SIZE
+	    fi
+	    
+	    if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+	    then
+		pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
+	    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+	    then
+		pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
+	    fi
+	    
+	    if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
+	    then
+		if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
+		then
+		    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+		else
+		    clearcache=""
+		fi
+	    else
+		clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+	    fi
+	    
+	    cd ${HADOOP_HOME}
+	    
+	    command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+	    echo "Running $command" >&2
+	    $command
+	    
+	    sleep 30
+	    
+	    if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
+	    then
+		rtasks=$HADOOP_TERASORT_REDUCER_COUNT
+	    else
+		rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
+	    fi
+
+	    command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+	    
+	    echo "Running $command" >&2
+	    $command
+	    
+	    command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+	    $command
+	    command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+	    $command
+	elif [ "${HADOOP_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing script $HADOOP_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${HADOOP_SCRIPT_PATH}
+	elif [ "${HADOOP_MODE}" == "interactive" ] \
+	    || [ "${HADOOP_MODE}" == "setuponly" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	    echo "*******************************************************"
+	    hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
+	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
+	    sleep ${hadoopsleepseconds}
+	fi
     fi
 fi
 
-if [ ${HADOOP_MODE} != "setuponly" ]
+if [ "${HADOOP_SETUP}" == "yes" ]
 then
-    cd ${HADOOP_HOME}
-
-    echo "Stopping hadoop"
-    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+    if [ ${HADOOP_MODE} != "setuponly" ]
     then
-	${hadoopscriptprefix}/stop-dfs.sh 
-    fi
-    
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-	${hadoopscriptprefix}/stop-mapred.sh
-    fi
-    
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-	${hadoopscriptprefix}/stop-yarn.sh
+	cd ${HADOOP_HOME}
+	
+	echo "Stopping hadoop"
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	then
+	    ${hadoopscriptprefix}/stop-dfs.sh 
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    ${hadoopscriptprefix}/stop-mapred.sh
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    ${hadoopscriptprefix}/stop-yarn.sh
+	fi
     fi
 fi
 
