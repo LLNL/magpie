@@ -141,7 +141,7 @@ else
     hadoopslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
     zookeeperslavestart=`expr ${hadoopslavecount} + 1`
 
-    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${HADOOP_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${ZOOKEEPER_CONF_DIR}/masters
     tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
 fi
 
