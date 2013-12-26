@@ -26,13 +26,6 @@
 # part, it shouldn't be editted.  See magpie.sbatch for configuration
 # details.
 
-if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] \
-    && [    ! -x "${MAGPIE_POST_JOB_RUN}" ]
-then 
-    echo "Script MAGPIE_POST_JOB_RUN=\"${MAGPIE_POST_JOB_RUN}\" is not executable"
-    exit 1
-fi
-
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]

@@ -13,6 +13,7 @@ Add documentation on using Moab.
 Require interactive/setup job length to be a minimum of 30 minutes. 
 Before shutting down HDFS, execute dfsadmin -saveNamespace to prevent potential corruption on shutdown .
 Do not start job until after namenode has exited safe mode.
+Do not execute job if pre-run script fails with exit code 0.
 Various re-org and cleanup. 
 
 magpie 1.15

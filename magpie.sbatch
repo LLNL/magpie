@@ -104,9 +104,13 @@ export MAGPIE_JOB_TYPE="hadoop"
 # on all nodes.
 #
 # Typically the pre-job script is used to set something up or get
-# debugging info.  The post-job script is used for cleaning up
-# something or gathering info (such as logs) for
-# post-debugging/analysis.
+# debugging info.  It can also be used to determine if system
+# conditions meet the expectations of your job.  The primary job
+# running script (magpie-run) will not be executed if the
+# MAGPIE_PRE_JOB_RUN exits with a non-zero exit code.
+#
+# The post-job script is typically used for cleaning up something or
+# gathering info (such as logs) for post-debugging/analysis.
 # 
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
@@ -625,6 +629,10 @@ srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-post-run
 
