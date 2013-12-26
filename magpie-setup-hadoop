@@ -623,6 +623,16 @@ else
     yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
 fi
 
+magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
+    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+then
+    # Need to split timeout time between the two daemons
+    hadoopstoptimeout=`expr ${magpieshutdowntimeseconds} \/ 2`
+else
+    hadoopstoptimeout=${magpieshutdowntimeseconds}
+fi    
+
 #
 # Get config files for setup
 #
@@ -676,6 +686,7 @@ then
 
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
     
     echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
@@ -740,6 +751,7 @@ then
     
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
 
     echo "export YARN_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh

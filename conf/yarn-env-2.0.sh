@@ -111,5 +111,6 @@ if [ "x$JAVA_LIBRARY_PATH" != "x" ]; then
 fi  
 YARN_OPTS="$YARN_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
 
-# Wait for more than 5 seconds before giving up on killing a daemon
-export YARN_STOP_TIMEOUT=90
+# Wait hopefully for more than default of 5 seconds before giving up
+# on killing a daemon
+export YARN_STOP_TIMEOUT=HADOOPTIMEOUTSECONDS

@@ -187,8 +187,8 @@ then
 	&& ([ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ])
     then
-	namenodemaxwaitminutes=`expr ${SBATCH_TIMELIMIT} - 20`
-	namenodemaxwaittimes=`expr ${namenodemaxwaitminutes} \* 2`
+	namenodemaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${sleepwait}`
+	namenodemaxwaittimes=`expr ${namenodemaxwaitseconds} \/ 30`
 	
 	cd ${HADOOP_HOME}
 	
@@ -311,7 +311,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
+	    hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_SHUTDOWN_TIME}`
 	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
 	    sleep ${hadoopsleepseconds}
 	fi

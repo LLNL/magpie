@@ -85,6 +85,19 @@ export MAGPIE_JOB_TYPE="hadoop"
 #
 # export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
 
+# Specify script startup / shutdown time window
+#
+# Specifies the amount of time to give startup / shutdown activities a
+# chance to succeed before Magpie will give up (or in the case of
+# shutdown, when the resource manager may kill the running job).
+# Defaults to 15 minutes.
+#
+# The startup & shutdown window must together be smaller than the
+# SBATCH_TIMELIMIT specified above.
+#
+# export MAGPIE_STARTUP_TIME=15
+# export MAGPIE_SHUTDOWN_TIME=15
+
 # Convenience Scripts
 #
 # Specify script to be executed to before / after your job.  It is run

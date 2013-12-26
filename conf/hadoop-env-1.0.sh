@@ -56,5 +56,7 @@ export HADOOP_JOBTRACKER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_JOBTRACKER
 # The scheduling priority for daemon processes.  See 'man nice'.
 # export HADOOP_NICENESS=10
 
-# Wait for more than 5 seconds before giving up on killing a daemon
-export HADOOP_STOP_TIMEOUT=60
+# Wait hopefully for more than default of 5 seconds before giving up
+# on killing a daemon
+export HADOOP_STOP_TIMEOUT=HADOOPTIMEOUTSECONDS
+

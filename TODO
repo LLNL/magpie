@@ -16,4 +16,4 @@ Ganglia
 templates
 - create "templates" allowing creation of moab/sbatch files.
 - also hadoop only + hadoop + zookeepr, etc. files
-magpie startup/shutdown window
+ 

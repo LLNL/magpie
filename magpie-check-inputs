@@ -36,12 +36,6 @@ then
     exit 1
 fi
 
-if [ ${SBATCH_TIMELIMIT} -lt 30 ]
-then
-    echo "timelimit must be atleast 30 minutes"
-    exit 1
-fi
-
 #
 # Check Magpie Inputs
 #
@@ -96,6 +90,28 @@ then
        echo "Script MAGPIE_SCRIPT_PATH \"$MAGPIE_SCRIPT_PATH\" does not have execute permissions"
        exit 1
     fi
+fi
+
+if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
+then
+    magpiestartuptime=15
+else
+    magpiestartuptime=${MAGPIE_STARTUP_TIME}
+fi
+
+if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
+then
+    magpieshutdowntime=15
+else
+    magpieshutdowntime=${MAGPIE_SHUTDOWN_TIME}
+fi
+
+magpiestartupshutdowntime=`expr ${magpiestartuptime} + ${magpieshutdowntime}`
+
+if [ ${SBATCH_TIMELIMIT} -le ${magpiestartupshutdowntime} ]
+then
+    echo "timelimit must be atleast the sum of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME"
+    exit 1
 fi
 
 #

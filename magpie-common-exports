@@ -75,7 +75,7 @@ Magpie_am_I_a_zookeeper_node () {
 Magpie_wait_script () {
     scriptpid=$1
 
-    scriptsleepamount=`expr ${SBATCH_TIMELIMIT} - 10`
+    scriptsleepamount=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_SHUTDOWN_TIME}`
 
     # We sleep in 30 second chunks, so times 2
     scriptsleepiterations=`expr ${scriptsleepamount}  \* 2`
@@ -109,6 +109,16 @@ export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
 export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
 export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
+
+if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
+then
+    export MAGPIE_STARTUP_TIME=15
+fi
+
+if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
+then
+    export MAGPIE_SHUTDOWN_TIME=15
+fi
 
 # In main script, if master/slaves haven't been created yet, environment
 # variable set in there.
