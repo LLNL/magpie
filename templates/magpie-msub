@@ -1,0 +1,43 @@
+############################################################################
+# Moab Customizations
+############################################################################
+
+# Node count.  Node count should include one node for the
+# head/managemnet node.  For example, if you want 8 compute nodes to
+# process data, specify 9 nodes below.
+#
+# If including Zookeeper, include expected Zookeeper nodes.  For
+# example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
+# specify 12 nodes (1 additional node for head/management).
+
+#MSUB -l nodes=<my node count>
+
+#MSUB -o ./moab-%j.out
+
+#MSUB -l partition=<my partition> 
+
+#MSUB -q <my batch queue>
+
+# *** SEE SBATCH_TIMELIMIT BELOW, IT MUST BE SET ***
+#
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
+# walltime should be a fair amount larger than them combined.
+
+#MSUB -l walltime=<my time in seconds or HH:MM:SS>
+
+#MSUB -l resfailpolicy=ignore
+
+#MSUB -V
+
+export MOAB_JOBNAME="<my job name>"
+export SLURM_JOB_NAME="<my job name>"
+
+export SLURM_TASKS_PER_NODE=1
+export SBATCH_EXCLUSIVE="yes"
+
+# You MUST set the SBATCH_TIMELIMIT value (in minutes) to match what
+# is entered with walltime.  Moab does not export an equivalent
+# environment variable such as SBATCH_TIMELIMIT, so this must be done
+# manually by the user.
+
+export SBATCH_TIMELIMIT=<time in minutes>

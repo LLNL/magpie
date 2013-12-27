@@ -1,0 +1,70 @@
+############################################################################
+# Magpie Configurations
+############################################################################
+
+# Directory your launching scripts/files are stored
+#
+# Normally an NFS mount, someplace magpie can be reached on all nodes.
+export MAGPIE_SCRIPTS_HOME="/home/username/magpie"
+
+# Path local to each cluster node, typically something in /tmp.
+# This will store local scratch files for Magpie.
+#
+export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
+
+# Magpie job type
+#
+# "hadoop" - Run a Hadoop job according to the settings of HADOOP_MODE.
+#
+# "script" - Run an arbitraty script, as specified by
+#            MAGPIE_JOB_SCRIPT.  This functionally is very similar to
+#            setting "script" in HADOOP_MODE.
+#
+#            It is primarily used if you want to launch without Hadoop
+#            (such as Zookeeper only) and are experimeting with
+#            things..
+#
+export MAGPIE_JOB_TYPE="hadoop"
+
+# Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
+#
+# export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+
+# Specify script startup / shutdown time window
+#
+# Specifies the amount of time to give startup / shutdown activities a
+# chance to succeed before Magpie will give up (or in the case of
+# shutdown, when the resource manager may kill the running job).
+# Defaults to 15 minutes.
+#
+# The startup & shutdown window must together be smaller than the
+# SBATCH_TIMELIMIT specified above.
+#
+# export MAGPIE_STARTUP_TIME=15
+# export MAGPIE_SHUTDOWN_TIME=15
+
+# Convenience Scripts
+#
+# Specify script to be executed to before / after your job.  It is run
+# on all nodes.
+#
+# Typically the pre-job script is used to set something up or get
+# debugging info.  It can also be used to determine if system
+# conditions meet the expectations of your job.  The primary job
+# running script (magpie-run) will not be executed if the
+# MAGPIE_PRE_JOB_RUN exits with a non-zero exit code.
+#
+# The post-job script is typically used for cleaning up something or
+# gathering info (such as logs) for post-debugging/analysis.
+# 
+# See example magpie-example-pre-job-script and
+# magpie-example-post-job-script for ideas of what you can do w/ these
+# scripts
+#
+# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
+
+# Specify ssh-equivalent remote command and/or options if ssh is not
+# available on your cluster
+# export MAGPIE_REMOTE_CMD="mrsh"
+# export MAGPIE_REMOTE_CMD_OPTS=""

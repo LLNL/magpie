@@ -1,0 +1,34 @@
+############################################################################
+# SLURM Customizations
+############################################################################
+
+# Node count.  Node count should include one node for the
+# head/managemnet node.  For example, if you want 8 compute nodes to
+# process data, specify 9 nodes below.
+#
+# If including Zookeeper, include expected Zookeeper nodes.  For
+# example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
+# specify 12 nodes (1 additional node for head/management).
+#SBATCH --nodes=<my node count>
+#SBATCH --output="slurm-%j.out"
+
+# Time to run the job
+#
+# Do not use --time, environment variable needed w/n magpie-run
+#
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+export SBATCH_TIMELIMIT=<my time in minutes>
+
+# Job name.  This will be used in naming directories for the job.
+#SBATCH --job-name=<my job name>
+
+# Partition to launch job in 
+#SBATCH --partition=<my partition>
+
+## SLURM Values
+# Generally speaking, don't touch these, just need to configure slurm
+
+#SBATCH --ntasks-per-node=1
+#SBATCH --exclusive
+#SBATCH --no-kill

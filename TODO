@@ -13,7 +13,3 @@ Hadoop
 - start w/ 2.1.1-beta 
 Ganglia
 - if user wants aid in monitoring
-templates
-- create "templates" allowing creation of moab/sbatch files.
-- also hadoop only + hadoop + zookeepr, etc. files
- 
