@@ -437,7 +437,8 @@ used for hostrange expansion within the scripts.  It is a hack pieced
 together from other scripts.
 
 The preferred mechanism is to use the hostlist command in the
-lua-hostlist project.  You can find lua-hostlist here : < FILL IN >
+lua-hostlist project.  You can find lua-hostlist at 
+https://github.com/grondo/lua-hostlist
 
 The main magpie-run script will use 'magpie-expand-nodes' if it cannot
 find 'hostlist' in its path.
