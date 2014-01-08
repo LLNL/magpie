@@ -338,6 +338,10 @@ then
 	    echo "Running $command" >&2
 	    $command
 
+	    command="bin/${dfsadminscript} dfsadmin -safemode leave"
+	    echo "Running $command" >&2
+	    $command
+
 	    ${hadoopscriptprefix}/stop-dfs.sh 
 	fi
 	
