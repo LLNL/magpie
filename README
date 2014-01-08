@@ -420,6 +420,9 @@ used to launch jobs as well using Magpie.  Please see the appropriate
 "msub" files in this project.  Jobs can then be submitted using the
 msub command.
 
+Please read the comments in the msub files, as configuring Moab settings
+will involve more work than configuring Slurm sbatch files.
+
 Testing
 -------
 
