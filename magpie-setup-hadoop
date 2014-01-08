@@ -623,15 +623,28 @@ else
     yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
 fi
 
-magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
 if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
-    # Need to split timeout time between the two daemons
-    hadoopstoptimeout=`expr ${magpieshutdowntimeseconds} \/ 2`
+    # Need to split timeout time between namenode, datanodes,
+    # secondary namenode, jobtracker/resource manager,
+    # tasktracker/nodemanagers, & saveNameSpace time + 1 (+1 gives us
+    # a bit of buffer for misc shutdown time)
+    hadoopstoptimeoutdivisor=7
 else
-    hadoopstoptimeout=${magpieshutdowntimeseconds}
+    # Need to split timeout time between namenode, datanodes,
+    # secondary namenode, & saveNameSpace time + 1 (+1 gives us a bit
+    # of buffer for misc shutdown time)
+    hadoopstoptimeoutdivisor=5
 fi    
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    hadoopstoptimeoutdivisor=`expr ${hadoopstoptimeoutdivisor} + 1`
+fi
+
+magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+hadoopstoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${hadoopstoptimeoutdivisor}`
 
 #
 # Get config files for setup
