@@ -94,7 +94,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # Specifies the amount of time to give startup / shutdown activities a
 # chance to succeed before Magpie will give up (or in the case of
 # shutdown, when the resource manager may kill the running job).
-# Defaults to 15 minutes.
+# Defaults to 30 minutes.
 #
 # The startup time in particular may need to be increased if you have
 # a large amount of data.  As an example, HDFS may need to spend a
@@ -104,8 +104,8 @@ export MAGPIE_JOB_TYPE="hadoop"
 # The startup & shutdown window must together be smaller than the
 # SBATCH_TIMELIMIT specified above.
 #
-# export MAGPIE_STARTUP_TIME=15
-# export MAGPIE_SHUTDOWN_TIME=15
+# export MAGPIE_STARTUP_TIME=30
+# export MAGPIE_SHUTDOWN_TIME=30
 
 # Convenience Scripts
 #

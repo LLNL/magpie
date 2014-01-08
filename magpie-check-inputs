@@ -94,14 +94,14 @@ fi
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
-    magpiestartuptime=15
+    magpiestartuptime=30
 else
     magpiestartuptime=${MAGPIE_STARTUP_TIME}
 fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    magpieshutdowntime=15
+    magpieshutdowntime=30
 else
     magpieshutdowntime=${MAGPIE_SHUTDOWN_TIME}
 fi

@@ -112,12 +112,12 @@ export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
-    export MAGPIE_STARTUP_TIME=15
+    export MAGPIE_STARTUP_TIME=30
 fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    export MAGPIE_SHUTDOWN_TIME=15
+    export MAGPIE_SHUTDOWN_TIME=30
 fi
 
 # In main script, if master/slaves haven't been created yet, environment
