@@ -75,6 +75,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "hadoop" - Run a Hadoop job according to the settings of HADOOP_MODE.
 #
+# "pig" - Run a Hadoop job according to the settings of PIG_SCRIPT.
+#
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_JOB_SCRIPT.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE.
@@ -538,6 +540,7 @@ then
 fi
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]

@@ -1,0 +1,58 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See magpie.sbatch for configuration
+# details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+
+if [ "${PIG_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${PIG_CONF_FILES}X" == "X" ]
+then
+    pigconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    pigconffiledir=${PIG_CONF_FILES}
+fi
+
+pigproperties=${pigconffiledir}/pig.properties
+
+#
+# Setup Pig configuration files and environment files
+#
+
+# achu: nothing to sed right now, maybe later
+cat $pigproperties > ${PIG_CONF_DIR}/pig.properties
+    
+cat ${pigconffiledir}/pig.log4j.properties > ${PIG_CONF_DIR}/log4j.properties
+
+exit 0

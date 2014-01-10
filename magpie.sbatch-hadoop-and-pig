@@ -23,7 +23,7 @@
 #############################################################################
 
 ############################################################################
-# Moab Customizations
+# SLURM Customizations
 ############################################################################
 
 # Node count.  Node count should include one node for the
@@ -33,38 +33,29 @@
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
 # specify 12 nodes (1 additional node for head/management).
+#SBATCH --nodes=<my node count>
+#SBATCH --output="slurm-%j.out"
 
-#MSUB -l nodes=<my node count>
-
-#MSUB -o ./moab-%j.out
-
-#MSUB -l partition=<my partition> 
-
-#MSUB -q <my batch queue>
-
-# *** SEE SBATCH_TIMELIMIT BELOW, IT MUST BE SET ***
+# Time to run the job
 #
-# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
-# walltime should be a fair amount larger than them combined.
+# Do not use --time, environment variable needed w/n magpie-run
+#
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+export SBATCH_TIMELIMIT=<my time in minutes>
 
-#MSUB -l walltime=<my time in seconds or HH:MM:SS>
+# Job name.  This will be used in naming directories for the job.
+#SBATCH --job-name=<my job name>
 
-#MSUB -l resfailpolicy=ignore
+# Partition to launch job in 
+#SBATCH --partition=<my partition>
 
-#MSUB -V
+## SLURM Values
+# Generally speaking, don't touch these, just need to configure slurm
 
-export MOAB_JOBNAME="<my job name>"
-export SLURM_JOB_NAME="<my job name>"
-
-export SLURM_TASKS_PER_NODE=1
-export SBATCH_EXCLUSIVE="yes"
-
-# You MUST set the SBATCH_TIMELIMIT value (in minutes) to match what
-# is entered with walltime.  Moab does not export an equivalent
-# environment variable such as SBATCH_TIMELIMIT, so this must be done
-# manually by the user.
-
-export SBATCH_TIMELIMIT=<time in minutes>
+#SBATCH --ntasks-per-node=1
+#SBATCH --exclusive
+#SBATCH --no-kill
 
 ############################################################################
 # Magpie Configurations
@@ -539,102 +530,69 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
 
 ############################################################################
-# Zookeeper Configurations
+# Pig Configurations
 ############################################################################
 
-# Should Zookeeper be run
+# Should Pig be setup
 #
 # Specify yes or no.  Defaults to no.
 # 
-export ZOOKEEPER_SETUP=yes
+# Note that unlike Hadoop or Zookeeper, Pig does not need to be
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
+#
+# If PIG_SETUP is enabled, this will inform Magpie to setup a
+# configuration files and environment variables that will hopefully
+# make it easier to run Pig w/ Hadoop.  You could leave this disabled
+# and setup/config Pig as you need.
+#
+export PIG_SETUP=yes
 
-# Zookeeper Replication Count
+# Pig Version
 #
-# Recommended to be odd.
-#
-export ZOOKEEPER_REPLICATION_COUNT=3
+export PIG_VERSION="0.12.0"
 
-# Zookeeper Node Sharing
-#
-# By default, Zookeeper will not run on nodes that will run Hadoop.
-# They will have dedicated nodes for themselves.  If you do not wish
-# for this to be the case, set the below to 'yes'.  Defaults to no.
-#
-# Keep in mind that adjustments to the number of nodes in your
-# allocation may need to be adjusted given your setting of this
-# parameter.  For example, if you want 8 nodes for Hadoop processing,
-# you should increase your allocation by ZOOKEEPER_REPLICATION_COUNT
-# if the below is 'no'.
-#
-# export ZOOKEEPER_SHARE_NODES=yes
-
-# Set how Zookeeper should run
-#
-# "launch" - (default) Magpie will launch Zookeeper daemons
-#
-# "setuponly" - Only setup conf files. useful if user wants to setup
-#               daemons themselves, etc.
-#
-export ZOOKEEPER_MODE="launch"
-
-# Zookeeper Version
-#
-export ZOOKEEPER_VERSION="3.4.5"
-
-# Path to your Zookeeper build/binaries
+# Path to your Pig build/binaries
 #
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
+export PIG_HOME="/home/username/pig-${PIG_VERSION}"
 
-# Set how Zookeeper data directory should be set.
-#
-# "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
-#               (such as Lustre).  Zookeeper local paths must be
-#               setup.
-#
-# "local" - ZOOKEEPER_DATA_DIR points to a local drive.
-#
-export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
-
-# Directory where Zookeeper configuration templates are stored
+# Directory where Pig configuration templates are stored
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
-
-# Path base for local data to each cluster node
-#
-export ZOOKEEPER_DATA_DIR="/lustre/username/zookeeper"  
+# export PIG_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export ZOOKEEPER_LOCAL_DIR="/tmp/username/zookeeper"
+export PIG_LOCAL_DIR="/tmp/username/pig"
 
-# ZooKeeper ticktime, measured in milliseconds.  Used by all of
-# Zookeeper for time measurement.
+# Specify script to execute for "pig" mode in MAGPIE_JOB_TYPE.  This
+# pig script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
 #
-# Defaults to 2000.
-#
-# export ZOOKEEPER_TICKTIME=2000
+# export PIG_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-pig-script"
 
-# ZooKeeper initLimit, multiple of ticks to allow followers to connect
-# and sync to a leader.  May need to increase this value if the data
-# managed by ZooKeeper is large.
+# Specify options to specify when calling pig.
 #
-# Defaults to 10
+# A particularly useful option is -l <logfile>, to indicate where you
+# would like hte pig log file to go.
 #
-# export ZOOKEEPER_INITLIMIT=10
+# export PIG_SCRIPT_OPTS="-l /home/username/mypig.log"
 
-# ZooKeeper syncLimit, multiple of ticks to allow followers to sync
-# with ZooKeeper.  If they fall too far behind a leader, they will be
-# dropped.
+# Pig Classpath
 #
-# Defaults to 5
+# Set the classpath you desire for pig.  This is the CLASSPATH you
+# likely want to set to add additional jars for your run.
 #
-# export ZOOKEEPER_SYNCLIMIT=5
+# export PIG_CLASSPATH="/home/username/myjarfiles.jar"
+
+# Pig Opts
+#
+# Extra Java runtime options
+#
+# export PIG_OPTS=""
 
 ############################################################################
 # Run Job

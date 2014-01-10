@@ -30,6 +30,24 @@ all:
 	cat templates/magpie-run-job >> magpie.sbatch-hadoop
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop
 
+# Make sbatch with Hadoop and Pig
+	echo "Creating magpie.sbatch-hadoop-and-pig"
+	cp templates/magpie-header magpie.sbatch-hadoop-and-pig
+	echo "" >> magpie.sbatch-hadoop-and-pig
+	cat templates/magpie-sbatch >> magpie.sbatch-hadoop-and-pig
+	echo "" >> magpie.sbatch-hadoop-and-pig
+	cat templates/magpie-magpie-customizations >> magpie.sbatch-hadoop-and-pig
+	echo "" >> magpie.sbatch-hadoop-and-pig
+	cat templates/magpie-general-configuration >> magpie.sbatch-hadoop-and-pig
+	echo "" >> magpie.sbatch-hadoop-and-pig
+	cat templates/magpie-hadoop >> magpie.sbatch-hadoop-and-pig
+	echo "" >> magpie.sbatch-hadoop-and-pig
+	cat templates/magpie-pig >> magpie.sbatch-hadoop-and-pig
+	echo "" >> magpie.sbatch-hadoop-and-pig
+	cat templates/magpie-run-job >> magpie.sbatch-hadoop-and-pig
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop-and-pig
+	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" magpie.sbatch-hadoop-and-pig
+
 # Make sbatch with Hadoop and Zookeeper
 	echo "Creating magpie.sbatch-hadoop-and-zookeeper"
 	cp templates/magpie-header magpie.sbatch-hadoop-and-zookeeper
@@ -78,6 +96,24 @@ all:
 	echo "" >> magpie.msub-hadoop
 	cat templates/magpie-run-job >> magpie.msub-hadoop
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop
+
+# Make msub with Hadoop and Pig
+	echo "Creating magpie.msub-hadoop-and-pig"
+	cp templates/magpie-header magpie.msub-hadoop-and-pig
+	echo "" >> magpie.msub-hadoop-and-pig
+	cat templates/magpie-msub >> magpie.msub-hadoop-and-pig
+	echo "" >> magpie.msub-hadoop-and-pig
+	cat templates/magpie-magpie-customizations >> magpie.msub-hadoop-and-pig
+	echo "" >> magpie.msub-hadoop-and-pig
+	cat templates/magpie-general-configuration >> magpie.msub-hadoop-and-pig
+	echo "" >> magpie.msub-hadoop-and-pig
+	cat templates/magpie-hadoop >> magpie.msub-hadoop-and-pig
+	echo "" >> magpie.msub-hadoop-and-pig
+	cat templates/magpie-pig >> magpie.msub-hadoop-and-pig
+	echo "" >> magpie.msub-hadoop-and-pig
+	cat templates/magpie-run-job >> magpie.msub-hadoop-and-pig
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop-and-pig
+	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" magpie.msub-hadoop-and-pig
 
 # Make msub with Hadoop and Zookeeper
 	echo "Creating magpie.msub-hadoop-and-zookeeper"
