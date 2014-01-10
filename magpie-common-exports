@@ -75,7 +75,8 @@ Magpie_am_I_a_zookeeper_node () {
 Magpie_wait_script () {
     scriptpid=$1
 
-    scriptsleepamount=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_SHUTDOWN_TIME}`
+    scriptsleepamounttemp=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_STARTUP_TIME}`
+    scriptsleepamount=`expr ${scriptsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
 
     # We sleep in 30 second chunks, so times 2
     scriptsleepiterations=`expr ${scriptsleepamount}  \* 2`
