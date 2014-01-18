@@ -55,6 +55,16 @@ then
 	echo "*" 
 	echo "*   bin/zkServer.sh stop"
 	echo "*" 
+	echo "*   Set JAVA_HOME, such as ..."
+	echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
+	echo "*     or"
+	echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
+	echo "*" 
+	echo "*   Set ZOOKEEPER_HOME, such as ..."
+	echo "*     export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
+	echo "*     or"
+	echo "*     setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
+	echo "*" 
 	echo "*******************************************************"
     else
 	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
@@ -176,6 +186,28 @@ then
     then
 	echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
     fi
+    echo "*" 
+    echo "* Some additional environment variables you may sometimes wish to set"
+    echo "*" 
+    echo "*" 
+    echo "*   Set JAVA_HOME, such as ..."
+    echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
+    echo "*     or"
+    echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
+    echo "*" 
+    echo "*   Set HADOOP_HOME, such as ..."
+    echo "*     export HADOOP_HOME=\"${HADOOP_HOME}\""
+    echo "*     or"
+    echo "*     setenv HADOOP_HOME \"${HADOOP_HOME}\""
+    if [ "${PIG_SETUP}" == "yes" ]
+    then
+	echo "*"
+	echo "*   Set PIG_HOME, such as ..."
+	echo "*     export PIG_HOME=\"${PIG_HOME}\""
+	echo "*     or"
+	echo "*     setenv PIG_HOME \"${PIG_HOME}\""
+    fi
+    echo "*" 
     echo "*******************************************************"
 
     # Ensure namenode isn't in safe mode.  Wait up to
@@ -222,6 +254,14 @@ then
     echo "* Executing script $MAGPIE_SCRIPT_PATH"
     echo "*******************************************************"
     ${MAGPIE_SCRIPT_PATH} &
+    scriptpid=$!
+    Magpie_wait_script ${scriptpid}
+elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
+then
+    echo "*******************************************************"
+    echo "* Executing Pig script $PIG_SCRIPT_PATH"
+    echo "*******************************************************"
+    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
     scriptpid=$!
     Magpie_wait_script ${scriptpid}
 elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]

@@ -67,6 +67,25 @@ then
 fi
 
 #
+# Setup Pig directories
+#
+
+if [ "${PIG_SETUP}" == "yes" ]
+then
+    mkdir -p $PIG_LOCAL_JOB_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${PIG_LOCAL_JOB_DIR}"
+	exit 1
+    fi
+    
+    mkdir -p $PIG_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${PIG_CONF_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup Zookeeper directories
 #
 

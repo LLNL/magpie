@@ -71,9 +71,10 @@ then
 fi 
 
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop or script"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, pig, or script"
     exit 1
 fi
 
@@ -151,6 +152,13 @@ then
     exit 1
 fi
 
+if [ "${PIG_SETUP}X" != "X" ] \
+    && ( [ "${PIG_SETUP}" != "yes" ] && [ "${PIG_SETUP}" != "no" ] )
+then
+    echo "PIG_SETUP must be set to yes or no"
+    exit 1
+fi
+
 if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
     && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
 then
@@ -159,6 +167,8 @@ then
 fi
 
 # Did user turn on SOMETHING to run
+#
+# Pig is not "something", b/c it needs hadoop 
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
@@ -173,6 +183,13 @@ if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
     && [ "${HADOOP_SETUP}" != "yes" ]
 then
     echo "Cannot run hadoop job type if HADOOP_SETUP is not enabled"
+    exit 1
+fi
+
+if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
+    && [ "${PIG_SETUP}" != "yes" ]
+then
+    echo "Cannot run pig job type if PIG_SETUP is not enabled"
     exit 1
 fi
    
@@ -223,13 +240,14 @@ then
 
     if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
 	|| [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
+	&& [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
 	&& [ "${HADOOP_MODE}" == "terasort" ]
     then
 	echo "Cannot run HADOOP_MODE as terasort when HADOOP_SETUP_TYPE is ${HADOOP_SETUP_TYPE}"
 	exit 1
     fi
 
-    if [ "${HADOOP_MODE}" == "terasort" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "terasort" ]
     then
 	if [ "${HADOOP_VERSION}X" == "X" ]
 	then
@@ -244,7 +262,7 @@ then
 	fi
     fi
 
-    if [ "${HADOOP_MODE}" == "script" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "script" ]
     then
 	if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
 	then
@@ -354,6 +372,46 @@ then
     then
 	echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
 	exit 1
+    fi
+fi
+
+#
+# Check Pig Inputs 
+#
+
+if [ "${PIG_SETUP}" == "yes" ]
+then
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	echo "Pig requires Hadoop to be setup, set HADOOP_SETUP to yes"
+	exit 1
+    fi
+
+    if [ "${PIG_HOME}X" == "X" ]
+    then
+       echo "PIG_HOME must be set"
+       exit 1
+    fi
+    
+    if [ ! -d ${PIG_HOME} ]
+    then
+       echo "${PIG_HOME} does not point to a directory"
+       exit 1
+    fi
+
+    if [ "${PIG_LOCAL_DIR}X" == "X" ]
+    then
+       echo "PIG_LOCAL_DIR must be set"
+       exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "pig" ]
+    then
+	if [ "${PIG_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script PIG_SCRIPT_PATH must be specified"
+	    exit 1
+	fi
     fi
 fi
 

@@ -13,3 +13,7 @@ Hadoop
 - start w/ 2.1.1-beta 
 Ganglia
 - if user wants aid in monitoring
+
+Setup-script
+- generate script that user can run to setup environment before running job
+  - e.g. set HADOOP_CONF_DIR, HADOOP_HOME, etc.

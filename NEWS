@@ -1,3 +1,7 @@
+magpie 1.18
+-----------
+Add support for running Pig scripts.
+
 magpie 1.17
 -----------
 Increase default MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME. 

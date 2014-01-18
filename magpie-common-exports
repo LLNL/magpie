@@ -75,7 +75,8 @@ Magpie_am_I_a_zookeeper_node () {
 Magpie_wait_script () {
     scriptpid=$1
 
-    scriptsleepamount=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_SHUTDOWN_TIME}`
+    scriptsleepamounttemp=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_STARTUP_TIME}`
+    scriptsleepamount=`expr ${scriptsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
 
     # We sleep in 30 second chunks, so times 2
     scriptsleepiterations=`expr ${scriptsleepamount}  \* 2`
@@ -105,6 +106,9 @@ export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID
 export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
 export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
+
+export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
+export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
 
 export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf

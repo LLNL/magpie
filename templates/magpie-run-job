@@ -9,6 +9,7 @@ then
 fi
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
