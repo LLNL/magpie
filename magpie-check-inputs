@@ -236,6 +236,12 @@ then
 	    echo "HADOOP_VERSION must be set for terasort mode"
 	    exit 1
 	fi
+
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort cannot be found, it is required to run terasort"
+	    exit 1
+	fi
     fi
 
     if [ "${HADOOP_MODE}" == "script" ]

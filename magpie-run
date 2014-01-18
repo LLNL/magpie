@@ -235,68 +235,10 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Terasort"
 	    echo "*******************************************************"
-	    
-	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-	    then
-		terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
-		rmoption="-rmr"
-	    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-	    then
-		terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
-		rmoption="-rm -r"
-	    fi
-	    
-	    if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
-	    then
-		terasortsize=50000000
-	    else
-		terasortsize=$HADOOP_TERASORT_SIZE
-	    fi
-	    
-	    if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
-	    then
-		pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
-	    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-	    then
-		pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
-	    fi
-	    
-	    if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
-	    then
-		if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
-		then
-		    clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
-		else
-		    clearcache=""
-		fi
-	    else
-		clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
-	    fi
-	    
-	    cd ${HADOOP_HOME}
-	    
-	    command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
-	    echo "Running $command" >&2
-	    $command
-	    
-	    sleep 30
-	    
-	    if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
-	    then
-		rtasks=$HADOOP_TERASORT_REDUCER_COUNT
-	    else
-		rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
-	    fi
 
-	    command="bin/hadoop jar ${terasortexamples} terasort -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
-	    
-	    echo "Running $command" >&2
-	    $command
-	    
-	    command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
-	    $command
-	    command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
-	    $command
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
