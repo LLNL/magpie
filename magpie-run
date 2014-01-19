@@ -258,12 +258,15 @@ then
     Magpie_wait_script ${scriptpid}
 elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
 then
-    echo "*******************************************************"
-    echo "* Executing Pig script $PIG_SCRIPT_PATH"
-    echo "*******************************************************"
-    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
-    scriptpid=$!
-    Magpie_wait_script ${scriptpid}
+    if [ "${hadoopsetuppass}" == "1" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing Pig script $PIG_SCRIPT_PATH"
+	echo "*******************************************************"
+	${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
+	scriptpid=$!
+	Magpie_wait_script ${scriptpid}
+    fi
 elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
 then
     if [ "${hadoopsetuppass}" == "1" ]
