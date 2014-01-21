@@ -586,7 +586,7 @@ export PIG_LOCAL_DIR="/tmp/username/pig"
 # Specify options to specify when calling pig.
 #
 # A particularly useful option is -l <logfile>, to indicate where you
-# would like hte pig log file to go.
+# would like the pig log file to go.
 #
 # export PIG_SCRIPT_OPTS="-l /home/username/mypig.log"
 
