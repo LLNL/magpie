@@ -310,6 +310,17 @@ then
 	cd ${HADOOP_HOME}
 	
 	echo "Stopping hadoop"
+
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    ${hadoopscriptprefix}/stop-mapred.sh
+	fi
+	
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    ${hadoopscriptprefix}/stop-yarn.sh
+	fi
+
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 	then
@@ -328,16 +339,6 @@ then
 	    $command
 
 	    ${hadoopscriptprefix}/stop-dfs.sh 
-	fi
-	
-	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-	then
-	    ${hadoopscriptprefix}/stop-mapred.sh
-	fi
-	
-	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	then
-	    ${hadoopscriptprefix}/stop-yarn.sh
 	fi
     fi
 fi
