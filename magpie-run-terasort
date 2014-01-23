@@ -67,6 +67,16 @@ fi
 	    
 cd ${HADOOP_HOME}
 	    
+#
+# Remove previous runs if they are lingering
+#
+
+command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+$command
+command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+$command
+
+
 command="bin/hadoop jar ${terasortexamples} teragen ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
