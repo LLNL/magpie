@@ -1,3 +1,8 @@
+magpie 1.19
+-----------
+Support changed configuration settings in yarn-site.xml for Hadoop 2.2.0.
+Various code cleanup.
+
 magpie 1.18
 -----------
 Add support for running Pig scripts.

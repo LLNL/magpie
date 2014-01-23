@@ -755,11 +755,25 @@ fi
 
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
+    #
+    # A few settings depend on version
+    #
+    if echo ${HADOOP_VERSION} | grep -q -E "2.[0-1]."
+    then 
+	yarnauxservices="mapreduce.shuffle"
+	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
+    else
+	yarnauxservices="mapreduce_shuffle"
+	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
+    fi
+
     sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
 	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
 	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
 	-e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
+	-e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
+	-e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \

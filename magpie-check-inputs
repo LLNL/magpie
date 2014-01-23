@@ -211,6 +211,15 @@ then
 	exit 1
     fi
 
+    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+	if [ "${HADOOP_VERSION}X" == "X" ]
+	then
+	    echo "HADOOP_VERSION must be set for HADOOP_SETUP_TYPE = MR2"
+	    exit 1
+	fi
+    fi
+
     if [ "${HADOOP_HOME}X" == "X" ]
     then
 	echo "HADOOP_HOME must be set"

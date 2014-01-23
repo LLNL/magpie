@@ -57,11 +57,11 @@
 
 <property>
   <name>yarn.nodemanager.aux-services</name>
-  <value>mapreduce.shuffle</value>
+  <value>YARNAUXSERVICES</value>
 </property>
 
 <property>
-  <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+  <name>YARNAUXMAPREDUCESHUFFLE</name>
   <value>org.apache.hadoop.mapred.ShuffleHandler</value>
 </property>
 
