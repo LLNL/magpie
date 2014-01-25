@@ -206,6 +206,11 @@ then
 	echo "*     export PIG_HOME=\"${PIG_HOME}\""
 	echo "*     or"
 	echo "*     setenv PIG_HOME \"${PIG_HOME}\""
+	echo "*"
+	echo "*   Set PIG_CONF_DIR, such as ..."
+	echo "*     export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
+	echo "*     or"
+	echo "*     setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
     fi
     echo "*" 
     echo "*******************************************************"
