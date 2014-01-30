@@ -19,6 +19,18 @@ then
 	cat ${HADOOP_CONF_DIR}/hadoop-env.sh
     fi
 
+    if [ -f "${HADOOP_CONF_DIR}/mapred-env.sh" ] 
+    then
+	echo "**** mapred-env.sh ****"
+	cat ${HADOOP_CONF_DIR}/mapred-env.sh
+    fi
+
+    if [ -f "${HADOOP_CONF_DIR}/yarn-env.sh" ] 
+    then
+	echo "**** yarn-env.sh ****"
+	cat ${HADOOP_CONF_DIR}/yarn-env.sh
+    fi
+
     if [ -f "${HADOOP_CONF_DIR}/mapred-site.xml" ]
     then
 	echo "**** mapred-site.xml ****"

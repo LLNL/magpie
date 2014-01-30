@@ -628,14 +628,14 @@ if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
 then
     # Need to split timeout time between namenode, datanodes,
     # secondary namenode, jobtracker/resource manager,
-    # tasktracker/nodemanagers, & saveNameSpace time + 1 (+1 gives us
-    # a bit of buffer for misc shutdown time)
-    hadoopstoptimeoutdivisor=7
+    # tasktracker/nodemanagers, jobhistory server, & saveNameSpace
+    # time + 1 (+1 gives us a bit of buffer for misc shutdown time)
+    hadoopstoptimeoutdivisor=8
 else
     # Need to split timeout time between namenode, datanodes,
-    # secondary namenode, & saveNameSpace time + 1 (+1 gives us a bit
-    # of buffer for misc shutdown time)
-    hadoopstoptimeoutdivisor=5
+    # secondary namenode, jobhistory server, & saveNameSpace time + 1
+    # (+1 gives us a bit of buffer for misc shutdown time)
+    hadoopstoptimeoutdivisor=6
 fi    
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
@@ -668,6 +668,7 @@ then
     coresitexml=${hadoopconffiledir}/core-site-2.0.xml
     mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
     hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.0.sh
+    mapredenvsh=${hadoopconffiledir}/mapred-env-2.0.sh
     yarnsitexml=${hadoopconffiledir}/yarn-site-2.0.xml
     yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
     hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
@@ -776,6 +777,14 @@ then
 	-e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
+    hadoopmapredlogdir=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+
+    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdir}/g" \
+	$mapredenvsh > ${HADOOP_CONF_DIR}/mapred-env.sh
+
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
