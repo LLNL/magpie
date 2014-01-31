@@ -181,10 +181,12 @@ then
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
 	echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
+	echo "*   ${hadoopscriptprefix}/stop-jobhistoryserver.sh"
     fi
     if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
     then
 	echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
+	echo "*   ${hadoopscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
     fi
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
