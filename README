@@ -37,7 +37,8 @@ Basic Idea
 
 The basic idea behind these scripts are to:
 
-1) Allocate nodes on a cluster using slurm
+1) Allocate nodes on a cluster using slurm.  It also works with Moab
+   if slurm is the underlying resource manager.
 
 2) Scripts will setup configuration files so the Slurm/MPI rank 0 node
    is the "master".  All compute nodes will have configuration files
