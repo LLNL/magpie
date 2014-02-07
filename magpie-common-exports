@@ -110,6 +110,8 @@ export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
 export HADOOP_MAPRED_HOME=${HADOOP_HOME}
 
 export HADOOP_YARN_HOME=${HADOOP_HOME}
+myusername=`whoami`
+export HADOOP_YARN_USER="${myusername}"
 export YARN_CONF_DIR=${HADOOP_CONF_DIR}
 export YARN_LOG_DIR=${HADOOP_LOG_DIR}
 

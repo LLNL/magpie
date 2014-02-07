@@ -788,6 +788,7 @@ then
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g"
 	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
 
     echo "export YARN_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
