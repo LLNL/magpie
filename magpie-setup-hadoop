@@ -759,7 +759,7 @@ then
     #
     # A few settings depend on version
     #
-    if echo ${HADOOP_VERSION} | grep -q -E "2.[0-1]."
+    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
     then 
 	yarnauxservices="mapreduce.shuffle"
 	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
