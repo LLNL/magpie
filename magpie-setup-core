@@ -61,9 +61,6 @@ then
 	echo "mkdir failed making ${HADOOP_LOG_DIR}"
 	exit 1
     fi
-
-    export YARN_CONF_DIR=${HADOOP_CONF_DIR}
-    export YARN_LOG_DIR=${HADOOP_LOG_DIR}
 fi
 
 #

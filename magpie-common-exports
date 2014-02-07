@@ -109,6 +109,14 @@ export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
 # For jobhistoryserver
 export HADOOP_MAPRED_HOME=${HADOOP_HOME}
 
+export HADOOP_YARN_HOME=${HADOOP_HOME}
+export YARN_CONF_DIR=${HADOOP_CONF_DIR}
+export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+
+# Unsure if needed, read about these two online
+export HADOOP_HDFS_HOME=${HADOOP_HOME}
+export HADOOP_COMMON_HOME=${HADOOP_HOME}
+
 export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
 
