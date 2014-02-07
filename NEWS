@@ -1,3 +1,7 @@
+magpie 1.20
+-----------
+Lower MAGPIE_SHUTDOWN_TIME default to 15 minutes.
+
 magpie 1.19
 -----------
 Support changed configuration settings in yarn-site.xml for Hadoop 2.2.0.

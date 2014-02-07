@@ -123,7 +123,7 @@ fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    export MAGPIE_SHUTDOWN_TIME=30
+    export MAGPIE_SHUTDOWN_TIME=15
 fi
 
 # In main script, if master/slaves haven't been created yet, environment

@@ -102,7 +102,7 @@ fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    magpieshutdowntime=30
+    magpieshutdowntime=15
 else
     magpieshutdowntime=${MAGPIE_SHUTDOWN_TIME}
 fi
