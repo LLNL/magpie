@@ -251,7 +251,7 @@ then
 	bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
 	if [ $? -ne 0 ] 
 	then
-	    echo "Namenode never exited safe mode, consider increasing your job time"
+	    echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
 	    hadoopsetuppass=0
 	else
 	    hadoopsetuppass=1
