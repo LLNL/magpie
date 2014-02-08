@@ -21,6 +21,13 @@ export HADOOP_MAPRED_ROOT_LOGGER=INFO,RFA
 
 #export HADOOP_JOB_HISTORYSERVER_OPTS=
 export HADOOP_MAPRED_LOG_DIR="HADOOPMAPREDLOGDIR" # Where log files are stored.  $HADOOP_MAPRED_HOME/logs by default.
+
+# extras 
+export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"HADOOPCONFDIR"}
+export HADOOP_HOME="${HADOOP_HOME:-HADOOPHOME}"
+export HADOOP_COMMON_HOME="${HADOOP_COMMON_HOME:-HADOOPCOMMONHOME}"
+export HADOOP_MAPRED_HOME="${HADOOP_MAPRED_HOME:-HADOOPMAPREDHOME}"
+
 #export HADOOP_JHS_LOGGER=INFO,RFA # Hadoop JobSummary logger.
 #export HADOOP_MAPRED_PID_DIR= # The pid files are stored. /tmp by default.
 #export HADOOP_MAPRED_IDENT_STRING= #A string representing this instance of hadoop. $USER by default

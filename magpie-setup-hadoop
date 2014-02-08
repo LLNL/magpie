@@ -788,11 +788,19 @@ then
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
     hadoopmapredlogdir=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopconfdir=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoophome=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopcommonhome=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopmapredhome=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdir}/g" \
+	-e "s/HADOOPCONFDIR/${hadoopconfdir}/g" \
+	-e "s/HADOOPHOME/${hadoophome}/g" \
+	-e "s/HADOOPCOMMONHOME/${hadoopcommonhome}/g" \
+	-e "s/HADOOPMAPREDHOME/${hadoopmapredhome}/g" \
 	$mapredenvsh > ${HADOOP_CONF_DIR}/mapred-env.sh
 
     yarnconfdir=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
