@@ -17,7 +17,12 @@
 export HADOOP_YARN_USER=${HADOOP_YARN_USER:-YARNUSERNAME}
 
 # resolve links - $0 may be a softlink
-export YARN_CONF_DIR="${YARN_CONF_DIR:-$HADOOP_YARN_HOME/conf}"
+export YARN_CONF_DIR="${YARN_CONF_DIR:-YARNCONFDIR}"
+
+# extras 
+export YARN_LOG_DIR="${YARN_LOG_DIR:-YARNLOGDIR}"
+export YARN_COMMON_HOME="${YARN_COMMON_HOME:-YARNCOMMONHOME}"
+export HADOOP_YARN_HOME="${HADOOP_YARN_HOME:-HADOOPYARNHOME}"
 
 # some Java parameters
 # export JAVA_HOME=/home/y/libexec/jdk1.6.0/

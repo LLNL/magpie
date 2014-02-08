@@ -115,9 +115,10 @@ export HADOOP_YARN_USER="${myusername}"
 export YARN_CONF_DIR=${HADOOP_CONF_DIR}
 export YARN_LOG_DIR=${HADOOP_LOG_DIR}
 
-# Unsure if needed, read about these two online
+# Unsure if needed, read about these online
 export HADOOP_HDFS_HOME=${HADOOP_HOME}
 export HADOOP_COMMON_HOME=${HADOOP_HOME}
+export YARN_COMMON_HOME=${HADOOP_HOME}
 
 export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf

@@ -698,13 +698,23 @@ then
 	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
 	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
 
+    hadoopconfdir=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooplogdir=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoophome=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopcommonhome=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopmapredhome=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoophdfshome=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+	-e "s/HADOOPCONFDIR/${hadoopconfdir}/g" \
+	-e "s/HADOOPLOGDIR/${hadooplogdir}/g" \
+	-e "s/HADOOPHOME/${hadoophome}/g" \
+	-e "s/HADOOPCOMMONHOME/${hadoopcommonhome}/g" \
+	-e "s/HADOOPMAPREDHOME/${hadoopmapredhome}/g" \
+	-e "s/HADOOPHDFSHOME/${hadoophdfshome}/g" \
 	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
-    
-    echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
-    echo "export HADOOP_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
@@ -785,14 +795,20 @@ then
 	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdir}/g" \
 	$mapredenvsh > ${HADOOP_CONF_DIR}/mapred-env.sh
 
+    yarnconfdir=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    yarnlogdir=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    yarncommonhome=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopyarnhome=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
-	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g"
+	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
+	-e "s/YARNCONFDIR/${yarnconfdir}/g" \
+	-e "s/YARNLOGDIR/${yarnlogdir}/g" \
+	-e "s/YARNCOMMONHOME/${yarncommonhome}/g" \
+	-e "s/HADOOPYARNHOME/${hadoopyarnhome}/g" \
 	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
-
-    echo "export YARN_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
-    echo "export YARN_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
