@@ -646,6 +646,11 @@ fi
 magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
 hadoopstoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${hadoopstoptimeoutdivisor}`
 
+if [ "${hadoopstoptimeout}" -lt 5 ]
+then
+    hadoopstoptimeout=5;
+fi
+
 #
 # Get config files for setup
 #
