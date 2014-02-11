@@ -96,7 +96,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # Specifies the amount of time to give startup / shutdown activities a
 # chance to succeed before Magpie will give up (or in the case of
 # shutdown, when the resource manager may kill the running job).
-# Defaults to 30 minutes.
+# Defaults to 30 minutes for startup, 15 minutes for shutdown.
 #
 # The startup time in particular may need to be increased if you have
 # a large amount of data.  As an example, HDFS may need to spend a
@@ -107,7 +107,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # SBATCH_TIMELIMIT specified above.
 #
 # export MAGPIE_STARTUP_TIME=30
-# export MAGPIE_SHUTDOWN_TIME=30
+# export MAGPIE_SHUTDOWN_TIME=15
 
 # Convenience Scripts
 #
@@ -175,7 +175,7 @@ export HADOOP_SETUP_TYPE="MR2"
 # Make sure the version for Mapreduce version 1 or 2 matches whatever
 # you set in HADOOP_SETUP_TYPE
 #
-export HADOOP_VERSION="2.1.0-beta"
+export HADOOP_VERSION="2.2.0"
 
 # Path to your Hadoop build/binaries
 #
