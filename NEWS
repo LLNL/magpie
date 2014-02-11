@@ -1,6 +1,7 @@
 magpie 1.20
 -----------
 Lower MAGPIE_SHUTDOWN_TIME default to 15 minutes.
+Update default Hadoop version to 2.2.0.
 
 magpie 1.19
 -----------
