@@ -168,6 +168,14 @@ then
 	then
 	    echo "*   ${hadoopscriptprefix}/start-yarn.sh"
 	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/start-jobhistoryserver.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "*   ${hadoopscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
+	fi
     fi
 
     echo "*" 
