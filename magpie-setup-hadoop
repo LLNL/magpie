@@ -39,7 +39,13 @@ then
     exit 0
 fi
 
-cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
+if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+then
+    # For some reason Hadoop 1.0 needs FQDN hosts in hosts-include
+    cp ${HADOOP_CONF_DIR}/slaves_fqdn ${HADOOP_CONF_DIR}/hosts-include
+else
+    cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
+fi
 hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
 hostsincludefile=`echo "${hostsincludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
 
