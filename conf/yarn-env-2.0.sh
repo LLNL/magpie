@@ -111,8 +111,21 @@ YARN_OPTS="$YARN_OPTS -Dyarn.home.dir=$YARN_COMMON_HOME"
 YARN_OPTS="$YARN_OPTS -Dyarn.id.str=$YARN_IDENT_STRING"
 YARN_OPTS="$YARN_OPTS -Dhadoop.root.logger=${YARN_ROOT_LOGGER:-INFO,console}"
 YARN_OPTS="$YARN_OPTS -Dyarn.root.logger=${YARN_ROOT_LOGGER:-INFO,console}"
+
+export EXTRA_YARN_LIBRARY_PATH="EXTRAYARNLIBRARYPATH"
+
 if [ "x$JAVA_LIBRARY_PATH" != "x" ]; then
-  YARN_OPTS="$YARN_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
+    if [ "${EXTRA_YARN_LIBRARY_PATH}X" != "X" ]
+    then
+	YARN_OPTS="$YARN_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH:${EXTRA_YARN_LIBRARY_PATH}"
+    else
+	YARN_OPTS="$YARN_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
+    fi
+else
+    if [ "${EXTRA_YARN_LIBRARY_PATH}X" != "X" ]
+    then
+	YARN_OPTS="$YARN_OPTS -Djava.library.path=${EXTRA_YARN_LIBRARY_PATH}"
+    fi
 fi  
 YARN_OPTS="$YARN_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
 

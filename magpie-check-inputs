@@ -152,6 +152,13 @@ then
     exit 1
 fi
 
+if [ "${HADOOP_UDA_SETUP}X" != "X" ] \
+    && ( [ "${HADOOP_UDA_SETUP}" != "yes" ] && [ "${HADOOP_UDA_SETUP}" != "no" ] )
+then
+    echo "HADOOP_UDA_SETUP must be set to yes or no"
+    exit 1
+fi
+
 if [ "${PIG_SETUP}X" != "X" ] \
     && ( [ "${PIG_SETUP}" != "yes" ] && [ "${PIG_SETUP}" != "no" ] )
 then
@@ -381,6 +388,56 @@ then
     then
 	echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
 	exit 1
+    fi
+fi
+
+#
+# Check UDA Inputs 
+#
+
+if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+then
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	echo "UDA requires Hadoop to be setup, set HADOOP_SETUP to yes"
+	exit 1
+    fi
+
+    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
+	|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    echo "UDA is only supported on HADOOP MRv2 right now."
+	    exit 1
+	fi
+
+	if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+	then 
+	    echo "HADOOP UDA only supported in Hadoop 2.2.0 and more recent versions"
+	    exit 1
+	fi
+
+	if [ "${HADOOP_UDA_JAR}X" == "X" ]
+	then
+	    echo "HADOOP_UDA_JAR must be set"
+	    exit 1
+	fi
+
+	if [ ! -f "${HADOOP_UDA_JAR}" ]
+	then
+	    echo "Jar HADOOP_UDA_JAR \"$HADOOP_UDA_JAR\" is not a regular file"
+	    exit 1
+	fi
+
+	if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
+	then
+	    if [ ! -d "${HADOOP_UDA_LIBPATH}" ]
+	    then
+		echo "Library path HADOOP_UDA_LIBPATH \"$HADOOP_UDA_LIBPATH\" is not a directory"
+		exit 1
+	    fi
+	fi
     fi
 fi
 

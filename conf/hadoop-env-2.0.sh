@@ -47,12 +47,25 @@ for f in $HADOOP_HOME/contrib/capacity-scheduler/*.jar; do
   fi
 done
 
+export EXTRA_HADOOP_CLASSES="EXTRAHADOOPCLASSES"
+
+if [ "${EXTRA_HADOOP_CLASSES}X" != "X" ]
+then
+  if [ "$HADOOP_CLASSPATH" ]; then
+    export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$EXTRA_HADOOP_CLASSES
+  else
+    export HADOOP_CLASSPATH=$EXTRA_HADOOP_CLASSES
+  fi
+fi
+
 # The maximum amount of heap to use, in MB. Default is 1000.
 export HADOOP_HEAPSIZE=HADOOP_DAEMON_HEAP_MAX
 #export HADOOP_NAMENODE_INIT_HEAPSIZE=""
 
+export EXTRA_HADOOP_OPTS="EXTRAHADOOPOPTS"
+
 # Extra Java runtime options.  Empty by default.
-export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"
+export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true $EXTRA_HADOOP_OPTS"
 
 # Command specific options appended to HADOOP_OPTS when specified
 export HADOOP_NAMENODE_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER:-INFO,RFAS} -Dhdfs.audit.logger=${HDFS_AUDIT_LOGGER:-INFO,NullAppender} $HADOOP_NAMENODE_OPTS"

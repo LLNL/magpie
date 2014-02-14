@@ -11,6 +11,8 @@ all:
 	echo "" >> magpie.sbatch
 	cat templates/magpie-hadoop >> magpie.sbatch
 	echo "" >> magpie.sbatch
+	cat templates/magpie-uda >> magpie.sbatch
+	echo "" >> magpie.sbatch
 	cat templates/magpie-pig >> magpie.sbatch
 	echo "" >> magpie.sbatch
 	cat templates/magpie-zookeeper >> magpie.sbatch
@@ -61,6 +63,8 @@ all:
 	cat templates/magpie-general-configuration >> magpie.msub
 	echo "" >> magpie.msub
 	cat templates/magpie-hadoop >> magpie.msub
+	echo "" >> magpie.msub
+	cat templates/magpie-uda >> magpie.msub
 	echo "" >> magpie.msub
 	cat templates/magpie-pig >> magpie.msub
 	echo "" >> magpie.msub

@@ -39,6 +39,9 @@ then
     exit 0
 fi
 
+extrahadoopclasses=""
+extrahadoopopts=""
+
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 then
     # For some reason Hadoop 1.0 needs FQDN hosts in hosts-include
@@ -658,6 +661,45 @@ then
 fi
 
 #
+# Hadoop UDA Setup
+#
+
+if [ "${HADOOP_UDA_SETUP}" == "yes" ] \
+    && [ "${HADOOP_SETUP_TYPE}"  == "MR2" ]
+then
+    if [ "${extrahadoopclasses}X" == "X" ]
+    then
+	extrahadoopclasses="${HADOOP_UDA_JAR}"
+    else
+	extrahadoopclasses="${extrahadoopclasses}:${HADOOP_UDA_JAR}"
+    fi
+
+    if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
+    then
+	if [ "${extrahadoopopts}X" == "X" ]
+	then
+	    extrahadoopopts="-Djava.library.path=${HADOOP_UDA_LIBPATH}"
+	else
+	    extrahadoopopts="${extrahadoopopts} -Djava.library.path=${HADOOP_UDA_LIBPATH}"
+	fi
+
+	if [ "${extrayarnlibrarypath}X" == "X" ]
+	then
+	    extrayarnlibrarypath="${HADOOP_UDA_LIBPATH}"
+	else
+	    extrayarnlibrarypath="${extrayarnlibrarypath}:${HADOOP_UDA_LIBPATH}"
+	fi
+    fi
+fi
+
+if [ "${HADOOP_UDA_RDMA_BUFFER_SIZE}X" != "X" ]
+then
+    rdmabufsize=${HADOOP_UDA_RDMA_BUFFER_SIZE}
+else
+    rdmabufsize=1024
+fi
+
+#
 # Get config files for setup
 #
 
@@ -716,6 +758,9 @@ then
     hadoopmapredhome=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     hadoophdfshome=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
+    sedextrahadoopclasses=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
+    sedextrahadoopopts=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
+
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
@@ -725,6 +770,8 @@ then
 	-e "s/HADOOPCOMMONHOME/${hadoopcommonhome}/g" \
 	-e "s/HADOOPMAPREDHOME/${hadoopmapredhome}/g" \
 	-e "s/HADOOPHDFSHOME/${hadoophdfshome}/g" \
+	-e "s/EXTRAHADOOPCLASSES/${sedextrahadoopclasses}/g" \
+	-e "s/EXTRAHADOOPOPTS/${sedextrahadoopopts}/g" \
 	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
@@ -747,9 +794,25 @@ then
     cat ${hadoopconffiledir}/hadoop.log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
 fi
 
-if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
+if [ ${HADOOP_SETUP_TYPE} == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
+    if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+    then
+        #
+        # A few settings depend on version
+        #
+	if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+	then 
+	    shuffleproviderservices="uda.shuffle"
+	else
+	    shuffleproviderservices="uda_shuffle"
+	fi
+	shuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
+    else
+	shuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
+    fi
+
     sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
 	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
@@ -772,6 +835,9 @@ then
 	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
     	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
     	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
+	-e "s/SHUFFLEPROVIDERSERVICES/${shuffleproviderservices}/g" \
+	-e "s/SHUFFLECONSUMERPLUGIN/${shuffleconsumerplugin}/g" \
+	-e "s/RDMABUFSIZE/${rdmabufsize}/g" \
 	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
 fi
 
@@ -782,10 +848,22 @@ then
     #
     if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
     then 
-	yarnauxservices="mapreduce.shuffle"
+	if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+	then
+	    yarnauxservices="mapreduce.shuffle,uda.shuffle"
+	    yarnauxudashuffle="yarn.nodemanager.aux-services.uda.shuffle.class"
+	else
+	    yarnauxservices="mapreduce.shuffle"
+	fi
 	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
     else
-	yarnauxservices="mapreduce_shuffle"
+	if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+	then
+	    yarnauxservices="mapreduce_shuffle,uda_shuffle"
+	    yarnauxudashuffle="yarn.nodemanager.aux-services.uda_shuffle.class"
+	else
+	    yarnauxservices="mapreduce_shuffle"
+	fi
 	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
     fi
 
@@ -796,6 +874,7 @@ then
 	-e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
 	-e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
 	-e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
+	-e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
     hadoopmapredlogdir=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -819,6 +898,8 @@ then
     yarncommonhome=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopyarnhome=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
+    sedextrayarnlibrarypath=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
+
     sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
@@ -827,6 +908,7 @@ then
 	-e "s/YARNLOGDIR/${yarnlogdir}/g" \
 	-e "s/YARNCOMMONHOME/${yarncommonhome}/g" \
 	-e "s/HADOOPYARNHOME/${hadoopyarnhome}/g" \
+	-e "s/EXTRAYARNLIBRARYPATH/${sedextrayarnlibrarypath}/g" \
 	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
