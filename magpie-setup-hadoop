@@ -144,7 +144,7 @@ then
     yarnresourcememory=${YARN_RESOURCE_MEMORY}
 else
     # 80% of system memory seems like a good estimate
-    tmp1=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    tmp1=$(echo "${memtotalgig} * .9" | bc -l | xargs printf "%1.0f")
     yarnresourcememory=$(echo "${tmp1} * 1024" | bc -l | xargs printf "%1.0f")
 fi
 
@@ -152,17 +152,17 @@ if [ "${HADOOP_CHILD_HEAPSIZE}X" != "X" ]
 then
     allchildheapsize=${HADOOP_CHILD_HEAPSIZE}
 else
-# achu: We round down to nearest 256 here b/c we add up 256 for container
+# achu: We round down to nearest 128 here b/c we add up 128 for container
 #
 # For MapReduce1, yarn resource memory makes no sense, but we can use
 # the value for some of the calculations below.
 #
     tmp1=$(echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
-    tmp2=$(echo "${tmp1} / 256" | bc -l | xargs printf "%1.0f")
-    allchildheapsize=$(echo "${tmp2} * 256" | bc -l | xargs printf "%1.0f")
-    if [ "${allchildheapsize}" -lt "256" ]
+    tmp2=$(echo "${tmp1} / 128" | bc -l | xargs printf "%1.0f")
+    allchildheapsize=$(echo "${tmp2} * 128" | bc -l | xargs printf "%1.0f")
+    if [ "${allchildheapsize}" -lt "128" ]
     then
-	allchildheapsize=256
+	allchildheapsize=128
     fi
 fi
 
@@ -197,8 +197,8 @@ else
     iosortfactor=`expr ${iosortmb} \/ 10`
 fi
 
-mapcontainermb=`expr ${mapchildheapsize} + 256`
-reducecontainermb=`expr ${reducechildheapsize} + 256`
+mapcontainermb=`expr ${mapchildheapsize} + 128`
+reducecontainermb=`expr ${reducechildheapsize} + 128`
 
 yarnmincontainer=1024
 if [ ${mapcontainermb} -lt ${yarnmincontainer} ]

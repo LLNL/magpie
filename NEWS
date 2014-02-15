@@ -1,6 +1,8 @@
 magpie 1.22
 -----------
 Support UDA.
+Change default memory from 80% to 90% of system memory.
+Change default container to be extra 128M instead of extra 256M.
 
 magpie 1.21
 -----------
