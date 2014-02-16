@@ -383,6 +383,9 @@ export HADOOP_MODE="terasort"
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
+# "hdfsovernetworkfs" - HDFS over Network FS.  Identical to HDFS over
+#                       Lustre, but filesystem agnostic.
+#
 # "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),
 #           to use networked file system directly.  It could be a
 #           Lustre mount or NFS mount.  Whatever you please.

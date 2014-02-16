@@ -108,10 +108,12 @@ submitfilereplication=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs pr
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then
     iobuffersize=65536
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     # Default block size is 1M in Lustre
     # XXX: If not default, can get from lctl or similar?
+    # If other networkFS, just assume like Lustre
     iobuffersize=1048576
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
@@ -488,6 +490,34 @@ then
     fi
     
     pathcount=1
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+then
+    fspath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${hadoopnoderank}"
+    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefault=`echo "hdfs://${HADOOP_MASTER_NODE}:54310" | sed "s/\\//\\\\\\\\\//g"`
+    
+    # Assume if path doesn't exist must format
+    if [ -d "${fspath}" ]
+    then
+	format=0
+    else
+	format=1
+	mkdir -p ${fspath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${fspath}"
+	    exit 1
+	fi
+    fi
+    
+    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+    then
+	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
+    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
+    then
+	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+    fi
+    
+    pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     fspath="${HADOOP_RAWNETWORKFS_PATH}"
@@ -570,6 +600,7 @@ else
 fi
 
 if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]) \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
@@ -930,7 +961,8 @@ then
 fi
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \

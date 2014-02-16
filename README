@@ -15,7 +15,8 @@ This project allows you to:
 - Run Hadoop interactively or via scripts.
 - Run Mapreduce 1.0 or 2.0 jobs (i.e. Hadoop 1.0 or 2.0)
 - Run against a number of filesystem options, such as HDFS, HDFS over
-  Lustre, or Lustre directly
+  Lustre, HDFS over a generic network filesystem, Lustre directly, or
+  a generic network filesystem.
 - Take advantage of SSDs for local caching if available
 - Make decent optimizations of Hadoop for your hardware
 

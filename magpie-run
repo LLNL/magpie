@@ -88,7 +88,8 @@ then
     then
 	echo "Starting hadoop"
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
 	    ${hadoopscriptprefix}/start-dfs.sh 
 	fi
@@ -156,7 +157,8 @@ then
 	echo "* To setup, you probably want to run:" 
 	echo "*"
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
 	    echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
 	fi
@@ -190,7 +192,8 @@ then
 	echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
     fi
     if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
     then
 	echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
     fi
@@ -237,7 +240,8 @@ then
     # as we're waiting.
     if [ ${HADOOP_MODE} != "setuponly" ] \
 	&& ([ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ])
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ])
     then
 	namenodemaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${sleepwait}`
 	namenodemaxwaittimes=`expr ${namenodemaxwaitseconds} \/ 30`
@@ -359,7 +363,8 @@ then
 	fi
 
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
 	    echo "Saving namespace before shutting down hdfs ..."
 
