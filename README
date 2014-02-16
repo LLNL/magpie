@@ -19,7 +19,11 @@ This project allows you to:
 - Take advantage of SSDs for local caching if available
 - Make decent optimizations of Hadoop for your hardware
 
-It also supports other big data software, including:
+This project supports additional Hadoop plugins, including:
+
+- UDA
+
+This project supports other Hadoop ecosystem software, including:
 
 - Pig
 - Zookeeper
