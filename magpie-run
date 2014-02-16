@@ -26,6 +26,7 @@
 # running jobs.  For the most part, it shouldn't be editted.  See
 # magpie.sbatch for configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 if ! Magpie_am_I_master
@@ -335,7 +336,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    hadoopsleepamount=`expr ${SBATCH_TIMELIMIT} - ${MAGPIE_SHUTDOWN_TIME}`
+	    hadoopsleepamount=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_SHUTDOWN_TIME}`
 	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
 	    sleep ${hadoopsleepseconds}
 	fi

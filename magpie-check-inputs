@@ -30,10 +30,50 @@
 # Check Core Inputs
 #
 
-if [ "${SBATCH_TIMELIMIT}X" == "X" ]
+if [ "${MAGPIE_SUBMISSION_TYPE}X" == "X" ]
 then
-    echo "SBATCH_TIMELIMIT environment variable must be set"
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set"
     exit 1
+fi
+
+if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ]
+then
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to slurmsbatch"
+    exit 1
+fi
+
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
+then
+    if [ "${SLURM_NODEID}X" == "X" ]
+    then
+	echo "SLURM_NODEID environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_NNODES}X" == "X" ]
+    then
+	echo "SLURM_NNODES environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_JOB_NODELIST}X" == "X" ]
+    then
+	echo "SLURM_JOB_NODELIST environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_JOB_NAME}X" == "X" ]
+    then
+	echo "SLURM_JOB_NAME environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_JOB_ID}X" == "X" ]
+    then
+	echo "SLURM_JOB_ID environment variable must be set"
+	exit 1
+    fi
+    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
+    then
+	echo "SBATCH_TIMELIMIT environment variable must be set"
+	exit 1
+    fi
 fi
 
 #
@@ -57,6 +97,14 @@ then
     echo "${MAGPIE_SCRIPTS_HOME}/magpie-common-exports cannot be found"
     exit 1
 fi
+
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert" ]
+then
+    echo "${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert cannot be found"
+    exit 1
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 
 if [ "${MAGPIE_LOCAL_DIR}X" == "X" ]
 then
@@ -109,7 +157,7 @@ fi
 
 magpiestartupshutdowntime=`expr ${magpiestartuptime} + ${magpieshutdowntime}`
 
-if [ ${SBATCH_TIMELIMIT} -le ${magpiestartupshutdowntime} ]
+if [ ${MAGPIE_TIMELIMIT_MINUTES} -le ${magpiestartupshutdowntime} ]
 then
     echo "timelimit must be atleast the sum of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME"
     exit 1
@@ -143,7 +191,7 @@ then
     exit 1
 fi
 
-nodecount=${SLURM_NNODES}
+nodecount=${MAGPIE_NODE_COUNT}
 
 if [ "${HADOOP_SETUP}X" != "X" ] \
     && ( [ "${HADOOP_SETUP}" != "yes" ] && [ "${HADOOP_SETUP}" != "no" ] )

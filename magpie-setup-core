@@ -36,6 +36,7 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 #
@@ -127,8 +128,8 @@ else
     fi
 fi
 
-${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | head -1 > ${MAGPIE_LOCAL_DIR}/tmp_masters
-${hostrangescript} ${hostrangescriptoptions} ${SLURM_JOB_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_DIR}/tmp_slaves
+${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_DIR}/tmp_masters
+${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_DIR}/tmp_slaves
 
 if [ "${HADOOP_SETUP}" == "yes" ] && [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then

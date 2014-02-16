@@ -1,6 +1,8 @@
 magpie 1.23
 -----------
 Support new 'hdfsovernetworkfs' filesystem option.
+Re-architect internally to be scheduler/resource manager agnostic
+- Will allow extensibility in the future.
 
 magpie 1.22
 -----------

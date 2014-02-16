@@ -57,6 +57,10 @@ export SBATCH_TIMELIMIT=<my time in minutes>
 #SBATCH --exclusive
 #SBATCH --no-kill
 
+# Need to tell Magpie how you are submitting this job
+export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
+
+
 ############################################################################
 # Magpie Configurations
 ############################################################################
@@ -407,13 +411,21 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 #
 export HADOOP_HDFS_PATH="/ssd/username/"
 
-# Lustre mount to do Hadoop HDFS out of
+# Lustre path to do Hadoop HDFS out of
 #
 # Note that different versions of Hadoop may not be compatible with
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
 export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
+
+# Networkfs path to do Hadoop HDFS out of
+#
+# Note that different versions of Hadoop may not be compatible with
+# your current HDFS data.  If you're going to switch around to
+# different versions, perhaps set different paths for different data.
+#
+export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/username/hdfsovernetworkfs/"
 
 # Path for rawnetworkfs
 #

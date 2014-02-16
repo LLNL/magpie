@@ -4,9 +4,6 @@ Spark
 Hbase
 - w/ thrift server?
 Storm
-Rework Magpie to not use SLURM/SBATCH environment variables.
-- Convert to generic MAGPIE variables and create shim that converts
-  from resource manager to MAGPIE variables.
 
 Minor feature support
 ---------------------

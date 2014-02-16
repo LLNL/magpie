@@ -2,8 +2,11 @@ magpie
 ======
 
 Magpie contains a number of scripts for running Hadoop jobs in HPC
-environments using Slurm and running jobs on top of Lustre.  It also
-supports other Hadoop related software, such as Pig and Zookeeper.
+environments.  It currently supports the schedulers/resource managers
+of Slurm and Moab.  It currently supports the parallel file system
+Lustre and running over any generic network filesytem..  It supports
+Hadoop extensions such as UDA.  It also supports other Hadoop
+ecosystem software, such as Pig and Zookeeper.
 
 Basic Idea
 ==========

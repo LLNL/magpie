@@ -26,6 +26,7 @@
 # part, it shouldn't be editted.  See magpie.sbatch for configuration
 # details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 if [ "${HADOOP_SETUP}" != "yes" ]

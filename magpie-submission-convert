@@ -22,17 +22,12 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script executes scripts on behalf of the user.  For the most
-# part, it shouldn't be editted.  See magpie.sbatch for configuration
-# details.
-
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-
-if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
-then    
-    ${MAGPIE_PRE_JOB_RUN}
-    exit $?
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
+then
+    export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
+    export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
+    export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
+    export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
+    export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
+    export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
 fi
-
-exit 0

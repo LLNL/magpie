@@ -1,4 +1,4 @@
-Running Hadoop on Clusters w/ Slurm & Lustre
+Running Hadoop on Traditional HPC Clusters
 
 Albert Chu
 Updated October 21st, 2013
@@ -8,7 +8,9 @@ What is this project
 --------------------
 
 This project contains a number of scripts for running Hadoop jobs in
-HPC environments using Slurm and running jobs on top of Lustre.
+HPC environments.  It currently supports the schedulers/resource
+managers of Slurm and Moab.  It currently supports the parallel file
+system Lustre and running over any generic network filesytem.
 
 This project allows you to:
 
