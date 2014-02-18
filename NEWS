@@ -1,3 +1,7 @@
+magpie 1.24
+-----------
+Turn off speculative execution by default.
+
 magpie 1.23
 -----------
 Support new 'hdfsovernetworkfs' filesystem option.
