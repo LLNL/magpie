@@ -2,6 +2,7 @@ magpie 1.24
 -----------
 Turn off speculative execution by default.
 Make parallel copies in Hadoop configurable.
+Make default tasks per node 1.5X number of cores.
 
 magpie 1.23
 -----------

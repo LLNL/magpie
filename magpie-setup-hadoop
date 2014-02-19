@@ -137,8 +137,7 @@ javahometmp=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
 memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
 proccounttmp=`cat /proc/cpuinfo | grep processor | wc -l`
-# subtract one, leave 1 processor for daemons
-proccount=`expr ${proccounttmp} - 1`
+proccount=`expr ${proccounttmp} + ${proccounttmp} \/ 2`
 
 if [ "${HADOOP_MAX_TASKS_PER_NODE}X" != "X" ]
 then

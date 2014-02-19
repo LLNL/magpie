@@ -242,8 +242,8 @@ export HADOOP_MODE="terasort"
 
 # Tasks per Node
 #
-# If not specified, defaults to #cores - 1 (i.e. leave 1 processor for
-# system daemons).    
+# If not specified, defaults to #cores * 1.5.  # of cores is determined
+# by /proc/cpuinfo.  Adjustment may be needed if hyperthreading is enabled.
 #
 # export HADOOP_MAX_TASKS_PER_NODE=8
 
@@ -325,6 +325,13 @@ export HADOOP_MODE="terasort"
 #
 # export HADOOP_IO_SORT_FACTOR=10
 # export HADOOP_IO_SORT_MB=100
+
+# Parallel Copies
+#
+# The default number of parallel transfers run by reduce during the
+# copy(shuffle) phase.  If not specified, some reasonable number will
+# be assumed.
+# export HADOOP_PARALLEL_COPIES=10
 
 ############################################################################
 # Hadoop Terasort Configurations
