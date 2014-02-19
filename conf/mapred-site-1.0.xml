@@ -72,7 +72,6 @@
   </description>
 </property>
 
-<!-- Script will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>mapred.reduce.parallel.copies</name>
   <value>MRPRALLELCOPIES</value>

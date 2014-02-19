@@ -64,10 +64,15 @@ hostsexcludefile=`echo "${hostsexcludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
 #
 
 # Recommendation from Cloudera, parallel copies sqrt(number of nodes), floor of ten
-parallelcopies=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
-if [ "${parallelcopies}" -lt "10" ]
+if [ "${HADOOP_PARALLEL_COPIES}X" != "X" ]
 then
-    parallelcopies=10
+    parallelcopies=${HADOOP_PARALLEL_COPIES}
+else 
+    parallelcopies=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
+    if [ "${parallelcopies}" -lt "10" ]
+    then
+	parallelcopies=10
+    fi
 fi
 
 # Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200

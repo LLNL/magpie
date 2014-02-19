@@ -178,6 +178,13 @@ export HADOOP_MODE="terasort"
 # export HADOOP_IO_SORT_FACTOR=10
 # export HADOOP_IO_SORT_MB=100
 
+# Parallel Copies
+#
+# The default number of parallel transfers run by reduce during the
+# copy(shuffle) phase.  If not specified, some reasonable number will
+# be assumed.
+# export HADOOP_PARALLEL_COPIES=10
+
 ############################################################################
 # Hadoop Terasort Configurations
 ############################################################################

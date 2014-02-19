@@ -53,7 +53,6 @@
   </description>
 </property>
 
-<!-- Script will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>mapreduce.reduce.shuffle.parallelcopies</name>
   <value>MRPRALLELCOPIES</value>
