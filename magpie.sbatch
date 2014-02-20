@@ -282,8 +282,11 @@ export HADOOP_MODE="terasort"
 # HADOOP_CHILD_MAP_HEAPSIZE and HADOOP_CHILD_REDUCE_HEAPSIZE are for
 # Yarn (i.e. HADOOP_SETUP_TYPE = MR2)
 #
-# If HADOOP_CHILD_MAP_HEAPSIZE and/or HADOOP_CHILD_REDUCE_HEAPSIZE are
-# not specified, they are assumed to be HADOOP_CHILD_HEAPSIZE.
+# If HADOOP_CHILD_MAP_HEAPSIZE is not specified, it is assumed to be
+# HADOOP_CHILD_HEAPSIZE.
+#
+# If HADOOP_CHILD_REDUCE_HEAPSIZE is not specified, it is assumed to
+# be 2X the HADOOP_CHILD_MAP_HEAPSIZE.
 #
 # export HADOOP_CHILD_HEAPSIZE=2048
 # export HADOOP_CHILD_MAP_HEAPSIZE=2048

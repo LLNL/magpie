@@ -3,6 +3,7 @@ magpie 1.25
 Change default memory from 90% to 80% of system memory.
 Determine default container size based on size of heap instead of fixed value.
 Calculate default io.sort.mb based on mapheapsize instead of fixed value. 
+Default reducer heap size is now 2X the map heap size.
 
 magpie 1.24
 -----------

@@ -180,7 +180,12 @@ if [ "${HADOOP_CHILD_REDUCE_HEAPSIZE}X" != "X" ]
 then
     reducechildheapsize=${HADOOP_CHILD_REDUCE_HEAPSIZE}
 else
-    reducechildheapsize=${allchildheapsize}
+    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+	reducechildheapsize=`expr ${mapchildheapsize} \* 2`
+    else
+	reducechildheapsize=${allchildheapsize}
+    fi
 fi
 
 if [ "${HADOOP_CHILD_MAP_CONTAINER_BUFFER}X" != "X" ]
