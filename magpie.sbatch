@@ -330,7 +330,7 @@ export HADOOP_MODE="terasort"
 # The number of streams of files to sort while reducing and the memory
 # amount to use while sorting.  This is a quite advanced mechanism
 # taking into account many factors.  If not specified, some reasonable
-# number will be assumed.
+# number will be calculated.
 #
 # export HADOOP_IO_SORT_FACTOR=10
 # export HADOOP_IO_SORT_MB=100

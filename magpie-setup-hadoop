@@ -216,7 +216,13 @@ if [ "${HADOOP_IO_SORT_MB}X" != "X" ]
 then
     iosortmb=${HADOOP_IO_SORT_MB}
 else
-    iosortmb=256
+    # 128M per gig
+    numgig=`expr ${mapchildheapsize} / 1024`
+    if [ "${numgig}" == "0" ]
+    then
+	numgig=1
+    fi
+    iosortmb=`expr ${numgig} \* 128`
 fi
 
 if [ "${HADOOP_IO_SORT_FACTOR}X" != "X" ]
