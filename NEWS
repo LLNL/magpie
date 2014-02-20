@@ -1,3 +1,8 @@
+magpie 1.25
+-----------
+Change default memory from 90% to 80% of system memory.
+Determine default container size based on size of heap instead of fixed value.
+
 magpie 1.24
 -----------
 Turn off speculative execution by default.

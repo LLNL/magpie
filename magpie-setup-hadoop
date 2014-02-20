@@ -159,17 +159,13 @@ if [ "${HADOOP_CHILD_HEAPSIZE}X" != "X" ]
 then
     allchildheapsize=${HADOOP_CHILD_HEAPSIZE}
 else
-# achu: We round down to nearest 128 here b/c we add up 128 for container
-#
-# For MapReduce1, yarn resource memory makes no sense, but we can use
-# the value for some of the calculations below.
-#
+# achu: We round down to nearest 512M
     tmp1=$(echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
-    tmp2=$(echo "${tmp1} / 128" | bc -l | xargs printf "%1.0f")
-    allchildheapsize=$(echo "${tmp2} * 128" | bc -l | xargs printf "%1.0f")
-    if [ "${allchildheapsize}" -lt "128" ]
+    tmp2=$(echo "${tmp1} / 512" | bc -l | xargs printf "%1.0f")
+    allchildheapsize=$(echo "${tmp2} * 512" | bc -l | xargs printf "%1.0f")
+    if [ "${allchildheapsize}" -lt "512" ]
     then
-	allchildheapsize=128
+	allchildheapsize=512
     fi
 fi
 
@@ -185,6 +181,32 @@ then
     reducechildheapsize=${HADOOP_CHILD_REDUCE_HEAPSIZE}
 else
     reducechildheapsize=${allchildheapsize}
+fi
+
+if [ "${HADOOP_CHILD_MAP_CONTAINER_BUFFER}X" != "X" ]
+then
+    mapcontainerbuffer=${HADOOP_CHILD_MAP_CONTAINER_BUFFER}
+else
+    # Estimate 256M per G
+    numgig=`expr ${mapchildheapsize} / 1024`
+    if [ "${numgig}" == "0" ]
+    then
+	numgig=1
+    fi
+    mapcontainerbuffer=`expr ${numgig} \* 256`
+fi
+
+if [ "${HADOOP_CHILD_REDUCE_CONTAINER_BUFFER}X" != "X" ]
+then
+    reducecontainerbuffer=${HADOOP_CHILD_REDUCE_CONTAINER_BUFFER}
+else
+    # Estimate 256M per G
+    numgig=`expr ${reducechildheapsize} / 1024`
+    if [ "${numgig}" == "0" ]
+    then
+	numgig=1
+    fi
+    reducecontainerbuffer=`expr ${numgig} \* 256`
 fi
 
 # Cloudera recommends 256 for io.sort.mb.  Cloudera blog suggests
@@ -204,8 +226,8 @@ else
     iosortfactor=`expr ${iosortmb} \/ 10`
 fi
 
-mapcontainermb=`expr ${mapchildheapsize} + 128`
-reducecontainermb=`expr ${reducechildheapsize} + 128`
+mapcontainermb=`expr ${mapchildheapsize} + ${mapcontainerbuffer}`
+reducecontainermb=`expr ${reducechildheapsize} + ${reducecontainerbuffer}`
 
 yarnmincontainer=1024
 if [ ${mapcontainermb} -lt ${yarnmincontainer} ]

@@ -139,7 +139,16 @@ export HADOOP_MODE="terasort"
 #
 # export HADOOP_CHILD_HEAPSIZE=2048
 # export HADOOP_CHILD_MAP_HEAPSIZE=2048
-# export HADOOP_CHILD_REDUCE_HEAPSIZE=2048
+# export HADOOP_CHILD_REDUCE_HEAPSIZE=4096
+
+# Container Buffer
+#
+# Specify the amount of overhead each Yarn container will have over
+# the heap size.  Specified in M.  If not specified, a reasonable
+# estimate will be calculated based on total memory available.
+#
+# export HADOOP_CHILD_MAP_CONTAINER_BUFFER=256
+# export HADOOP_CHILD_REDUCE_CONTAINER_BUFFER=512
 
 # Mapreduce Slowstart, indicating percent of maps that should complete
 # before reducers begin.
