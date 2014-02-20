@@ -151,7 +151,7 @@ then
     yarnresourcememory=${YARN_RESOURCE_MEMORY}
 else
     # 80% of system memory seems like a good estimate
-    tmp1=$(echo "${memtotalgig} * .9" | bc -l | xargs printf "%1.0f")
+    tmp1=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
     yarnresourcememory=$(echo "${tmp1} * 1024" | bc -l | xargs printf "%1.0f")
 fi
 
