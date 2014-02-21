@@ -640,8 +640,8 @@ fi
 if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]) \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
     && [ "${HADOOP_LOCALSTORE}X" != "X" ]
 then
     IFSORIG=${IFS}
