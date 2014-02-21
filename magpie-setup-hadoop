@@ -449,6 +449,7 @@ fi
 #
 
 pathcount=0
+dircount=0
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then
     # Setup node directory per node 
@@ -519,15 +520,57 @@ then
 	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
     fi
     
-    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+    pathcount=1
+
+    datanodedirtmp=""
+    if [ "${HADOOP_HDFSOVERLUSTRE_DIR_COUNT}X" != "X" ] \
+	&& [ "${HADOOP_HDFSOVERLUSTRE_DIR_COUNT}" -gt 1 ]
     then
-	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-    then
-	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+	for count in `seq 1 ${HADOOP_HDFSOVERLUSTRE_DIR_COUNT}`
+	do
+	    dirpath="${fspath}/dir${count}"
+
+	    if [ ! -d "${dirpath}" ]
+	    then
+		mkdir -p ${dirpath}
+		if [ $? -ne 0 ] ; then
+		    echo "mkdir failed making ${dirpath}"
+		    exit 1
+		fi
+	    fi
+
+	    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+	    then
+		if [ "${datanodedirtmp}X" == "X" ]
+		then
+		    datanodedirtmp="${dirpath}/dfs/data"
+		else
+		    datanodedirtmp="${datanodedirtmp},${dirpath}/dfs/data"
+		fi
+	    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
+	    then
+		if [ "${datanodedirtmp}X" == "X" ]
+		then
+		    datanodedirtmp="file://${dirpath}/dfs/data"
+		else
+		    datanodedirtmp="${datanodedirtmp},file://${dirpath}/dfs/data"
+		fi
+	    fi
+	done
+	dircount=${HADOOP_HDFSOVERLUSTRE_DIR_COUNT}
+    else
+	if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+	then
+	    datanodedirtmp="${fspath}/dfs/data"
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
+	then
+	    datanodedirtmp="file://${fspath}/dfs/data"
+	fi
+	dircount=1
     fi
     
-    pathcount=1
+    datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     fspath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${hadoopnoderank}"
@@ -547,15 +590,56 @@ then
 	fi
     fi
     
-    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+    pathcount=1
+
+    datanodedirtmp=""
+    if [ "${HADOOP_HDFSOVERNETWORKFS_DIR_COUNT}X" != "X" ] \
+	&& [ "${HADOOP_HDFSOVERNETWORKFS_DIR_COUNT}" -gt 1 ]
     then
-	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-    then
-	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+	for count in `seq 1 ${HADOOP_HDFSOVERNETWORKFS_DIR_COUNT}`
+	do
+	    dirpath="${fspath}/dir${count}"
+
+	    if [ ! -d "${dirpath}" ]
+	    then
+		mkdir -p ${dirpath}
+		if [ $? -ne 0 ] ; then
+		    echo "mkdir failed making ${dirpath}"
+		    exit 1
+		fi
+	    fi
+
+	    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+	    then
+		if [ "${datanodedirtmp}X" == "X" ]
+		then
+		    datanodedirtmp="${dirpath}/dfs/data"
+		else
+		    datanodedirtmp="${datanodedirtmp},${dirpath}/dfs/data"
+		fi
+	    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
+	    then
+		if [ "${datanodedirtmp}X" == "X" ]
+		then
+		    datanodedirtmp="file://${dirpath}/dfs/data"
+		else
+		    datanodedirtmp="${datanodedirtmp},file://${dirpath}/dfs/data"
+		fi
+	    fi
+	done
+	dircount=${HADOOP_HDFSOVERNETWORKFS_DIR_COUNT}
+    else
+	if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+	then
+	    datanodedirtmp="${fspath}/dfs/data"
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
+	then
+	    datanodedirtmp="file://${fspath}/dfs/data"
+	fi
+	dircount=1
     fi
     
-    pathcount=1
+    datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     fspath="${HADOOP_RAWNETWORKFS_PATH}"
@@ -638,6 +722,27 @@ else
 fi
 
 if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]) \
+    && [ "${dircount}" -gt 1 ]
+then
+    mapredlocalstoredir=""
+    yarnlocalstoredir=""
+    for count in `seq 1 ${dircount}`
+    do
+	dirpath="${fspath}/dir${count}"
+	mapredlocalstoredirtmp=`echo "${dirpath}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+	yarnlocalstoredirtmp=`echo "${dirpath}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+	
+	if [ "${mapredlocalstoredir}X" == "X" ]
+	then
+	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
+	else
+	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
+	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
+	fi
+    done
+elif ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \

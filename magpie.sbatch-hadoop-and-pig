@@ -438,6 +438,13 @@ export HADOOP_HDFS_PATH="/ssd/username/"
 #
 export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 
+# HDFS over Lustre dir count
+#
+# Number of "local disks" to emulate in Lustre.  If not specified,
+# assumed to be 1.
+#
+# export HADOOP_HDFSOVERLUSTRE_DIR_COUNT=1
+
 # Networkfs path to do Hadoop HDFS out of
 #
 # Note that different versions of Hadoop may not be compatible with
@@ -445,6 +452,13 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 # different versions, perhaps set different paths for different data.
 #
 export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/username/hdfsovernetworkfs/"
+
+# HDFS over NetworkFS dir count
+#
+# Number of "local disks" to emulate in the NetworkFS.  If not specified,
+# assumed to be 1.
+#
+# export HADOOP_HDFSOVERLUSTRE_DIR_COUNT=1
 
 # Path for rawnetworkfs
 #

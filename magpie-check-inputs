@@ -384,10 +384,26 @@ then
 	exit 1
     fi
 
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+	&& [ "${HADOOP_HDFSOVERLUSTRE_DIR_COUNT}X" != "X" ] \
+	&& [ "${HADOOP_HDFSOVERLUSTRE_DIR_COUNT}" -lt 1 ]
+    then
+	echo "HADOOP_HDFSOVERLUSTRE_DIR_COUNT must be > 0"
+	exit 1
+    fi
+
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
 	&& [ "${HADOOP_HDFSOVERNETWORKFS_PATH}X" == "X" ]
     then
 	echo "Must specify environment variable HADOOP_HDFSOVERNETWORKFS_PATH"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
+	&& [ "${HADOOP_HDFSOVERNETWORKFS_DIR_COUNT}X" != "X" ] \
+	&& [ "${HADOOP_HDFSOVERNETWORKFS_DIR_COUNT}" -lt 1 ]
+    then
+	echo "HADOOP_HDFSOVERNETWORKFS_DIR_COUNT must be > 0"
 	exit 1
     fi
 
