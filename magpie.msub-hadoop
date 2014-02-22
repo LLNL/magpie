@@ -528,9 +528,9 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 
 # IntelLustre Stripe Size
 #
-# If not specified, defaults to 33554432
+# If not specified, defaults to 134217728
 #
-# export HADOOP_INTELLUSTRE_STRIPESIZE=33554432
+# export HADOOP_INTELLUSTRE_STRIPESIZE=134217728
 
 # IntelLustre Stripe Count
 #
