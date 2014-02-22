@@ -1,3 +1,7 @@
+magpie 1.26
+-----------
+Default intellustre stripesize now 128M.
+
 magpie 1.25
 -----------
 Change default memory from 90% to 80% of system memory.
