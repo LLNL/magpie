@@ -333,7 +333,7 @@ if [ "${HADOOP_INTELLUSTRE_STRIPESIZE}X" != "X" ]
 then
     intellustrestripesize=${HADOOP_INTELLUSTRE_STRIPESIZE}
 else
-    intellustrestripesize=33554432
+    intellustrestripesize=134217728
 fi
 
 if [ "${HADOOP_INTELLUSTRE_STRIPECOUNT}X" != "X" ]
