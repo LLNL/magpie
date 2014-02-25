@@ -75,7 +75,7 @@ Basic Instructions For Running Hadoop
 2) Select an appropriate sbatch script for running your job.  Most
    likely, you'll want to use the magpie.sbatch-hadoop file.  If you
    wish to configure more, you can choose to start with the
-   magpie.sbatch file which contains for more configuration options.
+   magpie.sbatch file which contains far more configuration options.
 
 3) Open up magpie.sbatch and setup Slurm essentials for your job.
    Here are the essentials for the setup:
@@ -396,7 +396,7 @@ Basic Instructions For Using Pig
 2) Select an appropriate sbatch script for running your job.  If you
    want to use Pig with Hadoop, select magpie.sbatch-hadoop-and-pig.
    If you wish to configure more, you can choose to start with the
-   magpie.sbatch file which contains for more configuration options.
+   magpie.sbatch file which contains far more configuration options.
 
    Magpie does not have to setup environment variables and
    configuration files for Pig to work with Hadoop, however, it will
