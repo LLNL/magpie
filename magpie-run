@@ -126,8 +126,13 @@ then
     then
 	echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
     fi
-    echo "*" 
-    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
+    if [ ${HADOOP_FILESYSTEM_MODE} == "hdfs" ] \
+	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsoverlustre" ] \
+	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsovernetworkfs" ]
+    then
+	echo "*" 
+	echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
+    fi
     echo "*" 
     echo "* To access Hadoop directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
