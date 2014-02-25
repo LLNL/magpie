@@ -279,7 +279,7 @@ then
 
     # Setup job history server after namenode comes up, it may need to
     # write/create in HDFS
-    if [ "${hadoopsetuppass}" == "1" ]
+    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoopsetuppass}" == "1" ]
     then
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
