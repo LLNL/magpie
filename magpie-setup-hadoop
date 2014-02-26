@@ -878,8 +878,6 @@ then
 	    shuffleproviderservices="uda_shuffle"
 	fi
 	reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
-    else
-	reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
     fi
 
     sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
