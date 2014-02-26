@@ -1,3 +1,7 @@
+magpie 1.27
+-----------
+Fix corner cases with IntelLustre shuffling and UDA shuffling.
+
 magpie 1.26
 -----------
 Default intellustre stripesize now 128M.

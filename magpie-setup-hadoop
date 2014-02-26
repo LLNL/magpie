@@ -343,7 +343,7 @@ else
     intellustrestripecount=-1
 fi
 
-if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ]
+if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ]
 then
     if [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
     then
@@ -877,9 +877,9 @@ then
 	else
 	    shuffleproviderservices="uda_shuffle"
 	fi
-	shuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
+	reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
     else
-	shuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
+	reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
     fi
 
     sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
@@ -905,7 +905,6 @@ then
     	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
     	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
 	-e "s/SHUFFLEPROVIDERSERVICES/${shuffleproviderservices}/g" \
-	-e "s/SHUFFLECONSUMERPLUGIN/${shuffleconsumerplugin}/g" \
 	-e "s/RDMABUFSIZE/${rdmabufsize}/g" \
 	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
 fi

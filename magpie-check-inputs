@@ -496,6 +496,14 @@ then
 	    fi
 	fi
     fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
+	&& [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
+	&& [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
+    then
+	echo "UDA shuffling cannot be enabled alongside Lustre Shuffling, please disable one"
+	exit 1
+    fi
 fi
 
 #

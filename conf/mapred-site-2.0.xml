@@ -250,16 +250,6 @@
 </property>
 
 <property>
-  <name>mapreduce.job.reduce.shuffle.consumer.plugin.class</name>
-  <value>SHUFFLECONSUMERPLUGIN</value>
-  <description>
-    Name of the class whose instance will be used
-    to send shuffle requests by reducetasks of this job.
-    The class must be an instance of org.apache.hadoop.mapred.ShuffleConsumerPlugin.
-  </description>
-</property>
-
-<property>
   <name>mapred.rdma.cma.port</name>
   <description>Port number to be used for the RDMA connection</description>
   <value>9011</value>
