@@ -12,6 +12,9 @@ Hadoop
 - start w/ 2.1.1-beta 
 Ganglia
 - if user wants aid in monitoring
+hdfs over lustre/networkfs
+- stripe over multiple networked file systems
+- higher availability, maybe faster speed, etc.
 
 Setup-script
 - generate script that user can run to setup environment before running job
