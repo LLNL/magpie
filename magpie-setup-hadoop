@@ -266,8 +266,7 @@ if [ "${HADOOP_MAPREDUCE_SLOWSTART}X" != "X" ]
 then
     mapredslowstart=${HADOOP_MAPREDUCE_SLOWSTART}
 else
-    # Hadoop default is 0.05, which is normally ridiculously low.
-    mapredslowstart="0.25"
+    mapredslowstart="0.05"
 fi
 
 if [ "${HADOOP_DEFAULT_MAP_TASKS}X" != "X" ]

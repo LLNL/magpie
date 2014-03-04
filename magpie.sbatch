@@ -304,9 +304,9 @@ export HADOOP_MODE="terasort"
 # Mapreduce Slowstart, indicating percent of maps that should complete
 # before reducers begin.
 #
-# If not specified, defaults to 0.25 (Hadoop default is 0.05, really low)
+# If not specified, defaults to 0.05
 #
-# export HADOOP_MAPREDUCE_SLOWSTART=0.25
+# export HADOOP_MAPREDUCE_SLOWSTART=0.05
 
 # Container Memory
 #
