@@ -1,0 +1,218 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See magpie.sbatch for configuration
+# details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+
+if [ "${HBASE_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+# hbasenoderank set if succeed
+if ! Magpie_am_I_a_hbase_node
+then
+    exit 0
+fi
+
+if [ "${HBASE_MASTER_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hbasemasterdaemonheapmax="${HBASE_MASTER_DAEMON_HEAP_MAX}"
+else
+    hbasemasterdaemonheapmax="1000"
+fi 
+
+if [ "${HBASE_REGIONSERVER_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hbaseregionserverdaemonheapmax="${HBASE_REGIONSERVER_DAEMON_HEAP_MAX}"
+else
+    hbaseregionserverdaemonheapmax="16000"
+
+    memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+    memtotalmeg=$(echo "(${memtotal} / 1024)" | bc -l | xargs printf "%1.0f")
+    # if memtotalmeg * 50% is less than hbaseregionserverdaemonheapmax, drop it down
+    hbaseresourcememory=$(echo "${memtotalmeg} * .5" | bc -l | xargs printf "%1.0f")
+
+    if [ "${hbaseresourcememory}" -lt "${hbaseregionserverdaemonheapmax}" ]
+    then
+	hbaseregionserverdaemonheapmax=${hbaseresourcememory}
+    fi
+fi
+
+#
+# Setup file system to use
+#
+
+# sets hadooptmpdir and fsdefault
+Magpie_calculate_hadoop_filesystem_paths ${hbasenoderank}
+
+hbasetmpdir="${hadooptmpdir}/hbase"
+hbasetmpdirsubst=`echo "${hbasetmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+hbaserootdir="${fsdefault}/hbase"
+hbaserootdirsubst=`echo ${hbaserootdir} | sed "s/\\//\\\\\\\\\//g"`
+
+if [ ! -d "${hbasetmpdir}" ]
+then
+    mkdir -p ${hbasetmpdir}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${hbasetmpdir}"
+	exit 1
+    fi
+fi
+
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+
+hbasezookeeperquorum=""
+for zookeepernode in ${zookeepernodes}
+do
+    if [ "${hbasezookeeperquorum}X" == "X" ]
+    then
+	hbasezookeeperquorum=${zookeepernode}
+    else
+	hbasezookeeperquorum="${hbasezookeeperquorum},${zookeepernode}"
+    fi
+done
+
+# Sets hbase_slave_timeout
+Magpie_calculate_stop_timeouts
+
+openfiles=`ulimit -n`
+if [ "${openfiles}" != "unlimited" ]
+then
+    openfileshardlimit=`ulimit -H -n`
+
+    # we estimate 16384 per 64 nodes, minimum 32768, max 131072.
+    # Obviously depends on many factors, but it's a reasonble and safe
+    # over-estimate calculated based on experience.
+    openfilesslavecount=`expr ${HBASE_REGIONSERVER_COUNT} \/ 64`
+    openfilescount=`expr ${openfilesslavecount} \* 16384`
+    if [ "${openfilescount}" -lt "32768" ]
+    then
+	openfilescount=32768
+    fi
+    if [ "${openfilescount}" -gt "131072" ]
+    then
+	openfilescount=131072
+    fi
+    
+    if [ "${openfileshardlimit}" != "unlimited" ]
+    then
+        if [ ${openfilescount} -gt ${openfileshardlimit} ]
+        then
+            openfilescount=${openfileshardlimit}
+        fi
+    fi
+else
+    openfilescount="unlimited"
+fi
+
+userprocesses=`ulimit -u`
+if [ "${userprocesses}" != "unlimited" ]
+then
+    userprocesseshardlimit=`ulimit -H -u`
+
+    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
+    userprocessesslavecount=`expr ${HBASE_REGIONSERVER_COUNT} \/ 100`
+    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
+    if [ "${userprocessescount}" -lt "4096" ]
+    then
+	userprocessescount=4096
+    fi
+    if [ "${userprocessescount}" -gt "32768" ]
+    then
+	userprocessescount=32768
+    fi
+    
+    if [ "${userprocesseshardlimit}" != "unlimited" ]
+    then
+        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
+        then
+            userprocessescount=${userprocesseshardlimit}
+        fi
+    fi
+else
+    userprocessescount="unlimited"
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${HBASE_CONF_FILES}X" == "X" ]
+then
+    hbaseconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    hbaseconffiledir=${HBASE_CONF_FILES}
+fi
+
+hbasesitexml=${hbaseconffiledir}/hbase-site.xml
+hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
+
+#
+# Setup Hbase configuration files and environment files
+#
+
+sed -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
+    -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
+    -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
+    $hbasesitexml > ${HBASE_CONF_DIR}/hbase-site.xml
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+sed -e "s/HBASE_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/HBASEMASTERDAEMONHEAP/${hbasemasterdaemonheapmax}/g" \
+    -e "s/HBASEREGIONSERVERDAEMONHEAP/${hbaseregionserverdaemonheapmax}/g" \
+    $hbaseenvsh > ${HBASE_CONF_DIR}/hbase-env.sh
+
+echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+
+echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export HBASE_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export HBASE_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+fi
+
+if [ "${HBASE_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HBASE_ENVIRONMENT_EXTRA_PATH} ]
+then
+    cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${HBASE_CONF_DIR}/hbase-env.sh
+else
+    echo "ulimit -n ${openfilescount}" >> ${HBASE_CONF_DIR}/hbase-env.sh
+    echo "ulimit -u ${userprocessescount}" >> ${HBASE_CONF_DIR}/hbase-env.sh
+fi
+
+cat ${hbaseconffiledir}/hbase.log4j.properties > ${HBASE_CONF_DIR}/log4j.properties
+
+# Need a copy of hdfs-site.xml for client defaults
+cp ${HADOOP_CONF_DIR}/hdfs-site.xml ${HBASE_CONF_DIR}/hdfs-site.xml
+
+exit 0

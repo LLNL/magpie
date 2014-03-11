@@ -450,7 +450,7 @@ fi
 pathcount=0
 
 # sets hadooptmpdir and fsdefault
-Magpie_calculate_hadoop_filesystem_paths
+Magpie_calculate_hadoop_filesystem_paths ${hadoopnoderank}
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then

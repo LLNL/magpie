@@ -1,8 +1,6 @@
 Major feature support
 ---------------------
 Spark
-Hbase
-- w/ thrift server?
 Storm
 
 Minor feature support
@@ -19,3 +17,8 @@ hdfs over lustre/networkfs
 Setup-script
 - generate script that user can run to setup environment before running job
   - e.g. set HADOOP_CONF_DIR, HADOOP_HOME, etc.
+
+Hbase
+- thrift server?
+- multiple masters
+- region merge script

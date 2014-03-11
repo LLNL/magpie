@@ -130,7 +130,7 @@ then
 	then
             sleepwait=30
 	fi
-	echo "Waiting ${sleepwait} seconds to allows daemons to setup"
+	echo "Waiting ${sleepwait} seconds to allows Hadoop daemons to setup"
 	sleep ${sleepwait}
     fi
 
@@ -138,7 +138,7 @@ then
     echo "*"
     echo "* Hadoop Information"
     echo "*"
-    echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
+    echo "* You can view your Hadoop status by launching a web browser and pointing to ..."
     echo "*"
     if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
     then
@@ -314,6 +314,78 @@ then
     fi
 fi
 
+#
+# Setup Hbase
+#
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    cd ${HBASE_HOME}
+
+    if [ ${HBASE_MODE} != "setuponly" ]
+    then
+	echo "Starting hbase"
+	${hbasescriptprefix}/start-hbase.sh
+	
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
+	if [ ${sleepwait} -lt 30 ]
+	then
+            sleepwait=30
+	fi
+	echo "Waiting ${sleepwait} seconds to allow Hbase daemons to setup"
+	sleep ${sleepwait}
+    fi
+
+    echo "*******************************************************"
+    echo "*"
+    echo "* Hbase Information"
+    echo "*"
+    echo "* You can view your Hbase status by launching a web browser and pointing to ..."
+    echo "*"
+    echo "* Hbase Master: http://${HADOOP_MASTER_NODE}:60010"
+    echo "*" 
+    echo "* To access Hbase directly, you'll want to:"
+    echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
+    echo "*   Set HBASE_CONF_DIR, such as ..."
+    echo "*     export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+    echo "*     or"
+    echo "*     setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+    echo "*   cd $HBASE_HOME"
+    echo "*"
+    echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
+    echo "*" 
+    echo "*   ${hbasescriptprefix}/hbase shell"
+
+    if [ "${HBASE_MODE}" == "setuponly" ]
+    then
+	echo "*" 
+	echo "* To setup, you probably want to run:" 
+	echo "*"
+	echo "*   ${hbasescriptprefix}/start-hbase.sh" 
+    fi
+
+    echo "*" 
+    echo "* To end/cleanup your session, kill the daemons via:"
+    echo "*" 
+    echo "*   ${hbasescriptprefix}/stop-hbase.sh"
+    echo "*" 
+    echo "* Some additional environment variables you may sometimes wish to set"
+    echo "*" 
+    echo "*" 
+    echo "*   Set JAVA_HOME, such as ..."
+    echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
+    echo "*     or"
+    echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
+    echo "*" 
+    echo "*   Set HBASE_HOME, such as ..."
+    echo "*     export HBASE_HOME=\"${HBASE_HOME}\""
+    echo "*     or"
+    echo "*     setenv HBASE_HOME \"${HBASE_HOME}\""
+    echo "*" 
+    echo "*******************************************************"
+fi
+
 if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
     echo "*******************************************************"
@@ -367,6 +439,67 @@ then
 	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
 	    sleep ${hadoopsleepseconds}
 	fi
+    fi
+elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
+then
+    cd ${HBASE_HOME}
+    
+    if [ "${HBASE_MODE}" == "performanceeval" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Performance Evaluation"
+	echo "*******************************************************"
+	
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval &
+	scriptpid=$!
+	Magpie_wait_script ${scriptpid}
+    elif [ "${HBASE_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $HBASE_SCRIPT_PATH"
+	echo "*******************************************************"
+	${HBASE_SCRIPT_PATH} &
+	scriptpid=$!
+	Magpie_wait_script ${scriptpid}
+    elif [ "${HBASE_MODE}" == "interactive" ] \
+	|| [ "${HBASE_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hbase ${HBASE_MODE} mode"
+	echo "*******************************************************"
+
+	hbasesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	hbasesleepamount=`expr ${hbasesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	hbasesleepseconds=`expr ${hbasesleepamount}  \* 60`
+	sleep ${hbasesleepseconds}
+    fi
+fi
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    if [ ${HBASE_MODE} != "setuponly" ]
+    then
+	cd ${HBASE_HOME}
+	
+	echo "Stopping hbase"
+	
+	if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
+	then
+	    echo "Doing major compaction before shutting down ..."
+
+	    command="echo list"
+	    echo "Running $command in hbase shell" >&2
+	    listoutput=`$command | bin/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
+
+	    for table in ${listoutput}
+	    do
+		command="echo major_compact '${table}'"
+		echo "Running $command in hbase shell" >&2
+		$command | bin/hbase shell
+	    done
+	fi
+	
+	${hbasescriptprefix}/stop-hbase.sh
     fi
 fi
 

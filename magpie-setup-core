@@ -109,6 +109,31 @@ then
 fi
 
 #
+# Setup Hbase directories
+#
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    mkdir -p $HBASE_LOCAL_JOB_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HBASE_LOCAL_JOB_DIR}"
+	exit 1
+    fi
+    
+    mkdir -p $HBASE_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HBASE_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $HBASE_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HBASE_LOG_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup/Calculate Core Master/Slave files
 #
 
@@ -172,6 +197,12 @@ then
     do
 	echo "${node}.${dnsdomainname}" >> ${HADOOP_CONF_DIR}/slaves_fqdn
     done
+fi
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    cp ${HADOOP_CONF_DIR}/masters ${HBASE_CONF_DIR}/masters
+    cp ${HADOOP_CONF_DIR}/slaves ${HBASE_CONF_DIR}/regionservers
 fi
 
 rm -f ${MAGPIE_LOCAL_DIR}/tmp_masters

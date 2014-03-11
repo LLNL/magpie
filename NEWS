@@ -1,3 +1,7 @@
+magpie 1.28
+-----------
+Support Hbase in Magpie
+
 magpie 1.27
 -----------
 Fix corner cases with IntelLustre shuffling and UDA shuffling.

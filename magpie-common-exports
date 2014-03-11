@@ -74,6 +74,22 @@ Magpie_am_I_a_zookeeper_node () {
     return 1
 }
 
+Magpie_am_I_a_hbase_node () {
+    local myhostname=`hostname`
+    if grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/regionservers \
+	|| grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/masters
+    then 
+	if grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/masters
+	then
+	    hbasenoderank=0
+	else
+	    hbasenoderank=`grep -n -E "^${myhostname}$" ${HBASE_CONF_DIR}/regionservers | awk --field-separator=':' '{print $1}'`
+	fi
+	return 0
+    fi
+    return 1
+}
+
 Magpie_wait_script () {
     scriptpid=$1
 
@@ -102,21 +118,22 @@ Magpie_wait_script () {
 }
 
 Magpie_calculate_hadoop_filesystem_paths () {
+    noderank=$1
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
 	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
 	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
-	hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${hadoopnoderank}"
+	hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
 	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-	hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${hadoopnoderank}"
+	hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
 	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
-	hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${hadoopnoderank}"
+	hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
 	fsdefault="file:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
@@ -124,7 +141,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
 	fsdefault="lustre:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
-	hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${hadoopnoderank}"
+	hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
 	fsdefault="magpienetworkfs:///"
     else
 	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
@@ -133,6 +150,21 @@ Magpie_calculate_hadoop_filesystem_paths () {
 }
 
 Magpie_calculate_stop_timeouts () {
+    magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+    hadoopshutdowntimeseconds=${magpieshutdowntimeseconds}
+
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HBASE_SETUP}" == "yes" ]
+    then
+	# Need to give Hbase more time b/c of compaction.  We'll say
+	# Hbase always gets 50% of the time, Half for slave timeout and half for
+	# compaction .  Input checks ensure
+	# magpieshutdowntimeseconds >= 1200 
+
+	hbase_time=`expr ${hadoopshutdowntimeseconds} \/ 2`
+	hbase_slave_timeout=`expr ${hbase_time} \/ 2`
+	hadoopshutdowntimeseconds=${hbase_time}
+    fi
+
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
 	if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
@@ -205,6 +237,10 @@ export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPI
 export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
 export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
 
+export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
+export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
+
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
     export MAGPIE_STARTUP_TIME=30
@@ -212,7 +248,7 @@ fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    export MAGPIE_SHUTDOWN_TIME=15
+    export MAGPIE_SHUTDOWN_TIME=30
 fi
 
 # In main script, if master/slaves haven't been created yet, environment
@@ -228,6 +264,16 @@ then
     export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 fi
 
+if [ -f "${HBASE_CONF_DIR}/masters" ]
+then 
+     export HBASE_MASTER_NODE=`head -1 ${HBASE_CONF_DIR}/masters`
+fi
+
+if [ -f "${HBASE_CONF_DIR}/regionservers" ]
+then
+    export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
+fi
+
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     hadoopscriptprefix="bin"
@@ -237,5 +283,7 @@ then
     hadoopscriptprefix="sbin"
     dfsadminscript="hdfs"
 fi
+
+hbasescriptprefix="bin"
 
 magpieremotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 

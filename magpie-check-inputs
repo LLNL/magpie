@@ -119,6 +119,7 @@ then
 fi 
 
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ]
 then
@@ -150,7 +151,7 @@ fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    magpieshutdowntime=15
+    magpieshutdowntime=30
 else
     magpieshutdowntime=${MAGPIE_SHUTDOWN_TIME}
 fi
@@ -239,14 +240,22 @@ then
     exit 1
 fi
 
+if [ "${HBASE_SETUP}X" != "X" ] \
+    && ( [ "${HBASE_SETUP}" != "yes" ] && [ "${HBASE_SETUP}" != "no" ] )
+then
+    echo "HBASE_SETUP must be set to yes or no"
+    exit 1
+fi
+
 # Did user turn on SOMETHING to run
 #
 # Pig is not "something", b/c it needs hadoop 
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
-    && [ "${ZOOKEEPER_SETUP}" != "yes" ]
+    && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
+    && [ "${HBASE_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -266,6 +275,13 @@ then
     exit 1
 fi
    
+if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] \
+    && [ "${HBASE_SETUP}" != "yes" ]
+then
+    echo "Cannot run hbase job type if HBASE_SETUP is not enabled"
+    exit 1
+fi
+
 #
 # Check Hadoop Inputs 
 #
@@ -660,5 +676,119 @@ then
     fi
 fi
 
+#
+# Check Zookeeper Inputs 
+#
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    if [ "${HBASE_HOME}X" == "X" ]
+    then
+       echo "HBASE_HOME must be set"
+       exit 1
+    fi
+    
+    if [ ! -d ${HBASE_HOME} ]
+    then
+       echo "${HBASE_HOME} does not point to a directory"
+       exit 1
+    fi
+
+    if [ "${HBASE_LOCAL_DIR}X" == "X" ]
+    then
+       echo "HBASE_LOCAL_DIR must be set"
+       exit 1
+    fi
+
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	echo "Hadoop must be enabled for Hbase"
+	exit 1
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+    	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+    	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    then
+    	echo "Magpie presently only supports Hbase over HDFS"
+    	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
+    	exit 1
+    fi
+
+    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
+    then
+	echo "Zookeeper must be enabled for Hbase"
+	exit 1
+    fi
+
+    if [ "${magpieshutdowntime}" -lt 20 ]
+    then
+	echo "Magpie Shutdown Time must be atleast 20 minutes with Hbase"
+	exit 1
+    fi
+
+    if [ "${HBASE_MODE}" != "performanceeval" ] \
+	&& [ "${HBASE_MODE}" != "script" ] \
+	&& [ "${HBASE_MODE}" != "interactive" ] \
+	&& [ "${HBASE_MODE}" != "setuponly" ]
+    then
+	echo "HBASE_MODE must be set to performanceeval, script, interactive, setuponly"
+	exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_MODE}" == "performanceeval" ]
+    then
+	if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}X" != "X" ]
+	then
+	    if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}" -lt 1 ]
+	    then
+		echo "HBASE_PERFORMANCEEVAL_ROW_COUNT must be >= 1"
+		exit 1
+	    fi
+	fi
+
+	if [ "${HBASE_PERFORMANCEEVAL_CLIENT_COUNT}X" != "X" ]
+	then
+	    if [ "${HBASE_PERFORMANCEEVAL_CLIENT_COUNT}" -lt 1 ] || [ "${HBASE_PERFORMANCEEVAL_CLIENT_COUNT}" -gt 500 ]
+	    then
+		echo "HBASE_PERFORMANCEEVAL_CLIENT_COUNT must be >= 1 and <= 500"
+		exit 1
+	    fi
+	fi
+
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval cannot be found, it is required to run hbase performance evaluation"
+	    exit 1
+	fi
+    fi
+
+    if ([ "${HBASE_MODE}" == "performanceeval" ] \
+	|| [ "${HBASE_MODE}" == "script" ] \
+	|| [ "${HBASE_MODE}" == "interactive" ]) \
+	&& [ "${HADOOP_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Hbase job if Hadoop mode is setuponly"
+	exit 1
+    fi
+
+    if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" != "X" ]
+    then
+	if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" != "yes" ] && [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" != "no" ]
+	then
+	    echo "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN must be set to yes or no"
+	    exit 1
+	fi
+    fi
+
+    if ([ "${HBASE_MODE}" == "performanceeval" ] \
+	|| [ "${HBASE_MODE}" == "script" ] \
+	|| [ "${HBASE_MODE}" == "interactive" ]) \
+	&& [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Hbase job if Zookeeper mode is setuponly"
+	exit 1
+    fi
+fi
 
 exit 0

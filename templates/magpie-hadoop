@@ -410,7 +410,7 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # need to be set differently. Everyone's cluster/situation can be
 # slightly different.
 #
-# See the example hadoop-example-environment extra for examples on
+# See the example example-environment-extra extra for examples on
 # what you can/should do with adding extra environment settings.
 #
 # export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"

@@ -1,0 +1,87 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core terasort running script.  For the most part,
+# it shouldn't be editted.  See magpie.sbatch for configuration
+# details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+
+performanceevaljar="org.apache.hadoop.hbase.PerformanceEvaluation"
+
+if [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
+then
+    nomapredoption="--nomapred"
+else
+    nomapredoption=""
+fi
+	    
+if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}X" == "X" ]
+then
+    hbaserowcount=1048576
+else
+    hbaserowcount=$HBASE_PERFORMANCEEVAL_ROW_COUNT
+fi
+
+if [ "${HBASE_PERFORMANCEEVAL_CLIENT_COUNT}X" == "X" ]
+then
+    hbaseclientcount=1
+else
+    hbaseclientcount=$HBASE_PERFORMANCEEVAL_CLIENT_COUNT
+fi
+	    
+cd ${HBASE_HOME}
+	    
+#
+# Remove previous runs if they are lingering
+#
+
+if echo list | bin/hbase shell | grep -q TestTable
+then
+    echo "Remove earlier run of TestTable job"
+    command="echo disable 'TestTable'"
+    echo "Running $command in hbase shell" >&2
+    $command | bin/hbase shell
+    command="echo drop 'TestTable'"
+    echo "Running $command in hbase shell" >&2
+    $command | bin/hbase shell
+fi
+
+command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} sequentialWrite ${hbaseclientcount}"
+echo "Running $command" >&2
+$command
+
+command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} sequentialRead ${hbaseclientcount}"
+echo "Running $command" >&2
+$command
+
+echo "Removing TestTable ..."
+command="echo disable 'TestTable'"
+echo "Running $command in hbase shell" >&2
+$command | bin/hbase shell
+command="echo drop 'TestTable'"
+echo "Running $command in hbase shell" >&2
+$command | bin/hbase shell
+
+exit 0

@@ -90,6 +90,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "hadoop" - Run a Hadoop job according to the settings of HADOOP_MODE.
 #
+# "hbase" - Run a Hadoop job according to the settings of HBASE_MODE.
+#
 # "pig" - Run a Hadoop job according to the settings of PIG_SCRIPT.
 #
 # "script" - Run an arbitraty script, as specified by
@@ -111,12 +113,17 @@ export MAGPIE_JOB_TYPE="hadoop"
 # Specifies the amount of time to give startup / shutdown activities a
 # chance to succeed before Magpie will give up (or in the case of
 # shutdown, when the resource manager may kill the running job).
-# Defaults to 30 minutes for startup, 15 minutes for shutdown.
+# Defaults to 30 minutes for startup, 30 minutes for shutdown.
 #
 # The startup time in particular may need to be increased if you have
 # a large amount of data.  As an example, HDFS may need to spend a
 # significant amount of time determine all of the blocks in HDFS
 # before leaving safemode.
+#
+# The stop time in particular may need to be increased if you have a
+# large amount of cleanup to be done.  HDFS will save its NameSpace
+# before shutting down.  Hbase will do a compaction before shutting
+# down.
 #
 # The startup & shutdown window must together be smaller than the
 # SBATCH_TIMELIMIT specified above.
@@ -126,7 +133,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # MAGPIE_SHUTDOWN_TIME must be at minimum 10 minutes.
 #
 # export MAGPIE_STARTUP_TIME=30
-# export MAGPIE_SHUTDOWN_TIME=15
+# export MAGPIE_SHUTDOWN_TIME=30
 
 # Convenience Scripts
 #
@@ -574,7 +581,7 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # need to be set differently. Everyone's cluster/situation can be
 # slightly different.
 #
-# See the example hadoop-example-environment extra for examples on
+# See the example example-environment-extra extra for examples on
 # what you can/should do with adding extra environment settings.
 #
 # export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
@@ -783,6 +790,7 @@ srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then

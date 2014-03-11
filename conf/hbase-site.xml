@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+/**
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<configuration>
+  <!--Configs you will likely change are listed here at the top of the file.
+  -->
+  <property >
+    <name>hbase.tmp.dir</name>
+    <value>HBASETMPDIR</value>
+    <description>Temporary directory on the local filesystem.
+    Change this setting to point to a location more permanent
+    than '/tmp', the usual resolve for java.io.tmpdir, as the
+    '/tmp' directory is cleared on machine restart.</description>
+  </property>
+  <property >
+    <name>hbase.rootdir</name>
+    <value>HBASEROOTDIR</value>
+    <description>The directory shared by region servers and into
+    which HBase persists.  The URL should be 'fully-qualified'
+    to include the filesystem scheme.  For example, to specify the
+    HDFS directory '/hbase' where the HDFS instance's namenode is
+    running at namenode.example.org on port 9000, set this value to:
+    hdfs://namenode.example.org:9000/hbase.  By default, we write
+    to whatever ${hbase.tmp.dir} is set too -- usually /tmp --
+    so change this configuration or else all data will be lost on
+    machine restart.</description>
+  </property>
+  <property >
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+    <description>The mode the cluster will be in. Possible values are
+      false for standalone mode and true for distributed mode.  If
+      false, startup will run all HBase and ZooKeeper daemons together
+      in the one JVM.</description>
+  </property>
+  <property>
+    <name>hbase.zookeeper.quorum</name>
+    <value>HBASEZOOKEEPERQUORUM</value>
+    <description>Comma separated list of servers in the ZooKeeper ensemble
+    (This config. should have been named hbase.zookeeper.ensemble).
+    For example, "host1.mydomain.com,host2.mydomain.com,host3.mydomain.com".
+    By default this is set to localhost for local and pseudo-distributed modes
+    of operation. For a fully-distributed setup, this should be set to a full
+    list of ZooKeeper ensemble servers. If HBASE_MANAGES_ZK is set in hbase-env.sh
+    this is the list of servers which hbase will start/stop ZooKeeper on as
+    part of cluster start/stop.  Client-side, we will take this list of
+    ensemble members and put it together with the hbase.zookeeper.clientPort
+    config. and pass it into zookeeper constructor as the connectString
+    parameter.</description>
+  </property>
+
+  <!-- Effectively disable major compaction by setting to 4 weeks,
+  make user controled -->
+
+  <property>
+    <name>hbase.hregion.majorcompaction</name>
+    <value>2419200000</value>
+    <description>The time (in miliseconds) between 'major' compactions of all
+    HStoreFiles in a region.  Default: Set to 7 days.  Major compactions tend to
+    happen exactly when you need them least so enable them such that they run at
+    off-peak for your deploy; or, since this setting is on a periodicity that is
+    unlikely to match your loading, run the compactions via an external
+    invocation out of a cron job or some such.</description>
+  </property>
+</configuration>
