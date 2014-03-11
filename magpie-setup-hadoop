@@ -448,15 +448,17 @@ fi
 #
 
 pathcount=0
+
+# sets hadooptmpdir and fsdefault
+Magpie_calculate_hadoop_filesystem_paths
+
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then
-    # Setup node directory per node 
-    fspath=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "hdfs://${HADOOP_MASTER_NODE}:54310" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
 
     # Assume if path doesn't exist must format
-    if [ -d "${fspath}" ]
+    if [ -d "${hadooptmpdir}" ]
     then
 	format=0
     else
@@ -500,22 +502,21 @@ then
     datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
-    fspath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${hadoopnoderank}"
-    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "hdfs://${HADOOP_MASTER_NODE}:54310" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
     # Assume if path doesn't exist must format
-    if [ -d "${fspath}" ]
+    if [ -d "${hadooptmpdir}" ]
     then
 	format=0
     else
 	format=1
-	mkdir -p ${fspath}
+	mkdir -p ${hadooptmpdir}
 	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${fspath}"
+	    echo "mkdir failed making ${hadooptmpdir}"
 	    exit 1
 	fi
-	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${fspath}
+	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${hadooptmpdir}
     fi
     
     if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
@@ -529,19 +530,18 @@ then
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
-    fspath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${hadoopnoderank}"
-    hadooptmpdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "hdfs://${HADOOP_MASTER_NODE}:54310" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo${fsdefault}_ | sed "s/\\//\\\\\\\\\//g"`
     
     # Assume if path doesn't exist must format
-    if [ -d "${fspath}" ]
+    if [ -d "${hadooptmpdir}" ]
     then
 	format=0
     else
 	format=1
-	mkdir -p ${fspath}
+	mkdir -p ${hadooptmpdir}
 	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${fspath}"
+	    echo "mkdir failed making ${hadooptmpdir}"
 	    exit 1
 	fi
     fi
@@ -557,25 +557,23 @@ then
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
-    fspath="${HADOOP_RAWNETWORKFS_PATH}"
-    pernodepath="${fspath}/node-${hadoopnoderank}"
-    hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "file:///" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
-    if [ ! -d "${fspath}" ]
+    if [ ! -d "${HADOOP_RAWNETWORKFS_PATH}" ]
     then
-        mkdir -p ${fspath}
+        mkdir -p ${HADOOP_RAWNETWORKFS_PATH}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${fspath}"
+	    echo "mkdir failed making ${HADOOP_RAWNETWORKFS_PATH}"
 	    exit 1
         fi
     fi
 	
-    if [ ! -d "${pernodepath}" ]
+    if [ ! -d "${hadooptmpdir}" ]
     then
-        mkdir -p ${pernodepath}
+        mkdir -p ${hadooptmpdir}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${pernodepath}"
+	    echo "mkdir failed making ${hadooptmpdir}"
 	    exit 1
         fi
     fi
@@ -584,18 +582,15 @@ then
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
 then
-    # Setup node directory per node, still need for "local" files
-    fspath="${HADOOP_INTELLUSTRE_PATH}"
-    fspathtmp="${HADOOP_INTELLUSTRE_PATH}/tmp"
-    intellustrerootdir=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
-    hadooptmpdir=`echo "${fspathtmp}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "lustre:///" | sed "s/\\//\\\\\\\\\//g"`
+    intellustrerootdir=`echo "${HADOOP_INTELLUSTRE_PATH}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
 
-    if [ ! -d "${fspathtmp}" ]
+    if [ ! -d "${hadooptmpdir}" ]
     then
-        mkdir -p ${fspathtmp}
+        mkdir -p ${hadooptmpdir}
         if [ $? -ne 0 ] ; then
-            echo "mkdir failed making ${fspathtmp}"
+            echo "mkdir failed making ${hadooptmpdir}"
             exit 1
         fi
     fi
@@ -605,26 +600,24 @@ then
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
 then
-    fspath="${HADOOP_MAGPIENETWORKFS_PATH}"
-    pernodepath="${fspath}/node-${hadoopnoderank}"
-    hadooptmpdir=`echo "${pernodepath}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefault=`echo "magpienetworkfs:///" | sed "s/\\//\\\\\\\\\//g"`
-    magpienetworkfsbase=`echo "${fspath}" | sed "s/\\//\\\\\\\\\//g"`
+    magpienetworkfsbase=`echo "${HADOOP_MAGPIENETWORKFS_PATH}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
-    if [ ! -d "${fspath}" ]
+    if [ ! -d "${HADOOP_MAGPIENETWORKFS_PATH}" ]
     then
-        mkdir -p ${fspath}
+        mkdir -p ${HADOOP_MAGPIENETWORKFS_PATH}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${fspath}"
+	    echo "mkdir failed making ${HADOOP_MAGPIENETWORKFS_PATH}"
 	    exit 1
         fi
     fi
     
-    if [ ! -d "${pernodepath}" ]
+    if [ ! -d "${hadooptmpdir}" ]
     then
-        mkdir -p ${pernodepath}
+        mkdir -p ${hadooptmpdir}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${pernodepath}"
+	    echo "mkdir failed making ${hadooptmpdir}"
 	    exit 1
         fi
     fi
@@ -807,8 +800,8 @@ if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
 then
-    sed -e "s/HADOOPTMPDIR/${hadooptmpdir}/g" \
-        -e "s/FSDEFAULT/${fsdefault}/g" \
+    sed -e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \
+        -e "s/FSDEFAULT/${fsdefaultsubst}/g" \
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
 	-e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
 	-e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \

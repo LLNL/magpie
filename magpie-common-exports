@@ -100,6 +100,37 @@ Magpie_wait_script () {
     return 0
 }
 
+Magpie_calculate_hadoop_filesystem_paths () {
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
+    then
+	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
+	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+    then
+	hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${hadoopnoderank}"
+	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    then
+	hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${hadoopnoderank}"
+	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+    then
+	hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${hadoopnoderank}"
+	fsdefault="file:///"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+    then
+	hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
+	fsdefault="lustre:///"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+    then
+	hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${hadoopnoderank}"
+	fsdefault="magpienetworkfs:///"
+    else
+	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+	exit 1
+    fi
+}
+
 export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
 
 export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
