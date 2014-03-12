@@ -43,27 +43,27 @@ fi
 if [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "networkfs" ]
 then
     # Setup node directory per node 
-    zookeeperdatadirpathtmp="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
-    zookeeperdatadirpath=`echo "${zookeeperdatadirpathtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+    zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
     
-    mkdir -p ${zookeeperdatadirpathtmp}
+    mkdir -p ${zookeeperdatadirpath}
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${zookeeperdatadirpathtmp}"
+	echo "mkdir failed making ${zookeeperdatadirpath}"
 	exit 1
     fi
 elif [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "local" ]
 then
-    zookeeperdatadirpathtmp="${ZOOKEEPER_DATA_DIR}"
-    zookeeperdatadirpath=`echo "${zookeeperdatadirpathtmp}" | sed "s/\\//\\\\\\\\\//g"`
+    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}"
+    zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
     
-    mkdir -p ${zookeeperdatadirpathtmp}
+    mkdir -p ${zookeeperdatadirpath}
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${zookeeperdatadirpathtmp}"
+	echo "mkdir failed making ${zookeeperdatadirpath}"
 	exit 1
     fi
 fi
     
-echo "${zookeepernoderank}" > ${zookeeperdatadirpathtmp}/myid
+echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid
     
 if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
 then
@@ -104,7 +104,7 @@ zookeeperenvsh=${zookeeperconffiledir}/zookeeper-env.sh
 # Setup Zookeeper configuration files and environment files
 #
 
-sed -e "s/ZOOKEEPERDATADIR/${zookeeperdatadirpath}/g" \
+sed -e "s/ZOOKEEPERDATADIR/${zookeeperdatadirpathsubst}/g" \
     -e "s/ZOOKEEPERTICKTIME/${zookeeperticktime}/g" \
     -e "s/ZOOKEEPERINITLIMIT/${zookeeperinitlimit}/g" \
     -e "s/ZOOKEEPERSYNCLIMIT/${zookeepersynclimit}/g" \

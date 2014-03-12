@@ -50,13 +50,13 @@ then
 else
     cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
 fi
-hostsincludefiletmp="${HADOOP_CONF_DIR}/hosts-include"
-hostsincludefile=`echo "${hostsincludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+hostsincludefile="${HADOOP_CONF_DIR}/hosts-include"
+hostsincludefilesubst=`echo "${hostsincludefile}" | sed "s/\\//\\\\\\\\\//g"`
 
 # By default leave exclude file empty
 touch ${HADOOP_CONF_DIR}/hosts-exclude
-hostsexcludefiletmp="${HADOOP_CONF_DIR}/hosts-exclude"
-hostsexcludefile=`echo "${hostsexcludefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+hostsexcludefile="${HADOOP_CONF_DIR}/hosts-exclude"
+hostsexcludefilesubst=`echo "${hostsexcludefile}" | sed "s/\\//\\\\\\\\\//g"`
 
 #
 # Calculate values for various config file variables, based on
@@ -132,7 +132,7 @@ then
     iobuffersize=1048576
 fi 
 
-javahometmp=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
 memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
 memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
@@ -812,27 +812,27 @@ then
 	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
 	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
 
-    hadoopconfdir=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadooplogdir=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoophome=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopcommonhome=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopmapredhome=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoophdfshome=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooplogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoophdfshomesubst=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sedextrahadoopclasses=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
-    sedextrahadoopopts=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
+    extrahadoopclassessubst=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
+    extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+    sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
-	-e "s/HADOOPCONFDIR/${hadoopconfdir}/g" \
-	-e "s/HADOOPLOGDIR/${hadooplogdir}/g" \
-	-e "s/HADOOPHOME/${hadoophome}/g" \
-	-e "s/HADOOPCOMMONHOME/${hadoopcommonhome}/g" \
-	-e "s/HADOOPMAPREDHOME/${hadoopmapredhome}/g" \
-	-e "s/HADOOPHDFSHOME/${hadoophdfshome}/g" \
-	-e "s/EXTRAHADOOPCLASSES/${sedextrahadoopclasses}/g" \
-	-e "s/EXTRAHADOOPOPTS/${sedextrahadoopopts}/g" \
+	-e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+	-e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
+	-e "s/HADOOPHOME/${hadoophomesubst}/g" \
+	-e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
+	-e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
+	-e "s/HADOOPHDFSHOME/${hadoophdfshomesubst}/g" \
+	-e "s/EXTRAHADOOPCLASSES/${extrahadoopclassessubst}/g" \
+	-e "s/EXTRAHADOOPOPTS/${extrahadoopoptssubst}/g" \
 	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
@@ -889,8 +889,8 @@ then
 	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
 	-e "s/IOSORTMB/${iosortmb}/g" \
 	-e "s/HADOOPCOMPRESSION/${compression}/g" \
-	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
-	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
 	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
     	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
     	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
@@ -935,38 +935,38 @@ then
 	-e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
-    hadoopmapredlogdir=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopconfdir=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoophome=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopcommonhome=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopmapredhome=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+    sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
-	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdir}/g" \
-	-e "s/HADOOPCONFDIR/${hadoopconfdir}/g" \
-	-e "s/HADOOPHOME/${hadoophome}/g" \
-	-e "s/HADOOPCOMMONHOME/${hadoopcommonhome}/g" \
-	-e "s/HADOOPMAPREDHOME/${hadoopmapredhome}/g" \
+	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
+	-e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+	-e "s/HADOOPHOME/${hadoophomesubst}/g" \
+	-e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
+	-e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
 	$mapredenvsh > ${HADOOP_CONF_DIR}/mapred-env.sh
 
-    yarnconfdir=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    yarnlogdir=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    yarncommonhome=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopyarnhome=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    yarncommonhomesubst=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopyarnhomesubst=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sedextrayarnlibrarypath=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
+    extrayarnlibrarypathsubst=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sed -e "s/HADOOP_JAVA_HOME/${javahometmp}/g" \
+    sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
-	-e "s/YARNCONFDIR/${yarnconfdir}/g" \
-	-e "s/YARNLOGDIR/${yarnlogdir}/g" \
-	-e "s/YARNCOMMONHOME/${yarncommonhome}/g" \
-	-e "s/HADOOPYARNHOME/${hadoopyarnhome}/g" \
-	-e "s/EXTRAYARNLIBRARYPATH/${sedextrayarnlibrarypath}/g" \
+	-e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
+	-e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \
+	-e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
+	-e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
+	-e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
 	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
@@ -997,8 +997,8 @@ then
 	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
 	-e "s/HDFSDATANODEHANDLERCLOUNT/${datanodehandlercount}/g" \
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
-	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefile}/g" \
-	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefile}/g" \
+	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
+	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
 	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
 	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
 fi
