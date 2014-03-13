@@ -52,8 +52,8 @@ then
 	    nodecount=$((nodecount+1))
 	done
 
-        # My rough estimate for setup time is 30 seconds per 100 nodes
-	sleepwait=`expr ${nodecount} \/ 100 \* 30`
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${nodecount} \/ 128 \* 30`
 	if [ ${sleepwait} -lt 30 ]
 	then
             sleepwait=30
@@ -124,8 +124,8 @@ then
 	    ${hadoopscriptprefix}/start-yarn.sh
 	fi
 	
-        # My rough estimate for setup time is 30 seconds per 64 nodes
-	sleepwait=`expr ${HADOOP_SLAVE_COUNT} \/ 64 \* 30`
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${HADOOP_SLAVE_COUNT} \/ 128 \* 30`
 	if [ ${sleepwait} -lt 30 ]
 	then
             sleepwait=30
