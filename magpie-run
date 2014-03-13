@@ -40,9 +40,9 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    echo "Starting Zookeeper"
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
+	echo "Starting Zookeeper"
 	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 	
 	for zookeepernode in ${zookeepernodes}
