@@ -351,7 +351,8 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    hadoopsleepamount=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_SHUTDOWN_TIME}`
+	    hadoopsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	    hadoopsleepamount=`expr ${hadoopsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
 	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
 	    sleep ${hadoopsleepseconds}
 	fi
