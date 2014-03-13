@@ -40,10 +40,12 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
+    echo "*******************************************************"
+    echo "*"
+    echo "* Zookeeper Information"
+    echo "*"
     if [ "${ZOOKEEPER_MODE}" == "setuponly" ]
     then
-	echo "*******************************************************"
-	echo "*"
 	echo "* To start Zookeper, on each node"
 	echo "*   Set ZOOCFGDIR, such as ..."
 	echo "*     export ZOOCFGDIR=\"${ZOOCFGDIR}\""
@@ -52,22 +54,27 @@ then
 	echo "*   cd $ZOOKEEPER_HOME"
 	echo "*   bin/zkServer.sh start"
 	echo "*" 
-	echo "*   to end"
-	echo "*" 
-	echo "*   bin/zkServer.sh stop"
-	echo "*" 
-	echo "*   Set JAVA_HOME, such as ..."
-	echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
-	echo "*     or"
-	echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
-	echo "*" 
-	echo "*   Set ZOOKEEPER_HOME, such as ..."
-	echo "*     export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
-	echo "*     or"
-	echo "*     setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
-	echo "*" 
-	echo "*******************************************************"
-    else
+    fi
+    echo "* To end/cleanup your session, kill the daemons via:"
+    echo "*" 
+    echo "*   bin/zkServer.sh stop"
+    echo "*" 
+    echo "* Some additional environment variables you may sometimes wish to set"
+    echo "*" 
+    echo "*   Set JAVA_HOME, such as ..."
+    echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
+    echo "*     or"
+    echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
+    echo "*" 
+    echo "*   Set ZOOKEEPER_HOME, such as ..."
+    echo "*     export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
+    echo "*     or"
+    echo "*     setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
+    echo "*" 
+    echo "*******************************************************"
+
+    if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+    then
 	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 	
 	for zookeepernode in ${zookeepernodes}
@@ -116,6 +123,8 @@ then
     fi
 
     echo "*******************************************************"
+    echo "*"
+    echo "* Hadoop Information"
     echo "*"
     echo "* You can view your job/cluster status by launching a web browser and pointing to ..."
     echo "*"
