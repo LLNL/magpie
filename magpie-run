@@ -45,10 +45,21 @@ then
 	echo "Starting Zookeeper"
 	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 	
+	nodecount=0
 	for zookeepernode in ${zookeepernodes}
 	do
 	    ${magpieremotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} start
+	    nodecount=$((nodecount+1))
 	done
+
+        # My rough estimate for setup time is 30 seconds per 100 nodes
+	sleepwait=`expr ${nodecount} \/ 100 \* 30`
+	if [ ${sleepwait} -lt 30 ]
+	then
+            sleepwait=30
+	fi
+	echo "Waiting ${sleepwait} seconds to allow Zookeeper daemons to setup"
+	sleep ${sleepwait}
     fi
 
     echo "*******************************************************"
