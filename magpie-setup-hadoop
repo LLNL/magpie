@@ -418,7 +418,7 @@ fi
 userprocesses=`ulimit -u`
 if [ "${userprocesses}" != "unlimited" ]
 then
-    userprocesseshardlimit=`ulimit -H -n`
+    userprocesseshardlimit=`ulimit -H -u`
 
     # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
     userprocessesslavecount=`expr ${HADOOP_SLAVE_COUNT} \/ 100`
