@@ -79,4 +79,17 @@ then
     done
 fi
 
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+then
+    count=0
+    while [ "${count}" -lt "${nodecounttodecomission}" ]
+    do
+	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
+	rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-$noderank"
+	echo "Removing path ${rmpath} ..."
+	rm -rf ${rmpath}
+	count=`expr $count + 1`
+    done
+fi
+
 exit 0
