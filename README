@@ -133,12 +133,13 @@ Basic Instructions For Running Hadoop
    be some notes/instructions/tips in the slurm output file for
    viewing the status of your job, how to interact, etc..
 
-Basics of HDFS over Lustre
---------------------------
+Basics of HDFS over Lustre or HDFS over NetworkFS
+-------------------------------------------------
 
-Instead of using local disk, designate a lustre directory to "emulate"
-local disk for each compute node.  For example, lets say you have 4
-compute nodes.  If we create the following paths in Lustre,
+Instead of using local disk, designate a lustre/network file system
+directory to "emulate" local disk for each compute node.  For example,
+lets say you have 4 compute nodes.  If we create the following paths
+in Lustre,
 
 /lustre/myusername/node-0
 /lustre/myusername/node-1
@@ -151,7 +152,7 @@ they can treat like a local disk.
 Q: Does that mean I have to constantly rebuild HDFS everytime I start
   a job?
 
-A: No, using MPI ranks, "disk-paths" can be consistently assigned to
+A: No, using node ranks, "disk-paths" can be consistently assigned to
    nodes so that all your HDFS files from a previous run can exist on
    a later run.
 
