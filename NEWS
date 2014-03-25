@@ -2,6 +2,13 @@ magpie 1.27
 -----------
 Fix corner cases with IntelLustre shuffling and UDA shuffling.
 Make default slowstart .05 just like default Hadoop.
+Require MAGPIE_SHUTDOWN_TIME >= 10 minutes if MAGPIE_POST_JOB_RUN is set
+Add check for MAGPIE_STARTUP_TIME and MAGPIE_SHUTDOWN_TIME to be minimum 5 minutes.
+Rename scripts/hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh to
+  scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh.
+Rename scripts/hadoop-hdfs-over-lustre-nodes-decomission-script.sh to
+  scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh.
+Add hdfs over networkfs support to scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh.
 
 magpie 1.26
 -----------
