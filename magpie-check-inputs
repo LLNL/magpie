@@ -175,6 +175,24 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpiestartuptime} -lt 5 ]
+then
+    echo "MAGPIE_STARTUP_TIME must be >= 5 minutes"
+    exit 1
+fi
+
+if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpieshutdowntime} -lt 5 ]
+then
+    echo "MAGPIE_SHUTDOWN_TIME must be >= 5 minutes"
+    exit 1
+fi
+
+if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpieshutdowntime} -lt 10 ]
+then
+    echo "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set"
+    exit 1
+fi
+
 #
 # Check General Inputs
 #

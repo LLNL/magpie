@@ -156,6 +156,19 @@ Magpie_calculate_stop_timeouts () {
 	fi
     
 	magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+
+	if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
+	then
+	    # Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_JOB_RUN
+	    magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
+	    if [ "${magpiepostrunallocate}" -lt 300 ]
+	    then
+		magpiepostrunallocate=300
+	    fi
+
+	    magpieshutdowntimeseconds=`expr ${magpieshutdowntimeseconds} - ${magpiepostrunallocate}` 
+	fi
+
 	hadoopstoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${hadoopstoptimeoutdivisor}`
 	
 	if [ "${hadoopstoptimeout}" -lt 5 ]
