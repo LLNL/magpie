@@ -54,13 +54,13 @@ fi
 
 if [ "$3X" == "X" ]
 then
-    echo "User must start or stop as third argument"
+    echo "User must specify start or stop as third argument"
     exit 1
 fi
 
 if [ "$3" != "start" ] && [ "$3" != "stop" ]
 then
-    echo "User must start or stop as third argument"
+    echo "User must specify start or stop as third argument"
     exit 1
 fi
 
