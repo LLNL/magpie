@@ -95,6 +95,7 @@ Magpie_wait_script () {
 
     if [ "${scriptexitted}" == "0" ]
     then
+	echo "Killing script, did not exit within time limit"
 	kill ${scriptpid}
     fi
     return 0
