@@ -117,6 +117,10 @@ export MAGPIE_JOB_TYPE="hadoop"
 # The startup & shutdown window must together be smaller than the
 # SBATCH_TIMELIMIT specified above.
 #
+# MAGPIE_STARTUP_TIME and MAGPIE_SHUTDOWN_TIME at minimum must be 5
+# minutes.  If MAGPIE_POST_JOB_RUN is specified below,
+# MAGPIE_SHUTDOWN_TIME must be at minimum 10 minutes.
+#
 # export MAGPIE_STARTUP_TIME=30
 # export MAGPIE_SHUTDOWN_TIME=30
 
@@ -132,7 +136,8 @@ export MAGPIE_JOB_TYPE="hadoop"
 # MAGPIE_PRE_JOB_RUN exits with a non-zero exit code.
 #
 # The post-job script is typically used for cleaning up something or
-# gathering info (such as logs) for post-debugging/analysis.
+# gathering info (such as logs) for post-debugging/analysis.  If it is
+# set, MAGPIE_SHUTDOWN_TIME above must be > 5.
 # 
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
@@ -646,8 +651,12 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 export HBASE_MODE="performanceeval"
 
 # Should a major compaction be done when Hbase is being shut down.  In
-# general, this is something that should be done but could take a long
-# time.  MAGPIE_SHUTDOWN_TIME should be large enough to handle this.
+# general, this is something that should be done to compact small
+# files, remove flagged deletes, etc., but could take a long time.
+# MAGPIE_SHUTDOWN_TIME should be large enough to handle this.
+#
+# This can also be run via the convenience script
+# hbase-major-compaction.sh.
 #
 # Specify yes or no.  Defaults to yes.
 # export HBASE_MAJOR_COMPACTION_ON_SHUTDOWN=yes
@@ -658,7 +667,7 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Rows
 #
-# For "performanceeval" mode.
+# For "performanceeval" mode.  Rows each client will run.
 #
 # Defaults to 1048576 (1 million)
 #

@@ -90,7 +90,7 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Rows
 #
-# For "performanceeval" mode.
+# For "performanceeval" mode.  Rows each client will run.
 #
 # Defaults to 1048576 (1 million)
 #

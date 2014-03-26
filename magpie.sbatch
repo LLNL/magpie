@@ -842,8 +842,12 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 export HBASE_MODE="performanceeval"
 
 # Should a major compaction be done when Hbase is being shut down.  In
-# general, this is something that should be done but could take a long
-# time.  MAGPIE_SHUTDOWN_TIME should be large enough to handle this.
+# general, this is something that should be done to compact small
+# files, remove flagged deletes, etc., but could take a long time.
+# MAGPIE_SHUTDOWN_TIME should be large enough to handle this.
+#
+# This can also be run via the convenience script
+# hbase-major-compaction.sh.
 #
 # Specify yes or no.  Defaults to yes.
 # export HBASE_MAJOR_COMPACTION_ON_SHUTDOWN=yes
@@ -854,7 +858,7 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Rows
 #
-# For "performanceeval" mode.
+# For "performanceeval" mode.  Rows each client will run.
 #
 # Defaults to 1048576 (1 million)
 #
