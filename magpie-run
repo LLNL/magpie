@@ -394,6 +394,15 @@ then
     ${MAGPIE_SCRIPT_PATH} &
     scriptpid=$!
     Magpie_wait_script ${scriptpid}
+elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
+then
+    echo "*******************************************************"
+    echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
+    echo "*******************************************************"
+    magpiesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+    magpiesleepamount=`expr ${magpiesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+    magpiesleepseconds=`expr ${magpiesleepamount}  \* 60`
+    sleep ${magpiesleepseconds}
 elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
 then
     if [ "${hadoopsetuppass}" == "1" ]

@@ -121,9 +121,10 @@ fi
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
-    && [ "${MAGPIE_JOB_TYPE}" != "script" ]
+    && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, pig, or script"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, script, or interactive"
     exit 1
 fi
 

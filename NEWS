@@ -1,5 +1,6 @@
 magpie 1.29
 -----------
+Support 'interactive' mode in MAGPIE_JOB_TYPE.
 Minor cleanup of help output.
 
 magpie 1.28
