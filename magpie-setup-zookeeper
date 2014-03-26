@@ -122,11 +122,24 @@ done
 zookeeperjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 zookeeperlogdirsubst=`echo "${ZOOKEEPER_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 zookeeperconfdirsubst=`echo "${ZOOKEEPER_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+zookeeperhomesubst=`echo "${ZOOKEEPER_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
 sed -e "s/MAGPIEJAVAHOME/${zookeeperjavahomesubst}/g" \
     -e "s/ZOOKEEPERLOGDIR/${zookeeperlogdirsubst}/g" \
     -e "s/ZOOKEEPERCONFDIR/${zookeeperconfdirsubst}/g" \
+    -e "s/ZOOKEEPERHOME/${zookeeperhomesubst}/g" \
+    -e "s/MAGPIESCRIPTSHOME/${magpiescriptshome}/g" \
     $zookeeperenvsh > ${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export ZOOKEEPER_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export ZOOKEEPER_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh
+fi
 
 cat ${zookeeperconffiledir}/zookeeper.log4j.properties > ${ZOOKEEPER_CONF_DIR}/log4j.properties
 

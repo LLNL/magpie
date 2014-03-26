@@ -1,5 +1,7 @@
 magpie 1.29
 -----------
+Support binary bin/magpie-zookeeper.sh, to emulate start/stop scripts
+  in Hadoop/Hbase.
 Support 'interactive' mode in MAGPIE_JOB_TYPE.
 Minor cleanup of help output.
 

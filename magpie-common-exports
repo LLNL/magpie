@@ -274,6 +274,11 @@ then
     export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
 fi
 
+if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_slaves" ]
+then 
+     export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+fi
+
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     hadoopscriptprefix="bin"
