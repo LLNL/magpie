@@ -70,9 +70,12 @@ then
     then
 	echo "* To start Zookeper, on each node"
 	echo "*   Set ZOOCFGDIR, such as ..."
-	echo "*     export ZOOCFGDIR=\"${ZOOCFGDIR}\""
-	echo "*     or"
-	echo "*     setenv ZOOCFGDIR \"${ZOOCFGDIR}\""
+	if echo $SHELL | grep -q csh
+	then
+	    echo "*   setenv ZOOCFGDIR \"${ZOOCFGDIR}\""
+	else
+	    echo "*   export ZOOCFGDIR=\"${ZOOCFGDIR}\""
+	fi
 	echo "*   cd $ZOOKEEPER_HOME"
 	echo "*   bin/zkServer.sh start"
 	echo "*" 
@@ -83,15 +86,14 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    echo "*   Set JAVA_HOME, such as ..."
-    echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
-    echo "*     or"
-    echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
-    echo "*" 
-    echo "*   Set ZOOKEEPER_HOME, such as ..."
-    echo "*     export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
-    echo "*     or"
-    echo "*     setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
+    else
+	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
+    fi
     echo "*" 
     echo "*******************************************************"
 fi
@@ -157,10 +159,12 @@ then
     echo "*" 
     echo "* To access Hadoop directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-    echo "*   Set HADOOP_CONF_DIR, such as ..."
-    echo "*     export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-    echo "*     or"
-    echo "*     setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+    else
+	echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+    fi
     echo "*   cd $HADOOP_HOME"
     echo "*"
     echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
@@ -235,28 +239,24 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    echo "*" 
-    echo "*   Set JAVA_HOME, such as ..."
-    echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
-    echo "*     or"
-    echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
-    echo "*" 
-    echo "*   Set HADOOP_HOME, such as ..."
-    echo "*     export HADOOP_HOME=\"${HADOOP_HOME}\""
-    echo "*     or"
-    echo "*     setenv HADOOP_HOME \"${HADOOP_HOME}\""
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
+    else
+	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
+    fi
     if [ "${PIG_SETUP}" == "yes" ]
     then
-	echo "*"
-	echo "*   Set PIG_HOME, such as ..."
-	echo "*     export PIG_HOME=\"${PIG_HOME}\""
-	echo "*     or"
-	echo "*     setenv PIG_HOME \"${PIG_HOME}\""
-	echo "*"
-	echo "*   Set PIG_CONF_DIR, such as ..."
-	echo "*     export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
-	echo "*     or"
-	echo "*     setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
+	if echo $SHELL | grep -q csh
+	then
+	    echo "*   setenv PIG_HOME \"${PIG_HOME}\""
+	    echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
+	else
+	    echo "*   export PIG_HOME=\"${PIG_HOME}\""
+	    echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
+	fi
     fi
     echo "*" 
     echo "*******************************************************"
@@ -347,10 +347,12 @@ then
     echo "*" 
     echo "* To access Hbase directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
-    echo "*   Set HBASE_CONF_DIR, such as ..."
-    echo "*     export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
-    echo "*     or"
-    echo "*     setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+    else
+	echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+    fi
     echo "*   cd $HBASE_HOME"
     echo "*"
     echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
@@ -372,16 +374,14 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    echo "*" 
-    echo "*   Set JAVA_HOME, such as ..."
-    echo "*     export JAVA_HOME=\"${JAVA_HOME}\""
-    echo "*     or"
-    echo "*     setenv JAVA_HOME \"${JAVA_HOME}\""
-    echo "*" 
-    echo "*   Set HBASE_HOME, such as ..."
-    echo "*     export HBASE_HOME=\"${HBASE_HOME}\""
-    echo "*     or"
-    echo "*     setenv HBASE_HOME \"${HBASE_HOME}\""
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	echo "*   setenv HBASE_HOME \"${HBASE_HOME}\""
+    else
+	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	echo "*   export HBASE_HOME=\"${HBASE_HOME}\""
+    fi
     echo "*" 
     echo "*******************************************************"
 fi
