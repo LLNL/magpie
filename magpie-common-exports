@@ -32,13 +32,13 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 
 Magpie_am_I_master () {
     local myhostname=`hostname`
-    if [ ${HADOOP_SETUP} == "yes" ]
+    if [ "${HADOOP_SETUP}" == "yes" ]
     then
 	if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters
 	then 
 	    return 0
 	fi
-    elif [ ${ZOOKEEPER_SETUP} == "yes" ]
+    elif [ "${ZOOKEEPER_SETUP}" == "yes" ]
     then
 	if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/masters
 	then 
