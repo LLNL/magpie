@@ -95,12 +95,12 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 # "pig" - Run a Hadoop job according to the settings of PIG_SCRIPT.
 #
 # "script" - Run an arbitraty script, as specified by
-#            MAGPIE_JOB_SCRIPT.  This functionally is very similar to
-#            setting "script" in HADOOP_MODE.
+#            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
+#            setting "script" in HADOOP_MODE or HBASE_MODE.
 #
-#            It is primarily used if you want to launch without Hadoop
-#            (such as Zookeeper only) and are experimeting with
-#            things..
+#            It is primarily used if you want to launch without
+#            Hadoop/Hbase (such as Zookeeper only) and are
+#            experimeting with things..
 #
 export MAGPIE_JOB_TYPE="hadoop"
 
