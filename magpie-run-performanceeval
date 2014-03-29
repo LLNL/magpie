@@ -68,11 +68,11 @@ then
     $command | bin/hbase shell
 fi
 
-command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} sequentialWrite ${hbaseclientcount}"
+command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} randomWrite ${hbaseclientcount}"
 echo "Running $command" >&2
 $command
 
-command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} sequentialRead ${hbaseclientcount}"
+command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} randomRead ${hbaseclientcount}"
 echo "Running $command" >&2
 $command
 
