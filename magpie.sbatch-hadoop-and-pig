@@ -260,8 +260,11 @@ export HADOOP_MODE="terasort"
 
 # Tasks per Node
 #
-# If not specified, defaults to #cores * 1.5.  # of cores is determined
-# by /proc/cpuinfo.  Adjustment may be needed if hyperthreading is enabled.
+# If not specified, a reasonable estimate will be calculated based on
+# number of CPUs on the system.
+#
+# If running Hbase with Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be used by Hbase.
 #
 # export HADOOP_MAX_TASKS_PER_NODE=8
 
@@ -270,6 +273,9 @@ export HADOOP_MODE="terasort"
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
 # nodes.
 #
+# If running Hbase with Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be used by Hbase.
+#
 # export HADOOP_DEFAULT_MAP_TASKS=8
 
 # Default Reduce tasks for Job
@@ -277,17 +283,26 @@ export HADOOP_MODE="terasort"
 # If not specified, defaults to # compute nodes (i.e. 1 reducer per
 # node)
 #
+# If running Hbase with Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be used by Hbase.
+#
 # export HADOOP_DEFAULT_REDUCE_TASKS=8
 
 # Max Map tasks for Task Tracker
 #
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
 #
+# If running Hbase with Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be used by Hbase.
+#
 # export HADOOP_MAX_MAP_TASKS=8
 
 # Max Reduce tasks for Task Tracker
 #
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
+#
+# If running Hbase with Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be used by Hbase.
 #
 # export HADOOP_MAX_REDUCE_TASKS=8
 
@@ -305,6 +320,9 @@ export HADOOP_MODE="terasort"
 #
 # If HADOOP_CHILD_REDUCE_HEAPSIZE is not specified, it is assumed to
 # be 2X the HADOOP_CHILD_MAP_HEAPSIZE.
+#
+# If running Hbase with Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be used by Hbase.
 #
 # export HADOOP_CHILD_HEAPSIZE=2048
 # export HADOOP_CHILD_MAP_HEAPSIZE=2048

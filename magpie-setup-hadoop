@@ -137,7 +137,12 @@ javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
 memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
 proccounttmp=`cat /proc/cpuinfo | grep processor | wc -l`
-proccount=`expr ${proccounttmp} + ${proccounttmp} \/ 2`
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    proccount=`expr ${proccounttmp} \/ 2`
+else
+    proccount=`expr ${proccounttmp} + ${proccounttmp} \/ 2`
+fi
 
 if [ "${HADOOP_MAX_TASKS_PER_NODE}X" != "X" ]
 then
@@ -151,7 +156,12 @@ then
     yarnresourcememory=${YARN_RESOURCE_MEMORY}
 else
     # 80% of system memory seems like a good estimate
-    tmp1=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    if [ "${HBASE_SETUP}" == "yes" ]
+    then
+	tmp1=$(echo "${memtotalgig} * .4" | bc -l | xargs printf "%1.0f")
+    else
+	tmp1=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    fi
     yarnresourcememory=$(echo "${tmp1} * 1024" | bc -l | xargs printf "%1.0f")
 fi
 
