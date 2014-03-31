@@ -848,9 +848,9 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 
 # Set how Hbase should run
 #
-# "performanceeval" - run performance evaluation via Hbase sequential
-#              write and read.  Useful for making sure things are
-#              setup the way you like.
+# "performanceeval" - run performance evaluation write and read.
+#              Useful for making sure things are setup the way you
+#              like.
 #
 # "script" - execute a script that lists all of your Hbase jobs.  Be
 #            sure to set HBASE_SCRIPT_PATH to your script.
