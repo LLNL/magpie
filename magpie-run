@@ -322,7 +322,7 @@ if [ "${HBASE_SETUP}" == "yes" ]
 then
     cd ${HBASE_HOME}
 
-    if [ ${HBASE_MODE} != "setuponly" ]
+    if [ ${HBASE_MODE} != "setuponly" ] && [ "${hadoopsetuppass}" == "1" ]
     then
 	echo "Starting hbase"
 	${hbasescriptprefix}/start-hbase.sh
