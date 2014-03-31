@@ -37,6 +37,22 @@ else
     nomapredoption=""
 fi
 	    
+if [ "${HBASE_PERFORMANCEEVAL_MODE}X" != "X" ]
+then
+    if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential" ]
+    then
+	writecmd="randomWrite"
+	readcmd="randomRead"
+    elif [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random" ]
+    then
+	writecmd="sequentialWrite"
+	readcmd="sequentialRead"
+    fi
+else
+    writecmd="sequentialWrite"
+    readcmd="sequentialRead"
+fi
+
 if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}X" == "X" ]
 then
     hbaserowcount=1048576
@@ -68,11 +84,11 @@ then
     $command | bin/hbase shell
 fi
 
-command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} randomWrite ${hbaseclientcount}"
+command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${writecmd} ${hbaseclientcount}"
 echo "Running $command" >&2
 $command
 
-command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} randomRead ${hbaseclientcount}"
+command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${readcmd} ${hbaseclientcount}"
 echo "Running $command" >&2
 $command
 

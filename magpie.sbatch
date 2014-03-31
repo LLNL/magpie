@@ -880,6 +880,14 @@ export HBASE_MODE="performanceeval"
 # Hbase Performance Evaluation Configurations
 ############################################################################
 
+# Performance Evaluation Mode
+#
+# Specify 'sequential' or 'random' for sequential or random read/write tests.
+#
+# Defaults to sequential if not specified. 
+# 
+# export HBASE_PERFORMANCEEVAL_MODE=random
+
 # Performance Evaluation Rows
 #
 # For "performanceeval" mode.  Rows each client will run.

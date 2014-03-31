@@ -739,6 +739,16 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_MODE}" == "performanceeval" ]
     then
+	if [ "${HBASE_PERFORMANCEEVAL_MODE}X" != "X" ]
+	then
+	    if [ "${HBASE_PERFORMANCEEVAL_MODE}" != "sequential" ] \
+		&& [ "${HBASE_PERFORMANCEEVAL_MODE}" != "random" ]	
+	    then
+		echo "HBASE_PERFORMANCEEVAL_MODE must be sequential or random"
+		exit 1
+	    fi
+	fi
+
 	if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}X" != "X" ]
 	then
 	    if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}" -lt 1 ]

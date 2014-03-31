@@ -3,12 +3,12 @@ magpie 1.29
 Support binary bin/magpie-zookeeper.sh, to emulate start/stop scripts
   in Hadoop/Hbase.
 Support 'interactive' mode in MAGPIE_JOB_TYPE.
-Convert Hbase 'performanceeval' from sequential read/write to random
-  read/write.
 Decrease default hbase.server.thread.wakefrequency to 500ms per online
   suggestions.
 Configure hbase.regionserver.handler.count appropriately depending on
   node count.
+Support HBASE_PERFORMANCEEVAL_MODE, to allow sequential or random
+  read/write performance evaluation.
 Adjust tasks/per node default if Hbase is running.
 Minor cleanup of help output.
 
