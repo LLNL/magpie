@@ -81,4 +81,12 @@
     unlikely to match your loading, run the compactions via an external
     invocation out of a cron job or some such.</description>
   </property>
+
+  <!-- Default 10000 way to big, go down to 500 -->
+  <property>
+      <name>hbase.server.thread.wakefrequency</name>
+      <value>500</value>
+      <description>Time to sleep in between searches for work (in milliseconds).
+      Used as sleep interval by service threads such as log roller.</description>
+  </property>
 </configuration>
