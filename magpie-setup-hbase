@@ -64,6 +64,18 @@ else
     fi
 fi
 
+# My experience default 30 is low.  We'll say 50% of nodes, floor 60, ceiling 200
+hbaseregionserverhandlercount=$(echo "${HBASE_REGIONSERVER_COUNT} * .5" | bc -l | xargs printf "%1.0f")
+if [ "${hbaseregionserverhandlercount}" -lt "60" ]
+then
+    hbaseregionserverhandlercount=60
+fi
+
+if [ "${hbaseregionserverhandlercount}" -gt "200" ]
+then
+    hbaseregionserverhandlercount=200
+fi
+
 #
 # Setup file system to use
 #
@@ -180,6 +192,7 @@ hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
 sed -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
     -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
     -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
+    -e "s/HBASEREGIONSERVERHANDLERCOUNT/${hbaseregionserverhandlercount}/g" \
     $hbasesitexml > ${HBASE_CONF_DIR}/hbase-site.xml
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`

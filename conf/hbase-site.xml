@@ -89,4 +89,13 @@
       <description>Time to sleep in between searches for work (in milliseconds).
       Used as sleep interval by service threads such as log roller.</description>
   </property>
+
+  <!-- Adjust appropriately given cluster size -->
+  <property>
+    <name>hbase.regionserver.handler.count</name>
+    <value>HBASEREGIONSERVERHANDLERCOUNT</value>
+    <description>Count of RPC Listener instances spun up on RegionServers.
+    Same property is used by the Master for count of master handlers.</description>
+  </property>
+
 </configuration>
