@@ -886,7 +886,7 @@ export HBASE_MODE="performanceeval"
 #
 # Defaults to sequential if not specified. 
 # 
-# export HBASE_PERFORMANCEEVAL_MODE=random
+# export HBASE_PERFORMANCEEVAL_MODE="random"
 
 # Performance Evaluation Rows
 #
