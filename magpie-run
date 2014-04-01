@@ -451,36 +451,39 @@ then
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
 then
-    cd ${HBASE_HOME}
+    if [ "${hadoopsetuppass}" == "1" ]
+    then
+	cd ${HBASE_HOME}
     
-    if [ "${HBASE_MODE}" == "performanceeval" ]
-    then
-	echo "*******************************************************"
-	echo "* Running Performance Evaluation"
-	echo "*******************************************************"
-	
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval &
-	scriptpid=$!
-	Magpie_wait_script ${scriptpid}
-    elif [ "${HBASE_MODE}" == "script" ]
-    then
-	echo "*******************************************************"
-	echo "* Executing script $HBASE_SCRIPT_PATH"
-	echo "*******************************************************"
-	${HBASE_SCRIPT_PATH} &
-	scriptpid=$!
-	Magpie_wait_script ${scriptpid}
-    elif [ "${HBASE_MODE}" == "interactive" ] \
-	|| [ "${HBASE_MODE}" == "setuponly" ]
-    then
-	echo "*******************************************************"
-	echo "* Entering Hbase ${HBASE_MODE} mode"
-	echo "*******************************************************"
-
-	hbasesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	hbasesleepamount=`expr ${hbasesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	hbasesleepseconds=`expr ${hbasesleepamount}  \* 60`
-	sleep ${hbasesleepseconds}
+	if [ "${HBASE_MODE}" == "performanceeval" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Performance Evaluation"
+	    echo "*******************************************************"
+	    
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${HBASE_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing script $HBASE_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${HBASE_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${HBASE_MODE}" == "interactive" ] \
+	    || [ "${HBASE_MODE}" == "setuponly" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Hbase ${HBASE_MODE} mode"
+	    echo "*******************************************************"
+	    
+	    hbasesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	    hbasesleepamount=`expr ${hbasesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	    hbasesleepseconds=`expr ${hbasesleepamount}  \* 60`
+	    sleep ${hbasesleepseconds}
+	fi
     fi
 fi
 
