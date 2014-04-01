@@ -30,25 +30,25 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 performanceevaljar="org.apache.hadoop.hbase.PerformanceEvaluation"
 
-if [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-then
-    nomapredoption="--nomapred"
-else
-    nomapredoption=""
-fi
-	    
 if [ "${HBASE_PERFORMANCEEVAL_MODE}X" != "X" ]
 then
-    if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential" ]
+    if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-thread" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-thread" ]
     then
-	writecmd="randomWrite"
-	readcmd="randomRead"
-    elif [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random" ]
+	nomapredoption="--nomapred"
+    else
+	nomapredoption=""
+    fi
+
+    if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-thread" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ]
     then
 	writecmd="sequentialWrite"
 	readcmd="sequentialRead"
+    else
+	writecmd="randomWrite"
+	readcmd="randomRead"
     fi
 else
+    nomapredoption="--nomapred"
     writecmd="sequentialWrite"
     readcmd="sequentialRead"
 fi

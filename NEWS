@@ -1,3 +1,9 @@
+magpie 1.30
+-----------
+Support sequential vs random Hbase write/read tests.
+Support threaded vs mapreduce Hbase write/read tests.
+Fix several corner cases.
+
 magpie 1.29
 -----------
 Support binary bin/magpie-zookeeper.sh, to emulate start/stop scripts

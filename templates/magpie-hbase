@@ -90,11 +90,14 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Mode
 #
-# Specify 'sequential' or 'random' for sequential or random read/write tests.
+# Specify 'sequential-thread' for threaded sequential write/read 
+# Specify 'sequential-mr' for MapReduce sequential write/read
+# Specify 'random-thread' for threaded random write/read 
+# Specify 'random-mr' for MapReduce random write/read
 #
-# Defaults to sequential if not specified. 
+# Defaults to 'sequential-thread' if not specified. 
 # 
-# export HBASE_PERFORMANCEEVAL_MODE="random"
+# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"
 
 # Performance Evaluation Rows
 #
