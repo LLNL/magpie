@@ -458,19 +458,31 @@ export HADOOP_MODE="terasort"
 #          where you have high confidence you will also get the same
 #          nodes on each run.
 #
+#          User must set HADOOP_HDFSOVERLUSTRE_PATH below.
+#
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
+#
+#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below. 
 #
 # "hdfsovernetworkfs" - HDFS over Network FS.  Identical to HDFS over
 #                       Lustre, but filesystem agnostic.
+#
+#                       User must set HADOOP_HDFSOVERNETWORKFS_PATH below.
 #
 # "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),
 #           to use networked file system directly.  It could be a
 #           Lustre mount or NFS mount.  Whatever you please.
 #
+#           User must set HADOOP_RAWNETWORKFS_PATH below.
+#
 # "intellustre" - Use the Lustre plugin developed by Intel for IDH.
+#
+#                 User must set HADOOP_INTELLUSTRE_PATH below. 
 #
 # "magpienetworkfs" - Use the Magpie Network FS plugin.  See README for
 #                     details.
+#
+#                     User must set HADOOP_MAGPIENETWORKFS_PATH below.
 #
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
