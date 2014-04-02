@@ -53,6 +53,7 @@ all:
 	cat templates/magpie-run-job >> magpie.sbatch-hadoop-and-pig
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop-and-pig
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" magpie.sbatch-hadoop-and-pig
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"pig\"/" magpie.sbatch-hadoop-and-pig
 
 # Make sbatch with Hadoop and Hbase
 	echo "Creating magpie.sbatch-hadoop-and-hbase"
@@ -74,6 +75,7 @@ all:
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
 	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.sbatch-hadoop-and-hbase
 
 # Make msub with all configuration
 	echo "Creating magpie.msub"
@@ -127,6 +129,7 @@ all:
 	cat templates/magpie-run-job >> magpie.msub-hadoop-and-pig
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop-and-pig
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" magpie.msub-hadoop-and-pig
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"pig\"/" magpie.msub-hadoop-and-pig
 
 # Make msub with Hadoop and Hbase
 	echo "Creating magpie.msub-hadoop-and-hbase"
@@ -148,3 +151,4 @@ all:
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop-and-hbase
 	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.msub-hadoop-and-hbase
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.msub-hadoop-and-hbase
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.msub-hadoop-and-hbase

@@ -108,7 +108,7 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #                 you want to launch without Hadoop/Hbase (such as
 #                 Zookeeper only) and are experimeting with things..
 #
-export MAGPIE_JOB_TYPE="hadoop"
+export MAGPIE_JOB_TYPE="hbase"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
