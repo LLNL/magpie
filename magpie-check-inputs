@@ -571,11 +571,29 @@ then
        exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "pig" ]
+    if [ "${PIG_MODE}" != "testpig" ] \
+	&& [ "${PIG_MODE}" != "script" ] \
+	&& [ "${PIG_MODE}" != "interactive" ]
+    then
+	echo "PIG_MODE must be set to testpig, script, interactive"
+	exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "script" ]
     then
 	if [ "${PIG_SCRIPT_PATH}X" == "X" ]
 	then
 	    echo "Script PIG_SCRIPT_PATH must be specified"
+	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
+	&& ([ "${PIG_MODE}" == "testpig" ] || [ "${PIG_MODE}" == "script" ])
+    then
+	if [ "${HADOOP_MODE}" == "setuponly" ]
+	then
+	    echo "Cannot run Pig job if Hadoop mode is setuponly"
 	    exit 1
 	fi
     fi

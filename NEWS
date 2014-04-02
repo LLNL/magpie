@@ -1,3 +1,8 @@
+magpie 1.31
+-----------
+Support PIG_MODE variable for consistency to Hadoop/Hbase.
+Minor bug fixes.
+
 magpie 1.30
 -----------
 Support sequential vs random Hbase write/read tests.

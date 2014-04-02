@@ -172,6 +172,14 @@ then
     echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
     echo "*" 
     echo "*   bin/hadoop fs ..."
+    if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
+    then
+	echo "*"
+	echo "To run pig scripts:"
+	echo "*"
+	echo "* cd $PIG_HOME"
+	echo "* bin/pig ..."
+    fi
 
     if [ "${HADOOP_MODE}" == "interactive" ] \
 	&& ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
@@ -409,12 +417,32 @@ elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
 then
     if [ "${hadoopsetuppass}" == "1" ]
     then
-	echo "*******************************************************"
-	echo "* Executing Pig script $PIG_SCRIPT_PATH"
-	echo "*******************************************************"
-	${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
-	scriptpid=$!
-	Magpie_wait_script ${scriptpid}
+	if [ "${PIG_MODE}" == "testpig" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Testpig"
+	    echo "*******************************************************"
+	    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} -e "ls /"
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${PIG_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing Pig script $PIG_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${PIG_MODE}" == "interactive" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Pig ${PIG_MODE} mode"
+	    echo "*******************************************************"
+	    pigsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	    pigsleepamount=`expr ${pigsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	    pigsleepseconds=`expr ${pigsleepamount}  \* 60`
+	    sleep ${pigsleepseconds}
+	fi
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
 then

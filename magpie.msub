@@ -92,7 +92,7 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "hbase" - Run a Hadoop job according to the settings of HBASE_MODE.
 #
-# "pig" - Run a Hadoop job according to the settings of PIG_SCRIPT.
+# "pig" - Run a Hadoop job according to the settings of PIG_MODE.
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
@@ -104,9 +104,10 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "interactive" - manually interact with job run.  This functionally
 #                 is very similar to setting "interactive" in
-#                 HADOOP_MODE or HBASE_MODE.  It is primarily used if
-#                 you want to launch without Hadoop/Hbase (such as
-#                 Zookeeper only) and are experimeting with things..
+#                 HADOOP_MODE, HBASE_MODE, or PIG_MODE.  It is
+#                 primarily used if you want to launch without
+#                 Hadoop/Hbase (such as Zookeeper only) and are
+#                 experimeting with things..
 #
 export MAGPIE_JOB_TYPE="hadoop"
 
@@ -675,8 +676,21 @@ export PIG_HOME="/home/username/pig-${PIG_VERSION}"
 #
 export PIG_LOCAL_DIR="/tmp/username/pig"
 
-# Specify script to execute for "pig" mode in MAGPIE_JOB_TYPE.  This
-# pig script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
+# Set how Pig should run
+#
+# "testpig" - Run a quick sanity test to see that pig is setup
+#             correctly.
+#
+# "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
+#
+# "interactive" - manually interact to run pig scripts. In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and run pig scripts directly.
+#
+export PIG_MODE="testpig"
+
+# Specify script to execute for "script" mode in PIG_MODE.  This pig
+# script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
 #
 # export PIG_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-pig-script"
 

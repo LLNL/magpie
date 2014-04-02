@@ -81,7 +81,7 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "hbase" - Run a Hadoop job according to the settings of HBASE_MODE.
 #
-# "pig" - Run a Hadoop job according to the settings of PIG_SCRIPT.
+# "pig" - Run a Hadoop job according to the settings of PIG_MODE.
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
@@ -93,9 +93,10 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "interactive" - manually interact with job run.  This functionally
 #                 is very similar to setting "interactive" in
-#                 HADOOP_MODE or HBASE_MODE.  It is primarily used if
-#                 you want to launch without Hadoop/Hbase (such as
-#                 Zookeeper only) and are experimeting with things..
+#                 HADOOP_MODE, HBASE_MODE, or PIG_MODE.  It is
+#                 primarily used if you want to launch without
+#                 Hadoop/Hbase (such as Zookeeper only) and are
+#                 experimeting with things..
 #
 export MAGPIE_JOB_TYPE="hadoop"
 
