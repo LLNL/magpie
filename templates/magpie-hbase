@@ -141,6 +141,3 @@ export HBASE_MODE="performanceeval"
 # See hbase-example-job-script for example of what to put in the script.
 #
 # export HBASE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
-
-
-

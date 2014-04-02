@@ -723,9 +723,6 @@ export HBASE_MODE="performanceeval"
 #
 # export HBASE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
 
-
-
-
 ############################################################################
 # Zookeeper Configurations
 ############################################################################
