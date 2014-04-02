@@ -783,6 +783,21 @@ then
 	fi
     fi
 
+    if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_MODE}" == "script" ]
+    then
+	if [ "${HBASE_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script HBASE_SCRIPT_PATH must be specified"
+	    exit 1
+	fi
+	
+	if [ ! -x ${HBASE_SCRIPT_PATH} ]
+	then
+	    echo "Script HBASE_SCRIPT_PATH \"$HBASE_SCRIPT_PATH\" does not have execute permissions"
+	    exit 1
+	fi
+    fi
+
     if ([ "${HBASE_MODE}" == "performanceeval" ] \
 	|| [ "${HBASE_MODE}" == "script" ] \
 	|| [ "${HBASE_MODE}" == "interactive" ]) \
