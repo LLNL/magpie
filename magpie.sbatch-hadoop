@@ -400,47 +400,6 @@ export HADOOP_MODE="terasort"
 # export HADOOP_PARALLEL_COPIES=10
 
 ############################################################################
-# Hadoop Terasort Configurations
-############################################################################
-
-# Terasort size
-#
-# For "terasort" mode.
-#
-# Specify 10000000000 for terabyte, for actual benchmarking
-#
-# Specify something small, like 50000000 for basic sanity tests.
-# Defaults to 50000000.
-#
-# export HADOOP_TERASORT_SIZE=50000000
-
-# Terasort reducer count
-#
-# For "terasort" mode.
-#
-# If not specified, will be compute node count * 2.
-#
-# export HADOOP_TERASORT_REDUCER_COUNT=4
-
-# Terasort cache
-#
-# For "real benchmarking" you should flush page cache between a
-# teragen and a terasort.  You can disable this for sanity runs/tests
-# to make things go faster.  Specify yes or no.  Defaults to yes.
-#
-# export HADOOP_TERASORT_CLEAR_CACHE=no
-
-############################################################################
-# Hadoop Script Configurations
-############################################################################
-
-# Specify script to execute for "script" mode
-#
-# See hadoop-example-job-script for example of what to put in the script.
-#
-# export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
-
-############################################################################
 # Hadoop Filesystem Mode Configurations
 ############################################################################
 
@@ -608,6 +567,47 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 #
 # export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
 
+
+############################################################################
+# Hadoop Terasort Configurations
+############################################################################
+
+# Terasort size
+#
+# For "terasort" mode.
+#
+# Specify 10000000000 for terabyte, for actual benchmarking
+#
+# Specify something small, like 50000000 for basic sanity tests.
+# Defaults to 50000000.
+#
+# export HADOOP_TERASORT_SIZE=50000000
+
+# Terasort reducer count
+#
+# For "terasort" mode.
+#
+# If not specified, will be compute node count * 2.
+#
+# export HADOOP_TERASORT_REDUCER_COUNT=4
+
+# Terasort cache
+#
+# For "real benchmarking" you should flush page cache between a
+# teragen and a terasort.  You can disable this for sanity runs/tests
+# to make things go faster.  Specify yes or no.  Defaults to yes.
+#
+# export HADOOP_TERASORT_CLEAR_CACHE=no
+
+############################################################################
+# Hadoop Script Configurations
+############################################################################
+
+# Specify script to execute for "script" mode
+#
+# See hadoop-example-job-script for example of what to put in the script.
+#
+# export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
 
 ############################################################################
 # Run Job

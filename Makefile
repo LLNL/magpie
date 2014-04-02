@@ -11,6 +11,8 @@ all:
 	echo "" >> magpie.sbatch
 	cat templates/magpie-hadoop >> magpie.sbatch
 	echo "" >> magpie.sbatch
+	cat templates/magpie-hadoop-mode-details >> magpie.sbatch
+	echo "" >> magpie.sbatch
 	cat templates/magpie-uda >> magpie.sbatch
 	echo "" >> magpie.sbatch
 	cat templates/magpie-pig >> magpie.sbatch
@@ -32,6 +34,8 @@ all:
 	cat templates/magpie-general-configuration >> magpie.sbatch-hadoop
 	echo "" >> magpie.sbatch-hadoop
 	cat templates/magpie-hadoop >> magpie.sbatch-hadoop
+	echo "" >> magpie.sbatch-hadoop
+	cat templates/magpie-hadoop-mode-details >> magpie.sbatch-hadoop
 	echo "" >> magpie.sbatch-hadoop
 	cat templates/magpie-run-job >> magpie.sbatch-hadoop
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop
@@ -89,6 +93,8 @@ all:
 	echo "" >> magpie.msub
 	cat templates/magpie-hadoop >> magpie.msub
 	echo "" >> magpie.msub
+	cat templates/magpie-hadoop-mode-details >> magpie.msub
+	echo "" >> magpie.msub
 	cat templates/magpie-uda >> magpie.msub
 	echo "" >> magpie.msub
 	cat templates/magpie-pig >> magpie.msub
@@ -108,6 +114,8 @@ all:
 	cat templates/magpie-general-configuration >> magpie.msub-hadoop
 	echo "" >> magpie.msub-hadoop
 	cat templates/magpie-hadoop >> magpie.msub-hadoop
+	echo "" >> magpie.msub-hadoop
+	cat templates/magpie-hadoop-mode-details >> magpie.msub-hadoop
 	echo "" >> magpie.msub-hadoop
 	cat templates/magpie-run-job >> magpie.msub-hadoop
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop
