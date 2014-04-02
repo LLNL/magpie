@@ -273,6 +273,9 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
 #
+#              Configure run with HADOOP_TERASORT_SIZE, HADOOP_TERASORT_REDUCER_COUNT, and
+#              HADOOP_TERASORT_CLEAR_CACHE
+#
 # "script" - execute a script that lists all of your Hadoop jobs.  Be
 #            sure to set HADOOP_SCRIPT_PATH to your script.
 #
