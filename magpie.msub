@@ -246,6 +246,23 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_DAEMON_HEAP_MAX=2000
 
+# Environment Extra
+#
+# Specify extra environment information that should be passed into
+# Hadoop.  This file will simply be appended into the hadoop-env.sh
+# (and if appropriate) yarn-env.sh.
+#
+# By default, a reasonable estimate for max user processes and open
+# file descriptors will be calculated and put into hadoop-env.sh (and
+# if appropriate) yarn-env.sh.  However, it's always possible they may
+# need to be set differently. Everyone's cluster/situation can be
+# slightly different.
+#
+# See the example example-environment-extra extra for examples on
+# what you can/should do with adding extra environment settings.
+#
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
+
 ############################################################################
 # Hadoop Job/Run Configurations
 ############################################################################
@@ -589,26 +606,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 #
 # export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
 
-############################################################################
-# Hadoop Environment Configurations
-############################################################################
-
-# Environment Extra
-#
-# Specify extra environment information that should be passed into
-# Hadoop.  This file will simply be appended into the hadoop-env.sh
-# (and if appropriate) yarn-env.sh.
-#
-# By default, a reasonable estimate for max user processes and open
-# file descriptors will be calculated and put into hadoop-env.sh (and
-# if appropriate) yarn-env.sh.  However, it's always possible they may
-# need to be set differently. Everyone's cluster/situation can be
-# slightly different.
-#
-# See the example example-environment-extra extra for examples on
-# what you can/should do with adding extra environment settings.
-#
-# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
 
 ############################################################################
 # Hadoop UDA Configurations

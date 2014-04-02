@@ -235,6 +235,23 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_DAEMON_HEAP_MAX=2000
 
+# Environment Extra
+#
+# Specify extra environment information that should be passed into
+# Hadoop.  This file will simply be appended into the hadoop-env.sh
+# (and if appropriate) yarn-env.sh.
+#
+# By default, a reasonable estimate for max user processes and open
+# file descriptors will be calculated and put into hadoop-env.sh (and
+# if appropriate) yarn-env.sh.  However, it's always possible they may
+# need to be set differently. Everyone's cluster/situation can be
+# slightly different.
+#
+# See the example example-environment-extra extra for examples on
+# what you can/should do with adding extra environment settings.
+#
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
+
 ############################################################################
 # Hadoop Job/Run Configurations
 ############################################################################
@@ -578,26 +595,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 #
 # export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
 
-############################################################################
-# Hadoop Environment Configurations
-############################################################################
-
-# Environment Extra
-#
-# Specify extra environment information that should be passed into
-# Hadoop.  This file will simply be appended into the hadoop-env.sh
-# (and if appropriate) yarn-env.sh.
-#
-# By default, a reasonable estimate for max user processes and open
-# file descriptors will be calculated and put into hadoop-env.sh (and
-# if appropriate) yarn-env.sh.  However, it's always possible they may
-# need to be set differently. Everyone's cluster/situation can be
-# slightly different.
-#
-# See the example example-environment-extra extra for examples on
-# what you can/should do with adding extra environment settings.
-#
-# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
 
 ############################################################################
 # Hadoop UDA Configurations
@@ -842,6 +839,21 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 #
 # export HBASE_REGIONSERVER_DAEMON_HEAP_MAX=16000
 
+# Environment Extra
+#
+# Specify extra environment information that should be passed into
+# Hbase.  This file will simply be appended into the hbase-env.sh.
+#
+# By default, a reasonable estimate for max user processes and open
+# file descriptors will be calculated and put into hbase-env.sh.
+# However, it's always possible they may need to be set
+# differently. Everyone's cluster/situation can be slightly different.
+#
+# See the example example-environment-extra for examples on
+# what you can/should do with adding extra environment settings.
+#
+# export HBASE_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hbase-my-environment"
+
 ############################################################################
 # Hbase Job/Run Configurations
 ############################################################################
@@ -882,11 +894,14 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Mode
 #
-# Specify 'sequential' or 'random' for sequential or random read/write tests.
+# Specify 'sequential-thread' for threaded sequential write/read 
+# Specify 'sequential-mr' for MapReduce sequential write/read
+# Specify 'random-thread' for threaded random write/read 
+# Specify 'random-mr' for MapReduce random write/read
 #
-# Defaults to sequential if not specified. 
+# Defaults to 'sequential-thread' if not specified. 
 # 
-# export HBASE_PERFORMANCEEVAL_MODE="random"
+# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"
 
 # Performance Evaluation Rows
 #
@@ -916,24 +931,6 @@ export HBASE_MODE="performanceeval"
 #
 # export HBASE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
 
-############################################################################
-# Hbase Environment Configurations
-############################################################################
-
-# Environment Extra
-#
-# Specify extra environment information that should be passed into
-# Hbase.  This file will simply be appended into the hbase-env.sh.
-#
-# By default, a reasonable estimate for max user processes and open
-# file descriptors will be calculated and put into hbase-env.sh.
-# However, it's always possible they may need to be set
-# differently. Everyone's cluster/situation can be slightly different.
-#
-# See the example example-environment-extra for examples on
-# what you can/should do with adding extra environment settings.
-#
-# export HBASE_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hbase-my-environment"
 
 
 
