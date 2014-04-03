@@ -80,6 +80,7 @@ all:
 	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.sbatch-hadoop-and-hbase
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" magpie.sbatch-hadoop-and-hbase
 
 # Make msub with all configuration
 	echo "Creating magpie.msub"
@@ -160,3 +161,4 @@ all:
 	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.msub-hadoop-and-hbase
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.msub-hadoop-and-hbase
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.msub-hadoop-and-hbase
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" magpie.msub-hadoop-and-hbase

@@ -191,7 +191,7 @@ export HADOOP_SETUP=yes
 # HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre.  It makes no sense
 # otherwise.
 #
-export HADOOP_SETUP_TYPE="MR2"
+export HADOOP_SETUP_TYPE="HDFS2"
 
 # Version
 #
