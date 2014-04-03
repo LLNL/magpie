@@ -40,6 +40,25 @@ all:
 	cat templates/magpie-run-job >> magpie.sbatch-hadoop
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop
 
+# Make sbatch with Hadoop with UDA
+	echo "Creating magpie.sbatch-hadoop-with-uda"
+	cp templates/magpie-header magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-sbatch >> magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-magpie-customizations >> magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-general-configuration >> magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-hadoop >> magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-hadoop-mode-details >> magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-uda >> magpie.sbatch-hadoop-with-uda
+	echo "" >> magpie.sbatch-hadoop-with-uda
+	cat templates/magpie-run-job >> magpie.sbatch-hadoop-with-uda
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop-with-uda
+
 # Make sbatch with Hadoop and Pig
 	echo "Creating magpie.sbatch-hadoop-and-pig"
 	cp templates/magpie-header magpie.sbatch-hadoop-and-pig
@@ -120,6 +139,25 @@ all:
 	echo "" >> magpie.msub-hadoop
 	cat templates/magpie-run-job >> magpie.msub-hadoop
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop
+
+# Make msub with Hadoop with UDA
+	echo "Creating magpie.msub-hadoop-with-uda"
+	cp templates/magpie-header magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-msub >> magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-magpie-customizations >> magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-general-configuration >> magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-hadoop >> magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-hadoop-mode-details >> magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-uda >> magpie.msub-hadoop-with-uda
+	echo "" >> magpie.msub-hadoop-with-uda
+	cat templates/magpie-run-job >> magpie.msub-hadoop-with-uda
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop-with-uda
 
 # Make msub with Hadoop and Pig
 	echo "Creating magpie.msub-hadoop-and-pig"
