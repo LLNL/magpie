@@ -79,27 +79,27 @@ all:
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"pig\"/" magpie.sbatch-hadoop-and-pig
 
 # Make sbatch with Hadoop and Hbase
-	echo "Creating magpie.sbatch-hadoop-and-hbase"
-	cp templates/magpie-header magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-sbatch >> magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-magpie-customizations >> magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-general-configuration >> magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-hadoop >> magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-hbase >> magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-zookeeper >> magpie.sbatch-hadoop-and-hbase
-	echo "" >> magpie.sbatch-hadoop-and-hbase
-	cat templates/magpie-run-job >> magpie.sbatch-hadoop-and-hbase
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
-	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
-	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.sbatch-hadoop-and-hbase
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.sbatch-hadoop-and-hbase
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" magpie.sbatch-hadoop-and-hbase
+	echo "Creating magpie.sbatch-hbase-with-hdfs"
+	cp templates/magpie-header magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-sbatch >> magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-magpie-customizations >> magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-general-configuration >> magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-hadoop >> magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-hbase >> magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-zookeeper >> magpie.sbatch-hbase-with-hdfs
+	echo "" >> magpie.sbatch-hbase-with-hdfs
+	cat templates/magpie-run-job >> magpie.sbatch-hbase-with-hdfs
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.sbatch-hbase-with-hdfs
+	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.sbatch-hbase-with-hdfs
+	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.sbatch-hbase-with-hdfs
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.sbatch-hbase-with-hdfs
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" magpie.sbatch-hbase-with-hdfs
 
 # Make msub with all configuration
 	echo "Creating magpie.msub"
@@ -179,24 +179,24 @@ all:
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"pig\"/" magpie.msub-hadoop-and-pig
 
 # Make msub with Hadoop and Hbase
-	echo "Creating magpie.msub-hadoop-and-hbase"
-	cp templates/magpie-header magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-msub >> magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-magpie-customizations >> magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-general-configuration >> magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-hadoop >> magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-hbase >> magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-zookeeper >> magpie.msub-hadoop-and-hbase
-	echo "" >> magpie.msub-hadoop-and-hbase
-	cat templates/magpie-run-job >> magpie.msub-hadoop-and-hbase
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hadoop-and-hbase
-	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.msub-hadoop-and-hbase
-	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.msub-hadoop-and-hbase
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.msub-hadoop-and-hbase
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" magpie.msub-hadoop-and-hbase
+	echo "Creating magpie.msub-hbase-with-hdfs"
+	cp templates/magpie-header magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-msub >> magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-magpie-customizations >> magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-general-configuration >> magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-hadoop >> magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-hbase >> magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-zookeeper >> magpie.msub-hbase-with-hdfs
+	echo "" >> magpie.msub-hbase-with-hdfs
+	cat templates/magpie-run-job >> magpie.msub-hbase-with-hdfs
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" magpie.msub-hbase-with-hdfs
+	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" magpie.msub-hbase-with-hdfs
+	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" magpie.msub-hbase-with-hdfs
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" magpie.msub-hbase-with-hdfs
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" magpie.msub-hbase-with-hdfs
