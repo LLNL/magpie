@@ -510,7 +510,7 @@ then
     done
     IFS=${IFSORIG}
     datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
@@ -526,33 +526,10 @@ then
 	    echo "mkdir failed making ${hadooptmpdir}"
 	    exit 1
 	fi
-	/usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${hadooptmpdir}
-    fi
-    
-    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
-    then
-	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-    then
-	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
-    fi
-    
-    pathcount=1
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
-then
-    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
-    
-    # Assume if path doesn't exist must format
-    if [ -d "${hadooptmpdir}" ]
-    then
-	format=0
-    else
-	format=1
-	mkdir -p ${hadooptmpdir}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${hadooptmpdir}"
-	    exit 1
+
+	if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+	then
+	    /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${hadooptmpdir}
 	fi
     fi
     
