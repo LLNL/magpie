@@ -333,6 +333,8 @@ then
 	    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
 	fi
     fi
+else
+    hadoopsetuppass=1
 fi
 
 #
@@ -406,6 +408,86 @@ then
     else
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export HBASE_HOME=\"${HBASE_HOME}\""
+    fi
+    echo "*" 
+    echo "*******************************************************"
+fi
+
+#
+# Setup Spark
+#
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    cd ${SPARK_HOME}
+
+    if [ ${SPARK_MODE} != "setuponly" ]
+    then
+	echo "Starting spark"
+	${sparksetupscriptprefix}/start-all.sh
+	
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
+	if [ ${sleepwait} -lt 30 ]
+	then
+            sleepwait=30
+	fi
+	echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
+	sleep ${sleepwait}
+    fi
+
+    echo "*******************************************************"
+    echo "*"
+    echo "* Spark Information"
+    echo "*"
+    echo "* You can view your Spark status by launching a web browser and pointing to ..."
+    echo "*"
+    echo "* http://${SPARK_MASTER_NODE}:8080"
+    echo "*" 
+    echo "* The Spark Master for running jobs is"
+    echo "*"
+    echo "* spark://${SPARK_MASTER_NODE}:7077"
+    echo "*"
+    echo "* To access Spark directly, you'll want to:"
+    echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+    else
+	echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+    fi
+    echo "*   cd $SPARK_HOME"
+    echo "*"
+    echo "* Then you can do as you please.  For example to run a job:"
+    echo "*" 
+    echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:7077"
+
+    if [ "${SPARK_MODE}" == "setuponly" ]
+    then
+	echo "*" 
+	echo "* To setup, you probably want to run:" 
+	echo "*"
+	echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
+	echo "*   cd $SPARK_HOME"
+	echo "*   ${sparksetupscriptprefix}/start-all.sh" 
+    fi
+
+    echo "*" 
+    echo "* To end/cleanup your session, kill the daemons via:"
+    echo "*" 
+    echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
+    echo "*   cd $SPARK_HOME"
+    echo "*   ${sparksetupscriptprefix}/stop-all.sh"
+    echo "*" 
+    echo "* Some additional environment variables you may sometimes wish to set"
+    echo "*" 
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
+    else
+	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
     fi
     echo "*" 
     echo "*******************************************************"
@@ -529,6 +611,53 @@ then
 	    hbasesleepseconds=`expr ${hbasesleepamount}  \* 60`
 	    sleep ${hbasesleepseconds}
 	fi
+    fi
+elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
+then
+    if [ "${hadoopsetuppass}" == "1" ]
+    then
+	cd ${SPARK_HOME}
+    
+	if [ "${SPARK_MODE}" == "sparkpi" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running SparkPi"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${SPARK_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing script $SPARK_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${SPARK_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${SPARK_MODE}" == "interactive" ] \
+	    || [ "${SPARK_MODE}" == "setuponly" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Spark ${SPARK_MODE} mode"
+	    echo "*******************************************************"
+	    
+	    sparksleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	    sparksleepamount=`expr ${sparksleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	    sparksleepseconds=`expr ${sparksleepamount}  \* 60`
+	    sleep ${sparksleepseconds}
+	fi
+    fi
+fi
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    if [ ${SPARK_MODE} != "setuponly" ]
+    then
+	cd ${SPARK_HOME}
+	
+	echo "Stopping spark"
+	
+	${sparksetupscriptprefix}/stop-all.sh
     fi
 fi
 

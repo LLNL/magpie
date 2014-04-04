@@ -134,6 +134,31 @@ then
 fi
 
 #
+# Setup Spark directories
+#
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    mkdir -p $SPARK_LOCAL_JOB_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${SPARK_LOCAL_JOB_DIR}"
+	exit 1
+    fi
+    
+    mkdir -p $SPARK_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${SPARK_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $SPARK_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${SPARK_LOG_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup/Calculate Core Master/Slave files
 #
 
@@ -197,6 +222,12 @@ if [ "${HBASE_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_DIR}/job_masters ${HBASE_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_DIR}/job_slaves ${HBASE_CONF_DIR}/regionservers
+fi
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    cp ${MAGPIE_LOCAL_DIR}/job_masters ${SPARK_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/job_slaves ${SPARK_CONF_DIR}/slaves
 fi
 
 exit 0

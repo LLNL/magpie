@@ -84,6 +84,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "pig" - Run a Hadoop job according to the settings of PIG_MODE.
 #
+# "spark" - Run a Hadoop job according to the settings of SPARK_MODE.
+#
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE.
@@ -163,7 +165,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # General Configuration
 ############################################################################
 
-# Necessary for running many things
+# Necessary for Hadoop, Hbase, Pig, and Zookeeper
 export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 
 ############################################################################
@@ -286,8 +288,9 @@ export HADOOP_MODE="terasort"
 # If not specified, a reasonable estimate will be calculated based on
 # number of CPUs on the system.
 #
-# If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by Hbase.
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export HADOOP_MAX_TASKS_PER_NODE=8
 
@@ -296,8 +299,9 @@ export HADOOP_MODE="terasort"
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
 # nodes.
 #
-# If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by Hbase.
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export HADOOP_DEFAULT_MAP_TASKS=8
 
@@ -306,8 +310,9 @@ export HADOOP_MODE="terasort"
 # If not specified, defaults to # compute nodes (i.e. 1 reducer per
 # node)
 #
-# If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by Hbase.
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export HADOOP_DEFAULT_REDUCE_TASKS=8
 
@@ -315,8 +320,9 @@ export HADOOP_MODE="terasort"
 #
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
 #
-# If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by Hbase.
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export HADOOP_MAX_MAP_TASKS=8
 
@@ -324,8 +330,9 @@ export HADOOP_MODE="terasort"
 #
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
 #
-# If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by Hbase.
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export HADOOP_MAX_REDUCE_TASKS=8
 
@@ -344,8 +351,9 @@ export HADOOP_MODE="terasort"
 # If HADOOP_CHILD_REDUCE_HEAPSIZE is not specified, it is assumed to
 # be 2X the HADOOP_CHILD_MAP_HEAPSIZE.
 #
-# If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by Hbase.
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export HADOOP_CHILD_HEAPSIZE=2048
 # export HADOOP_CHILD_MAP_HEAPSIZE=2048
@@ -692,6 +700,7 @@ srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-spark
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then

@@ -1,0 +1,291 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+
+if [ "${SPARK_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+# sparknoderank set if succeed
+if ! Magpie_am_I_a_spark_node
+then
+    exit 0
+fi
+
+if [ "${SPARK_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    sparkdaemonheapmax="${SPARK_DAEMON_HEAP_MAX}"
+else
+    sparkdaemonheapmax="1000"
+fi 
+
+# Sets threadstouse and proccount
+Magpie_calculate_threadstouse
+
+# Sets memorytouse
+Magpie_calculate_memorytouse
+
+if [ "${SPARK_WORKER_CORES_PER_NODE}X" != "X" ]
+then
+    workercores=${SPARK_WORKER_CORES_PER_NODE}
+else
+    workercores=${threadstouse}
+fi
+
+# Spark is special, can't set > # of cores 
+if [ "${workercores}" -gt "${proccount}" ]
+then
+    workercores=${proccount}
+fi
+
+if [ "${SPARK_WORKER_MEMORY_PER_NODE}X" != "X" ]
+then
+    workermemory=${SPARK_WORKER_MEMORY_PER_NODE}
+else
+    workermemory=${memorytouse}
+fi
+
+if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
+then
+    workerdirectory=${SPARK_WORKER_DIRECTORY}
+else
+    workerdirectory="${SPARK_HOME}/work"
+fi
+
+if [ "${SPARK_JOB_MEMORY}X" != "X" ]
+then
+    sparkmem=${SPARK_JOB_MEMORY}
+else
+    sparkmem=${workermemory}
+fi
+
+#
+# Calculate settings in SPARK_JAVA_OPTS
+#
+
+SPARK_JAVA_OPTS=""
+
+if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
+then
+    # sets hadooptmpdir and fsdefault
+    Magpie_calculate_hadoop_filesystem_paths ${sparknoderank}
+
+    sparktmpdir="${hadooptmpdir}/spark"
+    
+    if [ ! -d "${sparktmpdir}" ]
+    then
+	mkdir -p ${sparktmpdir}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${sparktmpdir}"
+	    exit 1
+	fi
+    fi
+
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparktmpdir}"
+else
+    if [ ! -d "${SPARK_LOCAL_SCRATCH_DIR}" ]
+    then
+	mkdir -p ${SPARK_LOCAL_SCRATCH_DIR}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${SPARK_LOCAL_SCRATCH_DIR}"
+	    exit 1
+	fi
+    fi
+
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${SPARK_LOCAL_SCRATCH_DIR}"
+fi
+
+# Optimal depends on file system
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
+    then
+	sparkshufflebufferkb=100
+	sparkshuffleconsolidatefiles="false"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+	|| [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    then
+        # Default block size is 1M in Lustre
+        # XXX: If not default, can get from lctl or similar?
+        # If other networkFS, just assume like Lustre
+	sparkshufflebufferkb=1024
+	sparkshuffleconsolidatefiles="true"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
+	|| [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+    then
+        # Assuming Lustre, so copy above 1M
+	sparkshufflebufferkb=1024
+	sparkshuffleconsolidatefiles="true"
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+    then
+        # Assuming Lustre, so copy above 1M
+	sparkshufflebufferkb=1024
+	sparkshuffleconsolidatefiles="true"
+    fi 
+else
+    sparkshufflebufferkb=100
+    sparkshuffleconsolidatefiles="false"
+fi
+
+SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.file.buffer.kb=${sparkshufflebufferkb} -Dspark.shuffle.consolidateFiles=${sparkshuffleconsolidatefiles}"
+
+if [ "${SPARK_DEFAULT_PARALLELISM}X" == "X" ]
+then
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${SPARK_SLAVE_COUNT}"
+else
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${SPARK_DEFAULT_PARALLELISM}"
+fi
+
+openfiles=`ulimit -n`
+if [ "${openfiles}" != "unlimited" ]
+then
+    openfileshardlimit=`ulimit -H -n`
+
+    # we estimate 8192 per 100 nodes, minimum 16384, max 65536.
+    # Obviously depends on many factors such as core count, but it's a
+    # reasonble and safe over-estimate calculated based on experience.
+    openfilesslavecount=`expr ${SPARK_SLAVE_COUNT} \/ 100`
+    openfilescount=`expr ${openfilesslavecount} \* 8192`
+    if [ "${openfilescount}" -lt "16384" ]
+    then
+	openfilescount=16384
+    fi
+    if [ "${openfilescount}" -gt "65536" ]
+    then
+	openfilescount=65536
+    fi
+    
+    if [ "${openfileshardlimit}" != "unlimited" ]
+    then
+        if [ ${openfilescount} -gt ${openfileshardlimit} ]
+        then
+            openfilescount=${openfileshardlimit}
+        fi
+    fi
+else
+    openfilescount="unlimited"
+fi
+
+userprocesses=`ulimit -u`
+if [ "${userprocesses}" != "unlimited" ]
+then
+    userprocesseshardlimit=`ulimit -H -u`
+
+    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
+    userprocessesslavecount=`expr ${SPARK_SLAVE_COUNT} \/ 100`
+    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
+    if [ "${userprocessescount}" -lt "4096" ]
+    then
+	userprocessescount=4096
+    fi
+    if [ "${userprocessescount}" -gt "32768" ]
+    then
+	userprocessescount=32768
+    fi
+    
+    if [ "${userprocesseshardlimit}" != "unlimited" ]
+    then
+        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
+        then
+            userprocessescount=${userprocesseshardlimit}
+        fi
+    fi
+else
+    userprocessescount="unlimited"
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${SPARK_CONF_FILES}X" == "X" ]
+then
+    sparkconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    sparkconffiledir=${SPARK_CONF_FILES}
+fi
+
+sparkenvsh=${sparkconffiledir}/spark-env.sh
+
+#
+# Setup Spark configuration files and environment files
+#
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
+
+sed -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/SPARK_DAEMON_HEAP_MAX/${sparkdaemonheapmax}/g" \
+    -e "s/SPARKWORKERCORES/${workercores}/g" \
+    -e "s/SPARKWORKERMEMORY/${workermemory}/g" \
+    -e "s/SPARKWORKERDIR/${workerdirectorysubst}/g" \
+    -e "s/SPARKMEM/${sparkmem}/g" \
+    $sparkenvsh > ${SPARK_CONF_DIR}/spark-env.sh
+
+echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+
+if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
+then
+    echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+
+if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
+then
+    echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+
+if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
+then
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
+fi
+
+echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export SPARK_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export SPARK_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+
+if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXTRA_PATH} ]
+then
+    cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${SPARK_CONF_DIR}/spark-env.sh
+else
+    echo "ulimit -n ${openfilescount}" >> ${SPARK_CONF_DIR}/spark-env.sh
+    echo "ulimit -u ${userprocessescount}" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+
+cat ${sparkconffiledir}/spark.log4j.properties > ${SPARK_CONF_DIR}/log4j.properties
+
+exit 0
