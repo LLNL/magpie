@@ -541,7 +541,7 @@ then
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo${fsdefault}_ | sed "s/\\//\\\\\\\\\//g"`
+    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
     # Assume if path doesn't exist must format
     if [ -d "${hadooptmpdir}" ]
