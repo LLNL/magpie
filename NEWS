@@ -1,3 +1,9 @@
+magpie 1.32
+-----------
+Support HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS and
+  HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS, ability to cleanup lock files
+  in HDFS if necessary.
+
 magpie 1.31
 -----------
 Support PIG_MODE variable for consistency to Hadoop/Hbase.

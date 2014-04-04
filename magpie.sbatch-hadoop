@@ -466,6 +466,26 @@ export HADOOP_HDFS_PATH="/ssd/username/"
 #
 export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 
+# HDFS over Lustre ignore lock
+#
+# Remove in_use.lock files before launching HDFS
+#
+# On traditional Hadoop clusters, the in_use.lock file protects
+# against a second HDFS daemon running on the same node.  The lock
+# file can similarly protect against a second HDFS daemon running on
+# another node of your cluster.
+#
+# However, sometimes the lock file can be an annoyance.  If several
+# nodes in your cluster die and you simply restart the job on
+# separate nodes, the lock file may still be present and prohibit new
+# HDFS daemons to run.
+#
+# By default, if this option is not set, the lock file will be left in
+# place.  If set to yes, the lock files will be removed before
+# starting HDFS.
+#
+# export HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS=yes
+
 # Networkfs path to do Hadoop HDFS out of
 #
 # Note that different versions of Hadoop may not be compatible with
@@ -473,6 +493,26 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 # different versions, perhaps set different paths for different data.
 #
 export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/username/hdfsovernetworkfs/"
+
+# HDFS over Networkfs ignore lock
+#
+# Remove in_use.lock files before launching HDFS
+#
+# On traditional Hadoop clusters, the in_use.lock file protects
+# against a second HDFS daemon running on the same node.  The lock
+# file can similarly protect against a second HDFS daemon running on
+# another node of your cluster.
+#
+# However, sometimes the lock file can be an annoyance.  If several
+# nodes in your cluster die and you simply restart the job on
+# separate nodes, the lock file may still be present and prohibit new
+# HDFS daemons to run.
+#
+# By default, if this option is not set, the lock file will be left in
+# place.  If set to yes, the lock files will be removed before
+# starting HDFS.
+#
+# export HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS=yes
 
 # Path for rawnetworkfs
 #
