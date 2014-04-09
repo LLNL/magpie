@@ -1,3 +1,7 @@
+magpie 1.33
+-----------
+Various minor bug fixes.
+
 magpie 1.32
 -----------
 Support HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS and

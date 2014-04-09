@@ -423,7 +423,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Testpig"
 	    echo "*******************************************************"
-	    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} -e "ls /"
+	    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} -e "ls /" &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${PIG_MODE}" == "script" ]
