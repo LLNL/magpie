@@ -614,107 +614,18 @@ then
 fi
 
 #
-# Check Zookeeper Inputs 
-#
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
-    then
-	echo "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh is needed to launch Zookeeper"
-	exit 1
-    fi
-
-    if [ "${ZOOKEEPER_MODE}" != "launch" ] \
-       && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
-    then
-       echo "ZOOKEEPER_MODE must be set to launch or setuponly"
-       exit 1
-    fi
-
-    if [ "${ZOOKEEPER_REPLICATION_COUNT}X" == "X" ]
-    then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be set"
-       exit 1
-    fi
-
-    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -gt "0" ]
-    then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be > 0"
-       exit 1
-    fi
-
-    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "255" ]
-    then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be less than <= 255"
-       exit 1
-    fi
-
-    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "${nodecount}" ]
-    then
-       echo "Not enough nodes for ZOOKEEPER_REPLICATION_COUNT"
-       exit 1
-    fi
-
-    if [ "${ZOOKEEPER_SHARE_NODES}X" != "X" ]
-    then
-	if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] && [ "${ZOOKEEPER_SHARE_NODES}" != "no" ]
-	then
-	    echo "ZOOKEEPER_SHARE_NODES must be set to yes or no"
-	    exit 1
-	fi
-    fi
-
-    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
-    then
-	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
-    fi
-
-    if [ "${ZOOKEEPER_HOME}X" == "X" ]
-    then
-       echo "ZOOKEEPER_HOME must be set"
-       exit 1
-    fi
-    
-    if [ ! -d ${ZOOKEEPER_HOME} ]
-    then
-       echo "${ZOOKEEPER_HOME} does not point to a directory"
-       exit 1
-    fi
-
-    if [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "networkfs" ] \
-       && [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "local" ]
-    then
-       echo "ZOOKEEPER_FILESYSTEM_MODE must be set to networkfs or local"
-       exit 1
-    fi
-
-    if [ "${ZOOKEEPER_DATA_DIR}X" == "X" ]
-    then
-       echo "ZOOKEEPER_DATA_DIR must be set"
-       exit 1
-    fi
-
-    if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
-    then
-       echo "ZOOKEEPER_LOCAL_DIR must be set"
-       exit 1
-    fi
-
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
-    then
-	echo "No remaining nodes for Hadoop slave nodes after Zookeeper allocation"
-	echo "Please increase node count or adjust node allocations"
-	exit 1
-    fi
-fi
-
-#
 # Check Hbase Inputs 
 #
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
+# Subtract 1 for Hbase Master
+# if Hadoop already setup, don't subtract
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	nodecount=$((nodecount-1))
+    fi
+
     if [ "${HBASE_HOME}X" == "X" ]
     then
        echo "HBASE_HOME must be set"
@@ -854,6 +765,115 @@ then
 	&& [ "${ZOOKEEPER_MODE}" == "setuponly" ]
     then
 	echo "Cannot run Hbase job if Zookeeper mode is setuponly"
+	exit 1
+    fi
+
+    if [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Hbase regionservers, increase node count or adjust node allocations"
+	exit 1
+    fi
+fi
+
+#
+# Check Zookeeper Inputs 
+#
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
+    then
+	echo "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh is needed to launch Zookeeper"
+	exit 1
+    fi
+
+    if [ "${ZOOKEEPER_MODE}" != "launch" ] \
+       && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+    then
+       echo "ZOOKEEPER_MODE must be set to launch or setuponly"
+       exit 1
+    fi
+
+    if [ "${ZOOKEEPER_REPLICATION_COUNT}X" == "X" ]
+    then
+       echo "ZOOKEEPER_REPLICATION_COUNT must be set"
+       exit 1
+    fi
+
+    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -gt "0" ]
+    then
+       echo "ZOOKEEPER_REPLICATION_COUNT must be > 0"
+       exit 1
+    fi
+
+    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "255" ]
+    then
+       echo "ZOOKEEPER_REPLICATION_COUNT must be less than <= 255"
+       exit 1
+    fi
+
+    if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "${nodecount}" ]
+    then
+       echo "Not enough nodes for ZOOKEEPER_REPLICATION_COUNT"
+       exit 1
+    fi
+
+    if [ "${ZOOKEEPER_SHARE_NODES}X" != "X" ]
+    then
+	if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] && [ "${ZOOKEEPER_SHARE_NODES}" != "no" ]
+	then
+	    echo "ZOOKEEPER_SHARE_NODES must be set to yes or no"
+	    exit 1
+	fi
+    fi
+
+    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
+    then
+	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
+    fi
+
+    if [ "${ZOOKEEPER_HOME}X" == "X" ]
+    then
+       echo "ZOOKEEPER_HOME must be set"
+       exit 1
+    fi
+    
+    if [ ! -d ${ZOOKEEPER_HOME} ]
+    then
+       echo "${ZOOKEEPER_HOME} does not point to a directory"
+       exit 1
+    fi
+
+    if [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "networkfs" ] \
+       && [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "local" ]
+    then
+       echo "ZOOKEEPER_FILESYSTEM_MODE must be set to networkfs or local"
+       exit 1
+    fi
+
+    if [ "${ZOOKEEPER_DATA_DIR}X" == "X" ]
+    then
+       echo "ZOOKEEPER_DATA_DIR must be set"
+       exit 1
+    fi
+
+    if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
+    then
+       echo "ZOOKEEPER_LOCAL_DIR must be set"
+       exit 1
+    fi
+
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Hadoop slave nodes after Zookeeper allocation"
+	echo "Please increase node count or adjust node allocations"
+	exit 1
+    fi
+
+    if [ "${HBASE_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Hbase regionservers after Zookeeper allocation"
+	echo "Please increase node count or adjust node allocations"
 	exit 1
     fi
 fi
