@@ -25,6 +25,8 @@ export PIG_VERSION="0.12.0"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
+# Ensure the build matches the Hadoop version this will run against.
+#
 export PIG_HOME="/home/username/pig-${PIG_VERSION}"
 
 # Directory where Pig configuration templates are stored
@@ -47,7 +49,8 @@ export PIG_LOCAL_DIR="/tmp/username/pig"
 #
 # "interactive" - manually interact to run pig scripts. In this mode
 #                 you'll login to the cluster node that is your
-#                 'master' node and run pig scripts directly.
+#                 'master' node and run pig scripts directly
+#                 (e.g. bin/pig ...).
 #
 export PIG_MODE="testpig"
 

@@ -6,7 +6,7 @@
 #  LLNL-CODE-644248
 #  
 #  This file is part of Magpie, scripts for running Hadoop on
-#  traditional HPC systems.  For details, see <URL>.
+#  traditional HPC systems.  For details, see https://github.com/chu11/magpie.
 #  
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
@@ -27,12 +27,12 @@
 ############################################################################
 
 # Node count.  Node count should include one node for the
-# head/managemnet node.  For example, if you want 8 compute nodes to
-# process data, specify 9 nodes below.
+# head/management/master node.  For example, if you want 8 compute
+# nodes to process data, specify 9 nodes below.
 #
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
-# specify 12 nodes (1 additional node for head/management).
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
 
 #MSUB -l nodes=<my node count>
 
@@ -69,7 +69,8 @@ export SBATCH_TIMELIMIT=<time in minutes>
 # Need to tell Magpie how you are submitting this job
 #
 # IMPORTANT: This msub file assumes Slurm is the underlying resource
-# manager.  If it is not, a new Magpie submission type should be done.
+# manager.  If it is not, a new Magpie submission type should be put
+# into these scripts.
 export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
 
 ############################################################################
@@ -119,8 +120,8 @@ export MAGPIE_JOB_TYPE="hadoop"
 #
 # Specifies the amount of time to give startup / shutdown activities a
 # chance to succeed before Magpie will give up (or in the case of
-# shutdown, when the resource manager may kill the running job).
-# Defaults to 30 minutes for startup, 30 minutes for shutdown.
+# shutdown, when the resource manager/scheduler may kill the running
+# job).  Defaults to 30 minutes for startup, 30 minutes for shutdown.
 #
 # The startup time in particular may need to be increased if you have
 # a large amount of data.  As an example, HDFS may need to spend a
@@ -173,7 +174,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # General Configuration
 ############################################################################
 
-# Necessary for various Hadoop execution
+# Necessary for running many things
 export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 
 ############################################################################
@@ -197,10 +198,11 @@ export HADOOP_SETUP=yes
 # HDFS1 - HDFS only w/ Hadoop 1.0 
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
-# Note that the HDFS only options are normally for convenience,
-# perhaps to move files in/out of HDFS.  It only works with the
-# HADOOP_FILESYSTEM_MODE of hdfs or hdfsoverlustre.  It makes no sense
-# otherwise.
+# The HDFS only options may be useful when you want to use HDFS with
+# other big data software, such as Hbase, and do not care for using
+# Hadoop MapReduce.  It only works with HDFS based
+# HADOOP_FILESYSTEM_MODE, such as "hdfs", "hdfsoverlustre", or
+# "hdfsovernetworkfs".
 #
 export HADOOP_SETUP_TYPE="MR2"
 
@@ -213,8 +215,8 @@ export HADOOP_VERSION="2.2.0"
 
 # Path to your Hadoop build/binaries
 #
-# Make sure the build for Mapredeuce version 1 or 2 matches whatever
-# you set in HADOOP_SETUP_TYPE.
+# Make sure the build for MapReduce or HDFS version 1 or 2 matches
+# whatever you set in HADOOP_SETUP_TYPE.
 #
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
@@ -225,7 +227,7 @@ export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 # This will store local conf files and log files for your job. 
 #
 # This will not be used for storing intermediate files or
-# distributedcache files.  See HADOOP_LOCALSTORE above for that.
+# distributed cache files.  See HADOOP_LOCALSTORE above for that.
 #
 export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 
@@ -240,7 +242,7 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # Heap maximum for Hadoop daemons (i.e. Resource Manger, NodeManager,
 # etc.), specified in megs.
 #
-# If not specified, defaults to 1000 (which is Hadoop default)
+# If not specified, defaults to Hadoop default of 1000
 #
 # May need to be increased if you are scaling large, get OutofMemory
 # errors, or perhaps have a lot of cores on a node.
@@ -296,7 +298,7 @@ export HADOOP_MODE="terasort"
 # number of CPUs on the system.
 #
 # If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be used by Hbase.
+# tasks and the amount of memory that may be needed by Hbase.
 #
 # export HADOOP_MAX_TASKS_PER_NODE=8
 
@@ -306,7 +308,7 @@ export HADOOP_MODE="terasort"
 # nodes.
 #
 # If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be used by Hbase.
+# tasks and the amount of memory that may be needed by Hbase.
 #
 # export HADOOP_DEFAULT_MAP_TASKS=8
 
@@ -316,7 +318,7 @@ export HADOOP_MODE="terasort"
 # node)
 #
 # If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be used by Hbase.
+# tasks and the amount of memory that may be needed by Hbase.
 #
 # export HADOOP_DEFAULT_REDUCE_TASKS=8
 
@@ -325,7 +327,7 @@ export HADOOP_MODE="terasort"
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
 #
 # If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be used by Hbase.
+# tasks and the amount of memory that may be needed by Hbase.
 #
 # export HADOOP_MAX_MAP_TASKS=8
 
@@ -334,7 +336,7 @@ export HADOOP_MODE="terasort"
 # If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
 #
 # If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be used by Hbase.
+# tasks and the amount of memory that may be needed by Hbase.
 #
 # export HADOOP_MAX_REDUCE_TASKS=8
 
@@ -354,7 +356,7 @@ export HADOOP_MODE="terasort"
 # be 2X the HADOOP_CHILD_MAP_HEAPSIZE.
 #
 # If running Hbase with Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be used by Hbase.
+# tasks and the amount of memory that may be needed by Hbase.
 #
 # export HADOOP_CHILD_HEAPSIZE=2048
 # export HADOOP_CHILD_MAP_HEAPSIZE=2048
@@ -384,12 +386,13 @@ export HADOOP_MODE="terasort"
 #
 # If not specified, a reasonable estimate will be calculated based on
 # total memory on the system.
+#
 # export YARN_RESOURCE_MEMORY=32768
 
 # Compression
 #
 # Should compression of outputs and intermediate data be enabled.
-# Specify yes or no.
+# Specify yes or no.  Defaults to no.
 #
 # Effectively, is time spend compressing data going to save you time
 # on I/O.  Sometimes yes, sometimes no.
@@ -410,7 +413,7 @@ export HADOOP_MODE="terasort"
 #
 # The default number of parallel transfers run by reduce during the
 # copy(shuffle) phase.  If not specified, some reasonable number will
-# be assumed.
+# be calculated.
 # export HADOOP_PARALLEL_COPIES=10
 
 ############################################################################
@@ -426,10 +429,9 @@ export HADOOP_MODE="terasort"
 #          Be careful running this in a cluster environment.  The next
 #          time you execute your job, if a different set of nodes are
 #          allocated to you, the HDFS data you wrote from a previous
-#          job may not be there.  Using the --nodelist in sbatch may
-#          be a way to alleviate this, if you work in an environment
-#          where you have high confidence you will also get the same
-#          nodes on each run.
+#          job may not be there.  Specifying specific nodes to use in
+#          your job submission (e.g. --nodelist in sbatch) may be a
+#          way to alleviate this.
 #
 #          User must set HADOOP_HDFSOVERLUSTRE_PATH below.
 #
@@ -492,8 +494,8 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 # HDFS daemons to run.
 #
 # By default, if this option is not set, the lock file will be left in
-# place.  If set to yes, the lock files will be removed before
-# starting HDFS.
+# place and may cause HDFS daemons to not start.  If set to yes, the
+# lock files will be removed before starting HDFS.
 #
 # export HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS=yes
 
@@ -520,8 +522,8 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/username/hdfsovernetworkfs/"
 # HDFS daemons to run.
 #
 # By default, if this option is not set, the lock file will be left in
-# place.  If set to yes, the lock files will be removed before
-# starting HDFS.
+# place and may cause HDFS daemons to not start.  If set to yes, the
+# lock files will be removed before starting HDFS.
 #
 # export HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS=yes
 
@@ -542,8 +544,8 @@ export HADOOP_INTELLUSTRE_PATH="/lustre/username/intellustre/"
 export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 
 # If you have a local SSD, performance may be better to store
-# intermediate data on it rather than Lustre (or some other networked
-# fs).  If the below environment variable is specified, local
+# intermediate data on it rather than Lustre or some other networked
+# filesystem.  If the below environment variable is specified, local
 # intermediate data will be stored in the specified directory.
 # Otherwise it will go to an appropriate directory in Lustre/networked
 # FS.
@@ -567,12 +569,9 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 
 # HDFS Replication
 #
-# HDFS commonly uses 3.  It's not necessary if doing HDFS over Lustre,
-# but replication > 1 can help w/ Hadoop task scheduling and job read
-# performance at the cost of increased disk usage and write
-# performance.  Higher replication can also help with resilience if
-# nodes fail.  You may wish to set this to < 3 or even 1 if you want
-# to save space.
+# HDFS commonly uses 3.  When doing HDFS over Lustre/NetworkFS, higher
+# replication can also help with resilience if nodes fail.  You may
+# wish to set this to < 3 to save space.
 #
 # If not specified, defaults to 3
 #
@@ -620,7 +619,6 @@ export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
 # If not specified, defaults to 33554432
 #
 # export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432
-
 
 ############################################################################
 # Hadoop Terasort Configurations

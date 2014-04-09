@@ -105,7 +105,7 @@ all:
 	echo "Creating magpie.msub-slurm"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
-	cat magpie-msub >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
@@ -127,7 +127,7 @@ all:
 	echo "Creating magpie.msub-slurm-hadoop"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-hadoop
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
-	cat magpie-msub >> ../script-msub-slurm/magpie.msub-slurm-hadoop
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
@@ -144,7 +144,7 @@ all:
 	echo "Creating magpie.msub-slurm-hadoop-with-uda"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
-	cat magpie-msub >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
@@ -163,7 +163,7 @@ all:
 	echo "Creating magpie.msub-slurm-hadoop-and-pig"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
-	cat magpie-msub >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
@@ -182,7 +182,7 @@ all:
 	echo "Creating magpie.msub-slurm-hbase-with-hdfs"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
-	cat magpie-msub >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs

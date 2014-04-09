@@ -6,7 +6,7 @@
 #  LLNL-CODE-644248
 #  
 #  This file is part of Magpie, scripts for running Hadoop on
-#  traditional HPC systems.  For details, see <URL>.
+#  traditional HPC systems.  For details, see https://github.com/chu11/magpie.
 #  
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by

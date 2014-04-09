@@ -10,15 +10,14 @@ export HBASE_SETUP=no
 
 # Version
 #
-# Make sure the version for Mapreduce version 1 or 2 matches whatever
-# you set in HBASE_SETUP_TYPE
-#
 export HBASE_VERSION="0.96.1.1-hadoop2"
 
 # Path to your Hbase build/binaries
 #
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop/HDFS version this will run against.
 #
 export HBASE_HOME="/home/username/hbase-${HBASE_VERSION}"
 
@@ -46,7 +45,7 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 # Heap size for Hbase regionserver daemons, specified in megs.
 #
 # If not specified, defaults to 16000, or 50% of system memory,
-# whatever is smaller.
+# whichever is smaller.
 #
 # export HBASE_REGIONSERVER_DAEMON_HEAP_MAX=16000
 
@@ -130,9 +129,7 @@ export HBASE_MODE="performanceeval"
 #
 # For "performanceeval" mode.
 #
-# If not specified, defaults to 1.  If > 1 and if MapReduce is
-# available, clients are run as a MapReduce job.  Otherwise they are
-# multiple threads.
+# If not specified, defaults to 1.
 #
 # export HBASE_PERFORMANCEEVAL_CLIENT_COUNT=1
 

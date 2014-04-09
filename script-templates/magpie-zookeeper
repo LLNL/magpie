@@ -16,7 +16,7 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 
 # Zookeeper Node Sharing
 #
-# By default, Zookeeper will not run on nodes that will run Hadoop.
+# By default, Zookeeper will not run on nodes that will run Hadoop/Hbase.
 # They will have dedicated nodes for themselves.  If you do not wish
 # for this to be the case, set the below to 'yes'.  Defaults to no.
 #
@@ -51,7 +51,7 @@ export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
 # Set how Zookeeper data directory should be set.
 #
 # "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
-#               (such as Lustre).  Zookeeper local paths must be
+#               (such as Lustre).  Zookeeper local paths will be
 #               setup.
 #
 # "local" - ZOOKEEPER_DATA_DIR points to a local drive.
@@ -65,6 +65,10 @@ export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
 # export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
 
 # Path base for local data to each cluster node
+#
+# If ZOOKEEPER_FILESYSTEM_MODE is set to "networkfs", this is the base
+# point for local data and per-node directories will be created
+# (e.g. ${ZOOKEEPER_DATA_DIR}/node-1/)
 #
 export ZOOKEEPER_DATA_DIR="/lustre/username/zookeeper"  
 
