@@ -710,7 +710,7 @@ then
 fi
 
 #
-# Check Zookeeper Inputs 
+# Check Hbase Inputs 
 #
 
 if [ "${HBASE_SETUP}" == "yes" ]
