@@ -601,19 +601,17 @@ Testing
 
 While I did some testing w/ Hadoop 1.2.1, b/c of the problem mentioned
 above (HDFS-1835), I did most development and testing against Hadoop
-2.1.0-beta.
+2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.
 
-I have also tested against Hadoop 2.2.0.
+Pig support was added/tested against version 0.12.0.
 
-Pig development was done primarily against version 0.12.0.
+Zookeeper support was added/tested against version 3.4.5.
 
-Zookeeper development was done primarily against version 3.4.5.
-
-UDA was tested against uda-plugin 3.3.2-0 with Hadoop 2.2.0 and an
-appropriate patch for MAPREDUCE-5329.
+UDA support was added/tested against uda-plugin 3.3.2-0 with Hadoop
+2.2.0 and an appropriate patch for MAPREDUCE-5329.
 
 Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
-tested with HDFS based file systems.
+tested against HDFS based file systems.
 
 Contributions
 -------------
