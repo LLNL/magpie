@@ -156,38 +156,32 @@ fi
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_DIR}/tmp_masters
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_DIR}/tmp_slaves
 
-if [ "${HADOOP_SETUP}" == "yes" ] && [ "${ZOOKEEPER_SETUP}" == "yes" ]
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     tmpslavecount=`cat ${MAGPIE_LOCAL_DIR}/tmp_slaves | wc -l`
-    hadoopslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
-    zookeeperslavestart=`expr ${hadoopslavecount} + 1`
+    jobslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
+    zookeeperslavestart=`expr ${jobslavecount} + 1`
 
-    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${HADOOP_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${MAGPIE_LOCAL_DIR}/job_masters
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] 
     then
-	head -${hadoopslavecount} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${HADOOP_CONF_DIR}/slaves
+	head -${jobslavecount} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${MAGPIE_LOCAL_DIR}/job_slaves
     else
-	cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${HADOOP_CONF_DIR}/slaves
+	cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${MAGPIE_LOCAL_DIR}/job_slaves
     fi
 
     tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
-elif [ "${HADOOP_SETUP}" == "yes" ] && [ "${ZOOKEEPER_SETUP}" != "yes" ]
-then
-    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${HADOOP_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${HADOOP_CONF_DIR}/slaves
 else
-# [ "${HADOOP_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" == "yes" ]
-    tmpslavecount=`cat ${MAGPIE_LOCAL_DIR}/tmp_slaves | wc -l`
-    hadoopslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
-    zookeeperslavestart=`expr ${hadoopslavecount} + 1`
-
-    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${ZOOKEEPER_CONF_DIR}/masters
-    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
+    cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${MAGPIE_LOCAL_DIR}/job_masters
+    cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${MAGPIE_LOCAL_DIR}/job_slaves
 fi
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
+    cp ${MAGPIE_LOCAL_DIR}/job_masters ${HADOOP_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/job_slaves ${HADOOP_CONF_DIR}/slaves
+
     slavenodes=`cat ${HADOOP_CONF_DIR}/slaves`
     `touch ${HADOOP_CONF_DIR}/slaves_fqdn`
     dnsdomainname=`dnsdomainname`
@@ -201,11 +195,8 @@ fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
-    cp ${HADOOP_CONF_DIR}/masters ${HBASE_CONF_DIR}/masters
-    cp ${HADOOP_CONF_DIR}/slaves ${HBASE_CONF_DIR}/regionservers
+    cp ${MAGPIE_LOCAL_DIR}/job_masters ${HBASE_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/job_slaves ${HBASE_CONF_DIR}/regionservers
 fi
-
-rm -f ${MAGPIE_LOCAL_DIR}/tmp_masters
-rm -f ${MAGPIE_LOCAL_DIR}/tmp_slaves
 
 exit 0
