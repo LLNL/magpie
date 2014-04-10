@@ -873,6 +873,151 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/username/zookeeper"
 # export ZOOKEEPER_SYNCLIMIT=5
 
 ############################################################################
+# Hbase Core Configurations
+############################################################################
+
+# Should Hbase be run
+#
+# Specify yes or no.  Defaults to no.
+# 
+export HBASE_SETUP=no
+
+# Version
+#
+export HBASE_VERSION="0.96.1.1-hadoop2"
+
+# Path to your Hbase build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop/HDFS version this will run against.
+#
+export HBASE_HOME="/home/username/hbase-${HBASE_VERSION}"
+
+# Path local to each cluster node, typically something in /tmp.
+# This will store local conf files and log files for your job. 
+#
+export HBASE_LOCAL_DIR="/tmp/username/hbase"
+
+# Directory where Hbase configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export HBASE_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+
+# Master Daemon Heap Max
+#
+# Heap size for Hbase master daemons, specified in megs.
+#
+# If not specified, defaults to 1000
+#
+# export HBASE_MASTER_DAEMON_HEAP_MAX=1000
+
+# Regionserver Daemon Heap Max
+#
+# Heap size for Hbase regionserver daemons, specified in megs.
+#
+# If not specified, defaults to 16000, or 50% of system memory,
+# whichever is smaller.
+#
+# export HBASE_REGIONSERVER_DAEMON_HEAP_MAX=16000
+
+# Environment Extra
+#
+# Specify extra environment information that should be passed into
+# Hbase.  This file will simply be appended into the hbase-env.sh.
+#
+# By default, a reasonable estimate for max user processes and open
+# file descriptors will be calculated and put into hbase-env.sh.
+# However, it's always possible they may need to be set
+# differently. Everyone's cluster/situation can be slightly different.
+#
+# See the example example-environment-extra for examples on
+# what you can/should do with adding extra environment settings.
+#
+# export HBASE_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hbase-my-environment"
+
+############################################################################
+# Hbase Job/Run Configurations
+############################################################################
+
+# Set how Hbase should run
+#
+# "performanceeval" - run performance evaluation write and read.
+#              Useful for making sure things are setup the way you
+#              like.
+#
+#              Configure run with HBASE_PERFORMANCEEVAL_MODE,
+#              HBASE_PERFORMANCEEVAL_ROW_COUNT, and
+#              HBASE_PERFORMANCEEVAL_CLIENT_COUNT.
+#
+# "script" - execute a script that lists all of your Hbase jobs.  Be
+#            sure to set HBASE_SCRIPT_PATH to your script.
+#
+# "interactive" - manually interact to submit jobs, peruse Hbase, etc.
+#                 In this mode you'll login to the cluster node that
+#                 is your 'master' node and interact with Hbase
+#                 directly (e.g. bin/hbase ...)
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+export HBASE_MODE="performanceeval"
+
+# Should a major compaction be done when Hbase is being shut down.  In
+# general, this is something that should be done to compact small
+# files, remove flagged deletes, etc., but could take a long time.
+# MAGPIE_SHUTDOWN_TIME should be large enough to handle this.
+#
+# This can also be run via the convenience script
+# hbase-major-compaction.sh.
+#
+# Specify yes or no.  Defaults to yes.
+# export HBASE_MAJOR_COMPACTION_ON_SHUTDOWN=yes
+
+############################################################################
+# Hbase Performance Evaluation Configurations
+############################################################################
+
+# Performance Evaluation Mode
+#
+# Specify 'sequential-thread' for threaded sequential write/read 
+# Specify 'sequential-mr' for MapReduce sequential write/read
+# Specify 'random-thread' for threaded random write/read 
+# Specify 'random-mr' for MapReduce random write/read
+#
+# Defaults to 'sequential-thread' if not specified. 
+# 
+# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"
+
+# Performance Evaluation Rows
+#
+# For "performanceeval" mode.  Rows each client will run.
+#
+# Defaults to 1048576 (1 million)
+#
+# export HBASE_PERFORMANCEEVAL_ROW_COUNT=1048576
+
+# Performance Evaluation client count
+#
+# For "performanceeval" mode.
+#
+# If not specified, defaults to 1.
+#
+# export HBASE_PERFORMANCEEVAL_CLIENT_COUNT=1
+
+############################################################################
+# Hbase Script Configurations
+############################################################################
+
+# Specify script to execute for "script" mode
+#
+# See hbase-example-job-script for example of what to put in the script.
+#
+# export HBASE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+
+############################################################################
 # Run Job
 ############################################################################
 

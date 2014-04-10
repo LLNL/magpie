@@ -121,6 +121,8 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-zookeeper >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-hbase >> ../script-msub-slurm/magpie.msub-slurm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-run-job >> ../script-msub-slurm/magpie.msub-slurm
 
 # Make msub with just Hadoop
