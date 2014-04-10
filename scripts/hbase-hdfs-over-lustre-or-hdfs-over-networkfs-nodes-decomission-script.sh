@@ -2,7 +2,7 @@
 
 # This is a basic script to decomission "nodes" in Hbase w/ HDFS over
 # Lustre if you want to start using fewer nodes in your job.  You can
-# run it under 'script' mode in the main sbatch file and setting
+# run it under 'script' mode in the main job submission file and setting
 # HBASE_SCRIPT_PATH to this script.
 #
 # You the user must make only one input into this file, indicate the

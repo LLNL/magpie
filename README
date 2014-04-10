@@ -510,9 +510,12 @@ directory, both for possible usefulness and as examples.  Notable ones
 worth mentioning:
 
 magpie-gather-config-files-and-logs-script.sh - This script will get
-all of the conf files and log files from Hadoop and/or Zookeeper and
-store it in a location for post-analysis of your job.  It's convenient
-for debugging.
+all of the conf files and log files from Hadoop, Hbase, Pig, and/or
+Zookeeper and store it in a location for post-analysis of your job.
+It's convenient for debugging.
+
+magpie-output-config-files-script.sh - This script will output all of
+the conf files from your job.  It's convenient for debugging.
 
 hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See HDFS over
 Lustre section above for details.

@@ -4,7 +4,7 @@
 #
 # It is a convenient script to use before your job is run.  You can
 # set it with the MAGPIE_PRE_JOB_RUN environment variable in
-# magpie.sbatch.
+# the main job submission file.
 
 # Run only on one node, no need to do it on all nodes
 if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]

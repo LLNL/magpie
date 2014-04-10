@@ -5,7 +5,7 @@
 #
 # It is a convenient script to use in the post of your job.  You can
 # set it with the MAGPIE_POST_JOB_RUN environment variable in
-# magpie.sbatch.
+# the main job submission file.
 #
 # By default it stores into
 # $MAGPIE_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID, but you may wish

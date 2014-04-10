@@ -1,5 +1,6 @@
 magpie 1.33
 -----------
+Create new convenience script escripts/magpie-output-config-files-script.sh.
 Various minor bug fixes.
 
 magpie 1.32
