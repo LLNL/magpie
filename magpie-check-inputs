@@ -213,6 +213,9 @@ fi
 
 nodecount=${MAGPIE_NODE_COUNT}
 
+# nodecountmaster is a counter to count the master only once
+nodecountmaster=1
+
 if [ "${HADOOP_SETUP}X" != "X" ] \
     && ( [ "${HADOOP_SETUP}" != "yes" ] && [ "${HADOOP_SETUP}" != "no" ] )
 then
@@ -290,7 +293,8 @@ fi
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
 # Subtract 1 for Hadoop Master
-    nodecount=$((nodecount-1))
+    nodecount=$((nodecount-${nodecountmaster}))
+    nodecountmaster=0
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
 	&& [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
@@ -620,11 +624,8 @@ fi
 if [ "${HBASE_SETUP}" == "yes" ]
 then
 # Subtract 1 for Hbase Master
-# if Hadoop already setup, don't subtract
-    if [ "${HADOOP_SETUP}" != "yes" ]
-    then
-	nodecount=$((nodecount-1))
-    fi
+    nodecount=$((nodecount-${nodecountmaster}))
+    nodecountmaster=0
 
     if [ "${HBASE_HOME}X" == "X" ]
     then
