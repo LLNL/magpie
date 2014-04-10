@@ -78,7 +78,7 @@ all:
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" ../script-sbatch/magpie.sbatch-hadoop-and-pig
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"pig\"/" ../script-sbatch/magpie.sbatch-hadoop-and-pig
 
-# Make sbatch with Hadoop and Hbase
+# Make sbatch with Hbase with HDFS
 	echo "Creating magpie.sbatch-hbase-with-hdfs"
 	cp magpie-header ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
@@ -178,7 +178,7 @@ all:
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"pig\"/" ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 
-# Make msub with Hadoop and Hbase
+# Make msub with Hbase with HDFS
 	echo "Creating magpie.msub-slurm-hbase-with-hdfs"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
