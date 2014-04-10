@@ -151,9 +151,20 @@ Magpie_calculate_hadoop_filesystem_paths () {
 
 Magpie_calculate_stop_timeouts () {
     magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
-    hadoopshutdowntimeseconds=${magpieshutdowntimeseconds}
 
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HBASE_SETUP}" == "yes" ]
+    if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
+    then
+	# Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_JOB_RUN
+	magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
+	if [ "${magpiepostrunallocate}" -lt 300 ]
+	then
+	    magpiepostrunallocate=300
+	fi
+
+	magpieshutdowntimeseconds=`expr ${magpieshutdowntimeseconds} - ${magpiepostrunallocate}` 
+    fi
+
+    if [ "${HBASE_SETUP}" == "yes" ]
     then
 	# Need to give Hbase more time b/c of compaction.  We'll say
 	# Hbase always gets 50% of the time, Half for slave timeout and half for
@@ -162,8 +173,10 @@ Magpie_calculate_stop_timeouts () {
 
 	hbase_time=`expr ${hadoopshutdowntimeseconds} \/ 2`
 	hbase_slave_timeout=`expr ${hbase_time} \/ 2`
-	hadoopshutdowntimeseconds=${hbase_time}
+	magpieshutdowntimeseconds=${hbase_time}
     fi
+
+    stoptimeoutdivisor=1
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
@@ -173,42 +186,32 @@ Magpie_calculate_stop_timeouts () {
             # Need to split timeout time between namenode, datanodes,
             # secondary namenode, jobtracker/resource manager,
             # tasktracker/nodemanagers, jobhistory server, & saveNameSpace
-            # time + 2 (+2 gives us a bit of buffer for misc shutdown time)
-	    hadoopstoptimeoutdivisor=9
+            # time
+	    stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 7`
 	else
             # Need to split timeout time between namenode, datanodes,
-            # secondary namenode, jobhistory server, & saveNameSpace time + 2
-            # (+2 gives us a bit of buffer for misc shutdown time)
-	    hadoopstoptimeoutdivisor=7
+            # secondary namenode, jobhistory server, & saveNameSpace time
+	    stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 5`
 	fi    
     
-	if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-	then
-	    # +2 for extra misc shutdown time
-	    hadoopstoptimeoutdivisor=`expr ${hadoopstoptimeoutdivisor} + 2`
-	fi
-    
-	magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
-
-	if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
-	then
-	    # Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_JOB_RUN
-	    magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
-	    if [ "${magpiepostrunallocate}" -lt 300 ]
-	    then
-		magpiepostrunallocate=300
-	    fi
-
-	    magpieshutdowntimeseconds=`expr ${magpieshutdowntimeseconds} - ${magpiepostrunallocate}` 
-	fi
-
-	hadoopstoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${hadoopstoptimeoutdivisor}`
-	
-	if [ "${hadoopstoptimeout}" -lt 5 ]
-	then
-	    hadoopstoptimeout=5;
-	fi
+	# + 2 for scratch extra time in scripts and what not
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
     fi
+
+    if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
+	
+    if [ "${stoptimeout}" -lt 5 ]
+    then
+	stoptimeout=5
+    fi
+
+    hadoopstoptimeout=${stoptimeout}
 }
 
 export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
