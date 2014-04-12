@@ -24,7 +24,7 @@
 
 # This script is the core processing script for setting up daemons and
 # running jobs.  For the most part, it shouldn't be editted.  See
-# magpie.sbatch for configuration details.
+# job submission files for configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
