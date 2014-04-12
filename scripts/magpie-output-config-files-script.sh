@@ -54,6 +54,18 @@ then
 	echo "**** yarn-site.xml ****"
 	cat ${HADOOP_CONF_DIR}/yarn-site.xml
     fi
+
+    if [ -f "${HBASE_CONF_DIR}/hbase-env.sh" ] 
+    then
+	echo "**** hbase-env.sh ****"
+	cat ${HBASE_CONF_DIR}/hbase-env.sh
+    fi
+
+    if [ -f "${HBASE_CONF_DIR}/hbase-site.xml" ]
+    then
+	echo "**** hbase-site.xml ****"
+	cat ${HBASE_CONF_DIR}/hbase-site.xml
+    fi
 fi
 
 if [ "${MAGPIE_CLUSTER_NODERANK}" == "1" ]
