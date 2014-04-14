@@ -411,8 +411,8 @@ Basic Instructions For Running Hbase
    You can find Slurm Sbatch scripts in the directory script-sbatch or
    Moab Msub scripts in the directory script-msub-slurm.
 
-   You'll likely want to start with the magpie.sbatch-hadoop-with-hdfs
-   or magpie.msub-hadoop-with-hdfs submission script.  
+   You'll likely want to start with the magpie.sbatch-hbase-with-hdfs
+   or magpie.msub-hbase-with-hdfs submission script.  
 
 3) Setup the essentials for Hbase.  Here are the essentials:
 
