@@ -502,6 +502,8 @@ ZOOKEEPER_LOG_DIR : the directory Zookeeper log files are stored
 HBASE_CONF_DIR : the directory that Hbase configuration files local
                  to the node are stored.
 
+HBASE_LOG_DIR : the directory Hbase log files are stored
+
 HBASE_MASTER_NODE : the master node of the Hbase allocation
 
 HBASE_REGIONSERVER_COUNT : number of region servers in your allocation
