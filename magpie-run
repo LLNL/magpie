@@ -82,6 +82,7 @@ then
     fi
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
+    echo "*   ${magpieremotecmd} ${ZOOKEEPER_MASTER_NODE}"
     echo "*   ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop"
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
@@ -198,6 +199,7 @@ then
 	echo "*" 
  	echo "* To setup, you probably want to run:" 
 	echo "*"
+	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
@@ -225,6 +227,7 @@ then
     echo "*" 
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
+    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
 	echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
@@ -375,12 +378,14 @@ then
 	echo "*" 
 	echo "* To setup, you probably want to run:" 
 	echo "*"
+	echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
 	echo "*   ${hbasescriptprefix}/start-hbase.sh" 
     fi
 
     echo "*" 
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
+    echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
     echo "*   ${hbasescriptprefix}/stop-hbase.sh"
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
