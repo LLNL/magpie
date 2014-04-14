@@ -199,16 +199,13 @@ fi
 # Check General Inputs
 #
 
-if [ "${JAVA_HOME}X" == "X" ]
+if [ "${JAVA_HOME}X" != "X" ]
 then
-    echo "JAVA_HOME must be set"
-    exit 1
-fi
-
-if [ ! -d ${JAVA_HOME} ]
-then
-    echo "${JAVA_HOME} does not point to a directory"
-    exit 1
+    if [ ! -d ${JAVA_HOME} ]
+    then
+	echo "${JAVA_HOME} does not point to a directory"
+	exit 1
+    fi
 fi
 
 nodecount=${MAGPIE_NODE_COUNT}
@@ -295,6 +292,12 @@ then
 # Subtract 1 for Hadoop Master
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
+
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Hadoop"
+	exit 1
+    fi
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
 	&& [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
@@ -565,6 +568,12 @@ fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Pig"
+	exit 1
+    fi
+
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
 	echo "Pig requires Hadoop to be setup, set HADOOP_SETUP to yes"
@@ -626,6 +635,12 @@ then
 # Subtract 1 for Hbase Master
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
+
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Hbase"
+	exit 1
+    fi
 
     if [ "${HBASE_HOME}X" == "X" ]
     then
@@ -782,6 +797,12 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Zookeeper"
+	exit 1
+    fi
+
     if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
     then
 	echo "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh is needed to launch Zookeeper"
