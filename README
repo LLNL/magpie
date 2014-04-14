@@ -479,6 +479,8 @@ To only do something on one node of your allocation.
 
 MAGPIE_NODE_COUNT : Number of nodes in this allocation.
 
+MAGPIE_NODELIST : Nodes in your allocation.
+
 HADOOP_MASTER_NODE : the master node of the Hadoop allocation
 
 HADOOP_SLAVE_COUNT : number of compute/data nodes in your allocation
@@ -496,6 +498,9 @@ ZOOKEEPER_CONF_DIR : the directory that Zookeeper configuration files
           	     local to the node are stored.
 
 ZOOKEEPER_LOG_DIR : the directory Zookeeper log files are stored
+
+HBASE_CONF_DIR : the directory that Hbase configuration files local
+                 to the node are stored.
 
 HBASE_MASTER_NODE : the master node of the Hbase allocation
 
