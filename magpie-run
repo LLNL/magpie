@@ -200,6 +200,7 @@ then
  	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+	echo "*   cd $HADOOP_HOME"
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
@@ -228,6 +229,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+    echo "*   cd $HADOOP_HOME"
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
 	echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
@@ -379,6 +381,7 @@ then
 	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
+	echo "*   cd $HBASE_HOME"
 	echo "*   ${hbasescriptprefix}/start-hbase.sh" 
     fi
 
@@ -386,6 +389,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
+    echo "*   cd $HBASE_HOME"
     echo "*   ${hbasescriptprefix}/stop-hbase.sh"
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
