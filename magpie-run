@@ -371,7 +371,7 @@ then
     fi
     echo "*   cd $HBASE_HOME"
     echo "*"
-    echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
+    echo "* Then you can do as you please.  For example to interact in the Hbase shell :"
     echo "*" 
     echo "*   ${hbasescriptprefix}/hbase shell"
 
