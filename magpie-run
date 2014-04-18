@@ -114,17 +114,17 @@ then
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
-	    ${hadoopscriptprefix}/start-dfs.sh 
+	    ${hadoopsetupscriptprefix}/start-dfs.sh 
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    ${hadoopscriptprefix}/start-mapred.sh
+	    ${hadoopsetupscriptprefix}/start-mapred.sh
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    ${hadoopscriptprefix}/start-yarn.sh
+	    ${hadoopsetupscriptprefix}/start-yarn.sh
 	fi
 	
         # My rough estimate for setup time is 30 seconds per 128 nodes
@@ -205,23 +205,23 @@ then
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
-	    echo "*   ${hadoopscriptprefix}/start-dfs.sh" 
+	    echo "*   ${hadoopsetupscriptprefix}/start-dfs.sh" 
 	fi
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    echo "*   ${hadoopscriptprefix}/start-mapred.sh"
+	    echo "*   ${hadoopsetupscriptprefix}/start-mapred.sh"
 	fi
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    echo "*   ${hadoopscriptprefix}/start-yarn.sh"
+	    echo "*   ${hadoopsetupscriptprefix}/start-yarn.sh"
 	fi
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    echo "*   ${hadoopscriptprefix}/start-jobhistoryserver.sh"
+	    echo "*   ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
 	fi
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    echo "*   ${hadoopscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
+	    echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
 	fi
     fi
 
@@ -232,25 +232,25 @@ then
     echo "*   cd $HADOOP_HOME"
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
-	echo "*   ${hadoopscriptprefix}/stop-mapred.sh"
+	echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
     fi
     if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
     then
-	echo "*   ${hadoopscriptprefix}/stop-yarn.sh"
+	echo "*   ${hadoopsetupscriptprefix}/stop-yarn.sh"
     fi
     if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
     then
-	echo "*   ${hadoopscriptprefix}/stop-dfs.sh"
+	echo "*   ${hadoopsetupscriptprefix}/stop-dfs.sh"
     fi
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
-	echo "*   ${hadoopscriptprefix}/stop-jobhistoryserver.sh"
+	echo "*   ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
     fi
     if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
     then
-	echo "*   ${hadoopscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
+	echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
     fi
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
@@ -320,12 +320,12 @@ then
     then
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    ${hadoopscriptprefix}/start-jobhistoryserver.sh
+	    ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    ${hadoopscriptprefix}/mr-jobhistory-daemon.sh start historyserver
+	    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
 	fi
     fi
 fi
@@ -341,7 +341,7 @@ then
     if [ ${HBASE_MODE} != "setuponly" ] && [ "${hadoopsetuppass}" == "1" ]
     then
 	echo "Starting hbase"
-	${hbasescriptprefix}/start-hbase.sh
+	${hbasesetupscriptprefix}/start-hbase.sh
 	
         # My rough estimate for setup time is 30 seconds per 128 nodes
 	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
@@ -373,7 +373,7 @@ then
     echo "*"
     echo "* Then you can do as you please.  For example to interact in the Hbase shell :"
     echo "*" 
-    echo "*   ${hbasescriptprefix}/hbase shell"
+    echo "*   ${hbasecmdprefix}/hbase shell"
 
     if [ "${HBASE_MODE}" == "setuponly" ]
     then
@@ -382,7 +382,7 @@ then
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
 	echo "*   cd $HBASE_HOME"
-	echo "*   ${hbasescriptprefix}/start-hbase.sh" 
+	echo "*   ${hbasesetupscriptprefix}/start-hbase.sh" 
     fi
 
     echo "*" 
@@ -390,7 +390,7 @@ then
     echo "*" 
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
     echo "*   cd $HBASE_HOME"
-    echo "*   ${hbasescriptprefix}/stop-hbase.sh"
+    echo "*   ${hbasesetupscriptprefix}/stop-hbase.sh"
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
@@ -551,7 +551,7 @@ then
 	    done
 	fi
 	
-	${hbasescriptprefix}/stop-hbase.sh
+	${hbasesetupscriptprefix}/stop-hbase.sh
     fi
 fi
 
@@ -565,14 +565,14 @@ then
 
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    ${hadoopscriptprefix}/stop-mapred.sh
-	    ${hadoopscriptprefix}/stop-jobhistoryserver.sh
+	    ${hadoopsetupscriptprefix}/stop-mapred.sh
+	    ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    ${hadoopscriptprefix}/stop-yarn.sh
-	    ${hadoopscriptprefix}/mr-jobhistory-daemon.sh stop historyserver
+	    ${hadoopsetupscriptprefix}/stop-yarn.sh
+	    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver
 	fi
 
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
@@ -593,7 +593,7 @@ then
 	    echo "Running $command" >&2
 	    $command
 
-	    ${hadoopscriptprefix}/stop-dfs.sh 
+	    ${hadoopsetupscriptprefix}/stop-dfs.sh 
 	fi
     fi
 fi

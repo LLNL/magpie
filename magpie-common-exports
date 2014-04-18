@@ -290,14 +290,17 @@ fi
 
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
-    hadoopscriptprefix="bin"
+    hadoopsetupscriptprefix="bin"
+    hadoopcmdprefix="bin"
     dfsadminscript="hadoop"
 elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
 then
-    hadoopscriptprefix="sbin"
+    hadoopsetupscriptprefix="sbin"
+    hadoopcmdprefix="bin"
     dfsadminscript="hdfs"
 fi
 
-hbasescriptprefix="bin"
+hbasesetupscriptprefix="bin"
+hbasecmdprefix="bin"
 
 magpieremotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
