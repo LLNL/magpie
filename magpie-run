@@ -173,14 +173,14 @@ then
     echo "*"
     echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
     echo "*" 
-    echo "*   bin/hadoop fs ..."
+    echo "*   ${hadoopcmdprefix}/hadoop fs ..."
     if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
     then
 	echo "*"
 	echo "To run pig scripts:"
 	echo "*"
 	echo "* cd $PIG_HOME"
-	echo "* bin/pig ..."
+	echo "* ${pigcmdprefix}/pig ..."
     fi
 
     if [ "${HADOOP_MODE}" == "interactive" ] \
@@ -190,7 +190,7 @@ then
 	echo "*" 
 	echo "* To launch jobs you'll want to:"
 	echo "*" 
-	echo "*   bin/hadoop jar ..."
+	echo "*   ${hadoopcmdprefix}/hadoop jar ..."
 	echo "*" 
     fi
 
@@ -293,7 +293,7 @@ then
 	
 	for ((i = 1; i <= ${namenodemaxwaittimes}; i++)); do
 	    
-	    bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
+	    ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
 	    if [ $? -eq 0 ]
 	    then
 		break
@@ -302,7 +302,7 @@ then
 	    sleep 30
 	done
 	
-	bin/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
+	${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
 	if [ $? -ne 0 ] 
 	then
 	    echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
@@ -432,7 +432,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Testpig"
 	    echo "*******************************************************"
-	    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} -e "ls /" &
+	    ${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} -e "ls /" &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${PIG_MODE}" == "script" ]
@@ -440,7 +440,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Executing Pig script $PIG_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${PIG_HOME}/bin/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
+	    ${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${PIG_MODE}" == "interactive" ]
@@ -541,13 +541,13 @@ then
 
 	    command="echo list"
 	    echo "Running $command in hbase shell" >&2
-	    listoutput=`$command | bin/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
+	    listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
 
 	    for table in ${listoutput}
 	    do
 		command="echo major_compact '${table}'"
 		echo "Running $command in hbase shell" >&2
-		$command | bin/hbase shell
+		$command | ${hbasecmdprefix}/hbase shell
 	    done
 	fi
 	
@@ -581,15 +581,15 @@ then
 	then
 	    echo "Saving namespace before shutting down hdfs ..."
 
-	    command="bin/${dfsadminscript} dfsadmin -safemode enter"
+	    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
 	    echo "Running $command" >&2
 	    $command
 
-	    command="bin/${dfsadminscript} dfsadmin -saveNamespace"
+	    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
 	    echo "Running $command" >&2
 	    $command
 
-	    command="bin/${dfsadminscript} dfsadmin -safemode leave"
+	    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
 	    echo "Running $command" >&2
 	    $command
 

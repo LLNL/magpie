@@ -177,7 +177,7 @@ Magpie_calculate_stop_timeouts () {
 	# compaction .  Input checks ensure
 	# magpieshutdowntimeseconds >= 1200 
 
-	hbase_time=`expr ${hadoopshutdowntimeseconds} \/ 2`
+	hbase_time=`expr ${magpieshutdowntimeseconds} \/ 2`
 	hbase_slave_timeout=`expr ${hbase_time} \/ 2`
 	magpieshutdowntimeseconds=${hbase_time}
     fi
@@ -302,5 +302,7 @@ fi
 
 hbasesetupscriptprefix="bin"
 hbasecmdprefix="bin"
+
+pigcmdprefix="bin"
 
 magpieremotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
