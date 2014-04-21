@@ -73,31 +73,31 @@ cd ${HBASE_HOME}
 # Remove previous runs if they are lingering
 #
 
-if echo list | bin/hbase shell | grep -q TestTable
+if echo list | ${hbasecmdprefix}/hbase shell | grep -q TestTable
 then
     echo "Remove earlier run of TestTable job"
     command="echo disable 'TestTable'"
     echo "Running $command in hbase shell" >&2
-    $command | bin/hbase shell
+    $command | ${hbasecmdprefix}/hbase shell
     command="echo drop 'TestTable'"
     echo "Running $command in hbase shell" >&2
-    $command | bin/hbase shell
+    $command | ${hbasecmdprefix}/hbase shell
 fi
 
-command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${writecmd} ${hbaseclientcount}"
+command="${hbasecmdprefix}/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${writecmd} ${hbaseclientcount}"
 echo "Running $command" >&2
 $command
 
-command="bin/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${readcmd} ${hbaseclientcount}"
+command="${hbasecmdprefix}/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${readcmd} ${hbaseclientcount}"
 echo "Running $command" >&2
 $command
 
 echo "Removing TestTable ..."
 command="echo disable 'TestTable'"
 echo "Running $command in hbase shell" >&2
-$command | bin/hbase shell
+$command | ${hbasecmdprefix}/hbase shell
 command="echo drop 'TestTable'"
 echo "Running $command in hbase shell" >&2
-$command | bin/hbase shell
+$command | ${hbasecmdprefix}/hbase shell
 
 exit 0

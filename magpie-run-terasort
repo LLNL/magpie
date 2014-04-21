@@ -76,13 +76,13 @@ cd ${HADOOP_HOME}
 # Remove previous runs if they are lingering
 #
 
-command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
 $command
-command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
 $command
 
 
-command="bin/hadoop jar ${terasortexamples} teragen ${extralibjars} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
 	    
@@ -95,14 +95,14 @@ else
     rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
 fi
 
-command="bin/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
 
 echo "Running $command" >&2
 $command
 
-command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
 $command
-command="bin/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
 $command
 
 exit 0
