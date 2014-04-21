@@ -606,6 +606,15 @@ then
 	exit 1
     fi
 
+    if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "testpig" ]
+    then
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-testpig" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-testpig cannot be found, it is required to run the testpig sanity test"
+	    exit 1
+	fi
+    fi
+
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "script" ]
     then
 	if [ "${PIG_SCRIPT_PATH}X" == "X" ]
@@ -624,6 +633,8 @@ then
 	    exit 1
 	fi
     fi
+
+
 fi
 
 #
