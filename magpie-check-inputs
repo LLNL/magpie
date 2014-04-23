@@ -88,7 +88,7 @@ fi
 
 if [ ! -d ${MAGPIE_SCRIPTS_HOME} ]
 then
-    echo "${MAGPIE_SCRIPTS_HOME} does not point to a directory"
+    echo "MAGPIE_SCRIPTS_HOME does not point to a directory"
     exit 1
 fi
 
@@ -203,7 +203,7 @@ if [ "${JAVA_HOME}X" != "X" ]
 then
     if [ ! -d ${JAVA_HOME} ]
     then
-	echo "${JAVA_HOME} does not point to a directory"
+	echo "JAVA_HOME does not point to a directory"
 	exit 1
     fi
 fi
@@ -325,7 +325,7 @@ then
 
     if [ ! -d ${HADOOP_HOME} ]
     then
-	echo "${HADOOP_HOME} does not point to a directory"
+	echo "HADOOP_HOME does not point to a directory"
 	exit 1
     fi
 
@@ -547,7 +547,7 @@ then
 	then
 	    if [ ! -d "${HADOOP_UDA_LIBPATH}" ]
 	    then
-		echo "Library path HADOOP_UDA_LIBPATH \"$HADOOP_UDA_LIBPATH\" is not a directory"
+		echo "HADOOP_UDA_LIBPATH does not point to a directory"
 		exit 1
 	    fi
 	fi
@@ -588,7 +588,7 @@ then
     
     if [ ! -d ${PIG_HOME} ]
     then
-       echo "${PIG_HOME} does not point to a directory"
+       echo "PIG_HOME does not point to a directory"
        exit 1
     fi
 
@@ -661,7 +661,7 @@ then
     
     if [ ! -d ${HBASE_HOME} ]
     then
-       echo "${HBASE_HOME} does not point to a directory"
+       echo "HBASE_HOME does not point to a directory"
        exit 1
     fi
 
@@ -873,7 +873,7 @@ then
     
     if [ ! -d ${ZOOKEEPER_HOME} ]
     then
-       echo "${ZOOKEEPER_HOME} does not point to a directory"
+       echo "ZOOKEEPER_HOME does not point to a directory"
        exit 1
     fi
 
