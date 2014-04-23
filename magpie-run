@@ -159,6 +159,11 @@ then
 	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsovernetworkfs" ]
     then
 	echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
+	echo "*"
+	echo "* HDFS can be accessed at the address:"
+	echo "*"
+	echo "*   hdfs://${HADOOP_MASTER_NODE}:54310" 
+	echo "*" 
     fi
     echo "*" 
     echo "* To access Hadoop directly, you'll want to:"
