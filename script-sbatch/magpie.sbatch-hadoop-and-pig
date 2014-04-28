@@ -654,7 +654,9 @@ export PIG_LOCAL_DIR="/tmp/username/pig"
 # Set how Pig should run
 #
 # "testpig" - Run a quick sanity test to see that pig is setup
-#             correctly.
+#             correctly.  Testpig will do a simple ls of the root
+#             directory of whatever filesytem you setup (e.g. hdfs,
+#             lustre, etc.).
 #
 # "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
 #
