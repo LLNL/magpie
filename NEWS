@@ -1,3 +1,7 @@
+magpie 1.34
+-----------
+Support Spark in Magpie
+
 magpie 1.33
 -----------
 Create new convenience script escripts/magpie-output-config-files-script.sh.
