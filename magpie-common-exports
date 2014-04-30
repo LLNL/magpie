@@ -381,6 +381,8 @@ then
     export SPARK_SLAVE_COUNT=`cat ${SPARK_CONF_DIR}/slaves|wc -l`
 fi
 
+export SPARK_MASTER_PORT="7077"
+
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     hadoopsetupscriptprefix="bin"

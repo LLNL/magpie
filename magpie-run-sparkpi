@@ -32,7 +32,7 @@ sparkpiclass="org.apache.spark.examples.SparkPi"
 
 cd ${SPARK_HOME}
 	    
-command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:7077"
+command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT"
 echo "Running $command" >&2
 $command
 

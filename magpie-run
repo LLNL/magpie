@@ -179,26 +179,19 @@ then
     echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
     echo "*" 
     echo "*   ${hadoopcmdprefix}/hadoop fs ..."
+    echo "*" 
+    echo "* To launch jobs you'll want to:"
+    echo "*" 
+    echo "*   ${hadoopcmdprefix}/hadoop jar ..."
+    echo "*" 
     if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
     then
 	echo "*"
-	echo "To run pig scripts:"
+	echo "* To run pig scripts:"
 	echo "*"
 	echo "* cd $PIG_HOME"
 	echo "* ${pigcmdprefix}/pig ..."
     fi
-
-    if [ "${HADOOP_MODE}" == "interactive" ] \
-	&& ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-	|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ])
-    then
-	echo "*" 
-	echo "* To launch jobs you'll want to:"
-	echo "*" 
-	echo "*   ${hadoopcmdprefix}/hadoop jar ..."
-	echo "*" 
-    fi
-
     if [ "${HADOOP_MODE}" == "setuponly" ]
     then
 	echo "*" 
@@ -446,7 +439,7 @@ then
     echo "*" 
     echo "* The Spark Master for running jobs is"
     echo "*"
-    echo "* spark://${SPARK_MASTER_NODE}:7077"
+    echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
     echo "*"
     echo "* To access Spark directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
@@ -460,7 +453,7 @@ then
     echo "*"
     echo "* Then you can do as you please.  For example to run a job:"
     echo "*" 
-    echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:7077"
+    echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
 
     if [ "${SPARK_MODE}" == "setuponly" ]
     then
