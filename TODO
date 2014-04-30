@@ -1,6 +1,5 @@
 Major feature support
 ---------------------
-Spark
 Storm
 
 Minor feature support
@@ -22,3 +21,6 @@ Hbase
 - thrift server?
 - multiple masters
 - region merge script
+
+Spark
+- multiple masters

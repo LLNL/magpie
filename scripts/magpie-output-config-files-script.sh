@@ -66,6 +66,12 @@ then
 	echo "**** hbase-site.xml ****"
 	cat ${HBASE_CONF_DIR}/hbase-site.xml
     fi
+
+    if [ -f "${SPARK_CONF_DIR}/spark-env.sh" ] 
+    then
+	echo "**** spark-env.sh ****"
+	cat ${SPARK_CONF_DIR}/spark-env.sh
+    fi
 fi
 
 if [ "${MAGPIE_CLUSTER_NODERANK}" == "1" ]

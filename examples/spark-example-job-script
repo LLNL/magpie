@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# This script executes a performance test w/ Spark 0.9.1.  It is an
+# example of how you can setup a script to run an Spark job.  It is
+# set via the SPARK_SCRIPT_PATH environment variable and setting the
+# SPARK_MODE to 'script'.  See the job submission file for details.
+#
+# Remember to set SPARK_CLASSPATH or SPARK_LIBRARY_PATH appropriately
+# for extra libraries you require or SPARK_JAVA_OPTS to set Spark
+# options.
+#
+# Please adjust to whatever you would want to do with Spark
+
+cd ${SPARK_HOME}
+
+command="bin/run-example org.apache.spark.examples.SparkPi spark://$SPARK_MASTER_NODE:7077"
+echo "Running $command" >&2
+$command

@@ -41,6 +41,20 @@ then
     cp -a ${HBASE_LOG_DIR}/* ${targetdir}/log
 fi
 
+targetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/spark/nodes/${NODENAME}
+
+if [ "${SPARK_CONF_DIR}X" != "X" ] && [ -d ${SPARK_CONF_DIR}/ ] && [ "$(ls -A ${SPARK_CONF_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/conf
+    cp -a ${SPARK_CONF_DIR}/* ${targetdir}/conf
+fi
+
+if [ "${SPARK_LOG_DIR}X" != "X" ] && [ -d ${SPARK_LOG_DIR}/ ] && [ "$(ls -A ${SPARK_LOG_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/log
+    cp -a ${SPARK_LOG_DIR}/* ${targetdir}/log
+fi
+
 zookeepertargetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/zookeeper/nodes/${NODENAME}
         
 if [ "${ZOOKEEPER_CONF_DIR}X" != "X" ] && [ -d ${ZOOKEEPER_CONF_DIR}/ ] && [ "$(ls -A ${ZOOKEEPER_CONF_DIR}/)" ]

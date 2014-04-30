@@ -121,10 +121,11 @@ fi
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, script, or interactive"
     exit 1
 fi
 
@@ -248,15 +249,23 @@ then
     exit 1
 fi
 
+if [ "${SPARK_SETUP}X" != "X" ] \
+    && ( [ "${SPARK_SETUP}" != "yes" ] && [ "${SPARK_SETUP}" != "no" ] )
+then
+    echo "SPARK_SETUP must be set to yes or no"
+    exit 1
+fi
+
 # Did user turn on SOMETHING to run
 #
 # Pig is not "something", b/c it needs hadoop 
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
-    && [ "${HBASE_SETUP}" != "yes" ]
+    && [ "${HBASE_SETUP}" != "yes" ] \
+    && [ "${SPARK_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP nor SPARK_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -280,6 +289,13 @@ if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] \
     && [ "${HBASE_SETUP}" != "yes" ]
 then
     echo "Cannot run hbase job type if HBASE_SETUP is not enabled"
+    exit 1
+fi
+
+if [ "${MAGPIE_JOB_TYPE}" == "spark" ] \
+    && [ "${SPARK_SETUP}" != "yes" ]
+then
+    echo "Cannot run spark job type if SPARK_SETUP is not enabled"
     exit 1
 fi
 
@@ -798,6 +814,98 @@ then
     if [ ${nodecount} -le "0" ]
     then
 	echo "No remaining nodes for Hbase regionservers, increase node count or adjust node allocations"
+	exit 1
+    fi
+fi
+
+#
+# Check Spark Inputs 
+#
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+# Subtract 1 for Spark Master
+    nodecount=$((nodecount-${nodecountmaster}))
+    nodecountmaster=0
+
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Spark"
+	exit 1
+    fi
+
+    if [ "${SPARK_HOME}X" == "X" ]
+    then
+       echo "SPARK_HOME must be set"
+       exit 1
+    fi
+    
+    if [ ! -d ${SPARK_HOME} ]
+    then
+       echo "SPARK_HOME does not point to a directory"
+       exit 1
+    fi
+
+    if [ "${SPARK_LOCAL_DIR}X" == "X" ]
+    then
+       echo "SPARK_LOCAL_DIR must be set"
+       exit 1
+    fi
+
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
+	then
+	    echo "SPARK_LOCAL_SCRATCH_DIR must be set if Hadoop is not setup"
+	    exit 1
+	fi
+    fi
+
+    if [ "${SPARK_MODE}" != "sparkpi" ] \
+	&& [ "${SPARK_MODE}" != "script" ] \
+	&& [ "${SPARK_MODE}" != "interactive" ] \
+	&& [ "${SPARK_MODE}" != "setuponly" ]
+    then
+	echo "SPARK_MODE must be set to sparkpi, script, interactive, setuponly"
+	exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "sparkpi" ]
+    then
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi cannot be found, it is required to run sparkpi test"
+	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "script" ]
+    then
+	if [ "${SPARK_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script SPARK_SCRIPT_PATH must be specified"
+	    exit 1
+	fi
+	
+	if [ ! -x ${SPARK_SCRIPT_PATH} ]
+	then
+	    echo "Script SPARK_SCRIPT_PATH \"$SPARK_SCRIPT_PATH\" does not have execute permissions"
+	    exit 1
+	fi
+    fi
+
+    if ([ "${SPARK_MODE}" == "sparkpi" ] \
+	|| [ "${SPARK_MODE}" == "script" ] \
+	|| [ "${SPARK_MODE}" == "interactive" ]) \
+	&& [ "${HADOOP_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Spark job if Hadoop mode is setuponly"
+	exit 1
+    fi
+
+    if [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Spark slaves, increase node count or adjust node allocations"
 	exit 1
     fi
 fi

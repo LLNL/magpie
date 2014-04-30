@@ -21,6 +21,8 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-hbase >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
+	cat magpie-spark >> ../script-sbatch/magpie.sbatch
+	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-run-job >> ../script-sbatch/magpie.sbatch
 
 # Make sbatch with just Hadoop
@@ -101,6 +103,26 @@ all:
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 
+# Make sbatch with Spark with HDFS
+	echo "Creating magpie.sbatch-spark-with-hdfs"
+	cp magpie-header ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-sbatch >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-magpie-customizations >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-spark >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-run-job >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"spark\"/" ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ../script-sbatch/magpie.sbatch-spark-with-hdfs
+
 # Make msub with all configuration
 	echo "Creating magpie.msub-slurm"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm
@@ -122,6 +144,8 @@ all:
 	cat magpie-zookeeper >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-hbase >> ../script-msub-slurm/magpie.msub-slurm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-spark >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-run-job >> ../script-msub-slurm/magpie.msub-slurm
 
@@ -202,3 +226,23 @@ all:
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"hbase\"/" ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+
+# Make msub with Spark with HDFS
+	echo "Creating magpie.msub-slurm-spark-with-hdfs"
+	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-spark >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-run-job >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"spark\"/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs

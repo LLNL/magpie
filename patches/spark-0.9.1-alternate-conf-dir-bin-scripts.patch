@@ -1,0 +1,72 @@
+diff -pruN spark-0.9.1-orig/bin/compute-classpath.sh spark-0.9.1/bin/compute-classpath.sh
+--- spark-0.9.1-orig/bin/compute-classpath.sh	2014-03-26 22:28:16.000000000 -0700
++++ spark-0.9.1/bin/compute-classpath.sh	2014-04-21 15:42:13.168668000 -0700
+@@ -25,14 +25,15 @@ SCALA_VERSION=2.10
+ # Figure out where Spark is installed
+ FWDIR="$(cd `dirname $0`/..; pwd)"
+ 
+-# Load environment variables from conf/spark-env.sh, if it exists
+-if [ -e "$FWDIR/conf/spark-env.sh" ] ; then
++# Load environment variables from spark-env.sh, if it exists
++if [ "$SPARK_CONF_DIRX" != "X" ] && [ -e "$SPARK_CONF_DIR/spark-env.sh" ] ; then
++  . $SPARK_CONF_DIR/spark-env.sh
++  CLASSPATH="$SPARK_CLASSPATH:$SPARK_CONF_DIR"
++elif [ -e "$FWDIR/conf/spark-env.sh" ] ; then
+   . $FWDIR/conf/spark-env.sh
++  CLASSPATH="$SPARK_CLASSPATH:$FWDIR/conf"
+ fi
+ 
+-# Build up classpath
+-CLASSPATH="$SPARK_CLASSPATH:$FWDIR/conf"
+-
+ # First check if we have a dependencies jar. If so, include binary classes with the deps jar
+ if [ -f "$FWDIR"/assembly/target/scala-$SCALA_VERSION/spark-assembly*hadoop*-deps.jar ]; then
+   CLASSPATH="$CLASSPATH:$FWDIR/core/target/scala-$SCALA_VERSION/classes"
+diff -pruN spark-0.9.1-orig/bin/run-example spark-0.9.1/bin/run-example
+--- spark-0.9.1-orig/bin/run-example	2014-03-26 22:28:16.000000000 -0700
++++ spark-0.9.1/bin/run-example	2014-04-21 15:40:48.878046000 -0700
+@@ -30,8 +30,10 @@ FWDIR="$(cd `dirname $0`/..; pwd)"
+ # Export this as SPARK_HOME
+ export SPARK_HOME="$FWDIR"
+ 
+-# Load environment variables from conf/spark-env.sh, if it exists
+-if [ -e "$FWDIR/conf/spark-env.sh" ] ; then
++# Load environment variables from spark-env.sh, if it exists
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ -e "${SPARK_CONF_DIR}/spark-env.sh" ] ; then
++  . $SPARK_CONF_DIR/spark-env.sh
++elif [ -e "$FWDIR/conf/spark-env.sh" ] ; then
+   . $FWDIR/conf/spark-env.sh
+ fi
+ 
+diff -pruN spark-0.9.1-orig/bin/spark-class spark-0.9.1/bin/spark-class
+--- spark-0.9.1-orig/bin/spark-class	2014-03-26 22:28:16.000000000 -0700
++++ spark-0.9.1/bin/spark-class	2014-04-21 15:37:56.025072000 -0700
+@@ -30,8 +30,10 @@ FWDIR="$(cd `dirname $0`/..; pwd)"
+ # Export this as SPARK_HOME
+ export SPARK_HOME="$FWDIR"
+ 
+-# Load environment variables from conf/spark-env.sh, if it exists
+-if [ -e "$FWDIR/conf/spark-env.sh" ] ; then
++# Load environment variables from spark-env.sh, if it exists
++if [ "$SPARK_CONF_DIRX" != "X" ] && [ -e "$SPARK_CONF_DIR/spark-env.sh" ] ; then
++  . $SPARK_CONF_DIR/spark-env.sh
++elif [ -e "$FWDIR/conf/spark-env.sh" ] ; then
+   . $FWDIR/conf/spark-env.sh
+ fi
+ 
+diff -pruN spark-0.9.1-orig/bin/spark-shell spark-0.9.1/bin/spark-shell
+--- spark-0.9.1-orig/bin/spark-shell	2014-03-26 22:28:16.000000000 -0700
++++ spark-0.9.1/bin/spark-shell	2014-04-21 15:41:49.168694000 -0700
+@@ -47,8 +47,10 @@ done
+ # Set MASTER from spark-env if possible
+ DEFAULT_SPARK_MASTER_PORT=7077
+ if [ -z "$MASTER" ]; then
+-  if [ -e "$FWDIR/conf/spark-env.sh" ]; then
+-    . "$FWDIR/conf/spark-env.sh"
++  if [ "${SPARK_CONF_DIR}X" != "X" ] && [ -e "${SPARK_CONF_DIR}/spark-env.sh" ] ; then
++    . $SPARK_CONF_DIR/spark-env.sh
++  elif [ -e "$FWDIR/conf/spark-env.sh" ] ; then
++    . $FWDIR/conf/spark-env.sh
+   fi
+   if [ "x" != "x$SPARK_MASTER_IP" ]; then
+     if [ "y" != "y$SPARK_MASTER_PORT" ]; then

@@ -44,6 +44,12 @@ Magpie_am_I_master () {
 	then 
 	    return 0
 	fi
+    elif [ "${SPARK_SETUP}" == "yes" ] && [ -f "${SPARK_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
     elif [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ -f "${ZOOKEEPER_CONF_DIR}/masters" ]
     then
 	if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/masters
@@ -90,6 +96,22 @@ Magpie_am_I_a_hbase_node () {
 	    hbasenoderank=0
 	else
 	    hbasenoderank=`grep -n -E "^${myhostname}$" ${HBASE_CONF_DIR}/regionservers | awk --field-separator=':' '{print $1}'`
+	fi
+	return 0
+    fi
+    return 1
+}
+
+Magpie_am_I_a_spark_node () {
+    local myhostname=`hostname`
+    if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/slaves \
+	|| grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
+    then 
+	if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
+	then
+	    sparknoderank=0
+	else
+	    sparknoderank=`grep -n -E "^${myhostname}$" ${SPARK_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
 	fi
 	return 0
     fi
@@ -210,6 +232,12 @@ Magpie_calculate_stop_timeouts () {
 	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
     fi
 
+    if [ "${SPARK_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
     stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
 	
     if [ "${stoptimeout}" -lt 5 ]
@@ -218,6 +246,57 @@ Magpie_calculate_stop_timeouts () {
     fi
 
     hadoopstoptimeout=${stoptimeout}
+}
+
+Magpie_calculate_canrunjobscount () {
+    canrunjobscount=0
+
+    # Count how many big data systems we're using that can run jobs
+    if [ "${HADOOP_SETUP}" == "yes" ] && ( [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ] )
+    then
+	canrunjobscount=$((canrunjobscount+1))
+    fi
+
+    if [ "${HBASE_SETUP}" == "yes" ]
+    then
+	canrunjobscount=$((canrunjobscount+1))
+    fi
+ 
+    if [ "${SPARK_SETUP}" == "yes" ]
+    then
+	canrunjobscount=$((canrunjobscount+1))
+    fi
+}
+
+Magpie_calculate_threadstouse () {
+    proccount=`cat /proc/cpuinfo | grep processor | wc -l`
+
+    # Sets canrunjobscount
+    Magpie_calculate_canrunjobscount
+ 
+    # If only one system to run jobs, estimate 1.5X cores
+    # If > 1, split cores evenly amongst job running stuff
+
+    if [ "${canrunjobscount}" == "1" ]
+    then
+	threadstouse=`expr ${proccount} + ${proccount} \/ 2`
+    else
+	threadstouse=`expr ${proccount} \/ ${canrunjobscount}`
+    fi
+}
+
+Magpie_calculate_memorytouse () {
+    memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+    memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
+    
+    # Sets canrunjobscount
+    Magpie_calculate_canrunjobscount
+
+    # We start w/ 80% of system memory 
+    memorytouse=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    memorytouse=`expr $memorytouse \/ ${canrunjobscount}`
+
+    memorytouse=$(echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f")
 }
 
 export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
@@ -249,6 +328,10 @@ export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
 export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
 export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
 export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
+
+export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+export SPARK_CONF_DIR=${SPARK_LOCAL_JOB_DIR}/conf
+export SPARK_LOG_DIR=${SPARK_LOCAL_JOB_DIR}/log
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
@@ -288,6 +371,16 @@ then
      export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 fi
 
+if [ -f "${SPARK_CONF_DIR}/masters" ]
+then 
+     export SPARK_MASTER_NODE=`head -1 ${SPARK_CONF_DIR}/masters`
+fi
+
+if [ -f "${SPARK_CONF_DIR}/slaves" ]
+then
+    export SPARK_SLAVE_COUNT=`cat ${SPARK_CONF_DIR}/slaves|wc -l`
+fi
+
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then
     hadoopsetupscriptprefix="bin"
@@ -304,5 +397,8 @@ hbasesetupscriptprefix="bin"
 hbasecmdprefix="bin"
 
 pigcmdprefix="bin"
+
+sparksetupscriptprefix="sbin"
+sparkcmdprefix="bin"
 
 magpieremotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
