@@ -353,6 +353,8 @@ then
     export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 fi
 
+export YARN_RESOURCEMANAGER_WEBAPP_ADDRESS="8088"
+
 if [ -f "${HBASE_CONF_DIR}/masters" ]
 then 
      export HBASE_MASTER_NODE=`head -1 ${HBASE_CONF_DIR}/masters`

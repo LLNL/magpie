@@ -149,7 +149,7 @@ then
 	echo "*"
     elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
     then
-	echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:8088"
+	echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}"
 	echo "*"
 	echo "* Job History Server: http://${HADOOP_MASTER_NODE}:19888"
 	echo "*"

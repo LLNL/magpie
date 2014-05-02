@@ -895,6 +895,7 @@ then
 	-e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
 	-e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
 	-e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
+	-e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}/g" \
 	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`

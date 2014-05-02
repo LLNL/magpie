@@ -18,7 +18,7 @@
 <property>
   <description>The address of the RM web application.</description>
   <name>yarn.resourcemanager.webapp.address</name>
-  <value>HADOOP_MASTER_HOST:8088</value>
+  <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERWEBAPPADDRESS</value>
 </property>
 
 <property>
