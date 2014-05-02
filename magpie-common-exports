@@ -379,6 +379,8 @@ then
 fi
 
 export SPARK_MASTER_PORT="7077"
+export SPARK_MASTER_WEBUI_PORT="8080"
+export SPARK_WORKER_WEBUI_PORT="8081"
 
 if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
 then

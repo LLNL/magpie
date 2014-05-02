@@ -248,6 +248,8 @@ sed -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
     -e "s/SPARKWORKERMEMORY/${workermemory}/g" \
     -e "s/SPARKWORKERDIR/${workerdirectorysubst}/g" \
     -e "s/SPARKMEM/${sparkmem}/g" \
+    -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
+    -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
     $sparkenvsh > ${SPARK_CONF_DIR}/spark-env.sh
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
