@@ -343,9 +343,6 @@ then
     export MAGPIE_SHUTDOWN_TIME=30
 fi
 
-# In main script, if master/slaves haven't been created yet, environment
-# variable set in there.
-
 if [ -f "${HADOOP_CONF_DIR}/masters" ]
 then 
      export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
