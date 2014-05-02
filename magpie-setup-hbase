@@ -193,6 +193,8 @@ sed -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
     -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
     -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
     -e "s/HBASEREGIONSERVERHANDLERCOUNT/${hbaseregionserverhandlercount}/g" \
+    -e "s/HBASEMASTERINFOPORT/${HBASE_MASTER_INFO_PORT}/g" \
+    -e "s/HBASEREGIONSERVERINFOPORT/${HBASE_REGIONSERVER_INFO_PORT}/g" \
     $hbasesitexml > ${HBASE_CONF_DIR}/hbase-site.xml
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`

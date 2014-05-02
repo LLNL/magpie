@@ -68,6 +68,20 @@
     parameter.</description>
   </property>
 
+  <property>
+    <name>hbase.master.info.port</name>
+    <value>HBASEMASTERINFOPORT</value>
+    <description>The port for the HBase Master web UI.
+    Set to -1 if you do not want a UI instance run.</description>
+  </property>
+
+  <property>
+    <name>hbase.regionserver.info.port</name>
+    <value>HBASEREGIONSERVERINFOPORT</value>
+    <description>The port for the HBase RegionServer web UI
+    Set to -1 if you do not want the RegionServer UI to run.</description>
+  </property>
+
   <!-- Effectively disable major compaction by setting to 4 weeks,
   make user controled -->
 
