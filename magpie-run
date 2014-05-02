@@ -151,7 +151,7 @@ then
     then
 	echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}"
 	echo "*"
-	echo "* Job History Server: http://${HADOOP_MASTER_NODE}:19888"
+	echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}"
 	echo "*"
     fi
     if [ ${HADOOP_FILESYSTEM_MODE} == "hdfs" ] \

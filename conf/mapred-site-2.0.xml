@@ -233,6 +233,20 @@
                may be executed in parallel.</description>
 </property>
 
+<!-- jobhistory properties -->
+
+<property>
+  <name>mapreduce.jobhistory.address</name>
+  <value>0.0.0.0:HADOOPJOBHISTORYADDRESS</value>
+  <description>MapReduce JobHistory Server IPC host:port</description>
+</property>
+
+<property>
+  <name>mapreduce.jobhistory.webapp.address</name>
+  <value>0.0.0.0:HADOOPJOBHISTORYWEBAPPADDRESS</value>
+  <description>MapReduce JobHistory Server Web UI host:port</description>
+</property>
+
 <property>
   <name>mapreduce.client.submit.file.replication</name>
   <value>SUBMITFILEREPLICATION</value>
