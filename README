@@ -45,8 +45,7 @@ The basic idea behind these scripts are to:
 3) Launch daemons on all nodes.  The rank 0 node will run master
    daemons, such as the Hadoop Namenode or the Hbase Master.  All
    remaining nodes will run appropriate slave daemons, such as the
-   Hadoop Datanodes or Hbase RegionServers.  lave daemons will run
-   approp
+   Hadoop Datanodes or Hbase RegionServers.
 
 4) Now you have a mini cluster to do whatever you want.
 
