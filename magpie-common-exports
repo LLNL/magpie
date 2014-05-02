@@ -365,7 +365,9 @@ then
     export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
 fi
 
+export HBASE_MASTER_PORT="60000"
 export HBASE_MASTER_INFO_PORT="60010"
+export HBASE_REGIONSERVER_PORT="60020"
 export HBASE_REGIONSERVER_INFO_PORT="60030"
 
 if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_slaves" ]

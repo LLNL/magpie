@@ -68,6 +68,12 @@
     parameter.</description>
   </property>
 
+  <!--Master configurations-->
+  <property >
+    <name>hbase.master.port</name>
+    <value>HBASEMASTERPORT</value>
+    <description>The port the HBase Master should bind to.</description>
+  </property>
   <property>
     <name>hbase.master.info.port</name>
     <value>HBASEMASTERINFOPORT</value>
@@ -75,12 +81,28 @@
     Set to -1 if you do not want a UI instance run.</description>
   </property>
 
+    <!--RegionServer configurations-->
+  <property>
+    <name>hbase.regionserver.port</name>
+    <value>HBASEREGIONSERVERPORT</value>
+    <description>The port the HBase RegionServer binds to.</description>
+  </property>
   <property>
     <name>hbase.regionserver.info.port</name>
     <value>HBASEREGIONSERVERINFOPORT</value>
     <description>The port for the HBase RegionServer web UI
     Set to -1 if you do not want the RegionServer UI to run.</description>
   </property>
+
+  <!-- Adjust appropriately given cluster size -->
+  <property>
+    <name>hbase.regionserver.handler.count</name>
+    <value>HBASEREGIONSERVERHANDLERCOUNT</value>
+    <description>Count of RPC Listener instances spun up on RegionServers.
+    Same property is used by the Master for count of master handlers.</description>
+  </property>
+
+  <!--Miscellaneous configuration-->
 
   <!-- Effectively disable major compaction by setting to 4 weeks,
   make user controled -->
@@ -102,14 +124,6 @@
       <value>500</value>
       <description>Time to sleep in between searches for work (in milliseconds).
       Used as sleep interval by service threads such as log roller.</description>
-  </property>
-
-  <!-- Adjust appropriately given cluster size -->
-  <property>
-    <name>hbase.regionserver.handler.count</name>
-    <value>HBASEREGIONSERVERHANDLERCOUNT</value>
-    <description>Count of RPC Listener instances spun up on RegionServers.
-    Same property is used by the Master for count of master handlers.</description>
   </property>
 
 </configuration>
