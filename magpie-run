@@ -359,7 +359,7 @@ then
     echo "*"
     echo "* You can view your Hbase status by launching a web browser and pointing to ..."
     echo "*"
-    echo "* Hbase Master: http://${HADOOP_MASTER_NODE}:60010"
+    echo "* Hbase Master: http://${HBASE_MASTER_NODE}:60010"
     echo "*" 
     echo "* To access Hbase directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
