@@ -237,13 +237,13 @@
 
 <property>
   <name>mapreduce.jobhistory.address</name>
-  <value>0.0.0.0:HADOOPJOBHISTORYADDRESS</value>
+  <value>HADOOP_MASTER_HOST:HADOOPJOBHISTORYADDRESS</value>
   <description>MapReduce JobHistory Server IPC host:port</description>
 </property>
 
 <property>
   <name>mapreduce.jobhistory.webapp.address</name>
-  <value>0.0.0.0:HADOOPJOBHISTORYWEBAPPADDRESS</value>
+  <value>HADOOP_MASTER_HOST:HADOOPJOBHISTORYWEBAPPADDRESS</value>
   <description>MapReduce JobHistory Server Web UI host:port</description>
 </property>
 

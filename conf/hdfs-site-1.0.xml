@@ -28,6 +28,42 @@
 </property>
 
 <property>
+  <name>dfs.datanode.address</name>
+  <value>0.0.0.0:DFSDATANODEADDRESS</value>
+  <description>
+    The datanode server address and port for data transfer.
+    If the port is 0 then the server will start on a free port.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.http.address</name>
+  <value>0.0.0.0:DFSDATANODEHTTPADDRESS</value>
+  <description>
+    The datanode http server address and port.
+    If the port is 0 then the server will start on a free port.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.ipc.address</name>
+  <value>0.0.0.0:DFSDATANODEIPCADDRESS</value>
+  <description>
+    The datanode ipc server address and port.
+    If the port is 0 then the server will start on a free port.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.address</name>
+  <value>HADOOP_MASTER_HOST:DFSNAMENODEHTTPADDRESS</value>
+  <description>
+    The address and the base port where the dfs namenode web ui will listen on.
+    If the port is 0 then the server will start on a free port.
+  </description>
+</property>
+
+<property>
   <name>dfs.name.dir</name>
   <value>${hadoop.tmp.dir}/dfs/name</value>
   <description>Determines where on the local filesystem the DFS name node

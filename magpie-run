@@ -158,7 +158,8 @@ then
 	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsoverlustre" ] \
 	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsovernetworkfs" ]
     then
-	echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:50070"
+	echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+	echo "* HDFS DataNode: http://<DATANODE>:${HADOOP_HDFS_DATANODE_HTTPADDRESS}"
 	echo "*"
 	echo "* HDFS can be accessed at the address:"
 	echo "*"
