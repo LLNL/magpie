@@ -6,13 +6,13 @@
 <property>
   <description>The address of the applications manager interface in the RM.</description>
   <name>yarn.resourcemanager.address</name>
-  <value>HADOOP_MASTER_HOST:8032</value>
+  <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERADDRESS</value>
 </property>
 
 <property>
   <description>The address of the scheduler interface.</description>
   <name>yarn.resourcemanager.scheduler.address</name>
-  <value>HADOOP_MASTER_HOST:8030</value>
+  <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERSCHEDULERADDRESS</value>
 </property>
 
 <property>
@@ -23,13 +23,13 @@
 
 <property>
   <name>yarn.resourcemanager.resource-tracker.address</name>
-  <value>HADOOP_MASTER_HOST:8031</value>
+  <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERRESOURCETRACKERADDRESS</value>
 </property>
 
 <property>
   <description>The address of the RM admin interface.</description>
   <name>yarn.resourcemanager.admin.address</name>
-  <value>HADOOP_MASTER_HOST:8033</value>
+  <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERADMINADDRESS</value>
 </property>
 
 <property>
