@@ -27,6 +27,7 @@
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 
 command="${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} -e ls /"
 echo "Running $command" >&2

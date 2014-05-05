@@ -27,6 +27,7 @@
 # details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 
 sparkpiclass="org.apache.spark.examples.SparkPi"
 

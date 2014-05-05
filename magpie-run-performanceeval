@@ -27,6 +27,7 @@
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 
 performanceevaljar="org.apache.hadoop.hbase.PerformanceEvaluation"
 

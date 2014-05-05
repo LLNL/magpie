@@ -28,6 +28,7 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 
 if [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
