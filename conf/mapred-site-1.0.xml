@@ -29,6 +29,15 @@
   </description>
 </property>
 
+<property>
+  <name>mapred.job.tracker.http.address</name>
+  <value>HADOOP_MASTER_HOST:MAPREDJOBTRACKERHTTPADDRESS</value>
+  <description>
+    The job tracker http server address and port the server will listen on.
+    If the port is 0 then the server will start on a free port.
+  </description>
+</property>
+
 <!-- Script will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>mapred.job.tracker.handler.count</name>

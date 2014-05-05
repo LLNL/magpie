@@ -145,7 +145,7 @@ then
     echo "*"
     if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
     then
-	echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:50030"
+	echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${MAPRED_JOB_TRACKER_HTTPADDRESS}"
 	echo "*"
     elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
     then
