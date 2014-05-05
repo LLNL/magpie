@@ -22,7 +22,7 @@
 
 <property>
   <name>mapred.job.tracker</name>
-  <value>HADOOP_MASTER_HOST:54311</value>
+  <value>HADOOP_MASTER_HOST:MAPREDJOBTRACKERADDRESS</value>
   <description>The host and port that the MapReduce job tracker runs
   at.  If "local", then jobs are run in-process as a single map
   and reduce task.
