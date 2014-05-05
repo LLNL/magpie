@@ -20,7 +20,7 @@
 
 <property>
   <name>dfs.secondary.http.address</name>
-  <value>HADOOP_MASTER_HOST:50090</value>
+  <value>HADOOP_MASTER_HOST:DFSNAMENODESECONDARYHTTPADDRESS</value>
   <description>
     The secondary namenode http server address and port.
     If the port is 0 then the server will start on a free port.

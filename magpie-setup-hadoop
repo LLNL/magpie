@@ -969,6 +969,7 @@ then
 	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
 	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
+	-e "s/DFSNAMENODESECONDARYHTTPADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_ADDRESS}/g" \
 	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
 fi
 
