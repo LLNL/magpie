@@ -162,7 +162,7 @@ then
 	echo "*"
 	echo "* HDFS can be accessed at the address:"
 	echo "*"
-	echo "*   hdfs://${HADOOP_MASTER_NODE}:54310" 
+	echo "*   hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}" 
 	echo "*" 
     fi
     echo "*" 

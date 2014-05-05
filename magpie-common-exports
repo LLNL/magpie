@@ -150,15 +150,15 @@ Magpie_calculate_hadoop_filesystem_paths () {
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
 	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
+	fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
 	hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
-	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
+	fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
 	hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
-	fsdefault="hdfs://${HADOOP_MASTER_NODE}:54310"
+	fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
 	hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
@@ -358,6 +358,7 @@ export YARN_RESOURCEMANAGER_SCHEDULER_ADDRESS="8030"
 export YARN_RESOURCEMANAGER_WEBAPP_ADDRESS="8088"
 export YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS="8031"
 export YARN_RESOURCEMANAGER_ADMIN_ADDRESS="8033"
+export HADOOP_HDFS_NAMENODE_ADDRESS="54310"
 export HADOOP_JOBHISTORYSERVER_ADDRESS="10020"
 export HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS="19888"
 
