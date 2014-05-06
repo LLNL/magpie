@@ -794,6 +794,10 @@ export SPARK_MODE="sparkpi"
 # be calculated and configured.  If Hadoop is not setup, the following
 # must be specified.
 #
+# If you have local SSDs stored on the nodes of your system, it may be
+# in your interest to set this to a local drive and adjust
+# SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.
+#
 # export SPARK_LOCAL_SCRATCH_DIR="/myscratchlocation"
 
 # Set how SPARK_LOCAL_SCRATCH_DIR should be setup.
