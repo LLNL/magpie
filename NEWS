@@ -1,3 +1,8 @@
+magpie 1.35
+-----------
+Support SPARK_LOCAL_SCRATCH_DIR_TYPE to indicate if
+SPARK_LOCAL_SCRATCH_DIR points to a network drive or local drive.
+
 magpie 1.34
 -----------
 Support Spark in Magpie

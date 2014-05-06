@@ -112,16 +112,22 @@ then
 
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparktmpdir}"
 else
-    if [ ! -d "${SPARK_LOCAL_SCRATCH_DIR}" ]
+    if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "networkfs" ]
     then
-	mkdir -p ${SPARK_LOCAL_SCRATCH_DIR}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${SPARK_LOCAL_SCRATCH_DIR}"
-	    exit 1
-	fi
+        # Setup node directory per node 
+	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}/node-${zookeepernoderank}"
+    elif [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "local" ]
+    then
+	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}"
     fi
 
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${SPARK_LOCAL_SCRATCH_DIR}"
+    mkdir -p ${sparklocalscratchdirpath}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${sparklocalscratchdirpath}"
+	exit 1
+    fi
+
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparklocalscratchdirpath}"
 fi
 
 # Optimal depends on file system

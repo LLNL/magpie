@@ -819,7 +819,7 @@ export ZOOKEEPER_VERSION="3.4.5"
 #
 export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
 
-# Set how Zookeeper data directory should be set.
+# Set how Zookeeper data directory should be setup.
 #
 # "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
 #               (such as Lustre).  Zookeeper local paths will be
@@ -1183,6 +1183,16 @@ export SPARK_MODE="sparkpi"
 # must be specified.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/myscratchlocation"
+
+# Set how SPARK_LOCAL_SCRATCH_DIR should be setup.
+#
+# "networkfs" - SPARK_LOCAL_SCRATCH_DIR points to a network filesystem
+#               (such as Lustre).  Local paths will be
+#               setup.
+#
+# "local" - SPARK_LOCAL_SCRATCH_DIR points to a local drive.
+#
+# export SPARK_LOCAL_SCRATCH_DIR_TYPE="networkfs"
 
 ############################################################################
 # Spark Script Configurations
