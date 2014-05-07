@@ -14,13 +14,13 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 
 # Magpie job type
 #
-# "hadoop" - Run a Hadoop job according to the settings of HADOOP_MODE.
+# "hadoop" - Run a job according to the settings of HADOOP_MODE.
 #
-# "hbase" - Run a Hadoop job according to the settings of HBASE_MODE.
+# "hbase" - Run a job according to the settings of HBASE_MODE.
 #
-# "pig" - Run a Hadoop job according to the settings of PIG_MODE.
+# "pig" - Run a job according to the settings of PIG_MODE.
 #
-# "spark" - Run a Hadoop job according to the settings of SPARK_MODE.
+# "spark" - Run a job according to the settings of SPARK_MODE.
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
