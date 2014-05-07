@@ -803,8 +803,7 @@ then
     fi
 
     if ([ "${HBASE_MODE}" == "performanceeval" ] \
-	|| [ "${HBASE_MODE}" == "script" ] \
-	|| [ "${HBASE_MODE}" == "interactive" ]) \
+	|| [ "${HBASE_MODE}" == "script" ]) \
 	&& [ "${ZOOKEEPER_MODE}" == "setuponly" ]
     then
 	echo "Cannot run Hbase job if Zookeeper mode is setuponly"
@@ -908,8 +907,8 @@ then
     fi
 
     if ([ "${SPARK_MODE}" == "sparkpi" ] \
-	|| [ "${SPARK_MODE}" == "script" ] \
-	|| [ "${SPARK_MODE}" == "interactive" ]) \
+	|| [ "${SPARK_MODE}" == "script" ]) \
+	&& [ "${HADOOP_SETUP}" == "yes" ] \
 	&& [ "${HADOOP_MODE}" == "setuponly" ]
     then
 	echo "Cannot run Spark job if Hadoop mode is setuponly"
@@ -1027,6 +1026,13 @@ then
     if [ "${HBASE_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
     then
 	echo "No remaining nodes for Hbase regionservers after Zookeeper allocation"
+	echo "Please increase node count or adjust node allocations"
+	exit 1
+    fi
+
+    if [ "${SPARK_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Spark slaves after Zookeeper allocation"
 	echo "Please increase node count or adjust node allocations"
 	exit 1
     fi
