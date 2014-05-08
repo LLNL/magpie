@@ -17,11 +17,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-pig >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
-	cat magpie-zookeeper >> ../script-sbatch/magpie.sbatch
-	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-hbase >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-spark >> ../script-sbatch/magpie.sbatch
+	echo "" >> ../script-sbatch/magpie.sbatch
+	cat magpie-zookeeper >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-run-job >> ../script-sbatch/magpie.sbatch
 
@@ -157,11 +157,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-pig >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
-	cat magpie-zookeeper >> ../script-msub-slurm/magpie.msub-slurm
-	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-hbase >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-spark >> ../script-msub-slurm/magpie.msub-slurm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-zookeeper >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-run-job >> ../script-msub-slurm/magpie.msub-slurm
 
