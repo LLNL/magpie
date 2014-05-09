@@ -117,9 +117,9 @@ then
     export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_slaves" ]
+    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
     then 
-	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
     fi
 fi
 

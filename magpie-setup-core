@@ -198,6 +198,9 @@ then
     fi
 
     tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
+
+    # The Zookeeper master is not a real Zookeeper node
+    cp ${MAGPIE_LOCAL_DIR}/job_masters ${ZOOKEEPER_CONF_DIR}/zookeeper_master
 else
     cp ${MAGPIE_LOCAL_DIR}/tmp_masters ${MAGPIE_LOCAL_DIR}/job_masters
     cp ${MAGPIE_LOCAL_DIR}/tmp_slaves ${MAGPIE_LOCAL_DIR}/job_slaves

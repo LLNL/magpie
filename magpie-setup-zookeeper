@@ -35,56 +35,60 @@ then
     exit 0
 fi
 
-# zookeepernoderank set if succeed
+# zookeepernoderank set if succeed and it's a Zookeeper slave
+# Zookeeper master is only for setup/teardow management, not for actual Zookeeper
 if ! Magpie_am_I_a_zookeeper_node
 then
     exit 0
 fi
 
-if [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "networkfs" ]
-then
-    # Setup node directory per node 
-    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
-    zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
-    
-    mkdir -p ${zookeeperdatadirpath}
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${zookeeperdatadirpath}"
-	exit 1
+if [ "${zookeepernoderank}X" != "X" ]
+then 
+    if [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "networkfs" ]
+    then
+        # Setup node directory per node 
+	zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+	zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
+	
+	mkdir -p ${zookeeperdatadirpath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${zookeeperdatadirpath}"
+	    exit 1
+	fi
+    elif [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "local" ]
+    then
+	zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}"
+	zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
+	
+	mkdir -p ${zookeeperdatadirpath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${zookeeperdatadirpath}"
+	    exit 1
+	fi
     fi
-elif [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "local" ]
-then
-    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}"
-    zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
     
-    mkdir -p ${zookeeperdatadirpath}
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${zookeeperdatadirpath}"
-	exit 1
+    echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid
+    
+    if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
+    then
+	zookeeperticktime=${ZOOKEEPER_TICKTIME}
+    else
+	zookeeperticktime=2000
     fi
-fi
     
-echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid
+    if [ "${ZOOKEEPER_INITLIMIT}X" != "X" ]
+    then
+	zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
+    else
+	zookeeperinitlimit=10
+    fi
     
-if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
-then
-    zookeeperticktime=${ZOOKEEPER_TICKTIME}
-else
-    zookeeperticktime=2000
-fi
-    
-if [ "${ZOOKEEPER_INITLIMIT}X" != "X" ]
-then
-    zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
-else
-    zookeeperinitlimit=10
-fi
-    
-if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
-then
-    zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
-else
-    zookeepersynclimit=5
+    if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
+    then
+	zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
+    else
+	zookeepersynclimit=5
+    fi
 fi
 
 #

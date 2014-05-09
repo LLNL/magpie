@@ -1,3 +1,7 @@
+magpie 1.36
+-----------
+Re-arch Zookeeper code to be start/stop-able on the master node.
+
 magpie 1.35
 -----------
 Support SPARK_LOCAL_SCRATCH_DIR_TYPE to indicate if
