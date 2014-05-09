@@ -1,0 +1,23 @@
+Index: hadoop-mapreduce-project/hadoop-mapreduce-examples/src/main/java/org/apache/hadoop/examples/terasort/TeraSort.java
+===================================================================
+--- hadoop-mapreduce-project/hadoop-mapreduce-examples/src/main/java/org/apache/hadoop/examples/terasort/TeraSort.java	(revision 1525703)
++++ hadoop-mapreduce-project/hadoop-mapreduce-examples/src/main/java/org/apache/hadoop/examples/terasort/TeraSort.java	(working copy)
+@@ -38,6 +38,7 @@
+ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+ import org.apache.hadoop.util.Tool;
+ import org.apache.hadoop.util.ToolRunner;
++import org.apache.hadoop.filecache.DistributedCache;
+ 
+ /**
+  * Generates the sampled split points, launches the job, and waits for it to
+@@ -209,8 +210,8 @@
+       try {
+         FileSystem fs = FileSystem.getLocal(conf);
+         this.conf = conf;
+-        Path partFile = new Path(TeraInputFormat.PARTITION_FILENAME);
+-        splitPoints = readPartitions(fs, partFile, conf);
++        Path[] localPaths = DistributedCache.getLocalCacheFiles(conf);
++        splitPoints = readPartitions(fs, localPaths[0], conf);
+         trie = buildTrie(splitPoints, 0, splitPoints.length, new Text(), 2);
+       } catch (IOException ie) {
+         throw new IllegalArgumentException("can't read paritions file", ie);

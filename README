@@ -654,6 +654,8 @@ submitted a patch in this Jira.
 
 https://issues.apache.org/jira/browse/MAPREDUCE-5528
 
+The patch is included in the patches directory.
+
 Patch - Alternate Config Dir for Spark
 --------------------------------------
 
