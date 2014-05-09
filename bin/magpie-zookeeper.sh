@@ -73,6 +73,12 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_SCRIPTS_HOME}X" == "X" ]
+then
+    echo "MAGPIE_SCRIPTS_HOME not specified"
+    exit 1
+fi
+
 if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
 then
     echo "Cannot find magpie-launch-zookeeper.sh"
