@@ -44,17 +44,10 @@ then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
 	echo "Starting Zookeeper"
-	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
-	
-	nodecount=0
-	for zookeepernode in ${zookeepernodes}
-	do
-	    ${magpieremotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} start
-	    nodecount=$((nodecount+1))
-	done
+	${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh start
 
         # My rough estimate for setup time is 30 seconds per 128 nodes
-	sleepwait=`expr ${nodecount} \/ 128 \* 30`
+	sleepwait=`expr ${ZOOKEEPER_REPLICATION_COUNT} \/ 128 \* 30`
 	if [ ${sleepwait} -lt 30 ]
 	then
             sleepwait=30
@@ -740,12 +733,7 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
-	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
-	
-	for zookeepernode in ${zookeepernodes}
-	do
-	    ${magpieremotecmd} ${MAGPIE_REMOTE_CMD_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${ZOOKEEPER_CONF_DIR} ${ZOOKEEPER_HOME} stop
-	done
+	${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop
     fi
 fi
 
