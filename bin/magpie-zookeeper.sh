@@ -89,9 +89,7 @@ zookeepernodes=`cat ${zookeeperconfdir}/zookeeper_slaves`
 
 RSH_CMD=${ZOOKEEPER_SSH_CMD:-ssh}
 
-nodecount=0
 for zookeepernode in ${zookeepernodes}
 do
     ${RSH_CMD} ${ZOOKEEPER_SSH_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${zookeeperconfdir} ${ZOOKEEPER_HOME} $1
-    nodecount=$((nodecount+1))
 done
