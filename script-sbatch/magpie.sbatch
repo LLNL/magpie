@@ -1156,6 +1156,12 @@ export ZOOKEEPER_VERSION="3.4.5"
 #
 export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
 
+# Directory where Zookeeper configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+
 # Set how Zookeeper data directory should be setup.
 #
 # "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
@@ -1166,17 +1172,15 @@ export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
 #
 export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
 
-# Directory where Zookeeper configuration templates are stored
-#
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
-#
-# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
-
 # Path base for local data to each cluster node
 #
 # If ZOOKEEPER_FILESYSTEM_MODE is set to "networkfs", this is the base
 # point for local data and per-node directories will be created
 # (e.g. ${ZOOKEEPER_DATA_DIR}/node-1/)
+#
+# If you have local SSDs stored on the nodes of your system, it may be
+# in your interest to set this to a local drive and adjust
+# ZOOKEEPER_FILESYSTEM_MODE above to 'local'.
 #
 export ZOOKEEPER_DATA_DIR="/lustre/username/zookeeper"  
 
