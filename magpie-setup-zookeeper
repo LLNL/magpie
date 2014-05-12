@@ -113,6 +113,7 @@ sed -e "s/ZOOKEEPERDATADIR/${zookeeperdatadirpathsubst}/g" \
     -e "s/ZOOKEEPERTICKTIME/${zookeeperticktime}/g" \
     -e "s/ZOOKEEPERINITLIMIT/${zookeeperinitlimit}/g" \
     -e "s/ZOOKEEPERSYNCLIMIT/${zookeepersynclimit}/g" \
+    -e "s/ZOOKEEPERCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
     $zookeepercfg > ${ZOOKEEPER_CONF_DIR}/zoo.cfg
     
 zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
@@ -120,7 +121,7 @@ zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 servercount=1
 for zookeepernode in ${zookeepernodes}
 do
-    echo "server.${servercount}=${zookeepernode}:2888:3888" >> ${ZOOKEEPER_CONF_DIR}/zoo.cfg
+    echo "server.${servercount}=${zookeepernode}:${ZOOKEEPER_PEER_PORT}:${ZOOKEEPER_LEADER_PORT}" >> ${ZOOKEEPER_CONF_DIR}/zoo.cfg
     servercount=$((servercount+1))
 done
 

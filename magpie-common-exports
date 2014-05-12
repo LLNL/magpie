@@ -121,6 +121,10 @@ then
     then 
 	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
     fi
+
+    export ZOOKEEPER_CLIENT_PORT="2181"
+    export ZOOKEEPER_PEER_PORT="2888"
+    export ZOOKEEPER_LEADER_PORT="3888"
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]

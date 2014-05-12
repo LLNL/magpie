@@ -102,6 +102,15 @@
     Same property is used by the Master for count of master handlers.</description>
   </property>
 
+  <!--ZooKeeper configuration-->
+
+  <property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>HBASEZOOKEEPERPROPERTYCLIENTPORT</value>
+    <description>Property from ZooKeeper's config zoo.cfg.
+    The port at which the clients will connect.</description>
+  </property>
+
   <!--Miscellaneous configuration-->
 
   <!-- Effectively disable major compaction by setting to 4 weeks,
