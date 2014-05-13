@@ -79,13 +79,13 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${ZOOKEEPER_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
-	then
-	    echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
-	else
-	    echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
-	fi
-	echo "*   cd $MAGPIE_SCRIPTS_HOME"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
+    else
+	echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
+    fi
+    echo "*   cd $MAGPIE_SCRIPTS_HOME"
     echo "*   bin/magpie-zookeeper.sh stop"
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
