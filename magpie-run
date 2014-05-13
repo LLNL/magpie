@@ -737,6 +737,7 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
+	echo "Stopping Zookeeper"
 	${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop
     fi
 fi
