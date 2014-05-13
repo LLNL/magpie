@@ -66,4 +66,11 @@ fi
 
 source $1/zookeeper-env.sh
 
+myhostname=`hostname`
+if [ "$3" == "start" ]
+then
+    echo "Starting Zookeeper on $myhostname"
+else
+    echo "Stopping Zookeeper on $myhostname"
+fi
 $2/bin/zkServer.sh $3
