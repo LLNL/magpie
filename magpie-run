@@ -100,6 +100,10 @@ then
     fi
     echo "*" 
     echo "*******************************************************"
+    # Nothing to check for Zookeeper, setup always completes
+    zookeepersetupcomplete=1
+else
+    zookeepersetupcomplete=1
 fi
 
 #
@@ -308,17 +312,17 @@ then
 	if [ $? -ne 0 ] 
 	then
 	    echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-	    hadoopsetuppass=0
+	    hadoopsetupcomplete=0
 	else
-	    hadoopsetuppass=1
+	    hadoopsetupcomplete=1
 	fi
     else
-	hadoopsetuppass=1
+	hadoopsetupcomplete=1
     fi
 
     # Setup job history server after namenode comes up, it may need to
     # write/create in HDFS
-    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoopsetuppass}" == "1" ]
+    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoopsetupcomplete}" == "1" ]
     then
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
@@ -331,7 +335,7 @@ then
 	fi
     fi
 else
-    hadoopsetuppass=1
+    hadoopsetupcomplete=1
 fi
 
 #
@@ -342,7 +346,7 @@ if [ "${HBASE_SETUP}" == "yes" ]
 then
     cd ${HBASE_HOME}
 
-    if [ ${HBASE_MODE} != "setuponly" ] && [ "${hadoopsetuppass}" == "1" ]
+    if [ ${HBASE_MODE} != "setuponly" ] && [ "${hadoopsetupcomplete}" == "1" ]
     then
 	echo "Starting hbase"
 	${hbasesetupscriptprefix}/start-hbase.sh
@@ -409,6 +413,11 @@ then
     fi
     echo "*" 
     echo "*******************************************************"
+
+    # Nothing to check for Hbase, setup always completes
+    hbasesetupcomplete=1
+else
+    hbasesetupcomplete=1
 fi
 
 #
@@ -490,6 +499,21 @@ then
     fi
     echo "*" 
     echo "*******************************************************"
+    # Nothing to check for Spark, setup always completes
+    sparksetupcomplete=1
+else
+    sparksetupcomplete=1
+fi
+
+# Make sure all setup passed
+if [ "${zookeepersetupcomplete}" == "1" ] \
+    && [ "${hadoopsetupcomplete}" == "1" ] \
+    && [ "${hbasesetupcomplete}" == "1" ] \
+    && [ "${sparksetupcomplete}" == "1" ]
+then
+    setupcomplete=1
+else
+    setupcomplete=0
 fi
 
 if [ "${MAGPIE_JOB_TYPE}" == "script" ]
@@ -511,7 +535,7 @@ then
     sleep ${magpiesleepseconds}
 elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
 then
-    if [ "${hadoopsetuppass}" == "1" ]
+    if [ "${setupcomplete}" == "1" ]
     then
 	if [ "${PIG_MODE}" == "testpig" ]
 	then
@@ -542,7 +566,7 @@ then
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
 then
-    if [ "${hadoopsetuppass}" == "1" ]
+    if [ "${setupcomplete}" == "1" ]
     then
 	cd ${HADOOP_HOME}
 
@@ -577,7 +601,7 @@ then
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
 then
-    if [ "${hadoopsetuppass}" == "1" ]
+    if [ "${setupcomplete}" == "1" ]
     then
 	cd ${HBASE_HOME}
     
@@ -613,7 +637,7 @@ then
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
 then
-    if [ "${hadoopsetuppass}" == "1" ]
+    if [ "${setupcomplete}" == "1" ]
     then
 	cd ${SPARK_HOME}
     
@@ -648,7 +672,7 @@ then
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
 then
-    if [ "${hadoopsetuppass}" == "1" ]
+    if [ "${setupcomplete}" == "1" ]
     then
 	if [ "${ZOOKEEPER_MODE}" == "testzookeeper" ]
 	then
