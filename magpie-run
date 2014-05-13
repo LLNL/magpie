@@ -39,6 +39,8 @@ fi
 # Setup ZooKeeper
 #
 
+# Zookeeper setup comes first, as other things like Hbase require it
+
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
@@ -728,6 +730,8 @@ then
 	fi
     fi
 fi
+
+# Zookeeper teardown comes last, as other things like Hbase require it
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
