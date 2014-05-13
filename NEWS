@@ -1,3 +1,8 @@
+magpie 1.37
+-----------
+Support Zookeeper run mode and 'testzookeeper' sanity check job.
+Various documentation updates.
+
 magpie 1.36
 -----------
 Re-arch Zookeeper code to be start/stop-able on the master node.
