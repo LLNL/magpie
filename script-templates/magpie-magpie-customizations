@@ -22,6 +22,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
+# "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
+#
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or

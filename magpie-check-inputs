@@ -122,10 +122,11 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, zookeeper, script, or interactive"
     exit 1
 fi
 
@@ -263,9 +264,10 @@ fi
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
-    && [ "${SPARK_SETUP}" != "yes" ]
+    && [ "${SPARK_SETUP}" != "yes" ] \
+    && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP nor SPARK_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP nor SPARK_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -296,6 +298,13 @@ if [ "${MAGPIE_JOB_TYPE}" == "spark" ] \
     && [ "${SPARK_SETUP}" != "yes" ]
 then
     echo "Cannot run spark job type if SPARK_SETUP is not enabled"
+    exit 1
+fi
+
+if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] \
+    && [ "${ZOOKEEPER_SETUP}" != "yes" ]
+then
+    echo "Cannot run zookeeper job type if ZOOKEEPER_SETUP is not enabled"
     exit 1
 fi
 
@@ -649,8 +658,6 @@ then
 	    exit 1
 	fi
     fi
-
-
 fi
 
 #
@@ -940,11 +947,21 @@ then
 	exit 1
     fi
 
-    if [ "${ZOOKEEPER_MODE}" != "launch" ] \
+    if [ "${ZOOKEEPER_MODE}" != "testzookeeper" ] \
+       && [ "${ZOOKEEPER_MODE}" != "launch" ] \
        && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
-       echo "ZOOKEEPER_MODE must be set to launch or setuponly"
+       echo "ZOOKEEPER_MODE must be set to testzookeeper or launch or setuponly"
        exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] && [ "${ZOOKEEPER_MODE}" == "testzookeeper" ]
+    then
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper cannot be found, it is required to run testzookeeper test"
+	    exit 1
+	fi
     fi
 
     if [ "${ZOOKEEPER_REPLICATION_COUNT}X" == "X" ]

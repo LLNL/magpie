@@ -646,6 +646,31 @@ then
 	    sleep ${sparksleepseconds}
 	fi
     fi
+elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
+then
+    if [ "${hadoopsetuppass}" == "1" ]
+    then
+	if [ "${ZOOKEEPER_MODE}" == "testzookeeper" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Testzookeeper"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${ZOOKEEPER_MODE}" == "launch" ] \
+	    || [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
+	    echo "*******************************************************"
+	    
+	    zookeepersleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	    zookeepersleepamount=`expr ${zookeepersleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	    zookeepersleepseconds=`expr ${zookeepersleepamount}  \* 60`
+	    sleep ${zookeepersleepseconds}
+	fi
+    fi
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]

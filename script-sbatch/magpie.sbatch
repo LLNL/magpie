@@ -86,6 +86,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
+# "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
+#
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or
@@ -1139,7 +1141,11 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 
 # Set how Zookeeper should run
 #
-# "launch" - (default) Magpie will launch Zookeeper daemons
+# "zookeepertest" - Run a quick sanity test to see that zookeeper is
+#             setup correctly.  Testzookeeper will do a simple 'ruok'
+#             to all Zookeeper daemons.
+#
+# "launch" - Magpie will launch Zookeeper daemons
 #
 # "setuponly" - Only setup conf files. useful if user wants to setup
 #               daemons themselves, etc.
