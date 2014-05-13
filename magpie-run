@@ -35,6 +35,18 @@ then
     exit 0
 fi
 
+# Output some general info
+echo "*******************************************************"
+echo "* Magpie General Job Info"
+echo "*"
+echo "* Job Nodelist: ${MAGPIE_NODELIST}"
+echo "* Job Nodecount: ${MAGPIE_NODE_COUNT}"
+echo "* Job Timelimit in Minutes: ${MAGPIE_TIMELIMIT_MINUTES}"
+echo "* Job Name: ${MAGPIE_JOB_NAME}"
+echo "* Job ID: ${MAGPIE_JOB_ID}"
+echo "*"
+echo "*******************************************************"
+
 #
 # Setup ZooKeeper
 #
