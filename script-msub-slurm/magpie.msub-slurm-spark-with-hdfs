@@ -99,6 +99,17 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
+# "testall" - Run a job that runs all basic sanity tests for all
+#             software that is configured to be setup.  This is a good
+#             way to sanity check that everything has been setup
+#             correctly and the way you like.
+#
+#             For Hadoop, testall will run terasort
+#             For Hbase, testall will run performanceeval
+#             For Pig, testall will run testpig
+#             For Spark, testall will run sparkpi
+#             For Zookeeper, testall will run testzookeeper
+#
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or

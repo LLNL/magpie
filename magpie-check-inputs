@@ -123,10 +123,11 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, zookeeper, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -305,6 +306,17 @@ if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
     echo "Cannot run zookeeper job type if ZOOKEEPER_SETUP is not enabled"
+    exit 1
+fi
+
+if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
+    && [ "${HADOOP_SETUP}" != "yes" ] \
+    && [ "${PIG_SETUP}" != "yes" ] \
+    && [ "${HBASE_SETUP}" != "yes" ] \
+    && [ "${SPARK_SETUP}" != "yes" ] \
+    && [ "${ZOOKEEPER_SETUP}" != "yes" ]
+then
+    echo "Cannot run testall job type, nothing is enabled to be setup"
     exit 1
 fi
 

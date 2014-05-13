@@ -707,6 +707,17 @@ then
 	    sleep ${zookeepersleepseconds}
 	fi
     fi
+elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
+then
+    if [ "${setupcomplete}" == "1" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Magpie TestAll"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-testall &
+	scriptpid=$!
+	Magpie_wait_script ${scriptpid}
+    fi
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]

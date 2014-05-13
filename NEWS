@@ -1,6 +1,7 @@
 magpie 1.37
 -----------
 Support Zookeeper run mode and 'testzookeeper' sanity check job.
+Support 'testall' job mode for basic testing/sanity checks.
 Various documentation updates.
 
 magpie 1.36
