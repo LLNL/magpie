@@ -959,19 +959,19 @@ then
 	exit 1
     fi
 
-    if [ "${ZOOKEEPER_MODE}" != "testzookeeper" ] \
+    if [ "${ZOOKEEPER_MODE}" != "zookeeperruok" ] \
        && [ "${ZOOKEEPER_MODE}" != "launch" ] \
        && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
-       echo "ZOOKEEPER_MODE must be set to testzookeeper or launch or setuponly"
+       echo "ZOOKEEPER_MODE must be set to zookeeperruok or launch or setuponly"
        exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] && [ "${ZOOKEEPER_MODE}" == "testzookeeper" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] && [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
     then
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper cannot be found, it is required to run testzookeeper test"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok cannot be found, it is required to run zookeeperruok test"
 	    exit 1
 	fi
     fi

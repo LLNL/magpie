@@ -70,9 +70,9 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
    && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
 then
     echo "*******************************************************"
-    echo "* Running Zookeeper TestZookeeper"
+    echo "* Running Zookeeper Zookeeperruok"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok)
 fi
 
 exit 0

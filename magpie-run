@@ -686,12 +686,12 @@ elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
 then
     if [ "${setupcomplete}" == "1" ]
     then
-	if [ "${ZOOKEEPER_MODE}" == "testzookeeper" ]
+	if [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
 	then
 	    echo "*******************************************************"
-	    echo "* Running Testzookeeper"
+	    echo "* Running Zookeeper ruok"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-testzookeeper &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${ZOOKEEPER_MODE}" == "launch" ] \

@@ -30,8 +30,8 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 
 # Set how Zookeeper should run
 #
-# "zookeepertest" - Run a quick sanity test to see that zookeeper is
-#             setup correctly.  Testzookeeper will do a simple 'ruok'
+# "zookeeperruok" - Run a quick sanity test to see that zookeeper is
+#             setup correctly.  zookeeperruok will do a simple 'ruok'
 #             to all Zookeeper daemons.
 #
 # "launch" - Magpie will launch Zookeeper daemons

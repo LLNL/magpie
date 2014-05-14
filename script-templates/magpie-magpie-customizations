@@ -33,7 +33,7 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #             For Hbase, testall will run performanceeval
 #             For Pig, testall will run testpig
 #             For Spark, testall will run sparkpi
-#             For Zookeeper, testall will run testzookeeper
+#             For Zookeeper, testall will run zookeeperruok
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
