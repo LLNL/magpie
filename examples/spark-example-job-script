@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# This script executes a performance test w/ Spark 0.9.1.  It is an
-# example of how you can setup a script to run an Spark job.  It is
-# set via the SPARK_SCRIPT_PATH environment variable and setting the
-# SPARK_MODE to 'script'.  See the job submission file for details.
+# This script executes a basic Spark job.  It is an example of how you
+# can setup a script to run an Spark job.  It is set via the
+# SPARK_SCRIPT_PATH environment variable and setting the SPARK_MODE to
+# 'script'.  See the job submission file for details.
 #
 # Remember to set SPARK_CLASSPATH or SPARK_LIBRARY_PATH appropriately
 # for extra libraries you require or SPARK_JAVA_OPTS to set Spark
