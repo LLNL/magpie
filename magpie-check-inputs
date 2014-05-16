@@ -122,12 +122,13 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "storm" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, storm, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -135,14 +136,14 @@ if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
     if [ "${MAGPIE_SCRIPT_PATH}X" == "X" ]
     then
-       echo "Script MAGPIE_SCRIPT_PATH must be specified"
-       exit 1
+	echo "Script MAGPIE_SCRIPT_PATH must be specified"
+	exit 1
     fi
 
     if [ ! -x ${MAGPIE_SCRIPT_PATH} ]
     then
-       echo "Script MAGPIE_SCRIPT_PATH \"$MAGPIE_SCRIPT_PATH\" does not have execute permissions"
-       exit 1
+	echo "Script MAGPIE_SCRIPT_PATH \"$MAGPIE_SCRIPT_PATH\" does not have execute permissions"
+	exit 1
     fi
 fi
 
@@ -258,6 +259,13 @@ then
     exit 1
 fi
 
+if [ "${STORM_SETUP}X" != "X" ] \
+    && ( [ "${STORM_SETUP}" != "yes" ] && [ "${STORM_SETUP}" != "no" ] )
+then
+    echo "STORM_SETUP must be set to yes or no"
+    exit 1
+fi
+
 # Did user turn on SOMETHING to run
 #
 # Pig is not "something", b/c it needs hadoop 
@@ -266,9 +274,10 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
+    && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP nor SPARK_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP nor SPARK_SETUP nor STORM_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -287,7 +296,7 @@ then
     echo "Cannot run pig job type if PIG_SETUP is not enabled"
     exit 1
 fi
-   
+
 if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] \
     && [ "${HBASE_SETUP}" != "yes" ]
 then
@@ -302,11 +311,17 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_JOB_TYPE}" == "storm" ] \
+    && [ "${STORM_SETUP}" != "yes" ]
+then
+    echo "Cannot run storm job type if STORM_SETUP is not enabled"
+    exit 1
+fi
+
 if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
     echo "Cannot run zookeeper job type if ZOOKEEPER_SETUP is not enabled"
-    exit 1
 fi
 
 if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
@@ -314,6 +329,7 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${PIG_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
+    && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
     echo "Cannot run testall job type, nothing is enabled to be setup"
@@ -619,20 +635,20 @@ then
 
     if [ "${PIG_HOME}X" == "X" ]
     then
-       echo "PIG_HOME must be set"
-       exit 1
+	echo "PIG_HOME must be set"
+	exit 1
     fi
     
     if [ ! -d ${PIG_HOME} ]
     then
-       echo "PIG_HOME does not point to a directory"
-       exit 1
+	echo "PIG_HOME does not point to a directory"
+	exit 1
     fi
 
     if [ "${PIG_LOCAL_DIR}X" == "X" ]
     then
-       echo "PIG_LOCAL_DIR must be set"
-       exit 1
+	echo "PIG_LOCAL_DIR must be set"
+	exit 1
     fi
 
     if [ "${PIG_MODE}" != "testpig" ] \
@@ -690,20 +706,20 @@ then
 
     if [ "${HBASE_HOME}X" == "X" ]
     then
-       echo "HBASE_HOME must be set"
-       exit 1
+	echo "HBASE_HOME must be set"
+	exit 1
     fi
     
     if [ ! -d ${HBASE_HOME} ]
     then
-       echo "HBASE_HOME does not point to a directory"
-       exit 1
+	echo "HBASE_HOME does not point to a directory"
+	exit 1
     fi
 
     if [ "${HBASE_LOCAL_DIR}X" == "X" ]
     then
-       echo "HBASE_LOCAL_DIR must be set"
-       exit 1
+	echo "HBASE_LOCAL_DIR must be set"
+	exit 1
     fi
 
     if [ "${HADOOP_SETUP}" != "yes" ]
@@ -854,20 +870,20 @@ then
 
     if [ "${SPARK_HOME}X" == "X" ]
     then
-       echo "SPARK_HOME must be set"
-       exit 1
+	echo "SPARK_HOME must be set"
+	exit 1
     fi
     
     if [ ! -d ${SPARK_HOME} ]
     then
-       echo "SPARK_HOME does not point to a directory"
-       exit 1
+	echo "SPARK_HOME does not point to a directory"
+	exit 1
     fi
 
     if [ "${SPARK_LOCAL_DIR}X" == "X" ]
     then
-       echo "SPARK_LOCAL_DIR must be set"
-       exit 1
+	echo "SPARK_LOCAL_DIR must be set"
+	exit 1
     fi
 
     if [ "${HADOOP_SETUP}" != "yes" ]
@@ -942,6 +958,92 @@ then
 fi
 
 #
+# Check Storm Inputs 
+#
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+# Subtract 1 for Storm Master
+    nodecount=$((nodecount-${nodecountmaster}))
+    nodecountmaster=0
+
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Storm"
+	exit 1
+    fi
+
+    if [ "${STORM_HOME}X" == "X" ]
+    then
+	echo "STORM_HOME must be set"
+	exit 1
+    fi
+    
+    if [ ! -d ${STORM_HOME} ]
+    then
+	echo "STORM_HOME does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${STORM_LOCAL_DIR}X" == "X" ]
+    then
+	echo "STORM_LOCAL_DIR must be set"
+	exit 1
+    fi
+
+    if [ "${STORM_MODE}" != "stormwordcount" ] \
+	&& [ "${STORM_MODE}" != "script" ] \
+	&& [ "${STORM_MODE}" != "interactive" ] \
+	&& [ "${STORM_MODE}" != "setuponly" ]
+    then
+	echo "STORM_MODE must be set to stormwordcount, script, interactive, setuponly"
+	exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "stormwordcount" ]
+    then
+	if [ "${STORM_VERSION}X" == "X" ]
+	then
+	    echo "STORM_VERSION must be set for stormwordcount mode"
+	    exit 1
+	fi
+
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount cannot be found, it is required to run stormwordcount test"
+	    exit 1
+	fi
+
+	if [ "${STORM_STARTER_EXAMPLE_JAR_PATH}X" != "X" ] && [ ! -f "${STORM_STARTER_EXAMPLE_JAR_PATH}" ]
+	then
+	    echo "STORM_STARTER_EXAMPLE_JAR_PATH does not point to a file"
+	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "script" ]
+    then
+	if [ "${STORM_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script STORM_SCRIPT_PATH must be specified"
+	    exit 1
+	fi
+	
+	if [ ! -x ${STORM_SCRIPT_PATH} ]
+	then
+	    echo "Script STORM_SCRIPT_PATH \"$STORM_SCRIPT_PATH\" does not have execute permissions"
+	    exit 1
+	fi
+    fi
+
+    if [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Storm workers, increase node count or adjust node allocations"
+	exit 1
+    fi
+fi
+
+#
 # Check Zookeeper Inputs 
 #
 
@@ -978,26 +1080,26 @@ then
 
     if [ "${ZOOKEEPER_REPLICATION_COUNT}X" == "X" ]
     then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be set"
-       exit 1
+	echo "ZOOKEEPER_REPLICATION_COUNT must be set"
+	exit 1
     fi
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -gt "0" ]
     then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be > 0"
-       exit 1
+	echo "ZOOKEEPER_REPLICATION_COUNT must be > 0"
+	exit 1
     fi
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "255" ]
     then
-       echo "ZOOKEEPER_REPLICATION_COUNT must be less than <= 255"
-       exit 1
+	echo "ZOOKEEPER_REPLICATION_COUNT must be less than <= 255"
+	exit 1
     fi
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "${nodecount}" ]
     then
-       echo "Not enough nodes for ZOOKEEPER_REPLICATION_COUNT"
-       exit 1
+	echo "Not enough nodes for ZOOKEEPER_REPLICATION_COUNT"
+	exit 1
     fi
 
     if [ "${ZOOKEEPER_SHARE_NODES}X" != "X" ]
@@ -1016,33 +1118,33 @@ then
 
     if [ "${ZOOKEEPER_HOME}X" == "X" ]
     then
-       echo "ZOOKEEPER_HOME must be set"
-       exit 1
+	echo "ZOOKEEPER_HOME must be set"
+	exit 1
     fi
     
     if [ ! -d ${ZOOKEEPER_HOME} ]
     then
-       echo "ZOOKEEPER_HOME does not point to a directory"
-       exit 1
+	echo "ZOOKEEPER_HOME does not point to a directory"
+	exit 1
     fi
 
     if [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "networkfs" ] \
-       && [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "local" ]
+	&& [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "local" ]
     then
-       echo "ZOOKEEPER_FILESYSTEM_MODE must be set to networkfs or local"
-       exit 1
+	echo "ZOOKEEPER_FILESYSTEM_MODE must be set to networkfs or local"
+	exit 1
     fi
 
     if [ "${ZOOKEEPER_DATA_DIR}X" == "X" ]
     then
-       echo "ZOOKEEPER_DATA_DIR must be set"
-       exit 1
+	echo "ZOOKEEPER_DATA_DIR must be set"
+	exit 1
     fi
 
     if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
     then
-       echo "ZOOKEEPER_LOCAL_DIR must be set"
-       exit 1
+	echo "ZOOKEEPER_LOCAL_DIR must be set"
+	exit 1
     fi
 
     if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
@@ -1062,6 +1164,13 @@ then
     if [ "${SPARK_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
     then
 	echo "No remaining nodes for Spark slaves after Zookeeper allocation"
+	echo "Please increase node count or adjust node allocations"
+	exit 1
+    fi
+
+    if [ "${STORM_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Storm workers after Zookeeper allocation"
 	echo "Please increase node count or adjust node allocations"
 	exit 1
     fi

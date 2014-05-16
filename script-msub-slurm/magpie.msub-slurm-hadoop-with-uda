@@ -97,6 +97,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
+# "storm" - Run a job according to the settings of STORM_MODE.
+#
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
 # "testall" - Run a job that runs all basic sanity tests for all
@@ -108,23 +110,24 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #             For Hbase, testall will run performanceeval
 #             For Pig, testall will run testpig
 #             For Spark, testall will run sparkpi
-#             For Zookeeper, testall will run testzookeeper
+#             For Storm, testall will run stormwordcount
+#             For Zookeeper, testall will run zookeeperruok
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or
-#            SPARK_MODE.
+#            SPARK_MODE or STORM_MODE.
 #
 #            It is primarily used if you want to launch without
-#            Hadoop/Hbase/Spark (such as Zookeeper only) and are
+#            Hadoop/Hbase/Spark/Storm (such as Zookeeper only) and are
 #            experimenting with things..
 #
 # "interactive" - manually interact with job run.  This functionally
 #                 is very similar to setting "interactive" in
-#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, or PIG_MODE.
-#                 It is primarily used if you want to launch without
-#                 Hadoop/Hbase/Spark (such as Zookeeper only) and are
-#                 experimenting with things..
+#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, STORM_MODE, or
+#                 PIG_MODE.  It is primarily used if you want to
+#                 launch without Hadoop/Hbase/Spark/Storm (such as
+#                 Zookeeper only) and are experimenting with things..
 #
 export MAGPIE_JOB_TYPE="hadoop"
 
@@ -726,6 +729,7 @@ srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-spark
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-storm
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then

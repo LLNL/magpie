@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This script executes a basic Storm job.  It is an example of how you
+# can setup a script to run an Storm job.  It is set via the
+# STORM_SCRIPT_PATH environment variable and setting the STORM_MODE to
+# 'script'.  See the job submission file for details.
+#
+# Please adjust to whatever you would want to do with Storm
+
+cd ${STORM_HOME}
+
+command="bin/storm jar storm-starter/target/storm-starter-0.0.1-SNAPSHOT-jar-with-dependencies.jar storm.starter.WordCountTopology WordCount -c storm.starter.WordCountTopology WordCount -c nimbus.host=${STORM_NIMBUS_HOST}"
+echo "Running $command" >&2
+$command

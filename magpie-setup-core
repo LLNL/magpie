@@ -160,6 +160,31 @@ then
 fi
 
 #
+# Setup Storm directories
+#
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    mkdir -p $STORM_LOCAL_JOB_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${STORM_LOCAL_JOB_DIR}"
+	exit 1
+    fi
+    
+    mkdir -p $STORM_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${STORM_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $STORM_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${STORM_LOG_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup/Calculate Core Master/Slave files
 #
 
@@ -232,6 +257,12 @@ if [ "${SPARK_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_DIR}/job_masters ${SPARK_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_DIR}/job_slaves ${SPARK_CONF_DIR}/slaves
+fi
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    cp ${MAGPIE_LOCAL_DIR}/job_masters ${STORM_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/job_slaves ${STORM_CONF_DIR}/workers
 fi
 
 exit 0

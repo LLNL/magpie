@@ -51,7 +51,7 @@ echo "*******************************************************"
 # Setup ZooKeeper
 #
 
-# Zookeeper setup comes first, as other things like Hbase require it
+# Zookeeper setup comes first, as other things like Hbase & Storm require it
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
@@ -517,11 +517,102 @@ else
     sparksetupcomplete=1
 fi
 
+#
+# Setup Storm
+#
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    if [ ${STORM_MODE} != "setuponly" ]
+    then
+	echo "Starting storm"
+	${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh start
+	
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${STORM_WORKERS_COUNT} \/ 128 \* 30`
+	if [ ${sleepwait} -lt 30 ]
+	then
+            sleepwait=30
+	fi
+	echo "Waiting ${sleepwait} seconds to allow Storm daemons to setup"
+	sleep ${sleepwait}
+    fi
+
+    echo "*******************************************************"
+    echo "*"
+    echo "* Storm Information"
+    echo "*"
+    echo "* You can view your Storm status by launching a web browser and pointing to ..."
+    echo "*"
+    echo "* Storm UI: http://${STORM_MASTER_NODE}:${STORM_UI_PORT}"
+    echo "*" 
+    echo "* To access Storm directly, you'll want to:"
+    echo "*   ${magpieremotecmd} ${STORM_MASTER_NODE}"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+    else
+	echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+    fi
+    echo "*   cd $STORM_HOME"
+    echo "*"
+    echo "* Then you can do as you please.  For example to run a job:"
+    echo "*" 
+    echo "*   ${stormcmdprefix}/storm jar ..."
+    echo "*" 
+
+    if [ "${STORM_MODE}" == "setuponly" ]
+    then
+ 	echo "* To setup, you probably want to run:" 
+	echo "*"
+	echo "*   ${magpieremotecmd} ${STORM_MASTER_NODE}"
+	if echo $SHELL | grep -q csh
+	then
+	    echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+	else
+	    echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+	fi
+	echo "*   cd $MAGPIE_SCRIPTS_HOME"
+	echo "*   bin/magpie-storm.sh start"
+	echo "*" 
+    fi
+
+    echo "* To end/cleanup your session, kill the daemons via:"
+    echo "*" 
+    echo "*   ${magpieremotecmd} ${STORM_MASTER_NODE}"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+    else
+	echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+    fi
+    echo "*   cd $MAGPIE_SCRIPTS_HOME"
+    echo "*   bin/magpie-storm.sh stop"
+    echo "*" 
+    echo "* Some additional environment variables you may sometimes wish to set"
+    echo "*" 
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	echo "*   setenv STORM_HOME \"${STORM_HOME}\""
+    else
+	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	echo "*   export STORM_HOME=\"${STORM_HOME}\""
+    fi
+    echo "*" 
+    echo "*******************************************************"
+    # Nothing to check for Storm, setup always completes
+    stormsetupcomplete=1
+else
+    stormsetupcomplete=1
+fi
+
 # Make sure all setup passed
 if [ "${zookeepersetupcomplete}" == "1" ] \
     && [ "${hadoopsetupcomplete}" == "1" ] \
     && [ "${hbasesetupcomplete}" == "1" ] \
-    && [ "${sparksetupcomplete}" == "1" ]
+    && [ "${sparksetupcomplete}" == "1" ] \
+    && [ "${stormsetupcomplete}" == "1" ]
 then
     setupcomplete=1
 else
@@ -682,6 +773,42 @@ then
 	    sleep ${sparksleepseconds}
 	fi
     fi
+elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
+then
+    if [ "${setupcomplete}" == "1" ]
+    then
+	cd ${STORM_HOME}
+    
+	if [ "${STORM_MODE}" == "stormwordcount" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Storm WordCount"
+	    echo "*******************************************************"
+	    
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${STORM_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing script $STORM_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${STORM_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${STORM_MODE}" == "interactive" ] \
+	    || [ "${STORM_MODE}" == "setuponly" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Storm ${STORM_MODE} mode"
+	    echo "*******************************************************"
+	    
+	    stormsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	    stormsleepamount=`expr ${stormsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	    stormsleepseconds=`expr ${stormsleepamount}  \* 60`
+	    sleep ${stormsleepseconds}
+	fi
+    fi
 elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
 then
     if [ "${setupcomplete}" == "1" ]
@@ -717,6 +844,15 @@ then
 	${MAGPIE_SCRIPTS_HOME}/magpie-run-testall &
 	scriptpid=$!
 	Magpie_wait_script ${scriptpid}
+    fi
+fi
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    if [ ${STORM_MODE} != "setuponly" ]
+    then
+	echo "Stopping storm"
+	${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh stop
     fi
 fi
 
@@ -803,7 +939,7 @@ then
     fi
 fi
 
-# Zookeeper teardown comes last, as other things like Hbase require it
+# Zookeeper teardown comes last, as other things like Hbase & Storm require it
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then

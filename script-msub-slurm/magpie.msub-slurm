@@ -97,6 +97,8 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
+# "storm" - Run a job according to the settings of STORM_MODE.
+#
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
 # "testall" - Run a job that runs all basic sanity tests for all
@@ -108,23 +110,24 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #             For Hbase, testall will run performanceeval
 #             For Pig, testall will run testpig
 #             For Spark, testall will run sparkpi
-#             For Zookeeper, testall will run testzookeeper
+#             For Storm, testall will run stormwordcount
+#             For Zookeeper, testall will run zookeeperruok
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or
-#            SPARK_MODE.
+#            SPARK_MODE or STORM_MODE.
 #
 #            It is primarily used if you want to launch without
-#            Hadoop/Hbase/Spark (such as Zookeeper only) and are
+#            Hadoop/Hbase/Spark/Storm (such as Zookeeper only) and are
 #            experimenting with things..
 #
 # "interactive" - manually interact with job run.  This functionally
 #                 is very similar to setting "interactive" in
-#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, or PIG_MODE.
-#                 It is primarily used if you want to launch without
-#                 Hadoop/Hbase/Spark (such as Zookeeper only) and are
-#                 experimenting with things..
+#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, STORM_MODE, or
+#                 PIG_MODE.  It is primarily used if you want to
+#                 launch without Hadoop/Hbase/Spark/Storm (such as
+#                 Zookeeper only) and are experimenting with things..
 #
 export MAGPIE_JOB_TYPE="hadoop"
 
@@ -1132,6 +1135,103 @@ export SPARK_MODE="sparkpi"
 # export SPARK_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
 
 ############################################################################
+# Storm Core Configurations
+############################################################################
+
+# Should Storm be run
+#
+# Specify yes or no.  Defaults to no.
+# 
+export STORM_SETUP=no
+
+# Version
+#
+export STORM_VERSION="0.9.1-incubating"
+
+# Path to your Storm build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop/HDFS version this will run against.
+#
+export STORM_HOME="/home/username/apache-storm-${STORM_VERSION}"
+
+# Path local to each cluster node, typically something in /tmp.
+# This will store local conf files and log files for your job. 
+#
+export STORM_LOCAL_DIR="/tmp/username/storm"
+
+# Directory where Storm configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export STORM_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+
+# Storm Supervisor Slots
+#
+# Specify the number of slots/workers per supervisor/worker/slave shall run.
+#
+# If not specified, defaults to the number of processors on the system.
+#
+# export STORM_SUPERVISOR_SLOTS="16"
+
+# Daemon Heap Max
+#
+# Heap maximum for Storm daemons, specified in megs.
+#
+# If not specified, defaults to 1024
+#
+# May need to be increased if you are scaling large, get OutofMemory
+# errors, or perhaps have a lot of cores on a node.
+#
+# export STORM_DAEMON_HEAP_MAX=1024
+
+# Worker Heap Max
+#
+# Heap maximum for Storm workers, specified in megs.
+#
+# If not specified, a reasonable estimate will be calculated based on
+# total memory available and number of CPUs on the
+#
+# If also running Hbase or Hadoop MapReduce, be aware of the number of
+# tasks and the amount of memory that may be needed by other software.
+#
+# export STORM_WORKER_HEAP_MAX=1024
+
+############################################################################
+# Storm Job/Run Configurations
+############################################################################
+
+# Set how Storm should run
+#
+# "stormwordcount" - run Storm word count example.  Useful for making
+#            sure things are setup the way you like.
+#
+# "script" - execute a script that lists all of your Storm jobs.  Be
+#            sure to set STORM_SCRIPT_PATH to your script.
+#
+# "interactive" - manually interact to submit jobs, peruse Storm, etc.
+#                 In this mode you'll login to the cluster node that
+#                 is your 'master' node and interact with Storm
+#                 directly (e.g. bin/storm ...)
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+export STORM_MODE="stormwordcount"
+
+############################################################################
+# Storm Script Configurations
+############################################################################
+
+# Specify script to execute for "script" mode
+#
+# See storm-example-job-script for example of what to put in the script.
+#
+# export STORM_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+
+############################################################################
 # Zookeeper Configurations
 ############################################################################
 
@@ -1163,8 +1263,8 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 
 # Set how Zookeeper should run
 #
-# "zookeepertest" - Run a quick sanity test to see that zookeeper is
-#             setup correctly.  Testzookeeper will do a simple 'ruok'
+# "zookeeperruok" - Run a quick sanity test to see that zookeeper is
+#             setup correctly.  zookeeperruok will do a simple 'ruok'
 #             to all Zookeeper daemons.
 #
 # "launch" - Magpie will launch Zookeeper daemons
@@ -1256,6 +1356,7 @@ srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-spark
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-storm
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then

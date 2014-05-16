@@ -1,0 +1,163 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+
+if [ "${STORM_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+# stormnoderank set if succeed
+if ! Magpie_am_I_a_storm_node
+then
+    exit 0
+fi
+
+stormlocaldir="${STORM_LOCAL_DIR}/local"
+
+if [ ! -d "${stormlocaldir}" ]
+then
+    mkdir -p ${stormlocaldir}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${stormlocaldir}"
+	exit 1
+    fi
+fi
+
+# Sets threadstouse and proccount
+Magpie_calculate_threadstouse
+
+# Sets memorytouse
+Magpie_calculate_memorytouse
+
+if [ "${STORM_SUPERVISOR_SLOTS}X" != "X" ]
+then
+    stormslotcount=${STORM_SUPERVISOR_SLOTS}
+else
+    stormslotcount=${threadstouse}
+fi
+
+if [ "${STORM_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    stormdaemonheapmax="${STORM_DAEMON_HEAP_MAX}"
+else
+    stormdaemonheapmax="1024"
+fi 
+
+if [ "${STORM_WORKER_HEAP_MAX}X" != "X" ]
+then
+    stormworkerheapmax="${STORM_WORKER_HEAP_MAX}"
+else
+    stormworkerheapmax=`expr ${memorytouse} \/ ${stormslotcount}`
+fi 
+
+#
+# Get config files for setup
+#
+
+if [ "${STORM_CONF_FILES}X" == "X" ]
+then
+    stormconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    stormconffiledir=${STORM_CONF_FILES}
+fi
+
+stormyaml=${stormconffiledir}/storm.yaml
+stormenvsh=${stormconffiledir}/storm-env.sh
+
+#
+# Setup Storm configuration files and environment files
+#
+
+stormlocaldirsubst=`echo "${stormlocaldir}" | sed "s/\\//\\\\\\\\\//g"`
+
+sed -e "s/NIMBUSHOST/${STORM_MASTER_NODE}/g" \
+    -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
+    -e "s/STORMZOOKEEPERPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/STORMUIPORT/${STORM_UI_PORT}/g" \
+    -e "s/STORMLOGVIEWERPORT/${STORM_LOGVIEWER_PORT}/g" \
+    -e "s/STORMDRPCPORT/${STORM_DRPC_PORT}/g" \
+    -e "s/STORMDRPCINVOCATIONSPORT/${STORM_DRPC_INVOCATIONS_PORT}/g" \
+    -e "s/NIMBUSTHRIFTPORT/${STORM_THRIFT_PORT}/g" \
+    -e "s/STORM_DAEMON_HEAP_MAX/${stormdaemonheapmax}/g" \
+    -e "s/STORM_WORKER_HEAP_MAX/${stormworkerheapmax}/g" \
+    $stormyaml > ${STORM_CONF_DIR}/storm.yaml
+
+# Add Zookeeper servers to conf
+
+echo "storm.zookeeper.servers:" >> ${STORM_CONF_DIR}/storm.yaml
+
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+servercount=1
+for zookeepernode in ${zookeepernodes}
+do
+    echo "     - \"${zookeepernode}\"" >> ${STORM_CONF_DIR}/storm.yaml
+    servercount=$((servercount+1))
+done
+
+echo "" >> ${STORM_CONF_DIR}/storm.yaml
+
+# Add slots to conf
+
+echo "supervisor.slots.ports:" >> ${STORM_CONF_DIR}/storm.yaml
+
+slotport=${STORM_SUPERVISOR_SLOTS_STARTING_PORT}
+for i in `seq 1 ${stormslotcount}`
+do
+    echo "     - ${slotport}" >> ${STORM_CONF_DIR}/storm.yaml
+    slotport=$((slotport+1))
+done
+
+stormjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+stormlogdirsubst=`echo "${STORM_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+stormconfdirsubst=`echo "${STORM_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+stormhomesubst=`echo "${STORM_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+stormlocaldirsubst=`echo "${STORM_LOCAL_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+sed -e "s/MAGPIEJAVAHOME/${stormjavahomesubst}/g" \
+    -e "s/STORMLOGDIR/${stormlogdirsubst}/g" \
+    -e "s/STORMCONFDIR/${stormconfdirsubst}/g" \
+    -e "s/STORMHOME/${stormhomesubst}/g" \
+    -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
+    -e "s/MAGPIESCRIPTSHOME/${magpiescriptshome}/g" \
+    $stormenvsh > ${STORM_CONF_DIR}/storm-env.sh
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export STORM_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${STORM_CONF_DIR}/storm-env.sh
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${STORM_CONF_DIR}/storm-env.sh
+fi
+
+exit 0

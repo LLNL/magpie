@@ -49,6 +49,12 @@ Magpie_am_I_master () {
 	then 
 	    return 0
 	fi
+    elif [ "${STORM_SETUP}" == "yes" ] && [ -f "${STORM_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
     elif [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
     then
 	if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/zookeeper_master
@@ -116,6 +122,22 @@ Magpie_am_I_a_spark_node () {
 	    sparknoderank=0
 	else
 	    sparknoderank=`grep -n -E "^${myhostname}$" ${SPARK_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
+	fi
+	return 0
+    fi
+    return 1
+}
+
+Magpie_am_I_a_storm_node () {
+    local myhostname=`hostname`
+    if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/workers \
+	|| grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
+    then 
+	if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
+	then
+	    stormnoderank=0
+	else
+	    stormnoderank=`grep -n -E "^${myhostname}$" ${STORM_CONF_DIR}/workers | awk --field-separator=':' '{print $1}'`
 	fi
 	return 0
     fi
@@ -242,6 +264,12 @@ Magpie_calculate_stop_timeouts () {
 	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
     fi
 
+    if [ "${STORM_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
     stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
 	
     if [ "${stoptimeout}" -lt 5 ]
@@ -271,6 +299,11 @@ Magpie_calculate_canrunjobscount () {
     then
 	canrunjobscount=$((canrunjobscount+1))
     fi
+
+    if [ "${STORM_SETUP}" == "yes" ]
+    then
+	canrunjobscount=$((canrunjobscount+1))
+    fi
 }
 
 Magpie_calculate_threadstouse () {
@@ -284,7 +317,13 @@ Magpie_calculate_threadstouse () {
 
     if [ "${canrunjobscount}" == "1" ]
     then
-	threadstouse=`expr ${proccount} + ${proccount} \/ 2`
+	# Exception, if only Storm, 1X cores
+	if [ "${STORM_SETUP}" == "yes" ]
+	then
+	    threadstouse=${proccount}
+	else
+	    threadstouse=`expr ${proccount} + ${proccount} \/ 2`
+	fi
     else
 	threadstouse=`expr ${proccount} \/ ${canrunjobscount}`
     fi

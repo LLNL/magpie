@@ -13,6 +13,7 @@ srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-spark
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-storm
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then

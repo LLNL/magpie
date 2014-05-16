@@ -66,6 +66,15 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi)
 fi
 
+if [ "${STORM_SETUP}" == "yes" ] \
+   && [ "${STORM_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Storm Foobar"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount)
+fi
+
 if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
    && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
 then

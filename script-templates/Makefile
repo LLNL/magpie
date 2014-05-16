@@ -21,6 +21,8 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-spark >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
+	cat magpie-storm >> ../script-sbatch/magpie.sbatch
+	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-zookeeper >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-run-job >> ../script-sbatch/magpie.sbatch
@@ -139,6 +141,25 @@ all:
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"spark\"/" ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ../script-sbatch/magpie.sbatch-spark-with-hdfs
 
+# Make sbatch with Storm
+	echo "Creating magpie.sbatch-storm"
+	cp magpie-header ../script-sbatch/magpie.sbatch-storm
+	echo "" >> ../script-sbatch/magpie.sbatch-storm
+	cat magpie-sbatch >> ../script-sbatch/magpie.sbatch-storm
+	echo "" >> ../script-sbatch/magpie.sbatch-storm
+	cat magpie-magpie-customizations >> ../script-sbatch/magpie.sbatch-storm
+	echo "" >> ../script-sbatch/magpie.sbatch-storm
+	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-storm
+	echo "" >> ../script-sbatch/magpie.sbatch-storm
+	cat magpie-storm >> ../script-sbatch/magpie.sbatch-storm
+	echo "" >> ../script-sbatch/magpie.sbatch-storm
+	cat magpie-zookeeper >> ../script-sbatch/magpie.sbatch-storm
+	echo "" >> ../script-sbatch/magpie.sbatch-storm
+	cat magpie-run-job >> ../script-sbatch/magpie.sbatch-storm
+	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" ../script-sbatch/magpie.sbatch-storm
+	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ../script-sbatch/magpie.sbatch-storm
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"storm\"/" ../script-sbatch/magpie.sbatch-storm
+
 # Make msub with all configuration
 	echo "Creating magpie.msub-slurm"
 	cp magpie-header ../script-msub-slurm/magpie.msub-slurm
@@ -160,6 +181,8 @@ all:
 	cat magpie-hbase >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-spark >> ../script-msub-slurm/magpie.msub-slurm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-storm >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-zookeeper >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
@@ -278,3 +301,22 @@ all:
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"spark\"/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+
+# Make msub with Storm
+	echo "Creating magpie.msub-slurm-storm"
+	cp magpie-header ../script-msub-slurm/magpie.msub-slurm-storm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-storm
+	cat magpie-msub-slurm >> ../script-msub-slurm/magpie.msub-slurm-storm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-storm
+	cat magpie-magpie-customizations >> ../script-msub-slurm/magpie.msub-slurm-storm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-storm
+	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-storm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-storm
+	cat magpie-storm >> ../script-msub-slurm/magpie.msub-slurm-storm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-storm
+	cat magpie-zookeeper >> ../script-msub-slurm/magpie.msub-slurm-storm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-storm
+	cat magpie-run-job >> ../script-msub-slurm/magpie.msub-slurm-storm
+	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-storm
+	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ../script-msub-slurm/magpie.msub-slurm-storm
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"hadoop\"/MAGPIE_JOB_TYPE=\"storm\"/" ../script-msub-slurm/magpie.msub-slurm-storm
