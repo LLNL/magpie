@@ -757,15 +757,14 @@ tracked by:
 
 https://issues.apache.org/jira/browse/STORM-320
 
-Patches to support alternate log and conf directories in Storm 0.9.1
-and 0.9.2 are included in the patches directory.  As of this writing,
-a re-compile with the patches are necessary.
+Patches to support alternate log and conf directories in Storm 0.9.2
+are included in the patches directory.  As of this writing, a
+re-compile with the patches are necessary.
 
 After applying the patches to the Storm tree, a simple
 
 mvn clean install -DskipTests=true
-cd storm-dist
-(newer versions, cd storm-dist/binary)
+cd storm-dist/binary
 mvn package
 
 should net you a binary package with everything you need.
