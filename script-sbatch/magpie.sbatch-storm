@@ -242,11 +242,10 @@ export STORM_LOCAL_DIR="/tmp/username/storm"
 #
 # Heap maximum for Storm workers, specified in megs.
 #
-# If not specified, a reasonable estimate will be calculated based on
-# total memory available and number of CPUs on the
+# If not specified, defaults to 1024
 #
-# If also running Hbase or Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by other software.
+# May need to be increased if you are scaling large, get OutofMemory
+# errors, or perhaps have a lot of cores on a node.
 #
 # export STORM_WORKER_HEAP_MAX=1024
 
