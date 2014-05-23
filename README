@@ -769,6 +769,15 @@ mvn package
 
 should net you a binary package with everything you need.
 
+Patch - Pig Reducer Bug
+-----------------------
+
+There is a major bug in Pig 0.12.0 affecting reducer counts.
+
+https://issues.apache.org/jira/browse/PIG-3512
+
+It would be wise to recompile 0.12.0 with this fix.
+
 Dependencies
 ------------
 
