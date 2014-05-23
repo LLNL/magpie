@@ -59,7 +59,7 @@ if [ "${STORM_SUPERVISOR_SLOTS}X" != "X" ]
 then
     stormslotcount=${STORM_SUPERVISOR_SLOTS}
 else
-    stormslotcount=${threadstouse}
+    stormslotcount=`expr ${threadstouse} \/ 2`
 fi
 
 if [ "${STORM_DAEMON_HEAP_MAX}X" != "X" ]

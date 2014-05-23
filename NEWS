@@ -1,6 +1,7 @@
 magpie 1.40
 -----------
 Make default storm worker heap 1024.
+Make default storm slots 50% of cores.
 
 magpie 1.39
 -----------
