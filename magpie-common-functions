@@ -326,6 +326,11 @@ Magpie_calculate_threadstouse () {
 	fi
     else
 	threadstouse=`expr ${proccount} \/ ${canrunjobscount}`
+
+	if [ "${threadstouse}" == "0" ]
+	then
+	    threadstouse="1"
+	fi
     fi
 }
 
