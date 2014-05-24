@@ -59,7 +59,7 @@ if [ "${STORM_SUPERVISOR_SLOTS}X" != "X" ]
 then
     stormslotcount=${STORM_SUPERVISOR_SLOTS}
 else
-    stormslotcount=`expr ${threadstouse} \/ 2`
+    stormslotcount=`expr ${proccount} \/ 2`
 
     if [ "${stormslotcount}" == "0" ]
     then

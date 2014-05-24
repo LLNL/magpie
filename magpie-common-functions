@@ -317,13 +317,7 @@ Magpie_calculate_threadstouse () {
 
     if [ "${canrunjobscount}" == "1" ]
     then
-	# Exception, if only Storm, judge based on 1X cores
-	if [ "${STORM_SETUP}" == "yes" ]
-	then
-	    threadstouse=${proccount}
-	else
-	    threadstouse=`expr ${proccount} + ${proccount} \/ 2`
-	fi
+	threadstouse=`expr ${proccount} + ${proccount} \/ 2`
     else
 	threadstouse=`expr ${proccount} \/ ${canrunjobscount}`
 
