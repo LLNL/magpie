@@ -989,6 +989,9 @@ then
     # Only master will format the node
     if Magpie_am_I_master
     then
+	echo "*******************************************************"
+	echo "* Formatting HDFS Namenode"
+	echo "*******************************************************"
 	cd $HADOOP_HOME
 	echo 'Y' | bin/hadoop namenode -format
     else
