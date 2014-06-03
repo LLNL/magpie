@@ -830,3 +830,6 @@ Credit must be given to Kevin Regimbal @ PNNL.  Initial experiments
 were done using heavily modified versions of scripts Kevin developed
 for running Hadoop w/ Slurm & Lustre.  A number of the ideas from
 Kevin's scripts continue in spirit in these scripts.
+
+Special thanks to David Buttler who came up with the clever name for
+this project.
