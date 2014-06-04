@@ -5,21 +5,33 @@
 # SPARK_SCRIPT_PATH environment variable and setting the SPARK_MODE to
 # 'script'.  See the job submission file for details.
 #
-# Remember to set SPARK_CLASSPATH or SPARK_LIBRARY_PATH appropriately
-# for extra libraries you require or SPARK_JAVA_OPTS to set Spark
-# options.
+# For versions < 1.0.0, remember to set SPARK_CLASSPATH or
+# SPARK_LIBRARY_PATH appropriately for extra libraries you require or
+# SPARK_JAVA_OPTS to set Spark options.  For later versions, set
+# appropriate values in spark-defaults.conf.
 #
 # Please adjust to whatever you would want to do with Spark
 
 cd ${SPARK_HOME}
 
-command="bin/run-example org.apache.spark.examples.SparkPi spark://$SPARK_MASTER_NODE:7077"
+# for spark 0.9.1
+command="bin/run-example org.apache.spark.examples.SparkPi spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT"
+
+# for spark 1.0.0
+export MASTER="spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT"
+command="bin/run-example org.apache.spark.examples.SparkPi"
+
 echo "Running $command" >&2
 $command
 
 # or
 
+# for spark 0.9.1
 export SPARK_CLASSPATH="examples/target/scala-2.10/spark-examples-assembly-0.9.1.jar"
-command="bin/spark-class org.apache.spark.examples.SparkPi spark://$SPARK_MASTER_NODE:7077"
+command="bin/spark-class org.apache.spark.examples.SparkPi spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT"
+
+# for spark 1.0.0
+command="bin/spark-submit --class org.apache.spark.examples.SparkPi lib/spark-examples-1.0.0-hadoop2.2.0.jar"
+
 echo "Running $command" >&2
 $command

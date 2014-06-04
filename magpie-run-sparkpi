@@ -40,7 +40,16 @@ fi
 
 cd ${SPARK_HOME}
 	    
-command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
+# For some reason in 1.0, the <master> argument was removed.
+if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    # For some reason need to set MASTER environment variable for run-example, makes no sense
+    export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
+else
+    command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
+fi
+
 echo "Running $command" >&2
 $command
 

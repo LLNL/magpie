@@ -88,29 +88,41 @@ else
     sparkmem=${workermemory}
 fi
 
+if [ "${SPARK_DRIVER_MEMORY}X" != "X" ]
+then
+    sparkdrivermemory=${SPARK_DRIVER_MEMORY}
+else
+    sparkdrivermemory=${sparkmem}
+fi
+
 #
 # Calculate settings in SPARK_JAVA_OPTS
 #
 
-SPARK_JAVA_OPTS="-Dspark.ui.port=${SPARK_APPLICATION_DASHBOARD_PORT}"
+# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    SPARK_JAVA_OPTS="-Dspark.ui.port=${SPARK_APPLICATION_DASHBOARD_PORT}"
+else
+    SPARK_JAVA_OPTS=""
+fi
 
 if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
     # sets hadooptmpdir and fsdefault
     Magpie_calculate_hadoop_filesystem_paths ${sparknoderank}
 
-    sparktmpdir="${hadooptmpdir}/spark"
+    sparklocalscratchdirpath="${hadooptmpdir}/spark"
     
-    if [ ! -d "${sparktmpdir}" ]
+    if [ ! -d "${sparklocalscratchdirpath}" ]
     then
-	mkdir -p ${sparktmpdir}
+	mkdir -p ${sparklocalscratchdirpath}
 	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${sparktmpdir}"
+	    echo "mkdir failed making ${sparklocalscratchdirpath}"
 	    exit 1
 	fi
     fi
-
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparktmpdir}"
 else
     if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "networkfs" ]
     then
@@ -126,7 +138,12 @@ else
 	echo "mkdir failed making ${sparklocalscratchdirpath}"
 	exit 1
     fi
+fi
 
+# Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
+# - environment variable for >= 1.0.0 set up spark-env.sh below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparklocalscratchdirpath}"
 fi
 
@@ -162,13 +179,25 @@ else
     sparkshuffleconsolidatefiles="false"
 fi
 
-SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.file.buffer.kb=${sparkshufflebufferkb} -Dspark.shuffle.consolidateFiles=${sparkshuffleconsolidatefiles}"
+# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.file.buffer.kb=${sparkshufflebufferkb} -Dspark.shuffle.consolidateFiles=${sparkshuffleconsolidatefiles}"
+fi
 
 if [ "${SPARK_DEFAULT_PARALLELISM}X" == "X" ]
 then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${SPARK_SLAVE_COUNT}"
+    sparkdefaultparallelism="${SPARK_SLAVE_COUNT}"
 else
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${SPARK_DEFAULT_PARALLELISM}"
+    sparkdefaultparallelism="${SPARK_DEFAULT_PARALLELISM}"
+fi
+
+# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${sparkdefaultparallelism}"
 fi
 
 # We do proc count / 2, b/c other daemons on the master are also running. 
@@ -180,7 +209,12 @@ then
     akkathreads=4
 fi
 
-SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
+# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
+fi
 
 openfiles=`ulimit -n`
 if [ "${openfiles}" != "unlimited" ]
@@ -251,21 +285,30 @@ else
     sparkconffiledir=${SPARK_CONF_FILES}
 fi
 
-sparkenvsh=${sparkconffiledir}/spark-env.sh
+if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    sparkenvsh=${sparkconffiledir}/spark-env-post-1-0.sh
+else
+    sparkenvsh=${sparkconffiledir}/spark-env-pre-1-0.sh
+fi
+sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
 
 #
 # Setup Spark configuration files and environment files
 #
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+sparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
 
 sed -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/SPARKHOME/${sparkhomesubst}/g" \
     -e "s/SPARK_DAEMON_HEAP_MAX/${sparkdaemonheapmax}/g" \
     -e "s/SPARKWORKERCORES/${workercores}/g" \
     -e "s/SPARKWORKERMEMORY/${workermemory}/g" \
     -e "s/SPARKWORKERDIR/${workerdirectorysubst}/g" \
     -e "s/SPARKMEM/${sparkmem}/g" \
+    -e "s/SPARKDRIVERMEMORY/${sparkdrivermemory}/g" \
     -e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
     -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
     -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
@@ -273,22 +316,39 @@ sed -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
 
-if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
-then
-    echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
-fi
+# Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
+# afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
+    then
+	echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    fi
 
-if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
-then
-    echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
+    then
+	echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    fi
 fi
 
 if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
 then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
+    if [ "${SPARK_JAVA_OPTS}X" != "X" ]
+    then
+	SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
+    else
+	SPARK_JAVA_OPTS="${SPARK_JOB_JAVA_OPTS}"
+    fi
 fi
 
-echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+# After 1.0.0, everything in spark-defaults.conf
+# If coded correctly in this script, SPARK_JAVA_OPTS should be empty
+# unless user set something in it of their own volition.
+if [ "${SPARK_JAVA_OPTS}X" != "X" ]
+then 
+    echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
@@ -299,12 +359,45 @@ then
     echo "export SPARK_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
 fi
 
+# Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
+# - spark.local.dir for < 1.0.0 set above
+if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+
 if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXTRA_PATH} ]
 then
     cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${SPARK_CONF_DIR}/spark-env.sh
 else
     echo "ulimit -n ${openfilescount}" >> ${SPARK_CONF_DIR}/spark-env.sh
     echo "ulimit -u ${userprocessescount}" >> ${SPARK_CONF_DIR}/spark-env.sh
+fi
+
+if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
+    then
+	sparkclasspathsubst=`echo "${SPARK_JOB_CLASSPATH}" | sed "s/\\//\\\\\\\\\//g"`
+    fi
+    
+    if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
+    then
+	sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
+    fi
+
+    sed -e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
+	-e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
+	-e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
+	-e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
+	-e "s/SPARKDEFAULTPARALLELISM/${sparkdefaultparallelism}/g" \
+	-e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
+	-e "s/SPARKUIPORT/${SPARK_APPLICATION_DASHBOARD_PORT}/g" \
+	-e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
+	-e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
+	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
+	$sparkdefaultsconf > ${SPARK_CONF_DIR}/spark-defaults.conf
+    
 fi
 
 cat ${sparkconffiledir}/spark.log4j.properties > ${SPARK_CONF_DIR}/log4j.properties

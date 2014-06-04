@@ -697,10 +697,15 @@ Hbase
   environments.  Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
 
-Spark
+Spark 
 - Patch to support alternate config file directories is required.
-  Patch can be applied directly to startup scripts, not needing a
-  recompilation of source.
+
+  For versions < 1.0.0, patch can be applied directly to startup
+  scripts, not needing a recompilation of source.
+
+  For versions >= 1.0.0, patch for startup scripts and code is
+  required, a recompilation of source is required.
+
 - Patch to support non-ssh remote execution may be needed in some
   environments.  Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
@@ -784,6 +789,12 @@ and
 
 https://issues.apache.org/jira/browse/SPARK-1559
 
+For Spark >= 1.0.0, a patch is required to support the
+spark-defaults.conf file in the SPARK_CONF_DIR directory.  A patch for
+that is provided in the patches directory.  It is being monitored via:
+
+https://issues.apache.org/jira/browse/SPARK-2116
+
 Patch - Alternate Log Dir & Conf Dir for Storm
 ----------------------------------------------
 
@@ -854,7 +865,7 @@ UDA support was added/tested against uda-plugin 3.3.2-0 with Hadoop
 Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
 tested against HDFS based file systems.
 
-Spark was tested against spark-0.9.1.
+Spark was tested against spark-0.9.1 and spark-1.0.0.
 
 Storm was tested against storm-0.9.2 (trunk build).
 

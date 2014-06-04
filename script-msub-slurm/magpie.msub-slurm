@@ -1014,7 +1014,21 @@ export SPARK_LOCAL_DIR="/tmp/username/spark"
 # SPARK_WORKER_MEMORY_PER_NODE, but users may wish to lower it if
 # multiple Spark jobs will be submitted at the same time.
 #
+# In Spark parlance, this will set both the executor and driver memory
+# for Spark.
+#
 # export SPARK_JOB_MEMORY="2048"
+
+# SPARK_DRIVER_MEMORY
+#
+# Beginning in Spark 1.0, driver memory could be configured separately
+# from executor memory.  If SPARK_DRIVER_MEMORY is set below, driver
+# memory will be configured differently than the executor memory
+# indicated above with SPARK_JOB_MEMORY.
+#
+# If running Spark < 1.0, this option does nothing. 
+#
+# export SPARK_DRIVER_MEMORY="2048"
 
 # Daemon Heap Max
 #
@@ -1097,6 +1111,11 @@ export SPARK_MODE="sparkpi"
 # Magpie will set several options on its own, however, these options
 # will be appended last, ensuring they override anything that Magpie
 # will set by default.
+#
+# Note that many of the options that were set in SPARK_JAVA_OPTS in
+# Spark 0.9.1 and earlier have been moved to spark-defaults.conf.  It
+# would be recommended to set alternate configs in there instead of
+# here in Spark 1.0 and later.
 #
 # export SPARK_JOB_JAVA_OPTS=""
 
