@@ -115,7 +115,7 @@ else
     if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "networkfs" ]
     then
         # Setup node directory per node 
-	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}/node-${zookeepernoderank}"
+	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
     elif [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "local" ]
     then
 	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}"
