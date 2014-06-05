@@ -1,3 +1,7 @@
+magpie 1.42
+-----------
+Configure/output info on Spark job application dashboard.
+
 magpie 1.41
 -----------
 Fix bug in spark local scratch dir calculation.

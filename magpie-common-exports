@@ -173,6 +173,7 @@ then
     export SPARK_MASTER_PORT="7077"
     export SPARK_MASTER_WEBUI_PORT="8080"
     export SPARK_WORKER_WEBUI_PORT="8081"
+    export SPARK_APPLICATION_DASHBOARD_PORT="4040"
 
     sparksetupscriptprefix="sbin"
     sparkcmdprefix="bin"

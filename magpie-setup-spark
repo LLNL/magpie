@@ -92,7 +92,7 @@ fi
 # Calculate settings in SPARK_JAVA_OPTS
 #
 
-SPARK_JAVA_OPTS=""
+SPARK_JAVA_OPTS="-Dspark.ui.port=${SPARK_APPLICATION_DASHBOARD_PORT}"
 
 if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
