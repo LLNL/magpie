@@ -25,6 +25,8 @@ Hbase
 Spark
 - multiple masters
 
+Storm + Trident
+
 ideas
 -----
 failover support
