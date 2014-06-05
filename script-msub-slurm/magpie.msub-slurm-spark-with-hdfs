@@ -828,6 +828,19 @@ export SPARK_MODE="sparkpi"
 # export SPARK_LOCAL_SCRATCH_DIR_TYPE="networkfs"
 
 ############################################################################
+# Spark SparkPi Configuration
+############################################################################
+
+# SparkPi Slices
+#
+# Number of "slices" to parallelize in Pi estimation.  Generally
+# speaking, more should lead to more accurate estimates.
+#
+# If not specified, equals number of nodes.
+# 
+# export SPARK_SPARKPI_SLICES=4
+
+############################################################################
 # Spark Script Configurations
 ############################################################################
 

@@ -1,6 +1,7 @@
 magpie 1.42
 -----------
 Configure/output info on Spark job application dashboard.
+Support configuration of number of slices for SparkPi test.
 
 magpie 1.41
 -----------
