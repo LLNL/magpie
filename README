@@ -680,7 +680,42 @@ Patching
 
 Generally speaking, no modifications to any projects are necessary.
 However patches may be necessary depending on your environment,
-software version, or special features.
+software version, or special features.  The following is a summary of
+the patching requirements, recompilation needs, and patch details
+below.
+
+Hadoop
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+- Hadoop 1.0 may require recompilation if alternate solution for
+  increased entropy cannot be done.
+- Hadoop terasort may require recompilation if running over 'rawnetworkfs'.
+
+Hbase
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+
+Spark
+- Patch to support alternate config file directories is required.
+  Patch can be applied directly to startup scripts, not needing a
+  recompilation of source.
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+
+Storm
+- Patch to support alternate config file directories and log file
+  directories is required.  Storm requires a recompilation of source.
+
+Pig
+- No patching necessary.
+- However, a major bug exists in 0.12.0, which most users may wish to
+  patch and recompile.
+
+Zookeeper
+- No patching necessary.
 
 Patch - passwordless SSH
 ------------------------
