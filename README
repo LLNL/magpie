@@ -89,7 +89,8 @@ Basic Instructions For Running Hadoop
 
    HADOOP_SETUP : Set to yes
 
-   HADOOP_SETUP_TYPE : Are you running Mapreduce version 1 or 2
+   HADOOP_SETUP_TYPE : Are you running Mapreduce version 1 or 2.  Or
+   if you are only configuring HDFS, HDFS 1 or 2.
 
    HADOOP_VERSION : Make sure your build matches HADOOP_SETUP_TYPE
    (i.e. don't say you want MapReduce 1 and point to Hadoop 2.0 build)
@@ -258,14 +259,16 @@ Pro: Can adjust job size easily.
 
 Con: Portability issues w/ code that usually runs on HDFS.  As an
 example, HDFS has no concept of a working directory while Posix
-filesystems do.  Code will have to be adjusted for this.
+filesystems do.  In addition, absolute paths will be different.  Code
+will have to be adjusted for this.
 
 Con: User must "manage" and organize their files directly, not gaining
 the block advantages of HDFS.  If not handled well, this can lead to
 performance issues.  For example, a Hadoop job that creates a 1
-terabyte file under HDFS is creating a file made up of many small HDFS
+terabyte file under HDFS is creating a file made up of smaller HDFS
 blocks.  The same job may create a single 1 terabyte file under access
-to the Posic FS directly.
+to the Posix FS directly.  In the case of Lustre, striping of the file
+must be handled by the user to ensure satisfactory performance.
 
 Magpie Network File System Option
 ---------------------------------
@@ -508,15 +511,19 @@ Basic Instructions For Spark
    to run w/ 'script' or 'interactive' mode, as that is the more
    likely way to run.
 
-4) If you are happy with the configuration files provided by this
+4) Spark does not require HDFS, but many choose to use it.  If you do,
+   setup Hadoop w/ HDFS in your submission script.  See above for
+   Hadoop setup instructions.
+
+5) If you are happy with the configuration files provided by this
    project, you can use them.  If not, change them.  If you copy them
    to a new directory, adjust SPARK_CONF_FILES in your submission
    script as needed.
 
-5) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
+6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
    ... and any other options you see fit.
 
-6) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job, how to interact, etc..
 
@@ -554,15 +561,18 @@ Basic Instructions For Storm
    to run w/ 'script' or 'interactive' mode, as that is the more
    likely way to run.
 
-4) If you are happy with the configuration files provided by this
+4) Storm requires Zookeeper, so setup the essentials for Zookeeper.
+   See above for Zookeeper setup instructions.
+
+5) If you are happy with the configuration files provided by this
    project, you can use them.  If not, change them.  If you copy them
    to a new directory, adjust STORM_CONF_FILES in your submission
    script as needed.
 
-5) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
+6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
    ... and any other options you see fit.
 
-6) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job, how to interact, etc..
 
@@ -670,7 +680,42 @@ Patching
 
 Generally speaking, no modifications to any projects are necessary.
 However patches may be necessary depending on your environment,
-software version, or special features.
+software version, or special features.  The following is a summary of
+the patching requirements, recompilation needs, and patch details
+below.
+
+Hadoop
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+- Hadoop 1.0 may require recompilation if alternate solution for
+  increased entropy cannot be done.
+- Hadoop terasort may require recompilation if running over 'rawnetworkfs'.
+
+Hbase
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+
+Spark
+- Patch to support alternate config file directories is required.
+  Patch can be applied directly to startup scripts, not needing a
+  recompilation of source.
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+
+Storm
+- Patch to support alternate config file directories and log file
+  directories is required.  Storm requires a recompilation of source.
+
+Pig
+- No patching necessary.
+- However, a major bug exists in 0.12.0, which most users may wish to
+  patch and recompile.
+
+Zookeeper
+- No patching necessary.
 
 Patch - passwordless SSH
 ------------------------
