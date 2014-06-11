@@ -717,8 +717,8 @@ Pig
 Zookeeper
 - No patching necessary.
 
-Patch - passwordless SSH
-------------------------
+Patch - passwordless SSH for Hadoop, Hbase, and Spark
+-----------------------------------------------------
 
 Many projects in the big data space require passwordless ssh to launch
 daemons on remote nodes.  In some environments, passwordless ssh is
@@ -757,8 +757,8 @@ can't connect to the namenode, etc., badness all around.
 If you have root privileges, starting up the rngd daemon is another
 way to solve this problem without resorting to patching.
 
-Patch - Terasort over Raw Network FS
-------------------------------------
+Patch - Terasort over Raw Network FS in Hadoop
+----------------------------------------------
 
 I believe there is a bug in the Terasort example, leading to issues
 with running Terasort against a parallel file system directly.  I
@@ -784,8 +784,8 @@ and
 
 https://issues.apache.org/jira/browse/SPARK-1559
 
-Patch - Alternate Log Dir & Conf Dir
-------------------------------------
+Patch - Alternate Log Dir & Conf Dir for Storm
+----------------------------------------------
 
 By default (up to atleast Storm 0.9.2) logs are stored in
 STORM_HOME/logs and does not recognize the environment variable
@@ -814,8 +814,8 @@ mvn package
 
 should net you a binary package with everything you need.
 
-Patch - Pig Reducer Bug
------------------------
+Patch - Reducer Bug in Pig
+--------------------------
 
 There is a major bug in Pig 0.12.0 affecting reducer counts.
 
