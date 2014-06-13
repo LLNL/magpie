@@ -78,7 +78,7 @@ if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
 then
     workerdirectory=${SPARK_WORKER_DIRECTORY}
 else
-    workerdirectory="${SPARK_HOME}/work"
+    workerdirectory="${SPARK_LOCAL_DIR}/work"
 fi
 
 if [ "${SPARK_JOB_MEMORY}X" != "X" ]

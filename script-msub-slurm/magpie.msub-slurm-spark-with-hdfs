@@ -704,13 +704,12 @@ export SPARK_LOCAL_DIR="/tmp/username/spark"
 #
 # Directory to run applications in, which will include both logs and
 # scratch space for local jars.  If not specified, defaults to
-# SPARK_HOME/work.
+# SPARK_LOCAL_DIR/work.
 #
-# Generally speaking, this is probably fine if SPARK_HOME/work is in
-# an NFS mount, but under some situation, such as having many large
-# jar files, using an NFS mount may not be wise.
+# Generally speaking, this is best if this is a tmp directory such as
+# in /tmp
 #
-# export SPARK_WORKER_DIRECTORY=/tmp/username/spark
+# export SPARK_WORKER_DIRECTORY=/tmp/username/spark/work
 
 # SPARK_JOB_MEMORY
 #
