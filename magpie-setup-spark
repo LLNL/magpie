@@ -173,14 +173,14 @@ fi
 
 # We do proc count / 2, b/c other daemons on the master are also running. 
 
-akkthreads=`expr ${proccount} \/ 2`
+akkathreads=`expr ${proccount} \/ 2`
 
-if [ "${akkthreads}" -lt "4" ]
+if [ "${akkathreads}" -lt "4" ]
 then
-    akkthreads=4
+    akkathreads=4
 fi
 
-SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkthreads}"
+SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
 
 openfiles=`ulimit -n`
 if [ "${openfiles}" != "unlimited" ]
