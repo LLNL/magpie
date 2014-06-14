@@ -879,6 +879,24 @@ you feel are better, etc.
 Any patches you submit to me for fixes will be appreciated.  I am by
 no means a bash expert ... in fact I'm quite bad at it.
 
+Other Schedulers/Resource Managers
+----------------------------------
+
+While Slurm and Moab/Slurm are the currently supported
+schedulers/resource managers, there's no reason to believe that other
+schedulers/resource managers couldn't be supported.  I'd gladly
+welcome patches to support them.
+
+To support another scheduler or resource manager, you'll want to make
+your equivalent scheduler/resource manager header, similar to
+script-templates/magpie-slurm and script-templates/magpie-msub-slurm.
+Then add an appropriate new section to script-templates/Makefile and a
+new directory for these new submission scripts.
+
+If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
+magpie-submission-convert and add appropriate input checks in
+magpie-check-inputs.
+ 
 Credit
 ------
 
