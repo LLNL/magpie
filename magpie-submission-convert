@@ -22,7 +22,8 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
+    || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
     export MAGPIE_NODE_COUNT="${SLURM_NNODES}"

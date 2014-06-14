@@ -36,9 +36,10 @@ then
     exit 1
 fi
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ]
+if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ] \
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurm" ]
 then
-    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to slurmsbatch"
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to slurmsbatch or msubslurm"
     exit 1
 fi
 
