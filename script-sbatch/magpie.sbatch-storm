@@ -326,7 +326,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.5"
+export ZOOKEEPER_VERSION="3.4.6"
 
 # Path to your Zookeeper build/binaries
 #

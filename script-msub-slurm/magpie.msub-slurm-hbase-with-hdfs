@@ -69,9 +69,9 @@ export SBATCH_TIMELIMIT=<time in minutes>
 # Need to tell Magpie how you are submitting this job
 #
 # IMPORTANT: This msub file assumes Slurm is the underlying resource
-# manager.  If it is not, a new Magpie submission type should be put
-# into these scripts.
-export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
+# manager.  If it is not, a new Magpie submission type should be added
+# into Magpie.
+export MAGPIE_SUBMISSION_TYPE="msubslurm"
 
 ############################################################################
 # Magpie Configurations
@@ -230,7 +230,7 @@ export HADOOP_SETUP_TYPE="HDFS2"
 # Make sure the version for Mapreduce version 1 or 2 matches whatever
 # you set in HADOOP_SETUP_TYPE
 #
-export HADOOP_VERSION="2.2.0"
+export HADOOP_VERSION="2.4.0"
 
 # Path to your Hadoop build/binaries
 #
@@ -657,7 +657,7 @@ export HBASE_SETUP=yes
 
 # Version
 #
-export HBASE_VERSION="0.96.1.1-hadoop2"
+export HBASE_VERSION="0.98.3-hadoop2"
 
 # Path to your Hbase build/binaries
 #
@@ -835,7 +835,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.5"
+export ZOOKEEPER_VERSION="3.4.6"
 
 # Path to your Zookeeper build/binaries
 #

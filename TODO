@@ -6,7 +6,9 @@ Minor feature support
 ---------------------
 Hadoop
 - namenode failover w/ shared dir mechanism
-- start w/ 2.1.1-beta 
+  - start w/ 2.1.1-beta 
+- rolling upgrade scripts, for increasing hdfs fs versions
+
 Ganglia
 - if user wants aid in monitoring
 hdfs over lustre/networkfs

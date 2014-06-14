@@ -219,7 +219,7 @@ export HADOOP_SETUP_TYPE="MR2"
 # Make sure the version for Mapreduce version 1 or 2 matches whatever
 # you set in HADOOP_SETUP_TYPE
 #
-export HADOOP_VERSION="2.2.0"
+export HADOOP_VERSION="2.4.0"
 
 # Path to your Hadoop build/binaries
 #
@@ -723,7 +723,7 @@ export PIG_SETUP=no
 
 # Pig Version
 #
-export PIG_VERSION="0.12.0"
+export PIG_VERSION="0.12.1"
 
 # Path to your Pig build/binaries
 #
@@ -798,7 +798,7 @@ export HBASE_SETUP=no
 
 # Version
 #
-export HBASE_VERSION="0.96.1.1-hadoop2"
+export HBASE_VERSION="0.98.3-hadoop2"
 
 # Path to your Hbase build/binaries
 #
@@ -943,7 +943,7 @@ export SPARK_SETUP=no
 
 # Version
 #
-export SPARK_VERSION="0.9.1"
+export SPARK_VERSION="1.0.0-bin-hadoop2"
 
 # Path to your Spark build/binaries
 #
@@ -1295,7 +1295,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.5"
+export ZOOKEEPER_VERSION="3.4.6"
 
 # Path to your Zookeeper build/binaries
 #

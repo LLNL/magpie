@@ -197,7 +197,7 @@ export SPARK_SETUP=yes
 
 # Version
 #
-export SPARK_VERSION="0.9.1"
+export SPARK_VERSION="1.0.0-bin-hadoop2"
 
 # Path to your Spark build/binaries
 #
