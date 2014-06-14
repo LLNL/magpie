@@ -30,6 +30,6 @@ The basic idea behind these scripts are to:
    remaining nodes will run appropriate slave daemons, such as the
    Hadoop Datanodes or Hbase RegionServers.
 
-4) Now you have a mini cluster to do whatever you want.
+4) Now you have a mini big data cluster to do whatever you want.
 
 Additional details can be found in the project README file
