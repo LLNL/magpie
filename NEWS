@@ -2,6 +2,7 @@ magpie 1.43
 -----------
 Default Spark worker directory is now SPARK_LOCAL_DIR/work.
 Make default Spark akka.threads is processor count / 2.
+Update Magpie to support Spark 1.0.0.
 
 magpie 1.42
 -----------
