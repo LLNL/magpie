@@ -218,6 +218,12 @@ then
  	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+	if echo $SHELL | grep -q csh
+	then
+	    echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	else
+	    echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	fi
 	echo "*   cd $HADOOP_HOME"
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
@@ -248,6 +254,12 @@ then
     echo "*" 
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
     echo "*   cd $HADOOP_HOME"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+    else
+	echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+    fi
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
 	echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
@@ -402,6 +414,12 @@ then
 	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
+	if echo $SHELL | grep -q csh
+	then
+	    echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+	else
+	    echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+	fi
 	echo "*   cd $HBASE_HOME"
 	echo "*   ${hbasesetupscriptprefix}/start-hbase.sh" 
     fi
@@ -410,6 +428,12 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+    else
+	echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+    fi
     echo "*   cd $HBASE_HOME"
     echo "*   ${hbasesetupscriptprefix}/stop-hbase.sh"
     echo "*" 
@@ -489,6 +513,12 @@ then
 	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
+	if echo $SHELL | grep -q csh
+	then
+	    echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+	else
+	echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+	fi
 	echo "*   cd $SPARK_HOME"
 	echo "*   ${sparksetupscriptprefix}/start-all.sh" 
     fi
@@ -497,6 +527,12 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
+    if echo $SHELL | grep -q csh
+    then
+	echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+    else
+	echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+    fi
     echo "*   cd $SPARK_HOME"
     echo "*   ${sparksetupscriptprefix}/stop-all.sh"
     echo "*" 
