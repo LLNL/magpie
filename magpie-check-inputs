@@ -137,7 +137,7 @@ if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
     if [ "${MAGPIE_SCRIPT_PATH}X" == "X" ]
     then
-	echo "Script MAGPIE_SCRIPT_PATH must be specified"
+	echo "Script MAGPIE_SCRIPT_PATH must be specified for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
 	exit 1
     fi
 
@@ -366,14 +366,14 @@ then
     then
 	if [ "${HADOOP_VERSION}X" == "X" ]
 	then
-	    echo "HADOOP_VERSION must be set for HADOOP_SETUP_TYPE = MR2"
+	    echo "HADOOP_VERSION must be set for HADOOP_SETUP_TYPE = ${HADOOP_SETUP_TYPE}"
 	    exit 1
 	fi
     fi
 
     if [ "${HADOOP_HOME}X" == "X" ]
     then
-	echo "HADOOP_HOME must be set"
+	echo "HADOOP_HOME must be set to run Hadoop"
 	exit 1
     fi
 
@@ -385,7 +385,7 @@ then
 
     if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
     then
-	echo "HADOOP_LOCAL_DIR must be set"
+	echo "HADOOP_LOCAL_DIR must be set to run Hadoop"
 	exit 1
     fi
 
@@ -411,13 +411,13 @@ then
     then
 	if [ "${HADOOP_VERSION}X" == "X" ]
 	then
-	    echo "HADOOP_VERSION must be set for terasort mode"
+	    echo "HADOOP_VERSION must be set for HADOOP_MODE = ${HADOOP_MODE}"
 	    exit 1
 	fi
 
 	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort cannot be found, it is required to run terasort"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort cannot be found, it is required for HADOOP_MODE = ${HADOOP_MODE}"
 	    exit 1
 	fi
     fi
@@ -426,7 +426,7 @@ then
     then
 	if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
 	then
-	    echo "Script HADOOP_SCRIPT_PATH must be specified"
+	    echo "Script HADOOP_SCRIPT_PATH must be specified for HADOOP_MODE = ${HADOOP_MODE}"
 	    exit 1
 	fi
 	
@@ -462,21 +462,21 @@ then
 	|| [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
 	&& [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
     then
-	echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE=MR2"
+	echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE = ${HADOOP_SETUP_TYPE}"
 	exit 1
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
 	&& [ "${HADOOP_HDFS_PATH}X" == "X" ]
     then
-	echo "Must specify environment variable HADOOP_HDFS_PATH"
+	echo "Must specify environment variable HADOOP_HDFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 	exit 1
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
 	&& [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
     then
-	echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH"
+	echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 	exit 1
     fi
 
@@ -490,7 +490,7 @@ then
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
 	&& [ "${HADOOP_HDFSOVERNETWORKFS_PATH}X" == "X" ]
     then
-	echo "Must specify environment variable HADOOP_HDFSOVERNETWORKFS_PATH"
+	echo "Must specify environment variable HADOOP_HDFSOVERNETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 	exit 1
     fi
 
@@ -504,14 +504,14 @@ then
     if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
 	&& [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
     then
-	echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH"
+	echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 	exit 1
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
 	&& [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
     then
-	echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH"
+	echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 	exit 1
     fi
 
@@ -525,7 +525,7 @@ then
     if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
 	&& [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
     then
-	echo "Must specify environment variable HADOOP_MAGPIENETWORKFS_PATH"
+	echo "Must specify environment variable HADOOP_MAGPIENETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 	exit 1
 
 	firstchar="$(echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1)"
@@ -587,7 +587,7 @@ then
 
 	if [ "${HADOOP_UDA_JAR}X" == "X" ]
 	then
-	    echo "HADOOP_UDA_JAR must be set"
+	    echo "HADOOP_UDA_JAR must be set to run Hadoop w/ UDA"
 	    exit 1
 	fi
 
@@ -611,7 +611,7 @@ then
 	&& [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
 	&& [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
     then
-	echo "UDA shuffling cannot be enabled alongside Lustre Shuffling, please disable one"
+	echo "UDA shuffling cannot be enabled alongside Lustre Shuffling, please disable one of them"
 	exit 1
     fi
 fi
@@ -636,7 +636,7 @@ then
 
     if [ "${PIG_HOME}X" == "X" ]
     then
-	echo "PIG_HOME must be set"
+	echo "PIG_HOME must be set to run Pig"
 	exit 1
     fi
     
@@ -648,7 +648,7 @@ then
 
     if [ "${PIG_LOCAL_DIR}X" == "X" ]
     then
-	echo "PIG_LOCAL_DIR must be set"
+	echo "PIG_LOCAL_DIR must be set to run Pig"
 	exit 1
     fi
 
@@ -673,7 +673,7 @@ then
     then
 	if [ "${PIG_SCRIPT_PATH}X" == "X" ]
 	then
-	    echo "Script PIG_SCRIPT_PATH must be specified"
+	    echo "Script PIG_SCRIPT_PATH must be specified for PIG_MODE = ${PIG_MODE}"
 	    exit 1
 	fi
     fi
@@ -707,7 +707,7 @@ then
 
     if [ "${HBASE_HOME}X" == "X" ]
     then
-	echo "HBASE_HOME must be set"
+	echo "HBASE_HOME must be set to run Hbase"
 	exit 1
     fi
     
@@ -719,7 +719,7 @@ then
 
     if [ "${HBASE_LOCAL_DIR}X" == "X" ]
     then
-	echo "HBASE_LOCAL_DIR must be set"
+	echo "HBASE_LOCAL_DIR must be set to run Hbase"
 	exit 1
     fi
 
@@ -809,7 +809,7 @@ then
     then
 	if [ "${HBASE_SCRIPT_PATH}X" == "X" ]
 	then
-	    echo "Script HBASE_SCRIPT_PATH must be specified"
+	    echo "Script HBASE_SCRIPT_PATH must be specified for HBASE_MODE = ${HBASE_MODE}"
 	    exit 1
 	fi
 	
@@ -871,13 +871,13 @@ then
 
     if [ "${SPARK_VERSION}X" == "X" ]
     then
-	echo "SPARK_VERSION must be set"
+	echo "SPARK_VERSION must be set to run Spark"
 	exit 1
     fi
 
     if [ "${SPARK_HOME}X" == "X" ]
     then
-	echo "SPARK_HOME must be set"
+	echo "SPARK_HOME must be set to run Spark"
 	exit 1
     fi
     
@@ -889,7 +889,7 @@ then
 
     if [ "${SPARK_LOCAL_DIR}X" == "X" ]
     then
-	echo "SPARK_LOCAL_DIR must be set"
+	echo "SPARK_LOCAL_DIR must be set to run Spark"
 	exit 1
     fi
 
@@ -937,7 +937,7 @@ then
     then
 	if [ "${SPARK_SCRIPT_PATH}X" == "X" ]
 	then
-	    echo "Script SPARK_SCRIPT_PATH must be specified"
+	    echo "Script SPARK_SCRIPT_PATH must be specified for SPARK_MODE = ${SPARK_MODE}"
 	    exit 1
 	fi
 	
@@ -982,7 +982,7 @@ then
 
     if [ "${STORM_HOME}X" == "X" ]
     then
-	echo "STORM_HOME must be set"
+	echo "STORM_HOME must be set to run Storm"
 	exit 1
     fi
     
@@ -994,7 +994,7 @@ then
 
     if [ "${STORM_LOCAL_DIR}X" == "X" ]
     then
-	echo "STORM_LOCAL_DIR must be set"
+	echo "STORM_LOCAL_DIR must be set to run Storm"
 	exit 1
     fi
 
@@ -1032,7 +1032,7 @@ then
     then
 	if [ "${STORM_SCRIPT_PATH}X" == "X" ]
 	then
-	    echo "Script STORM_SCRIPT_PATH must be specified"
+	    echo "Script STORM_SCRIPT_PATH must be specified for STORM_MODE = ${STORM_MODE}"
 	    exit 1
 	fi
 	
@@ -1072,7 +1072,7 @@ then
        && [ "${ZOOKEEPER_MODE}" != "launch" ] \
        && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
-       echo "ZOOKEEPER_MODE must be set to zookeeperruok or launch or setuponly"
+       echo "ZOOKEEPER_MODE must be set to zookeeperruok, launch, or setuponly"
        exit 1
     fi
 
@@ -1087,7 +1087,7 @@ then
 
     if [ "${ZOOKEEPER_REPLICATION_COUNT}X" == "X" ]
     then
-	echo "ZOOKEEPER_REPLICATION_COUNT must be set"
+	echo "ZOOKEEPER_REPLICATION_COUNT must be set to run Zookeeper"
 	exit 1
     fi
 
@@ -1125,7 +1125,7 @@ then
 
     if [ "${ZOOKEEPER_HOME}X" == "X" ]
     then
-	echo "ZOOKEEPER_HOME must be set"
+	echo "ZOOKEEPER_HOME must be set to run Zookeeper"
 	exit 1
     fi
     
@@ -1144,13 +1144,13 @@ then
 
     if [ "${ZOOKEEPER_DATA_DIR}X" == "X" ]
     then
-	echo "ZOOKEEPER_DATA_DIR must be set"
+	echo "ZOOKEEPER_DATA_DIR must be set to run Zookeeper"
 	exit 1
     fi
 
     if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
     then
-	echo "ZOOKEEPER_LOCAL_DIR must be set"
+	echo "ZOOKEEPER_LOCAL_DIR must be set to run Zookeeper"
 	exit 1
     fi
 
