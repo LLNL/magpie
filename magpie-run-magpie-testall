@@ -37,7 +37,7 @@ then
     echo "*******************************************************"
     echo "* Running Hadoop Terasort"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort)
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]
@@ -45,7 +45,7 @@ then
     echo "*******************************************************"
     echo "* Running Pig Testpig"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-testpig)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig)
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ] \
@@ -54,7 +54,7 @@ then
     echo "*******************************************************"
     echo "* Running Hbase Performance Evaluation"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval)
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ] \
@@ -63,7 +63,7 @@ then
     echo "*******************************************************"
     echo "* Running Spark SparkPi"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi)
 fi
 
 if [ "${STORM_SETUP}" == "yes" ] \
@@ -72,7 +72,7 @@ then
     echo "*******************************************************"
     echo "* Running Storm Foobar"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount)
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
@@ -81,7 +81,7 @@ then
     echo "*******************************************************"
     echo "* Running Zookeeper Zookeeperruok"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok)
 fi
 
 exit 0

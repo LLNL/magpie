@@ -415,9 +415,9 @@ then
 	    exit 1
 	fi
 
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort cannot be found, it is required for HADOOP_MODE = ${HADOOP_MODE}"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort cannot be found, it is required for HADOOP_MODE = ${HADOOP_MODE}"
 	    exit 1
 	fi
     fi
@@ -662,9 +662,9 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "testpig" ]
     then
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-testpig" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-testpig cannot be found, it is required to run the testpig sanity test"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig cannot be found, it is required to run the testpig sanity test"
 	    exit 1
 	fi
     fi
@@ -798,9 +798,9 @@ then
 	    fi
 	fi
 
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval cannot be found, it is required to run hbase performance evaluation"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval cannot be found, it is required to run hbase performance evaluation"
 	    exit 1
 	fi
     fi
@@ -926,9 +926,9 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "sparkpi" ]
     then
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpimagpie-run-spark-sparkpi" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi cannot be found, it is required to run sparkpi test"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpimagpie-run-spark-sparkpi cannot be found, it is required to run sparkpi test"
 	    exit 1
 	fi
     fi
@@ -1015,9 +1015,9 @@ then
 	    exit 1
 	fi
 
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount cannot be found, it is required to run stormwordcount test"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount cannot be found, it is required to run stormwordcount test"
 	    exit 1
 	fi
 
@@ -1078,9 +1078,9 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] && [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
     then
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok cannot be found, it is required to run zookeeperruok test"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok cannot be found, it is required to run zookeeperruok test"
 	    exit 1
 	fi
     fi

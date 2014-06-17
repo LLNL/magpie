@@ -682,7 +682,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Testpig"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-testpig &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${PIG_MODE}" == "script" ]
@@ -716,7 +716,7 @@ then
 	    echo "* Running Terasort"
 	    echo "*******************************************************"
 
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-terasort &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "script" ]
@@ -751,7 +751,7 @@ then
 	    echo "* Running Performance Evaluation"
 	    echo "*******************************************************"
 	    
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-performanceeval &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${HBASE_MODE}" == "script" ]
@@ -786,7 +786,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Running SparkPi"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpi &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${SPARK_MODE}" == "script" ]
@@ -822,7 +822,7 @@ then
 	    echo "* Running Storm WordCount"
 	    echo "*******************************************************"
 	    
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-stormwordcount &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${STORM_MODE}" == "script" ]
@@ -855,7 +855,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Zookeeper ruok"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeperruok &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${ZOOKEEPER_MODE}" == "launch" ] \
@@ -878,7 +878,7 @@ then
 	echo "*******************************************************"
 	echo "* Running Magpie TestAll"
 	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-testall &
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-magpie-testall &
 	scriptpid=$!
 	Magpie_wait_script ${scriptpid}
     fi
