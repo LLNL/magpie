@@ -133,7 +133,12 @@ then
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
-	    ${hadoopsetupscriptprefix}/start-dfs.sh 
+	    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
+	    then
+		startdfsoptions="-upgrade"
+	    fi
+
+	    ${hadoopsetupscriptprefix}/start-dfs.sh ${startdfsoptions}
 	fi
 	
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
@@ -737,6 +742,14 @@ then
 	    hadoopsleepamount=`expr ${hadoopsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
 	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
 	    sleep ${hadoopsleepseconds}
+	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     fi
 elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]

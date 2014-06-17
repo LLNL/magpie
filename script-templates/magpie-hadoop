@@ -108,6 +108,10 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #                 'master' node and interact with Hadoop directly
 #                 (e.g. bin/hadoop ...)
 #
+# "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
+#                 used when you are switching to a newer HDFS.  Only
+#                 works with HDFS versions >= 2.2.0.
+#
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.
 #
