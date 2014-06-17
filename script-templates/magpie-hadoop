@@ -109,8 +109,12 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #                 (e.g. bin/hadoop ...)
 #
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
-#                 used when you are switching to a newer HDFS.  Only
-#                 works with HDFS versions >= 2.2.0.
+#                 used when you are switching to a newer Hadoop
+#                 version and the HDFS version would be inconsistent
+#                 without upgrading.  Only works with HDFS versions >=
+#                 2.2.0.
+#
+#		  Beware, once you upgrade it'll be difficult to rollback.
 #
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.

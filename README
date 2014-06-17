@@ -1,7 +1,7 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated April 8th, 2014
+Updated June 17th, 2014
 chu11@llnl.gov
 
 What is this project
@@ -222,9 +222,21 @@ A: The scripts in this package default to HDFS replication of 3 when
    datanode were to die (i.e. a node crashes) Hadoop has the ability
    to survive the crash just like in a traditional Hadoop cluster.
 
-   The trade-off is space and HDFS writes.  With HDFS replication of
-   1, you can save space, but replication also increases the time for
-   writes.
+   The trade-off is space and HDFS writes vs HDFS reads.  With lower
+   HDFS replication (lowest is 1) you save space and decrease time for
+   writes.  With increased HDFS replication, you perform better on
+   reads.
+
+Q: What if I need to upgrade the HDFS version I'm using.
+
+A: If you want to use a different Hadoop version than what you started
+   with, you will have to go through the normal upgrade or rollback
+   precedures for Hadoop.
+
+   With Hadoop versions 2.2.0 and newer, there is a seemless upgrade
+   path done by specifying "-upgrade" when running the "start-dfs.sh"
+   script.  This is implemented in the "upgradehdfs" option for
+   HADOOP_MODE in the launch scripts.
 
 Pro vs Con of HDFS over Lustre/NetworkFS vs. Posix FS (e.g. rawnetowrkfs, etc.)
 -------------------------------------------------------------------------------
@@ -703,8 +715,9 @@ Spark
   For versions < 1.0.0, patch can be applied directly to startup
   scripts, not needing a recompilation of source.
 
-  For versions >= 1.0.0, patch for startup scripts and code is
-  required, a recompilation of source is required.
+  For atleast Spark version 1.0.0 (possibly versions newer than it),
+  patch for startup scripts and code is required, a recompilation of
+  source is required.
 
 - Patch to support non-ssh remote execution may be needed in some
   environments.  Patch can be applied directly to startup scripts, not
@@ -789,12 +802,13 @@ and
 
 https://issues.apache.org/jira/browse/SPARK-1559
 
-For Spark >= 1.0.0, a patch is required to support the
-spark-defaults.conf file in the SPARK_CONF_DIR directory.  A patch for
-that is provided in the patches directory.  It is being monitored via:
+For atleast Spark version 1.0.0 (possibly versions newer than it), a
+patch is required to support the spark-defaults.conf file in the
+SPARK_CONF_DIR directory.  A patch for that is provided in the patches
+directory.  It is being monitored via:
 
 https://issues.apache.org/jira/browse/SPARK-2116
-(Alternate approach at https://issues.apache.org/jira/browse/SPARK-2058 may suffice)
+(Alternate approach at https://issues.apache.org/jira/browse/SPARK-2058 may suffice if it is accepted)
 
 Patch - Alternate Log Dir & Conf Dir for Storm
 ----------------------------------------------
@@ -854,21 +868,25 @@ Testing
 
 While I did some testing w/ Hadoop 1.2.1, b/c of the problem mentioned
 above (HDFS-1835), I did most development and testing against Hadoop
-2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.
+2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.  Nominal
+testing was done with Hadoop 2.4.0.
 
-Pig support was added/tested against version 0.12.0.
+Pig support was added/tested against version 0.12.0.  Nominal
+testing was done with Pig 0.12.1.
 
-Zookeeper support was added/tested against version 3.4.5.
+Zookeeper support was added/tested against version 3.4.5.  Nominal
+testing was done with Zookeeper 3.4.6.
 
 UDA support was added/tested against uda-plugin 3.3.2-0 with Hadoop
 2.2.0 and an appropriate patch for MAPREDUCE-5329.
 
 Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
-tested against HDFS based file systems.
+tested against HDFS based file systems.  Nominal testing was done with
+Hbase 0.98.3-hadoop2.
 
-Spark was tested against spark-0.9.1 and spark-1.0.0.
+Spark was added/tested against spark-0.9.1 and spark-1.0.0.
 
-Storm was tested against storm-0.9.2 (trunk build).
+Storm was added/tested against storm-0.9.2 (trunk build).
 
 Contributions
 -------------
