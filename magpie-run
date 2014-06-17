@@ -258,13 +258,13 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-    echo "*   cd $HADOOP_HOME"
     if echo $SHELL | grep -q csh
     then
 	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
     else
 	echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
     fi
+    echo "*   cd $HADOOP_HOME"
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
     then
 	echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
