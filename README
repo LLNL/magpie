@@ -725,7 +725,8 @@ Spark
 
 Storm
 - Patch to support alternate config file directories and log file
-  directories is required.  Storm requires a recompilation of source.
+  directories is required atleast through Storm 0.9.2.  Storm requires
+  a recompilation of source.
 
 Pig
 - No patching necessary.
@@ -821,10 +822,10 @@ It is currently being tracked in the Jira:
 
 https://issues.apache.org/jira/browse/STORM-279
 
-In addition, Storm does not support alternate config file directories
-other than its default of STORM_HOME/conf.  Another patch is available
-in the 'patches' directory to handle this.  It is currently being
-tracked by:
+In addition, Storm (up to atleast Storm 0.9.2) does not support
+alternate config file directories other than its default of
+STORM_HOME/conf.  Another patch is available in the 'patches'
+directory to handle this.  It is currently being tracked by:
 
 https://issues.apache.org/jira/browse/STORM-320
 
