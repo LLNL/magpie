@@ -10,14 +10,9 @@ Hadoop
 Ganglia
 - if user wants aid in monitoring
 
-Setup-script
-- generate script that user can run to setup environment before running job
-  - e.g. set HADOOP_CONF_DIR, HADOOP_HOME, etc.
-
 Hbase
 - thrift server?
 - multiple masters
-- region merge script
 
 Spark
 - multiple masters
