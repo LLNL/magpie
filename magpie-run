@@ -47,6 +47,34 @@ echo "* Job ID: ${MAGPIE_JOB_ID}"
 echo "*"
 echo "*******************************************************"
 
+if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+then
+    if [ -f "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}" ]
+    then
+	rm -f ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
+    
+    touch ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    chmod 700 ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+    echo "#!${SHELL}" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+    echo "# Common environment variables for Job = ${MAGPIE_JOB_NAME}, Job ID = ${MAGPIE_JOB_ID}" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    if [ "${JAVA_HOME}X" != "X" ]
+    then
+	if echo $SHELL | grep -q csh
+	then
+	    echo "setenv JAVA_HOME \"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+	    echo "export JAVA_HOME=\"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
+fi
+
 #
 # Setup ZooKeeper
 #
@@ -110,8 +138,31 @@ then
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
     fi
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	echo "*"
+	echo "* If running interactively, sourcing"
+	echo "*"
+	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	echo "*"
+	echo "* will set most common environment variables for your job."
+    fi
     echo "*" 
     echo "*******************************************************"
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	if echo $SHELL | grep -q csh
+	then
+	    echo "setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+	    echo "export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
+    
     # Nothing to check for Zookeeper, setup always completes
     zookeepersetupcomplete=1
 else
@@ -309,8 +360,44 @@ then
 	    echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
 	fi
     fi
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	echo "*"
+	echo "* If running interactively, sourcing"
+	echo "*"
+	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	echo "*"
+	echo "* will set most common environment variables for your job."
+    fi
     echo "*" 
     echo "*******************************************************"
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	if echo $SHELL | grep -q csh
+	then
+	    echo "setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "setenv HADOOP_HOME \"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+	    echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+	if [ "${PIG_SETUP}" == "yes" ]
+	then
+	    if echo $SHELL | grep -q csh
+	    then
+		echo "setenv PIG_HOME \"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    else
+		echo "export PIG_HOME=\"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export PIG_CONF_DIR=\"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
 
     # Ensure namenode isn't in safe mode.
     #
@@ -452,8 +539,31 @@ then
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export HBASE_HOME=\"${HBASE_HOME}\""
     fi
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	echo "*"
+	echo "* If running interactively, sourcing"
+	echo "*"
+	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	echo "*"
+	echo "* will set most common environment variables for your job."
+    fi
     echo "*" 
     echo "*******************************************************"
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	if echo $SHELL | grep -q csh
+	then
+	    echo "setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "setenv HBASE_HOME \"${HBASE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+	    echo "export HBASE_HOME=\"${HBASE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
 
     # Nothing to check for Hbase, setup always completes
     hbasesetupcomplete=1
@@ -551,8 +661,32 @@ then
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
     fi
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	echo "*"
+	echo "* If running interactively, sourcing"
+	echo "*"
+	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	echo "*"
+	echo "* will set most common environment variables for your job."
+    fi
     echo "*" 
     echo "*******************************************************"
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	if echo $SHELL | grep -q csh
+	then
+	    echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "setenv SPARK_HOME \"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+	    echo "export SPARK_HOME=\"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
+
     # Nothing to check for Spark, setup always completes
     sparksetupcomplete=1
 else
@@ -641,8 +775,32 @@ then
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export STORM_HOME=\"${STORM_HOME}\""
     fi
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	echo "*"
+	echo "* If running interactively, sourcing"
+	echo "*"
+	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	echo "*"
+	echo "* will set most common environment variables for your job."
+    fi
     echo "*" 
     echo "*******************************************************"
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	if echo $SHELL | grep -q csh
+	then
+	    echo "setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "setenv STORM_HOME \"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+	    echo "export STORM_HOME=\"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    echo "export STORM_CONF_DIR=\"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
+
     # Nothing to check for Storm, setup always completes
     stormsetupcomplete=1
 else

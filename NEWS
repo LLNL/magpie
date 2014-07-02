@@ -1,3 +1,7 @@
+magpie 1.45
+-----------
+Support MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT option.
+
 magpie 1.44
 -----------
 Support 'upgradehdfs' HADOOP_MODE to update HDFS as you move to newer
