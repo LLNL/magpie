@@ -839,7 +839,8 @@ mvn clean install -DskipTests=true
 cd storm-dist/binary
 mvn package
 
-should net you a binary package with everything you need.
+should net you a binary package with everything you need in the target
+directory.
 
 Patch - Reducer Bug in Pig
 --------------------------
@@ -887,7 +888,7 @@ Hbase 0.98.3-hadoop2.
 
 Spark was added/tested against spark-0.9.1 and spark-1.0.0.
 
-Storm was added/tested against storm-0.9.2 (trunk build).
+Storm was added/tested against storm-0.9.2.
 
 Contributions
 -------------

@@ -2,6 +2,7 @@ magpie 1.44
 -----------
 Support 'upgradehdfs' HADOOP_MODE to update HDFS as you move to newer
  versions.
+Support Storm 0.9.2.
 
 magpie 1.43
 -----------
