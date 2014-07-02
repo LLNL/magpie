@@ -79,6 +79,8 @@ fi
 # Setup ZooKeeper
 #
 
+totalsleepwait=0
+
 # Zookeeper setup comes first, as other things like Hbase & Storm require it
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
@@ -96,6 +98,7 @@ then
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Zookeeper daemons to setup"
 	sleep ${sleepwait}
+	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
     fi
 
     echo "*******************************************************"
@@ -210,6 +213,7 @@ then
 	fi
 	echo "Waiting ${sleepwait} seconds to allows Hadoop daemons to setup"
 	sleep ${sleepwait}
+	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
     fi
 
     echo "*******************************************************"
@@ -408,7 +412,13 @@ then
 	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ])
     then
-	namenodemaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${sleepwait}`
+	namenodemaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${totalsleepwait}`
+
+	if [ "${namenodemaxwaitseconds}" -lt 30 ]
+	then
+	    namenodemaxwaitseconds=30
+	fi
+
 	namenodemaxwaittimes=`expr ${namenodemaxwaitseconds} \/ 30`
 	
 	cd ${HADOOP_HOME}
@@ -475,6 +485,7 @@ then
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Hbase daemons to setup"
 	sleep ${sleepwait}
+	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
     fi
 
     echo "*******************************************************"
@@ -592,6 +603,7 @@ then
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
 	sleep ${sleepwait}
+	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
     fi
 
     echo "*******************************************************"
@@ -712,6 +724,7 @@ then
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Storm daemons to setup"
 	sleep ${sleepwait}
+	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
     fi
 
     echo "*******************************************************"
