@@ -958,9 +958,9 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "sparkpi" ]
     then
-	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpimagpie-run-spark-sparkpi" ]
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi" ]
 	then
-	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-sparkpimagpie-run-spark-sparkpi cannot be found, it is required to run sparkpi test"
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi cannot be found, it is required to run sparkpi test"
 	    exit 1
 	fi
     fi
