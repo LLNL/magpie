@@ -27,7 +27,7 @@ export HADOOP_HEAPSIZE=HADOOP_DAEMON_HEAP_MAX
 # export HADOOP_OPTS=-server
 
 # Command specific options appended to HADOOP_OPTS when specified
-export HADOOP_NAMENODE_OPTS="-Dcom.sun.management.jmxremote $HADOOP_NAMENODE_OPTS"
+export HADOOP_NAMENODE_OPTS="-Dcom.sun.management.jmxremote -XmxHADOOP_NAMENODE_HEAP_MAXm $HADOOP_NAMENODE_OPTS"
 export HADOOP_SECONDARYNAMENODE_OPTS="-Dcom.sun.management.jmxremote $HADOOP_SECONDARYNAMENODE_OPTS"
 export HADOOP_DATANODE_OPTS="-Dcom.sun.management.jmxremote $HADOOP_DATANODE_OPTS"
 export HADOOP_BALANCER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_BALANCER_OPTS"

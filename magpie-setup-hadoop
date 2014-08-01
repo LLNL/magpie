@@ -373,6 +373,13 @@ else
     hadoopdaemonheapmax="1000"
 fi 
 
+if [ "${HADOOP_NAMENODE_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hadoopnamenodedaemonheapmax="${HADOOP_NAMENODE_DAEMON_HEAP_MAX}"
+else
+    hadoopnamenodedaemonheapmax="${hadoopdaemonheapmax}"
+fi 
+
 if [ "${HADOOP_COMPRESSION}X" != "X" ]
 then
     if [ "${HADOOP_COMPRESSION}" == "yes" ]
@@ -787,6 +794,7 @@ then
 
     sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+	-e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	-e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
 	-e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \

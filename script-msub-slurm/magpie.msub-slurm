@@ -281,7 +281,8 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # Daemon Heap Max
 #
 # Heap maximum for Hadoop daemons (i.e. Resource Manger, NodeManager,
-# etc.), specified in megs.
+# DataNode, History Server, etc.), specified in megs.  Special case
+# for Namenode, see below.
 #
 # If not specified, defaults to Hadoop default of 1000
 #
@@ -289,6 +290,18 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # errors, or perhaps have a lot of cores on a node.
 #
 # export HADOOP_DAEMON_HEAP_MAX=2000
+
+# Daemon Heap Max
+#
+# Heap maximum for Hadoop Namenode daemons specified in megs.
+#
+# If not specified, defaults to HADOOP_DAEMON_HEAP_MAX above.
+#
+# Unlike most Hadoop daemons, namenode may need more memory if there
+# are a very large number of files in your HDFS setup.  A general rule
+# of thumb is a 1G heap for each 100T of data.
+#
+# export HADOOP_NAMENODE_DAEMON_HEAP_MAX=2000
 
 # Environment Extra
 #

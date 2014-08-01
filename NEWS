@@ -1,6 +1,7 @@
 magpie 1.45
 -----------
 Support MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT option.
+Support HADOOP_NAMENODE_DAEMON_HEAP_MAX option.
 
 magpie 1.44
 -----------
