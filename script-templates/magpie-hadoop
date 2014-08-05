@@ -71,7 +71,7 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #
 # export HADOOP_DAEMON_HEAP_MAX=2000
 
-# Daemon Heap Max
+# Daemon Namenode Heap Max
 #
 # Heap maximum for Hadoop Namenode daemons specified in megs.
 #
