@@ -1209,7 +1209,7 @@ export STORM_SETUP=no
 
 # Version
 #
-export STORM_VERSION="0.9.1-incubating"
+export STORM_VERSION="0.9.2-incubating"
 
 # Path to your Storm build/binaries
 #
