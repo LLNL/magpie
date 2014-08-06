@@ -74,9 +74,8 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 #              Useful for making sure things are setup the way you
 #              like.
 #
-#              Configure run with HBASE_PERFORMANCEEVAL_MODE,
-#              HBASE_PERFORMANCEEVAL_ROW_COUNT, and
-#              HBASE_PERFORMANCEEVAL_CLIENT_COUNT.
+#              There are additional configuration options for this
+#              example listed below.
 #
 # "script" - execute a script that lists all of your Hbase jobs.  Be
 #            sure to set HBASE_SCRIPT_PATH to your script.

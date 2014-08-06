@@ -318,8 +318,8 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
 #
-#              Configure run with HADOOP_TERASORT_SIZE, HADOOP_TERASORT_REDUCER_COUNT, and
-#              HADOOP_TERASORT_CLEAR_CACHE
+#              There are additional configuration options for this
+#              example listed below.
 #
 # "script" - execute a script that lists all of your Hadoop jobs.  Be
 #            sure to set HADOOP_SCRIPT_PATH to your script.
@@ -905,9 +905,8 @@ export HBASE_LOCAL_DIR="/tmp/username/hbase"
 #              Useful for making sure things are setup the way you
 #              like.
 #
-#              Configure run with HBASE_PERFORMANCEEVAL_MODE,
-#              HBASE_PERFORMANCEEVAL_ROW_COUNT, and
-#              HBASE_PERFORMANCEEVAL_CLIENT_COUNT.
+#              There are additional configuration options for this
+#              example listed below.
 #
 # "script" - execute a script that lists all of your Hbase jobs.  Be
 #            sure to set HBASE_SCRIPT_PATH to your script.
@@ -1096,6 +1095,9 @@ export SPARK_LOCAL_DIR="/tmp/username/spark"
 #
 # "sparkpi" - run sparkpi example. Useful for making sure things are
 #             setup the way you like.
+#
+#             There are additional configuration options for this
+#             example listed below.
 #
 # "script" - execute a script that lists all of your Spark jobs.  Be
 #            sure to set SPARK_SCRIPT_PATH to your script.
