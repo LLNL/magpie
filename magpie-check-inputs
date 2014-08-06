@@ -948,11 +948,12 @@ then
     fi
 
     if [ "${SPARK_MODE}" != "sparkpi" ] \
+	&& [ "${SPARK_MODE}" != "sparkwordcount" ] \
 	&& [ "${SPARK_MODE}" != "script" ] \
 	&& [ "${SPARK_MODE}" != "interactive" ] \
 	&& [ "${SPARK_MODE}" != "setuponly" ]
     then
-	echo "SPARK_MODE must be set to sparkpi, script, interactive, setuponly"
+	echo "SPARK_MODE must be set to sparkpi, sparkwordcount, script, interactive, setuponly"
 	exit 1
     fi
 
@@ -962,6 +963,63 @@ then
 	then
 	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi cannot be found, it is required to run sparkpi test"
 	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "sparkwordcount" ]
+    then
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkwordcount" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkwordcount cannot be found, it is required to run sparkwordcount test"
+	    exit 1
+	fi
+
+	if [ "${SPARK_SPARKWORDCOUNT_FILE}X" == "X" ]
+	then
+	    echo "File SPARK_SPARKWORDCOUNT_FILE must be specified for SPARK_MODE = ${SPARK_MODE}"
+	    exit 1
+	fi
+
+	if ! echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^[a-zA-Z0-9_]+:\/\/"
+	then
+	    echo "File SPARK_SPARKWORDCOUNT_FILE does not specify scheme via scheme:// expression"
+	    exit 1
+	fi
+
+	if [ "${SPARK_SPARKWORDCOUNT_COPY_IN_FILE}X" != "X" ]
+	then
+	    if ! echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^[a-zA-Z0-9_]+:\/\/"
+	    then
+		echo "File SPARK_SPARKWORDCOUNT_COPY_IN_FILE does not specify scheme via scheme:// expression"
+		exit 1
+	    fi
+
+	    # At the moment only hdfs:// and file:// are handled
+
+	    if ! echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^hdfs:\/\/" \
+		&& ! echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^file:\/\/" 
+	    then
+		echo "File SPARK_SPARKWORDCOUNT_COPY_IN_FILE can only handle hdfs:// and file://"
+		exit 1
+	    fi
+
+	    if echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^hdfs:\/\/"
+	    then
+		if [ "${HADOOP_HOME}X" == "X" ]
+		then
+		    echo "Cannot copy in file to SPARK_SPARKWORDCOUNT_FILE without HADOOP_HOME set"
+		    exit 1
+		fi
+	    fi
+
+	    if echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^hdfs:\/\/"
+	    then
+		if [ "${HADOOP_HOME}X" == "X" ]
+		then
+		    echo "Cannot copy file from SPARK_SPARKWORDCOUNT_COPY_IN_FILE without HADOOP_HOME set"
+		    exit 1
+		fi
+	    fi
 	fi
     fi
 
@@ -981,6 +1039,7 @@ then
     fi
 
     if ([ "${SPARK_MODE}" == "sparkpi" ] \
+	|| [ "${SPARK_MODE}" == "sparkwordcount" ] \
 	|| [ "${SPARK_MODE}" == "script" ]) \
 	&& [ "${HADOOP_SETUP}" == "yes" ] \
 	&& [ "${HADOOP_MODE}" == "setuponly" ]

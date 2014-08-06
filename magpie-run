@@ -973,6 +973,14 @@ then
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
+	elif [ "${SPARK_MODE}" == "sparkwordcount" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running SparkWordCount"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkwordcount &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	elif [ "${SPARK_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"

@@ -333,6 +333,12 @@ export SPARK_LOCAL_DIR="/tmp/username/spark"
 #             There are additional configuration options for this
 #             example listed below.
 #
+# "sparkwordcount" - run wordcount example.  Useful for making sure
+#                    things are setup the way you like.
+#
+#                    See below for additional required configuration
+#                    for this example.
+#
 # "script" - execute a script that lists all of your Spark jobs.  Be
 #            sure to set SPARK_SCRIPT_PATH to your script.
 #
@@ -422,6 +428,35 @@ export SPARK_MODE="sparkpi"
 # If not specified, equals number of nodes.
 # 
 # export SPARK_SPARKPI_SLICES=4
+
+############################################################################
+# Spark SparkWordCount Configuration
+############################################################################
+
+# SparkWordCount File
+#
+# Specify the file to do the word count on.  Specify the scheme, such
+# as hdfs:// or file://, appropriately.
+# 
+# export SPARK_SPARKWORDCOUNT_FILE="/mywordcountfile"
+
+# SparkWordCount Copy In File
+#
+# In some cases, a file must be copied in before it can be used.  Most
+# notably, this can be the case if the file is not yet in HDFS.
+#
+# If specified below, the file will be copied to the location
+# specified by SPARK_SPARKWORDCOUNT_FILE before the word count is
+# executed.  
+#
+# Specify the scheme appropriately.  At this moment, the schemes of
+# file:// and hdfs:// are recognized for this option.
+#
+# Note that this is not required.  The file could be copied in any
+# number of other ways, such as through a previous job or through a
+# script specified via MAGPIE_PRE_JOB_RUN.
+#
+# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="/mywordcountfile"
 
 ############################################################################
 # Spark Script Configurations
