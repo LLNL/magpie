@@ -112,8 +112,6 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
-	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
-	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	cat magpie-hbase >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
@@ -154,8 +152,6 @@ all:
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
-	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
-	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
@@ -299,8 +295,6 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
-	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
-	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	cat magpie-hbase >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
@@ -341,8 +335,6 @@ all:
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
-	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
-	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs

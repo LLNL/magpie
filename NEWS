@@ -1,3 +1,9 @@
+magpie 1.46
+-----------
+Various default submission file template cleanup.
+- Remove Hadoop job info from Hbase & Spark + HDFS files
+- Default MAGPIE_JOB_TYPE is now 'script'
+
 magpie 1.45
 -----------
 Support MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT option.
