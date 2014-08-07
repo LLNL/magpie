@@ -9,7 +9,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
-	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch
+	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch
+	echo "" >> ../script-sbatch/magpie.sbatch
+	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch
+	echo "" >> ../script-sbatch/magpie.sbatch
+	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
 	cat magpie-hadoop-mode-details >> ../script-sbatch/magpie.sbatch
 	echo "" >> ../script-sbatch/magpie.sbatch
@@ -37,7 +41,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-hadoop
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop
-	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch-hadoop
+	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-hadoop
+	echo "" >> ../script-sbatch/magpie.sbatch-hadoop
+	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-hadoop
+	echo "" >> ../script-sbatch/magpie.sbatch-hadoop
+	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-hadoop
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop
 	cat magpie-hadoop-mode-details >> ../script-sbatch/magpie.sbatch-hadoop
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop
@@ -54,7 +62,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
-	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
+	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
+	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
+	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
+	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
+	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
 	cat magpie-hadoop-mode-details >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-with-uda
@@ -73,7 +85,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
-	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
+	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
+	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
+	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
+	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
+	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
 	cat magpie-pig >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
 	echo "" >> ../script-sbatch/magpie.sbatch-hadoop-and-pig
@@ -92,7 +108,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
-	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
+	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
+	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
+	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	cat magpie-hbase >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-hbase-with-hdfs
@@ -131,7 +151,11 @@ all:
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	cat magpie-general-configuration >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
-	cat magpie-hadoop >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-hadoop-core >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-hadoop-job >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
+	cat magpie-hadoop-filesystem >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	cat magpie-spark >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
 	echo "" >> ../script-sbatch/magpie.sbatch-spark-with-hdfs
@@ -170,7 +194,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
-	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm
+	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
 	cat magpie-hadoop-mode-details >> ../script-msub-slurm/magpie.msub-slurm
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm
@@ -198,7 +226,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
-	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm-hadoop
+	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-hadoop
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
+	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-hadoop
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
+	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	cat magpie-hadoop-mode-details >> ../script-msub-slurm/magpie.msub-slurm-hadoop
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop
@@ -215,7 +247,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
-	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
+	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
+	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
+	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	cat magpie-hadoop-mode-details >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda
@@ -234,7 +270,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
-	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
+	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
+	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
+	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	cat magpie-pig >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig
@@ -253,7 +293,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
-	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
+	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	cat magpie-hbase >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs
@@ -292,7 +336,11 @@ all:
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	cat magpie-general-configuration >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
-	cat magpie-hadoop >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-hadoop-core >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-hadoop-job >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
+	cat magpie-hadoop-filesystem >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	cat magpie-spark >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
 	echo "" >> ../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs
