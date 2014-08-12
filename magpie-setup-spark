@@ -287,11 +287,16 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    sparkenvsh=${sparkconffiledir}/spark-env-post-1-0.sh
+    pre_sparkenvsh=${sparkconffiledir}/spark-env-post-1-0.sh
 else
-    sparkenvsh=${sparkconffiledir}/spark-env-pre-1-0.sh
+    pre_sparkenvsh=${sparkconffiledir}/spark-env-pre-1-0.sh
 fi
-sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
+pre_sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
+pre_log4jproperties=${sparkconffiledir}/spark.log4j.properties
+
+post_sparkenvsh=${SPARK_CONF_DIR}/spark-env.sh
+post_sparkdefaultsconf=${SPARK_CONF_DIR}/spark-defaults.conf
+post_log4jproperties=${SPARK_CONF_DIR}/log4j.properties
 
 #
 # Setup Spark configuration files and environment files
@@ -301,7 +306,10 @@ javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 sparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
 
-sed -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
+cp ${pre_sparkenvsh} ${post_sparkenvsh}
+
+sed -i \
+    -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
     -e "s/SPARKHOME/${sparkhomesubst}/g" \
     -e "s/SPARK_DAEMON_HEAP_MAX/${sparkdaemonheapmax}/g" \
     -e "s/SPARKWORKERCORES/${workercores}/g" \
@@ -312,9 +320,9 @@ sed -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
     -e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
     -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
     -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
-    $sparkenvsh > ${SPARK_CONF_DIR}/spark-env.sh
+    ${post_sparkenvsh}
 
-echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
 
 # Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
 # afterwards set in spark-defaults.conf
@@ -323,12 +331,12 @@ if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
 then 
     if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
     then
-	echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+	echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH}\"" >> ${post_sparkenvsh}
     fi
 
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
     then
-	echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+	echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${post_sparkenvsh}
     fi
 fi
 
@@ -347,31 +355,31 @@ fi
 # unless user set something in it of their own volition.
 if [ "${SPARK_JAVA_OPTS}X" != "X" ]
 then 
-    echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${post_sparkenvsh}
 fi
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
-    echo "export SPARK_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    echo "export SPARK_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_sparkenvsh}
 fi
 if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
 then
-    echo "export SPARK_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    echo "export SPARK_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_sparkenvsh}
 fi
 
 # Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
 # - spark.local.dir for < 1.0.0 set above
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
+    echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
 fi
 
 if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXTRA_PATH} ]
 then
-    cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${SPARK_CONF_DIR}/spark-env.sh
+    cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${post_sparkenvsh}
 else
-    echo "ulimit -n ${openfilescount}" >> ${SPARK_CONF_DIR}/spark-env.sh
-    echo "ulimit -u ${userprocessescount}" >> ${SPARK_CONF_DIR}/spark-env.sh
+    echo "ulimit -n ${openfilescount}" >> ${post_sparkenvsh}
+    echo "ulimit -u ${userprocessescount}" >> ${post_sparkenvsh}
 fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
@@ -386,7 +394,10 @@ then
 	sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
-    sed -e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
+    cp ${pre_sparkdefaultsconf} ${post_sparkdefaultsconf}
+
+    sed -i \
+	-e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
 	-e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
 	-e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
 	-e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
@@ -396,10 +407,10 @@ then
 	-e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
 	-e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
 	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
-	$sparkdefaultsconf > ${SPARK_CONF_DIR}/spark-defaults.conf
+	${post_sparkdefaultsconf}
     
 fi
 
-cat ${sparkconffiledir}/spark.log4j.properties > ${SPARK_CONF_DIR}/log4j.properties
+cp ${pre_log4jproperties} ${post_log4jproperties}
 
 exit 0

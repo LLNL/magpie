@@ -183,14 +183,22 @@ else
     hbaseconffiledir=${HBASE_CONF_FILES}
 fi
 
-hbasesitexml=${hbaseconffiledir}/hbase-site.xml
-hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
+pre_hbasesitexml=${hbaseconffiledir}/hbase-site.xml
+pre_hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
+pre_log4jproperties=${hbaseconffiledir}/hbase.log4j.properties
+
+post_hbasesitexml=${HBASE_CONF_DIR}/hbase-site.xml
+post_hbaseenvsh=${HBASE_CONF_DIR}/hbase-env.sh
+post_log4jproperties=${HBASE_CONF_DIR}/log4j.properties
 
 #
 # Setup Hbase configuration files and environment files
 #
 
-sed -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
+cp ${pre_hbasesitexml} ${post_hbasesitexml}
+
+sed -i \
+    -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
     -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
     -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
     -e "s/HBASEREGIONSERVERHANDLERCOUNT/${hbaseregionserverhandlercount}/g" \
@@ -199,37 +207,40 @@ sed -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
     -e "s/HBASEREGIONSERVERPORT/${HBASE_REGIONSERVER_PORT}/g" \
     -e "s/HBASEREGIONSERVERINFOPORT/${HBASE_REGIONSERVER_INFO_PORT}/g" \
     -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
-    $hbasesitexml > ${HBASE_CONF_DIR}/hbase-site.xml
+    ${post_hbasesitexml}
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-sed -e "s/HBASE_JAVA_HOME/${javahomesubst}/g" \
+cp ${pre_hbaseenvsh} ${post_hbaseenvsh}
+
+sed -i \
+    -e "s/HBASE_JAVA_HOME/${javahomesubst}/g" \
     -e "s/HBASEMASTERDAEMONHEAP/${hbasemasterdaemonheapmax}/g" \
     -e "s/HBASEREGIONSERVERDAEMONHEAP/${hbaseregionserverdaemonheapmax}/g" \
-    $hbaseenvsh > ${HBASE_CONF_DIR}/hbase-env.sh
+    ${post_hbaseenvsh}
 
-echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
 
-echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${post_hbaseenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
-    echo "export HBASE_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+    echo "export HBASE_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hbaseenvsh}
 fi
 if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
 then
-    echo "export HBASE_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${HBASE_CONF_DIR}/hbase-env.sh
+    echo "export HBASE_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hbaseenvsh}
 fi
 
 if [ "${HBASE_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HBASE_ENVIRONMENT_EXTRA_PATH} ]
 then
-    cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${HBASE_CONF_DIR}/hbase-env.sh
+    cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${post_hbaseenvsh}
 else
-    echo "ulimit -n ${openfilescount}" >> ${HBASE_CONF_DIR}/hbase-env.sh
-    echo "ulimit -u ${userprocessescount}" >> ${HBASE_CONF_DIR}/hbase-env.sh
+    echo "ulimit -n ${openfilescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -u ${userprocessescount}" >> ${post_hbaseenvsh}
 fi
 
-cat ${hbaseconffiledir}/hbase.log4j.properties > ${HBASE_CONF_DIR}/log4j.properties
+cp ${pre_log4jproperties} ${post_log4jproperties}
 
 # Need a copy of hdfs-site.xml for client defaults
 cp ${HADOOP_CONF_DIR}/hdfs-site.xml ${HBASE_CONF_DIR}/hdfs-site.xml

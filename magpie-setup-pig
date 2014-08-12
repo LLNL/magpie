@@ -46,15 +46,19 @@ else
     pigconffiledir=${PIG_CONF_FILES}
 fi
 
-pigproperties=${pigconffiledir}/pig.properties
+pre_pigproperties=${pigconffiledir}/pig.properties
+pre_log4jproperties=${pigconffiledir}/pig.log4j.properties
+
+post_pigproperties=${PIG_CONF_DIR}/pig.properties
+post_log4jproperties=${PIG_CONF_DIR}/log4j.properties
 
 #
 # Setup Pig configuration files and environment files
 #
 
 # achu: nothing to sed right now, maybe later
-cat $pigproperties > ${PIG_CONF_DIR}/pig.properties
+cp ${pre_pigproperties} ${post_pigproperties}
     
-cat ${pigconffiledir}/pig.log4j.properties > ${PIG_CONF_DIR}/log4j.properties
+cp ${pre_log4jproperties} ${post_log4jproperties}
 
 exit 0

@@ -92,8 +92,11 @@ else
     stormconffiledir=${STORM_CONF_FILES}
 fi
 
-stormyaml=${stormconffiledir}/storm.yaml
-stormenvsh=${stormconffiledir}/storm-env.sh
+pre_stormyaml=${stormconffiledir}/storm.yaml
+pre_stormenvsh=${stormconffiledir}/storm-env.sh
+
+post_stormyaml=${STORM_CONF_DIR}/storm.yaml
+post_stormenvsh=${STORM_CONF_DIR}/storm-env.sh
 
 #
 # Setup Storm configuration files and environment files
@@ -101,7 +104,10 @@ stormenvsh=${stormconffiledir}/storm-env.sh
 
 stormlocaldirsubst=`echo "${stormlocaldir}" | sed "s/\\//\\\\\\\\\//g"`
 
-sed -e "s/NIMBUSHOST/${STORM_MASTER_NODE}/g" \
+cp ${pre_stormyaml} ${post_stormyaml}
+
+sed -i \
+    -e "s/NIMBUSHOST/${STORM_MASTER_NODE}/g" \
     -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
     -e "s/STORMZOOKEEPERPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
     -e "s/STORMUIPORT/${STORM_UI_PORT}/g" \
@@ -111,30 +117,30 @@ sed -e "s/NIMBUSHOST/${STORM_MASTER_NODE}/g" \
     -e "s/NIMBUSTHRIFTPORT/${STORM_THRIFT_PORT}/g" \
     -e "s/STORM_DAEMON_HEAP_MAX/${stormdaemonheapmax}/g" \
     -e "s/STORM_WORKER_HEAP_MAX/${stormworkerheapmax}/g" \
-    $stormyaml > ${STORM_CONF_DIR}/storm.yaml
+    ${post_stormyaml}
 
 # Add Zookeeper servers to conf
 
-echo "storm.zookeeper.servers:" >> ${STORM_CONF_DIR}/storm.yaml
+echo "storm.zookeeper.servers:" >> ${post_stormyaml}
 
 zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 servercount=1
 for zookeepernode in ${zookeepernodes}
 do
-    echo "     - \"${zookeepernode}\"" >> ${STORM_CONF_DIR}/storm.yaml
+    echo "     - \"${zookeepernode}\"" >> ${post_stormyaml}
     servercount=$((servercount+1))
 done
 
-echo "" >> ${STORM_CONF_DIR}/storm.yaml
+echo "" >> ${post_stormyaml}
 
 # Add slots to conf
 
-echo "supervisor.slots.ports:" >> ${STORM_CONF_DIR}/storm.yaml
+echo "supervisor.slots.ports:" >> ${post_stormyaml}
 
 slotport=${STORM_SUPERVISOR_SLOTS_STARTING_PORT}
 for i in `seq 1 ${stormslotcount}`
 do
-    echo "     - ${slotport}" >> ${STORM_CONF_DIR}/storm.yaml
+    echo "     - ${slotport}" >> ${post_stormyaml}
     slotport=$((slotport+1))
 done
 
@@ -145,21 +151,24 @@ stormhomesubst=`echo "${STORM_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 stormlocaldirsubst=`echo "${STORM_LOCAL_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-sed -e "s/MAGPIEJAVAHOME/${stormjavahomesubst}/g" \
+cp ${pre_stormenvsh} ${post_stormenvsh}
+
+sed -i \
+    -e "s/MAGPIEJAVAHOME/${stormjavahomesubst}/g" \
     -e "s/STORMLOGDIR/${stormlogdirsubst}/g" \
     -e "s/STORMCONFDIR/${stormconfdirsubst}/g" \
     -e "s/STORMHOME/${stormhomesubst}/g" \
     -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
     -e "s/MAGPIESCRIPTSHOME/${magpiescriptshome}/g" \
-    $stormenvsh > ${STORM_CONF_DIR}/storm-env.sh
+    ${post_stormenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
-    echo "export STORM_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${STORM_CONF_DIR}/storm-env.sh
+    echo "export STORM_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_stormenvsh}
 fi
 if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
 then
-    echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${STORM_CONF_DIR}/storm-env.sh
+    echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_stormenvsh}
 fi
 
 exit 0

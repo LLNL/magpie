@@ -743,23 +743,34 @@ fi
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 then
-    coresitexml=${hadoopconffiledir}/core-site-1.0.xml
-    mapredsitexml=${hadoopconffiledir}/mapred-site-1.0.xml
-    hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.0.sh
-    hdfssitexml=${hadoopconffiledir}/hdfs-site-1.0.xml
+    pre_coresitexml=${hadoopconffiledir}/core-site-1.0.xml
+    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-1.0.xml
+    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.0.sh
+    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-1.0.xml
+    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
 elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 then
-    coresitexml=${hadoopconffiledir}/core-site-2.0.xml
-    mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
-    hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.0.sh
-    mapredenvsh=${hadoopconffiledir}/mapred-env-2.0.sh
-    yarnsitexml=${hadoopconffiledir}/yarn-site-2.0.xml
-    yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
-    hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
+    pre_coresitexml=${hadoopconffiledir}/core-site-2.0.xml
+    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
+    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.0.sh
+    pre_mapredenvsh=${hadoopconffiledir}/mapred-env-2.0.sh
+    pre_yarnsitexml=${hadoopconffiledir}/yarn-site-2.0.xml
+    pre_yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
+    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
+    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
 else
     echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
     exit 1
 fi
+
+post_coresitexml=${HADOOP_CONF_DIR}/core-site.xml
+post_mapredsitexml=${HADOOP_CONF_DIR}/mapred-site.xml
+post_hadoopenvsh=${HADOOP_CONF_DIR}/hadoop-env.sh
+post_mapredenvsh=${HADOOP_CONF_DIR}/mapred-env.sh
+post_yarnsitexml=${HADOOP_CONF_DIR}/yarn-site.xml
+post_yarnenvsh=${HADOOP_CONF_DIR}/yarn-env.sh
+post_hdfssitexml=${HADOOP_CONF_DIR}/hdfs-site.xml
+post_log4jproperties=${HADOOP_CONF_DIR}/log4j.properties
 
 #
 # Setup Hadoop configuration files and environment files
@@ -770,7 +781,10 @@ if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
 then
-    sed -e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \
+    cp ${pre_coresitexml} ${post_coresitexml}
+
+    sed -i \
+	-e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \
         -e "s/FSDEFAULT/${fsdefaultsubst}/g" \
 	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
 	-e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
@@ -780,7 +794,7 @@ then
 	-e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
 	-e "s/MAGPIENETWORKFSBASEDIR/${magpienetworkfsbase}/g" \
 	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
-	$coresitexml > ${HADOOP_CONF_DIR}/core-site.xml
+	${post_coresitexml}
 
     hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     hadooplogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -792,7 +806,10 @@ then
     extrahadoopclassessubst=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
     extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+    cp ${pre_hadoopenvsh} ${post_hadoopenvsh}
+
+    sed -i \
+	-e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
@@ -804,26 +821,26 @@ then
 	-e "s/HADOOPHDFSHOME/${hadoophdfshomesubst}/g" \
 	-e "s/EXTRAHADOOPCLASSES/${extrahadoopclassessubst}/g" \
 	-e "s/EXTRAHADOOPOPTS/${extrahadoopoptssubst}/g" \
-	$hadoopenvsh > ${HADOOP_CONF_DIR}/hadoop-env.sh
+	${post_hadoopenvsh}
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
-	echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+	echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hadoopenvsh}
     fi
     if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
     then
-	echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+	echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
     fi
 
     if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
     then
-	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
     else
-	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
-	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/hadoop-env.sh
+	echo "ulimit -n ${openfilescount}" >> ${post_hadoopenvsh}
+	echo "ulimit -u ${userprocessescount}" >> ${post_hadoopenvsh}
     fi
 
-    cat ${hadoopconffiledir}/hadoop.log4j.properties > ${HADOOP_CONF_DIR}/log4j.properties
+    cp ${pre_log4jproperties} ${post_log4jproperties}
 fi
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] \
@@ -843,7 +860,10 @@ then
 	reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
     fi
 
-    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+    cp ${pre_mapredsitexml} ${post_mapredsitexml}
+
+    sed -i \
+	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
 	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
 	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
@@ -871,7 +891,7 @@ then
 	-e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}/g" \
 	-e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
 	-e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
-	$mapredsitexml > ${HADOOP_CONF_DIR}/mapred-site.xml
+	${post_mapredsitexml}
 fi
 
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
@@ -900,7 +920,10 @@ then
 	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
     fi
 
-    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+    cp ${pre_yarnsitexml} ${post_yarnsitexml}
+
+    sed -i \
+	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
 	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
 	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
@@ -913,7 +936,7 @@ then
 	-e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}/g" \
 	-e "s/YARNRESOURCEMANAGERRESOURCETRACKERADDRESS/${YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS}/g" \
 	-e "s/YARNRESOURCEMANAGERADMINADDRESS/${YARN_RESOURCEMANAGER_ADMIN_ADDRESS}/g" \
-	$yarnsitexml > ${HADOOP_CONF_DIR}/yarn-site.xml
+	${post_yarnsitexml}
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -921,7 +944,10 @@ then
     hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+    cp ${pre_mapredenvsh} ${post_mapredenvsh}
+
+    sed -i \
+	-e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
@@ -929,7 +955,7 @@ then
 	-e "s/HADOOPHOME/${hadoophomesubst}/g" \
 	-e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
 	-e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
-	$mapredenvsh > ${HADOOP_CONF_DIR}/mapred-env.sh
+	${post_mapredenvsh}
 
     yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -938,7 +964,10 @@ then
 
     extrayarnlibrarypathsubst=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
 
-    sed -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+    cp ${pre_yarnenvsh} ${post_yarnenvsh}
+
+    sed -i \
+	-e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
 	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
@@ -947,23 +976,23 @@ then
 	-e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
 	-e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
 	-e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
-	$yarnenvsh > ${HADOOP_CONF_DIR}/yarn-env.sh
+	${post_yarnenvsh}
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
-	echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+	echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${post_yarnenvsh}
     fi
     if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
     then
-	echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+	echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_yarnenvsh}
     fi
 
     if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
     then
-	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${HADOOP_CONF_DIR}/yarn-env.sh
+	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
     else
-	echo "ulimit -n ${openfilescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
-	echo "ulimit -u ${userprocessescount}" >> ${HADOOP_CONF_DIR}/yarn-env.sh
+	echo "ulimit -n ${openfilescount}" >> ${post_yarnenvsh}
+	echo "ulimit -u ${userprocessescount}" >> ${post_yarnenvsh}
     fi
 fi
 
@@ -971,7 +1000,11 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
-    sed -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+
+    cp ${pre_hdfssitexml} ${post_hdfssitexml}
+
+    sed -i \
+	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
 	-e "s/HDFSREPLICATION/${hdfsreplication}/g" \
 	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
@@ -985,7 +1018,7 @@ then
 	-e "s/DFSDATANODEADDRESS/${HADOOP_HDFS_DATANODE_ADDRESS}/g" \
 	-e "s/DFSDATANODEHTTPADDRESS/${HADOOP_HDFS_DATANODE_HTTPADDRESS}/g" \
 	-e "s/DFSDATANODEIPCADDRESS/${HADOOP_HDFS_DATANODE_IPCADDRESS}/g" \
-	$hdfssitexml > ${HADOOP_CONF_DIR}/hdfs-site.xml
+	${post_hdfssitexml}
 fi
 
 #
