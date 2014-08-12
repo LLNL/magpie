@@ -758,6 +758,16 @@ then
     pre_yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
     pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
     pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+    then
+	pre_coresitexml_intellustre=${hadoopconffiledir}/core-site-2.0-intellustre.xml
+    fi
+
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+    then
+	pre_coresitexml_magpienetworkfs=${hadoopconffiledir}/core-site-2.0-magpienetworkfs.xml
+    fi
 else
     echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
     exit 1
@@ -782,6 +792,20 @@ if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
 then
     cp ${pre_coresitexml} ${post_coresitexml}
+
+    if [ "${pre_coresitexml_intellustre}X" != "X" ]
+    then
+	sed -i -e "/@INTELLUSTRE@/{r ${pre_coresitexml_intellustre}" -e "d}" ${post_coresitexml}
+    else
+	sed -i -e "s/@INTELLUSTRE@//" ${post_coresitexml}
+    fi
+
+    if [ "${pre_coresitexml_magpienetworkfs}X" != "X" ]
+    then
+	sed -i -e "/@MAGPIENETWORKFS@/{r ${pre_coresitexml_magpienetworkfs}" -e "d}" ${post_coresitexml}
+    else
+	sed -i -e "s/@MAGPIENETWORKFS@//" ${post_coresitexml}
+    fi
 
     sed -i \
 	-e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \

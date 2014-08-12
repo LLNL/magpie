@@ -58,51 +58,7 @@
   <description>Block size to use when writing files to local.</description>
 </property>
 
-<property>
-  <name>fs.AbstractFileSystem.lustre.impl</name>
-  <value>org.apache.hadoop.fs.LustreFileSystem$LustreFs</value>
-</property>
-
-<property>
-  <name>fs.root.dir</name>
-  <value>INTELLUSTREROOTDIR</value>
-  <description>A base for other temporary directories.</description>
-</property>
-
-<property>
-  <name>fs.block.size</name>
-  <value>INTELLUSTREBLOCKSIZE</value>
-</property>
-
-<property>
-  <name>lustre.stripe.size</name>
-  <value>INTELLUSTRESTRIPESIZE</value>
-</property>
-
-<property>
-  <name>lustre.stripe.count</name>
-  <value>INTELLUSTRESTRIPECOUNT</value>
-</property>
-
-<property>
-  <name>fs.magpienetworkfs.impl</name>
-  <value>org.apache.hadoop.fs.MagpieNetworkFileSystem</value>
-</property>
-
-<property>
-  <name>fs.AbstractFileSystem.magpienetworkfs.impl</name>
-  <value>org.apache.hadoop.fs.magpienetworkfs.MagpieNetworkFs</value>
-</property>
-
-<property>
-  <name>fs.magpienetworkfs.base.dir</name>
-  <value>MAGPIENETWORKFSBASEDIR</value>
-  <description></description>
-</property>
-
-<property>
-  <name>fs.magpienetworkfs.block.size</name>
-  <value>MAGPIENETWORKFSBLOCKSIZE</value>
-</property>
+@INTELLUSTRE@
+@MAGPIENETWORKFS@
 
 </configuration>
