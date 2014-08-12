@@ -803,14 +803,14 @@ then
     then
 	sed -i -e "/@INTELLUSTRE@/{r ${pre_coresitexml_intellustre}" -e "d}" ${post_coresitexml}
     else
-	sed -i -e "s/@INTELLUSTRE@//" ${post_coresitexml}
+	sed -i -e "/@INTELLUSTRE@/,+1d" ${post_coresitexml}
     fi
 
     if [ "${pre_coresitexml_magpienetworkfs}X" != "X" ]
     then
 	sed -i -e "/@MAGPIENETWORKFS@/{r ${pre_coresitexml_magpienetworkfs}" -e "d}" ${post_coresitexml}
     else
-	sed -i -e "s/@MAGPIENETWORKFS@//" ${post_coresitexml}
+	sed -i -e "/@MAGPIENETWORKFS@/,+1d" ${post_coresitexml}
     fi
 
     sed -i \
@@ -896,7 +896,7 @@ then
     then
 	sed -i -e "/@UDA@/{r ${pre_mapredsitexml_uda}" -e "d}" ${post_mapredsitexml}
     else
-	sed -i -e "s/@UDA@//" ${post_mapredsitexml}
+	sed -i -e "/@UDA@/,+1d" ${post_mapredsitexml}
     fi
 
     sed -i \
@@ -963,7 +963,7 @@ then
     then
 	sed -i -e "/@UDA@/{r ${pre_yarnsitexml_uda}" -e "d}" ${post_yarnsitexml}
     else
-	sed -i -e "s/@UDA@//" ${post_yarnsitexml}
+	sed -i -e "/@UDA@/,+1d" ${post_yarnsitexml}
     fi
 
     sed -i \
