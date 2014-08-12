@@ -65,10 +65,7 @@
   <value>org.apache.hadoop.mapred.ShuffleHandler</value>
 </property>
 
-<property>
-  <name>YARNAUXUDASHUFFLE</name>
-  <value>com.mellanox.hadoop.mapred.UdaShuffleHandler</value>
-</property>
+@UDA@
 
 <property>
   <description>List of directories to store localized files in. An

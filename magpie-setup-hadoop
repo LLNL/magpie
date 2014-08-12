@@ -759,6 +759,12 @@ then
     pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
     pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
 
+    if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+    then
+	pre_mapredsitexml_uda=${hadoopconffiledir}/mapred-site-2.0-uda.xml
+	pre_yarnsitexml_uda=${hadoopconffiledir}/yarn-site-2.0-uda.xml
+    fi
+
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
 	pre_coresitexml_intellustre=${hadoopconffiledir}/core-site-2.0-intellustre.xml
@@ -886,6 +892,13 @@ then
 
     cp ${pre_mapredsitexml} ${post_mapredsitexml}
 
+    if [ "${pre_mapredsitexml_uda}X" != "X" ]
+    then
+	sed -i -e "/@UDA@/{r ${pre_mapredsitexml_uda}" -e "d}" ${post_mapredsitexml}
+    else
+	sed -i -e "s/@UDA@//" ${post_mapredsitexml}
+    fi
+
     sed -i \
 	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
@@ -945,6 +958,13 @@ then
     fi
 
     cp ${pre_yarnsitexml} ${post_yarnsitexml}
+
+    if [ "${pre_yarnsitexml_uda}X" != "X" ]
+    then
+	sed -i -e "/@UDA@/{r ${pre_yarnsitexml_uda}" -e "d}" ${post_yarnsitexml}
+    else
+	sed -i -e "s/@UDA@//" ${post_yarnsitexml}
+    fi
 
     sed -i \
 	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
