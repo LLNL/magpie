@@ -22,8 +22,7 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
-    || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
     export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
@@ -31,4 +30,17 @@ then
     export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
     export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
+fi
+
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
+then
+    export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
+    export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
+    export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
+    export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
+    export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
+    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+    then
+	export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
+    fi
 fi

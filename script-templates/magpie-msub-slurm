@@ -18,7 +18,7 @@
 
 #MSUB -q <my batch queue>
 
-# *** SEE SBATCH_TIMELIMIT BELOW, IT MUST BE SET ***
+# *** SEE MAGPIE_TIMELIMIT_MINUTES BELOW, IT MUST BE SET ***
 #
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
 # walltime should be a fair amount larger than them combined.
@@ -35,12 +35,11 @@ export SLURM_JOB_NAME="<my job name>"
 export SLURM_TASKS_PER_NODE=1
 export SBATCH_EXCLUSIVE="yes"
 
-# You MUST set the SBATCH_TIMELIMIT value (in minutes) to match what
-# is entered with walltime.  Moab does not export an equivalent
-# environment variable such as SBATCH_TIMELIMIT, so this must be done
-# manually by the user.
-
-export SBATCH_TIMELIMIT=<time in minutes>
+# You MUST set the MAGPIE_TIMELIMIT_MINUTES value (in minutes) to
+# match what is entered with walltime.  Moab does not export an
+# environment variable with job time, so this must be done manually by
+# the user.
+# export MAGPIE_TIMELIMIT_MINUTES=<time in minutes>
 
 # Need to tell Magpie how you are submitting this job
 #

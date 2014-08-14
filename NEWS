@@ -4,6 +4,7 @@ Support Spark wordcount test.
 Various default submission file template cleanup.
 - Remove Hadoop job info from Hbase & Spark + HDFS files
 - Default MAGPIE_JOB_TYPE is now 'script'
+msub-slurm scripts require MAGPIE_TIMELIMIT_MINUTES now, instead of SBATCH_TIMELIMIT.
 
 magpie 1.45
 -----------
