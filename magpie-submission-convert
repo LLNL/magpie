@@ -37,7 +37,7 @@ then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
     export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
     export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
-    export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
+    export MAGPIE_JOB_NAME="${MOAB_JOBNAME}"
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then

@@ -30,7 +30,6 @@
 #MSUB -V
 
 export MOAB_JOBNAME="<my job name>"
-export SLURM_JOB_NAME="<my job name>"
 
 export SLURM_TASKS_PER_NODE=1
 export SBATCH_EXCLUSIVE="yes"
