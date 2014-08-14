@@ -9,6 +9,7 @@
 
 cd ${STORM_HOME}
 
-command="bin/storm jar storm-starter/target/storm-starter-0.0.1-SNAPSHOT-jar-with-dependencies.jar storm.starter.WordCountTopology WordCount -c storm.starter.WordCountTopology WordCount -c nimbus.host=${STORM_NIMBUS_HOST}"
+command="bin/storm jar examples/storm-starter/storm-starter-topologies-0.9.2-incubating-SNAPSHOT.jar storm.starter.WordCountTopology WordCount -c storm.starter.WordCountTopology WordCount -c nimbus.host=${STORM_NIMBUS_HOST}"
+
 echo "Running $command" >&2
 $command
