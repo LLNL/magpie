@@ -77,6 +77,40 @@ then
     fi
 fi
 
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
+then
+    if [ "${SLURM_NODEID}X" == "X" ]
+    then
+	echo "SLURM_NODEID environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_NNODES}X" == "X" ]
+    then
+	echo "SLURM_NNODES environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_JOB_NODELIST}X" == "X" ]
+    then
+	echo "SLURM_JOB_NODELIST environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_JOB_NAME}X" == "X" ]
+    then
+	echo "SLURM_JOB_NAME environment variable must be set"
+	exit 1
+    fi
+    if [ "${SLURM_JOB_ID}X" == "X" ]
+    then
+	echo "SLURM_JOB_ID environment variable must be set"
+	exit 1
+    fi
+    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
+    then
+	echo "SBATCH_TIMELIMIT environment variable must be set"
+	exit 1
+    fi
+fi
+
 #
 # Check Magpie Inputs
 #
