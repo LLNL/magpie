@@ -8,12 +8,12 @@
 # the main job submission file.
 #
 # By default it stores into
-# $MAGPIE_SCRIPTS_HOME/$SLURM_JOB_NAME/$SLURM_JOB_ID, but you may wish
+# $MAGPIE_SCRIPTS_HOME/$MAGPIE_JOB_NAME/$MAGPIE_JOB_ID, but you may wish
 # to change that.
 
 export NODENAME=`hostname`
 
-targetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/hadoop/nodes/${NODENAME}
+targetdir=${MAGPIE_SCRIPTS_HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/hadoop/nodes/${NODENAME}
 
 if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ -d ${HADOOP_CONF_DIR}/ ] && [ "$(ls -A ${HADOOP_CONF_DIR}/)" ]
 then
@@ -27,7 +27,7 @@ then
     cp -a ${HADOOP_LOG_DIR}/* ${targetdir}/log
 fi
 
-targetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/hbase/nodes/${NODENAME}
+targetdir=${MAGPIE_SCRIPTS_HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/hbase/nodes/${NODENAME}
 
 if [ "${HBASE_CONF_DIR}X" != "X" ] && [ -d ${HBASE_CONF_DIR}/ ] && [ "$(ls -A ${HBASE_CONF_DIR}/)" ]
 then
@@ -41,7 +41,7 @@ then
     cp -a ${HBASE_LOG_DIR}/* ${targetdir}/log
 fi
 
-targetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/spark/nodes/${NODENAME}
+targetdir=${MAGPIE_SCRIPTS_HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/spark/nodes/${NODENAME}
 
 if [ "${SPARK_CONF_DIR}X" != "X" ] && [ -d ${SPARK_CONF_DIR}/ ] && [ "$(ls -A ${SPARK_CONF_DIR}/)" ]
 then
@@ -55,7 +55,7 @@ then
     cp -a ${SPARK_LOG_DIR}/* ${targetdir}/log
 fi
 
-targetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/storm/nodes/${NODENAME}
+targetdir=${MAGPIE_SCRIPTS_HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/storm/nodes/${NODENAME}
 
 if [ "${STORM_CONF_DIR}X" != "X" ] && [ -d ${STORM_CONF_DIR}/ ] && [ "$(ls -A ${STORM_CONF_DIR}/)" ]
 then
@@ -69,7 +69,7 @@ then
     cp -a ${STORM_LOG_DIR}/* ${targetdir}/log
 fi
 
-zookeepertargetdir=${MAGPIE_SCRIPTS_HOME}/${SLURM_JOB_NAME}/${SLURM_JOB_ID}/zookeeper/nodes/${NODENAME}
+zookeepertargetdir=${MAGPIE_SCRIPTS_HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/zookeeper/nodes/${NODENAME}
         
 if [ "${ZOOKEEPER_CONF_DIR}X" != "X" ] && [ -d ${ZOOKEEPER_CONF_DIR}/ ] && [ "$(ls -A ${ZOOKEEPER_CONF_DIR}/)" ]
 then
