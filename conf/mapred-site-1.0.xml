@@ -38,7 +38,7 @@
   </description>
 </property>
 
-<!-- Script will calculate based on recommendation of Cloudera/Experience -->
+<!-- Magpie will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>mapred.job.tracker.handler.count</name>
   <value>JOBTRACKERHANDLERCOUNT</value>

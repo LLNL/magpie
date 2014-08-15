@@ -99,14 +99,14 @@
   </description>
 </property>
 
-<!-- Script will calculate based on recommendation of Cloudera/Experience -->
+<!-- Magpie will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>dfs.namenode.handler.count</name>
   <value>HDFSNAMENODEHANDLERCLOUNT</value>
   <description>The number of server threads for the namenode.</description>
 </property>
 
-<!-- Script will calculate based on recommendation of Cloudera/Experience -->
+<!-- Magpie will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>dfs.datanode.handler.count</name>
   <value>HDFSDATANODEHANDLERCLOUNT</value>

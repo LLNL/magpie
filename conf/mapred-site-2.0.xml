@@ -144,7 +144,7 @@
   </description>
 </property>
 
-<!-- Script will calculate based on recommendation of Cloudera/Experience -->
+<!-- Magpie will calculate based on recommendation of Cloudera/Experience -->
 <property>
   <name>mapreduce.jobtracker.handler.count</name>
   <value>JOBTRACKERHANDLERCOUNT</value>
