@@ -608,6 +608,67 @@ then
 	fi
     fi
 
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ]
+    then
+	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	then
+	    if ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+		&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+		&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ])
+	    then
+		echo "HDFS federation can only work with an HDFS based file system, cannot work with HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+		exit 1
+	    fi
+
+	    if [ "${HADOOP_VERSION}X" == "X" ]
+	    then
+		echo "HADOOP_VERSION must be set for HDFS_FEDERATION_NAMENODE_COUNT greater than 1"
+		exit 1
+	    fi
+
+	    if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
+	    then 
+		echo "HDFS Fderation only supported in Hadoop 2.2.0 and more recent versions"
+		exit 1
+	    fi
+
+	    # Ensure user listed atleast 1 mount for each namenode
+	    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+	    do
+		mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_1"
+		eval mountvalue="\$$mountname"
+		if [ "${mountvalue}X" == "X" ]
+		then
+		    echo "HDFS federation requires atleast one mount specified for each namenode, ${mountname} must be specified" 
+		    exit 1
+		fi
+	    done
+
+	    # Check that all mounts are absolute paths
+	    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+	    do
+		j=1
+		while true;
+		do
+		    mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_${j}"
+		    eval mountvalue="\$$mountname"
+		    if [ "${mountvalue}X" == "X" ]
+		    then
+			break;
+		    fi
+		    if [[ "${mountvalue}" != /* ]]
+		    then
+			echo "HDFS federation mount must be an absolute path beginning with a /"
+			exit 1
+		    fi
+		    j=$((j+1))
+		done
+	    done
+
+	    nodecount=$((nodecount-${HDFS_FEDERATION_NAMENODE_COUNT-1}))
+	fi
+    fi
+	    
     if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
 	&& ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
     then

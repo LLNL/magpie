@@ -780,6 +780,11 @@ then
     then
 	pre_coresitexml_magpienetworkfs=${hadoopconffiledir}/core-site-2.0-magpienetworkfs.xml
     fi
+
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+    then
+	pre_coresitexml_viewfsmount=${hadoopconffiledir}/core-site-2.0-viewfsmount.xml
+    fi
 else
     echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
     exit 1
@@ -817,6 +822,49 @@ then
 	sed -i -e "/@MAGPIENETWORKFS@/{r ${pre_coresitexml_magpienetworkfs}" -e "d}" ${post_coresitexml}
     else
 	sed -i -e "/@MAGPIENETWORKFS@/,+1d" ${post_coresitexml}
+    fi
+
+    if [ "${pre_coresitexml_viewfsmount}X" != "X" ]
+    then
+	for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+	do
+            j=1
+            while true;
+            do
+                mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_${j}"
+                eval mountvalue="\$$mountname"
+
+                if [ "${mountvalue}X" == "X" ]
+                then
+                    break;
+                fi
+		
+		sed -i -e "/@VIEWFSMOUNT@/{r ${pre_coresitexml_viewfsmount}" -e "d}" ${post_coresitexml}
+
+	        # First namenode is based on master
+		if [ "${i}" == "1" ]
+		then
+		    federationnamenodehost="${HADOOP_MASTER_NODE}"
+		else
+		    numline=`expr ${i} - 1`
+		    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+		fi
+
+		mountvaluesubst=`echo "${mountvalue}" | sed "s/\\//\\\\\\\\\//g"`
+		
+		sed -i -e "s/VIEWFSPATH/${mountvaluesubst}/g" ${post_coresitexml}
+		sed -i -e "s/VIEWFSNAMENODE/${federationnamenodehost}/g" ${post_coresitexml}
+		sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_coresitexml}
+		sed -i -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" ${post_coresitexml}
+
+                j=$((j+1))
+            done
+	done
+
+	sed -i -e "/@VIEWFSMOUNT@/,+1d" ${post_coresitexml}
+	
+    else
+	sed -i -e "/@VIEWFSMOUNT@/,+1d" ${post_coresitexml}
     fi
 
     sed -i \
@@ -1055,6 +1103,49 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
 then
     cp ${pre_hdfssitexml} ${post_hdfssitexml}
 
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+    then
+	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.0-hdfs-federation.xml
+    else
+	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.0-hdfs-namenode.xml
+    fi
+
+    sed -i -e "/@NAMENODE@/{r ${pre_hdfssitexml_namenode}" -e "d}" ${post_hdfssitexml}
+
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+    then
+	nameservices="ns1"
+	for i in `seq 2 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+        do
+	    nameservices="${nameservices},ns${i}"
+	done
+
+	sed -i -e "s/NAMESERVICES/${nameservices}/g" ${post_hdfssitexml}
+
+	pre_hdfssitexml_namenodeinfo=${hadoopconffiledir}/hdfs-site-2.0-hdfs-federation-namenode.xml
+
+	# Now fill each additional namenode
+	for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+	do
+	    sed -i -e "/@NAMENODEINFO@/{r ${pre_hdfssitexml_namenodeinfo}" -e "d}" ${post_hdfssitexml}
+
+	    sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_hdfssitexml}
+
+	    # First namenode is based on master
+	    if [ "${i}" == "1" ]
+	    then
+		federationnamenodehost="${HADOOP_MASTER_NODE}"
+	    else
+		numline=`expr ${i} - 1`
+		federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+	    fi
+	    
+	    sed -i -e "s/FEDERATIONNAMENODEHOST/${federationnamenodehost}/g" ${post_hdfssitexml}
+	done
+
+	sed -i -e "/@NAMENODEINFO@/,+1d" ${post_hdfssitexml}
+    fi
+
     sed -i \
 	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
@@ -1065,6 +1156,7 @@ then
 	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
 	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
 	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
+	-e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" \
 	-e "s/DFSNAMENODESECONDARYHTTPADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_ADDRESS}/g" \
 	-e "s/DFSNAMENODEHTTPADDRESS/${HADOOP_HDFS_NAMENODE_HTTPADDRESS}/g" \
 	-e "s/DFSDATANODEADDRESS/${HADOOP_HDFS_DATANODE_ADDRESS}/g" \
@@ -1083,18 +1175,34 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
 then
     if [ "${hdfsformat}" -eq "1" ]
     then
-        # Only master will format the node
-	if Magpie_am_I_master
+	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
 	then
-	    echo "*******************************************************"
-	    echo "* Formatting HDFS Namenode"
-	    echo "*******************************************************"
-	    cd $HADOOP_HOME
-	    echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+	    if Magpie_am_I_a_hadoop_namenode
+	    then
+		echo "*******************************************************"
+		echo "* Formatting HDFS Namenode on Namenode ${MAGPIE_CLUSTER_NODERANK}"
+		echo "*******************************************************"
+		cd $HADOOP_HOME
+		echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format -clusterId "Magpie${HADOOP_FILESYSTEM_MODE}"
+	    else
+	        # If this is the first time running, make everyone else wait
+	        # until the format is complete
+		sleep 30
+	    fi
 	else
-	    # If this is the first time running, make everyone else wait
-	    # until the format is complete
-	    sleep 30
+            # Only master will format the node
+	    if Magpie_am_I_master
+	    then
+		echo "*******************************************************"
+		echo "* Formatting HDFS Namenode"
+		echo "*******************************************************"
+		cd $HADOOP_HOME
+		echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+	    else
+	        # If this is the first time running, make everyone else wait
+	        # until the format is complete
+		sleep 30
+	    fi
 	fi
     fi
 fi

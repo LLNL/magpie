@@ -81,6 +81,8 @@ fi
 # Setup file system to use
 #
 
+# XXX how deal w/ fedreation?
+
 # sets hadooptmpdir and fsdefault
 Magpie_calculate_hadoop_filesystem_paths ${hbasenoderank}
 

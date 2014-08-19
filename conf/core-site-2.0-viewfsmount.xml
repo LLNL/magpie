@@ -1,0 +1,6 @@
+<property>
+  <name>fs.viewfs.mounttable.default.link.VIEWFSPATH</name>
+  <value>hdfs://VIEWFSNAMENODE:DFSNAMENODERPCADDRESSVIEWFSPATHhdfsfederation-NAMESERVICEID</value>
+</property>
+
+@VIEWFSMOUNT@

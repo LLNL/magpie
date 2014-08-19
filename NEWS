@@ -1,3 +1,7 @@
+magpie 1.47
+-----------
+Support HDFS federation (experimental)
+
 magpie 1.46
 -----------
 Support Spark wordcount test.

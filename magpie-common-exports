@@ -100,6 +100,11 @@ then
 	hadoopcmdprefix="bin"
 	dfsadminscript="hdfs"
     fi
+
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" == "X" ]
+    then
+	export HDFS_FEDERATION_NAMENODE_COUNT=1
+    fi
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]

@@ -33,6 +33,9 @@
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
 # specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
+#
+# Also take into account additional nodes needed for other services,
+# for example HDFS federation.
 
 #MSUB -l nodes=<my node count>
 
@@ -339,6 +342,7 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #                 'master' node and interact with Hadoop directly
 #                 (e.g. bin/hadoop ...)
 #
+# XXX - will this work w/ federation?
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
 #                 used when you are switching to a newer Hadoop
 #                 version and the HDFS version would be inconsistent

@@ -68,13 +68,35 @@ Magpie_am_I_master () {
 Magpie_am_I_a_hadoop_node () {
     local myhostname=`hostname`
     if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves \
-	|| grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters
+	|| grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters \
+	|| grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
+    then 
+	if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters
+	then
+	    hadoopnoderank=0
+	elif grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
+	then
+	    subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+	    hadoopnoderank="0${subrank}"
+	else
+	    hadoopnoderank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
+	fi
+	return 0
+    fi
+    return 1
+}
+
+Magpie_am_I_a_hadoop_namenode () {
+    local myhostname=`hostname`
+    if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters \
+	|| grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
     then 
 	if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters
 	then
 	    hadoopnoderank=0
 	else
-	    hadoopnoderank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
+	    subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+	    hadoopnoderank="0${subrank}"
 	fi
 	return 0
     fi
@@ -171,20 +193,36 @@ Magpie_wait_script () {
     return 0
 }
 
+# XXX deal with viewfs & federation
 Magpie_calculate_hadoop_filesystem_paths () {
     noderank=$1
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
 	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-	fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	then
+	    fsdefault="viewfs:///"
+	else
+	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+	fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
 	hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
-	fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	then
+	    fsdefault="viewfs:///"
+	else
+	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+	fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
 	hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
-	fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	then
+	    fsdefault="viewfs:///"
+	else
+	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+	fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
 	hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"

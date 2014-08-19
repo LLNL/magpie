@@ -25,6 +25,7 @@ MAGPIE_MSUB_SLURM_STORM="../script-msub-slurm/magpie.msub-slurm-storm"
 #
 INSERT_INTELLUSTRE=n
 INSERT_MAGPIENETWORKFS=n
+INSERT_HDFS_FEDERATION=n
 
 all:
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
@@ -47,6 +48,12 @@ all:
 		sed -i -e "/@MODE_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@PATH_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
+	fi
+
+	if test "${INSERT_HDFS_FEDERATION}" = "y"; then \
+		sed -i -e "/@HDFS_FEDERATION@/{r magpie-hadoop-filesystem-hdfs-federation" -e "d}" magpie-hadoop-filesystem-substitution; \
+	else \
+		sed -i -e "/@HDFS_FEDERATION@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
 # Make sbatch with all configuration
