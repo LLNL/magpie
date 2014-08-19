@@ -6,6 +6,7 @@ Various default submission file template cleanup.
 - Default MAGPIE_JOB_TYPE is now 'script'
 msub-slurm scripts require MAGPIE_TIMELIMIT_MINUTES now, instead of SBATCH_TIMELIMIT.
 Remove required configuration of SLURM_JOB_NAME in msub-slurm scriptts. 
+Remove 'intellustre' and 'magpienetworkfs' config options from templates by default.
 
 magpie 1.45
 -----------

@@ -1,3 +1,4 @@
+# Filenames
 MAGPIE_SBATCH="../script-sbatch/magpie.sbatch"
 MAGPIE_SBATCH_HADOOP="../script-sbatch/magpie.sbatch-hadoop"
 MAGPIE_SBATCH_HADOOP_WITH_UDA="../script-sbatch/magpie.sbatch-hadoop-with-uda"
@@ -16,7 +17,38 @@ MAGPIE_MSUB_SLURM_SPARK="../script-msub-slurm/magpie.msub-slurm-spark"
 MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS="../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs"
 MAGPIE_MSUB_SLURM_STORM="../script-msub-slurm/magpie.msub-slurm-storm"
 
+# Creation options, set to y or n
+#
+# INSERT_INTELLUSTRE - insert intellustre configuration
+#
+# INSERT_MAGPIENETWORKFS - insert magpienetworkfs configuration
+#
+INSERT_INTELLUSTRE=n
+INSERT_MAGPIENETWORKFS=n
+
 all:
+	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
+
+	if test "${INSERT_INTELLUSTRE}" = "y"; then \
+		sed -i -e "/@MODE_INTELLUSTRE@/{r magpie-hadoop-filesystem-mode-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@PATH_INTELLUSTRE@/{r magpie-hadoop-filesystem-path-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_INTELLUSTRE@/{r magpie-hadoop-filesystem-config-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
+	else \
+		sed -i -e "/@MODE_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@PATH_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
+	fi
+
+	if test "${INSERT_MAGPIENETWORKFS}" = "y"; then \
+		sed -i -e "/@MODE_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-mode-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@PATH_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-path-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-config-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
+	else \
+		sed -i -e "/@MODE_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@PATH_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
+	fi
+
 # Make sbatch with all configuration
 	echo "Creating magpie.sbatch"
 	cp magpie-header ${MAGPIE_SBATCH}
@@ -31,7 +63,7 @@ all:
 	echo "" >> ${MAGPIE_SBATCH}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH}
 	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_SBATCH}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH}
 	echo "" >> ${MAGPIE_SBATCH}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH}
 	echo "" >> ${MAGPIE_SBATCH}
@@ -63,7 +95,7 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_SBATCH_HADOOP}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH_HADOOP}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
@@ -85,7 +117,7 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
@@ -109,7 +141,7 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	cat magpie-pig >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
@@ -130,7 +162,7 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	cat magpie-hbase >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
@@ -171,7 +203,7 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	cat magpie-spark >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
@@ -214,7 +246,7 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM}
 	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_MSUB_SLURM}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM}
 	echo "" >> ${MAGPIE_MSUB_SLURM}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM}
 	echo "" >> ${MAGPIE_MSUB_SLURM}
@@ -246,7 +278,7 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_MSUB_SLURM_HADOOP}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
@@ -268,7 +300,7 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
@@ -292,7 +324,7 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	cat magpie-pig >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
@@ -313,7 +345,7 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	cat magpie-hbase >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
@@ -354,7 +386,7 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-hadoop-filesystem >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
+	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	cat magpie-spark >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
@@ -382,3 +414,4 @@ all:
 	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" ${MAGPIE_MSUB_SLURM_STORM}
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_MSUB_SLURM_STORM}
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"storm\"/" ${MAGPIE_MSUB_SLURM_STORM}
+

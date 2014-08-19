@@ -1,0 +1,7 @@
+# MagpieNetworkFS Block Size
+#
+# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_MAGPIENETWORKFS_BLOCKSIZE=33554432

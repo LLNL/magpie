@@ -1,0 +1,3 @@
+# Path for intellustre 
+#
+export HADOOP_INTELLUSTRE_PATH="/lustre/username/intellustre/"
