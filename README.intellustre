@@ -1,0 +1,17 @@
+Intel Lustre Plugin
+-------------------
+
+Intel supports a Lustre plugin for Hadoop, however that plugin is
+currently only available in their distribution of Hadoop or a code
+plugin that can only be requested from them directly (i.e. it's not
+open source).
+
+The plugin is supported in Magpie via the 'intellustre' Hadoop file
+system option.
+
+The submission scripts do not include 'intellustre' configuration
+fields by default.  To include them:
+
+cd script-templates
+edit script-templates/Makefile and set INSERT_INTELLUSTRE to 'y'
+run 'make'
