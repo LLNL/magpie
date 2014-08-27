@@ -464,12 +464,12 @@ then
     hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
 
-    # Assume if path doesn't exist must format
+    # Assume if path doesn't exist must hdfsformat
     if [ -d "${hadooptmpdir}" ]
     then
-	format=0
+	hdfsformat=0
     else
-	format=1
+	hdfsformat=1
     fi
 
     IFSORIG=${IFS}
@@ -512,12 +512,12 @@ then
     hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
-    # Assume if path doesn't exist must format
+    # Assume if path doesn't exist must hdfsformat
     if [ -d "${hadooptmpdir}" ]
     then
-	format=0
+	hdfsformat=0
     else
-	format=1
+	hdfsformat=1
 	mkdir -p ${hadooptmpdir}
 	if [ $? -ne 0 ] ; then
 	    echo "mkdir failed making ${hadooptmpdir}"
@@ -573,7 +573,7 @@ then
         fi
     fi
     
-    format=0
+    hdfsformat=0
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
 then
@@ -590,7 +590,7 @@ then
         fi
     fi
 
-    format=0
+    hdfsformat=0
 
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
@@ -617,7 +617,7 @@ then
         fi
     fi
 
-    format=0
+    hdfsformat=0
     pathcount=1
 else
     echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
@@ -1066,10 +1066,10 @@ then
 fi
 
 #
-# Perform format if necessary
+# Perform HDFS format if necessary
 #
 
-if [ "${format}" -eq "1" ]
+if [ "${hdfsformat}" -eq "1" ]
 then
     # Only master will format the node
     if Magpie_am_I_master
