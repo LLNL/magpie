@@ -688,6 +688,16 @@ else
     yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
 fi
 
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+then
+    # If HDFS would be stored in HDFS, so pick a better path
+    yardappmapreduceamstagingdir="/tmp/yarn/"
+else
+    yardappmapreduceamstagingdir="${hadooptmpdir}/yarn/"
+fi
+
 # Sets hadoopstoptimeout
 Magpie_calculate_stop_timeouts
 
@@ -890,6 +900,8 @@ then
 	reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
     fi
 
+    yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
+
     cp ${pre_mapredsitexml} ${post_mapredsitexml}
 
     if [ "${pre_mapredsitexml_uda}X" != "X" ]
@@ -928,6 +940,7 @@ then
 	-e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}/g" \
 	-e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
 	-e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
+	-e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
 	${post_mapredsitexml}
 fi
 
@@ -1044,7 +1057,6 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
-
     cp ${pre_hdfssitexml} ${post_hdfssitexml}
 
     sed -i \

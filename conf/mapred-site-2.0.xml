@@ -165,7 +165,7 @@
 
 <property>
   <name>yarn.app.mapreduce.am.staging-dir</name>
-  <value>${hadoop.tmp.dir}/yarn/</value>
+  <value>YARNAPPMAPREDUCEAMSTAGINGDIR</value>
   <description>The staging dir used while submitting jobs.
   </description>  
 </property>
