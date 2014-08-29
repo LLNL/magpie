@@ -573,7 +573,6 @@ then
         fi
     fi
     
-    hdfsformat=0
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
 then
@@ -589,8 +588,6 @@ then
             exit 1
         fi
     fi
-
-    hdfsformat=0
 
     pathcount=1
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
@@ -617,7 +614,6 @@ then
         fi
     fi
 
-    hdfsformat=0
     pathcount=1
 else
     echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
@@ -1081,20 +1077,25 @@ fi
 # Perform HDFS format if necessary
 #
 
-if [ "${hdfsformat}" -eq "1" ]
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
-    # Only master will format the node
-    if Magpie_am_I_master
+    if [ "${hdfsformat}" -eq "1" ]
     then
-	echo "*******************************************************"
-	echo "* Formatting HDFS Namenode"
-	echo "*******************************************************"
-	cd $HADOOP_HOME
-	echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
-    else
-	# If this is the first time running, make everyone else wait
-	# until the format is complete
-	sleep 30
+        # Only master will format the node
+	if Magpie_am_I_master
+	then
+	    echo "*******************************************************"
+	    echo "* Formatting HDFS Namenode"
+	    echo "*******************************************************"
+	    cd $HADOOP_HOME
+	    echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+	else
+	    # If this is the first time running, make everyone else wait
+	    # until the format is complete
+	    sleep 30
+	fi
     fi
 fi
 
