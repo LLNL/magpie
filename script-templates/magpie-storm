@@ -71,6 +71,11 @@ export STORM_LOCAL_DIR="/tmp/username/storm"
 # "stormwordcount" - run Storm word count example.  Useful for making
 #            sure things are setup the way you like.
 #
+#            Note that there is no "output" from stormwordcount, it is
+#            stored in Storm log files.  Consider using the
+#            magpie-gather-config-files-and-logs-script.sh to gather
+#            those log files.
+#
 # "script" - execute a script that lists all of your Storm jobs.  Be
 #            sure to set STORM_SCRIPT_PATH to your script.
 #
