@@ -6,7 +6,6 @@ Minor feature support
 Hadoop
 - namenode failover w/ shared dir mechanism
   - start w/ 2.1.1-beta 
-- namenode federation
 
 Ganglia
 - if user wants aid in monitoring
@@ -26,3 +25,4 @@ failover support
 - if too many nodes fail, recover through fake re-bringup?
 - e.g. rank 10 node dies, have extra nodes to re-take over rank 10
 - need to re-arch to make all nodes get rank based off file instead of actual rank
+- would need daemon-ish thing to monitor situation, adjust config files, etc.?
