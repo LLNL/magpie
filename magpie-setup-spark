@@ -175,8 +175,9 @@ then
 	sparkshuffleconsolidatefiles="true"
     fi 
 else
-    sparkshufflebufferkb=100
-    sparkshuffleconsolidatefiles="false"
+    # Accessing filesystem directly, assume Lustre
+    sparkshufflebufferkb=1024
+    sparkshuffleconsolidatefiles="true"
 fi
 
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
