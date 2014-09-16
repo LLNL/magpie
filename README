@@ -582,7 +582,12 @@ MAGPIE_TIMELIMIT_MINUTES : Timelimit of job in minutes
 HADOOP_MASTER_NODE : the master node of the Hadoop allocation
 
 HADOOP_SLAVE_COUNT : number of compute/data nodes in your allocation
-                     for Hadoop.
+                     for Hadoop.  May be useful for adjusting run time
+                     options such as reducer count.
+
+HADOOP_SLAVE_CORE_COUNT : Total cores on slave nodes in the
+       		          allocation.  May be useful for adjusting run
+       		          time options such as reducer count.
 
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.
@@ -612,7 +617,12 @@ SPARK_MASTER_NODE : the master node of the Spark allocation
 SPARK_MASTER_PORT : the master port for running Spark jobs
 
 SPARK_SLAVE_COUNT : number of compute/data nodes in your allocation
-                    for Spark.
+                    for Spark.  May be useful for adjusting run time
+                    options such as reducer count.
+
+SPARK_SLAVE_CORE_COUNT : Total cores on slave nodes in the allocation.
+       		         May be useful for adjusting run time options
+       		         such as reducer count.
 
 SPARK_CONF_DIR : the directory that Spark configuration files local
                  to the node are stored.
