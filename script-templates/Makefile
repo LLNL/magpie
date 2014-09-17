@@ -177,6 +177,8 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
+	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
+	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	cat magpie-hbase >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
@@ -189,6 +191,7 @@ all:
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hbase\"/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
 
 # Make sbatch with Spark
 	echo "Creating magpie.sbatch-spark"
@@ -218,6 +221,8 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
+	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
+	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	cat magpie-spark >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
@@ -227,6 +232,7 @@ all:
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
 
 # Make sbatch with Storm
 	echo "Creating magpie.sbatch-storm"
@@ -368,6 +374,8 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
+	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
+	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	cat magpie-hbase >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
@@ -380,6 +388,7 @@ all:
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hbase\"/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
 
 # Make msub with Spark
 	echo "Creating magpie.msub-slurm-spark"
@@ -409,6 +418,8 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
+	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
+	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	cat magpie-spark >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
@@ -418,6 +429,7 @@ all:
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
 
 # Make msub with Storm
 	echo "Creating magpie.msub-slurm-storm"

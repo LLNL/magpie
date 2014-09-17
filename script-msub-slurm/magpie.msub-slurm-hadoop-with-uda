@@ -353,6 +353,8 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.
 #
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
+#
 export HADOOP_MODE="terasort"
 
 # Tasks per Node
