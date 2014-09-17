@@ -333,7 +333,6 @@ export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
 #                 'master' node and interact with Hadoop directly
 #                 (e.g. bin/hadoop ...)
 #
-# XXX - will this work w/ federation?
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
 #                 used when you are switching to a newer Hadoop
 #                 version and the HDFS version would be inconsistent
