@@ -25,6 +25,12 @@ Some of the features presently supported:
 - Run the UDA Infiniband optimization plugin for Hadoop.
 - Make decent optimizations of Hadoop for your hardware
 
+Some experimental features currently supported:
+
+- Support MagpieNetworkFS - See README.magpienetworkfs
+- Support intellustre - See README.intellustre
+- Support HDFS federation - See README.hdfsfederation
+
 Basic Idea
 ----------
 
