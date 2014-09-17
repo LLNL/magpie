@@ -70,6 +70,8 @@ all:
 	echo "" >> ${MAGPIE_SBATCH}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH}
 	echo "" >> ${MAGPIE_SBATCH}
+	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH}
+	echo "" >> ${MAGPIE_SBATCH}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH}
 	echo "" >> ${MAGPIE_SBATCH}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH}
@@ -102,6 +104,8 @@ all:
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
+	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH_HADOOP}
+	echo "" >> ${MAGPIE_SBATCH_HADOOP}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH_HADOOP}
@@ -123,6 +127,8 @@ all:
 	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
+	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
+	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
@@ -147,6 +153,8 @@ all:
 	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
+	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
+	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
@@ -253,6 +261,8 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM}
 	echo "" >> ${MAGPIE_MSUB_SLURM}
+	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM}
+	echo "" >> ${MAGPIE_MSUB_SLURM}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM}
 	echo "" >> ${MAGPIE_MSUB_SLURM}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM}
@@ -285,6 +295,8 @@ all:
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
+	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM_HADOOP}
+	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
 	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM_HADOOP}
@@ -306,6 +318,8 @@ all:
 	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
+	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
+	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
@@ -330,6 +344,8 @@ all:
 	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
+	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
+	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
 	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
