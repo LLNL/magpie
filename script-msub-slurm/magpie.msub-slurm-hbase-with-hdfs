@@ -190,10 +190,10 @@ export MAGPIE_JOB_TYPE="hbase"
 # When working with Magpie interactively by logging into the master
 # node of your job allocation, many environment variables may need to
 # be set.  For example, environment variables for config file
-# directories (e.g. HADOOP_CONF_DIR, HBASE_CONF_DIR, etc.) and log
-# file directories (e.g. HADOOP_LOG_DIR, HBASE_LOG_DIR, etc.) and more
-# general environment variables (e.g. JAVA_HOME) may need to be set
-# before you begin interacting with your big data setup.
+# directories (e.g. HADOOP_CONF_DIR, HBASE_CONF_DIR, etc.) and home
+# directories (e.g. HADOOP_HOME, HBASE_HOME, etc.) and more general
+# environment variables (e.g. JAVA_HOME) may need to be set before you
+# begin interacting with your big data setup.
 #
 # The standard job output from Magpie provides instructions on all the
 # environment variables typically needed to interact with your job.
