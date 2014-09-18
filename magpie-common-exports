@@ -64,20 +64,6 @@ then
     export HADOOP_COMMON_HOME=${HADOOP_HOME}
     export YARN_COMMON_HOME=${HADOOP_HOME}
     
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${HADOOP_CONF_DIR}/masters" ]
-    then 
-	export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-    fi
-
-    if [ -f "${HADOOP_CONF_DIR}/slaves" ]
-    then
-	export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
-
-	# Assume cores same on each node
-	export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
-    fi
-
     export YARN_RESOURCEMANAGER_ADDRESS="8032"
     export YARN_RESOURCEMANAGER_SCHEDULER_ADDRESS="8030"
     export YARN_RESOURCEMANAGER_WEBAPP_ADDRESS="8088"
@@ -93,6 +79,22 @@ then
     export HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS="19888"
     export MAPRED_JOB_TRACKER_ADDRESS="54311"
     export MAPRED_JOB_TRACKER_HTTPADDRESS="50030"
+
+    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
+    if [ -f "${HADOOP_CONF_DIR}/masters" ]
+    then 
+	export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
+	export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
+	export HADOOP_NAMENODE_PORT="${HADOOP_HDFS_NAMENODE_ADDRESS}"
+    fi
+
+    if [ -f "${HADOOP_CONF_DIR}/slaves" ]
+    then
+	export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
+
+	# Assume cores same on each node
+	export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
+    fi
 
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
     then
@@ -126,15 +128,15 @@ then
     export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
     export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
 
+    export ZOOKEEPER_CLIENT_PORT="2181"
+    export ZOOKEEPER_PEER_PORT="2888"
+    export ZOOKEEPER_LEADER_PORT="3888"
+
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
     then 
 	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
     fi
-
-    export ZOOKEEPER_CLIENT_PORT="2181"
-    export ZOOKEEPER_PEER_PORT="2888"
-    export ZOOKEEPER_LEADER_PORT="3888"
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
@@ -142,6 +144,11 @@ then
     export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
     export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
+
+    export HBASE_MASTER_PORT="60000"
+    export HBASE_MASTER_INFO_PORT="60010"
+    export HBASE_REGIONSERVER_PORT="60020"
+    export HBASE_REGIONSERVER_INFO_PORT="60030"
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${HBASE_CONF_DIR}/masters" ]
@@ -154,11 +161,6 @@ then
 	export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
     fi
     
-    export HBASE_MASTER_PORT="60000"
-    export HBASE_MASTER_INFO_PORT="60010"
-    export HBASE_REGIONSERVER_PORT="60020"
-    export HBASE_REGIONSERVER_INFO_PORT="60030"
-
     hbasesetupscriptprefix="bin"
     hbasecmdprefix="bin"
 fi
@@ -168,6 +170,11 @@ then
     export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     export SPARK_CONF_DIR=${SPARK_LOCAL_JOB_DIR}/conf
     export SPARK_LOG_DIR=${SPARK_LOCAL_JOB_DIR}/log
+
+    export SPARK_MASTER_PORT="7077"
+    export SPARK_MASTER_WEBUI_PORT="8080"
+    export SPARK_WORKER_WEBUI_PORT="8081"
+    export SPARK_APPLICATION_DASHBOARD_PORT="4040"
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${SPARK_CONF_DIR}/masters" ]
@@ -183,11 +190,6 @@ then
 	export SPARK_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${SPARK_SLAVE_COUNT}`
     fi
     
-    export SPARK_MASTER_PORT="7077"
-    export SPARK_MASTER_WEBUI_PORT="8080"
-    export SPARK_WORKER_WEBUI_PORT="8081"
-    export SPARK_APPLICATION_DASHBOARD_PORT="4040"
-
     sparksetupscriptprefix="sbin"
     sparkcmdprefix="bin"
 fi
@@ -197,6 +199,18 @@ then
     export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     export STORM_CONF_DIR=${STORM_LOCAL_JOB_DIR}/conf
     export STORM_LOG_DIR=${STORM_LOCAL_JOB_DIR}/log
+
+    # Default is 8080, but that is same as Spark.  So up by 100
+    export STORM_UI_PORT="8180"
+
+    # Default is 8000, for consistency to above, up by 100
+    export STORM_LOGVIEWER_PORT="8100"
+
+    export STORM_DRPC_PORT="3772"
+    export STORM_DRPC_INVOCATIONS_PORT="3773"
+    export STORM_THRIFT_PORT="6627"
+
+    export STORM_SUPERVISOR_SLOTS_STARTING_PORT="6700"
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${STORM_CONF_DIR}/masters" ]
@@ -210,17 +224,5 @@ then
 	export STORM_WORKERS_COUNT=`cat ${STORM_CONF_DIR}/workers|wc -l`
     fi
     
-    # Default is 8080, but that is same as Spark.  So up by 100
-    export STORM_UI_PORT="8180"
-
-    # Default is 8000, for consistency to above, up by 100
-    export STORM_LOGVIEWER_PORT="8100"
-
-    export STORM_DRPC_PORT="3772"
-    export STORM_DRPC_INVOCATIONS_PORT="3773"
-    export STORM_THRIFT_PORT="6627"
-
-    export STORM_SUPERVISOR_SLOTS_STARTING_PORT="6700"
-
     stormcmdprefix="bin"
 fi

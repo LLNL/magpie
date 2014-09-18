@@ -595,6 +595,14 @@ HADOOP_SLAVE_CORE_COUNT : Total cores on slave nodes in the
        		          allocation.  May be useful for adjusting run
        		          time options such as reducer count.
 
+HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
+ 		  used for accessing HDFS when the namenode + port
+ 		  must be specified in a script.
+
+HADOOP_NAMENODE_PORT : the port of the namenode.  Often used for
+ 		  accessing HDFS when the namenode + port must be
+ 		  specified in a script.
+
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.
 
