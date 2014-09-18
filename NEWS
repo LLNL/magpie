@@ -1,9 +1,10 @@
 magpie 1.47
 -----------
-Support HDFS federation (experimental)
 Support HADOOP_SLAVE_CORE_COUNT and SPARK_SLAVE_CORE_COUNT environment
   variables.
 Support 'hdfsonly' option to HADOOP_MODE for clarity.
+Add additional environment variables into MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT.
+Support HDFS federation (experimental)
 
 magpie 1.46
 -----------
