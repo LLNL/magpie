@@ -375,6 +375,18 @@ then
     echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
 fi
 
+# Spark requires HADOOP_CONF_DIR and YARN_CONF_DIR to be set for it to
+# automatically find/parse Hadoop conf files.
+#
+# We go ahead and set HADOOP_HOME for good measure just incase too.
+#
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${post_sparkenvsh}
+    echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${post_sparkenvsh}
+    echo "export YARN_CONF_DIR=\"${YARN_CONF_DIR}\"" >> ${post_sparkenvsh}
+fi
+
 if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXTRA_PATH} ]
 then
     cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${post_sparkenvsh}
