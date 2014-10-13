@@ -201,9 +201,10 @@ then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${sparkdefaultparallelism}"
 fi
 
-# We do proc count / 2, b/c other daemons on the master are also running. 
+# Tests show proc count is about the best performing when you have
+# many cores, which is likely the norm in HPC clusters
 
-akkathreads=`expr ${proccount} \/ 2`
+akkathreads=`expr ${proccount}`
 
 if [ "${akkathreads}" -lt "4" ]
 then
