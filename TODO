@@ -16,6 +16,7 @@ Hbase
 
 Spark
 - multiple masters
+- "PER_NODE" variables, not correct
 
 Storm + Trident
 
