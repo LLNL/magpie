@@ -55,6 +55,13 @@ then
     cp -a ${SPARK_LOG_DIR}/* ${targetdir}/log
 fi
 
+if [ "${SPARK_LOCAL_DIR}X" != "X" ] && [ -d ${SPARK_LOCAL_DIR}/ ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/)" ] \
+    && [ -d ${SPARK_LOCAL_DIR}/work ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/work)" ]
+then
+    mkdir -p ${targetdir}/work
+    cp -a `find ${SPARK_LOCAL_DIR}/work/ | grep -e 'std'` ${targetdir}/work
+fi
+
 targetdir=${MAGPIE_SCRIPTS_HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/storm/nodes/${NODENAME}
 
 if [ "${STORM_CONF_DIR}X" != "X" ] && [ -d ${STORM_CONF_DIR}/ ] && [ "$(ls -A ${STORM_CONF_DIR}/)" ]
