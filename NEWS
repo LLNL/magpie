@@ -7,6 +7,7 @@ Support convenience environment variables HADOOP_NAMENODE & HADOOP_NAMENODE_PORT
 Add additional environment variables into MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT.
 Support HDFS federation (experimental)
 Support Spark configuration of spark storage memory fraction.
+Support Spark configuration of spark shuffle memory fraction.
 Default akkathreads = core count in Spark setup.
 
 magpie 1.46
