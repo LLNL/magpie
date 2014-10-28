@@ -201,6 +201,20 @@ then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${sparkdefaultparallelism}"
 fi
 
+if [ "${SPARK_STORAGE_MEMORY_FRACTION}X" == "X" ]
+then
+    sparkstoragememoryfraction="0.6"
+else
+    sparkstoragememoryfraction="${SPARK_STORAGE_MEMORY_FRACTION}"
+fi
+
+# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.storage.memoryFraction=${sparkstoragememoryfraction}"
+fi
+
 # Tests show proc count is about the best performing when you have
 # many cores, which is likely the norm in HPC clusters
 
@@ -421,6 +435,7 @@ then
 	-e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
 	-e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
 	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
+	-e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
 	${post_sparkdefaultsconf}
     
 fi

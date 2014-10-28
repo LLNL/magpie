@@ -370,7 +370,22 @@ export SPARK_MODE="sparkpi"
 # shuffle operations (groupByKey, reduceByKey, etc) when not set by
 # user. If not specified, defaults to # compute nodes (i.e. 1 per node)
 #
+# This is something you (the user) almost definitely want to set.
+#
 # export SPARK_DEFAULT_PARALLELISM=8
+
+# SPARK_MEMORY_FRACTION
+#
+# Configure fraction of Java heap to use for Spark's memory cache.
+# This should not be larger than the "old" generation of objects in
+# the JVM.  This can highly affect performance due to interruption due
+# to JVM garbage collection.  If a large amount of time is spent in
+# garbage collection, consider shrinking this value, such as to 0.5 or
+# 0.4.
+#
+# Defaults to 0.6
+#
+# export SPARK_MEMORY_FRACTION=0.6
 
 # SPARK_JOB_CLASSPATH
 #
