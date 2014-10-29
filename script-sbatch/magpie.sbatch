@@ -1080,7 +1080,7 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_DEFAULT_PARALLELISM=8
 
-# SPARK_MEMORY_FRACTION
+# SPARK_STORAGE_MEMORY_FRACTION
 #
 # Configure fraction of Java heap to use for Spark's memory cache.
 # This should not be larger than the "old" generation of objects in
@@ -1091,7 +1091,20 @@ export SPARK_MODE="sparkpi"
 #
 # Defaults to 0.6
 #
-# export SPARK_MEMORY_FRACTION=0.6
+# export SPARK_STORAGE_MEMORY_FRACTION=0.6
+
+# SPARK_SHUFFLE_MEMORY_FRACTION
+#
+# Fraction of Java heap to use for aggregation and cogroups during
+# shuffles.  At any given time, the collective size of all in-memory
+# maps used for shuffles is bounded by this limit, beyond which the
+# contents will begin to spill to disk.  If spills are often, consider
+# increasing this value at the expense of storage memory fraction
+# (SPARK_STORAGE_MEMORY_FRACTION above).
+#
+# Defaults to 0.3
+#
+# export SPARK_SHUFFLE_MEMORY_FRACTION=0.3
 
 # SPARK_JOB_CLASSPATH
 #
