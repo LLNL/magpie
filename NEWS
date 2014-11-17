@@ -1,3 +1,11 @@
+magpie 1.49
+-----------
+Fix scripts/magpie-gather-config-files-and-logs-script.sh to gather all Spark work stderr/stdout.
+
+magpie 1.48
+-----------
+Fix build for correct release.
+
 magpie 1.47
 -----------
 Support HADOOP_SLAVE_CORE_COUNT and SPARK_SLAVE_CORE_COUNT environment

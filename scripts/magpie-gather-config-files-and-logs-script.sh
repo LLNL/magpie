@@ -58,13 +58,15 @@ fi
 if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
 then
     mkdir -p ${targetdir}/work
-    cp -a `find ${SPARK_WORKER_DIRECTORY} | grep -e 'std'` ${targetdir}/work
+    cd ${SPARK_WORKER_DIRECTORY}
+    cp --parents `find . | grep -e 'std'` ${targetdir}/work
 else
     if [ "${SPARK_LOCAL_DIR}X" != "X" ] && [ -d ${SPARK_LOCAL_DIR}/ ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/)" ] \
 	&& [ -d ${SPARK_LOCAL_DIR}/work ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/work)" ]
     then
 	mkdir -p ${targetdir}/work
-	cp -a `find ${SPARK_LOCAL_DIR}/work/ | grep -e 'std'` ${targetdir}/work
+	cd ${SPARK_LOCAL_DIR}/work/
+	cp --parents `find . | grep -e 'std'` ${targetdir}/work
     fi
 fi
 
