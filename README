@@ -912,6 +912,9 @@ new directory for these new submission scripts.
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
 magpie-submission-convert and add appropriate input checks in
 magpie-check-inputs.
+
+I'd be glad to accept patches back for other schedulers/resource
+managers.  Please send me a pull request.
  
 Credit
 ------
