@@ -179,6 +179,22 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_SHUFFLE_MEMORY_FRACTION=0.3
 
+# SPARK_DEPLOY_SPREADOUT
+#
+# Per Spark documentation, "Whether the standalone cluster manager
+# should spread applications out across nodes or try to consolidate
+# them onto as few nodes as possible. Spreading out is usually better
+# for data locality in HDFS, but consolidating is more efficient for
+# compute-intensive workloads."
+#
+# If you are hard coding parallelism in certain parts of your
+# application because those individual actions do not scale well, it
+# may be beneficial to disable this.
+#
+# Defaults to true
+#
+# export SPARK_DEPLOY_SPREADOUT=true
+
 # SPARK_JOB_CLASSPATH
 #
 # May be necessary to set to get certain code/scripts to work.

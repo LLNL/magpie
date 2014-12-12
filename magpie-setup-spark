@@ -229,6 +229,20 @@ then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.memoryFraction=${sparkshufflememoryfraction}"
 fi
 
+if [ "${SPARK_DEPLOY_SPREADOUT}X" == "X" ]
+then
+    sparkdeployspreadout="true"
+else
+    sparkdeployspreadout="${SPARK_DEPLOY_SPREADOUT}"
+fi
+
+# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
+# - spark-defaults.conf for >= 1.0.0 set up below
+if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+then 
+    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.deploy.spreadOut=${sparkdeployspreadout}"
+fi
+
 # Tests show proc count is about the best performing when you have
 # many cores, which is likely the norm in HPC clusters
 
@@ -451,6 +465,7 @@ then
 	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
 	-e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
 	-e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
+	-e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
 	${post_sparkdefaultsconf}
     
 fi

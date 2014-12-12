@@ -1125,6 +1125,13 @@ then
 	fi
     fi
 
+    if [ "${SPARK_DEPLOY_SPREADOUT}X" != "X" ] \
+	&& ( [ "${SPARK_DEPLOY_SPREADOUT}" != "true" ] && [ "${SPARK_DEPLOY_SPREADOUT}" != "false" ])
+    then
+	echo "SPARK_DEPLOY_SPREADOUT must be set to true or false"
+	exit 1
+    fi
+
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "script" ]
     then
 	if [ "${SPARK_SCRIPT_PATH}X" == "X" ]

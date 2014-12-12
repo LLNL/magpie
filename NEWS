@@ -1,3 +1,7 @@
+magpie 1.50
+-----------
+Support SPARK_DEPLOY_SPREADOUT option.
+
 magpie 1.49
 -----------
 Support Moab scheduler w/ Torque resource manager through msubtorque submission type.
