@@ -44,3 +44,16 @@ then
 	export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
     fi
 fi
+
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "moabtorque" ]
+then
+    export MAGPIE_CLUSTER_NODERANK="$(($(echo ${MOAB_NODELIST} | sed 's/&/\n/g' | grep -n ${HOSTNAME} | cut -f1 -d:) - 1))"
+    export MAGPIE_NODE_COUNT="${PBS_NUM_NODES}"
+    export MAGPIE_NODELIST=$(echo ${MOAB_NODELIST} | sed 's/&/,/g')
+    export MAGPIE_JOB_NAME="${MOAB_JOBNAME}"
+    export MAGPIE_JOB_ID="${PBS_JOBID}"
+    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+    then
+	export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
+    fi
+fi
