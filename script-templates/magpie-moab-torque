@@ -25,8 +25,6 @@
 
 #PBS -q <my batch queue>
 
-# *** SEE MAGPIE_TIMELIMIT_MINUTES BELOW, IT MUST BE SET ***
-#
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
 # walltime should be a fair amount larger than them combined.
 
@@ -34,16 +32,9 @@
 
 #PBS -l resfailpolicy=ignore
 
-# You MUST set the MAGPIE_TIMELIMIT_MINUTES value (in minutes) to
-# match what is entered with walltime.  Moab does not export an
-# environment variable with job time, so this must be done manually by
-# the user.
-# export MAGPIE_TIMELIMIT_MINUTES=<time in minutes>
-
 # Need to tell Magpie how you are submitting this job
 #
-# IMPORTANT: This msub file assumes Slurm is the underlying resource
+# IMPORTANT: This submit file assumes torque is the underlying resource
 # manager.  If it is not, a new Magpie submission type should be added
 # into Magpie.
 export MAGPIE_SUBMISSION_TYPE="moabtorque"
-
