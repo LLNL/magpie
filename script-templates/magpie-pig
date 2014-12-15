@@ -80,3 +80,4 @@ export PIG_MODE="testpig"
 # Extra Java runtime options
 #
 # export PIG_OPTS=""
+

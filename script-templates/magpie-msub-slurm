@@ -49,3 +49,4 @@ export SBATCH_EXCLUSIVE="yes"
 # manager.  If it is not, a new Magpie submission type should be added
 # into Magpie.
 export MAGPIE_SUBMISSION_TYPE="msubslurm"
+

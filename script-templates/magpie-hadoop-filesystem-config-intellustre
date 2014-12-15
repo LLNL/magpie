@@ -24,3 +24,4 @@
 # jobs.  Specify yes or no.  Defaults to no.
 #
 # export HADOOP_INTELLUSTRE_SHUFFLE=no
+

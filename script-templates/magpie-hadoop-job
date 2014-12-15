@@ -33,3 +33,4 @@
 # "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
 #
 export HADOOP_MODE="terasort"
+

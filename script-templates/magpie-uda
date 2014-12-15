@@ -25,3 +25,4 @@ export HADOOP_UDA_JAR="/home/username/uda/uda-hadoop-2.x.jar"
 # Defaults to 1024.
 # 
 # export HADOOP_UDA_RDMA_BUFFER_SIZE=1024
+

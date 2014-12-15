@@ -286,3 +286,4 @@ export SPARK_MODE="sparkpi"
 # See spark-example-job-script for example of what to put in the script.
 #
 # export SPARK_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+

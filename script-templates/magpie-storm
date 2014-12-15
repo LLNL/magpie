@@ -98,3 +98,4 @@ export STORM_MODE="stormwordcount"
 # See storm-example-job-script for example of what to put in the script.
 #
 # export STORM_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+
