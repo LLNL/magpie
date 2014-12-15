@@ -40,3 +40,4 @@ export SBATCH_TIMELIMIT=<my time in minutes>
 # Need to tell Magpie how you are submitting this job
 export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
 
+

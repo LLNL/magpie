@@ -44,3 +44,4 @@
 # export HDFS_FEDERATION_NAMENODE_2_MOUNT_1="/path2" 
 #
 # export HDFS_FEDERATION_NAMENODE_3_MOUNT_1="/path3" 
+
