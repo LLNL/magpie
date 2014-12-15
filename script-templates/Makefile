@@ -1,22 +1,3 @@
-# Filenames
-MAGPIE_SBATCH="../script-sbatch/magpie.sbatch"
-MAGPIE_SBATCH_HADOOP="../script-sbatch/magpie.sbatch-hadoop"
-MAGPIE_SBATCH_HADOOP_WITH_UDA="../script-sbatch/magpie.sbatch-hadoop-with-uda"
-MAGPIE_SBATCH_HADOOP_AND_PIG="../script-sbatch/magpie.sbatch-hadoop-and-pig"
-MAGPIE_SBATCH_HBASE_WITH_HDFS="../script-sbatch/magpie.sbatch-hbase-with-hdfs"
-MAGPIE_SBATCH_SPARK="../script-sbatch/magpie.sbatch-spark"
-MAGPIE_SBATCH_SPARK_WITH_HDFS="../script-sbatch/magpie.sbatch-spark-with-hdfs"
-MAGPIE_SBATCH_STORM="../script-sbatch/magpie.sbatch-storm"
-
-MAGPIE_MSUB_SLURM="../script-msub-slurm/magpie.msub-slurm"
-MAGPIE_MSUB_SLURM_HADOOP="../script-msub-slurm/magpie.msub-slurm-hadoop"
-MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA="../script-msub-slurm/magpie.msub-slurm-hadoop-with-uda"
-MAGPIE_MSUB_SLURM_HADOOP_AND_PIG="../script-msub-slurm/magpie.msub-slurm-hadoop-and-pig"
-MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS="../script-msub-slurm/magpie.msub-slurm-hbase-with-hdfs"
-MAGPIE_MSUB_SLURM_SPARK="../script-msub-slurm/magpie.msub-slurm-spark"
-MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS="../script-msub-slurm/magpie.msub-slurm-spark-with-hdfs"
-MAGPIE_MSUB_SLURM_STORM="../script-msub-slurm/magpie.msub-slurm-storm"
-
 # Creation options, set to y or n
 #
 # INSERT_INTELLUSTRE - insert intellustre configuration
@@ -27,7 +8,11 @@ INSERT_INTELLUSTRE=n
 INSERT_MAGPIENETWORKFS=n
 INSERT_HDFS_FEDERATION=n
 
-all:
+.DEFAULT_GOAL=all
+
+all: msub-slurm.srun sbatch.srun
+
+filesystem:
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
 
 	if test "${INSERT_INTELLUSTRE}" = "y"; then \
@@ -56,397 +41,102 @@ all:
 		sed -i -e "/@HDFS_FEDERATION@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
-# Make sbatch with all configuration
-	echo "Creating magpie.sbatch"
-	cp magpie-header ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hadoop-core >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hadoop-job >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-uda >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-pig >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-hbase >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-spark >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-storm >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-zookeeper >> ${MAGPIE_SBATCH}
-	echo "" >> ${MAGPIE_SBATCH}
-	cat magpie-run-job >> ${MAGPIE_SBATCH}
+%.srun: filesystem
+# Build submit file for srun
+	$(eval SCHED := $(basename $@))
+	echo "Creating magpie.$(SCHED)"
+	mkdir -p ../script-$(SCHED)
+	$(eval MAGPIE := ../script-$(SCHED)/magpie.$(SCHED))
+	$(eval MAGPIE_HADOOP := ../script-$(SCHED)/magpie.$(SCHED)-hadoop)
+	$(eval MAGPIE_HADOOP_WITH_UDA := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-with-uda)
+	$(eval MAGPIE_HADOOP_AND_PIG := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-and-pig)
+	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs)
+	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
+	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
+	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 
-# Make sbatch with just Hadoop
-	echo "Creating magpie.sbatch-hadoop"
-	cp magpie-header ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH_HADOOP}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_HADOOP}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_SBATCH_HADOOP}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" ${MAGPIE_SBATCH_HADOOP}
+	cp magpie-header $(MAGPIE)
 
-# Make sbatch with Hadoop with UDA
-	echo "Creating magpie.sbatch-hadoop-with-uda"
-	cp magpie-header ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-hadoop-mode-details >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-uda >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" ${MAGPIE_SBATCH_HADOOP_WITH_UDA}
+	# All configuration
+	echo "Creating magpie.$(SCHED)"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
+		magpie-uda\
+		magpie-pig\
+		magpie-hbase\
+		magpie-spark\
+		magpie-storm\
+		magpie-zookeeper\
+		magpie-run-job > $(MAGPIE)
 
-# Make sbatch with Hadoop and Pig
-	echo "Creating magpie.sbatch-hadoop-and-pig"
-	cp magpie-header ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-hadoop-job-details >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-pig >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" ${MAGPIE_SBATCH_HADOOP_AND_PIG}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" ${MAGPIE_SBATCH_HADOOP_AND_PIG}
+	# Just Hadoop
+	echo "Creating magpie.$(SCHED)-hadoop"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
+		magpie-run-job > $(MAGPIE_HADOOP)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 
-# Make sbatch with Hbase with HDFS
-	echo "Creating magpie.sbatch-hbase-with-hdfs"
-	cp magpie-header ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-hbase >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-zookeeper >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hbase\"/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
-	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_SBATCH_HBASE_WITH_HDFS}
+	# Hadoop with UDA
+	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
+		magpie-uda\
+		magpie-run-job > $(MAGPIE_HADOOP_WITH_UDA)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
 
-# Make sbatch with Spark
-	echo "Creating magpie.sbatch-spark"
-	cp magpie-header ${MAGPIE_SBATCH_SPARK}
-	echo "" >> ${MAGPIE_SBATCH_SPARK}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_SPARK}
-	echo "" >> ${MAGPIE_SBATCH_SPARK}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_SPARK}
-	echo "" >> ${MAGPIE_SBATCH_SPARK}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_SPARK}
-	echo "" >> ${MAGPIE_SBATCH_SPARK}
-	cat magpie-spark >> ${MAGPIE_SBATCH_SPARK}
-	echo "" >> ${MAGPIE_SBATCH_SPARK}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_SPARK}
-	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ${MAGPIE_SBATCH_SPARK}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" ${MAGPIE_SBATCH_SPARK}
+	# Hadoop and Pig
+	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
+		magpie-pig\
+		magpie-run-job > $(MAGPIE_HADOOP_AND_PIG)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
+	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 
-# Make sbatch with Spark with HDFS
-	echo "Creating magpie.sbatch-spark-with-hdfs"
-	cp magpie-header ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-hadoop-core >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-hadoop-job >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-spark >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
-	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_SBATCH_SPARK_WITH_HDFS}
+	# Hadoop with Hbase with HDFS
+	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
+		magpie-hbase\
+		magpie-zookeeper\
+		magpie-run-job > $(MAGPIE_HBASE_WITH_HDFS)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
+	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
+	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hbase\"/" $(MAGPIE_HBASE_WITH_HDFS)
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS)
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
 
-# Make sbatch with Storm
-	echo "Creating magpie.sbatch-storm"
-	cp magpie-header ${MAGPIE_SBATCH_STORM}
-	echo "" >> ${MAGPIE_SBATCH_STORM}
-	cat magpie-sbatch >> ${MAGPIE_SBATCH_STORM}
-	echo "" >> ${MAGPIE_SBATCH_STORM}
-	cat magpie-magpie-customizations >> ${MAGPIE_SBATCH_STORM}
-	echo "" >> ${MAGPIE_SBATCH_STORM}
-	cat magpie-general-configuration >> ${MAGPIE_SBATCH_STORM}
-	echo "" >> ${MAGPIE_SBATCH_STORM}
-	cat magpie-storm >> ${MAGPIE_SBATCH_STORM}
-	echo "" >> ${MAGPIE_SBATCH_STORM}
-	cat magpie-zookeeper >> ${MAGPIE_SBATCH_STORM}
-	echo "" >> ${MAGPIE_SBATCH_STORM}
-	cat magpie-run-job >> ${MAGPIE_SBATCH_STORM}
-	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" ${MAGPIE_SBATCH_STORM}
-	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_SBATCH_STORM}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"storm\"/" ${MAGPIE_SBATCH_STORM}
+	# Spark
+	echo "Creating magpie.$(SCHED)-spark"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-spark\
+		magpie-run-job > $(MAGPIE_SPARK)
+	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
 
-# Make msub with all configuration
-	echo "Creating magpie.msub-slurm"
-	cp magpie-header ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-uda >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-pig >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-hbase >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-spark >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-storm >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-zookeeper >> ${MAGPIE_MSUB_SLURM}
-	echo "" >> ${MAGPIE_MSUB_SLURM}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM}
+	# Spark with HDFS
+	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
+		magpie-spark\
+		magpie-run-job > $(MAGPIE_SPARK_WITH_HDFS)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
+	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_HDFS)
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_HDFS)
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 
-# Make msub with just Hadoop
-	echo "Creating magpie.msub-slurm-hadoop"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_HADOOP}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HADOOP}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" ${MAGPIE_MSUB_SLURM_HADOOP}
-
-# Make msub with Hadoop with UDA
-	echo "Creating magpie.msub-slurm-hadoop-with-uda"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-hadoop-mode-details >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-uda >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" ${MAGPIE_MSUB_SLURM_HADOOP_WITH_UDA}
-
-# Make msub with Hadoop and Pig
-	echo "Creating magpie.msub-slurm-hadoop-and-pig"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-hadoop-job-details >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-pig >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" ${MAGPIE_MSUB_SLURM_HADOOP_AND_PIG}
-
-# Make msub with Hbase with HDFS
-	echo "Creating magpie.msub-slurm-hbase-with-hdfs"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-hbase >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-zookeeper >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hbase\"/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_MSUB_SLURM_HBASE_WITH_HDFS}
-
-# Make msub with Spark
-	echo "Creating magpie.msub-slurm-spark"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_SPARK}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_SPARK}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_SPARK}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_SPARK}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK}
-	cat magpie-spark >> ${MAGPIE_MSUB_SLURM_SPARK}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_SPARK}
-	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ${MAGPIE_MSUB_SLURM_SPARK}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" ${MAGPIE_MSUB_SLURM_SPARK}
-
-# Make msub with Spark with HDFS
-	echo "Creating magpie.msub-slurm-spark-with-hdfs"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-hadoop-core >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-hadoop-job >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-hadoop-filesystem-substitution >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-spark >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	echo "" >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" ${MAGPIE_MSUB_SLURM_SPARK_WITH_HDFS}
-
-# Make msub with Storm
-	echo "Creating magpie.msub-slurm-storm"
-	cp magpie-header ${MAGPIE_MSUB_SLURM_STORM}
-	echo "" >> ${MAGPIE_MSUB_SLURM_STORM}
-	cat magpie-msub-slurm >> ${MAGPIE_MSUB_SLURM_STORM}
-	echo "" >> ${MAGPIE_MSUB_SLURM_STORM}
-	cat magpie-magpie-customizations >> ${MAGPIE_MSUB_SLURM_STORM}
-	echo "" >> ${MAGPIE_MSUB_SLURM_STORM}
-	cat magpie-general-configuration >> ${MAGPIE_MSUB_SLURM_STORM}
-	echo "" >> ${MAGPIE_MSUB_SLURM_STORM}
-	cat magpie-storm >> ${MAGPIE_MSUB_SLURM_STORM}
-	echo "" >> ${MAGPIE_MSUB_SLURM_STORM}
-	cat magpie-zookeeper >> ${MAGPIE_MSUB_SLURM_STORM}
-	echo "" >> ${MAGPIE_MSUB_SLURM_STORM}
-	cat magpie-run-job >> ${MAGPIE_MSUB_SLURM_STORM}
-	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" ${MAGPIE_MSUB_SLURM_STORM}
-	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" ${MAGPIE_MSUB_SLURM_STORM}
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"storm\"/" ${MAGPIE_MSUB_SLURM_STORM}
+	# Storm
+	echo "Creating magpie.$(SCHED)-storm"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-storm\
+		magpie-zookeeper\
+		magpie-run-job > $(MAGPIE_STORM)
+	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" $(MAGPIE_STORM)
+	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
 
