@@ -8,7 +8,7 @@ over the schedulers of Slurm and Moab, and the resource managers of
 Slurm and Torque.  It currently supports running over the parallel
 file system Lustre and running over any generic network filesytem.
 
-xBasic Idea
+Basic Idea
 ----------
 
 The basic idea behind these scripts are to:
