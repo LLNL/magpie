@@ -21,7 +21,7 @@ msub-slurm:
 moab-torque:
 	$(call create-templates,$@,pdsh)
 
-define create-templates =
+define create-templates
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
 
 	if test "${INSERT_INTELLUSTRE}" = "y"; then \
