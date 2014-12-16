@@ -10,7 +10,7 @@ INSERT_HDFS_FEDERATION=n
 
 .DEFAULT_GOAL=all
 
-all: msub-slurm sbatch moab-torque
+all: msub-slurm sbatch msub-torque
 
 sbatch:
 	$(call create-templates,$@,srun)
@@ -18,7 +18,7 @@ sbatch:
 msub-slurm:
 	$(call create-templates,$@,srun)
 
-moab-torque:
+msub-torque:
 	$(call create-templates,$@,pdsh)
 
 define create-templates
