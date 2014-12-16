@@ -1,5 +1,7 @@
 magpie 1.49
 -----------
+Support Moab scheduler w/ Torque resource manager through msubtorque submission type.
+- See new submission scripts in script-msub-torque
 Fix scripts/magpie-gather-config-files-and-logs-script.sh to gather all Spark work stderr/stdout.
 
 magpie 1.48
