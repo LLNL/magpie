@@ -4,9 +4,9 @@ magpie
 This project contains a number of scripts for running Big Data
 software in HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark,
 Storm, and Zookeeper are supported.  It currently supports running
-over the schedulers/resource managers of Slurm and Moab.  It currently
-supports running over the parallel file system Lustre and running over
-any generic network filesytem.
+over the schedulers of Slurm and Moab, and the resource managers of
+Slurm and Torque.  It currently supports running over the parallel
+file system Lustre and running over any generic network filesytem.
 
 Basic Idea
 ----------
@@ -14,7 +14,7 @@ Basic Idea
 The basic idea behind these scripts are to:
 
 1) Allocate nodes on a cluster using your HPC scheduler/resource
-   manager.  Slurm and Moab are currently supported.
+   manager.
 
 2) Scripts will setup configuration files so the rank 0 node is
    the "master".  All compute nodes will have configuration files
