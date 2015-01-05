@@ -878,6 +878,12 @@ https://github.com/grondo/lua-hostlist
 The main magpie-run script will use 'magpie-expand-nodes' if it cannot
 find 'hostlist' in its path.
 
+To launch the daemons on the cluster nodes, magpie normally uses
+srun provided by SLURM. However, with other resource allocation
+managers (e.g.: Moab/Torque), the mechanism used is pdsh.
+You can find pdsh at
+https://code.google.com/p/pdsh/
+
 Testing
 -------
 
