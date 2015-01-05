@@ -2,7 +2,8 @@
 # Run Job
 ############################################################################
 
-ENV=$(env | grep -E '^HADOOP|^JAVA|^LD_LIBRARY_PATH|^MAGPIE|^MOAB|^PATH|^PBS|RAMDISK' | sed 's/^/export /;s/=/="/;s/$/"/')
+ENV=$(env | grep -E '^MAGPIE|^HADOOP|^PIG|^ZOOKEEPER|^HBASE|^SPARK|^STORM|^JAVA|^LD_LIBRARY_PATH|^MOAB|^PATH|^PBS|RAMDISK'\
+          | sed 's/^/export /;s/=/="/;s/$/"/')
 
 pdsh "$ENV;
       $MAGPIE_SCRIPTS_HOME/magpie-check-inputs;
