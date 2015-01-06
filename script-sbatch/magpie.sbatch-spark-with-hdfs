@@ -123,6 +123,24 @@ export MAGPIE_LOCAL_DIR="/tmp/username/magpie"
 #
 export MAGPIE_JOB_TYPE="spark"
 
+# Specify whether or not to run slave daemons on master node
+#
+# By default, the master node will only run master daemons, such as
+# the Hadoop NameNode, Hbase Master, Spark Master, etc.
+#
+# On certain workloads the amount of memory and processing used on
+# the master may be low enough it would be worthwhile to also run
+# slave node daemons on the master (e.g. Hadoop DataNode, Hbase
+# RegionServer, Spark Worker, etc.). By setting the below to yes,
+# you will inform Magpie to also run slave node daemons on the
+# master. If enabled, you are advised to adjust heap and memory
+# usage of all necessary daemons to ensure that resources are
+# allocated appropriately to ensure decent performance.
+#
+# By default, this is turned off.
+#
+# export MAGPIE_RUN_SLAVE_ON_MASTER="yes"
+
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
 # export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"

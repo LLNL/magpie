@@ -205,7 +205,13 @@ else
 fi
 
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_DIR}/tmp_masters
-${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_DIR}/tmp_slaves
+if [ "${MAGPIE_RUN_SLAVE_ON_MASTER}" == "yes" ]
+then
+	slavestart=1
+else
+	slavestart=2
+fi
+${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+${slavestart} > ${MAGPIE_LOCAL_DIR}/tmp_slaves
 
 if [ "${HADOOP_SETUP}" == "yes" ] \
     && ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
