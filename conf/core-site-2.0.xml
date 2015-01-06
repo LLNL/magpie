@@ -64,4 +64,14 @@
 
 @VIEWFSMOUNT@
 
+<property>
+  <name>hadoop.ib.enabled</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>hadoop.roce.enabled</name>
+  <value>false</value>
+</property>
+
 </configuration>

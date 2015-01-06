@@ -137,5 +137,10 @@
   </description>
 </property>
 
+<property>
+  <name>dfs.replication.parallel.enabled</name>
+  <value>true</value>
+</property>
+
 </configuration>
 

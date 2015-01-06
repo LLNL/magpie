@@ -62,7 +62,7 @@
 
 <property>
   <name>YARNAUXMAPREDUCESHUFFLE</name>
-  <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+  <value>org.apache.hadoop.mapred.HOMRShuffleHandler</value>
 </property>
 
 @UDA@
