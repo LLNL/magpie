@@ -47,7 +47,7 @@ fi
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorque" ]
 then
-    export MAGPIE_CLUSTER_NODERANK="$(($(echo ${MOAB_NODELIST} | sed 's/&/\n/g' | grep -n ${HOSTNAME} | cut -f1 -d:) - 1))"
+    export MAGPIE_CLUSTER_NODERANK=`expr $(echo ${MOAB_NODELIST} | sed 's/&/\n/g' | grep -n ${HOSTNAME} | cut -f1 -d:) - 1`
     export MAGPIE_NODE_COUNT="${PBS_NUM_NODES}"
     export MAGPIE_NODELIST=$(echo ${MOAB_NODELIST} | sed 's/&/,/g')
     export MAGPIE_JOB_NAME="${MOAB_JOBNAME}"
