@@ -1198,6 +1198,12 @@ then
 	exit 1
     fi
 
+    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
+    then
+	echo "Zookeeper must be enabled for Storm"
+	exit 1
+    fi
+
     if [ "${STORM_MODE}" != "stormwordcount" ] \
 	&& [ "${STORM_MODE}" != "script" ] \
 	&& [ "${STORM_MODE}" != "interactive" ] \
@@ -1241,6 +1247,12 @@ then
 	    echo "Script STORM_SCRIPT_PATH \"$STORM_SCRIPT_PATH\" does not have execute permissions"
 	    exit 1
 	fi
+    fi
+
+    if [ "${STORM_MODE}" != "setuponly" ] && [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Storm job if Zookeeper mode is setuponly"
+	exit 1
     fi
 
     if [ ${nodecount} -le "0" ]
