@@ -1249,6 +1249,12 @@ then
 	fi
     fi
 
+    if [ "${STORM_MODE}" != "setuponly" ] && [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Storm job if Zookeeper mode is setuponly"
+	exit 1
+    fi
+
     if [ ${nodecount} -le "0" ]
     then
 	echo "No remaining nodes for Storm workers, increase node count or adjust node allocations"
