@@ -42,7 +42,7 @@ export HADOOP_VERSION="2.6.0"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="PROJECTDIRPREFIX/hadoop-${HADOOP_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -50,7 +50,7 @@ export HADOOP_HOME="/home/username/hadoop-${HADOOP_VERSION}"
 # This will not be used for storing intermediate files or
 # distributed cache files.  See HADOOP_LOCALSTORE above for that.
 #
-export HADOOP_LOCAL_DIR="/tmp/username/hadoop"
+export HADOOP_LOCAL_DIR="LOCALDIRPREFIX/hadoop"
 
 # Directory where Hadoop configuration templates are stored
 #

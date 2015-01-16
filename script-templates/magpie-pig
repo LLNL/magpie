@@ -27,7 +27,7 @@ export PIG_VERSION="0.14.0"
 #
 # Ensure the build matches the Hadoop version this will run against.
 #
-export PIG_HOME="/home/username/pig-${PIG_VERSION}"
+export PIG_HOME="PROJECTDIRPREFIX/pig-${PIG_VERSION}"
 
 # Directory where Pig configuration templates are stored
 #
@@ -38,7 +38,7 @@ export PIG_HOME="/home/username/pig-${PIG_VERSION}"
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export PIG_LOCAL_DIR="/tmp/username/pig"
+export PIG_LOCAL_DIR="LOCALDIRPREFIX/pig"
 
 # Set how Pig should run
 #
@@ -66,14 +66,14 @@ export PIG_MODE="testpig"
 # A particularly useful option is -l <logfile>, to indicate where you
 # would like the pig log file to go.
 #
-# export PIG_SCRIPT_OPTS="-l /home/username/mypig.log"
+# export PIG_SCRIPT_OPTS="-l HOMEDIRPREFIX/mypig.log"
 
 # Pig Classpath
 #
 # Set the classpath you desire for pig.  This is the CLASSPATH you
 # likely want to set to add additional jars for your run.
 #
-# export PIG_CLASSPATH="/home/username/myjarfiles.jar"
+# export PIG_CLASSPATH="HOMEDIRPREFIX/myjarfiles.jar"
 
 # Pig Opts
 #

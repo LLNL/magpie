@@ -19,12 +19,12 @@ export STORM_VERSION="0.9.2-incubating"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export STORM_HOME="/home/username/apache-storm-${STORM_VERSION}"
+export STORM_HOME="PROJECTDIRPREFIX/apache-storm-${STORM_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export STORM_LOCAL_DIR="/tmp/username/storm"
+export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 
 # Directory where Storm configuration templates are stored
 #

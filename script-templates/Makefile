@@ -8,6 +8,14 @@ INSERT_INTELLUSTRE=n
 INSERT_MAGPIENETWORKFS=n
 INSERT_HDFS_FEDERATION=n
 
+MAGPIE_SCRIPTS_DIR_PREFIX="/home/username"
+LOCAL_DIR_PREFIX="/tmp/username"
+PROJECT_DIR_PREFIX="/home/username"
+HOME_DIR_PREFIX="/home/username"
+LUSTRE_DIR_PREFIX="/lustre/username"
+NETWORKFS_DIR_PREFIX="/networkfs/username"
+SSD_DIR_PREFIX="/ssd/username"
+
 .DEFAULT_GOAL=all
 
 all: msub-slurm sbatch msub-torque
@@ -20,6 +28,24 @@ msub-slurm:
 
 msub-torque:
 	$(call create-templates,$@,pdsh)
+
+define common-substitution
+	$(eval magpiescriptsdirprefix := $(shell echo "${MAGPIE_SCRIPTS_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval localdirprefix := $(shell echo "${LOCAL_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval projectdirprefix := $(shell echo "${PROJECT_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval homedirprefix := $(shell echo "${HOME_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval lustredirprefix := $(shell echo "${LUSTRE_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval networkfsdirprefix := $(shell echo "${NETWORKFS_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval ssddirprefix := $(shell echo "${SSD_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+
+	sed -i -e "s/MAGPIESCRIPTSDIRPREFIX/${magpiescriptsdirprefix}/g" $(1)
+	sed -i -e "s/LOCALDIRPREFIX/${localdirprefix}/g" $(1)
+	sed -i -e "s/PROJECTDIRPREFIX/${projectdirprefix}/g" $(1)
+	sed -i -e "s/HOMEDIRPREFIX/${homedirprefix}/g" $(1)
+	sed -i -e "s/LUSTREDIRPREFIX/${lustredirprefix}/g" $(1)
+	sed -i -e "s/NETWORKFSDIRPREFIX/${networkfsdirprefix}/g" $(1)
+	sed -i -e "s/SSDDIRPREFIX/${ssddirprefix}/g" $(1)
+endef
 
 define create-templates
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
@@ -75,6 +101,7 @@ define create-templates
 		magpie-storm\
 		magpie-zookeeper\
 		magpie-run-job-$(DIST) > $(MAGPIE)
+	$(call common-substitution, ${MAGPIE})
 
 	# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
@@ -83,6 +110,7 @@ define create-templates
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
+	$(call common-substitution, ${MAGPIE_HADOOP})
 
 	# Hadoop with UDA
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
@@ -92,6 +120,7 @@ define create-templates
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
+	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA})
 
 	# Hadoop and Pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
@@ -102,6 +131,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
+	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
 
 	# Hadoop with Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
@@ -116,6 +146,7 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hbase\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
+	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
 
 	# Spark
 	echo "Creating magpie.$(SCHED)-spark"
@@ -124,6 +155,7 @@ define create-templates
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK)
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
+	$(call common-substitution, ${MAGPIE_SPARK})
 
 	# Spark with HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
@@ -136,6 +168,7 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
+	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
 
 	# Storm
 	echo "Creating magpie.$(SCHED)-storm"
@@ -146,5 +179,6 @@ define create-templates
 	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
+	$(call common-substitution, ${MAGPIE_STORM})
 endef
 

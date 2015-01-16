@@ -46,7 +46,7 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 # path will also store daemon data, such as namenode or jobtracker
 # data.
 #
-export HADOOP_HDFS_PATH="/ssd/username/"
+export HADOOP_HDFS_PATH="SSDDIRPREFIX/"
 
 # Lustre path to do Hadoop HDFS out of
 #
@@ -54,7 +54,7 @@ export HADOOP_HDFS_PATH="/ssd/username/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
+export HADOOP_HDFSOVERLUSTRE_PATH="LUSTREDIRPREFIX/hdfsoverlustre/"
 
 # HDFS over Lustre ignore lock
 #
@@ -82,7 +82,7 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/username/hdfsoverlustre/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/username/hdfsovernetworkfs/"
+export HADOOP_HDFSOVERNETWORKFS_PATH="NETWORKFSDIRPREFIX/hdfsovernetworkfs/"
 
 # HDFS over Networkfs ignore lock
 #
@@ -108,7 +108,7 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/username/hdfsovernetworkfs/"
 #
 # This path is used for creating local per-node paths.
 #
-export HADOOP_RAWNETWORKFS_PATH="/lustre/username/rawnetworkfs/"
+export HADOOP_RAWNETWORKFS_PATH="LUSTREDIRPREFIX/rawnetworkfs/"
 
 @PATH_INTELLUSTRE@
 
@@ -128,7 +128,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/username/rawnetworkfs/"
 # make them comma separated (e.g. /dir1,/dir2,/dir3).  The multiple
 # paths will be used for local intermediate data.
 #
-# export HADOOP_LOCALSTORE="/ssd/username/localstore/"
+# export HADOOP_LOCALSTORE="SSDDIRPREFIX/localstore/"
 
 # HDFS Block Size
 #

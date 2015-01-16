@@ -2,5 +2,5 @@
 #
 # This path must be an absolute path.
 #
-export HADOOP_MAGPIENETWORKFS_PATH="/lustre/username/magpienetworkfs/"
+export HADOOP_MAGPIENETWORKFS_PATH="LUSTREDIRPREFIX/magpienetworkfs/"
 

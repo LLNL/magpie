@@ -19,12 +19,12 @@ export SPARK_VERSION="1.0.0-bin-hadoop2"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="/home/username/spark-${SPARK_VERSION}"
+export SPARK_HOME="PROJECTDIRPREFIX/spark-${SPARK_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export SPARK_LOCAL_DIR="/tmp/username/spark"
+export SPARK_LOCAL_DIR="LOCALDIRPREFIX/spark"
 
 # Directory where Spark configuration templates are stored
 #
@@ -62,7 +62,7 @@ export SPARK_LOCAL_DIR="/tmp/username/spark"
 # Generally speaking, this is best if this is a tmp directory such as
 # in /tmp
 #
-# export SPARK_WORKER_DIRECTORY=/tmp/username/spark/work
+# export SPARK_WORKER_DIRECTORY=LOCALDIRPREFIX/spark/work
 
 # SPARK_JOB_MEMORY
 #

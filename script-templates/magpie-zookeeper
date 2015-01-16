@@ -50,7 +50,7 @@ export ZOOKEEPER_VERSION="3.4.6"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export ZOOKEEPER_HOME="/home/username/zookeeper-${ZOOKEEPER_VERSION}"
+export ZOOKEEPER_HOME="PROJECTDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
 
 # Directory where Zookeeper configuration templates are stored
 #
@@ -78,12 +78,12 @@ export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
 # in your interest to set this to a local drive and adjust
 # ZOOKEEPER_FILESYSTEM_MODE above to 'local'.
 #
-export ZOOKEEPER_DATA_DIR="/lustre/username/zookeeper"  
+export ZOOKEEPER_DATA_DIR="LUSTREDIRPREFIX/zookeeper"  
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export ZOOKEEPER_LOCAL_DIR="/tmp/username/zookeeper"
+export ZOOKEEPER_LOCAL_DIR="LOCALDIRPREFIX/zookeeper"
 
 # ZooKeeper ticktime, measured in milliseconds.  Used by all of
 # Zookeeper for time measurement.
