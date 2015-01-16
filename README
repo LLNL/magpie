@@ -893,7 +893,7 @@ above (HDFS-1835), I did most development and testing against Hadoop
 testing was done with Hadoop 2.4.0 and 2.6.0.
 
 Pig support was added/tested against version 0.12.0.  Nominal
-testing was done with Pig 0.12.1.
+testing was done with Pig 0.12.1 and 0.14.0.
 
 Zookeeper support was added/tested against version 3.4.5.  Nominal
 testing was done with Zookeeper 3.4.6.
