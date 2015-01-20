@@ -1,5 +1,6 @@
 magpie 1.51
 -----------
+Support Storm 0.9.3.
 Update primary Hadoop support to 2.6.0.
 Update primary Pig to 0.14.0.
 
