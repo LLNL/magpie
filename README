@@ -739,7 +739,7 @@ Spark
 Storm
 - Patch to support alternate config file directories and log file
   directories is required atleast through Storm 0.9.2.  Storm requires
-  a recompilation of source.
+  a recompilation of source.  Patch is no longer needed in 0.9.3.
 
 Pig
 - No patching necessary.
