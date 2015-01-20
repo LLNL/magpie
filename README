@@ -732,6 +732,9 @@ Spark
   patch for startup scripts and code is required, a recompilation of
   source is required.
 
+  For Spark version 1.2.0, patch for startup scripts is required, but
+  recompilation of source is not required.
+
 - Patch to support non-ssh remote execution may be needed in some
   environments.  Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
@@ -824,6 +827,9 @@ directory.  It is being monitored via:
 https://issues.apache.org/jira/browse/SPARK-2116
 (Alternate approach at https://issues.apache.org/jira/browse/SPARK-2058 may suffice if it is accepted)
 
+For Spark version 1.2.0, a recompile is no longer required, but
+patching scripts is still necessary.
+
 Patch - Alternate Log Dir & Conf Dir for Storm
 ----------------------------------------------
 
@@ -907,7 +913,8 @@ Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
 tested against HDFS based file systems.  Nominal testing was done with
 Hbase 0.98.3-hadoop2.
 
-Spark was added/tested against spark-0.9.1 and spark-1.0.0.
+Spark was added/tested against spark-0.9.1 and spark-1.0.0.  Nominal
+testing was done with Spark 1.2.0.
 
 Storm was added/tested against storm-0.9.2.  Nominal testing was done
 with Storm 0.9.3.

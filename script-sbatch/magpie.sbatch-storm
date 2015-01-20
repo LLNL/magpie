@@ -222,7 +222,7 @@ export STORM_SETUP=yes
 
 # Version
 #
-export STORM_VERSION="0.9.2-incubating"
+export STORM_VERSION="0.9.3"
 
 # Path to your Storm build/binaries
 #
