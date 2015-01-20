@@ -14,6 +14,6 @@ then
 fi
 
 # Perhaps want to gather conf/log info for post-job analysis
-# see hadoop-gather-config-files-and-logs-script.sh script
+# see magpie-gather-config-files-and-logs-script.sh script
 
 exit 0

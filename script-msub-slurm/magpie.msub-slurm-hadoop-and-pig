@@ -182,6 +182,10 @@ export MAGPIE_JOB_TYPE="pig"
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
 #
+#
+# A number of convenient scripts are available in the scripts
+# directory.
+#
 # export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
 # export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
 
