@@ -700,6 +700,14 @@ corrupted blocks in HDFS.
 hbase-major-compaction.sh - Perform a major compaction on all Hbase
 tables.
 
+Download Script
+---------------
+
+bin/magpie-apache-download-and-setup.sh is a convenient script that
+you may wish to consider using.  It will automatically download and
+patch many of the above Apache projects for you.  It'll also configure
+several paths for you in the launch scripts automatically.
+
 Patching
 --------
 
