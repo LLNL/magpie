@@ -911,7 +911,7 @@ UDA support was added/tested against uda-plugin 3.3.2-0 with Hadoop
 
 Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
 tested against HDFS based file systems.  Nominal testing was done with
-Hbase 0.98.3-hadoop2.
+Hbase 0.98.3-hadoop2 and 0.98.9-hadoop2.
 
 Spark was added/tested against spark-0.9.1 and spark-1.0.0.  Nominal
 testing was done with Spark 1.2.0.
