@@ -72,6 +72,24 @@ then
 	echo "**** spark-env.sh ****"
 	cat ${SPARK_CONF_DIR}/spark-env.sh
     fi
+
+    if [ -f "${SPARK_CONF_DIR}/spark-defaults.conf" ] 
+    then
+	echo "**** spark-defaults.conf ****"
+	cat ${SPARK_CONF_DIR}/spark-defaults.conf
+    fi
+
+    if [ -f "${STORM_CONF_DIR}/storm-env.sh" ] 
+    then
+	echo "**** storm-env.sh ****"
+	cat ${STORM_CONF_DIR}/storm-env.sh
+    fi
+
+    if [ -f "${STORM_CONF_DIR}/storm.yaml" ] 
+    then
+	echo "**** storm.yaml ****"
+	cat ${STORM_CONF_DIR}/storm.yaml
+    fi
 fi
 
 if [ "${MAGPIE_CLUSTER_NODERANK}" == "1" ]
