@@ -16,6 +16,8 @@ LUSTRE_DIR_PREFIX="/lustre/username"
 NETWORKFS_DIR_PREFIX="/networkfs/username"
 SSD_DIR_PREFIX="/ssd/username"
 
+REMOTE_CMD_DEFAULT="ssh"
+
 .DEFAULT_GOAL=all
 
 all: msub-slurm sbatch msub-torque
@@ -45,6 +47,8 @@ define common-substitution
 	sed -i -e "s/LUSTREDIRPREFIX/${lustredirprefix}/g" $(1)
 	sed -i -e "s/NETWORKFSDIRPREFIX/${networkfsdirprefix}/g" $(1)
 	sed -i -e "s/SSDDIRPREFIX/${ssddirprefix}/g" $(1)
+
+	sed -i -e "s/REMOTECMDDEFAULT/${REMOTE_CMD_DEFAULT}/g" $(1)
 endef
 
 define create-templates

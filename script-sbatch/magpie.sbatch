@@ -204,7 +204,7 @@ export MAGPIE_JOB_TYPE="script"
 
 # Specify ssh-equivalent remote command and/or options if ssh is not
 # available on your cluster
-# export MAGPIE_REMOTE_CMD="mrsh"
+# export MAGPIE_REMOTE_CMD="ssh"
 # export MAGPIE_REMOTE_CMD_OPTS=""
 
 ############################################################################
