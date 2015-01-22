@@ -3,9 +3,10 @@ are organized as follows:
 
 job-scripts
 
-these are scripts that you would run as a possible job.  You would set
-these scripts in Magpie job scripts in environment variables such as
-MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH, HBASE_SCRIPT_PATH, etc.
+these are scripts that you would run as a possible job in Magpie.  You
+would set these scripts in Magpie job scripts in environment variables
+such as MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH, HBASE_SCRIPT_PATH,
+etc.
 
 pre-job-run-scripts
 
@@ -18,3 +19,8 @@ post-job-run-scripts
 these are scripts that you would run after the actual calculation is
 executed.  You would set these scripts in the MAGPIE_POST_JOB_RUN
 environment variable.
+
+misc
+
+Other miscellaneous scripts.  These may be useful outside of Magpie or
+are convenient in some other way.
