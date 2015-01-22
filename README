@@ -53,7 +53,10 @@ The basic idea behind these scripts are to:
    remaining nodes will run appropriate slave daemons, such as the
    Hadoop Datanodes or Hbase RegionServers.
 
-4) Now you have a mini big data cluster to do whatever you want.
+4) Now you have a mini big data cluster to do whatever you want.  You
+   can log into the master node and interact with your mini big data
+   cluster however you want.  Or you could have Magpie run a script to
+   execute your big data calculation instead.
 
 Basic Instructions For Running Hadoop
 -------------------------------------
@@ -108,11 +111,6 @@ Basic Instructions For Running Hadoop
    HADOOP_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   HADOOP_MODE : The first time you'll probably want to run w/
-   'terasort' mode just to try things out.  Later you may want to run
-   w/ 'script' or 'interactive' mode, as that is the more likely way
-   to run.
-
    HADOOP_FILESYSTEM_MODE : Most will likely want "hdfsoverlustre" or
    "hdfsovernetworkfs".  See below for details on HDFS over Lustre and
    HDFS over NetworkFS.
@@ -121,17 +119,19 @@ Basic Instructions For Running Hadoop
    need to set this.  If not using HDFS over Lustre, set the
    appropriate path for your filesystem mode choice.
 
-5) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust HADOOP_CONF_FILES in your submission
-   script as needed.
+5) Select how your job will run by setting HADOOP_MODE.  The first
+   time you'll probably want to run w/ 'terasort' mode just to try
+   things out and make things look setup correctly.  Later you may
+   want to run w/ 'script' or 'interactive' mode to run real
+   calculations.
 
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
-   ... and any other options you see fit.
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job, how to interact with it, etc..
 
 Basic Instructions For Running Hadoop w/ UDA
 --------------------------------------------
@@ -156,6 +156,10 @@ HADOOP_UDA_JAR : Set to the path for the uda jar file, such as
 
 HADOOP_UDA_LIBPATH : Set to location of libuda.so.  Necessary if your
                      libuda.so isn't in a common location (e.g. /usr/lib).
+
+You'll find starting point scripts such as
+magpie.sbatch-hadoop-with-uda and magpie.msub-slurm-hadoop-with-uda to
+begin configuration.
 
 If you are building UDA yourself, be aware that the jar may have
 difficulty finding the libuda.so file.  Some appropriately placed
@@ -196,14 +200,14 @@ Q: But that'll mean I have to consistently use the same number of
    cluster nodes?
 
 A: Generally speaking no, but you can hit issues if you don't.  Just
-   imagine how HDFS issues if you were on a traditional Hadoop cluster
-   and added or removed nodes.
+   imagine what HDFS issues if you were on a traditional Hadoop
+   cluster and added or removed nodes.
 
    Generally speaking, increasing the number of nodes you use for a
    job is fine.  Data you currently have in HDFS is still there and
    readable, but it is not viewed as "local" according to HDFS and
    more network transfers will have to happen.  You may wish to
-   rebalance the HDFS blocks though.  The script
+   rebalance the HDFS blocks though.  The convenience script
    hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh can
    be used instead.
 
@@ -218,7 +222,8 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    to scale down the number of nodes, you should go through the
    process of "decomissioning" nodes like on a real cluster, otherwise
    you may lose data.  You can decomission nodes through the
-   hadoop-hdfs-over-lustre-nodes-decomission-script.sh script.
+   hadoop-hdfs-over-lustre-nodes-decomission-script.sh convenience
+   script.
 
 Q: What should HDFS replication be?
 
@@ -330,21 +335,18 @@ Basic Instructions For Using Pig
    PIG_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-   PIG_MODE : The first time you'll probably want to run w/ "testpig"
-   mode just to try things out.  Later you may want to run w/ 'script'
-   or 'interactive' mode, as that is the more likely way to run.
+5) Select how your job will run by setting PIG_MODE.  The first time
+   you'll probably want to run w/ 'testpig' mode just to try things
+   out and make things look setup correctly.  Later you may want to
+   run w/ 'script' or 'interactive' mode to run real calculations.
 
-4) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust PIG_CONF_FILES in your submission script
-   as needed.
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
-5) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
-   ... and any other options you see fit.
-
-6) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job, how to interact with it, etc..
 
 Basic Instructions For Running Zookeeper
 ----------------------------------------
@@ -360,6 +362,11 @@ Basic Instructions For Running Zookeeper
 
    If the Zookeeper section isn't in it, just copy the Zookeeper
    section from base script (e.g. magpie.sbatch) into it.
+
+   Be aware that your node allocation may need to change if you are
+   running Zookeeper, as it normally runs on cluster nodes separate
+   from the rest (e.g. separate from nodes running HDFS or Hbase
+   Regionservers).
 
 3) Setup the essentials for Zookeeper.  Here are the essentials:
 
@@ -385,12 +392,7 @@ Basic Instructions For Running Zookeeper
    ZOOKEEPER_LOCAL_DIR : A small place for conf files and log files
    local to each node.  Typically /tmp directory.
 
-4) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust ZOOKEEPER_CONF_FILES in your submission
-   script as needed.
-
-5) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
+4) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
    appropriately.  Now Zookeeper will be started along with your job.
 
 Basic Instructions For Running Hbase
@@ -431,25 +433,27 @@ Basic Instructions For Running Hbase
    to run w/ 'script' or 'interactive' mode, as that is the more
    likely way to run.
 
-4) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
+4) Select how your job will run by setting HBASE_MODE.  The first time
+   you'll probably want to run w/ 'performanceeval' mode just to try
+   things out and make things look setup correctly.  Later you may
+   want to run w/ 'script' or 'interactive' mode to run real
+   calculations.
+
+5) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
    also in your submission script.  MapReduce is not needed with Hbase
    but can be setup along with it.  See above for Hadoop setup
    instructions.
 
-5) Hbase requires Zookeeper, so setup the essentials for Zookeeper.
+6) Hbase requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
 
-6) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust HBASE_CONF_FILES in your submission
-   script as needed.
+7) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
-   ... and any other options you see fit.
-
-7) Look at your job output file to see your output.  There will also
+8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job, how to interact with it, etc..
 
 Hbase Notes
 -----------
@@ -503,26 +507,25 @@ Basic Instructions For Spark
    SPARK_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   SPARK_MODE : The first time you'll probably want to run w/
-   'sparkpi' mode just to try things out.  Later you may want
-   to run w/ 'script' or 'interactive' mode, as that is the more
-   likely way to run.
+4) Select how your job will run by setting SPARK_MODE.  The first time
+   you'll probably want to run w/ 'sparkpi' mode just to try things
+   out and make things look setup correctly.  Later you may want to
+   run w/ 'script' or 'interactive' mode to run real calculations.
 
-4) Spark does not require HDFS, but many choose to use it.  If you do,
+5) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
    Hadoop setup instructions.
 
-5) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust SPARK_CONF_FILES in your submission
-   script as needed.
+   You may wish to run with SPARK_MODE set to 'sparkwordcount' to test
+   the HDFS setup.
 
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
-   ... and any other options you see fit.
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job, how to interact with it, etc..
 
 Basic Instructions For Storm
 ----------------------------
@@ -557,25 +560,22 @@ Basic Instructions For Storm
    STORM_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   STORM_MODE : The first time you'll probably want to run w/
-   'stormwordcount' mode just to try things out.  Later you may want
-   to run w/ 'script' or 'interactive' mode, as that is the more
-   likely way to run.
+4) Select how your job will run by setting STORM_MODE.  The first time
+   you'll probably want to run w/ 'stormwordcount' mode just to try
+   things out and make things look setup correctly.  Later you may
+   want to run w/ 'script' or 'interactive' mode to run real
+   calculations.
 
-4) Storm requires Zookeeper, so setup the essentials for Zookeeper.
+5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
 
-5) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust STORM_CONF_FILES in your submission
-   script as needed.
-
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
-   ... and any other options you see fit.
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job, how to interact with it, etc..
 
 Exported Environment Variables
 ------------------------------
