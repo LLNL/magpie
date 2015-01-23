@@ -68,7 +68,7 @@ fi
 
 CURRENT_DIR=`pwd`
 
-MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
+MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/../..; pwd)
 
 if [ ! -d "${MAGPIE_SCRIPTS_HOME}/patches" ]
 then
