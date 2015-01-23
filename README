@@ -677,37 +677,52 @@ Convenience Scripts
 -------------------
 
 A number of convenience scripts are included in the scripts/
-directory, both for possible usefulness and as examples.  Notable ones
-worth mentioning:
+directory, both for possible usefulness and as examples.  They are
+organized within the directory as follows:
 
-magpie-gather-config-files-and-logs-script.sh - This script will get
-all of the conf files and log files from Hadoop, Hbase, Pig, and/or
-Zookeeper and store it in a location for post-analysis of your job.
-It's convenient for debugging.
+job-scripts - These are scripts that you would run as a possible job
+in Magpie.  You would set these scripts in Magpie job scripts in
+environment variables such as MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH,
+HBASE_SCRIPT_PATH, etc.
 
-magpie-output-config-files-script.sh - This script will output all of
-the conf files from your job.  It's convenient for debugging.
+pre-job-run-scripts - These are scripts that you would run before the
+actual calculation is executed.  You would set these scripts in the
+MAGPIE_PRE_JOB_RUN environment variable.
 
-hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See HDFS over
-Lustre section above for details.
+post-job-run-scripts - These are scripts that you would run after the
+actual calculation is executed.  You would set these scripts in the
+MAGPIE_POST_JOB_RUN environment variable.
 
-hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh - See
+misc - Other miscellaneous scripts.  These may be useful outside of
+Magpie or are convenient in some other way.
+
+Notable scripts worth mentioning:
+
+pre-job-run-scripts/magpie-output-config-files-script.sh - This script
+will output all of the conf files from your job.  It's convenient for
+debugging.
+
+post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
+This script will get all of the conf files and log files from Hadoop,
+Hbase, Pig, and/or Zookeeper and store it in a location for
+post-analysis of your job.  It's convenient for debugging.
+
+job-scripts/hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See
 HDFS over Lustre section above for details.
 
-hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh - Cleanup/remove
-corrupted blocks in HDFS.
+job-scripts/hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh
+- See HDFS over Lustre section above for details.
 
-hbase-major-compaction.sh - Perform a major compaction on all Hbase
-tables.
+job-scripts/hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh -
+Cleanup/remove corrupted blocks in HDFS.
 
-Download Script
----------------
+job-scripts/hbase-major-compaction.sh - Perform a major compaction on
+all Hbase tables.
 
-scripts/misc/magpie-apache-download-and-setup.sh is a convenient
-script that you may wish to consider using.  It will automatically
-download and patch many of the above Apache projects for you.  It'll
-also configure several paths for you in the launch scripts
-automatically.
+misc/magpie-apache-download-and-setup.sh - Script will automatically
+download and patch Apache projects for you so you don't have to
+manually download them.  It'll also configure several paths for you in
+the launch scripts automatically.
 
 Patching
 --------
