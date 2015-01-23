@@ -76,9 +76,9 @@ then
     exit 1
 fi
 
-if [ ! -d "${MAGPIE_SCRIPTS_HOME}/script-templates" ]
+if [ ! -d "${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates" ]
 then
-    echo "${MAGPIE_SCRIPTS_HOME}/script-templates not a directory"
+    echo "${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates not a directory"
     exit 1
 fi
 
@@ -218,42 +218,42 @@ if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]
 then
     MAGPIE_SCRIPTS_HOME_DIRNAME=`dirname ${MAGPIE_SCRIPTS_HOME}`
     magpiescriptshomedirnamesubst=`echo ${MAGPIE_SCRIPTS_HOME_DIRNAME} | sed "s/\\//\\\\\\\\\//g"`
-    sed -i -e "s/MAGPIE_SCRIPTS_DIR_PREFIX=\"\(.*\)\"/MAGPIE_SCRIPTS_DIR_PREFIX=\"${magpiescriptshomedirnamesubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+    sed -i -e "s/MAGPIE_SCRIPTS_DIR_PREFIX=\"\(.*\)\"/MAGPIE_SCRIPTS_DIR_PREFIX=\"${magpiescriptshomedirnamesubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
     installpathsubst=`echo ${INSTALL_PATH} | sed "s/\\//\\\\\\\\\//g"`
-    sed -i -e "s/PROJECT_DIR_PREFIX=\"\(.*\)\"/PROJECT_DIR_PREFIX=\"${installpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+    sed -i -e "s/PROJECT_DIR_PREFIX=\"\(.*\)\"/PROJECT_DIR_PREFIX=\"${installpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
     if [ "${LOCAL_DIR_PATH}X" != "X" ]
     then
 	localdirpathsubst=`echo ${LOCAL_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-	sed -i -e "s/LOCAL_DIR_PREFIX=\"\(.*\)\"/LOCAL_DIR_PREFIX=\"${localdirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+	sed -i -e "s/LOCAL_DIR_PREFIX=\"\(.*\)\"/LOCAL_DIR_PREFIX=\"${localdirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
     if [ "${HOME_DIR_PATH}X" != "X" ]
     then
 	homedirpathsubst=`echo ${HOME_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-	sed -i -e "s/HOME_DIR_PREFIX=\"\(.*\)\"/HOME_DIR_PREFIX=\"${homedirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+	sed -i -e "s/HOME_DIR_PREFIX=\"\(.*\)\"/HOME_DIR_PREFIX=\"${homedirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
     if [ "${LUSTRE_DIR_PATH}X" != "X" ]
     then
 	lustredirpathsubst=`echo ${LUSTRE_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-	sed -i -e "s/LUSTRE_DIR_PREFIX=\"\(.*\)\"/LUSTRE_DIR_PREFIX=\"${lustredirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+	sed -i -e "s/LUSTRE_DIR_PREFIX=\"\(.*\)\"/LUSTRE_DIR_PREFIX=\"${lustredirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
     if [ "${NETWORKFS_DIR_PATH}X" != "X" ]
     then
 	networkfsdirpathsubst=`echo ${NETWORKFS_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-	sed -i -e "s/NETWORKFS_DIR_PREFIX=\"\(.*\)\"/NETWORKFS_DIR_PREFIX=\"${networkfsdirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+	sed -i -e "s/NETWORKFS_DIR_PREFIX=\"\(.*\)\"/NETWORKFS_DIR_PREFIX=\"${networkfsdirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
     if [ "${SSD_DIR_PATH}X" != "X" ]
     then
 	ssddirpathsubst=`echo ${SSD_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-	sed -i -e "s/SSD_DIR_PREFIX=\"\(.*\)\"/SSD_DIR_PREFIX=\"${ssddirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/script-templates/Makefile
+	sed -i -e "s/SSD_DIR_PREFIX=\"\(.*\)\"/SSD_DIR_PREFIX=\"${ssddirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
-    cd ${MAGPIE_SCRIPTS_HOME}/script-templates/
+    cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 
     echo "Making launching scripts"
 

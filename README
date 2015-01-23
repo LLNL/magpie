@@ -71,10 +71,11 @@ Basic Instructions For Running Hadoop
    See below about misc/magpie-apache-download-and-setup.sh, which may
    make the downloading and patching easier.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+2) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base hadoop script
    (e.g. magpie.sbatch-hadoop) for your scheduler/resource manager.  If
@@ -316,10 +317,11 @@ Basic Instructions For Using Pig
    See below about misc/magpie-apache-download-and-setup.sh, which may
    make the downloading easier.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+2) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base hadoop+pig script
    (e.g. magpie.sbatch-hadoop-and-pig) for your scheduler/resource
@@ -364,10 +366,11 @@ Basic Instructions For Running Zookeeper
    See below about misc/magpie-apache-download-and-setup.sh, which may
    make the downloading easier.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+2) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    If the Zookeeper section isn't in it, just copy the Zookeeper
    section from base script (e.g. magpie.sbatch) into it.
@@ -417,10 +420,11 @@ Basic Instructions For Running Hbase
    See below about misc/magpie-apache-download-and-setup.sh, which may
    make the downloading and patching easier.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+2) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base hbase w/ hdfs script
    (e.g. magpie.sbatch-hbase-with-hdfs) for your scheduler/resource
@@ -495,10 +499,11 @@ Basic Instructions For Spark
    See below about misc/magpie-apache-download-and-setup.sh, which may
    make the downloading and patching easier.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+2) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base spark script
    (e.g. magpie.sbatch-spark) or spark w/ hdfs
@@ -555,10 +560,11 @@ Basic Instructions For Storm
    See below about misc/magpie-apache-download-and-setup.sh, which may
    make the downloading and patching easier.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+2) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base storm script
    (e.g. magpie.sbatch-storm) for your scheduler/resource manager.  If
@@ -981,9 +987,10 @@ welcome patches to support them.
 
 To support another scheduler or resource manager, you'll want to make
 your equivalent scheduler/resource manager header, similar to
-script-templates/magpie-slurm.  Then add an appropriate new section to
-script-templates/Makefile and a new directory for these new submission
-scripts.
+submission-scripts/script-templates/magpie-slurm.  Then add an
+appropriate new section to
+sbumission-scripts/script-templates/Makefile and a new directory for
+these new submission scripts.
 
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
 magpie-submission-convert and add appropriate input checks in
