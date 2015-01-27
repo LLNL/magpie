@@ -23,7 +23,7 @@ Some of the features presently supported:
   a generic network filesystem.
 - Take advantage of SSDs for local caching if available
 - Run the UDA Infiniband optimization plugin for Hadoop.
-- Make decent optimizations of Hadoop for your hardware
+- Make decent optimizations for your hardware
 
 Some experimental features currently supported:
 
