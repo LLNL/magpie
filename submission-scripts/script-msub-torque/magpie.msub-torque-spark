@@ -211,6 +211,9 @@ export MAGPIE_JOB_TYPE="spark"
 # Necessary for Hadoop, Hbase, Pig, and Zookeeper
 export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 
+# For convenience, change if you desire so
+expot MAGPIE_USERNAME=`whoami`
+
 ############################################################################
 # Spark Core Configurations
 ############################################################################
