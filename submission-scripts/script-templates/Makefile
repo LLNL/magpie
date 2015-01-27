@@ -4,6 +4,8 @@
 #
 # INSERT_MAGPIENETWORKFS - insert magpienetworkfs configuration
 #
+# INSERT_HDFS_FEDERATION - insert HDFS federation configure 
+#
 INSERT_INTELLUSTRE=n
 INSERT_MAGPIENETWORKFS=n
 INSERT_HDFS_FEDERATION=n
