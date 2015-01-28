@@ -105,16 +105,6 @@ then
 	echo "SLURM_JOB_ID environment variable must be set"
 	exit 1
     fi
-
-    # Legacy, SBATCH_TIMELIMIT was the primary advertised environment variable when first developed
-    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
-    then
-	if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
-	then
-	    echo "MAGPIE_TIMELIMIT_MINUTES environment variable must be set"
-	    exit 1
-	fi
-    fi
 fi
 
 #
@@ -146,6 +136,12 @@ then
 fi
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+
+if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+then
+    echo "MAGPIE_TIMELIMIT_MINUTES environment variable could not be calculated"
+    exit 1
+fi
 
 if [ "${MAGPIE_LOCAL_DIR}X" == "X" ]
 then

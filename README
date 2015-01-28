@@ -96,12 +96,6 @@ Basic Instructions For Running Hadoop
 
    MOAB_JOBNAME : Set your job name.
 
-   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
-     walltime above.  Sorry you have to input this, it's an
-     unfortunate side effect of Moab, as the walltime input by the
-     user isn't accessible by the scripts (as an environment variable
-     or otherwise).
-
    MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
    MAGPIE_LOCAL_DIR : For scratch space files
@@ -352,12 +346,6 @@ Basic Instructions For Using Pig
 
    MOAB_JOBNAME : Set your job name.
 
-   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
-     walltime above.  Sorry you have to input this, it's an
-     unfortunate side effect of Moab, as the walltime input by the
-     user isn't accessible by the scripts (as an environment variable
-     or otherwise).
-
    MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
    MAGPIE_LOCAL_DIR : For scratch space files
@@ -492,12 +480,6 @@ Basic Instructions For Running Hbase
 
    MOAB_JOBNAME : Set your job name.
 
-   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
-     walltime above.  Sorry you have to input this, it's an
-     unfortunate side effect of Moab, as the walltime input by the
-     user isn't accessible by the scripts (as an environment variable
-     or otherwise).
-
    MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
    MAGPIE_LOCAL_DIR : For scratch space files
@@ -597,12 +579,6 @@ Basic Instructions For Spark
 
    MOAB_JOBNAME : Set your job name.
 
-   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
-     walltime above.  Sorry you have to input this, it's an
-     unfortunate side effect of Moab, as the walltime input by the
-     user isn't accessible by the scripts (as an environment variable
-     or otherwise).
-
    MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
    MAGPIE_LOCAL_DIR : For scratch space files
@@ -680,12 +656,6 @@ Basic Instructions For Storm
    #MSUB -q <my batch queue> : Set to batch queue
 
    MOAB_JOBNAME : Set your job name.
-
-   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
-     walltime above.  Sorry you have to input this, it's an
-     unfortunate side effect of Moab, as the walltime input by the
-     user isn't accessible by the scripts (as an environment variable
-     or otherwise).
 
    MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
