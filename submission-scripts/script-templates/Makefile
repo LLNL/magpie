@@ -23,6 +23,8 @@ SSD_DIR_PREFIX="/ssd/\\\$$\$$\{MAGPIE_USERNAME\}"
 
 REMOTE_CMD_DEFAULT="ssh"
 
+JAVA_DEFAULT="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+
 .DEFAULT_GOAL=all
 
 all: msub-slurm sbatch msub-torque
@@ -44,6 +46,7 @@ define common-substitution
 	$(eval lustredirprefix := $(shell echo "${LUSTRE_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
 	$(eval networkfsdirprefix := $(shell echo "${NETWORKFS_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
 	$(eval ssddirprefix := $(shell echo "${SSD_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
+	$(eval javadefault := $(shell echo "${JAVA_DEFAULT}" | sed "s/\\//\\\\\\\\\//g"))
 
 	sed -i -e "s/MAGPIESCRIPTSDIRPREFIX/${magpiescriptsdirprefix}/g" $(1)
 	sed -i -e "s/LOCALDIRPREFIX/${localdirprefix}/g" $(1)
@@ -54,6 +57,7 @@ define common-substitution
 	sed -i -e "s/SSDDIRPREFIX/${ssddirprefix}/g" $(1)
 
 	sed -i -e "s/REMOTECMDDEFAULT/${REMOTE_CMD_DEFAULT}/g" $(1)
+	sed -i -e "s/JAVADEFAULT/${javadefault}/g" $(1)
 endef
 
 define create-templates
