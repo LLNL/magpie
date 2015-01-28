@@ -1170,7 +1170,7 @@ export SPARK_MODE="sparkpi"
 # in your interest to set this to a local drive and adjust
 # SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.
 #
-# export SPARK_LOCAL_SCRATCH_DIR="/myscratchlocation"
+# export SPARK_LOCAL_SCRATCH_DIR="/lustre/${MAGPIE_USERNAME}/sparkscratch/"
 
 # Set how SPARK_LOCAL_SCRATCH_DIR should be setup.
 #
