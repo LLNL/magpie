@@ -83,8 +83,8 @@ Basic Instructions For Running Hadoop
    script (e.g. magpie.sbatch) which contains all configuration
    options.
 
-3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Moab.
+3) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
 
@@ -339,8 +339,8 @@ Basic Instructions For Using Pig
    with the base script (e.g. magpie.sbatch) which contains all
    configuration options.
 
-3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Moab.
+3) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
 
@@ -416,8 +416,8 @@ Basic Instructions For Running Zookeeper
    section isn't in it, just copy the Zookeeper section from base
    script (e.g. magpie.sbatch) into it.
 
-3) Setup your job essentials at the top of the script.  See other
-   projects (e.g. Hbase, Storm) for details on this setup.
+3) Setup your job essentials at the top of the submission script.  See
+   other projects (e.g. Hbase, Storm) for details on this setup.
 
    Be aware of how you many nodes you allocate for your job when
    running Zookeeper.  Zookeeper normally runs on cluster nodes
@@ -480,8 +480,8 @@ Basic Instructions For Running Hbase
    with the base script (e.g. magpie.sbatch) which contains all
    configuration options.
 
-3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Moab.
+3) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
 
@@ -585,8 +585,8 @@ Basic Instructions For Spark
    It should be noted that you can run Spark without HDFS.  You can
    access files normally through "file://<path>".
 
-3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Moab.
+3) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
 
@@ -669,8 +669,8 @@ Basic Instructions For Storm
    script (e.g. magpie.sbatch) which contains all configuration
    options.
 
-3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Moab.
+3) Setup your job essentials at the top of the submissionscript.  As
+   an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
 
