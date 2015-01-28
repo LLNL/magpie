@@ -84,19 +84,29 @@ Basic Instructions For Running Hadoop
    options.
 
 3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Slurm w/ Sbatch.
+   the following are the essentials for running with Moab.
 
-   #SBATCH --nodes : Set how many nodes you want in your job
+   #MSUB -l nodes : Set how many nodes you want in your job
 
-   SBATCH_TIMELIMIT : Set the time for this job to run
+   #MSUB -l walltime : Set the time for this job to run
 
-   #SBATCH --partition : Set the job partition
+   #MSUB -l partition : Set the job partition
 
-   MAGPIE_SCRIPTS_HOME : Set where your scripts are.
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
+     walltime above.  Sorry you have to input this, it's an
+     unfortunate side effect of Moab, as the walltime input by the
+     user isn't accessible by the scripts (as an environment variable
+     or otherwise).
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : Set to "hadoop" most likely.
+   MAGPIE_JOB_TYPE : This should be set to 'hadoop'
 
    JAVA_HOME : B/c you need to ...
 
@@ -329,10 +339,35 @@ Basic Instructions For Using Pig
    with the base script (e.g. magpie.sbatch) which contains all
    configuration options.
 
-3) Setup the essentials for Pig.  If you are letting Magpie do some
-   setup, here are the essentials:
+3) Setup your job essentials at the top of the script.  As an example,
+   the following are the essentials for running with Moab.
 
-   MAGPIE_JOB_TYPE : Set to "pig".
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
+     walltime above.  Sorry you have to input this, it's an
+     unfortunate side effect of Moab, as the walltime input by the
+     user isn't accessible by the scripts (as an environment variable
+     or otherwise).
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'pig'
+
+   JAVA_HOME : B/c you need to ...
+
+4) Setup the essentials for Pig.  If you are letting Magpie do some
+   setup, here are the essentials:
 
    PIG_SETUP : Set to yes
 
@@ -343,19 +378,19 @@ Basic Instructions For Using Pig
    PIG_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting PIG_MODE.  The first time
+5) Select how your job will run by setting PIG_MODE.  The first time
    you'll probably want to run w/ 'testpig' mode just to try things
    out and make things look setup correctly.  Later you may want to
    run w/ 'script' or 'interactive' mode to run real calculations.
 
-5) Pig requires Hadoop, so ensure the Hadoop is configured and also in
+6) Pig requires Hadoop, so ensure the Hadoop is configured and also in
    your submission script.  See above for Hadoop setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
+7) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
    Moab.  Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job, how to interact with it, etc..
 
@@ -381,12 +416,19 @@ Basic Instructions For Running Zookeeper
    section isn't in it, just copy the Zookeeper section from base
    script (e.g. magpie.sbatch) into it.
 
-   Be aware that your node allocation may need to change if you are
-   running Zookeeper, as it normally runs on cluster nodes separate
-   from the rest (e.g. separate from nodes running HDFS or Hbase
-   Regionservers).
+3) Setup your job essentials at the top of the script.  See other
+   projects (e.g. Hbase, Storm) for details on this setup.
 
-3) Setup the essentials for Zookeeper.  Here are the essentials:
+   Be aware of how you many nodes you allocate for your job when
+   running Zookeeper.  Zookeeper normally runs on cluster nodes
+   separate from the rest (e.g. separate from nodes running HDFS or
+   Hbase Regionservers).  So you may need to increase your node count.
+
+   For example, if you desire 3 Zookeeper servers and 8 compute nodes,
+   your total node count should be 12 (1 master, 8 compute, 3
+   Zookeeper).
+
+4) Setup the essentials for Zookeeper.  Here are the essentials:
 
    ZOOKEEPER_SETUP : Set to yes
 
@@ -410,8 +452,8 @@ Basic Instructions For Running Zookeeper
    ZOOKEEPER_LOCAL_DIR : A small place for conf files and log files
    local to each node.  Typically /tmp directory.
 
-4) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
-   appropriately.  Now Zookeeper will be started along with your job.
+5) Run your job as instructions dictate in other project sections
+   (e.g. Hbase, Storm).
 
 Basic Instructions For Running Hbase
 ------------------------------------
@@ -438,7 +480,34 @@ Basic Instructions For Running Hbase
    with the base script (e.g. magpie.sbatch) which contains all
    configuration options.
 
-3) Setup the essentials for Hbase.  Here are the essentials:
+3) Setup your job essentials at the top of the script.  As an example,
+   the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
+     walltime above.  Sorry you have to input this, it's an
+     unfortunate side effect of Moab, as the walltime input by the
+     user isn't accessible by the scripts (as an environment variable
+     or otherwise).
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'hbase'
+
+   JAVA_HOME : B/c you need to ...
+
+4) Setup the essentials for Hbase.  Here are the essentials:
 
    HBASE_SETUP : Set to yes
 
@@ -450,30 +519,25 @@ Basic Instructions For Running Hbase
    HBASE_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   HBASE_MODE : The first time you'll probably want to run w/
-   'performanceeval' mode just to try things out.  Later you may want
-   to run w/ 'script' or 'interactive' mode, as that is the more
-   likely way to run.
-
-4) Select how your job will run by setting HBASE_MODE.  The first time
+5) Select how your job will run by setting HBASE_MODE.  The first time
    you'll probably want to run w/ 'performanceeval' mode just to try
    things out and make things look setup correctly.  Later you may
    want to run w/ 'script' or 'interactive' mode to run real
    calculations.
 
-5) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
+6) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
    also in your submission script.  MapReduce is not needed with Hbase
    but can be setup along with it.  See above for Hadoop setup
    instructions.
 
-6) Hbase requires Zookeeper, so setup the essentials for Zookeeper.
+7) Hbase requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
 
-7) Submit your job into the cluster by running "sbatch -k
+8) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
    Moab.  Add any other options you see fit.
 
-8) Look at your job output file to see your output.  There will also
+9) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job, how to interact with it, etc..
 
@@ -521,7 +585,34 @@ Basic Instructions For Spark
    It should be noted that you can run Spark without HDFS.  You can
    access files normally through "file://<path>".
 
-3) Setup the essentials for Spark.  Here are the essentials:
+3) Setup your job essentials at the top of the script.  As an example,
+   the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
+     walltime above.  Sorry you have to input this, it's an
+     unfortunate side effect of Moab, as the walltime input by the
+     user isn't accessible by the scripts (as an environment variable
+     or otherwise).
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'spark'
+
+   JAVA_HOME : B/c you need to ...
+
+4) Setup the essentials for Spark.  Here are the essentials:
 
    SPARK_SETUP : Set to yes
 
@@ -533,23 +624,23 @@ Basic Instructions For Spark
    SPARK_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting SPARK_MODE.  The first time
+5) Select how your job will run by setting SPARK_MODE.  The first time
    you'll probably want to run w/ 'sparkpi' mode just to try things
    out and make things look setup correctly.  Later you may want to
    run w/ 'script' or 'interactive' mode to run real calculations.
 
-5) Spark does not require HDFS, but many choose to use it.  If you do,
+6) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
    Hadoop setup instructions.
 
    You may wish to run with SPARK_MODE set to 'sparkwordcount' to test
    the HDFS setup.
 
-6) Submit your job into the cluster by running "sbatch -k
+7) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
    Moab.  Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job, how to interact with it, etc..
 
@@ -578,7 +669,34 @@ Basic Instructions For Storm
    script (e.g. magpie.sbatch) which contains all configuration
    options.
 
-3) Setup the essentials for Storm.  Here are the essentials:
+3) Setup your job essentials at the top of the script.  As an example,
+   the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_TIMELIMIT_MINUTES : Set to the number of minutes set in the
+     walltime above.  Sorry you have to input this, it's an
+     unfortunate side effect of Moab, as the walltime input by the
+     user isn't accessible by the scripts (as an environment variable
+     or otherwise).
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'storm'
+
+   JAVA_HOME : B/c you need to ...
+
+4) Setup the essentials for Storm.  Here are the essentials:
 
    STORM_SETUP : Set to yes
 
@@ -590,20 +708,20 @@ Basic Instructions For Storm
    STORM_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting STORM_MODE.  The first time
+5) Select how your job will run by setting STORM_MODE.  The first time
    you'll probably want to run w/ 'stormwordcount' mode just to try
    things out and make things look setup correctly.  Later you may
    want to run w/ 'script' or 'interactive' mode to run real
    calculations.
 
-5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
+6) Storm requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
+7) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
    Moab.  Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job, how to interact with it, etc..
 
