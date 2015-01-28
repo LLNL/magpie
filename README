@@ -366,8 +366,7 @@ Basic Instructions For Using Pig
 
    JAVA_HOME : B/c you need to ...
 
-4) Setup the essentials for Pig.  If you are letting Magpie do some
-   setup, here are the essentials:
+4) Setup the essentials for Pig.
 
    PIG_SETUP : Set to yes
 
@@ -428,7 +427,7 @@ Basic Instructions For Running Zookeeper
    your total node count should be 12 (1 master, 8 compute, 3
    Zookeeper).
 
-4) Setup the essentials for Zookeeper.  Here are the essentials:
+4) Setup the essentials for Zookeeper.
 
    ZOOKEEPER_SETUP : Set to yes
 
@@ -507,7 +506,7 @@ Basic Instructions For Running Hbase
 
    JAVA_HOME : B/c you need to ...
 
-4) Setup the essentials for Hbase.  Here are the essentials:
+4) Setup the essentials for Hbase.
 
    HBASE_SETUP : Set to yes
 
@@ -612,7 +611,7 @@ Basic Instructions For Spark
 
    JAVA_HOME : B/c you need to ...
 
-4) Setup the essentials for Spark.  Here are the essentials:
+4) Setup the essentials for Spark.
 
    SPARK_SETUP : Set to yes
 
@@ -696,7 +695,7 @@ Basic Instructions For Storm
 
    JAVA_HOME : B/c you need to ...
 
-4) Setup the essentials for Storm.  Here are the essentials:
+4) Setup the essentials for Storm.
 
    STORM_SETUP : Set to yes
 
