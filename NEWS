@@ -1,3 +1,12 @@
+magpie 1.52
+-----------
+Support MAGPIE_USERNAME environment variable.
+Default most paths to use MAGPIE_USERNAME instead of generic 'username'.
+No longer require users to set MAGPIE_TIMELIMIT_MINUTES when using Moab.
+Make default SPARK_LOCAL_SCRATCH_DIR a Lustre path.
+In Spark w/o HDFS submission script, default to setting up network
+  based scratch space.
+
 magpie 1.51
 -----------
 Support Storm 0.9.3.
