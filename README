@@ -375,8 +375,11 @@ Basic Instructions For Running Zookeeper
    script-msub-slurm, and Moab Msub+Torque scripts in
    script-msub-torque.
 
-   If the Zookeeper section isn't in it, just copy the Zookeeper
-   section from base script (e.g. magpie.sbatch) into it.
+   As Zookeeper is predominantly a node coordination service used by
+   other services (e.g. Hbase, Storm), it likely in the main
+   submission scripts for those big data projects.  If the Zookeeper
+   section isn't in it, just copy the Zookeeper section from base
+   script (e.g. magpie.sbatch) into it.
 
    Be aware that your node allocation may need to change if you are
    running Zookeeper, as it normally runs on cluster nodes separate
