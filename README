@@ -343,10 +343,13 @@ Basic Instructions For Using Pig
    PIG_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-5) Select how your job will run by setting PIG_MODE.  The first time
+4) Select how your job will run by setting PIG_MODE.  The first time
    you'll probably want to run w/ 'testpig' mode just to try things
    out and make things look setup correctly.  Later you may want to
    run w/ 'script' or 'interactive' mode to run real calculations.
+
+5) Pig requires Hadoop, so ensure the Hadoop is configured and also in
+   your submission script.  See above for Hadoop setup instructions.
 
 6) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
