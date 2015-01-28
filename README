@@ -606,7 +606,9 @@ Basic Instructions For Spark
 
 6) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
-   Hadoop setup instructions.
+   Hadoop setup instructions.  Simply use the prefix "hdfs://" or
+   "file://" appropriately for the filesystem you will access files
+   from.
 
    You may wish to run with SPARK_MODE set to 'sparkwordcount' to test
    the HDFS setup.
