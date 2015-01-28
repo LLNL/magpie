@@ -2,6 +2,9 @@
 # Magpie Configurations
 ############################################################################
 
+# For convenience, change if you desire so
+export MAGPIE_USERNAME=`whoami`
+
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
