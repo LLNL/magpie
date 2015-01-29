@@ -127,6 +127,10 @@ Basic Instructions For Running Hadoop
    need to set this.  If not using HDFS over Lustre, set the
    appropriate path for your filesystem mode choice.
 
+   HADOOP_LOCALSTORE : If your cluster has a local SSD, set a path to
+   it and let Hadoop store intermediate shuffle data to it.  It should
+   significantly improve performance.
+
 4) Select how your job will run by setting HADOOP_MODE.  The first
    time you'll probably want to run w/ 'terasort' mode just to try
    things out and make things look setup correctly.  Later you may
@@ -431,10 +435,13 @@ Basic Instructions For Running Zookeeper
 
    ZOOKEEPER_FILESYSTEM_MODE : most will likely want "networkfs" so
    data files can be stored to Lustre.  If you have local disks such
-   as SSDs, you can use "local" instead.
+   as SSDs, you can use "local" instead, and set ZOOKEEPER_DATA_DIR to
+   the local SSD path.
 
    ZOOKEEPER_DATA_DIR : The base path for where you will store
-   Zookeeper data.
+   Zookeeper data.  If a local SSD is available, it may be preferable
+   to set this to a local drive and set ZOOKEEPER_FILESYSTEM_MODE
+   above to "local".
 
    ZOOKEEPER_LOCAL_DIR : A small place for conf files and log files
    local to each node.  Typically /tmp directory.
@@ -597,7 +604,14 @@ Basic Instructions For Spark
    mount.
 
    SPARK_LOCAL_DIR : A small place for conf files and log files local
-   to each node.  Typically /tmp directory.
+   to each node.  Typically /tmp directory.  
+
+   SPARK_LOCAL_SCRATCH_DIR : A scratch directory for Spark to use.  If
+   a local SSD is available, it would be preferable to set this to
+   that path and set SPARK_LOCAL_SCRATCH_DIR_TYPE to "local".
+
+   SPARK_LOCAL_SCRATCH_DIR_TYPE : Indicates if SPARK_LOCAL_SCRATCH_DIR
+   if a network file path or local store path.
 
 4) Select how your job will run by setting SPARK_MODE.  The first time
    you'll probably want to run w/ 'sparkpi' mode just to try things
