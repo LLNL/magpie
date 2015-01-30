@@ -58,8 +58,8 @@ The basic idea behind these scripts are to:
    cluster however you want.  Or you could have Magpie run a script to
    execute your big data calculation instead.
 
-Basic Instructions For Running Hadoop
--------------------------------------
+Instructions For Running Hadoop
+-------------------------------
 
 0) If necessary, download your favorite version of Hadoop off of
    Apache and install it into a location where it's accessible on all
@@ -133,9 +133,28 @@ Basic Instructions For Running Hadoop
 
 4) Select how your job will run by setting HADOOP_MODE.  The first
    time you'll probably want to run w/ 'terasort' mode just to try
-   things out and make things look setup correctly.  Later you may
-   want to run w/ 'script' or 'interactive' mode to run real
-   calculations.
+   things out and make things look setup correctly.
+
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv HADOOP_CONF_DIR "/tmp/username/hadoop/ajobname/1081559/conf"
+      cd /home/username/hadoop-2.6.0
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can
+   interact with the Hadoop filesystem (bin/hadoop fs ...) or run a
+   job (bin/hadoop jar ...).  There will also be instructions in your
+   job output on how to tear the session down cleanly if you wish to
+   end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   HADOOP_SCRIPT_PATH, and then run your job.
 
 5) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
@@ -143,7 +162,8 @@ Basic Instructions For Running Hadoop
 
 6) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact with it, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
 Basic Instructions For Running Hadoop w/ UDA
 --------------------------------------------
@@ -307,8 +327,8 @@ blocks.  The same job may create a single 1 terabyte file under access
 to the Posix FS directly.  In the case of Lustre, striping of the file
 must be handled by the user to ensure satisfactory performance.
 
-Basic Instructions For Using Pig
---------------------------------
+Instructions For Using Pig
+--------------------------
 
 0) If necessary, download your favorite version of Pig off of Apache
    and install it into a location where it's accessible on all cluster
@@ -369,10 +389,27 @@ Basic Instructions For Using Pig
    PIG_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting PIG_MODE.  The first time
-   you'll probably want to run w/ 'testpig' mode just to try things
-   out and make things look setup correctly.  Later you may want to
-   run w/ 'script' or 'interactive' mode to run real calculations.
+4) Select how your job will run by setting PIG_MODE.  The first
+   time you'll probably want to run w/ 'testpig' mode just to try
+   things out and make things look setup correctly.
+
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/ajobname/1081559/conf"
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can
+   launch a pig job (bin/pig ...).  There will also be instructions in
+   your job output on how to tear the session down cleanly if you wish
+   to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a Pig script and set
+   it in PIG_SCRIPT_PATH, and then run your job.
 
 5) Pig requires Hadoop, so ensure the Hadoop is configured and also in
    your submission script.  See above for Hadoop setup instructions.
@@ -383,10 +420,11 @@ Basic Instructions For Using Pig
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact with it, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
-Basic Instructions For Running Zookeeper
-----------------------------------------
+Instructions For Running Zookeeper
+----------------------------------
 
 0) If necessary, download your favorite version of Zookeeper off of
    Apache and install it into a location where it's accessible on all
@@ -449,8 +487,8 @@ Basic Instructions For Running Zookeeper
 4) Run your job as instructions dictate in other project sections
    (e.g. Hbase, Storm).
 
-Basic Instructions For Running Hbase
-------------------------------------
+Instructions For Running Hbase
+------------------------------
 
 0) If necessary, download your favorite version of Hbase off of Apache
    and install it into a location where it's accessible on all cluster
@@ -509,9 +547,27 @@ Basic Instructions For Running Hbase
 
 4) Select how your job will run by setting HBASE_MODE.  The first time
    you'll probably want to run w/ 'performanceeval' mode just to try
-   things out and make things look setup correctly.  Later you may
-   want to run w/ 'script' or 'interactive' mode to run real
-   calculations.
+   things out and make things look setup correctly.
+
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv HBASE_CONF_DIR "/tmp/username/hbase/ajobname/1081559/conf"
+      cd /home/username/hbase-0.98.9-hadoop2
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can
+   interact with the Hbase shell to start (bin/hbase shell).  There
+   will also be instructions in your job output on how to tear the
+   session down cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   HBASE_SCRIPT_PATH, and then run your job.
 
 5) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
    also in your submission script.  MapReduce is not needed with Hbase
@@ -527,7 +583,8 @@ Basic Instructions For Running Hbase
 
 8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact with it, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
 Hbase Notes
 -----------
@@ -539,8 +596,8 @@ data would not be distributed evenly if you added new nodes into a
 traditional Hbase/Hadoop cluster.  Over time Hbase will rebalance data
 over the new nodes.
 
-Basic Instructions For Spark
-----------------------------
+Instructions For Spark
+----------------------
 
 0) If necessary, download your favorite version of Spark off of Apache
    and install it into a location where it's accessible on all cluster
@@ -615,8 +672,27 @@ Basic Instructions For Spark
 
 4) Select how your job will run by setting SPARK_MODE.  The first time
    you'll probably want to run w/ 'sparkpi' mode just to try things
-   out and make things look setup correctly.  Later you may want to
-   run w/ 'script' or 'interactive' mode to run real calculations.
+   out and make things look setup correctly.
+
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv SPARK_CONF_DIR "/tmp/username/spark/ajobname/1081559/conf"
+      cd /home/username/spark-1.2.0-bin-hadoop2.4
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can run
+   a job using spark-class (bin/spark-class ...).  There will also be
+   instructions in your job output on how to tear the session down
+   cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   SPARK_SCRIPT_PATH, and then run your job.
 
 5) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
@@ -633,10 +709,11 @@ Basic Instructions For Spark
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact with it, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
-Basic Instructions For Storm
-----------------------------
+Instructions For Storm
+----------------------
 
 0) If necessary, download your favorite version of Storm off of Apache
    and install it into a location where it's accessible on all cluster
@@ -695,9 +772,27 @@ Basic Instructions For Storm
 
 4) Select how your job will run by setting STORM_MODE.  The first time
    you'll probably want to run w/ 'stormwordcount' mode just to try
-   things out and make things look setup correctly.  Later you may
-   want to run w/ 'script' or 'interactive' mode to run real
-   calculations.
+   things out and make things look setup correctly.
+
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv STORM_CONF_DIR "/tmp/username/storm/ajobname/1081559/conf"
+      cd /home/username/apache-storm-0.9.3
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can run
+   a job using bin/storm (bin/storm jar ...).  There will also be
+   instructions in your job output on how to tear the session down
+   cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   STORM_SCRIPT_PATH, and then run your job.
 
 5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
@@ -708,7 +803,8 @@ Basic Instructions For Storm
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact with it, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
 Exported Environment Variables
 ------------------------------
