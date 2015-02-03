@@ -1,7 +1,7 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated February 2, 2015
+Updated February 3, 2015
 chu11@llnl.gov
 
 What is this project
@@ -168,6 +168,268 @@ Instructions For Running Hadoop
    to set if interacting with it, etc.
 
    See below on "General Advanced Usage" for additional tips.
+
+Example Job Output for Hadoop running Terasort
+----------------------------------------------
+
+The following is an example job output of Magpie running Hadoop and
+running a Terasort.  This is run over HDFS over Lustre.  Sections of
+extraneous text have been left out.
+
+While this output is specific to using Magpie with Hadoop, the output
+when using Spark, Storm, Hbase, etc. is not all that different.
+
+1) First we see that HDFS over Lustre is being setup by formatting the
+HDFS Namenode.
+
+*******************************************************
+* Formatting HDFS Namenode
+*******************************************************
+DEPRECATED: Use of this script to execute hdfs command is deprecated.
+Instead use the hdfs command for it.
+
+15/01/28 07:17:36 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = apex70.llnl.gov/192.168.123.70
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 2.6.0
+<snip>
+<snip>
+<snip>
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at apex70.llnl.gov/192.168.123.70
+************************************************************/
+
+2) Next we get some details of the job
+
+*******************************************************
+* Magpie General Job Info
+*
+* Job Nodelist: apex[70-78]
+* Job Nodecount: 9
+* Job Timelimit in Minutes: 60
+* Job Name: terasort
+* Job ID: 1081559
+*
+*******************************************************
+
+3) Hadoop begins to launch and startup daemons on all cluster nodes.
+
+Starting hadoop
+15/01/28 07:18:04 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Starting namenodes on [apex70]
+apex70: starting namenode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-namenode-apex70.out
+apex72: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex72.out
+apex71: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex71.out
+apex77: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex77.out
+apex76: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex76.out
+apex73: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex73.out
+apex74: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex74.out
+apex78: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex78.out
+apex75: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex75.out
+Starting secondary namenodes [apex70]
+apex70: starting secondarynamenode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-secondarynamenode-apex70.out
+15/01/28 07:18:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+starting yarn daemons
+starting resourcemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-resourcemanager-apex70.out
+apex71: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex71.out
+apex72: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex72.out
+apex77: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex77.out
+apex78: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex78.out
+apex74: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex74.out
+apex75: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex75.out
+apex73: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex73.out
+apex76: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex76.out
+Waiting 30 seconds to allows Hadoop daemons to setup
+
+4) Next, we see output with details of the Hadoop setup.  You'll find
+   addresses indicating web services you can access to get detailed
+   job information.  You'll also find information about how to login
+   to access Hadoop directory and how to shut down the job early if
+   you so desire.
+
+*******************************************************
+*
+* Hadoop Information
+*
+* You can view your Hadoop status by launching a web browser and pointing to ...
+*
+* Yarn Resource Manager: http://apex70:8088
+*
+* Job History Server: http://apex70:19888
+*
+* HDFS Namenode: http://apex70:50070
+* HDFS DataNode: http://<DATANODE>:50075
+*
+* HDFS can be accessed directly at:
+*
+*   hdfs://apex70:54310
+*
+*
+* To access Hadoop directly, you'll want to:
+*   ssh apex70
+*   setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/terasort/1081559/conf"
+*   cd /home/achu/hadoop/hadoop-2.6.0
+*
+* Then you can do as you please.  For example to interact with the Hadoop filesystem:
+*
+*   bin/hadoop fs ...
+*
+* To launch jobs you'll want to:
+*
+*   bin/hadoop jar ...
+*
+*
+* To end/cleanup your session, kill the daemons via:
+*
+*   ssh apex70
+*   setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/terasort/1081559/conf"
+*   cd /home/achu/hadoop/hadoop-2.6.0
+*   sbin/stop-yarn.sh
+*   sbin/stop-dfs.sh
+*   sbin/mr-jobhistory-daemon.sh stop historyserver
+*
+* Some additional environment variables you may sometimes wish to set
+*
+*   setenv JAVA_HOME "/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+*   setenv HADOOP_HOME "/home/achu/hadoop/hadoop-2.6.0"
+*
+*******************************************************
+
+5) The job then runs Teragen
+
+Running bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar teragen  -Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true 50000000 terasort-teragen
+15/01/28 07:19:01 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/01/28 07:19:01 INFO client.RMProxy: Connecting to ResourceManager at apex70/192.168.123.70:8032
+15/01/28 07:19:05 INFO terasort.TeraSort: Generating 50000000 using 192
+15/01/28 07:19:10 INFO mapreduce.JobSubmitter: number of splits:192
+15/01/28 07:19:12 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1422458304036_0001
+15/01/28 07:19:12 INFO impl.YarnClientImpl: Submitted application application_1422458304036_0001
+15/01/28 07:19:12 INFO mapreduce.Job: The url to track the job: http://apex70:8088/proxy/application_1422458304036_0001/
+15/01/28 07:19:12 INFO mapreduce.Job: Running job: job_1422458304036_0001
+15/01/28 07:19:20 INFO mapreduce.Job: Job job_1422458304036_0001 running in uber mode : false
+15/01/28 07:19:20 INFO mapreduce.Job:  map 0% reduce 0%
+15/01/28 07:19:31 INFO mapreduce.Job:  map 1% reduce 0%
+15/01/28 07:19:32 INFO mapreduce.Job:  map 5% reduce 0%
+<snip>
+<snip>
+<snip>
+15/01/28 07:20:48 INFO mapreduce.Job:  map 97% reduce 0%
+15/01/28 07:20:49 INFO mapreduce.Job:  map 98% reduce 0%
+15/01/28 07:20:52 INFO mapreduce.Job:  map 100% reduce 0%
+15/01/28 07:22:24 INFO mapreduce.Job: Job job_1422458304036_0001 completed successfully
+15/01/28 07:22:24 INFO mapreduce.Job: Counters: 31
+<snip>
+<snip>
+<snip>
+        Map-Reduce Framework
+                Map input records=50000000
+                Map output records=50000000
+                Input split bytes=16444
+                Spilled Records=0
+                Failed Shuffles=0
+                Merged Map outputs=0
+                GC time elapsed (ms)=3037
+                CPU time spent (ms)=313700
+                Physical memory (bytes) snapshot=66395398144
+                Virtual memory (bytes) snapshot=502137180160
+                Total committed heap usage (bytes)=192971538432
+        org.apache.hadoop.examples.terasort.TeraGen$Counters
+                CHECKSUM=107387891658806101
+        File Input Format Counters 
+                Bytes Read=0
+        File Output Format Counters 
+                Bytes Written=5000000000
+
+6) The job then runs Terasort
+
+Running bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar terasort  -Dmapred.reduce.tasks=16 -Ddfs.replication=1 -Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true terasort-teragen terasort-sort
+15/01/28 07:22:55 INFO terasort.TeraSort: starting
+15/01/28 07:22:55 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/01/28 07:22:56 INFO input.FileInputFormat: Total input paths to process : 192
+Spent 269ms computing base-splits.
+Spent 4ms computing TeraScheduler splits.
+Computing input splits took 274ms
+Sampling 10 splits of 192
+Making 16 from 100000 sampled records
+Computing parititions took 1525ms
+Spent 1801ms computing partitions.
+15/01/28 07:22:57 INFO client.RMProxy: Connecting to ResourceManager at apex70/192.168.123.70:8032
+15/01/28 07:23:04 INFO mapreduce.JobSubmitter: number of splits:192
+15/01/28 07:23:05 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+15/01/28 07:23:06 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1422458304036_0002
+15/01/28 07:23:06 INFO impl.YarnClientImpl: Submitted application application_1422458304036_0002
+15/01/28 07:23:06 INFO mapreduce.Job: The url to track the job: http://apex70:8088/proxy/application_1422458304036_0002/
+15/01/28 07:23:06 INFO mapreduce.Job: Running job: job_1422458304036_0002
+15/01/28 07:23:11 INFO mapreduce.Job: Job job_1422458304036_0002 running in uber mode : false
+15/01/28 07:23:11 INFO mapreduce.Job:  map 0% reduce 0%
+15/01/28 07:23:21 INFO mapreduce.Job:  map 5% reduce 0%
+15/01/28 07:23:22 INFO mapreduce.Job:  map 65% reduce 0%
+<snip>
+<snip>
+<snip>
+15/01/28 07:23:44 INFO mapreduce.Job:  map 100% reduce 97%
+15/01/28 07:23:45 INFO mapreduce.Job:  map 100% reduce 99%
+15/01/28 07:23:46 INFO mapreduce.Job:  map 100% reduce 100%
+15/01/28 07:24:03 INFO mapreduce.Job: Job job_1422458304036_0002 completed successfully
+15/01/28 07:24:03 INFO mapreduce.Job: Counters: 50
+<snip>
+<snip>
+<snip>
+        Shuffle Errors
+                BAD_ID=0
+                CONNECTION=0
+                IO_ERROR=0
+                WRONG_LENGTH=0
+                WRONG_MAP=0
+                WRONG_REDUCE=0
+        File Input Format Counters 
+                Bytes Read=5000000000
+        File Output Format Counters 
+                Bytes Written=5000000000
+15/01/28 07:24:03 INFO terasort.TeraSort: done
+
+7) With the job complete, Magpie now tears down the session and cleans
+   up all daemons.
+
+Stopping hadoop
+stopping yarn daemons
+stopping resourcemanager
+apex76: stopping nodemanager
+apex74: stopping nodemanager
+apex77: stopping nodemanager
+apex73: stopping nodemanager
+apex75: stopping nodemanager
+apex72: stopping nodemanager
+apex71: stopping nodemanager
+apex78: stopping nodemanager
+no proxyserver to stop
+stopping historyserver
+Saving namespace before shutting down hdfs ...
+Running bin/hdfs dfsadmin -safemode enter
+15/01/28 07:25:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Safe mode is ON
+Running bin/hdfs dfsadmin -saveNamespace
+15/01/28 07:25:59 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Save namespace successful
+Running bin/hdfs dfsadmin -safemode leave
+15/01/28 07:26:03 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Safe mode is OFF
+15/01/28 07:26:04 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Stopping namenodes on [apex70]
+apex70: stopping namenode
+apex76: stopping datanode
+apex78: stopping datanode
+apex74: stopping datanode
+apex75: stopping datanode
+apex77: stopping datanode
+apex72: stopping datanode
+apex73: stopping datanode
+apex71: stopping datanode
+Stopping secondary namenodes [apex70]
+apex70: stopping secondarynamenode
+
 
 Basic Instructions For Running Hadoop w/ UDA
 --------------------------------------------
