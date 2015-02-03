@@ -1,3 +1,8 @@
+magpie 1.53
+-----------
+Update various path defaults in scripts and submission-scripts.
+Documentation updates.
+
 magpie 1.52
 -----------
 Support MAGPIE_USERNAME environment variable.
