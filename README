@@ -1,7 +1,7 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated January 23, 2015
+Updated February 2, 2015
 chu11@llnl.gov
 
 What is this project
@@ -154,7 +154,9 @@ Instructions For Running Hadoop
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   HADOOP_SCRIPT_PATH, and then run your job.
+   HADOOP_SCRIPT_PATH, and then run your job.  See below on "Exported
+   Environment Variables", for information on exported environment
+   variables that may be useful in scripts. 
 
 5) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
@@ -164,6 +166,8 @@ Instructions For Running Hadoop
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
 
 Basic Instructions For Running Hadoop w/ UDA
 --------------------------------------------
@@ -423,6 +427,8 @@ Instructions For Using Pig
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
+   See below on "General Advanced Usage" for additional tips.
+
 Instructions For Running Zookeeper
 ----------------------------------
 
@@ -567,7 +573,9 @@ Instructions For Running Hbase
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   HBASE_SCRIPT_PATH, and then run your job.
+   HBASE_SCRIPT_PATH, and then run your job.  See below on "Exported
+   Environment Variables", for information on exported environment
+   variables that may be useful in scripts. 
 
 5) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
    also in your submission script.  MapReduce is not needed with Hbase
@@ -585,6 +593,8 @@ Instructions For Running Hbase
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
 
 Hbase Notes
 -----------
@@ -692,7 +702,9 @@ Instructions For Spark
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   SPARK_SCRIPT_PATH, and then run your job.
+   SPARK_SCRIPT_PATH, and then run your job.  See below on "Exported
+   Environment Variables", for information on exported environment
+   variables that may be useful in scripts.
 
 5) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
@@ -711,6 +723,8 @@ Instructions For Spark
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
 
 Instructions For Storm
 ----------------------
@@ -792,7 +806,9 @@ Instructions For Storm
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   STORM_SCRIPT_PATH, and then run your job.
+   STORM_SCRIPT_PATH, and then run your job.  See below on "Exported
+   Environment Variables", for information on exported environment
+   variables that may be useful in scripts. 
 
 5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
@@ -805,6 +821,29 @@ Instructions For Storm
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
+
+General Advanced Usage
+----------------------
+
+The following are additional tips for advanced usage of Magpie.
+
+1) The Magpie environment variables of MAGPIE_PRE_JOB_RUN and
+   MAGPIE_POST_JOB_RUN can be used to run scripts before and after
+   your primary job script executes.
+
+   The MAGPIE_POST_JOB_RUN is particularly useful, as it can gather
+   logs and/or other debugging data for you.  The convenience script
+   post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh
+   gathers most configuration and log data and stores it to your home
+   directory.
+
+2) The Magpie environment variable MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT
+   is useful for creating a file of popular and useful environment
+   variables.  The file it creates can be used within scripts you
+   write, or it can sourced into your environment when you try to
+   interact with your job.
 
 Exported Environment Variables
 ------------------------------
