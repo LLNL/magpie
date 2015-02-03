@@ -125,7 +125,7 @@ export MAGPIE_JOB_TYPE="script"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
-# export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
 # Specify script startup / shutdown time window
 #
@@ -177,8 +177,8 @@ export MAGPIE_JOB_TYPE="script"
 # A number of convenient scripts are available in the scripts
 # directory.
 #
-# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
-# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
+# export MAGPIE_PRE_JOB_RUN="${HOME}/magpie-my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${HOME}/magpie-my-post-job-script"
 
 # Environment Variable Script
 #
@@ -200,7 +200,7 @@ export MAGPIE_JOB_TYPE="script"
 # can be sourced easily if you will be running your job interactively.
 # It can also be loaded or used by other job scripts.
 #
-# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${MAGPIE_SCRIPTS_HOME}/my-job-env"
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
 
 # Specify ssh-equivalent remote command and/or options if ssh is not
 # available on your cluster
@@ -272,7 +272,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export HADOOP_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export HADOOP_CONF_FILES="${HOME}/myconf"
 
 # Daemon Heap Max
 #
@@ -314,7 +314,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # See the example example-environment-extra extra for examples on
 # what you can/should do with adding extra environment settings.
 #
-# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${HOME}/hadoop-my-environment"
 
 ############################################################################
 # Hadoop Job/Run Configurations
@@ -672,7 +672,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # See hadoop-example-job-script for example of what to put in the script.
 #
-# export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 
 ############################################################################
 # Hadoop UDA Configurations
@@ -737,7 +737,7 @@ export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export PIG_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export PIG_CONF_FILES="${HOME}/myconf"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -763,7 +763,7 @@ export PIG_MODE="testpig"
 # Specify script to execute for "script" mode in PIG_MODE.  This pig
 # script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
 #
-# export PIG_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-pig-script"
+# export PIG_SCRIPT_PATH="${HOME}/my-pig-script"
 
 # Specify options to specify when calling pig.
 #
@@ -817,7 +817,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export HBASE_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export HBASE_CONF_FILES="${HOME}/myconf"
 
 # Master Daemon Heap Max
 #
@@ -849,7 +849,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # See the example example-environment-extra for examples on
 # what you can/should do with adding extra environment settings.
 #
-# export HBASE_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hbase-my-environment"
+# export HBASE_ENVIRONMENT_EXTRA_PATH="${HOME}/hbase-my-environment"
 
 ############################################################################
 # Hbase Job/Run Configurations
@@ -927,7 +927,7 @@ export HBASE_MODE="performanceeval"
 #
 # See hbase-example-job-script for example of what to put in the script.
 #
-# export HBASE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
 
 ############################################################################
 # Spark Core Configurations
@@ -961,7 +961,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export SPARK_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export SPARK_CONF_FILES="${HOME}/myconf"
 
 # Worker Cores per Node
 #
@@ -1041,7 +1041,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # See the example example-environment-extra for examples on
 # what you can/should do with adding extra environment settings.
 #
-# export SPARK_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/spark-my-environment"
+# export SPARK_ENVIRONMENT_EXTRA_PATH="${HOME}/spark-my-environment"
 
 ############################################################################
 # Spark Job/Run Configurations
@@ -1232,7 +1232,7 @@ export SPARK_MODE="sparkpi"
 #
 # See spark-example-job-script for example of what to put in the script.
 #
-# export SPARK_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 
 ############################################################################
 # Storm Core Configurations
@@ -1266,7 +1266,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export STORM_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export STORM_CONF_FILES="${HOME}/myconf"
 
 # Storm Supervisor Slots
 #
@@ -1333,7 +1333,7 @@ export STORM_MODE="stormwordcount"
 #
 # See storm-example-job-script for example of what to put in the script.
 #
-# export STORM_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 
 ############################################################################
 # Zookeeper Configurations
@@ -1393,7 +1393,7 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
 
 # Set how Zookeeper data directory should be setup.
 #

@@ -126,7 +126,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
-# export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
 # Specify script startup / shutdown time window
 #
@@ -178,8 +178,8 @@ export MAGPIE_JOB_TYPE="hadoop"
 # A number of convenient scripts are available in the scripts
 # directory.
 #
-# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
-# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
+# export MAGPIE_PRE_JOB_RUN="${HOME}/magpie-my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${HOME}/magpie-my-post-job-script"
 
 # Environment Variable Script
 #
@@ -201,7 +201,7 @@ export MAGPIE_JOB_TYPE="hadoop"
 # can be sourced easily if you will be running your job interactively.
 # It can also be loaded or used by other job scripts.
 #
-# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${MAGPIE_SCRIPTS_HOME}/my-job-env"
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
 
 # Specify ssh-equivalent remote command and/or options if ssh is not
 # available on your cluster
@@ -273,7 +273,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export HADOOP_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export HADOOP_CONF_FILES="${HOME}/myconf"
 
 # Daemon Heap Max
 #
@@ -315,7 +315,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # See the example example-environment-extra extra for examples on
 # what you can/should do with adding extra environment settings.
 #
-# export HADOOP_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hadoop-my-environment"
+# export HADOOP_ENVIRONMENT_EXTRA_PATH="${HOME}/hadoop-my-environment"
 
 ############################################################################
 # Hadoop Job/Run Configurations
@@ -673,7 +673,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # See hadoop-example-job-script for example of what to put in the script.
 #
-# export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 
 ############################################################################
 # Hadoop UDA Configurations

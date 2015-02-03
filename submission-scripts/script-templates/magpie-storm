@@ -30,7 +30,7 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export STORM_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export STORM_CONF_FILES="${HOME}/myconf"
 
 # Storm Supervisor Slots
 #
@@ -97,5 +97,5 @@ export STORM_MODE="stormwordcount"
 #
 # See storm-example-job-script for example of what to put in the script.
 #
-# export STORM_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 

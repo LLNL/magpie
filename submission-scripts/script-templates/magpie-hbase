@@ -30,7 +30,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export HBASE_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export HBASE_CONF_FILES="${HOME}/myconf"
 
 # Master Daemon Heap Max
 #
@@ -62,7 +62,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 # See the example example-environment-extra for examples on
 # what you can/should do with adding extra environment settings.
 #
-# export HBASE_ENVIRONMENT_EXTRA_PATH="${MAGPIE_SCRIPTS_HOME}/hbase-my-environment"
+# export HBASE_ENVIRONMENT_EXTRA_PATH="${HOME}/hbase-my-environment"
 
 ############################################################################
 # Hbase Job/Run Configurations
@@ -140,5 +140,5 @@ export HBASE_MODE="performanceeval"
 #
 # See hbase-example-job-script for example of what to put in the script.
 #
-# export HBASE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
 

@@ -56,7 +56,7 @@ export ZOOKEEPER_HOME="PROJECTDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
 
 # Set how Zookeeper data directory should be setup.
 #

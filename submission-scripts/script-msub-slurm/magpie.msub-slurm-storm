@@ -126,7 +126,7 @@ export MAGPIE_JOB_TYPE="storm"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
-# export MAGPIE_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
 # Specify script startup / shutdown time window
 #
@@ -178,8 +178,8 @@ export MAGPIE_JOB_TYPE="storm"
 # A number of convenient scripts are available in the scripts
 # directory.
 #
-# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-pre-job-script"
-# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/magpie-my-post-job-script"
+# export MAGPIE_PRE_JOB_RUN="${HOME}/magpie-my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${HOME}/magpie-my-post-job-script"
 
 # Environment Variable Script
 #
@@ -201,7 +201,7 @@ export MAGPIE_JOB_TYPE="storm"
 # can be sourced easily if you will be running your job interactively.
 # It can also be loaded or used by other job scripts.
 #
-# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${MAGPIE_SCRIPTS_HOME}/my-job-env"
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
 
 # Specify ssh-equivalent remote command and/or options if ssh is not
 # available on your cluster
@@ -247,7 +247,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export STORM_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export STORM_CONF_FILES="${HOME}/myconf"
 
 # Storm Supervisor Slots
 #
@@ -314,7 +314,7 @@ export STORM_MODE="stormwordcount"
 #
 # See storm-example-job-script for example of what to put in the script.
 #
-# export STORM_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 
 ############################################################################
 # Zookeeper Configurations
@@ -374,7 +374,7 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export ZOOKEEPER_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
 
 # Set how Zookeeper data directory should be setup.
 #

@@ -33,7 +33,7 @@ export PIG_HOME="PROJECTDIRPREFIX/pig-${PIG_VERSION}"
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# export PIG_CONF_FILES="${MAGPIE_SCRIPTS_HOME}/conf"
+# export PIG_CONF_FILES="${HOME}/myconf"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -59,7 +59,7 @@ export PIG_MODE="testpig"
 # Specify script to execute for "script" mode in PIG_MODE.  This pig
 # script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
 #
-# export PIG_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-pig-script"
+# export PIG_SCRIPT_PATH="${HOME}/my-pig-script"
 
 # Specify options to specify when calling pig.
 #

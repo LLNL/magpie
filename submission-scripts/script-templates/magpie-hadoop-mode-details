@@ -37,5 +37,5 @@
 #
 # See hadoop-example-job-script for example of what to put in the script.
 #
-# export HADOOP_SCRIPT_PATH="${MAGPIE_SCRIPTS_HOME}/my-job-script"
+# export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 
