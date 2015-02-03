@@ -70,18 +70,15 @@ export MAGPIE_SUBMISSION_TYPE="msubslurm"
 # Magpie Configurations
 ############################################################################
 
-# For convenience, change if you desire so
-export MAGPIE_USERNAME=`whoami`
-
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
-export MAGPIE_SCRIPTS_HOME="/home/${MAGPIE_USERNAME}/magpie"
+export MAGPIE_SCRIPTS_HOME="/home/${USER}/magpie"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local scratch files for Magpie.
 #
-export MAGPIE_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/magpie"
+export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
@@ -239,12 +236,12 @@ export SPARK_VERSION="1.2.0-bin-hadoop2.4"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="/home/${MAGPIE_USERNAME}/spark-${SPARK_VERSION}"
+export SPARK_HOME="/home/${USER}/spark-${SPARK_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export SPARK_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/spark"
+export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 
 # Directory where Spark configuration templates are stored
 #
@@ -282,7 +279,7 @@ export SPARK_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/spark"
 # Generally speaking, this is best if this is a tmp directory such as
 # in /tmp
 #
-# export SPARK_WORKER_DIRECTORY=/tmp/${MAGPIE_USERNAME}/spark/work
+# export SPARK_WORKER_DIRECTORY=/tmp/${USER}/spark/work
 
 # SPARK_JOB_MEMORY
 #
@@ -459,7 +456,7 @@ export SPARK_MODE="sparkpi"
 # in your interest to set this to a local drive and adjust
 # SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.
 #
-export SPARK_LOCAL_SCRATCH_DIR="/lustre/${MAGPIE_USERNAME}/sparkscratch/"
+export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
 # Set how SPARK_LOCAL_SCRATCH_DIR should be setup.
 #

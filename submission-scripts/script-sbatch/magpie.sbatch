@@ -69,18 +69,15 @@ export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
 # Magpie Configurations
 ############################################################################
 
-# For convenience, change if you desire so
-export MAGPIE_USERNAME=`whoami`
-
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
-export MAGPIE_SCRIPTS_HOME="/home/${MAGPIE_USERNAME}/magpie"
+export MAGPIE_SCRIPTS_HOME="/home/${USER}/magpie"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local scratch files for Magpie.
 #
-export MAGPIE_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/magpie"
+export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
@@ -261,7 +258,7 @@ export HADOOP_VERSION="2.6.0"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_HOME="/home/${MAGPIE_USERNAME}/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="/home/${USER}/hadoop-${HADOOP_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -269,7 +266,7 @@ export HADOOP_HOME="/home/${MAGPIE_USERNAME}/hadoop-${HADOOP_VERSION}"
 # This will not be used for storing intermediate files or
 # distributed cache files.  See HADOOP_LOCALSTORE above for that.
 #
-export HADOOP_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/hadoop"
+export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 
 # Directory where Hadoop configuration templates are stored
 #
@@ -529,7 +526,7 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 # path will also store daemon data, such as namenode or jobtracker
 # data.
 #
-export HADOOP_HDFS_PATH="/ssd/${MAGPIE_USERNAME}/"
+export HADOOP_HDFS_PATH="/ssd/${USER}/"
 
 # Lustre path to do Hadoop HDFS out of
 #
@@ -537,7 +534,7 @@ export HADOOP_HDFS_PATH="/ssd/${MAGPIE_USERNAME}/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${MAGPIE_USERNAME}/hdfsoverlustre/"
+export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${USER}/hdfsoverlustre/"
 
 # HDFS over Lustre ignore lock
 #
@@ -565,7 +562,7 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${MAGPIE_USERNAME}/hdfsoverlustre/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${MAGPIE_USERNAME}/hdfsovernetworkfs/"
+export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 
 # HDFS over Networkfs ignore lock
 #
@@ -591,7 +588,7 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${MAGPIE_USERNAME}/hdfsovernetw
 #
 # This path is used for creating local per-node paths.
 #
-export HADOOP_RAWNETWORKFS_PATH="/lustre/${MAGPIE_USERNAME}/rawnetworkfs/"
+export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 # If you have a local SSD, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked
@@ -607,7 +604,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${MAGPIE_USERNAME}/rawnetworkfs/"
 # make them comma separated (e.g. /dir1,/dir2,/dir3).  The multiple
 # paths will be used for local intermediate data.
 #
-# export HADOOP_LOCALSTORE="/ssd/${MAGPIE_USERNAME}/localstore/"
+# export HADOOP_LOCALSTORE="/ssd/${USER}/localstore/"
 
 # HDFS Block Size
 #
@@ -689,14 +686,14 @@ export HADOOP_UDA_SETUP=no
 
 # Specify UDA jar
 #
-export HADOOP_UDA_JAR="/home/${MAGPIE_USERNAME}/uda/uda-hadoop-2.x.jar"
+export HADOOP_UDA_JAR="/home/${USER}/uda/uda-hadoop-2.x.jar"
 
 # Specify UDA shared object file
 #
 # Does not need to be specified, but if it is not installed in a
 # common library path (e.g. /usr/lib), specify the path.
 #
-# export HADOOP_UDA_LIBPATH="/home/${MAGPIE_USERNAME}/uda/lib/"
+# export HADOOP_UDA_LIBPATH="/home/${USER}/uda/lib/"
 
 # Specify RDMA buffer size
 #
@@ -734,7 +731,7 @@ export PIG_VERSION="0.14.0"
 #
 # Ensure the build matches the Hadoop version this will run against.
 #
-export PIG_HOME="/home/${MAGPIE_USERNAME}/pig-${PIG_VERSION}"
+export PIG_HOME="/home/${USER}/pig-${PIG_VERSION}"
 
 # Directory where Pig configuration templates are stored
 #
@@ -745,7 +742,7 @@ export PIG_HOME="/home/${MAGPIE_USERNAME}/pig-${PIG_VERSION}"
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export PIG_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/pig"
+export PIG_LOCAL_DIR="/tmp/${USER}/pig"
 
 # Set how Pig should run
 #
@@ -773,14 +770,14 @@ export PIG_MODE="testpig"
 # A particularly useful option is -l <logfile>, to indicate where you
 # would like the pig log file to go.
 #
-# export PIG_SCRIPT_OPTS="-l /home/${MAGPIE_USERNAME}/mypig.log"
+# export PIG_SCRIPT_OPTS="-l /home/${USER}/mypig.log"
 
 # Pig Classpath
 #
 # Set the classpath you desire for pig.  This is the CLASSPATH you
 # likely want to set to add additional jars for your run.
 #
-# export PIG_CLASSPATH="/home/${MAGPIE_USERNAME}/myjarfiles.jar"
+# export PIG_CLASSPATH="/home/${USER}/myjarfiles.jar"
 
 # Pig Opts
 #
@@ -809,12 +806,12 @@ export HBASE_VERSION="0.98.9-hadoop2"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export HBASE_HOME="/home/${MAGPIE_USERNAME}/hbase-${HBASE_VERSION}"
+export HBASE_HOME="/home/${USER}/hbase-${HBASE_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export HBASE_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/hbase"
+export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 
 # Directory where Hbase configuration templates are stored
 #
@@ -953,12 +950,12 @@ export SPARK_VERSION="1.2.0-bin-hadoop2.4"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="/home/${MAGPIE_USERNAME}/spark-${SPARK_VERSION}"
+export SPARK_HOME="/home/${USER}/spark-${SPARK_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export SPARK_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/spark"
+export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 
 # Directory where Spark configuration templates are stored
 #
@@ -996,7 +993,7 @@ export SPARK_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/spark"
 # Generally speaking, this is best if this is a tmp directory such as
 # in /tmp
 #
-# export SPARK_WORKER_DIRECTORY=/tmp/${MAGPIE_USERNAME}/spark/work
+# export SPARK_WORKER_DIRECTORY=/tmp/${USER}/spark/work
 
 # SPARK_JOB_MEMORY
 #
@@ -1173,7 +1170,7 @@ export SPARK_MODE="sparkpi"
 # in your interest to set this to a local drive and adjust
 # SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.
 #
-# export SPARK_LOCAL_SCRATCH_DIR="/lustre/${MAGPIE_USERNAME}/sparkscratch/"
+# export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
 # Set how SPARK_LOCAL_SCRATCH_DIR should be setup.
 #
@@ -1258,12 +1255,12 @@ export STORM_VERSION="0.9.3"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export STORM_HOME="/home/${MAGPIE_USERNAME}/apache-storm-${STORM_VERSION}"
+export STORM_HOME="/home/${USER}/apache-storm-${STORM_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export STORM_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/storm"
+export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 
 # Directory where Storm configuration templates are stored
 #
@@ -1390,7 +1387,7 @@ export ZOOKEEPER_VERSION="3.4.6"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export ZOOKEEPER_HOME="/home/${MAGPIE_USERNAME}/zookeeper-${ZOOKEEPER_VERSION}"
+export ZOOKEEPER_HOME="/home/${USER}/zookeeper-${ZOOKEEPER_VERSION}"
 
 # Directory where Zookeeper configuration templates are stored
 #
@@ -1418,12 +1415,12 @@ export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
 # in your interest to set this to a local drive and adjust
 # ZOOKEEPER_FILESYSTEM_MODE above to 'local'.
 #
-export ZOOKEEPER_DATA_DIR="/lustre/${MAGPIE_USERNAME}/zookeeper"  
+export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
-export ZOOKEEPER_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/zookeeper"
+export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 
 # ZooKeeper ticktime, measured in milliseconds.  Used by all of
 # Zookeeper for time measurement.

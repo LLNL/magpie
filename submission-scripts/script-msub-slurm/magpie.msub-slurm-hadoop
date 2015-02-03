@@ -70,18 +70,15 @@ export MAGPIE_SUBMISSION_TYPE="msubslurm"
 # Magpie Configurations
 ############################################################################
 
-# For convenience, change if you desire so
-export MAGPIE_USERNAME=`whoami`
-
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
-export MAGPIE_SCRIPTS_HOME="/home/${MAGPIE_USERNAME}/magpie"
+export MAGPIE_SCRIPTS_HOME="/home/${USER}/magpie"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local scratch files for Magpie.
 #
-export MAGPIE_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/magpie"
+export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
@@ -262,7 +259,7 @@ export HADOOP_VERSION="2.6.0"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_HOME="/home/${MAGPIE_USERNAME}/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="/home/${USER}/hadoop-${HADOOP_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -270,7 +267,7 @@ export HADOOP_HOME="/home/${MAGPIE_USERNAME}/hadoop-${HADOOP_VERSION}"
 # This will not be used for storing intermediate files or
 # distributed cache files.  See HADOOP_LOCALSTORE above for that.
 #
-export HADOOP_LOCAL_DIR="/tmp/${MAGPIE_USERNAME}/hadoop"
+export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 
 # Directory where Hadoop configuration templates are stored
 #
@@ -530,7 +527,7 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 # path will also store daemon data, such as namenode or jobtracker
 # data.
 #
-export HADOOP_HDFS_PATH="/ssd/${MAGPIE_USERNAME}/"
+export HADOOP_HDFS_PATH="/ssd/${USER}/"
 
 # Lustre path to do Hadoop HDFS out of
 #
@@ -538,7 +535,7 @@ export HADOOP_HDFS_PATH="/ssd/${MAGPIE_USERNAME}/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${MAGPIE_USERNAME}/hdfsoverlustre/"
+export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${USER}/hdfsoverlustre/"
 
 # HDFS over Lustre ignore lock
 #
@@ -566,7 +563,7 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${MAGPIE_USERNAME}/hdfsoverlustre/"
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
 #
-export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${MAGPIE_USERNAME}/hdfsovernetworkfs/"
+export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 
 # HDFS over Networkfs ignore lock
 #
@@ -592,7 +589,7 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${MAGPIE_USERNAME}/hdfsovernetw
 #
 # This path is used for creating local per-node paths.
 #
-export HADOOP_RAWNETWORKFS_PATH="/lustre/${MAGPIE_USERNAME}/rawnetworkfs/"
+export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 # If you have a local SSD, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked
@@ -608,7 +605,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${MAGPIE_USERNAME}/rawnetworkfs/"
 # make them comma separated (e.g. /dir1,/dir2,/dir3).  The multiple
 # paths will be used for local intermediate data.
 #
-# export HADOOP_LOCALSTORE="/ssd/${MAGPIE_USERNAME}/localstore/"
+# export HADOOP_LOCALSTORE="/ssd/${USER}/localstore/"
 
 # HDFS Block Size
 #
