@@ -2,6 +2,7 @@ magpie 1.53
 -----------
 Update various path defaults in scripts and submission-scripts.
 Remove MAGPIE_USERNAME, just use USER instead.
+Use HOME instead of /home/${USER} in various locations.
 Documentation updates.
 
 magpie 1.52

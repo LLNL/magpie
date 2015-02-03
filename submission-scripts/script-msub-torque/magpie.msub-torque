@@ -69,7 +69,7 @@ export MAGPIE_SUBMISSION_TYPE="msubtorque"
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
-export MAGPIE_SCRIPTS_HOME="/home/${USER}/magpie"
+export MAGPIE_SCRIPTS_HOME="${HOME}/magpie"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local scratch files for Magpie.
@@ -255,7 +255,7 @@ export HADOOP_VERSION="2.6.0"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_HOME="/home/${USER}/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="${HOME}/hadoop-${HADOOP_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -683,14 +683,14 @@ export HADOOP_UDA_SETUP=no
 
 # Specify UDA jar
 #
-export HADOOP_UDA_JAR="/home/${USER}/uda/uda-hadoop-2.x.jar"
+export HADOOP_UDA_JAR="${HOME}/uda/uda-hadoop-2.x.jar"
 
 # Specify UDA shared object file
 #
 # Does not need to be specified, but if it is not installed in a
 # common library path (e.g. /usr/lib), specify the path.
 #
-# export HADOOP_UDA_LIBPATH="/home/${USER}/uda/lib/"
+# export HADOOP_UDA_LIBPATH="${HOME}/uda/lib/"
 
 # Specify RDMA buffer size
 #
@@ -728,7 +728,7 @@ export PIG_VERSION="0.14.0"
 #
 # Ensure the build matches the Hadoop version this will run against.
 #
-export PIG_HOME="/home/${USER}/pig-${PIG_VERSION}"
+export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 
 # Directory where Pig configuration templates are stored
 #
@@ -767,14 +767,14 @@ export PIG_MODE="testpig"
 # A particularly useful option is -l <logfile>, to indicate where you
 # would like the pig log file to go.
 #
-# export PIG_SCRIPT_OPTS="-l /home/${USER}/mypig.log"
+# export PIG_SCRIPT_OPTS="-l ${HOME}/mypig.log"
 
 # Pig Classpath
 #
 # Set the classpath you desire for pig.  This is the CLASSPATH you
 # likely want to set to add additional jars for your run.
 #
-# export PIG_CLASSPATH="/home/${USER}/myjarfiles.jar"
+# export PIG_CLASSPATH="${HOME}/myjarfiles.jar"
 
 # Pig Opts
 #
@@ -803,7 +803,7 @@ export HBASE_VERSION="0.98.9-hadoop2"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export HBASE_HOME="/home/${USER}/hbase-${HBASE_VERSION}"
+export HBASE_HOME="${HOME}/hbase-${HBASE_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -947,7 +947,7 @@ export SPARK_VERSION="1.2.0-bin-hadoop2.4"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="/home/${USER}/spark-${SPARK_VERSION}"
+export SPARK_HOME="${HOME}/spark-${SPARK_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -1252,7 +1252,7 @@ export STORM_VERSION="0.9.3"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export STORM_HOME="/home/${USER}/apache-storm-${STORM_VERSION}"
+export STORM_HOME="${HOME}/apache-storm-${STORM_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -1384,7 +1384,7 @@ export ZOOKEEPER_VERSION="3.4.6"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export ZOOKEEPER_HOME="/home/${USER}/zookeeper-${ZOOKEEPER_VERSION}"
+export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 
 # Directory where Zookeeper configuration templates are stored
 #

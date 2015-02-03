@@ -72,7 +72,7 @@ export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
-export MAGPIE_SCRIPTS_HOME="/home/${USER}/magpie"
+export MAGPIE_SCRIPTS_HOME="${HOME}/magpie"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local scratch files for Magpie.
@@ -258,7 +258,7 @@ export HADOOP_VERSION="2.6.0"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_HOME="/home/${USER}/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="${HOME}/hadoop-${HADOOP_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
@@ -524,7 +524,7 @@ export SPARK_VERSION="1.2.0-bin-hadoop2.4"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="/home/${USER}/spark-${SPARK_VERSION}"
+export SPARK_HOME="${HOME}/spark-${SPARK_VERSION}"
 
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
