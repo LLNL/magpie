@@ -549,7 +549,7 @@ A: If you want to use a different Hadoop version than what you started
    script.  This is implemented in the "upgradehdfs" option for
    HADOOP_MODE in the launch scripts.
 
-Pro vs Con of HDFS over Lustre/NetworkFS vs. Posix FS (e.g. rawnetowrkfs, etc.)
+Pro vs Con of HDFS over Lustre/NetworkFS vs. Posix FS (e.g. rawnetworkfs, etc.)
 -------------------------------------------------------------------------------
 
 Here are some pros vs. cons of using a network filesystem directly vs
