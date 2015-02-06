@@ -1234,8 +1234,8 @@ debugging.
 
 post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
 This script will get all of the conf files and log files from Hadoop,
-Hbase, Pig, and/or Zookeeper and store it in a location for
-post-analysis of your job.  It's convenient for debugging.
+Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
+for post-analysis of your job.  It's convenient for debugging.
 
 job-scripts/hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See
 HDFS over Lustre section above for details.
