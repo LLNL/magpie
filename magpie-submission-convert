@@ -41,7 +41,8 @@ then
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-	export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
+	TIMELIMIT_WALLTIME=`squeue -j ${SLURM_JOB_ID} -h -o %l`
+	export MAGPIE_TIMELIMIT_MINUTES=`echo ${TIMELIMIT_WALLTIME} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
     fi
 fi
 

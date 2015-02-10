@@ -1,0 +1,5 @@
+# "hdfsovernetworkfs" - HDFS over Network FS.  Identical to HDFS over
+#                       Lustre, but filesystem agnostic.
+#
+#                       User must set HADOOP_HDFSOVERNETWORKFS_PATH below.
+#

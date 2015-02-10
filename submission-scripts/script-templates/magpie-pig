@@ -1,0 +1,83 @@
+############################################################################
+# Pig Configurations
+############################################################################
+
+# Should Pig be setup
+#
+# Specify yes or no.  Defaults to no.
+# 
+# Note that unlike Hadoop or Zookeeper, Pig does not need to be
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
+#
+# If PIG_SETUP is enabled, this will inform Magpie to setup a
+# configuration files and environment variables that will hopefully
+# make it easier to run Pig w/ Hadoop.  You could leave this disabled
+# and setup/config Pig as you need.
+#
+export PIG_SETUP=no
+
+# Pig Version
+#
+export PIG_VERSION="0.14.0"
+
+# Path to your Pig build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop version this will run against.
+#
+export PIG_HOME="PROJECTDIRPREFIX/pig-${PIG_VERSION}"
+
+# Directory where Pig configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export PIG_CONF_FILES="${HOME}/myconf"
+
+# Path local to each cluster node, typically something in /tmp.
+# This will store local conf files and log files for your job. 
+#
+export PIG_LOCAL_DIR="LOCALDIRPREFIX/pig"
+
+# Set how Pig should run
+#
+# "testpig" - Run a quick sanity test to see that pig is setup
+#             correctly.  Testpig will do a simple ls of the root
+#             directory of whatever filesytem you setup (e.g. hdfs,
+#             lustre, etc.).
+#
+# "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
+#
+# "interactive" - manually interact to run pig scripts. In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and run pig scripts directly
+#                 (e.g. bin/pig ...).
+#
+export PIG_MODE="testpig"
+
+# Specify script to execute for "script" mode in PIG_MODE.  This pig
+# script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
+#
+# export PIG_SCRIPT_PATH="${HOME}/my-pig-script"
+
+# Specify options to specify when calling pig.
+#
+# A particularly useful option is -l <logfile>, to indicate where you
+# would like the pig log file to go.
+#
+# export PIG_SCRIPT_OPTS="-l HOMEDIRPREFIX/mypig.log"
+
+# Pig Classpath
+#
+# Set the classpath you desire for pig.  This is the CLASSPATH you
+# likely want to set to add additional jars for your run.
+#
+# export PIG_CLASSPATH="HOMEDIRPREFIX/myjarfiles.jar"
+
+# Pig Opts
+#
+# Extra Java runtime options
+#
+# export PIG_OPTS=""
+

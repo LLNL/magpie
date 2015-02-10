@@ -105,16 +105,6 @@ then
 	echo "SLURM_JOB_ID environment variable must be set"
 	exit 1
     fi
-
-    # Legacy, SBATCH_TIMELIMIT was the primary advertised environment variable when first developed
-    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
-    then
-	if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
-	then
-	    echo "MAGPIE_TIMELIMIT_MINUTES environment variable must be set"
-	    exit 1
-	fi
-    fi
 fi
 
 #
@@ -146,6 +136,12 @@ then
 fi
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+
+if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+then
+    echo "MAGPIE_TIMELIMIT_MINUTES environment variable could not be calculated"
+    exit 1
+fi
 
 if [ "${MAGPIE_LOCAL_DIR}X" == "X" ]
 then
@@ -1198,6 +1194,12 @@ then
 	exit 1
     fi
 
+    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
+    then
+	echo "Zookeeper must be enabled for Storm"
+	exit 1
+    fi
+
     if [ "${STORM_MODE}" != "stormwordcount" ] \
 	&& [ "${STORM_MODE}" != "script" ] \
 	&& [ "${STORM_MODE}" != "interactive" ] \
@@ -1241,6 +1243,12 @@ then
 	    echo "Script STORM_SCRIPT_PATH \"$STORM_SCRIPT_PATH\" does not have execute permissions"
 	    exit 1
 	fi
+    fi
+
+    if [ "${STORM_MODE}" != "setuponly" ] && [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Storm job if Zookeeper mode is setuponly"
+	exit 1
     fi
 
     if [ ${nodecount} -le "0" ]

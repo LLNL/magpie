@@ -103,12 +103,14 @@ post_stormenvsh=${STORM_CONF_DIR}/storm-env.sh
 #
 
 stormlocaldirsubst=`echo "${stormlocaldir}" | sed "s/\\//\\\\\\\\\//g"`
+stormlogdirsubst=`echo "${STORM_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_stormyaml} ${post_stormyaml}
 
 sed -i \
     -e "s/NIMBUSHOST/${STORM_MASTER_NODE}/g" \
     -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
+    -e "s/STORMLOGDIR/${stormlogdirsubst}/g" \
     -e "s/STORMZOOKEEPERPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
     -e "s/STORMUIPORT/${STORM_UI_PORT}/g" \
     -e "s/STORMLOGVIEWERPORT/${STORM_LOGVIEWER_PORT}/g" \
