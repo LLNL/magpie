@@ -154,9 +154,10 @@ Instructions For Running Hadoop
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   HADOOP_SCRIPT_PATH, and then run your job.  See below on "Exported
-   Environment Variables", for information on exported environment
-   variables that may be useful in scripts. 
+   HADOOP_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/hadoop-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
 
 5) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
@@ -675,7 +676,7 @@ Instructions For Using Pig
 
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a Pig script and set
-   it in PIG_SCRIPT_PATH, and then run your job.
+   it in PIG_SCRIPT_PATH, and then run your job.  
 
 5) Pig requires Hadoop, so ensure the Hadoop is configured and also in
    your submission script.  See above for Hadoop setup instructions.
@@ -835,9 +836,10 @@ Instructions For Running Hbase
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   HBASE_SCRIPT_PATH, and then run your job.  See below on "Exported
-   Environment Variables", for information on exported environment
-   variables that may be useful in scripts. 
+   HBASE_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/hbase-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
 
 5) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
    also in your submission script.  MapReduce is not needed with Hbase
@@ -964,9 +966,10 @@ Instructions For Spark
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   SPARK_SCRIPT_PATH, and then run your job.  See below on "Exported
-   Environment Variables", for information on exported environment
-   variables that may be useful in scripts.
+   SPARK_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/spark-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
 
 5) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
@@ -1068,9 +1071,10 @@ Instructions For Storm
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a script that will
    run your job/calculation automatically, set it in
-   STORM_SCRIPT_PATH, and then run your job.  See below on "Exported
-   Environment Variables", for information on exported environment
-   variables that may be useful in scripts. 
+   STORM_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/storm-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
 
 5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
