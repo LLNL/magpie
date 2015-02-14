@@ -801,7 +801,8 @@ export SPARK_MODE="sparkpi"
 
 # Specify script to execute for "script" mode
 #
-# See spark-example-job-script for example of what to put in the script.
+# See examples/spark-example-job-script for example of what to put in
+# the script.
 #
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 

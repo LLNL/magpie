@@ -667,7 +667,8 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 # Specify script to execute for "script" mode
 #
-# See hadoop-example-job-script for example of what to put in the script.
+# See examples/hadoop-example-job-script for example of what to put in
+# the script.
 #
 # export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 

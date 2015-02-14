@@ -670,7 +670,8 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 # Specify script to execute for "script" mode
 #
-# See hadoop-example-job-script for example of what to put in the script.
+# See examples/hadoop-example-job-script for example of what to put in
+# the script.
 #
 # export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 
@@ -925,7 +926,8 @@ export HBASE_MODE="performanceeval"
 
 # Specify script to execute for "script" mode
 #
-# See hbase-example-job-script for example of what to put in the script.
+# See examples/hbase-example-job-script for example of what to put in
+# the script.
 #
 # export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
 
@@ -1230,7 +1232,8 @@ export SPARK_MODE="sparkpi"
 
 # Specify script to execute for "script" mode
 #
-# See spark-example-job-script for example of what to put in the script.
+# See examples/spark-example-job-script for example of what to put in
+# the script.
 #
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 
@@ -1331,7 +1334,8 @@ export STORM_MODE="stormwordcount"
 
 # Specify script to execute for "script" mode
 #
-# See storm-example-job-script for example of what to put in the script.
+# See examples/storm-example-job-script for example of what to put in
+# the script.
 #
 # export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 

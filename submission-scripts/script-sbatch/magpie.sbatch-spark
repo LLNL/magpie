@@ -515,7 +515,8 @@ export SPARK_LOCAL_SCRATCH_DIR_TYPE="networkfs"
 
 # Specify script to execute for "script" mode
 #
-# See spark-example-job-script for example of what to put in the script.
+# See examples/spark-example-job-script for example of what to put in
+# the script.
 #
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 

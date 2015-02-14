@@ -138,7 +138,8 @@ export HBASE_MODE="performanceeval"
 
 # Specify script to execute for "script" mode
 #
-# See hbase-example-job-script for example of what to put in the script.
+# See examples/hbase-example-job-script for example of what to put in
+# the script.
 #
 # export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
 

@@ -95,7 +95,8 @@ export STORM_MODE="stormwordcount"
 
 # Specify script to execute for "script" mode
 #
-# See storm-example-job-script for example of what to put in the script.
+# See examples/storm-example-job-script for example of what to put in
+# the script.
 #
 # export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 
