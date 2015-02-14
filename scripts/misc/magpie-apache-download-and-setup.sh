@@ -192,6 +192,7 @@ then
     echo "Applying patches"
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-conf-dir.patch
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-spark-defaults-conf.patch
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
