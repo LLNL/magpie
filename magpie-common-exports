@@ -69,6 +69,8 @@ then
     export YARN_RESOURCEMANAGER_WEBAPP_ADDRESS="8088"
     export YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS="8031"
     export YARN_RESOURCEMANAGER_ADMIN_ADDRESS="8033"
+    # In Hadoop code, default is 8020, but 54310 is the common legacy
+    # one used throughout the web.  I'll keep the 54310 one for now.
     export HADOOP_HDFS_NAMENODE_ADDRESS="54310"
     export HADOOP_HDFS_NAMENODE_HTTPADDRESS="50070"
     export HADOOP_HDFS_NAMENODE_SECONDARY_ADDRESS="50090"
