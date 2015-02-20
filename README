@@ -247,8 +247,8 @@ Waiting 30 seconds to allows Hadoop daemons to setup
 4) Next, we see output with details of the Hadoop setup.  You'll find
    addresses indicating web services you can access to get detailed
    job information.  You'll also find information about how to login
-   to access Hadoop directory and how to shut down the job early if
-   you so desire.
+   to access Hadoop directly and how to shut down the job early if you
+   so desire.
 
 *******************************************************
 *
@@ -990,6 +990,184 @@ Instructions For Spark
    to set if interacting with it, etc.
 
    See below on "General Advanced Usage" for additional tips.
+
+Example Job Output for Spark running SparkPi
+--------------------------------------------
+
+The following is an example job output of Magpie running Spark and
+running SparkPi.  This is run over HDFS over Lustre.  Sections of
+extraneous text have been left out.
+
+While this output is specific to using Magpie with Spark, the output
+when using Hadoop, Storm, Hbase, etc. is not all that different.
+
+1) First we get some details of the job
+
+*******************************************************
+* Magpie General Job Info
+*
+* Job Nodelist: apex[69-77]
+* Job Nodecount: 9
+* Job Timelimit in Minutes: 60
+* Job Name: sparkpitest
+* Job ID: 1081573
+*
+*******************************************************
+
+2) Next, Spark begins to launch and startup daemons on all cluster nodes.
+
+Starting spark
+starting org.apache.spark.deploy.master.Master, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.master.Master-1-apex69.out
+apex71: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex71.out
+apex72: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex72.out
+apex77: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex77.out
+apex76: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex76.out
+apex74: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex74.out
+apex75: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex75.out
+apex73: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex73.out
+apex70: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex70.out
+Waiting 30 seconds to allow Spark daemons to setup
+
+3) Next, we see output with details of the Spark setup.  You'll find
+   addresses indicating web services you can access to get detailed
+   job information.  You'll also find information about how to login
+   to access Spark directly and how to shut down the job early if you
+   so desire.
+
+*******************************************************
+*
+* Spark Information
+*
+* You can view your Spark status by launching a web browser and pointing to ...
+*
+* Spark Master: http://apex69:8080
+* Spark Worker: http://<WORKERNODE>:8081
+* Spark Application Dashboard: http://apex69:4040
+*
+* The Spark Master for running jobs is
+*
+* spark://apex69:7077
+*
+* To access Spark directly, you'll want to:
+*   mrsh apex69
+*   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1081573/conf"
+*   cd /home/achu/hadoop/spark-1.2.0-bin-hadoop2.4
+*
+* Then you can do as you please.  For example to run a job:
+*
+*   bin/spark-class <class> spark://apex69:7077
+*
+* To end/cleanup your session, kill the daemons via:
+*
+*   mrsh apex69
+*   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1081573/conf"
+*   cd /home/achu/hadoop/spark-1.2.0-bin-hadoop2.4
+*   sbin/stop-all.sh
+*
+* Some additional environment variables you may sometimes wish to set
+*
+*   setenv JAVA_HOME "/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+*   setenv SPARK_HOME "/home/achu/hadoop/spark-1.2.0-bin-hadoop2.4"
+*
+*******************************************************
+
+4) Then the SparkPi job is run
+
+Running bin/run-example org.apache.spark.examples.SparkPi 8
+15/02/20 10:33:23 INFO SecurityManager: Changing view acls to: achu
+15/02/20 10:33:23 INFO SecurityManager: Changing modify acls to: achu
+15/02/20 10:33:23 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(achu); users with modify permissions: Set(achu)
+15/02/20 10:33:23 INFO Slf4jLogger: Slf4jLogger started
+15/02/20 10:33:24 INFO Remoting: Starting remoting
+15/02/20 10:33:24 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriver@apex69.llnl.gov:59131]
+15/02/20 10:33:24 INFO Utils: Successfully started service 'sparkDriver' on port 59131.
+15/02/20 10:33:24 INFO SparkEnv: Registering MapOutputTracker
+15/02/20 10:33:24 INFO SparkEnv: Registering BlockManagerMaster
+15/02/20 10:33:24 INFO DiskBlockManager: Created local directory at /p/lscratchg/achu/sparkscratch/node-0/spark-local-20150220103324-88d6
+15/02/20 10:33:24 INFO MemoryStore: MemoryStore started with capacity 25.9 GB
+15/02/20 10:33:24 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/02/20 10:33:25 INFO HttpFileServer: HTTP File server directory is /tmp/spark-b62dfb05-a931-4c9f-bbde-f420b605e4e4
+15/02/20 10:33:25 INFO HttpServer: Starting HTTP Server
+15/02/20 10:33:25 INFO Utils: Successfully started service 'HTTP file server' on port 43436.
+15/02/20 10:33:25 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+15/02/20 10:33:25 INFO SparkUI: Started SparkUI at http://apex69.llnl.gov:4040
+15/02/20 10:33:26 INFO SparkContext: Added JAR file:/home/achu/hadoop/spark-1.2.0-bin-hadoop2.4/lib/spark-examples-1.2.0-hadoop2.4.0.jar at http://192.168.123.69:43436/jars/spark-examples-1.2.0-hadoop2.4.0.jar with timestamp 1424457206218
+15/02/20 10:33:26 INFO AppClient$ClientActor: Connecting to master spark://apex69:7077...
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Connected to Spark cluster with app ID app-20150220103326-0000
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/0 on worker-20150220103252-apex73.llnl.gov-37145 (apex73.llnl.gov:37145) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/0 on hostPort apex73.llnl.gov:37145 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/1 on worker-20150220103252-apex71.llnl.gov-33291 (apex71.llnl.gov:33291) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/1 on hostPort apex71.llnl.gov:33291 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/2 on worker-20150220103252-apex75.llnl.gov-33121 (apex75.llnl.gov:33121) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/2 on hostPort apex75.llnl.gov:33121 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/3 on worker-20150220103252-apex74.llnl.gov-60926 (apex74.llnl.gov:60926) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/3 on hostPort apex74.llnl.gov:60926 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/4 on worker-20150220103252-apex77.llnl.gov-49445 (apex77.llnl.gov:49445) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/4 on hostPort apex77.llnl.gov:49445 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/5 on worker-20150220103252-apex76.llnl.gov-52178 (apex76.llnl.gov:52178) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/5 on hostPort apex76.llnl.gov:52178 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/6 on worker-20150220103252-apex70.llnl.gov-53289 (apex70.llnl.gov:53289) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/6 on hostPort apex70.llnl.gov:53289 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/7 on worker-20150220103252-apex72.llnl.gov-51360 (apex72.llnl.gov:51360) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/7 on hostPort apex72.llnl.gov:51360 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/0 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/1 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/2 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/3 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/4 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/5 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/6 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/7 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/0 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/6 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/1 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/5 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/2 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/4 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/7 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/3 is now LOADING
+<snip>
+<snip>
+<snip>
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 5.0 in stage 0.0 (TID 5) in 2001 ms on apex70.llnl.gov (1/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 1.0 in stage 0.0 (TID 1) in 2005 ms on apex70.llnl.gov (2/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 6.0 in stage 0.0 (TID 6) in 2003 ms on apex70.llnl.gov (3/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 7.0 in stage 0.0 (TID 7) in 2150 ms on apex70.llnl.gov (4/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 2167 ms on apex70.llnl.gov (5/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 2.0 in stage 0.0 (TID 2) in 2165 ms on apex70.llnl.gov (6/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 3.0 in stage 0.0 (TID 3) in 2166 ms on apex70.llnl.gov (7/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 4.0 in stage 0.0 (TID 4) in 2167 ms on apex70.llnl.gov (8/8)
+15/02/20 10:33:30 INFO DAGScheduler: Stage 0 (reduce at SparkPi.scala:35) finished in 3.377 s
+15/02/20 10:33:30 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool 
+15/02/20 10:33:30 INFO DAGScheduler: Job 0 finished: reduce at SparkPi.scala:35, took 3.583061 s
+Pi is roughly 3.142925
+15/02/20 10:33:30 INFO SparkUI: Stopped Spark web UI at http://apex69.llnl.gov:4040
+15/02/20 10:33:30 INFO DAGScheduler: Stopping DAGScheduler
+15/02/20 10:33:30 INFO SparkDeploySchedulerBackend: Shutting down all executors
+15/02/20 10:33:30 INFO SparkDeploySchedulerBackend: Asking each executor to shut down
+15/02/20 10:33:31 INFO MapOutputTrackerMasterActor: MapOutputTrackerActor stopped!
+15/02/20 10:33:31 INFO MemoryStore: MemoryStore cleared
+15/02/20 10:33:31 INFO BlockManager: BlockManager stopped
+15/02/20 10:33:31 INFO BlockManagerMaster: BlockManagerMaster stopped
+15/02/20 10:33:31 INFO SparkContext: Successfully stopped SparkContext
+15/02/20 10:33:31 INFO RemoteActorRefProvider$RemotingTerminator: Shutting down remote daemon.
+15/02/20 10:33:31 INFO RemoteActorRefProvider$RemotingTerminator: Remote daemon shut down; proceeding with flushing remote transports.
+
+The Pi approximation is 3.142925.
+
+5) With the job complete, Magpie now tears down the session and cleans
+   up all daemons.
+
+Stopping spark
+apex74: stopping org.apache.spark.deploy.worker.Worker
+apex77: stopping org.apache.spark.deploy.worker.Worker
+apex75: stopping org.apache.spark.deploy.worker.Worker
+apex73: stopping org.apache.spark.deploy.worker.Worker
+apex72: stopping org.apache.spark.deploy.worker.Worker
+apex70: stopping org.apache.spark.deploy.worker.Worker
+apex71: stopping org.apache.spark.deploy.worker.Worker
+apex76: stopping org.apache.spark.deploy.worker.Worker
+stopping org.apache.spark.deploy.master.Master
 
 Instructions For Storm
 ----------------------
