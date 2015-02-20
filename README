@@ -1049,7 +1049,7 @@ Waiting 30 seconds to allow Spark daemons to setup
 * spark://apex69:7077
 *
 * To access Spark directly, you'll want to:
-*   mrsh apex69
+*   ssh apex69
 *   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1081573/conf"
 *   cd /home/achu/hadoop/spark-1.2.0-bin-hadoop2.4
 *
@@ -1059,7 +1059,7 @@ Waiting 30 seconds to allow Spark daemons to setup
 *
 * To end/cleanup your session, kill the daemons via:
 *
-*   mrsh apex69
+*   ssh apex69
 *   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1081573/conf"
 *   cd /home/achu/hadoop/spark-1.2.0-bin-hadoop2.4
 *   sbin/stop-all.sh
