@@ -1328,10 +1328,12 @@ HADOOP_SLAVE_CORE_COUNT : Total cores on slave nodes in the
 HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
  		  used for accessing HDFS when the namenode + port
  		  must be specified in a script.
+ 		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
 HADOOP_NAMENODE_PORT : the port of the namenode.  Often used for
  		  accessing HDFS when the namenode + port must be
  		  specified in a script.
+ 		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.
@@ -1356,9 +1358,13 @@ HBASE_MASTER_NODE : the master node of the Hbase allocation
 HBASE_REGIONSERVER_COUNT : number of region servers in your allocation
                            for Hbase.
 
-SPARK_MASTER_NODE : the master node of the Spark allocation
+SPARK_MASTER_NODE : the master node of the Spark allocation.  Often
+		    used for launching Spark jobs
+		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
 
-SPARK_MASTER_PORT : the master port for running Spark jobs
+SPARK_MASTER_PORT : the master port for running Spark jobs.  Often
+		    used for launching Spark jobs
+		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
 
 SPARK_SLAVE_COUNT : number of compute/data nodes in your allocation
                     for Spark.  May be useful for adjusting run time
