@@ -1,0 +1,9 @@
+language: bash
+
+env:
+    - TARGET=sbatch
+    - TARGET=msub-slurm
+    - TARGET=msub-torque
+
+script:
+    - cd submission-scripts/script-templates && make $TARGET
