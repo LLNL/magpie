@@ -124,23 +124,6 @@ then
     pigcmdprefix="bin"
 fi
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
-    export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
-
-    export ZOOKEEPER_CLIENT_PORT="2181"
-    export ZOOKEEPER_PEER_PORT="2888"
-    export ZOOKEEPER_LEADER_PORT="3888"
-
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
-    then 
-	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
-    fi
-fi
-
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
@@ -227,4 +210,21 @@ then
     fi
     
     stormcmdprefix="bin"
+fi
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
+    export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
+
+    export ZOOKEEPER_CLIENT_PORT="2181"
+    export ZOOKEEPER_PEER_PORT="2888"
+    export ZOOKEEPER_LEADER_PORT="3888"
+
+    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
+    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
+    then 
+	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
+    fi
 fi
