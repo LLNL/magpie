@@ -13,17 +13,17 @@ INSERT_MAGPIENETWORKFS=n
 INSERT_HDFSOVERNETWORKFS=y
 INSERT_HDFS_FEDERATION=n
 
-MAGPIE_SCRIPTS_DIR_PREFIX="\\\$$\$$\{HOME\}"
-LOCAL_DIR_PREFIX="/tmp/\\\$$\$$\{USER\}"
-PROJECT_DIR_PREFIX="\\\$$\$$\{HOME\}"
-HOME_DIR_PREFIX="\\\$$\$$\{HOME\}"
-LUSTRE_DIR_PREFIX="/lustre/\\\$$\$$\{USER\}"
-NETWORKFS_DIR_PREFIX="/networkfs/\\\$$\$$\{USER\}"
-SSD_DIR_PREFIX="/ssd/\\\$$\$$\{USER\}"
+MAGPIE_SCRIPTS_DIR_PREFIX=$${HOME}
+LOCAL_DIR_PREFIX=/tmp/$${USER}
+PROJECT_DIR_PREFIX=$${HOME}
+HOME_DIR_PREFIX=$${HOME}
+LUSTRE_DIR_PREFIX=/lustre/$${USER}
+NETWORKFS_DIR_PREFIX=/networkfs/$${USER}
+SSD_DIR_PREFIX=/ssd/$${USER}
 
-REMOTE_CMD_DEFAULT="ssh"
+REMOTE_CMD_DEFAULT=ssh
 
-JAVA_DEFAULT="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+JAVA_DEFAULT=/usr/lib/jvm/jre-1.6.0-sun.x86_64/
 
 .DEFAULT_GOAL=all
 
@@ -39,25 +39,16 @@ msub-torque:
 	$(call create-templates,$@,pdsh)
 
 define common-substitution
-	$(eval magpiescriptsdirprefix := $(shell echo "${MAGPIE_SCRIPTS_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval localdirprefix := $(shell echo "${LOCAL_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval projectdirprefix := $(shell echo "${PROJECT_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval homedirprefix := $(shell echo "${HOME_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval lustredirprefix := $(shell echo "${LUSTRE_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval networkfsdirprefix := $(shell echo "${NETWORKFS_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval ssddirprefix := $(shell echo "${SSD_DIR_PREFIX}" | sed "s/\\//\\\\\\\\\//g"))
-	$(eval javadefault := $(shell echo "${JAVA_DEFAULT}" | sed "s/\\//\\\\\\\\\//g"))
+	sed -i -e 's;MAGPIESCRIPTSDIRPREFIX;$(MAGPIE_SCRIPTS_DIR_PREFIX);g' $(1)
+	sed -i -e 's;LOCALDIRPREFIX;$(LOCAL_DIR_PREFIX);g' $(1)
+	sed -i -e 's;PROJECTDIRPREFIX;$(PROJECT_DIR_PREFIX);g' $(1)
+	sed -i -e 's;HOMEDIRPREFIX;$(HOME_DIR_PREFIX);g' $(1)
+	sed -i -e 's;LUSTREDIRPREFIX;$(LUSTRE_DIR_PREFIX);g' $(1)
+	sed -i -e 's;NETWORKFSDIRPREFIX;$(NETWORKFS_DIR_PREFIX);g' $(1)
+	sed -i -e 's;SSDDIRPREFIX;$(SSD_DIR_PREFIX);g' $(1)
 
-	sed -i -e "s/MAGPIESCRIPTSDIRPREFIX/${magpiescriptsdirprefix}/g" $(1)
-	sed -i -e "s/LOCALDIRPREFIX/${localdirprefix}/g" $(1)
-	sed -i -e "s/PROJECTDIRPREFIX/${projectdirprefix}/g" $(1)
-	sed -i -e "s/HOMEDIRPREFIX/${homedirprefix}/g" $(1)
-	sed -i -e "s/LUSTREDIRPREFIX/${lustredirprefix}/g" $(1)
-	sed -i -e "s/NETWORKFSDIRPREFIX/${networkfsdirprefix}/g" $(1)
-	sed -i -e "s/SSDDIRPREFIX/${ssddirprefix}/g" $(1)
-
-	sed -i -e "s/REMOTECMDDEFAULT/${REMOTE_CMD_DEFAULT}/g" $(1)
-	sed -i -e "s/JAVADEFAULT/${javadefault}/g" $(1)
+	sed -i -e 's;REMOTECMDDEFAULT;$(REMOTE_CMD_DEFAULT);g' $(1)
+	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
 endef
 
 define create-templates
