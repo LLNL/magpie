@@ -75,6 +75,15 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount)
 fi
 
+if [ "${TACHYON_SETUP}" == "yes" ] \
+   && [ "${TACHYON_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Tachyon Testtachyon"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon)
+fi
+
 if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
    && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
 then

@@ -160,12 +160,13 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "storm" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "tachyon" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, storm, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, storm, tachyon, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -296,6 +297,13 @@ then
     exit 1
 fi
 
+if [ "${TACHYON_SETUP}X" != "X" ] \
+    && ( [ "${TACHYON_SETUP}" != "yes" ] && [ "${TACHYON_SETUP}" != "no" ] )
+then
+    echo "TACHYON_SETUP must be set to yes or no"
+    exit 1
+fi
+
 if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
     && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
 then
@@ -311,9 +319,10 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
+    && [ "${TACHYON_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor STORM_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor STORM_SETUP nor TACHYON_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -354,6 +363,12 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_JOB_TYPE}" == "tachyon" ] \
+    && [ "${TACHYON_SETUP}" != "yes" ]
+then
+    echo "Cannot run tachyon job type if TACHYON_SETUP is not enabled"
+fi
+
 if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
@@ -366,6 +381,7 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
+    && [ "${TACHYON_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
     echo "Cannot run testall job type, nothing is enabled to be setup"
@@ -1269,6 +1285,90 @@ then
 fi
 
 #
+# Check Tachyon Inputs 
+#
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+# Subtract 1 for Tachyon Master
+    nodecount=$((nodecount-${nodecountmaster}))
+    nodecountmaster=0
+
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Tachyon"
+	exit 1
+    fi
+
+    if [ "${TACHYON_MODE}" != "testtachyon" ] \
+       && [ "${TACHYON_MODE}" != "launch" ] \
+       && [ "${TACHYON_MODE}" != "setuponly" ]
+    then
+       echo "TACHYON_MODE must be set to testtachyon, launch, or setuponly"
+       exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "tachyon" ] && [ "${TACHYON_MODE}" == "testtachyon" ]
+    then
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon cannot be found, it is required to run testtachyon test"
+	    exit 1
+	fi
+    fi
+
+    if [ "${TACHYON_HOME}X" == "X" ]
+    then
+	echo "TACHYON_HOME must be set to run Tachyon"
+	exit 1
+    fi
+    
+    if [ ! -d ${TACHYON_HOME} ]
+    then
+	echo "TACHYON_HOME does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${TACHYON_LOCAL_DIR}X" == "X" ]
+    then
+	echo "TACHYON_LOCAL_DIR must be set to run Tachyon"
+	exit 1
+    fi
+
+    if [ "${TACHYON_STORE_TYPE}" != "MEM" ] \
+       && [ "${TACHYON_STORE_TYPE}" != "SSD" ] \
+       && [ "${TACHYON_STORE_TYPE}" != "HDD" ]
+    then
+       echo "TACHYON_STORE_TYPE must be set to MEM, SSD, or HDD"
+       exit 1
+    fi
+
+    if [ "${TACHYON_STORE_PATHS}X" == "X" ]
+    then
+	echo "TACHYON_STORE_PATHS must be set to run Tachyon"
+	exit 1
+    fi
+
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	if [ "${TACHYON_UNDERFS_FILESYSTEM}X" == "X" ]
+	then
+	    echo "TACHYON_UNDERFS_FILESYSTEM must be set if Hadoop is not setup"
+	    exit 1
+	fi
+    else
+	if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+	    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+	    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ] \
+	    && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ]
+	then
+	    echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, hdfsovernetworkfs, or rawnetworkfs for Tachyon underfs"
+	    exit 1
+	fi
+    fi
+fi
+
+#
 # Check Zookeeper Inputs 
 #
 
@@ -1396,6 +1496,13 @@ then
     if [ "${STORM_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
     then
 	echo "No remaining nodes for Storm workers after Zookeeper allocation"
+	echo "Please increase node count or adjust node allocations"
+	exit 1
+    fi
+
+    if [ "${TACHYON_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    then
+	echo "No remaining nodes for Tachyon workers after Zookeeper allocation"
 	echo "Please increase node count or adjust node allocations"
 	exit 1
     fi

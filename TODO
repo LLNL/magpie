@@ -20,6 +20,10 @@ Spark
 
 Storm + Trident
 
+Tachyon
+- fault tolerance (zookeeper + multiple masters, etc.)
+- multiple layer hierarchy support 
+
 ideas
 -----
 failover support
