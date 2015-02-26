@@ -16,7 +16,7 @@ Lustre and running over any generic network filesytem.
 
 Some of the features presently supported:
 
-- Run Hadoop, Hbase, or Pig interactively or via scripts.
+- Run jobs interactively or via scripts.
 - Run Mapreduce 1.0 or 2.0 jobs via Hadoop 1.0 or 2.0
 - Run against a number of filesystem options, such as HDFS, HDFS over
   Lustre, HDFS over a generic network filesystem, Lustre directly, or
