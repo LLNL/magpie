@@ -20,6 +20,11 @@ Spark
 
 Storm + Trident
 
+Tachyon
+- fault tolerance (zookeeper + journaling + multiple masters, etc.)
+- ramdisk support?  Some environments may support
+- multiple layer hierarchy support 
+
 ideas
 -----
 failover support

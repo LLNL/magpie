@@ -24,6 +24,8 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
+# "tachyon" - Run a job according ot the settings of TACHYON_MODE. 
+#
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
 # "testall" - Run a job that runs all basic sanity tests for all
@@ -36,6 +38,7 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #             For Pig, testall will run testpig
 #             For Spark, testall will run sparkpi
 #             For Storm, testall will run stormwordcount
+#             For tachyon, testall will run testtachyon
 #             For Zookeeper, testall will run zookeeperruok
 #
 # "script" - Run an arbitraty script, as specified by

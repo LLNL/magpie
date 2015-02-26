@@ -160,6 +160,31 @@ then
 fi
 
 #
+# Setup Tachyon directories
+#
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    mkdir -p $TACHYON_LOCAL_JOB_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${TACHYON_LOCAL_JOB_DIR}"
+	exit 1
+    fi
+    
+    mkdir -p $TACHYON_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${TACHYON_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $TACHYON_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${TACHYON_LOG_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup Zookeeper directories
 #
 
@@ -282,6 +307,15 @@ if [ "${STORM_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_DIR}/job_masters ${STORM_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_DIR}/job_slaves ${STORM_CONF_DIR}/workers
+fi
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    # Tachyon assumes setup node is master, so no need for masters
+    # file but we still output it b/c there are functions in Magpie
+    # that assume it exists 
+    cp ${MAGPIE_LOCAL_DIR}/job_masters ${TACHYON_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_DIR}/job_slaves ${TACHYON_CONF_DIR}/workers
 fi
 
 exit 0

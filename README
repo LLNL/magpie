@@ -1,18 +1,18 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated February 3, 2015
+Updated February 25, 2015
 chu11@llnl.gov
 
 What is Magpie?
 ---------------
 
 Magpie contains a number of scripts for running Big Data software in
-HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark, Storm, and
-Zookeeper are supported.  It currently supports running over the
-schedulers of Slurm and Moab, and the resource managers of Slurm and
-Torque.  It currently supports running over the parallel file system
-Lustre and running over any generic network filesytem.
+HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark, Storm,
+Tachyon, and Zookeeper are supported.  It currently supports running
+over the schedulers of Slurm and Moab, and the resource managers of
+Slurm and Torque.  It currently supports running over the parallel
+file system Lustre and running over any generic network filesytem.
 
 Some of the features presently supported:
 
@@ -1268,6 +1268,11 @@ Instructions For Storm
 
    See below on "General Advanced Usage" for additional tips.
 
+Instructions For Tachyon
+------------------------
+
+XXX do this
+
 General Advanced Usage
 ----------------------
 
@@ -1391,6 +1396,24 @@ STORM_CONF_DIR : the directory that Storm configuration files local
 
 STORM_LOG_DIR : the directory Storm log files are stored
 
+XXX is this text right?
+
+TACHYON_MASTER_NODE : the master node of the Tachyon allocation.  Often
+		      used for accessing tachyon
+		      (e.g. tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT})
+
+TACHYON_MASTER_PORT : the master port for running Tachyon jobs.  Often
+		      used for accessing tachyon
+		      (e.g. tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT})
+
+TACHYON_SLAVE_COUNT : number of compute/data nodes in your allocation
+                      for Tachyon.
+
+TACHYON_CONF_DIR : the directory that Tachyon configuration files local
+                   to the node are stored.
+
+TACHYON_LOG_DIR : the directory Tachyon log files are stored
+
 Convenience Scripts
 -------------------
 
@@ -1490,6 +1513,15 @@ Pig
 - No patching necessary.
 - However, a major bug exists in 0.12.0, which most users may wish to
   patch and recompile.
+
+Tachyon
+- Patch to support alternate config file directories is required.
+  Patch can be applied directly to startup scripts, not needing a
+  recompilation of source.
+
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
 
 Zookeeper
 - No patching necessary.

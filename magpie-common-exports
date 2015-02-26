@@ -212,6 +212,31 @@ then
     stormcmdprefix="bin"
 fi
 
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    export TACHYON_CONF_DIR=${TACHYON_LOCAL_JOB_DIR}/conf
+    export TACHYON_LOG_DIR=${TACHYON_LOCAL_JOB_DIR}/log
+
+    export TACHYON_MASTER_PORT="19998"
+    export TACHYON_MASTER_WEB_PORT="19999"
+    export TACHYON_WORKER_PORT="29998"
+    export TACHYON_WORKER_DATA_PORT="29999"
+
+    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
+    if [ -f "${TACHYON_CONF_DIR}/masters" ]
+    then 
+	export TACHYON_MASTER_NODE=`head -1 ${TACHYON_CONF_DIR}/masters`
+    fi
+    
+    if [ -f "${TACHYON_CONF_DIR}/workers" ]
+    then
+	export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
+    fi
+    
+    tachyoncmdprefix="bin"
+fi
+
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}

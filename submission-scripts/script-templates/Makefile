@@ -99,6 +99,7 @@ define create-templates
 	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs)
 	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
 	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
+	$(eval MAGPIE_SPARK_WITH_TACHYON_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-tachyon-and-hdfs)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 	cp magpie-header $(MAGPIE)
 
@@ -111,6 +112,7 @@ define create-templates
 		magpie-hbase\
 		magpie-spark\
 		magpie-storm\
+		magpie-tachyon\
 		magpie-zookeeper\
 		magpie-run-job-$(DIST) > $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
@@ -184,6 +186,21 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
+
+	# Spark with Tachyon and HDFS
+	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
+		magpie-spark\
+		magpie-tachyon\
+		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	sed -i -e "s/TACHYON_SETUP=no/TACHYON_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"MR2\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
 
 	# Storm
 	echo "Creating magpie.$(SCHED)-storm"

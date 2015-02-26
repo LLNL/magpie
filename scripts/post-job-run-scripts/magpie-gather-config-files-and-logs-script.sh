@@ -84,6 +84,20 @@ then
     cp -a ${STORM_LOG_DIR}/* ${targetdir}/log
 fi
 
+targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/tachyon/nodes/${NODENAME}
+
+if [ "${TACHYON_CONF_DIR}X" != "X" ] && [ -d ${TACHYON_CONF_DIR}/ ] && [ "$(ls -A ${TACHYON_CONF_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/conf
+    cp -a ${TACHYON_CONF_DIR}/* ${targetdir}/conf
+fi
+
+if [ "${TACHYON_LOG_DIR}X" != "X" ] && [ -d ${TACHYON_LOG_DIR}/ ] && [ "$(ls -A ${TACHYON_LOG_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/log
+    cp -a ${TACHYON_LOG_DIR}/* ${targetdir}/log
+fi
+
 zookeepertargetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/zookeeper/nodes/${NODENAME}
         
 if [ "${ZOOKEEPER_CONF_DIR}X" != "X" ] && [ -d ${ZOOKEEPER_CONF_DIR}/ ] && [ "$(ls -A ${ZOOKEEPER_CONF_DIR}/)" ]
