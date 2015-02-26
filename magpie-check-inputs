@@ -308,13 +308,12 @@ fi
 # Pig is not "something", b/c it needs hadoop 
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
-    && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor ZOOKEEPER_SETUP nor HBASE_SETUP nor SPARK_SETUP nor STORM_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor STORM_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
