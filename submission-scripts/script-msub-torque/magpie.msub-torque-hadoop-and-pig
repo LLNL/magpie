@@ -170,7 +170,6 @@ export MAGPIE_JOB_TYPE="pig"
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
 #
-#
 # A number of convenient scripts are available in the scripts
 # directory.
 #
