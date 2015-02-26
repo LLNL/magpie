@@ -275,13 +275,6 @@ then
     exit 1
 fi
 
-if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
-    && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
-then
-    echo "ZOOKEEPER_SETUP must be set to yes or no"
-    exit 1
-fi
-
 if [ "${HBASE_SETUP}X" != "X" ] \
     && ( [ "${HBASE_SETUP}" != "yes" ] && [ "${HBASE_SETUP}" != "no" ] )
 then
@@ -300,6 +293,13 @@ if [ "${STORM_SETUP}X" != "X" ] \
     && ( [ "${STORM_SETUP}" != "yes" ] && [ "${STORM_SETUP}" != "no" ] )
 then
     echo "STORM_SETUP must be set to yes or no"
+    exit 1
+fi
+
+if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
+    && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
+then
+    echo "ZOOKEEPER_SETUP must be set to yes or no"
     exit 1
 fi
 
