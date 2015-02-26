@@ -154,7 +154,7 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
 
-	# Hadoop with Hbase with HDFS
+	# Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
