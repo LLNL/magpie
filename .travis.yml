@@ -6,4 +6,4 @@ env:
     - TARGET=msub-torque
 
 script:
-    - cd submission-scripts/script-templates && make $TARGET
+    - ./configure && cd submission-scripts/script-templates && make $TARGET
