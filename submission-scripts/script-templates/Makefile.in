@@ -1,29 +1,19 @@
-# Creation options, set to y or n
-#
-# INSERT_INTELLUSTRE - insert intellustre configuration
-#
-# INSERT_MAGPIENETWORKFS - insert magpienetworkfs configuration
-#
-# INSERT_HDFSOVERNETWORKFS - insert HDFS over NetworkFS configuration
-#
-# INSERT_HDFS_FEDERATION - insert HDFS federation configuration 
-#
-INSERT_INTELLUSTRE=n
-INSERT_MAGPIENETWORKFS=n
-INSERT_HDFSOVERNETWORKFS=y
-INSERT_HDFS_FEDERATION=n
+INSERT_INTELLUSTRE=@INTELLUSTRE@
+INSERT_MAGPIENETWORKFS=@MAGPIENETWORKFS@
+INSERT_HDFSOVERNETWORKFS=@HDFSOVERNETWORKFS@
+INSERT_HDFS_FEDERATION=@HDFS_FEDERATION@
 
-MAGPIE_SCRIPTS_DIR_PREFIX=$${HOME}
-LOCAL_DIR_PREFIX=/tmp/$${USER}
-PROJECT_DIR_PREFIX=$${HOME}
-HOME_DIR_PREFIX=$${HOME}
-LUSTRE_DIR_PREFIX=/lustre/$${USER}
-NETWORKFS_DIR_PREFIX=/networkfs/$${USER}
-SSD_DIR_PREFIX=/ssd/$${USER}
+MAGPIE_SCRIPTS_DIR_PREFIX=@prefix@
+LOCAL_DIR_PREFIX=@LOCAL_DIR@
+PROJECT_DIR_PREFIX=@PROJECT_DIR@
+HOME_DIR_PREFIX=@HOME_DIR@
+LUSTRE_DIR_PREFIX=@LUSTRE_DIR@
+NETWORKFS_DIR_PREFIX=@NETWORKFS_DIR@
+SSD_DIR_PREFIX=@SSD_DIR@
 
 REMOTE_CMD_DEFAULT=ssh
 
-JAVA_DEFAULT=/usr/lib/jvm/jre-1.6.0-sun.x86_64/
+JAVA_DEFAULT=@JAVA_HOME@
 
 .DEFAULT_GOAL=all
 
@@ -54,7 +44,7 @@ endef
 define create-templates
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
 
-	if test "${INSERT_INTELLUSTRE}" = "y"; then \
+	if test "${INSERT_INTELLUSTRE}" = "yes"; then \
 		sed -i -e "/@MODE_INTELLUSTRE@/{r magpie-hadoop-filesystem-mode-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@PATH_INTELLUSTRE@/{r magpie-hadoop-filesystem-path-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@CONFIG_INTELLUSTRE@/{r magpie-hadoop-filesystem-config-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
@@ -64,7 +54,7 @@ define create-templates
 		sed -i -e "/@CONFIG_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
-	if test "${INSERT_MAGPIENETWORKFS}" = "y"; then \
+	if test "${INSERT_MAGPIENETWORKFS}" = "yes"; then \
 		sed -i -e "/@MODE_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-mode-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@PATH_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-path-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-config-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
@@ -74,7 +64,7 @@ define create-templates
 		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
-	if test "${INSERT_HDFSOVERNETWORKFS}" = "y"; then \
+	if test "${INSERT_HDFSOVERNETWORKFS}" = "yes"; then \
 		sed -i -e "/@MODE_HDFSOVERNETWORKFS@/{r magpie-hadoop-filesystem-mode-hdfsovernetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@PATH_HDFSOVERNETWORKFS@/{r magpie-hadoop-filesystem-path-hdfsovernetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
 	else \
@@ -82,7 +72,7 @@ define create-templates
 		sed -i -e "/@PATH_HDFSOVERNETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
-	if test "${INSERT_HDFS_FEDERATION}" = "y"; then \
+	if test "${INSERT_HDFS_FEDERATION}" = "yes"; then \
 		sed -i -e "/@HDFS_FEDERATION@/{r magpie-hadoop-filesystem-hdfs-federation" -e "d}" magpie-hadoop-filesystem-substitution; \
 	else \
 		sed -i -e "/@HDFS_FEDERATION@/,+1d" magpie-hadoop-filesystem-substitution; \
