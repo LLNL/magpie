@@ -341,6 +341,10 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #
 #		  Beware, once you upgrade it'll be difficult to rollback.
 #
+# "launch" - Launch Hadoop but do nothing, usually set to this because
+#            another project (e.g. Hbase, Pig) will run something that
+#            uses Hadoop MapReduce.
+#
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.
 #

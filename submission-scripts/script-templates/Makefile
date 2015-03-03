@@ -141,6 +141,7 @@ define create-templates
 		magpie-pig\
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
+	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})

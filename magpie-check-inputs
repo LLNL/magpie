@@ -428,10 +428,11 @@ then
 	&& [ "${HADOOP_MODE}" != "script" ] \
 	&& [ "${HADOOP_MODE}" != "interactive" ] \
 	&& [ "${HADOOP_MODE}" != "upgradehdfs" ] \
+	&& [ "${HADOOP_MODE}" != "launch" ] \
 	&& [ "${HADOOP_MODE}" != "setuponly" ] \
 	&& [ "${HADOOP_MODE}" != "hdfsonly" ]
     then
-	echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, setuponly, or hdfsonly"
+	echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, launch, setuponly, or hdfsonly"
 	exit 1
     fi
 
