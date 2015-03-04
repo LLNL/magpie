@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is for running the pig testzookeeper sanity test.  For
-# the most part, it shouldn't be editted.  See job submission files
-# for configuration details.
+# This script is for running the zookeeper zookeeperruok sanity test.
+# For the most part, it shouldn't be editted.  See job submission
+# files for configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
