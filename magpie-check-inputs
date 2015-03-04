@@ -1054,7 +1054,7 @@ then
 	    fi
 	fi
     fi
-    
+
     if [ "${SPARK_MODE}" != "sparkpi" ] \
 	&& [ "${SPARK_MODE}" != "sparkwordcount" ] \
 	&& [ "${SPARK_MODE}" != "script" ] \
