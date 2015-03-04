@@ -1043,8 +1043,18 @@ then
 	    echo "SPARK_LOCAL_SCRATCH_DIR_TYPE must be set to networkfs or local"
 	    exit 1
 	fi
+    else
+	if [ "{SPARK_LOCAL_SCRATCH_DIR_TYPE}X" != "X" ]
+	then
+	    if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" != "networkfs" ] \
+		&& [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" != "local" ]
+	    then
+		echo "SPARK_LOCAL_SCRATCH_DIR_TYPE must be set to networkfs or local"
+		exit 1
+	    fi
+	fi
     fi
-
+    
     if [ "${SPARK_MODE}" != "sparkpi" ] \
 	&& [ "${SPARK_MODE}" != "sparkwordcount" ] \
 	&& [ "${SPARK_MODE}" != "script" ] \
