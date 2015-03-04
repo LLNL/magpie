@@ -1044,7 +1044,7 @@ then
 	    exit 1
 	fi
     else
-	if [ "{SPARK_LOCAL_SCRATCH_DIR_TYPE}X" != "X" ]
+	if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}X" != "X" ]
 	then
 	    if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" != "networkfs" ] \
 		&& [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" != "local" ]
