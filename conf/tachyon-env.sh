@@ -70,6 +70,7 @@ export TACHYON_JOURNAL_FOLDER="TACHYONJOURNALFOLDER"
 export TACHYON_JAVA_OPTS+="
   -Dlog4j.configuration=file:${TACHYON_CONF_DIR}/log4j.properties
   -Dtachyon.debug=false
+  -Dtachyon.home=${TACHYON_HOME} 
   -Dtachyon.master.hostname=${TACHYON_MASTER_ADDRESS}
   -Dtachyon.master.port=${TACHYON_MASTER_PORT}
   -Dtachyon.master.web.port=${TACHYON_MASTER_WEB_PORT}
