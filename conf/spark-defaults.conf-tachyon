@@ -1,0 +1,3 @@
+spark.tachyonStore.url	    SPARKTACHYONSTOREURL
+
+spark.tachyonStore.baseDir  /tachyonSparkStore

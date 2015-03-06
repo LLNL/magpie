@@ -62,6 +62,8 @@
 
 @MAGPIENETWORKFS@
 
+@TACHYON@
+
 @VIEWFSMOUNT@
 
 </configuration>

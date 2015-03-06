@@ -338,6 +338,11 @@ fi
 pre_sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
 pre_log4jproperties=${sparkconffiledir}/spark.log4j.properties
 
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    pre_sparkdefaultsconf_tachyon=${sparkconffiledir}/spark-defaults.conf-tachyon
+fi
+
 post_sparkenvsh=${SPARK_CONF_DIR}/spark-env.sh
 post_sparkdefaultsconf=${SPARK_CONF_DIR}/spark-defaults.conf
 post_log4jproperties=${SPARK_CONF_DIR}/log4j.properties
@@ -368,14 +373,32 @@ sed -i \
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
 
+if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
+then
+    sparkclasspath="${SPARK_JOB_CLASSPATH}"
+fi
+
+# Must put jar in for 0.9.1
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    tachyon_jar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
+    
+    if [ "${sparkclasspath}X" != "X" ]
+    then
+	sparkclasspath="${tachyon_jar}:${sparkclasspath}"
+    else
+	sparkclasspath="${tachyon_jar}"
+    fi
+fi
+
 # Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
 # afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
 then 
-    if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
+    if [ "${sparkclasspath}X" != "X" ]
     then
-	echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH}\"" >> ${post_sparkenvsh}
+	echo "export SPARK_CLASSPATH=\"${sparkclasspath}\"" >> ${post_sparkenvsh}
     fi
 
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
@@ -440,9 +463,9 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
+    if [ "${sparkclasspath}X" != "X" ]
     then
-	sparkclasspathsubst=`echo "${SPARK_JOB_CLASSPATH}" | sed "s/\\//\\\\\\\\\//g"`
+	sparkclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
     fi
     
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
@@ -450,7 +473,20 @@ then
 	sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
+    if [ "${TACHYON_SETUP}" == "yes" ]
+    then
+	sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}"
+	sparktachyonstoreurlsubst=`echo "${sparktachyonstoreurl}" | sed "s/\\//\\\\\\\\\//g"`
+    fi
+
     cp ${pre_sparkdefaultsconf} ${post_sparkdefaultsconf}
+
+    if [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ]
+    then
+	sed -i -e "/@TACHYON@/{r ${pre_sparkdefaultsconf_tachyon}" -e "d}" ${post_sparkdefaultsconf}
+    else
+	sed -i -e "/@TACHYON@/,+1d" ${post_sparkdefaultsconf}
+    fi
 
     sed -i \
 	-e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
@@ -466,6 +502,7 @@ then
 	-e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
 	-e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
 	-e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
+	-e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
 	${post_sparkdefaultsconf}
     
 fi

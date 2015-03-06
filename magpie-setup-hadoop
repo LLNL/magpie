@@ -737,6 +737,22 @@ else
 fi
 
 #
+# Tachyon
+#
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    tachyonjar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
+
+    if [ "${extrahadoopclasses}X" == "X" ]
+    then
+	extrahadoopclasses="${tachyonjar}"
+    else
+	extrahadoopclasses="${extrahadoopclasses}:${tachyonjar}"
+    fi
+fi
+
+#
 # Get config files for setup
 #
 
@@ -781,6 +797,11 @@ then
 	pre_coresitexml_magpienetworkfs=${hadoopconffiledir}/core-site-2.0-magpienetworkfs.xml
     fi
 
+    if [ "${TACHYON_SETUP}" == "yes" ]
+    then
+	pre_coresitexml_tachyon=${hadoopconffiledir}/core-site-2.0-tachyon.xml
+    fi
+
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
 	pre_coresitexml_viewfsmount=${hadoopconffiledir}/core-site-2.0-viewfsmount.xml
@@ -822,6 +843,13 @@ then
 	sed -i -e "/@MAGPIENETWORKFS@/{r ${pre_coresitexml_magpienetworkfs}" -e "d}" ${post_coresitexml}
     else
 	sed -i -e "/@MAGPIENETWORKFS@/,+1d" ${post_coresitexml}
+    fi
+
+    if [ "${pre_coresitexml_tachyon}X" != "X" ]
+    then
+	sed -i -e "/@TACHYON@/{r ${pre_coresitexml_tachyon}" -e "d}" ${post_coresitexml}
+    else
+	sed -i -e "/@TACHYON@/,+1d" ${post_coresitexml}
     fi
 
     if [ "${pre_coresitexml_viewfsmount}X" != "X" ]
