@@ -201,6 +201,18 @@ export MAGPIE_JOB_TYPE="storm"
 #
 # export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
 
+# Environment Variable Shell Type
+#
+# Magpie outputs environment variables in help output and
+# MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT based on your SHELL environment
+# variable.
+#
+# If you would like to output in a different shell type (perhaps you
+# have programmed scripts in a different shell), specify that shell
+# here.
+#
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
+
 # Specify ssh-equivalent remote command and/or options if ssh is not
 # available on your cluster
 # export MAGPIE_REMOTE_CMD="ssh"
