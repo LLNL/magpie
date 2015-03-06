@@ -57,7 +57,14 @@ then
     touch ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     chmod 700 ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 
-    echo "#!${SHELL}" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL}X" != "X" ]
+    then
+	MAGPIE_SHELL="${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL}"
+    else
+	MAGPIE_SHELL="${SHELL}"
+    fi
+
+    echo "#!${MAGPIE_SHELL}" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 
     echo "# Common environment variables for Job = ${MAGPIE_JOB_NAME}, Job ID = ${MAGPIE_JOB_ID}" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -65,7 +72,7 @@ then
     echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     if [ "${JAVA_HOME}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv JAVA_HOME \"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	else
@@ -109,7 +116,7 @@ then
     then
  	echo "* To setup, you probably want to run:" 
 	echo "*   ${magpieremotecmd} ${ZOOKEEPER_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
 	else
@@ -122,7 +129,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${ZOOKEEPER_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
     else
@@ -133,7 +140,7 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
@@ -155,7 +162,7 @@ then
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -284,7 +291,7 @@ then
     echo "*" 
     echo "* To access Hadoop directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
     else
@@ -314,7 +321,7 @@ then
  	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
 	else
@@ -349,7 +356,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
     else
@@ -381,7 +388,7 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
@@ -391,7 +398,7 @@ then
     fi
     if [ "${PIG_SETUP}" == "yes" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv PIG_HOME \"${PIG_HOME}\""
 	    echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
@@ -415,7 +422,7 @@ then
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv HADOOP_HOME \"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -439,7 +446,7 @@ then
 
 	if [ "${PIG_SETUP}" == "yes" ]
 	then
-	    if echo $SHELL | grep -q csh
+	    if echo $MAGPIE_SHELL | grep -q csh
 	    then
 		echo "setenv PIG_HOME \"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		echo "setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -580,7 +587,7 @@ then
     echo "*" 
     echo "* To access Hbase directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
     else
@@ -598,7 +605,7 @@ then
 	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
 	else
@@ -612,7 +619,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${HBASE_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
     else
@@ -623,7 +630,7 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv HBASE_HOME \"${HBASE_HOME}\""
@@ -646,7 +653,7 @@ then
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv HBASE_HOME \"${HBASE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -709,7 +716,7 @@ then
     echo "*"
     echo "* To access Spark directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
     else
@@ -727,7 +734,7 @@ then
 	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
 	else
@@ -741,7 +748,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${SPARK_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
     else
@@ -752,7 +759,7 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
@@ -775,7 +782,7 @@ then
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv SPARK_HOME \"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -834,7 +841,7 @@ then
     echo "*" 
     echo "* To access Storm directly, you'll want to:"
     echo "*   ${magpieremotecmd} ${STORM_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
     else
@@ -852,7 +859,7 @@ then
  	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${STORM_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
 	else
@@ -866,7 +873,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${STORM_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
     else
@@ -877,7 +884,7 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv STORM_HOME \"${STORM_HOME}\""
@@ -900,7 +907,7 @@ then
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv STORM_HOME \"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -997,7 +1004,7 @@ then
     echo "*" 
     echo "* To access Tachyon directly, you'll most likely want to:"
     echo "*   ${magpieremotecmd} <WORKERNODE>"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\""
     else
@@ -1015,7 +1022,7 @@ then
  	echo "* To setup, you probably want to run:" 
 	echo "*"
 	echo "*   ${magpieremotecmd} ${TACHYON_MASTER_NODE}"
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "*   setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\""
 	else
@@ -1030,7 +1037,7 @@ then
     echo "* To end/cleanup your session, kill the daemons via:"
     echo "*" 
     echo "*   ${magpieremotecmd} ${TACHYON_MASTER_NODE}"
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\""
     else
@@ -1041,7 +1048,7 @@ then
     echo "*" 
     echo "* Some additional environment variables you may sometimes wish to set"
     echo "*" 
-    if echo $SHELL | grep -q csh
+    if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv TACHYON_HOME \"${TACHYON_HOME}\""
@@ -1064,7 +1071,7 @@ then
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
     then
-	if echo $SHELL | grep -q csh
+	if echo $MAGPIE_SHELL | grep -q csh
 	then
 	    echo "setenv TACHYON_HOME \"${TACHYON_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}

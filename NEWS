@@ -2,6 +2,7 @@ magpie 1.54
 -----------
 Add basic support for Tachyon.
 Support HADOOP_MODE of "launch" for convenience.
+Support MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL option.
 
 magpie 1.53
 -----------
