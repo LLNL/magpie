@@ -1445,6 +1445,11 @@ TACHYON_MASTER_PORT : the master port for running Tachyon jobs.  Often
 		      used for accessing tachyon
 		      (e.g. tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT})
 
+TACHYON_FIRST_WORKER_NODE : the first worker node.  Often needed
+                            because some Tachyon tests/operations are
+                            required to run on a node with a worker on
+                            it.
+
 TACHYON_SLAVE_COUNT : number of compute/data nodes in your allocation
                       for Tachyon.
 

@@ -232,6 +232,7 @@ then
     if [ -f "${TACHYON_CONF_DIR}/workers" ]
     then
 	export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
+	export TACHYON_FIRST_WORKER_NODE=`head -1 ${TACHYON_CONF_DIR}/workers`
     fi
     
     tachyoncmdprefix="bin"
