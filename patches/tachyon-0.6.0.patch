@@ -1,6 +1,6 @@
-diff -pruN tachyon-0.6.0-orig/bin/tachyon tachyon-0.6.0/bin/tachyon
+diff -pruN tachyon-0.6.0-orig/bin/tachyon tachyon-0.6.0-new/bin/tachyon
 --- tachyon-0.6.0-orig/bin/tachyon	2015-02-11 17:52:30.000000000 -0800
-+++ tachyon-0.6.0/bin/tachyon	2015-03-03 14:44:44.553956000 -0800
++++ tachyon-0.6.0-new/bin/tachyon	2015-03-05 16:36:20.718221000 -0800
 @@ -28,6 +28,22 @@ if [ "$#" == 0 ]; then
    exit 1
  fi
@@ -56,9 +56,9 @@ diff -pruN tachyon-0.6.0-orig/bin/tachyon tachyon-0.6.0/bin/tachyon
  
    echo "Formatting Tachyon Master @ $TACHYON_MASTER_ADDRESS"
    CLASS=tachyon.Format
-diff -pruN tachyon-0.6.0-orig/bin/tachyon-start.sh tachyon-0.6.0/bin/tachyon-start.sh
+diff -pruN tachyon-0.6.0-orig/bin/tachyon-start.sh tachyon-0.6.0-new/bin/tachyon-start.sh
 --- tachyon-0.6.0-orig/bin/tachyon-start.sh	2015-02-11 17:52:30.000000000 -0800
-+++ tachyon-0.6.0/bin/tachyon-start.sh	2015-03-04 13:49:44.489989000 -0800
++++ tachyon-0.6.0-new/bin/tachyon-start.sh	2015-03-05 16:36:20.721218000 -0800
 @@ -8,7 +8,7 @@ fi
  
  #start up tachyon
@@ -182,9 +182,9 @@ diff -pruN tachyon-0.6.0-orig/bin/tachyon-start.sh tachyon-0.6.0/bin/tachyon-sta
      ;;
    *)
      echo "Error: Invalid WHAT: $WHAT"
-diff -pruN tachyon-0.6.0-orig/bin/tachyon-stop.sh tachyon-0.6.0/bin/tachyon-stop.sh
+diff -pruN tachyon-0.6.0-orig/bin/tachyon-stop.sh tachyon-0.6.0-new/bin/tachyon-stop.sh
 --- tachyon-0.6.0-orig/bin/tachyon-stop.sh	2015-02-11 17:52:30.000000000 -0800
-+++ tachyon-0.6.0/bin/tachyon-stop.sh	2015-03-03 14:44:44.559950000 -0800
++++ tachyon-0.6.0-new/bin/tachyon-stop.sh	2015-03-05 16:36:20.724215000 -0800
 @@ -16,6 +16,21 @@ Where component is one of:
  -h  display this help."
  bin=`cd "$( dirname "$0" )"; pwd`
@@ -221,9 +221,9 @@ diff -pruN tachyon-0.6.0-orig/bin/tachyon-stop.sh tachyon-0.6.0/bin/tachyon-stop
  }
  
  WHAT=${1:-all}
-diff -pruN tachyon-0.6.0-orig/bin/tachyon-workers.sh tachyon-0.6.0/bin/tachyon-workers.sh
+diff -pruN tachyon-0.6.0-orig/bin/tachyon-workers.sh tachyon-0.6.0-new/bin/tachyon-workers.sh
 --- tachyon-0.6.0-orig/bin/tachyon-workers.sh	2015-02-11 17:52:30.000000000 -0800
-+++ tachyon-0.6.0/bin/tachyon-workers.sh	2015-03-03 14:44:44.562947000 -0800
++++ tachyon-0.6.0-new/bin/tachyon-workers.sh	2015-03-05 16:36:20.726216000 -0800
 @@ -21,10 +21,22 @@ TACHYON_LIBEXEC_DIR=${TACHYON_LIBEXEC_DI
  
  HOSTLIST=$TACHYON_CONF_DIR/workers
@@ -250,9 +250,19 @@ diff -pruN tachyon-0.6.0-orig/bin/tachyon-workers.sh tachyon-0.6.0/bin/tachyon-w
  done
  
  wait
-diff -pruN tachyon-0.6.0-orig/libexec/tachyon-layout.sh tachyon-0.6.0/libexec/tachyon-layout.sh
+diff -pruN tachyon-0.6.0-orig/libexec/tachyon-config.sh tachyon-0.6.0-new/libexec/tachyon-config.sh
+--- tachyon-0.6.0-orig/libexec/tachyon-config.sh	2015-02-11 17:52:30.000000000 -0800
++++ tachyon-0.6.0-new/libexec/tachyon-config.sh	2015-03-05 20:30:54.746909000 -0800
+@@ -34,4 +34,5 @@ if [ -e $TACHYON_CONF_DIR/tachyon-env.sh
+   . $TACHYON_CONF_DIR/tachyon-env.sh
+ fi
+ 
+-export CLASSPATH="$TACHYON_CONF_DIR/:$TACHYON_CLASSPATH:$TACHYON_JAR"
++export CLASSPATH="$TACHYON_CONF_DIR/:$TACHYON_JAR:$TACHYON_CLASSPATH"
++
+diff -pruN tachyon-0.6.0-orig/libexec/tachyon-layout.sh tachyon-0.6.0-new/libexec/tachyon-layout.sh
 --- tachyon-0.6.0-orig/libexec/tachyon-layout.sh	1969-12-31 16:00:00.000000000 -0800
-+++ tachyon-0.6.0/libexec/tachyon-layout.sh	2015-03-03 14:44:44.563952000 -0800
++++ tachyon-0.6.0-new/libexec/tachyon-layout.sh	2015-03-05 16:51:58.702302000 -0800
 @@ -0,0 +1,16 @@
 +#!/usr/bin/env bash
 +
