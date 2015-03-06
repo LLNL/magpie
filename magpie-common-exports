@@ -69,6 +69,8 @@ then
     export YARN_RESOURCEMANAGER_WEBAPP_ADDRESS="8088"
     export YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS="8031"
     export YARN_RESOURCEMANAGER_ADMIN_ADDRESS="8033"
+    # In Hadoop code, default is 8020, but 54310 is the common legacy
+    # one used throughout the web.  I'll keep the 54310 one for now.
     export HADOOP_HDFS_NAMENODE_ADDRESS="54310"
     export HADOOP_HDFS_NAMENODE_HTTPADDRESS="50070"
     export HADOOP_HDFS_NAMENODE_SECONDARY_ADDRESS="50090"
@@ -120,23 +122,6 @@ then
     export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
 
     pigcmdprefix="bin"
-fi
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
-    export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
-
-    export ZOOKEEPER_CLIENT_PORT="2181"
-    export ZOOKEEPER_PEER_PORT="2888"
-    export ZOOKEEPER_LEADER_PORT="3888"
-
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
-    then 
-	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
-    fi
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
@@ -225,4 +210,47 @@ then
     fi
     
     stormcmdprefix="bin"
+fi
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    export TACHYON_CONF_DIR=${TACHYON_LOCAL_JOB_DIR}/conf
+    export TACHYON_LOG_DIR=${TACHYON_LOCAL_JOB_DIR}/log
+
+    export TACHYON_MASTER_PORT="19998"
+    export TACHYON_MASTER_WEB_PORT="19999"
+    export TACHYON_WORKER_PORT="29998"
+    export TACHYON_WORKER_DATA_PORT="29999"
+
+    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
+    if [ -f "${TACHYON_CONF_DIR}/masters" ]
+    then 
+	export TACHYON_MASTER_NODE=`head -1 ${TACHYON_CONF_DIR}/masters`
+    fi
+    
+    if [ -f "${TACHYON_CONF_DIR}/workers" ]
+    then
+	export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
+	export TACHYON_FIRST_WORKER_NODE=`head -1 ${TACHYON_CONF_DIR}/workers`
+    fi
+    
+    tachyoncmdprefix="bin"
+fi
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
+    export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
+
+    export ZOOKEEPER_CLIENT_PORT="2181"
+    export ZOOKEEPER_PEER_PORT="2888"
+    export ZOOKEEPER_LEADER_PORT="3888"
+
+    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
+    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
+    then 
+	export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
+    fi
 fi

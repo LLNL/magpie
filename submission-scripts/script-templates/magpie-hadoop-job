@@ -1,0 +1,40 @@
+############################################################################
+# Hadoop Job/Run Configurations
+############################################################################
+
+# Set how Hadoop should run
+#
+# "terasort" - run terasort.  Useful for making sure things are setup
+#              the way you like.
+#
+#              There are additional configuration options for this
+#              example listed below.
+#
+# "script" - execute a script that lists all of your Hadoop jobs.  Be
+#            sure to set HADOOP_SCRIPT_PATH to your script.
+#
+# "interactive" - manually interact to submit jobs, peruse HDFS, etc.
+#                 also useful for moving data in/out of HDFS.  In this
+#                 mode you'll login to the cluster node that is your
+#                 'master' node and interact with Hadoop directly
+#                 (e.g. bin/hadoop ...)
+#
+# "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
+#                 used when you are switching to a newer Hadoop
+#                 version and the HDFS version would be inconsistent
+#                 without upgrading.  Only works with HDFS versions >=
+#                 2.2.0.
+#
+#		  Beware, once you upgrade it'll be difficult to rollback.
+#
+# "launch" - Launch Hadoop but do nothing, usually set to this because
+#            another project (e.g. Hbase, Pig) will run something that
+#            uses Hadoop MapReduce.
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
+#
+export HADOOP_MODE="terasort"
+

@@ -36,7 +36,7 @@ then
 fi
 
 # zookeepernoderank set if succeed and it's a Zookeeper slave
-# Zookeeper master is only for setup/teardow management, not for actual Zookeeper
+# Zookeeper master is only for setup/teardown management, not for actual Zookeeper
 if ! Magpie_am_I_a_zookeeper_node
 then
     exit 0

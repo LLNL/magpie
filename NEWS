@@ -1,3 +1,34 @@
+magpie 1.54
+-----------
+Add basic support for Tachyon.
+Support HADOOP_MODE of "launch" for convenience.
+
+magpie 1.53
+-----------
+Update various path defaults in scripts and submission-scripts.
+Remove MAGPIE_USERNAME, just use USER instead.
+Use HOME instead of /home/${USER} in various locations.
+Documentation updates.
+
+magpie 1.52
+-----------
+Support MAGPIE_USERNAME environment variable.
+Default most paths to use MAGPIE_USERNAME instead of generic 'username'.
+No longer require users to set MAGPIE_TIMELIMIT_MINUTES when using Moab.
+Make default SPARK_LOCAL_SCRATCH_DIR a Lustre path.
+In Spark w/o HDFS submission script, default to setting up network
+  based scratch space.
+
+magpie 1.51
+-----------
+Support Storm 0.9.3.
+Update primary Hadoop support to 2.6.0.
+Update primary Pig to 0.14.0.
+Update primary Spark to 1.2.0.  Add appropriate patches for support.
+Update primary Hbase to 0.98.9.
+Add new magpie-apache-download-and-setup.sh convenience script.
+Various re-org of script files and script directories.
+
 magpie 1.50
 -----------
 Support SPARK_DEPLOY_SPREADOUT option.

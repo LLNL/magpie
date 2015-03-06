@@ -1,0 +1,110 @@
+############################################################################
+# Zookeeper Configurations
+############################################################################
+
+# Should Zookeeper be run
+#
+# Specify yes or no.  Defaults to no.
+# 
+export ZOOKEEPER_SETUP=no
+
+# Zookeeper Replication Count
+#
+# Recommended to be odd.
+#
+export ZOOKEEPER_REPLICATION_COUNT=3
+
+# Zookeeper Node Sharing
+#
+# By default, Zookeeper will not run on nodes that will run Hadoop/Hbase.
+# They will have dedicated nodes for themselves.  If you do not wish
+# for this to be the case, set the below to 'yes'.  Defaults to no.
+#
+# Keep in mind that adjustments to the number of nodes in your
+# allocation may need to be adjusted given your setting of this
+# parameter.  For example, if you want 8 nodes for Hadoop processing,
+# you should increase your allocation by ZOOKEEPER_REPLICATION_COUNT
+# if the below is 'no'.
+#
+# export ZOOKEEPER_SHARE_NODES=yes
+
+# Set how Zookeeper should run
+#
+# "zookeeperruok" - Run a quick sanity test to see that zookeeper is
+#             setup correctly.  zookeeperruok will do a simple 'ruok'
+#             to all Zookeeper daemons.
+#
+# "launch" - Magpie will launch Zookeeper daemons
+#
+# "setuponly" - Only setup conf files. useful if user wants to setup
+#               daemons themselves, etc.
+#
+export ZOOKEEPER_MODE="launch"
+
+# Zookeeper Version
+#
+export ZOOKEEPER_VERSION="3.4.6"
+
+# Path to your Zookeeper build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+export ZOOKEEPER_HOME="PROJECTDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
+
+# Directory where Zookeeper configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
+
+# Set how Zookeeper data directory should be setup.
+#
+# "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
+#               (such as Lustre).  Zookeeper local paths will be
+#               setup.
+#
+# "local" - ZOOKEEPER_DATA_DIR points to a local drive.
+#
+export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
+
+# Path base for local data to each cluster node
+#
+# If ZOOKEEPER_FILESYSTEM_MODE is set to "networkfs", this is the base
+# point for local data and per-node directories will be created
+# (e.g. ${ZOOKEEPER_DATA_DIR}/node-1/)
+#
+# If you have local SSDs stored on the nodes of your system, it may be
+# in your interest to set this to a local drive and adjust
+# ZOOKEEPER_FILESYSTEM_MODE above to 'local'.
+#
+export ZOOKEEPER_DATA_DIR="LUSTREDIRPREFIX/zookeeper"  
+
+# Path local to each cluster node, typically something in /tmp.
+# This will store local conf files and log files for your job. 
+#
+export ZOOKEEPER_LOCAL_DIR="LOCALDIRPREFIX/zookeeper"
+
+# ZooKeeper ticktime, measured in milliseconds.  Used by all of
+# Zookeeper for time measurement.
+#
+# Defaults to 2000.
+#
+# export ZOOKEEPER_TICKTIME=2000
+
+# ZooKeeper initLimit, multiple of ticks to allow followers to connect
+# and sync to a leader.  May need to increase this value if the data
+# managed by ZooKeeper is large.
+#
+# Defaults to 10
+#
+# export ZOOKEEPER_INITLIMIT=10
+
+# ZooKeeper syncLimit, multiple of ticks to allow followers to sync
+# with ZooKeeper.  If they fall too far behind a leader, they will be
+# dropped.
+#
+# Defaults to 5
+#
+# export ZOOKEEPER_SYNCLIMIT=5
+

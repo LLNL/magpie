@@ -71,4 +71,5 @@ drpc.invocations.port: STORMDRPCINVOCATIONSPORT
 
 storm.local.dir: "STORMLOCALDIR"
 
+storm.log.dir: "STORMLOGDIR"
 

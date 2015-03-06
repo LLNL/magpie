@@ -1,0 +1,241 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+
+if [ "${TACHYON_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+# tachyonnoderank set if succeed
+if ! Magpie_am_I_a_tachyon_node
+then
+    exit 0
+fi
+
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    tachyonhadoopcmd="${HADOOP_HOME}/${hadoopcmdprefix}/hadoop"
+fi
+
+IFSORIG=${IFS}
+IFS=","
+tachyonstorepaths=""
+for tachyonstorefile in ${TACHYON_STORE_PATHS}
+do
+    tachyonstorefiletmp=${tachyonstorefile}
+    tachyonstorepathstmp=`echo "${tachyonstorefiletmp}" | sed "s/\\//\\\\\\\\\//g"`
+    
+    if [ ! -d "${tachyonstorefiletmp}" ]
+    then
+	mkdir -p ${tachyonstorefiletmp}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${tachyonstorefiletmp}"
+	    exit 1
+	fi
+    fi
+    
+    if [ "${tachyonstorepaths}X" == "X" ]
+    then
+	tachyonstorepaths="${tachyonstorepathstmp}"
+    else
+	tachyonstorepaths="${tachyonstorepaths},${tachyonstorepathstmp}"
+    fi
+done
+IFS=${IFSORIG}
+
+if [ "${TACHYON_STORE_QUOTA}X" != "X" ]
+then
+    tachyonstorequota="${TACHYON_STORE_QUOTA}GB"
+else
+    tachyonstorequota="1000GB"
+fi
+
+if [ "${TACHYON_UNDERFS_FILESYSTEM}X" == "X" ]
+then
+    # sets hadooptmpdir and fsdefault
+    Magpie_calculate_hadoop_filesystem_paths ${tachyonnoderank}
+    tachyonunderfsaddress="${fsdefault}"
+else
+    tachyonunderfsaddress="file://${TACHYON_UNDERFS_FILESYSTEM}"
+    mkdir -p ${TACHYON_UNDERFS_FILESYSTEM}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${TACHYON_UNDERFS_FILESYSTEM}"
+	exit 1
+    fi
+fi
+
+if [ "${TACHYON_JOURNAL_FOLDER}X" != "X" ]
+then
+    tachyonjournalfolder=${TACHYON_JOURNAL_FOLDER}
+else
+    tachyonjournalfolder="${TACHYON_LOCAL_DIR}/journal/"
+fi
+
+openfiles=`ulimit -n`
+if [ "${openfiles}" != "unlimited" ]
+then
+    openfileshardlimit=`ulimit -H -n`
+
+    # we estimate 4096 per 100 nodes, minimum 8192, max 65536.
+    # Obviously depends on many factors such as core count, but it's a
+    # reasonble and safe over-estimate calculated based on experience.
+    openfilesslavecount=`expr ${TACHYON_SLAVE_COUNT} \/ 100`
+    openfilescount=`expr ${openfilesslavecount} \* 4096`
+    if [ "${openfilescount}" -lt "8192" ]
+    then
+	openfilescount=8192
+    fi
+    if [ "${openfilescount}" -gt "65536" ]
+    then
+	openfilescount=65536
+    fi
+    
+    if [ "${openfileshardlimit}" != "unlimited" ]
+    then
+        if [ ${openfilescount} -gt ${openfileshardlimit} ]
+        then
+            openfilescount=${openfileshardlimit}
+        fi
+    fi
+else
+    openfilescount="unlimited"
+fi
+
+userprocesses=`ulimit -u`
+if [ "${userprocesses}" != "unlimited" ]
+then
+    userprocesseshardlimit=`ulimit -H -u`
+
+    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
+    userprocessesslavecount=`expr ${TACHYON_SLAVE_COUNT} \/ 100`
+    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
+    if [ "${userprocessescount}" -lt "4096" ]
+    then
+	userprocessescount=4096
+    fi
+    if [ "${userprocessescount}" -gt "32768" ]
+    then
+	userprocessescount=32768
+    fi
+    
+    if [ "${userprocesseshardlimit}" != "unlimited" ]
+    then
+        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
+        then
+            userprocessescount=${userprocesseshardlimit}
+        fi
+    fi
+else
+    userprocessescount="unlimited"
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${TACHYON_CONF_FILES}X" == "X" ]
+then
+    tachyonconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    tachyonconffiledir=${TACHYON_CONF_FILES}
+fi
+
+pre_tachyonenvsh=${tachyonconffiledir}/tachyon-env.sh
+pre_log4jproperties=${tachyonconffiledir}/tachyon.log4j.properties
+
+post_tachyonenvsh=${TACHYON_CONF_DIR}/tachyon-env.sh
+post_log4jproperties=${TACHYON_CONF_DIR}/log4j.properties
+
+#
+# Setup Tachyon configuration files and environment files
+#
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+tachyonhadoopcmdsubst=`echo "${tachyonhadoopcmd}" |  sed "s/\\//\\\\\\\\\//g"`
+
+tachyonhomesubst=`echo "${TACHYON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+tachyonlocaldirsubst=`echo "${TACHYON_LOCAL_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+tachyonconfdirsubst=`echo "${TACHYON_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+tachyonlogdirsubst=`echo "${TACHYON_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+tachyonunderfsaddresssubst=`echo "${tachyonunderfsaddress}" | sed "s/\\//\\\\\\\\\//g"`
+tachyonjournalfoldersubst=`echo "${tachyonjournalfolder}" | sed "s/\\//\\\\\\\\\//g"`
+
+cp ${pre_tachyonenvsh} ${post_tachyonenvsh}
+
+sed -i \
+    -e "s/TACHYON_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+    -e "s/HADOOPHOME/${hadoophomesubst}/g" \
+    -e "s/TACHYONHADOOPCMD/${tachyonhadoopcmdsubst}/g" \
+    -e "s/TACHYONHOME/${tachyonhomesubst}/g" \
+    -e "s/TACHYONLOCALDIR/${tachyonlocaldirsubst}/g" \
+    -e "s/TACHYONCONFDIR/${tachyonconfdirsubst}/g" \
+    -e "s/TACHYONLOGDIR/${tachyonlogdirsubst}/g" \
+    -e "s/TACHYONMASTERADDRESS/${TACHYON_MASTER_NODE}/g" \
+    -e "s/TACHYONMASTERPORT/${TACHYON_MASTER_PORT}/g" \
+    -e "s/TACHYONMASTERWEBPORT/${TACHYON_MASTER_WEB_PORT}/g" \
+    -e "s/TACHYONWORKERPORT/${TACHYON_WORKER_PORT}/g" \
+    -e "s/TACHYONWORKERDATAPORT/${TACHYON_WORKER_DATA_PORT}/g" \
+    -e "s/TACHYONHIERARCHYSTORETYPE/${TACHYON_STORE_TYPE}/g" \
+    -e "s/TACHYONHIERARCHYSTOREPATHS/${tachyonstorepaths}/g" \
+    -e "s/TACHYONHIERARCHYSTOREQUOTA/${tachyonstorequota}/g" \
+    -e "s/TACHYONWORKERMEMORYSIZE/${tachyonstorequota}/g" \
+    -e "s/TACHYONUNDERFSADDRESS/${tachyonunderfsaddresssubst}/g" \
+    -e "s/TACHYONJOURNALFOLDER/${tachyonjournalfoldersubst}/g" \
+    ${post_tachyonenvsh}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export TACHYON_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_tachyonenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export TACHYON_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_tachyonenvsh}
+fi
+
+if [ "${TACHYON_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${TACHYON_ENVIRONMENT_EXTRA_PATH} ]
+then
+    cat ${TACHYON_ENVIRONMENT_EXTRA_PATH} >> ${post_tachyonenvsh}
+else
+    echo "ulimit -n ${openfilescount}" >> ${post_tachyonenvsh}
+    echo "ulimit -u ${userprocessescount}" >> ${post_tachyonenvsh}
+fi
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+sed -i \
+    -e "s/TACHYONLOGDIR/${tachyonlogdirsubst}/g" \
+    ${post_log4jproperties}
+
+exit 0

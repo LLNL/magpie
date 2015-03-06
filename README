@@ -1,29 +1,29 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated June 17th, 2014
+Updated February 25, 2015
 chu11@llnl.gov
 
-What is this project
---------------------
+What is Magpie?
+---------------
 
-This project contains a number of scripts for running Big Data
-software in HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark,
-Storm, and Zookeeper are supported.  It currently supports running
+Magpie contains a number of scripts for running Big Data software in
+HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark, Storm,
+Tachyon, and Zookeeper are supported.  It currently supports running
 over the schedulers of Slurm and Moab, and the resource managers of
 Slurm and Torque.  It currently supports running over the parallel
 file system Lustre and running over any generic network filesytem.
 
 Some of the features presently supported:
 
-- Run Hadoop, Hbase, or Pig interactively or via scripts.
+- Run jobs interactively or via scripts.
 - Run Mapreduce 1.0 or 2.0 jobs via Hadoop 1.0 or 2.0
 - Run against a number of filesystem options, such as HDFS, HDFS over
   Lustre, HDFS over a generic network filesystem, Lustre directly, or
   a generic network filesystem.
 - Take advantage of SSDs for local caching if available
 - Run the UDA Infiniband optimization plugin for Hadoop.
-- Make decent optimizations of Hadoop for your hardware
+- Make decent optimizations for your hardware
 
 Some experimental features currently supported:
 
@@ -53,22 +53,29 @@ The basic idea behind these scripts are to:
    remaining nodes will run appropriate slave daemons, such as the
    Hadoop Datanodes or Hbase RegionServers.
 
-4) Now you have a mini big data cluster to do whatever you want.
+4) Now you have a mini big data cluster to do whatever you want.  You
+   can log into the master node and interact with your mini big data
+   cluster however you want.  Or you could have Magpie run a script to
+   execute your big data calculation instead.
 
-Basic Instructions For Running Hadoop
--------------------------------------
+Instructions For Running Hadoop
+-------------------------------
 
-1) Download your favorite version of Hadoop off of Apache and install
-   it into a location where it's accessible on all cluster nodes.
-   Usually this is on a NFS home directory.
+0) If necessary, download your favorite version of Hadoop off of
+   Apache and install it into a location where it's accessible on all
+   cluster nodes.  Usually this is on a NFS home directory.
 
    See below about patches that may be necessary for Hadoop depending
    on your environment and Hadoop version.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+   See below about misc/magpie-apache-download-and-setup.sh, which may
+   make the downloading and patching easier.
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base hadoop script
    (e.g. magpie.sbatch-hadoop) for your scheduler/resource manager.  If
@@ -76,24 +83,28 @@ Basic Instructions For Running Hadoop
    script (e.g. magpie.sbatch) which contains all configuration
    options.
 
-3) Setup your job essentials at the top of the script.  As an example,
-   the following are the essentials for running with Slurm w/ Sbatch.
+2) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
 
-   #SBATCH --nodes : Set how many nodes you want in your job
+   #MSUB -l nodes : Set how many nodes you want in your job
 
-   SBATCH_TIMELIMIT : Set the time for this job to run
+   #MSUB -l walltime : Set the time for this job to run
 
-   #SBATCH --partition : Set the job partition
+   #MSUB -l partition : Set the job partition
 
-   MAGPIE_SCRIPTS_HOME : Set where your scripts are.
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : Set to "hadoop" most likely.
+   MAGPIE_JOB_TYPE : This should be set to 'hadoop'
 
    JAVA_HOME : B/c you need to ...
 
-4) Now setup the essentials for Hadoop.
+3) Now setup the essentials for Hadoop.
 
    HADOOP_SETUP : Set to yes
 
@@ -108,11 +119,6 @@ Basic Instructions For Running Hadoop
    HADOOP_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   HADOOP_MODE : The first time you'll probably want to run w/
-   'terasort' mode just to try things out.  Later you may want to run
-   w/ 'script' or 'interactive' mode, as that is the more likely way
-   to run.
-
    HADOOP_FILESYSTEM_MODE : Most will likely want "hdfsoverlustre" or
    "hdfsovernetworkfs".  See below for details on HDFS over Lustre and
    HDFS over NetworkFS.
@@ -121,17 +127,310 @@ Basic Instructions For Running Hadoop
    need to set this.  If not using HDFS over Lustre, set the
    appropriate path for your filesystem mode choice.
 
-5) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust HADOOP_CONF_FILES in your submission
-   script as needed.
+   HADOOP_LOCALSTORE : If your cluster has a local SSD, set a path to
+   it and let Hadoop store intermediate shuffle data to it.  It should
+   significantly improve performance.
 
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
-   ... and any other options you see fit.
+4) Select how your job will run by setting HADOOP_MODE.  The first
+   time you'll probably want to run w/ 'terasort' mode just to try
+   things out and make things look setup correctly.
 
-7) Look at your job output file to see your output.  There will also
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv HADOOP_CONF_DIR "/tmp/username/hadoop/ajobname/1081559/conf"
+      cd /home/username/hadoop-2.6.0
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can
+   interact with the Hadoop filesystem (bin/hadoop fs ...) or run a
+   job (bin/hadoop jar ...).  There will also be instructions in your
+   job output on how to tear the session down cleanly if you wish to
+   end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   HADOOP_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/hadoop-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
+
+5) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
+
+6) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
+
+Example Job Output for Hadoop running Terasort
+----------------------------------------------
+
+The following is an example job output of Magpie running Hadoop and
+running a Terasort.  This is run over HDFS over Lustre.  Sections of
+extraneous text have been left out.
+
+While this output is specific to using Magpie with Hadoop, the output
+when using Spark, Storm, Hbase, etc. is not all that different.
+
+1) First we see that HDFS over Lustre is being setup by formatting the
+HDFS Namenode.
+
+*******************************************************
+* Formatting HDFS Namenode
+*******************************************************
+DEPRECATED: Use of this script to execute hdfs command is deprecated.
+Instead use the hdfs command for it.
+
+15/01/28 07:17:36 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = apex70.llnl.gov/192.168.123.70
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 2.6.0
+<snip>
+<snip>
+<snip>
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at apex70.llnl.gov/192.168.123.70
+************************************************************/
+
+2) Next we get some details of the job
+
+*******************************************************
+* Magpie General Job Info
+*
+* Job Nodelist: apex[70-78]
+* Job Nodecount: 9
+* Job Timelimit in Minutes: 60
+* Job Name: terasort
+* Job ID: 1081559
+*
+*******************************************************
+
+3) Hadoop begins to launch and startup daemons on all cluster nodes.
+
+Starting hadoop
+15/01/28 07:18:04 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Starting namenodes on [apex70]
+apex70: starting namenode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-namenode-apex70.out
+apex72: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex72.out
+apex71: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex71.out
+apex77: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex77.out
+apex76: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex76.out
+apex73: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex73.out
+apex74: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex74.out
+apex78: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex78.out
+apex75: starting datanode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-datanode-apex75.out
+Starting secondary namenodes [apex70]
+apex70: starting secondarynamenode, logging to /tmp/achu/hadoop/terasort/1081559/log/hadoop-achu-secondarynamenode-apex70.out
+15/01/28 07:18:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+starting yarn daemons
+starting resourcemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-resourcemanager-apex70.out
+apex71: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex71.out
+apex72: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex72.out
+apex77: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex77.out
+apex78: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex78.out
+apex74: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex74.out
+apex75: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex75.out
+apex73: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex73.out
+apex76: starting nodemanager, logging to /tmp/achu/hadoop/terasort/1081559/log/yarn-achu-nodemanager-apex76.out
+Waiting 30 seconds to allows Hadoop daemons to setup
+
+4) Next, we see output with details of the Hadoop setup.  You'll find
+   addresses indicating web services you can access to get detailed
+   job information.  You'll also find information about how to login
+   to access Hadoop directly and how to shut down the job early if you
+   so desire.
+
+*******************************************************
+*
+* Hadoop Information
+*
+* You can view your Hadoop status by launching a web browser and pointing to ...
+*
+* Yarn Resource Manager: http://apex70:8088
+*
+* Job History Server: http://apex70:19888
+*
+* HDFS Namenode: http://apex70:50070
+* HDFS DataNode: http://<DATANODE>:50075
+*
+* HDFS can be accessed directly at:
+*
+*   hdfs://apex70:54310
+*
+*
+* To access Hadoop directly, you'll want to:
+*   ssh apex70
+*   setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/terasort/1081559/conf"
+*   cd /home/achu/hadoop/hadoop-2.6.0
+*
+* Then you can do as you please.  For example to interact with the Hadoop filesystem:
+*
+*   bin/hadoop fs ...
+*
+* To launch jobs you'll want to:
+*
+*   bin/hadoop jar ...
+*
+*
+* To end/cleanup your session, kill the daemons via:
+*
+*   ssh apex70
+*   setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/terasort/1081559/conf"
+*   cd /home/achu/hadoop/hadoop-2.6.0
+*   sbin/stop-yarn.sh
+*   sbin/stop-dfs.sh
+*   sbin/mr-jobhistory-daemon.sh stop historyserver
+*
+* Some additional environment variables you may sometimes wish to set
+*
+*   setenv JAVA_HOME "/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+*   setenv HADOOP_HOME "/home/achu/hadoop/hadoop-2.6.0"
+*
+*******************************************************
+
+5) The job then runs Teragen
+
+Running bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar teragen  -Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true 50000000 terasort-teragen
+15/01/28 07:19:01 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/01/28 07:19:01 INFO client.RMProxy: Connecting to ResourceManager at apex70/192.168.123.70:8032
+15/01/28 07:19:05 INFO terasort.TeraSort: Generating 50000000 using 192
+15/01/28 07:19:10 INFO mapreduce.JobSubmitter: number of splits:192
+15/01/28 07:19:12 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1422458304036_0001
+15/01/28 07:19:12 INFO impl.YarnClientImpl: Submitted application application_1422458304036_0001
+15/01/28 07:19:12 INFO mapreduce.Job: The url to track the job: http://apex70:8088/proxy/application_1422458304036_0001/
+15/01/28 07:19:12 INFO mapreduce.Job: Running job: job_1422458304036_0001
+15/01/28 07:19:20 INFO mapreduce.Job: Job job_1422458304036_0001 running in uber mode : false
+15/01/28 07:19:20 INFO mapreduce.Job:  map 0% reduce 0%
+15/01/28 07:19:31 INFO mapreduce.Job:  map 1% reduce 0%
+15/01/28 07:19:32 INFO mapreduce.Job:  map 5% reduce 0%
+<snip>
+<snip>
+<snip>
+15/01/28 07:20:48 INFO mapreduce.Job:  map 97% reduce 0%
+15/01/28 07:20:49 INFO mapreduce.Job:  map 98% reduce 0%
+15/01/28 07:20:52 INFO mapreduce.Job:  map 100% reduce 0%
+15/01/28 07:22:24 INFO mapreduce.Job: Job job_1422458304036_0001 completed successfully
+15/01/28 07:22:24 INFO mapreduce.Job: Counters: 31
+<snip>
+<snip>
+<snip>
+        Map-Reduce Framework
+                Map input records=50000000
+                Map output records=50000000
+                Input split bytes=16444
+                Spilled Records=0
+                Failed Shuffles=0
+                Merged Map outputs=0
+                GC time elapsed (ms)=3037
+                CPU time spent (ms)=313700
+                Physical memory (bytes) snapshot=66395398144
+                Virtual memory (bytes) snapshot=502137180160
+                Total committed heap usage (bytes)=192971538432
+        org.apache.hadoop.examples.terasort.TeraGen$Counters
+                CHECKSUM=107387891658806101
+        File Input Format Counters 
+                Bytes Read=0
+        File Output Format Counters 
+                Bytes Written=5000000000
+
+6) The job then runs Terasort
+
+Running bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar terasort  -Dmapred.reduce.tasks=16 -Ddfs.replication=1 -Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true terasort-teragen terasort-sort
+15/01/28 07:22:55 INFO terasort.TeraSort: starting
+15/01/28 07:22:55 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/01/28 07:22:56 INFO input.FileInputFormat: Total input paths to process : 192
+Spent 269ms computing base-splits.
+Spent 4ms computing TeraScheduler splits.
+Computing input splits took 274ms
+Sampling 10 splits of 192
+Making 16 from 100000 sampled records
+Computing parititions took 1525ms
+Spent 1801ms computing partitions.
+15/01/28 07:22:57 INFO client.RMProxy: Connecting to ResourceManager at apex70/192.168.123.70:8032
+15/01/28 07:23:04 INFO mapreduce.JobSubmitter: number of splits:192
+15/01/28 07:23:05 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+15/01/28 07:23:06 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1422458304036_0002
+15/01/28 07:23:06 INFO impl.YarnClientImpl: Submitted application application_1422458304036_0002
+15/01/28 07:23:06 INFO mapreduce.Job: The url to track the job: http://apex70:8088/proxy/application_1422458304036_0002/
+15/01/28 07:23:06 INFO mapreduce.Job: Running job: job_1422458304036_0002
+15/01/28 07:23:11 INFO mapreduce.Job: Job job_1422458304036_0002 running in uber mode : false
+15/01/28 07:23:11 INFO mapreduce.Job:  map 0% reduce 0%
+15/01/28 07:23:21 INFO mapreduce.Job:  map 5% reduce 0%
+15/01/28 07:23:22 INFO mapreduce.Job:  map 65% reduce 0%
+<snip>
+<snip>
+<snip>
+15/01/28 07:23:44 INFO mapreduce.Job:  map 100% reduce 97%
+15/01/28 07:23:45 INFO mapreduce.Job:  map 100% reduce 99%
+15/01/28 07:23:46 INFO mapreduce.Job:  map 100% reduce 100%
+15/01/28 07:24:03 INFO mapreduce.Job: Job job_1422458304036_0002 completed successfully
+15/01/28 07:24:03 INFO mapreduce.Job: Counters: 50
+<snip>
+<snip>
+<snip>
+        Shuffle Errors
+                BAD_ID=0
+                CONNECTION=0
+                IO_ERROR=0
+                WRONG_LENGTH=0
+                WRONG_MAP=0
+                WRONG_REDUCE=0
+        File Input Format Counters 
+                Bytes Read=5000000000
+        File Output Format Counters 
+                Bytes Written=5000000000
+15/01/28 07:24:03 INFO terasort.TeraSort: done
+
+7) With the job complete, Magpie now tears down the session and cleans
+   up all daemons.
+
+Stopping hadoop
+stopping yarn daemons
+stopping resourcemanager
+apex76: stopping nodemanager
+apex74: stopping nodemanager
+apex77: stopping nodemanager
+apex73: stopping nodemanager
+apex75: stopping nodemanager
+apex72: stopping nodemanager
+apex71: stopping nodemanager
+apex78: stopping nodemanager
+no proxyserver to stop
+stopping historyserver
+Saving namespace before shutting down hdfs ...
+Running bin/hdfs dfsadmin -safemode enter
+15/01/28 07:25:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Safe mode is ON
+Running bin/hdfs dfsadmin -saveNamespace
+15/01/28 07:25:59 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Save namespace successful
+Running bin/hdfs dfsadmin -safemode leave
+15/01/28 07:26:03 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Safe mode is OFF
+15/01/28 07:26:04 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Stopping namenodes on [apex70]
+apex70: stopping namenode
+apex76: stopping datanode
+apex78: stopping datanode
+apex74: stopping datanode
+apex75: stopping datanode
+apex77: stopping datanode
+apex72: stopping datanode
+apex73: stopping datanode
+apex71: stopping datanode
+Stopping secondary namenodes [apex70]
+apex70: stopping secondarynamenode
+
 
 Basic Instructions For Running Hadoop w/ UDA
 --------------------------------------------
@@ -156,6 +455,10 @@ HADOOP_UDA_JAR : Set to the path for the uda jar file, such as
 
 HADOOP_UDA_LIBPATH : Set to location of libuda.so.  Necessary if your
                      libuda.so isn't in a common location (e.g. /usr/lib).
+
+You'll find starting point scripts such as
+magpie.sbatch-hadoop-with-uda and magpie.msub-slurm-hadoop-with-uda to
+begin configuration.
 
 If you are building UDA yourself, be aware that the jar may have
 difficulty finding the libuda.so file.  Some appropriately placed
@@ -196,14 +499,14 @@ Q: But that'll mean I have to consistently use the same number of
    cluster nodes?
 
 A: Generally speaking no, but you can hit issues if you don't.  Just
-   imagine how HDFS issues if you were on a traditional Hadoop cluster
-   and added or removed nodes.
+   imagine what HDFS issues if you were on a traditional Hadoop
+   cluster and added or removed nodes.
 
    Generally speaking, increasing the number of nodes you use for a
    job is fine.  Data you currently have in HDFS is still there and
    readable, but it is not viewed as "local" according to HDFS and
    more network transfers will have to happen.  You may wish to
-   rebalance the HDFS blocks though.  The script
+   rebalance the HDFS blocks though.  The convenience script
    hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh can
    be used instead.
 
@@ -218,7 +521,8 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    to scale down the number of nodes, you should go through the
    process of "decomissioning" nodes like on a real cluster, otherwise
    you may lose data.  You can decomission nodes through the
-   hadoop-hdfs-over-lustre-nodes-decomission-script.sh script.
+   hadoop-hdfs-over-lustre-nodes-decomission-script.sh convenience
+   script.
 
 Q: What should HDFS replication be?
 
@@ -246,7 +550,7 @@ A: If you want to use a different Hadoop version than what you started
    script.  This is implemented in the "upgradehdfs" option for
    HADOOP_MODE in the launch scripts.
 
-Pro vs Con of HDFS over Lustre/NetworkFS vs. Posix FS (e.g. rawnetowrkfs, etc.)
+Pro vs Con of HDFS over Lustre/NetworkFS vs. Posix FS (e.g. rawnetworkfs, etc.)
 -------------------------------------------------------------------------------
 
 Here are some pros vs. cons of using a network filesystem directly vs
@@ -290,12 +594,12 @@ blocks.  The same job may create a single 1 terabyte file under access
 to the Posix FS directly.  In the case of Lustre, striping of the file
 must be handled by the user to ensure satisfactory performance.
 
-Basic Instructions For Using Pig
---------------------------------
+Instructions For Using Pig
+--------------------------
 
-1) Download your favorite version of Pig off of Apache and install it
-   into a location where it's accessible on all cluster nodes.
-   Usually this is on a NFS home directory.
+0) If necessary, download your favorite version of Pig off of Apache
+   and install it into a location where it's accessible on all cluster
+   nodes.  Usually this is on a NFS home directory.
 
    Make sure that the version of Pig you install is compatible with
    the version of Hadoop you are using.
@@ -305,10 +609,14 @@ Basic Instructions For Using Pig
    branch of Hadoop.  You may need to modify the Pig build.xml to work
    with the 0.23.0 branch (i.e. Hadoop 2.0).
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+   See below about misc/magpie-apache-download-and-setup.sh, which may
+   make the downloading easier.
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base hadoop+pig script
    (e.g. magpie.sbatch-hadoop-and-pig) for your scheduler/resource
@@ -316,10 +624,28 @@ Basic Instructions For Using Pig
    with the base script (e.g. magpie.sbatch) which contains all
    configuration options.
 
-3) Setup the essentials for Pig.  If you are letting Magpie do some
-   setup, here are the essentials:
+2) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
 
-   MAGPIE_JOB_TYPE : Set to "pig".
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'pig'
+
+   JAVA_HOME : B/c you need to ...
+
+3) Setup the essentials for Pig.
 
    PIG_SETUP : Set to yes
 
@@ -330,38 +656,77 @@ Basic Instructions For Using Pig
    PIG_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-   PIG_MODE : The first time you'll probably want to run w/ "testpig"
-   mode just to try things out.  Later you may want to run w/ 'script'
-   or 'interactive' mode, as that is the more likely way to run.
+4) Select how your job will run by setting PIG_MODE.  The first
+   time you'll probably want to run w/ 'testpig' mode just to try
+   things out and make things look setup correctly.
 
-4) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust PIG_CONF_FILES in your submission script
-   as needed.
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
 
-5) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
-   ... and any other options you see fit.
+      ssh node70
+      setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/ajobname/1081559/conf"
 
-6) Look at your job output file to see your output.  There will also
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can
+   launch a pig job (bin/pig ...).  There will also be instructions in
+   your job output on how to tear the session down cleanly if you wish
+   to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a Pig script and set
+   it in PIG_SCRIPT_PATH, and then run your job.  
+
+5) Pig requires Hadoop, so ensure the Hadoop is configured and also in
+   your submission script.  See above for Hadoop setup instructions.
+
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
+
+7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
-Basic Instructions For Running Zookeeper
-----------------------------------------
+   See below on "General Advanced Usage" for additional tips.
 
-1) Download your favorite version of Zookeeper off of Apache and install
-   it into a location where it's accessible on all cluster nodes.
-   Usually this is on a NFS home directory.  
+Instructions For Running Zookeeper
+----------------------------------
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+0) If necessary, download your favorite version of Zookeeper off of
+   Apache and install it into a location where it's accessible on all
+   cluster nodes.  Usually this is on a NFS home directory.
 
-   If the Zookeeper section isn't in it, just copy the Zookeeper
-   section from base script (e.g. magpie.sbatch) into it.
+   See below about misc/magpie-apache-download-and-setup.sh, which may
+   make the downloading easier.
 
-3) Setup the essentials for Zookeeper.  Here are the essentials:
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
+
+   As Zookeeper is predominantly a node coordination service used by
+   other services (e.g. Hbase, Storm), it's likely in the main
+   submission scripts for those big data projects.  If the Zookeeper
+   section isn't in it, just copy the Zookeeper section from base
+   script (e.g. magpie.sbatch) into it.
+
+2) Setup your job essentials at the top of the submission script.  See
+   other projects (e.g. Hbase, Storm) for details on this setup.
+
+   Be aware of how you many nodes you allocate for your job when
+   running Zookeeper.  Zookeeper normally runs on cluster nodes
+   separate from the rest (e.g. separate from nodes running HDFS or
+   Hbase Regionservers).  So you may need to increase your node count.
+
+   For example, if you desire 3 Zookeeper servers and 8 compute nodes,
+   your total node count should be 12 (1 master, 8 compute, 3
+   Zookeeper).
+
+3) Setup the essentials for Zookeeper.
 
    ZOOKEEPER_SETUP : Set to yes
 
@@ -377,36 +742,38 @@ Basic Instructions For Running Zookeeper
 
    ZOOKEEPER_FILESYSTEM_MODE : most will likely want "networkfs" so
    data files can be stored to Lustre.  If you have local disks such
-   as SSDs, you can use "local" instead.
+   as SSDs, you can use "local" instead, and set ZOOKEEPER_DATA_DIR to
+   the local SSD path.
 
    ZOOKEEPER_DATA_DIR : The base path for where you will store
-   Zookeeper data.
+   Zookeeper data.  If a local SSD is available, it may be preferable
+   to set this to a local drive and set ZOOKEEPER_FILESYSTEM_MODE
+   above to "local".
 
    ZOOKEEPER_LOCAL_DIR : A small place for conf files and log files
    local to each node.  Typically /tmp directory.
 
-4) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust ZOOKEEPER_CONF_FILES in your submission
-   script as needed.
+4) Run your job as instructions dictate in other project sections
+   (e.g. Hbase, Storm).
 
-5) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile"
-   appropriately.  Now Zookeeper will be started along with your job.
+Instructions For Running Hbase
+------------------------------
 
-Basic Instructions For Running Hbase
-------------------------------------
-
-1) Download your favorite version of Hbase off of Apache and install
-   it into a location where it's accessible on all cluster nodes.
-   Usually this is on a NFS home directory.  
+0) If necessary, download your favorite version of Hbase off of Apache
+   and install it into a location where it's accessible on all cluster
+   nodes.  Usually this is on a NFS home directory.
 
    See below about patches that may be necessary for Hbase depending
    on your environment and Hbase version.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+   See below about misc/magpie-apache-download-and-setup.sh, which may
+   make the downloading and patching easier.
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base hbase w/ hdfs script
    (e.g. magpie.sbatch-hbase-with-hdfs) for your scheduler/resource
@@ -414,7 +781,28 @@ Basic Instructions For Running Hbase
    with the base script (e.g. magpie.sbatch) which contains all
    configuration options.
 
-3) Setup the essentials for Hbase.  Here are the essentials:
+2) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'hbase'
+
+   JAVA_HOME : B/c you need to ...
+
+3) Setup the essentials for Hbase.
 
    HBASE_SETUP : Set to yes
 
@@ -426,30 +814,51 @@ Basic Instructions For Running Hbase
    HBASE_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   HBASE_MODE : The first time you'll probably want to run w/
-   'performanceeval' mode just to try things out.  Later you may want
-   to run w/ 'script' or 'interactive' mode, as that is the more
-   likely way to run.
+4) Select how your job will run by setting HBASE_MODE.  The first time
+   you'll probably want to run w/ 'performanceeval' mode just to try
+   things out and make things look setup correctly.
 
-4) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv HBASE_CONF_DIR "/tmp/username/hbase/ajobname/1081559/conf"
+      cd /home/username/hbase-0.98.9-hadoop2
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can
+   interact with the Hbase shell to start (bin/hbase shell).  There
+   will also be instructions in your job output on how to tear the
+   session down cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   HBASE_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/hbase-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
+
+5) Hbase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
    also in your submission script.  MapReduce is not needed with Hbase
    but can be setup along with it.  See above for Hadoop setup
    instructions.
 
-5) Hbase requires Zookeeper, so setup the essentials for Zookeeper.
+6) Hbase requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
 
-6) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust HBASE_CONF_FILES in your submission
-   script as needed.
+7) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
-   ... and any other options you see fit.
-
-7) Look at your job output file to see your output.  There will also
+8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
 
 Hbase Notes
 -----------
@@ -461,14 +870,14 @@ data would not be distributed evenly if you added new nodes into a
 traditional Hbase/Hadoop cluster.  Over time Hbase will rebalance data
 over the new nodes.
 
-Basic Instructions For Spark
-----------------------------
+Instructions For Spark
+----------------------
 
-1) Download your favorite version of Spark off of Apache and install
-   it into a location where it's accessible on all cluster nodes.
-   Usually this is on a NFS home directory.  You may need to set
-   SPARK_HADOOP_VERSION and run 'sbt/sbt assembly' to prepare Spark
-   for execution.  If you are not using the default Java
+0) If necessary, download your favorite version of Spark off of Apache
+   and install it into a location where it's accessible on all cluster
+   nodes.  Usually this is on a NFS home directory.  You may need to
+   set SPARK_HADOOP_VERSION and run 'sbt/sbt assembly' to prepare
+   Spark for execution.  If you are not using the default Java
    implementation installed in your system, you may need to edit
    sbt/sbt to use the proper Java version you desire (this is the case
    with 0.9.1, not the case in future versions).
@@ -476,10 +885,14 @@ Basic Instructions For Spark
    See below about patches that may be necessary for Spark depending
    on your environment and Spark version.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+   See below about misc/magpie-apache-download-and-setup.sh, which may
+   make the downloading and patching easier.
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base spark script
    (e.g. magpie.sbatch-spark) or spark w/ hdfs
@@ -491,7 +904,28 @@ Basic Instructions For Spark
    It should be noted that you can run Spark without HDFS.  You can
    access files normally through "file://<path>".
 
-3) Setup the essentials for Spark.  Here are the essentials:
+2) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'spark'
+
+   JAVA_HOME : B/c you need to ...
+
+3) Setup the essentials for Spark.
 
    SPARK_SETUP : Set to yes
 
@@ -501,43 +935,258 @@ Basic Instructions For Spark
    mount.
 
    SPARK_LOCAL_DIR : A small place for conf files and log files local
-   to each node.  Typically /tmp directory.
+   to each node.  Typically /tmp directory.  
 
-   SPARK_MODE : The first time you'll probably want to run w/
-   'sparkpi' mode just to try things out.  Later you may want
-   to run w/ 'script' or 'interactive' mode, as that is the more
-   likely way to run.
+   SPARK_LOCAL_SCRATCH_DIR : A scratch directory for Spark to use.  If
+   a local SSD is available, it would be preferable to set this to
+   that path and set SPARK_LOCAL_SCRATCH_DIR_TYPE to "local".
 
-4) Spark does not require HDFS, but many choose to use it.  If you do,
+   SPARK_LOCAL_SCRATCH_DIR_TYPE : Indicates if SPARK_LOCAL_SCRATCH_DIR
+   if a network file path or local store path.
+
+4) Select how your job will run by setting SPARK_MODE.  The first time
+   you'll probably want to run w/ 'sparkpi' mode just to try things
+   out and make things look setup correctly.
+
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv SPARK_CONF_DIR "/tmp/username/spark/ajobname/1081559/conf"
+      cd /home/username/spark-1.2.0-bin-hadoop2.4
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can run
+   a job using spark-class (bin/spark-class ...).  There will also be
+   instructions in your job output on how to tear the session down
+   cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   SPARK_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/spark-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
+
+5) Spark does not require HDFS, but many choose to use it.  If you do,
    setup Hadoop w/ HDFS in your submission script.  See above for
-   Hadoop setup instructions.
+   Hadoop setup instructions.  Simply use the prefix "hdfs://" or
+   "file://" appropriately for the filesystem you will access files
+   from.
 
-5) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust SPARK_CONF_FILES in your submission
-   script as needed.
+   You may wish to run with SPARK_MODE set to 'sparkwordcount' to test
+   the HDFS setup.
 
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
-   ... and any other options you see fit.
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
 
-Basic Instructions For Storm
-----------------------------
+   See below on "General Advanced Usage" for additional tips.
 
-1) Download your favorite version of Storm off of Apache and install
-   it into a location where it's accessible on all cluster nodes.
-   Usually this is on a NFS home directory.
+Example Job Output for Spark running SparkPi
+--------------------------------------------
+
+The following is an example job output of Magpie running Spark and
+running SparkPi.  This is run over HDFS over Lustre.  Sections of
+extraneous text have been left out.
+
+While this output is specific to using Magpie with Spark, the output
+when using Hadoop, Storm, Hbase, etc. is not all that different.
+
+1) First we get some details of the job
+
+*******************************************************
+* Magpie General Job Info
+*
+* Job Nodelist: apex[69-77]
+* Job Nodecount: 9
+* Job Timelimit in Minutes: 60
+* Job Name: sparkpitest
+* Job ID: 1081573
+*
+*******************************************************
+
+2) Next, Spark begins to launch and startup daemons on all cluster nodes.
+
+Starting spark
+starting org.apache.spark.deploy.master.Master, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.master.Master-1-apex69.out
+apex71: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex71.out
+apex72: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex72.out
+apex77: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex77.out
+apex76: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex76.out
+apex74: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex74.out
+apex75: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex75.out
+apex73: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex73.out
+apex70: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1081573/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex70.out
+Waiting 30 seconds to allow Spark daemons to setup
+
+3) Next, we see output with details of the Spark setup.  You'll find
+   addresses indicating web services you can access to get detailed
+   job information.  You'll also find information about how to login
+   to access Spark directly and how to shut down the job early if you
+   so desire.
+
+*******************************************************
+*
+* Spark Information
+*
+* You can view your Spark status by launching a web browser and pointing to ...
+*
+* Spark Master: http://apex69:8080
+* Spark Worker: http://<WORKERNODE>:8081
+* Spark Application Dashboard: http://apex69:4040
+*
+* The Spark Master for running jobs is
+*
+* spark://apex69:7077
+*
+* To access Spark directly, you'll want to:
+*   ssh apex69
+*   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1081573/conf"
+*   cd /home/achu/hadoop/spark-1.2.0-bin-hadoop2.4
+*
+* Then you can do as you please.  For example to run a job:
+*
+*   bin/spark-class <class> spark://apex69:7077
+*
+* To end/cleanup your session, kill the daemons via:
+*
+*   ssh apex69
+*   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1081573/conf"
+*   cd /home/achu/hadoop/spark-1.2.0-bin-hadoop2.4
+*   sbin/stop-all.sh
+*
+* Some additional environment variables you may sometimes wish to set
+*
+*   setenv JAVA_HOME "/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+*   setenv SPARK_HOME "/home/achu/hadoop/spark-1.2.0-bin-hadoop2.4"
+*
+*******************************************************
+
+4) Then the SparkPi job is run
+
+Running bin/run-example org.apache.spark.examples.SparkPi 8
+15/02/20 10:33:23 INFO SecurityManager: Changing view acls to: achu
+15/02/20 10:33:23 INFO SecurityManager: Changing modify acls to: achu
+15/02/20 10:33:23 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(achu); users with modify permissions: Set(achu)
+15/02/20 10:33:23 INFO Slf4jLogger: Slf4jLogger started
+15/02/20 10:33:24 INFO Remoting: Starting remoting
+15/02/20 10:33:24 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriver@apex69.llnl.gov:59131]
+15/02/20 10:33:24 INFO Utils: Successfully started service 'sparkDriver' on port 59131.
+15/02/20 10:33:24 INFO SparkEnv: Registering MapOutputTracker
+15/02/20 10:33:24 INFO SparkEnv: Registering BlockManagerMaster
+15/02/20 10:33:24 INFO DiskBlockManager: Created local directory at /p/lscratchg/achu/sparkscratch/node-0/spark-local-20150220103324-88d6
+15/02/20 10:33:24 INFO MemoryStore: MemoryStore started with capacity 25.9 GB
+15/02/20 10:33:24 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/02/20 10:33:25 INFO HttpFileServer: HTTP File server directory is /tmp/spark-b62dfb05-a931-4c9f-bbde-f420b605e4e4
+15/02/20 10:33:25 INFO HttpServer: Starting HTTP Server
+15/02/20 10:33:25 INFO Utils: Successfully started service 'HTTP file server' on port 43436.
+15/02/20 10:33:25 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+15/02/20 10:33:25 INFO SparkUI: Started SparkUI at http://apex69.llnl.gov:4040
+15/02/20 10:33:26 INFO SparkContext: Added JAR file:/home/achu/hadoop/spark-1.2.0-bin-hadoop2.4/lib/spark-examples-1.2.0-hadoop2.4.0.jar at http://192.168.123.69:43436/jars/spark-examples-1.2.0-hadoop2.4.0.jar with timestamp 1424457206218
+15/02/20 10:33:26 INFO AppClient$ClientActor: Connecting to master spark://apex69:7077...
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Connected to Spark cluster with app ID app-20150220103326-0000
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/0 on worker-20150220103252-apex73.llnl.gov-37145 (apex73.llnl.gov:37145) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/0 on hostPort apex73.llnl.gov:37145 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/1 on worker-20150220103252-apex71.llnl.gov-33291 (apex71.llnl.gov:33291) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/1 on hostPort apex71.llnl.gov:33291 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/2 on worker-20150220103252-apex75.llnl.gov-33121 (apex75.llnl.gov:33121) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/2 on hostPort apex75.llnl.gov:33121 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/3 on worker-20150220103252-apex74.llnl.gov-60926 (apex74.llnl.gov:60926) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/3 on hostPort apex74.llnl.gov:60926 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/4 on worker-20150220103252-apex77.llnl.gov-49445 (apex77.llnl.gov:49445) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/4 on hostPort apex77.llnl.gov:49445 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/5 on worker-20150220103252-apex76.llnl.gov-52178 (apex76.llnl.gov:52178) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/5 on hostPort apex76.llnl.gov:52178 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/6 on worker-20150220103252-apex70.llnl.gov-53289 (apex70.llnl.gov:53289) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/6 on hostPort apex70.llnl.gov:53289 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor added: app-20150220103326-0000/7 on worker-20150220103252-apex72.llnl.gov-51360 (apex72.llnl.gov:51360) with 16 cores
+15/02/20 10:33:26 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150220103326-0000/7 on hostPort apex72.llnl.gov:51360 with 16 cores, 50.0 GB RAM
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/0 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/1 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/2 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/3 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/4 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/5 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/6 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/7 is now RUNNING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/0 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/6 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/1 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/5 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/2 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/4 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/7 is now LOADING
+15/02/20 10:33:26 INFO AppClient$ClientActor: Executor updated: app-20150220103326-0000/3 is now LOADING
+<snip>
+<snip>
+<snip>
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 5.0 in stage 0.0 (TID 5) in 2001 ms on apex70.llnl.gov (1/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 1.0 in stage 0.0 (TID 1) in 2005 ms on apex70.llnl.gov (2/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 6.0 in stage 0.0 (TID 6) in 2003 ms on apex70.llnl.gov (3/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 7.0 in stage 0.0 (TID 7) in 2150 ms on apex70.llnl.gov (4/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 2167 ms on apex70.llnl.gov (5/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 2.0 in stage 0.0 (TID 2) in 2165 ms on apex70.llnl.gov (6/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 3.0 in stage 0.0 (TID 3) in 2166 ms on apex70.llnl.gov (7/8)
+15/02/20 10:33:30 INFO TaskSetManager: Finished task 4.0 in stage 0.0 (TID 4) in 2167 ms on apex70.llnl.gov (8/8)
+15/02/20 10:33:30 INFO DAGScheduler: Stage 0 (reduce at SparkPi.scala:35) finished in 3.377 s
+15/02/20 10:33:30 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool 
+15/02/20 10:33:30 INFO DAGScheduler: Job 0 finished: reduce at SparkPi.scala:35, took 3.583061 s
+Pi is roughly 3.142925
+15/02/20 10:33:30 INFO SparkUI: Stopped Spark web UI at http://apex69.llnl.gov:4040
+15/02/20 10:33:30 INFO DAGScheduler: Stopping DAGScheduler
+15/02/20 10:33:30 INFO SparkDeploySchedulerBackend: Shutting down all executors
+15/02/20 10:33:30 INFO SparkDeploySchedulerBackend: Asking each executor to shut down
+15/02/20 10:33:31 INFO MapOutputTrackerMasterActor: MapOutputTrackerActor stopped!
+15/02/20 10:33:31 INFO MemoryStore: MemoryStore cleared
+15/02/20 10:33:31 INFO BlockManager: BlockManager stopped
+15/02/20 10:33:31 INFO BlockManagerMaster: BlockManagerMaster stopped
+15/02/20 10:33:31 INFO SparkContext: Successfully stopped SparkContext
+15/02/20 10:33:31 INFO RemoteActorRefProvider$RemotingTerminator: Shutting down remote daemon.
+15/02/20 10:33:31 INFO RemoteActorRefProvider$RemotingTerminator: Remote daemon shut down; proceeding with flushing remote transports.
+
+The Pi approximation is 3.142925.
+
+5) With the job complete, Magpie now tears down the session and cleans
+   up all daemons.
+
+Stopping spark
+apex74: stopping org.apache.spark.deploy.worker.Worker
+apex77: stopping org.apache.spark.deploy.worker.Worker
+apex75: stopping org.apache.spark.deploy.worker.Worker
+apex73: stopping org.apache.spark.deploy.worker.Worker
+apex72: stopping org.apache.spark.deploy.worker.Worker
+apex70: stopping org.apache.spark.deploy.worker.Worker
+apex71: stopping org.apache.spark.deploy.worker.Worker
+apex76: stopping org.apache.spark.deploy.worker.Worker
+stopping org.apache.spark.deploy.master.Master
+
+Instructions For Storm
+----------------------
+
+0) If necessary, download your favorite version of Storm off of Apache
+   and install it into a location where it's accessible on all cluster
+   nodes.  Usually this is on a NFS home directory.
 
    See below about patches that may be necessary for Storm depending
    on your environment and Storm version.
 
-2) Select an appropriate job submission script for running your job.
-   You can find Slurm Sbatch scripts in the directory script-sbatch,
-   Moab Msub+Slurm scripts in the directory script-msub-slurm, and
-   Moab Msub+Torque scripts in the directory script-msub-torque.
+   See below about misc/magpie-apache-download-and-setup.sh, which may
+   make the downloading and patching easier.
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
 
    You'll likely want to start with the base storm script
    (e.g. magpie.sbatch-storm) for your scheduler/resource manager.  If
@@ -545,7 +1194,28 @@ Basic Instructions For Storm
    script (e.g. magpie.sbatch) which contains all configuration
    options.
 
-3) Setup the essentials for Storm.  Here are the essentials:
+2) Setup your job essentials at the top of the submissionscript.  As
+   an example, the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'storm'
+
+   JAVA_HOME : B/c you need to ...
+
+3) Setup the essentials for Storm.
 
    STORM_SETUP : Set to yes
 
@@ -557,25 +1227,113 @@ Basic Instructions For Storm
    STORM_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-   STORM_MODE : The first time you'll probably want to run w/
-   'stormwordcount' mode just to try things out.  Later you may want
-   to run w/ 'script' or 'interactive' mode, as that is the more
-   likely way to run.
+4) Select how your job will run by setting STORM_MODE.  The first time
+   you'll probably want to run w/ 'stormwordcount' mode just to try
+   things out and make things look setup correctly.
 
-4) Storm requires Zookeeper, so setup the essentials for Zookeeper.
+   After this, you may want to run with 'interactive' mode to play
+   around and figure things out.  In the job output you will see
+   output similar to the following:
+
+      ssh node70
+      setenv STORM_CONF_DIR "/tmp/username/storm/ajobname/1081559/conf"
+      cd /home/username/apache-storm-0.9.3
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session.  Once in
+   your session.  You can do as you please.  For example, you can run
+   a job using bin/storm (bin/storm jar ...).  There will also be
+   instructions in your job output on how to tear the session down
+   cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with 'script' mode.  Create a script that will
+   run your job/calculation automatically, set it in
+   STORM_SCRIPT_PATH, and then run your job.  You can find an example
+   job script in examples/storm-example-job-script.  See below on
+   "Exported Environment Variables", for information on exported
+   environment variables that may be useful in scripts.
+
+5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
    See above for Zookeeper setup instructions.
 
-5) If you are happy with the configuration files provided by this
-   project, you can use them.  If not, change them.  If you copy them
-   to a new directory, adjust STORM_CONF_FILES in your submission
-   script as needed.
-
-6) Run "sbatch -k ./magpie.sbatchfile" or "msub ./magpie.msubfile
-   ... and any other options you see fit.
+6) Submit your job into the cluster by running "sbatch -k
+   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
+   Moab.  Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
-   status of your job, how to interact, etc..
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
+
+   See below on "General Advanced Usage" for additional tips.
+
+Instructions For Tachyon
+------------------------
+
+0) If necessary, download your favorite version of Tachyon and install
+   it into a location where it's accessible on all cluster nodes.
+   Usually this is on a NFS home directory.
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/, with Slurm
+   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
+   script-msub-slurm, and Moab Msub+Torque scripts in
+   script-msub-torque.
+
+   As Tachyon is predominantly a data caching service used by other
+   services (e.g. Spark, Hadoop), it's likely in the main submission
+   scripts for some of those big data projects.  If the Tachyon
+   section isn't in it, just copy the Tachyon section from base script
+   (e.g. magpie.sbatch) into it.
+
+2) Setup your job essentials at the top of the submission script.  See
+   other projects (e.g. Spark, Hadoop) for details on this setup.
+
+3) Setup the essentials for Tachyon.
+
+   TACHYON_SETUP : Set to yes
+
+   TACHYON_VERSION : Set appropriately.
+
+   TACHYON_HOME : Where your tachyon code is.  Typically in an NFS
+   mount.
+
+   TACHYON_MODE : This will almost certainly be "launch". 
+
+   TACHYON_STORE_TYPE : most likely will be SSD.  Can be set to MEM if
+   an ramdisk has already been setup on the system for user access.
+
+   TACHYON_STORE_PATHS : set to the path of the local cache/store.
+
+   TACHYON_STORE_QUOTA : set to the right data size in gigs.
+
+   TACHYON_LOCAL_DIR : A small place for conf files and log files
+   local to each node.  Typically /tmp directory.
+
+4) Run your job as instructions dictate in other project sections
+   (e.g. Spark, Hadoop).
+
+General Advanced Usage
+----------------------
+
+The following are additional tips for advanced usage of Magpie.
+
+1) The Magpie environment variables of MAGPIE_PRE_JOB_RUN and
+   MAGPIE_POST_JOB_RUN can be used to run scripts before and after
+   your primary job script executes.
+
+   The MAGPIE_POST_JOB_RUN is particularly useful, as it can gather
+   logs and/or other debugging data for you.  The convenience script
+   post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh
+   gathers most configuration and log data and stores it to your home
+   directory.
+
+2) The Magpie environment variable MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT
+   is useful for creating a file of popular and useful environment
+   variables.  The file it creates can be used within scripts you
+   write, or it can sourced into your environment when you try to
+   interact with your job.
 
 Exported Environment Variables
 ------------------------------
@@ -616,10 +1374,12 @@ HADOOP_SLAVE_CORE_COUNT : Total cores on slave nodes in the
 HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
  		  used for accessing HDFS when the namenode + port
  		  must be specified in a script.
+ 		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
 HADOOP_NAMENODE_PORT : the port of the namenode.  Often used for
  		  accessing HDFS when the namenode + port must be
  		  specified in a script.
+ 		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.
@@ -644,9 +1404,13 @@ HBASE_MASTER_NODE : the master node of the Hbase allocation
 HBASE_REGIONSERVER_COUNT : number of region servers in your allocation
                            for Hbase.
 
-SPARK_MASTER_NODE : the master node of the Spark allocation
+SPARK_MASTER_NODE : the master node of the Spark allocation.  Often
+		    used for launching Spark jobs
+		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
 
-SPARK_MASTER_PORT : the master port for running Spark jobs
+SPARK_MASTER_PORT : the master port for running Spark jobs.  Often
+		    used for launching Spark jobs
+		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
 
 SPARK_SLAVE_COUNT : number of compute/data nodes in your allocation
                     for Spark.  May be useful for adjusting run time
@@ -673,32 +1437,77 @@ STORM_CONF_DIR : the directory that Storm configuration files local
 
 STORM_LOG_DIR : the directory Storm log files are stored
 
+TACHYON_MASTER_NODE : the master node of the Tachyon allocation.  Often
+		      used for accessing tachyon
+		      (e.g. tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT})
+
+TACHYON_MASTER_PORT : the master port for running Tachyon jobs.  Often
+		      used for accessing tachyon
+		      (e.g. tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT})
+
+TACHYON_FIRST_WORKER_NODE : the first worker node.  Often needed
+                            because some Tachyon tests/operations are
+                            required to run on a node with a worker on
+                            it.
+
+TACHYON_SLAVE_COUNT : number of compute/data nodes in your allocation
+                      for Tachyon.
+
+TACHYON_CONF_DIR : the directory that Tachyon configuration files local
+                   to the node are stored.
+
+TACHYON_LOG_DIR : the directory Tachyon log files are stored
+
 Convenience Scripts
 -------------------
 
 A number of convenience scripts are included in the scripts/
-directory, both for possible usefulness and as examples.  Notable ones
-worth mentioning:
+directory, both for possible usefulness and as examples.  They are
+organized within the directory as follows:
 
-magpie-gather-config-files-and-logs-script.sh - This script will get
-all of the conf files and log files from Hadoop, Hbase, Pig, and/or
-Zookeeper and store it in a location for post-analysis of your job.
-It's convenient for debugging.
+job-scripts - These are scripts that you would run as a possible job
+in Magpie.  You would set these scripts in Magpie job scripts in
+environment variables such as MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH,
+HBASE_SCRIPT_PATH, etc.
 
-magpie-output-config-files-script.sh - This script will output all of
-the conf files from your job.  It's convenient for debugging.
+pre-job-run-scripts - These are scripts that you would run before the
+actual calculation is executed.  You would set these scripts in the
+MAGPIE_PRE_JOB_RUN environment variable.
 
-hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See HDFS over
-Lustre section above for details.
+post-job-run-scripts - These are scripts that you would run after the
+actual calculation is executed.  You would set these scripts in the
+MAGPIE_POST_JOB_RUN environment variable.
 
-hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh - See
+misc - Other miscellaneous scripts.  These may be useful outside of
+Magpie or are convenient in some other way.
+
+Notable scripts worth mentioning:
+
+pre-job-run-scripts/magpie-output-config-files-script.sh - This script
+will output all of the conf files from your job.  It's convenient for
+debugging.
+
+post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
+This script will get all of the conf files and log files from Hadoop,
+Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
+for post-analysis of your job.  It's convenient for debugging.
+
+job-scripts/hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See
 HDFS over Lustre section above for details.
 
-hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh - Cleanup/remove
-corrupted blocks in HDFS.
+job-scripts/hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh
+- See HDFS over Lustre section above for details.
 
-hbase-major-compaction.sh - Perform a major compaction on all Hbase
-tables.
+job-scripts/hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh -
+Cleanup/remove corrupted blocks in HDFS.
+
+job-scripts/hbase-major-compaction.sh - Perform a major compaction on
+all Hbase tables.
+
+misc/magpie-apache-download-and-setup.sh - Script will automatically
+download and patch Apache projects for you so you don't have to
+manually download them.  It'll also configure several paths for you in
+the launch scripts automatically.
 
 Patching
 --------
@@ -732,6 +1541,9 @@ Spark
   patch for startup scripts and code is required, a recompilation of
   source is required.
 
+  For Spark version 1.2.0, patch for startup scripts is required, but
+  recompilation of source is not required.
+
 - Patch to support non-ssh remote execution may be needed in some
   environments.  Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
@@ -739,12 +1551,21 @@ Spark
 Storm
 - Patch to support alternate config file directories and log file
   directories is required atleast through Storm 0.9.2.  Storm requires
-  a recompilation of source.
+  a recompilation of source.  Patch is no longer needed in 0.9.3.
 
 Pig
 - No patching necessary.
 - However, a major bug exists in 0.12.0, which most users may wish to
   patch and recompile.
+
+Tachyon
+- Patch to support alternate config file directories is required.
+  Patch can be applied directly to startup scripts, not needing a
+  recompilation of source.
+
+- Patch to support non-ssh remote execution may be needed in some
+  environments.  Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
 
 Zookeeper
 - No patching necessary.
@@ -824,6 +1645,9 @@ directory.  It is being monitored via:
 https://issues.apache.org/jira/browse/SPARK-2116
 (Alternate approach at https://issues.apache.org/jira/browse/SPARK-2058 may suffice if it is accepted)
 
+For Spark version 1.2.0, a recompile is no longer required, but
+patching scripts is still necessary.
+
 Patch - Alternate Log Dir & Conf Dir for Storm
 ----------------------------------------------
 
@@ -854,6 +1678,8 @@ mvn package
 
 should net you a binary package with everything you need in the target
 directory.
+
+No patching is necessary with Storm 0.9.3.
 
 Patch - Reducer Bug in Pig
 --------------------------
@@ -890,10 +1716,10 @@ Testing
 While I did some testing w/ Hadoop 1.2.1, b/c of the problem mentioned
 above (HDFS-1835), I did most development and testing against Hadoop
 2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.  Nominal
-testing was done with Hadoop 2.4.0.
+testing was done with Hadoop 2.4.0 and 2.6.0.
 
 Pig support was added/tested against version 0.12.0.  Nominal
-testing was done with Pig 0.12.1.
+testing was done with Pig 0.12.1 and 0.14.0.
 
 Zookeeper support was added/tested against version 3.4.5.  Nominal
 testing was done with Zookeeper 3.4.6.
@@ -903,11 +1729,15 @@ UDA support was added/tested against uda-plugin 3.3.2-0 with Hadoop
 
 Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
 tested against HDFS based file systems.  Nominal testing was done with
-Hbase 0.98.3-hadoop2.
+Hbase 0.98.3-hadoop2 and 0.98.9-hadoop2.
 
-Spark was added/tested against spark-0.9.1 and spark-1.0.0.
+Spark was added/tested against spark-0.9.1 and spark-1.0.0.  Nominal
+testing was done with Spark 1.2.0.
 
-Storm was added/tested against storm-0.9.2.
+Storm was added/tested against storm-0.9.2.  Nominal testing was done
+with Storm 0.9.3.
+
+Tachyon was added/tested against tachyon-0.6.0.
 
 Contributions
 -------------
@@ -929,9 +1759,10 @@ welcome patches to support them.
 
 To support another scheduler or resource manager, you'll want to make
 your equivalent scheduler/resource manager header, similar to
-script-templates/magpie-slurm.  Then add an appropriate new section to
-script-templates/Makefile and a new directory for these new submission
-scripts.
+submission-scripts/script-templates/magpie-slurm.  Then add an
+appropriate new section to
+sbumission-scripts/script-templates/Makefile and a new directory for
+these new submission scripts.
 
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
 magpie-submission-convert and add appropriate input checks in

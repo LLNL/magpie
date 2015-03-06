@@ -1,0 +1,4 @@
+# Path for intellustre 
+#
+export HADOOP_INTELLUSTRE_PATH="LUSTREDIRPREFIX/intellustre/"
+
