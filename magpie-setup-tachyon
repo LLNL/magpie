@@ -76,7 +76,7 @@ if [ "${TACHYON_STORE_QUOTA}X" != "X" ]
 then
     tachyonstorequota="${TACHYON_STORE_QUOTA}GB"
 else
-    tachyonstorequota="1000GB"
+    tachyonstorequota="100GB"
 fi
 
 if [ "${TACHYON_UNDERFS_FILESYSTEM}X" == "X" ]

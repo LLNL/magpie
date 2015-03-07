@@ -1420,9 +1420,9 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 # TACHYON_STORE_QUOTA
 #
 # Amount of data Tachyon can store for the user.  Specified in gigs.
-# Defaults to "1000" if not specified.
+# Defaults to "100" if not specified.
 #
-# export TACHYON_STORE_QUOTA="1000"
+# export TACHYON_STORE_QUOTA="100"
 
 # TACHYON_UNDERFS_FILESYSTEM
 #
