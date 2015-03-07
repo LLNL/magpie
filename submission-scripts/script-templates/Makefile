@@ -152,7 +152,7 @@ define create-templates
 	# Hadoop and Tachyon
 	echo "Creating magpie.$(SCHED)-hadoop-and-tachyon"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
-		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
 		magpie-tachyon\
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_TACHYON)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_TACHYON)
