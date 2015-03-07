@@ -96,6 +96,7 @@ define create-templates
 	$(eval MAGPIE_HADOOP := ../script-$(SCHED)/magpie.$(SCHED)-hadoop)
 	$(eval MAGPIE_HADOOP_WITH_UDA := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-with-uda)
 	$(eval MAGPIE_HADOOP_AND_PIG := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-and-pig)
+	$(eval MAGPIE_HADOOP_AND_TACHYON := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-and-tachyon)
 	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs)
 	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
 	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
@@ -147,6 +148,17 @@ define create-templates
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
+
+	# Hadoop and Tachyon
+	echo "Creating magpie.$(SCHED)-hadoop-and-tachyon"
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
+		magpie-tachyon\
+		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_TACHYON)
+	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_TACHYON)
+	sed -i -e "s/TACHYON_SETUP=no/TACHYON_SETUP=yes/" $(MAGPIE_HADOOP_AND_TACHYON)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_AND_TACHYON)
+	$(call common-substitution, ${MAGPIE_HADOOP_AND_TACHYON})
 
 	# Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
