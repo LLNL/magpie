@@ -1314,6 +1314,13 @@ Instructions For Tachyon
 4) Run your job as instructions dictate in other project sections
    (e.g. Spark, Hadoop).
 
+   Take note that it may be necessary to include the tachyon client
+   jar in your jobs, as it may not be in the default paths.  For
+   example, with Hadoop you may need to specify the tachyon jar with
+   -libjars.
+
+   hadoop jar hadoop-mapreduce-examples-2.4.0.jar wordcount -libjars /path-to-tachyon/tachyon-client-0.6.0-jar-with-dependencies.jar tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}/foo.txt tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}/out
+
 General Advanced Usage
 ----------------------
 
