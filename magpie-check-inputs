@@ -1349,6 +1349,15 @@ then
 	exit 1
     fi
 
+    if [ "${TACHYON_WORKER_ON_MASTER}X" != "X" ]
+    then
+	if [ "${TACHYON_WORKER_ON_MASTER}" != "yes" ] && [ "${TACHYON_WORKER_ON_MASTER}" != "no" ]
+	then
+	    echo "TACHYON_WORKER_ON_MASTER must be set to yes or no"
+	    exit 1
+	fi
+    fi
+
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
 	if [ "${TACHYON_UNDERFS_FILESYSTEM}X" == "X" ]

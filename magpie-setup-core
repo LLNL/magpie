@@ -315,7 +315,13 @@ then
     # file but we still output it b/c there are functions in Magpie
     # that assume it exists 
     cp ${MAGPIE_LOCAL_DIR}/job_masters ${TACHYON_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_DIR}/job_slaves ${TACHYON_CONF_DIR}/workers
+    if [ "${TACHYON_WORKER_ON_MASTER}" == "yes" ]
+    then
+	cp ${MAGPIE_LOCAL_DIR}/job_masters ${TACHYON_CONF_DIR}/workers
+	cat ${MAGPIE_LOCAL_DIR}/job_slaves >> ${TACHYON_CONF_DIR}/workers
+    else
+	cp ${MAGPIE_LOCAL_DIR}/job_slaves ${TACHYON_CONF_DIR}/workers
+    fi
 fi
 
 exit 0

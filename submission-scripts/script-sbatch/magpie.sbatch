@@ -1446,6 +1446,18 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 #
 # export TACHYON_JOURNAL_FOLDER="/lustre/${USER}/tachyon/journal/"
 
+# TACHYON_WORKER_ON_MASTER
+#
+# Most big data projects do not have a "slave" or "worker" that also
+# runs on the master node (such as Hadoop, Hbase, etc.).  Tachyon is
+# an exception in which it often likes to have a worker running on the
+# master node for convenience of running tests and such.
+#
+# It is not required to run a worker on the master, but it can be
+# convenient.  Specify the below to "yes" to run a worker on the
+# master.
+# export TACHYON_WORKER_ON_MASTER="yes" 
+
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
