@@ -6,9 +6,11 @@
 #
 # For "terasort" mode.
 #
-# Specify 10000000000 for terabyte, for actual benchmarking
+# Specify terasort size in units of 100.  Specify 10000000000 for
+# terabyte, for actual benchmarking
 #
-# Specify something small, like 50000000 for basic sanity tests.
+# Specify something small, for basic sanity tests.
+#
 # Defaults to 50000000.
 #
 # export HADOOP_TERASORT_SIZE=50000000
