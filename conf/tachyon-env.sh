@@ -87,6 +87,7 @@ export TACHYON_JAVA_OPTS+="
   -Dtachyon.worker.memory.size=${TACHYON_HIERARCHYSTORE_QUOTA}
   -Dtachyon.worker.data.folder=/tachyonworker/
   -Dtachyon.master.worker.timeout.ms=60000
+  -Dtachyon.worker.user.timeout.ms=30000
   -Dtachyon.master.journal.folder=${TACHYON_JOURNAL_FOLDER}
 "
 
