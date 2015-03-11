@@ -1476,6 +1476,15 @@ then
     then
 	cd ${TACHYON_HOME}
 
+	if [ "${TACHYON_JOURNAL_FOLDER}X" == "X" ]
+	then
+	    echo "Clearing tachyon data"
+	    
+	    command="${tachyoncmdprefix}/tachyon tfs rmr /"
+	    echo "Running $command" >&2
+	    $command
+	fi
+
 	echo "Stopping tachyon"
 	${tachyoncmdprefix}/tachyon-stop.sh all
     fi
