@@ -1422,15 +1422,6 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 #
 # export TACHYON_STORE_QUOTA="100"
 
-# TACHYON_UNDERFS_FILESYSTEM
-#
-# By default, if Hadoop is setup with a file system (and it is an HDFS
-# variant or rawnetworkfs), the Tachyon underfs (where data is backed
-# up to) will automatically be calculated and configured.  If Hadoop
-# is not setup, the following must be specified.
-#
-# export TACHYON_UNDERFS_FILESYSTEM="/lustre/${USER}/tachyon/underfs/"
-
 # TACHYON_JOURNAL_FOLDER
 #
 # By default, if not specified, Magpie will re-format the Tachyon file

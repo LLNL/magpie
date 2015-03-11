@@ -79,19 +79,9 @@ else
     tachyonstorequota="100GB"
 fi
 
-if [ "${TACHYON_UNDERFS_FILESYSTEM}X" == "X" ]
-then
-    # sets hadooptmpdir and fsdefault
-    Magpie_calculate_hadoop_filesystem_paths ${tachyonnoderank}
-    tachyonunderfsaddress="${fsdefault}"
-else
-    tachyonunderfsaddress="file://${TACHYON_UNDERFS_FILESYSTEM}"
-    mkdir -p ${TACHYON_UNDERFS_FILESYSTEM}
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${TACHYON_UNDERFS_FILESYSTEM}"
-	exit 1
-    fi
-fi
+# sets hadooptmpdir and fsdefault
+Magpie_calculate_hadoop_filesystem_paths ${tachyonnoderank}
+tachyonunderfsaddress="${fsdefault}"
 
 if [ "${TACHYON_JOURNAL_FOLDER}X" != "X" ]
 then
