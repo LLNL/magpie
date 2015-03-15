@@ -43,6 +43,7 @@ fi
 
 extrahadoopclasses=""
 extrahadoopopts=""
+extrahadooptaskopts=""
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 then
@@ -973,6 +974,12 @@ then
     fi
 
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
+    if [ "${extrahadooptaskopts}X" != "X" ]
+    then
+	# Add a space in front
+	${extrahadooptaskopts} = " ${extrahadooptaskopts}"
+    fi
+    extrahadooptaskoptssubst=`echo "${extrahadooptaskopts}" | sed "s/\\//\\\\\\\\\//g"`
 
     cp ${pre_mapredsitexml} ${post_mapredsitexml}
 
@@ -1013,6 +1020,7 @@ then
 	-e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
 	-e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
 	-e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
+	-e "s/HADOOPEXTRATASKJAVAOPTS/${extrahadooptaskoptssubst}/g" \
 	${post_mapredsitexml}
 fi
 

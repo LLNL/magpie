@@ -63,7 +63,7 @@
 
 <property>
   <name>mapred.child.java.opts</name>
-  <value>-XmxALLCHILDHEAPSIZEm</value>
+  <value>-XmxALLCHILDHEAPSIZEmHADOOPEXTRATASKJAVAOPTS</value>
   <description>Java opts for the task tracker child processes.  
   The following symbol, if present, will be interpolated: @taskid@ is replaced 
   by current TaskID. Any other occurrences of '@' will go unchanged.
@@ -80,7 +80,7 @@
 
 <property>
   <name>mapred.map.child.java.opts</name>
-  <value>-XmxMAPCHILDHEAPSIZEm</value>
+  <value>-XmxMAPCHILDHEAPSIZEmHADOOPEXTRATASKJAVAOPTS</value>
 </property>
 
 <property>
@@ -90,7 +90,7 @@
 
 <property>
   <name>mapred.reduce.child.java.opts</name>
-  <value>-XmxREDUCECHILDHEAPSIZEm</value>
+  <value>-XmxREDUCECHILDHEAPSIZEmHADOOPEXTRATASKJAVAOPTS</value>
 </property>
 
 <property>
