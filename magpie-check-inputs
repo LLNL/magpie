@@ -1372,6 +1372,15 @@ then
 	    exit 1
 	fi
     fi
+
+    if [ "${TACHYON_ASYNCHRONOUS_WRITES}X" != "X" ]
+    then
+	if [ "${TACHYON_ASYNCHRONOUS_WRITES}" != "yes" ] && [ "${TACHYON_ASYNCHRONOUS_WRITES}" != "no" ]
+	then
+	    echo "TACHYON_ASYNCHRONOUS_WRITES must be set to yes or no"
+	    exit 1
+	fi
+    fi
 fi
 
 #

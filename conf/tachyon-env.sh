@@ -64,6 +64,10 @@ export TACHYON_UNDERFS_HDFS_IMPL=org.apache.hadoop.hdfs.DistributedFileSystem
 
 export TACHYON_JOURNAL_FOLDER="TACHYONJOURNALFOLDER"
 
+export TACHYON_ASYNC_ENABLE="TACHYONASYNCENABLE"
+
+export TACHYON_WRITETYPE_DEFAULT="TACHYONWRITETYPEDEFAULT"
+
 # tachyon.worker.hierarchystore.level0.alias - MEM or SSD or HDD
 # achu: is tachyon.worker.memory.size deprecated in 0.6.0?
 # XXX tachyon journal only needed for failover? in local-dir good/bad?
@@ -89,6 +93,8 @@ export TACHYON_JAVA_OPTS+="
   -Dtachyon.master.worker.timeout.ms=60000
   -Dtachyon.worker.user.timeout.ms=30000
   -Dtachyon.master.journal.folder=${TACHYON_JOURNAL_FOLDER}
+  -Dtachyon.async.enabled=${TACHYON_ASYNC_ENABLE}
+  -Dtachyon.user.file.writetype.default=${TACHYON_WRITETYPE_DEFAULT}
 "
 
 # Master specific parameters. Default to TACHYON_JAVA_OPTS.

@@ -90,6 +90,15 @@ else
     tachyonjournalfolder="${TACHYON_LOCAL_DIR}/journal/"
 fi
 
+if [ "${TACHYON_ASYNCHRONOUS_WRITES}" == "yes" ]
+then
+    tachyonasyncenable="true"
+    tachyonwritetypedefault="ASYNC_THROUGH"
+else
+    tachyonasyncenable="false"
+    tachyonwritetypedefault="CACHE_THROUGH"
+fi
+
 openfiles=`ulimit -n`
 if [ "${openfiles}" != "unlimited" ]
 then
@@ -203,6 +212,8 @@ sed -i \
     -e "s/TACHYONWORKERMEMORYSIZE/${tachyonstorequota}/g" \
     -e "s/TACHYONUNDERFSADDRESS/${tachyonunderfsaddresssubst}/g" \
     -e "s/TACHYONJOURNALFOLDER/${tachyonjournalfoldersubst}/g" \
+    -e "s/TACHYONASYNCENABLE/${tachyonasyncenable}/g" \
+    -e "s/TACHYONWRITETYPEDEFAULT/${tachyonwritetypedefault}/g" \
     ${post_tachyonenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]

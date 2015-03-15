@@ -751,6 +751,16 @@ then
     else
 	extrahadoopclasses="${extrahadoopclasses}:${tachyonjar}"
     fi
+
+    if [ "${TACHYON_ASYNCHRONOUS_WRITES}" == "yes" ]
+    then
+	if [ "${extrahadooptaskopts}X" == "X" ]
+	then
+	    extrahadooptaskopts="-Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
+	else
+	    extrahadooptaskopts="${extrahadooptaskopts} -Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
+	fi
+    fi
 fi
 
 #
@@ -974,11 +984,6 @@ then
     fi
 
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
-    if [ "${extrahadooptaskopts}X" != "X" ]
-    then
-	# Add a space in front
-	${extrahadooptaskopts} = " ${extrahadooptaskopts}"
-    fi
     extrahadooptaskoptssubst=`echo "${extrahadooptaskopts}" | sed "s/\\//\\\\\\\\\//g"`
 
     cp ${pre_mapredsitexml} ${post_mapredsitexml}
@@ -990,6 +995,7 @@ then
 	sed -i -e "/@UDA@/,+1d" ${post_mapredsitexml}
     fi
 
+    # Space w/ HADOOPEXTRATASKJAVAOPTS substitution is intentional
     sed -i \
 	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
@@ -1020,7 +1026,7 @@ then
 	-e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
 	-e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
 	-e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
-	-e "s/HADOOPEXTRATASKJAVAOPTS/${extrahadooptaskoptssubst}/g" \
+	-e "s/HADOOPEXTRATASKJAVAOPTS/ ${extrahadooptaskoptssubst}/g" \
 	${post_mapredsitexml}
 fi
 
