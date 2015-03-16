@@ -1704,6 +1704,37 @@ directory.
 
 No patching is necessary with Storm 0.9.3.
 
+Patch - Various minor issues for Tachyon
+----------------------------------------
+
+A variety of minor issues exist with Tachyon 0.6.0, which are handled
+in aggregate by the tachyon-0.6.0.patch provided.
+
+User should note that Tachyon 0.6.0 defaults to using Hadoop 1.0.4.  A
+recompile is needed against the appropriate version for use with
+Magpie.
+
+mvn -Dhadoop.version=2.4.0 -DskipTests clean package
+
+Users should note that Tachyon 0.6.0 is not the default build within
+Spark, so a recompile of Spark is also necessary.  It can be done as
+follows:
+
+edit core/pom.xml and update the Tachyon version to 0.6.0
+
+./make-distribution.sh --name yourbuildname --tgz -Phadoop-2.4
+
+In addition, Spark needs to updated to support 0.6.0.  The patch can
+be found in the following tree on github:
+
+https://github.com/calvinjia/spark.git
+
+in the branch
+
+upgrade_tachyon_0.6.0
+
+The patch is included in the patches/ directory for your convenience.
+
 Patch - Reducer Bug in Pig
 --------------------------
 
