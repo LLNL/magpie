@@ -594,6 +594,62 @@ blocks.  The same job may create a single 1 terabyte file under access
 to the Posix FS directly.  In the case of Lustre, striping of the file
 must be handled by the user to ensure satisfactory performance.
 
+Troubleshooting Hadoop
+----------------------
+
+1) When running Hadoop w/ HDFS over Lustre or a NetworkFS, if you see
+   errors like the following:
+
+Waiting 30 more seconds for namenode to exit safe mode
+Waiting 30 more seconds for namenode to exit safe mode
+Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME
+
+   There is one of several likely problems. Please look at the log
+   file for the namenode.  You can find it in the master node in the
+   location indicated by HADOOP_LOG_DIR.  You can also set
+   MAGPIE_POST_JOB_RUN to
+   post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh
+   to gather the log file for you.  See "General Advanced Usage" below
+   for more info.
+
+   A) If you see messages such as the following in the log
+
+The reported blocks 169 needs additional 26 blocks to reach the threshold 0.9990 of total blocks 195.
+The number of live datanodes 3 has reached the minimum number 0. Safe mode will be turned off automatically once the thresholds have been reached.
+
+   There are several possibilities.
+
+   - If the number of reported blocks continually increases and the
+     additional blocks decreases, HDFS's namenode may have simply not
+     had enough time to read all of the blocks and setup HDFS.
+     Increase MAGPIE_STARTUP_TIME.
+
+   - If there is no progress on the number of reported blocks or
+     additional blocks, HDFS's namenode cannot find the blocks it needs
+     to complete setup.  This can be due to several reasons.
+
+     - You have decreased the number of nodes in your HDFS allocation.
+       Similar to if you removed nodes from a real HDFS cluster, data
+       has "disappeared".  See above for information on using the
+       hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh
+       script if you truly want to use fewer nodes.
+
+     - You have lost blocks of data due to corruption.  This can be
+       due to variety of reasons.  See script
+       hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh to try and
+       fix the corruption.
+
+  B) If you see messages such as the following in the log
+
+File system image contains an old layout version -56.
+An upgrade to version -60 is required.
+Please restart NameNode with the "-rollingUpgrade started" option if a rolling upgrade is already started; or restart NameNode with the "-upgrade" option to start a new upgrade.
+
+  You are likely using a newer version of Hadoop against an older
+  version.  If you are upgrading with Hadoop 2.2.0 or newer, there is
+  a seemless upgrade path.  Run the "upgradehdfs" option by setting it
+  in HADOOP_MODE in your launch scripts.
+
 Instructions For Using Pig
 --------------------------
 
