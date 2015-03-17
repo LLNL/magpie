@@ -521,8 +521,8 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    to scale down the number of nodes, you should go through the
    process of "decomissioning" nodes like on a real cluster, otherwise
    you may lose data.  You can decomission nodes through the
-   hadoop-hdfs-over-lustre-nodes-decomission-script.sh convenience
-   script.
+   hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh
+   convenience script.
 
 Q: What should HDFS replication be?
 
@@ -1515,8 +1515,8 @@ This script will get all of the conf files and log files from Hadoop,
 Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
 for post-analysis of your job.  It's convenient for debugging.
 
-job-scripts/hadoop-hdfs-over-lustre-nodes-decomission-script.sh - See
-HDFS over Lustre section above for details.
+job-scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh
+- See HDFS over Lustre section above for details.
 
 job-scripts/hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh
 - See HDFS over Lustre section above for details.
