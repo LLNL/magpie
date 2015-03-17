@@ -1,8 +1,6 @@
 #!/bin/sh
 
-# This script just lists the files in your HDFS home dir.
-#
-# Convenient for just looking to see what's in there, perhaps after a job
+# This script is useful for fixing HDFS corruption
 
 cd ${HADOOP_HOME}
 
