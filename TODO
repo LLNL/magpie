@@ -1,3 +1,9 @@
+General
+-------
+do not start spark, hbase, etc. if hadoop namenode doesn't come up
+- etc. with other bringups
+
+
 Major feature support
 ---------------------
 script to get/patch all newest versions of stuff supported by Magpie
@@ -27,6 +33,7 @@ Storm + Trident
 Tachyon
 - fault tolerance (zookeeper + multiple masters, etc.)
 - multiple layer hierarchy support 
+- localfilesystem underfs support
 
 ideas
 -----
