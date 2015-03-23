@@ -68,6 +68,10 @@ export TACHYON_ASYNC_ENABLE="TACHYONASYNCENABLE"
 
 export TACHYON_WRITETYPE_DEFAULT="TACHYONWRITETYPEDEFAULT"
 
+# Prepend Tachyon classes before classes specified by TACHYON_CLASSPATH
+# in the Java classpath.  May be necessary if there are jar conflicts
+export TACHYON_PREPEND_TACHYON_CLASSES="y"
+
 # tachyon.worker.hierarchystore.level0.alias - MEM or SSD or HDD
 # achu: is tachyon.worker.memory.size deprecated in 0.6.0?
 # XXX tachyon journal only needed for failover? in local-dir good/bad?
