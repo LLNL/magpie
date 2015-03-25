@@ -1452,17 +1452,6 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 # master.
 # export TACHYON_WORKER_ON_MASTER="yes" 
 
-# TACHYON_ASYNCHRONOUS_WRITES
-#
-# By default, many Tachyon writes such as CLI copyFromLocal and Hadoop
-# compatitable interface write from the Tachyon cache to the
-# UnderFileSystem (i.e. HDFS) synchronously.  This can be bad for
-# performance and lead to various task timeouts.
-#
-# Set the below to force the default to asynchronous writes.  Defaults
-# to no.
-# export TACHYON_ASYNCHRONOUS_WRITES="yes"
-
 # Path local to each cluster node, typically something in /tmp.
 # This will store local conf files and log files for your job. 
 #
