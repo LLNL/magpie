@@ -358,6 +358,12 @@ Magpie_calculate_canrunjobscount () {
     then
 	canrunjobscount=$((canrunjobscount+1))
     fi
+
+    # Could be zero in weird test scenarios
+    if [ "${canrunjobscount}" == "0" ]
+    then
+	canrunjobscount=1
+    fi
 }
 
 Magpie_calculate_threadstouse () {
