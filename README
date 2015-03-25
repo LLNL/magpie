@@ -1,7 +1,7 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated March 15, 2015
+Updated March 24, 2015
 chu11@llnl.gov
 
 What is Magpie?
@@ -1763,8 +1763,9 @@ No patching is necessary with Storm 0.9.3.
 Patch - Various minor issues for Tachyon
 ----------------------------------------
 
-A variety of minor issues exist with Tachyon 0.6.0, which are handled
-in aggregate by the tachyon-0.6.0.patch provided.
+In addition to the alternate ssh & conf support, a variety of minor
+issues exist with Tachyon 0.6.0, which are handled in aggregate by the
+tachyon-0.6.0.patch provided.
 
 User should note that Tachyon 0.6.0 defaults to using Hadoop 1.0.4.  A
 recompile is needed against the appropriate version for use with
@@ -1772,16 +1773,16 @@ Magpie.
 
 mvn -Dhadoop.version=2.4.0 -DskipTests clean package
 
-Users should note that Tachyon 0.6.0 is not the default build within
-Spark, so a recompile of Spark is also necessary.  It can be done as
-follows:
+Users should note that Tachyon 0.6.X is not the default build within
+Spark 1.2.X, so a recompile of Spark is also necessary.  It can be
+done as follows:
 
-edit core/pom.xml and update the Tachyon version to 0.6.0
+edit core/pom.xml and update the Tachyon version to 0.6.X
 
 ./make-distribution.sh --name yourbuildname --tgz -Phadoop-2.4
 
-In addition, Spark needs to updated to support 0.6.0.  The patch can
-be found in the following tree on github:
+In addition, Spark 1.2.X needs to updated to support 0.6.X.  The patch
+can be found in the following tree on github:
 
 https://github.com/calvinjia/spark.git
 
@@ -1847,7 +1848,8 @@ testing was done with Spark 1.2.0.
 Storm was added/tested against storm-0.9.2.  Nominal testing was done
 with Storm 0.9.3.
 
-Tachyon was added/tested against tachyon-0.6.0.
+Tachyon was added/tested against tachyon-0.6.0.  Nominal testing was
+done with Tachyon 0.6.1.
 
 Contributions
 -------------

@@ -1381,7 +1381,7 @@ export TACHYON_MODE="launch"
 
 # Tachyon Version
 #
-export TACHYON_VERSION="0.6.0"
+export TACHYON_VERSION="0.6.1"
 
 # Path to your Tachyon build/binaries
 #
