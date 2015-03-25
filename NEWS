@@ -4,6 +4,7 @@ Add basic support for Tachyon (ALPHA).
 Support HADOOP_MODE of "launch" for convenience.
 Support MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL option.
 Output additional environment variables into MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT.
+Update primary Spark to 1.3.0.
 
 magpie 1.53
 -----------
