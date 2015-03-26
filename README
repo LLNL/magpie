@@ -1338,13 +1338,13 @@ Instructions For Tachyon
    script-msub-torque.
 
    As Tachyon is predominantly a data caching service used by other
-   services (e.g. Spark, Hadoop), it's likely in the main submission
-   scripts for some of those big data projects.  If the Tachyon
-   section isn't in it, just copy the Tachyon section from base script
+   services (e.g. Spark), it's likely in the main submission scripts
+   for some of those big data projects.  If the Tachyon section isn't
+   in it, just copy the Tachyon section from base script
    (e.g. magpie.sbatch) into it.
 
 2) Setup your job essentials at the top of the submission script.  See
-   other projects (e.g. Spark, Hadoop) for details on this setup.
+   other projects (e.g. Spark) for details on this setup.
 
 3) Setup the essentials for Tachyon.
 
@@ -1368,7 +1368,7 @@ Instructions For Tachyon
    local to each node.  Typically /tmp directory.
 
 4) Run your job as instructions dictate in other project sections
-   (e.g. Spark, Hadoop).
+   (e.g. Spark).
 
    Take note that it may be necessary to include the tachyon client
    jar in your jobs, as it may not be in the default paths.  For
