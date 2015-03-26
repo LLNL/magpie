@@ -1377,22 +1377,6 @@ Instructions For Tachyon
 
    hadoop jar hadoop-mapreduce-examples-2.4.0.jar wordcount -libjars /path-to-tachyon/tachyon-client-0.6.0-jar-with-dependencies.jar tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}/foo.txt tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}/out
 
-Troubleshooting Tachyon
------------------------
-
-1) When running Tachyon with Hadoop, if you see errors like the
-   following:
-
-15/03/10 10:00:11 INFO mapreduce.Job: Task Id : attempt_1426006397452_0001_m_000030_0, Status : FAILED
-Error: java.io.IOException: FailedToCheckpointException(message:Failed to rename hdfs://apex69:54310/tmp/tachyon/workers/1426006000063/387/515 to hdfs://apex69:54310/tmp/tachyon/data/515)
-        at tachyon.worker.WorkerClient.addCheckpoint(WorkerClient.java:116)
-
-   The likely cause is timeouts due to threads being too busy because
-   Tachyon defaults to synchronous writes to HDFS.
- 
-   To force asynchronous writes set TACHYON_ASYNCHRONOUS_WRITES to
-   "yes" in your submission script.
-
 General Advanced Usage
 ----------------------
 
