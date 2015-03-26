@@ -507,7 +507,7 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    readable, but it is not viewed as "local" according to HDFS and
    more network transfers will have to happen.  You may wish to
    rebalance the HDFS blocks though.  The convenience script
-   hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh can
+   hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh
    be used instead.
 
    (Special Note: The start-balancer.sh that is
@@ -1558,7 +1558,7 @@ for post-analysis of your job.  It's convenient for debugging.
 job-scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh
 - See HDFS over Lustre section above for details.
 
-job-scripts/hadoop-rebalance-hdfs-over-lustre-if-increasing-nodes-script.sh
+job-scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh
 - See HDFS over Lustre section above for details.
 
 job-scripts/hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh -
