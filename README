@@ -646,9 +646,9 @@ An upgrade to version -60 is required.
 Please restart NameNode with the "-rollingUpgrade started" option if a rolling upgrade is already started; or restart NameNode with the "-upgrade" option to start a new upgrade.
 
   You are likely using a newer version of Hadoop against an older
-  version.  If you are upgrading with Hadoop 2.2.0 or newer, there is
-  a seemless upgrade path.  Run the "upgradehdfs" option by setting it
-  in HADOOP_MODE in your launch scripts.
+  version of HDFS.  If you are upgrading with Hadoop 2.2.0 or newer,
+  there is a seemless upgrade path.  Run the "upgradehdfs" option by
+  setting it in HADOOP_MODE in your launch scripts.
 
 Instructions For Using Pig
 --------------------------
