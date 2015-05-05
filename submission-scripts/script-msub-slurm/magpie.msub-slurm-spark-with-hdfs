@@ -727,11 +727,19 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_JOB_CLASSPATH="examples/target/spark-examples-assembly-0.9.1.jar"
 #
+# Note that this is primarily for Spark 0.9.1 and earlier versions.
+# You likely want to use the --driver-class-path option in
+# spark-submit now.
+#
 # export SPARK_JOB_CLASSPATH=""
 
 # SPARK_JOB_LIBRARY_PATH
 #
 # May be necessary to set to get certain code/scripts to work.
+#
+# Note that this is primarily for Spark 0.9.1 and earlier versions.
+# You likely want to use the --driver-library-path option in
+# spark-submit now.
 #
 # export SPARK_JOB_LIBRARY_PATH=""
 
@@ -746,9 +754,8 @@ export SPARK_MODE="sparkpi"
 # will set by default.
 #
 # Note that many of the options that were set in SPARK_JAVA_OPTS in
-# Spark 0.9.1 and earlier have been moved to spark-defaults.conf.  It
-# would be recommended to set alternate configs in there instead of
-# here in Spark 1.0 and later.
+# Spark 0.9.1 and earlier have been deprecated.  You likely want to
+# use the --driver-java-options option in spark-submit now.
 #
 # export SPARK_JOB_JAVA_OPTS=""
 
