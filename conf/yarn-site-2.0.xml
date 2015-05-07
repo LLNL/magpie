@@ -79,6 +79,18 @@
 </property>
 
 <property>
+  <name>yarn.acl.enable</name>
+  <value>true</value>
+  <description>Are acls enabled.</description>
+</property>
+
+<property>
+  <name>yarn.admin.acl</name>
+  <value>YARNDEFAULTUSER</value>
+  <description>ACL of who can be admin of the YARN cluster.</description>
+</property>
+
+<property>
   <name>yarn.scheduler.capacity.root.queues</name>
   <value>default</value>
   <description>The queues at the this level (root is the root queue).
@@ -86,8 +98,33 @@
 </property>
 
 <property>
+  <name>yarn.scheduler.capacity.root.acl_submit_applications</name>
+  <value>YARNDEFAULTUSER</value>
+</property>
+
+<property>
+  <name>yarn.scheduler.capacity.root.acl_administer_queue</name>
+  <value>YARNDEFAULTUSER</value>
+</property>
+
+<property>
   <name>yarn.scheduler.capacity.root.default.capacity</name>
   <value>100</value>
+</property>
+
+<property>
+  <name>yarn.scheduler.capacity.root.default.state</name>
+  <value>RUNNING</value>
+</property>
+
+<property>
+  <name>yarn.scheduler.capacity.root.default.acl_submit_applications</name>
+  <value>YARNDEFAULTUSER</value>
+</property>
+
+<property>
+  <name>yarn.scheduler.capacity.root.default.acl_administer_queue</name>
+  <value>YARNDEFAULTUSER</value>
 </property>
 
 </configuration>
