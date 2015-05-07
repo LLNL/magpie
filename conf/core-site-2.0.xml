@@ -58,6 +58,17 @@
   <description>Block size to use when writing files to local.</description>
 </property>
 
+<property>
+  <name>fs.permissions.umask-mode</name>
+  <value>077</value>
+  <description>
+    The umask used when creating files and directories.
+    Can be in octal or in symbolic. Examples are:
+    "022" (octal for u=rwx,g=r-x,o=r-x in symbolic),
+    or "u=rwx,g=rwx,o=" (symbolic for 007 in octal).
+  </description>
+</property>
+
 @INTELLUSTRE@
 
 @MAGPIENETWORKFS@

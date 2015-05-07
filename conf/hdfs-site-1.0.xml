@@ -147,5 +147,11 @@
   <description>The name of the group of super-users.</description>
 </property>
 
+<property>
+  <name>dfs.umaskmode</name>
+  <value>077</value>
+  <description>The name of the group of super-users.</description>
+</property>
+
 </configuration>
 
