@@ -137,5 +137,11 @@
   </description>
 </property>
 
+<property>
+  <name>dfs.permissions.superusergroup</name>
+  <value>DFSPERMISSIONSSUPERUSERGROUP</value>
+  <description>The name of the group of super-users.</description>
+</property>
+
 </configuration>
 
