@@ -488,6 +488,11 @@ then
 	sed -i -e "/@TACHYON@/,+1d" ${post_sparkdefaultsconf}
     fi
 
+    # This is not for legitimate security as it can easily be
+    # calculated.  It is for sanity "just in case we screwed up a
+    # config" security.
+    sparkauthenticatesecret=`echo -n ${MAGPIE_JOB_ID} | md5sum | awk '{print $1}'`
+
     sed -i \
 	-e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
 	-e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
@@ -503,6 +508,7 @@ then
 	-e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
 	-e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
 	-e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
+	-e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
 	${post_sparkdefaultsconf}
     
 fi
