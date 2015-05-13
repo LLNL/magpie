@@ -1,3 +1,9 @@
+magpie 1.55
+-----------
+Add basic acl checks for Hadoop.
+Set default HDFS umask 077.
+Add shared secret to Spark.
+
 magpie 1.54
 -----------
 Add basic support for Tachyon (ALPHA).
