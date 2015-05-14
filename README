@@ -1398,6 +1398,16 @@ The following are additional tips for advanced usage of Magpie.
    write, or it can sourced into your environment when you try to
    interact with your job.
 
+3) All configuration files in conf/ can be modified to be tuned for
+   individual applications.  For the brave and adventurous, various
+   configurations such as JVM options and other tunables can be
+   adjusted.  If you wish to experiment with different sets of
+   configuration files, consider making different directories with
+   different conf files in them.  Then a quick change to project
+   CONF_FILE settings (e.g. HADOOP_CONF_FILES, SPARK_CONF_FILES,
+   HBASE_CONF_FILES, etc.) can quickly allow different files to be
+   experimented with.
+
 Exported Environment Variables
 ------------------------------
 
