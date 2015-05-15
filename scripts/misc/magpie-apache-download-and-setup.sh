@@ -53,8 +53,8 @@ HADOOP_PACKAGE="hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
 HBASE_PACKAGE="hbase/hbase-0.98.9/hbase-0.98.9-hadoop2-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.14.0/pig-0.14.0.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
-SPARK_PACKAGE="spark/spark-1.2.0/spark-1.2.0-bin-hadoop2.4.tgz"
-STORM_PACKAGE="storm/apache-storm-0.9.3/apache-storm-0.9.3.tar.gz"
+SPARK_PACKAGE="spark/spark-1.3.0/spark-1.3.0-bin-hadoop2.4.tgz"
+STORM_PACKAGE="storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz"
 
 # First check some basics
 
@@ -190,9 +190,7 @@ then
     SPARK_PACKAGE_BASEDIR=`echo $SPARK_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1\.\2/g'`
     cd ${INSTALL_PATH}/${SPARK_PACKAGE_BASEDIR}
     echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-conf-dir.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-ssh.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-spark-defaults-conf.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-all.patch
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
