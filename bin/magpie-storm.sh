@@ -52,13 +52,13 @@ then
     exit 1
 fi
 
-if [ ! -f ${STORM_CONF_DIR}/storm-env.sh ]
+if [ ! -f ${STORM_CONF_DIR}/magpie-launch-storm-env.sh ]
 then
-    echo "Cannot find file ${STORM_CONF_DIR}/storm-env.sh"
+    echo "Cannot find file ${STORM_CONF_DIR}/magpie-launch-storm-env.sh"
     exit 1
 fi
 
-source ${STORM_CONF_DIR}/storm-env.sh
+source ${STORM_CONF_DIR}/magpie-launch-storm-env.sh
 
 if [ "${STORM_HOME}X" == "X" ]
 then

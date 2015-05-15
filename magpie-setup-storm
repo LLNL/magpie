@@ -94,11 +94,11 @@ fi
 
 pre_stormyaml=${stormconffiledir}/storm.yaml
 pre_stormenvini=${stormconffiledir}/storm_env.ini
-pre_stormenvsh=${stormconffiledir}/storm-env.sh
+pre_stormenvsh=${stormconffiledir}/magpie-launch-storm-env.sh
 
 post_stormyaml=${STORM_CONF_DIR}/storm.yaml
 post_stormenvini=${STORM_CONF_DIR}/storm_env.ini
-post_stormenvsh=${STORM_CONF_DIR}/storm-env.sh
+post_stormenvsh=${STORM_CONF_DIR}/magpie-launch-storm-env.sh
 
 #
 # Setup Storm configuration files and environment files
