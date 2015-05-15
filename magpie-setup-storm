@@ -93,9 +93,11 @@ else
 fi
 
 pre_stormyaml=${stormconffiledir}/storm.yaml
+pre_stormenvini=${stormconffiledir}/storm_env.ini
 pre_stormenvsh=${stormconffiledir}/storm-env.sh
 
 post_stormyaml=${STORM_CONF_DIR}/storm.yaml
+post_stormenvini=${STORM_CONF_DIR}/storm_env.ini
 post_stormenvsh=${STORM_CONF_DIR}/storm-env.sh
 
 #
@@ -152,6 +154,12 @@ stormconfdirsubst=`echo "${STORM_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 stormhomesubst=`echo "${STORM_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 stormlocaldirsubst=`echo "${STORM_LOCAL_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+cp ${pre_stormenvini} ${post_stormenvini}
+
+sed -i \
+    -e "s/MAGPIEJAVAHOME/${stormjavahomesubst}/g" \
+    ${post_stormenvini}
 
 cp ${pre_stormenvsh} ${post_stormenvsh}
 
