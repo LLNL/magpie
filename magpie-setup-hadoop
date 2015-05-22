@@ -917,6 +917,7 @@ then
 	-e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
 	-e "s/MAGPIENETWORKFSBASEDIR/${magpienetworkfsbase}/g" \
 	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
+	-e "s/HADOOPDEFAULTUSER/${USER}/g" \
 	${post_coresitexml}
 
     hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
