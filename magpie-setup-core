@@ -44,7 +44,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 # Setup Hadoop directories
 #
 
-if [ "${HADOOP_SETUP}" == "yes" ]                                                                                                                                                                                 
+if [ "${HADOOP_SETUP}" == "yes" ]
 then  
     mkdir -p $HADOOP_LOCAL_JOB_DIR
     if [ $? -ne 0 ] ; then
