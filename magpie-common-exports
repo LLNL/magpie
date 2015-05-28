@@ -73,7 +73,8 @@ then
     # one used throughout the web.  I'll keep the 54310 one for now.
     export HADOOP_HDFS_NAMENODE_ADDRESS="54310"
     export HADOOP_HDFS_NAMENODE_HTTPADDRESS="50070"
-    export HADOOP_HDFS_NAMENODE_SECONDARY_ADDRESS="50090"
+    export HADOOP_HDFS_NAMENODE_SECONDARY_HTTP_ADDRESS="50090"
+    export HADOOP_HDFS_NAMENODE_SECONDARY_HTTPS_ADDRESS="50091"
     export HADOOP_HDFS_DATANODE_ADDRESS="50010"
     export HADOOP_HDFS_DATANODE_HTTPADDRESS="50075"
     export HADOOP_HDFS_DATANODE_IPCADDRESS="50020"
@@ -81,6 +82,10 @@ then
     export HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS="19888"
     export MAPRED_JOB_TRACKER_ADDRESS="54311"
     export MAPRED_JOB_TRACKER_HTTPADDRESS="50030"
+    # achu: Why not set dfs.namenode.rpc-address and
+    # dfs.namenode.servicerpc-address?  Unclear of why one might set
+    # this, internal to Hadoop 2.6.0 code, defaults to fs.defaultFS
+    # setting.  Perhaps legacy and I'm unaware of why.
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${HADOOP_CONF_DIR}/masters" ]
