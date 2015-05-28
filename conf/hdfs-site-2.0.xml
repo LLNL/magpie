@@ -22,7 +22,7 @@
 
 <property>
   <name>dfs.datanode.address</name>
-  <value>0.0.0.0:DFSDATANODEADDRESS</value>
+  <value>HADOOP_HOST:DFSDATANODEADDRESS</value>
   <description>
     The datanode server address and port for data transfer.
   </description>
@@ -30,7 +30,7 @@
 
 <property>
   <name>dfs.datanode.http.address</name>
-  <value>0.0.0.0:DFSDATANODEHTTPADDRESS</value>
+  <value>HADOOP_HOST:DFSDATANODEHTTPADDRESS</value>
   <description>
     The datanode http server address and port.
   </description>
@@ -38,7 +38,7 @@
 
 <property>
   <name>dfs.datanode.ipc.address</name>
-  <value>0.0.0.0:DFSDATANODEIPCADDRESS</value>
+  <value>HADOOP_HOST:DFSDATANODEIPCADDRESS</value>
   <description>
     The datanode ipc server address and port.
   </description>

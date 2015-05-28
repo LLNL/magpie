@@ -1190,8 +1190,11 @@ then
 	sed -i -e "/@NAMENODEINFO@/,+1d" ${post_hdfssitexml}
     fi
 
+    HADOOP_THIS_HOST=`hostname`
+
     sed -i \
 	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+	-e "s/HADOOP_HOST/${HADOOP_THIS_HOST}/g" \
 	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
 	-e "s/HDFSREPLICATION/${hdfsreplication}/g" \
 	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
