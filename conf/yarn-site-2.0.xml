@@ -22,6 +22,12 @@
 </property>
 
 <property>
+  <description>The address of the RM web application.</description>
+  <name>yarn.resourcemanager.webapp.https.address</name>
+  <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERWEBAPPHTTPSADDRESS</value>
+</property>
+
+<property>
   <name>yarn.resourcemanager.resource-tracker.address</name>
   <value>HADOOP_MASTER_HOST:YARNRESOURCEMANAGERRESOURCETRACKERADDRESS</value>
 </property>
@@ -63,6 +69,18 @@
 <property>
   <name>YARNAUXMAPREDUCESHUFFLE</name>
   <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+<property>
+  <description>Address where the localizer IPC is.</description>
+  <name>yarn.nodemanager.localizer.address</name>
+  <value>${yarn.nodemanager.hostname}:YARNLOCALIZERADDRESS</value>
+</property>
+
+<property>
+  <description>NM Webapp address.</description>
+  <name>yarn.nodemanager.webapp.address</name>
+  <value>${yarn.nodemanager.hostname}:YARNNODEMANAGERWEBAPPADDRESS</value>
 </property>
 
 @UDA@

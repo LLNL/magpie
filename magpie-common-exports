@@ -67,8 +67,11 @@ then
     export YARN_RESOURCEMANAGER_ADDRESS="8032"
     export YARN_RESOURCEMANAGER_SCHEDULER_ADDRESS="8030"
     export YARN_RESOURCEMANAGER_WEBAPP_ADDRESS="8088"
+    export YARN_RESOURCEMANAGER_WEBAPP_HTTPS_ADDRESS="8090"
     export YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS="8031"
     export YARN_RESOURCEMANAGER_ADMIN_ADDRESS="8033"
+    export YARN_NODEMANAGER_LOCALIZER_ADDRESS="8040"
+    export YARN_NODEMANAGER_WEBAPP_ADDRESS="8042"
     # In Hadoop code, default is 8020, but 54310 is the common legacy
     # one used throughout the web.  I'll keep the 54310 one for now.
     export HADOOP_HDFS_NAMENODE_ADDRESS="54310"
@@ -92,6 +95,14 @@ then
     # achu: Why not set dfs.journalnode.rpc-address,
     # dfs.journalnode.http-address, dfs.journalnode.https-address?
     # dfs.namenode.shared.edits.dir we do not set.
+
+    # achu: Why not set yarn.nodemanager.address?  Specific for node
+    # manager restart, we don't care about this.
+
+    # achu: Why not set yarn.timeline-service.address,
+    # yarn.timeline-service.webapp.address,
+    # yarn.timeline-service.webapp.https.address?  We do not set this,
+    # it is disabled by default in Hadoop.
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${HADOOP_CONF_DIR}/masters" ]
