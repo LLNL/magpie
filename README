@@ -1769,6 +1769,67 @@ download and patch Apache projects for you so you don't have to
 manually download them.  It'll also configure several paths for you in
 the launch scripts automatically.
 
+Security
+--------
+
+Users should be aware that running Magpie w/ the big data software
+supported here may be insecure in your environment.  While Magpie
+makes attempts to configure software with good "sanity"
+configurations, they are not foolproof.  In addition, some software
+may not yet have security infrastructure built in.
+
+If you are not running in an environment where your cluster allocation
+is isolated (through a private virtualized network or something
+similar) other users on the cluster may be able to communicate with a
+number of the big data services setup by Magpie.
+
+These issues are due to a variety of factors, including:
+
+1) In "traditional" big data clusters, system adminsitrators control
+who is allowed on the cluster and who is not, limiting exposure of
+data.  In HPC environments, you are setting up a "big data cluster"
+within another cluster and the users on the system are not controlled
+by those running the job.
+
+2) In "traditional" big data clusters, important daemons are
+owned/executed by a special user (e.g. hdfs, yarn, etc.).  This may
+limit the type of the exposure a nefarious/rogue process can have on
+the system.  When running in an HPC environment with Magpie, the
+processes are run under the user's ownership.  Since users are
+typically not root, they have no way to change the ownership of the
+process to a "special" user.
+
+3) While some big data software (not all) have Kerberos or similar
+security functions built it.  It is beyond the scope of HPC users to be
+able to be able to get proper kerberos configuration of Hadoop, HDFS,
+etc. from their site staff before running their job.
+
+4) Some big data software just doesn't really have any security built
+in at all.
+ 
+A few examples of security issues are listed below:
+
+Hadoop HDFS - The Hadoop Namenode is generally available on an open
+and public port.  While HDFS has been configured with a good
+default umask and ACLs, other users on the system can override this by
+setting HADOOP_USER_NAME environment variable.
+
+Hadoop YARN - Similar to Hadoop HDFS, good default configurations have
+been setup.  However they can be overridden with the HADOOP_USER_NAME
+environment variable.  This allows users to potentially run jobs as
+another user on the cluster.  This in turn can open up all of a user's
+data to others within the system.
+
+Spark - Spark shared secret keys have been configured for sanity
+configuration.  However, since the shared secret may be easy to
+determine, it will allow user to run jobs as another user on the
+cluster.  This in turn can open up all of a user's data to others
+within the system.
+
+Web UIs - Generally speaking, most web UIs will be viewable by other
+users on the cluster if firewall rules (or similar) are not setup on
+your cluster by default.
+
 Patching
 --------
 
