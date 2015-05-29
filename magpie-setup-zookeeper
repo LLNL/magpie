@@ -116,12 +116,15 @@ post_log4jproperties=${ZOOKEEPER_CONF_DIR}/log4j.properties
 
 cp ${pre_zookeepercfg} ${post_zookeepercfg}
 
+ZOOKEEPER_THIS_HOST=`hostname`
+
 sed -i \
     -e "s/ZOOKEEPERDATADIR/${zookeeperdatadirpathsubst}/g" \
     -e "s/ZOOKEEPERTICKTIME/${zookeeperticktime}/g" \
     -e "s/ZOOKEEPERINITLIMIT/${zookeeperinitlimit}/g" \
     -e "s/ZOOKEEPERSYNCLIMIT/${zookeepersynclimit}/g" \
     -e "s/ZOOKEEPERCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/ZOOKEEPERHOST/${ZOOKEEPER_THIS_HOST}/g" \
     ${post_zookeepercfg}
     
 zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
