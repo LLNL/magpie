@@ -118,6 +118,7 @@ sed -i \
     -e "s/STORMLOGVIEWERPORT/${STORM_LOGVIEWER_PORT}/g" \
     -e "s/STORMDRPCPORT/${STORM_DRPC_PORT}/g" \
     -e "s/STORMDRPCINVOCATIONSPORT/${STORM_DRPC_INVOCATIONS_PORT}/g" \
+    -e "s/STORMDRPCHTTPPORT/${STORM_DRPC_HTTP_PORT}/g" \
     -e "s/NIMBUSTHRIFTPORT/${STORM_THRIFT_PORT}/g" \
     -e "s/STORM_DAEMON_HEAP_MAX/${stormdaemonheapmax}/g" \
     -e "s/STORM_WORKER_HEAP_MAX/${stormworkerheapmax}/g" \
