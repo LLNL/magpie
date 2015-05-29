@@ -80,6 +80,12 @@
     <description>The port for the HBase Master web UI.
     Set to -1 if you do not want a UI instance run.</description>
   </property>
+  <property>
+    <name>hbase.master.info.bindAddress</name>
+    <value>HBASEMASTERHOST</value>
+    <description>The bind address for the HBase Master web UI
+    </description>
+  </property>
 
     <!--RegionServer configurations-->
   <property>
@@ -92,6 +98,11 @@
     <value>HBASEREGIONSERVERINFOPORT</value>
     <description>The port for the HBase RegionServer web UI
     Set to -1 if you do not want the RegionServer UI to run.</description>
+  </property>
+  <property>
+    <name>hbase.regionserver.info.bindAddress</name>
+    <value>HBASE_HOST</value>
+    <description>The address for the HBase RegionServer web UI</description>
   </property>
 
   <!-- Adjust appropriately given cluster size -->

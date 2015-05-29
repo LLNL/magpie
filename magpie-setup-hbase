@@ -199,6 +199,8 @@ post_log4jproperties=${HBASE_CONF_DIR}/log4j.properties
 
 cp ${pre_hbasesitexml} ${post_hbasesitexml}
 
+HBASE_THIS_HOST=`hostname`
+
 sed -i \
     -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
     -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
@@ -209,6 +211,8 @@ sed -i \
     -e "s/HBASEREGIONSERVERPORT/${HBASE_REGIONSERVER_PORT}/g" \
     -e "s/HBASEREGIONSERVERINFOPORT/${HBASE_REGIONSERVER_INFO_PORT}/g" \
     -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/HBASEMASTERHOST/${HBASE_MASTER_NODE}/g" \
+    -e "s/HBASE_HOST/${HBASE_THIS_HOST}/g" \
     ${post_hbasesitexml}
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
