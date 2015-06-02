@@ -51,8 +51,10 @@ Additional details can be found in the project README file
 Supported Package Versions
 --------------------------
 
-The following packages have been tested for minimal support in
-Magpie.  Versions not listed below may also work with Magpie.
+The following packages have been tested for minimal support in Magpie.
+Versions not listed below should work with Magpie if the
+configuration/setup of those versions is compatible with the versions
+listed below.
 
 * + - Requires patch against binary distro, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
