@@ -47,3 +47,34 @@ The basic idea behind these scripts are to:
    compaction).
 
 Additional details can be found in the project README file
+
+Supported Package Versions
+--------------------------
+
+The following packages have been tested for minimal support in
+Magpie.  Versions not listed below may also work with Magpie.
+
+* + - Requires patch against binary distro, no re-compilation needed
+* ^ - Requires patch against source, requires re-compilation
+
+Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.6.0+
+
+Pig - 0.12.0, 0.12.1, 0.14.0
+
+Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+
+
+Spark - 0.9.1-bin-hadoop2+, 1.0.0-bin-hadoop2^, 1.2.0-bin-hadoop2.4+, 1.3.0-bin-hadoop2.4+
+
+Storm - 0.9.2^, 0.9.3, 0.9.4
+
+Zookeeper - 3.4.5, 3.4.6
+
+UDA/uda-plugin - 3.3.2-0
+
+Tachyon - 0.6.0+, 0.6.1+ [1]
+
+[1] - Default Tachyon build is against Hadoop 1.0.4 and Spark may be
+      built against non-0.6.X builds.  Recompilation of Tachyon &
+      Spark may be needed depending on your environment.  See README
+      for more details
+
