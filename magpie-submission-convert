@@ -24,7 +24,14 @@
 
 Magpie_calc_slurm_magpie_timelimit () {
     TIMELIMIT_WALLTIME=`squeue -j ${SLURM_JOB_ID} -h -o %l`
-    export MAGPIE_TIMELIMIT_MINUTES=`echo ${TIMELIMIT_WALLTIME} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
+    numcolons=`echo ${TIMELIMIT_WALLTIME} | awk -F: '{print NF-1}'`
+    if [ "${numcolons}" == "2" ]
+    then
+	export MAGPIE_TIMELIMIT_MINUTES=`echo ${TIMELIMIT_WALLTIME} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
+    elif [ "${numcolons}" == "1" ]
+    then
+	export MAGPIE_TIMELIMIT_MINUTES=`echo ${TIMELIMIT_WALLTIME} | awk -F':' '{print $1 + $2 / 60}' | xargs printf "%1.0f"`
+    fi
 }
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
