@@ -40,13 +40,9 @@
 #SBATCH --nodes=<my node count>
 #SBATCH --output="slurm-%j.out"
 
-# Time to run the job
-#
-# Do not use --time, environment variable needed w/n magpie-run
-#
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
 # timelimit should be a fair amount larger than them combined.
-export SBATCH_TIMELIMIT=<my time in minutes>
+#SBATCH --time=<my time in minutes>
 
 # Job name.  This will be used in naming directories for the job.
 #SBATCH --job-name=<my job name>

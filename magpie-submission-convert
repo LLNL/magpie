@@ -22,6 +22,11 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+Magpie_calc_slurm_magpie_timelimit () {
+    TIMELIMIT_WALLTIME=`squeue -j ${SLURM_JOB_ID} -h -o %l`
+    export MAGPIE_TIMELIMIT_MINUTES=`echo ${TIMELIMIT_WALLTIME} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
+}
+
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
@@ -29,7 +34,13 @@ then
     export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
     export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
-    export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
+    # Legacy: Use if user set SBATCH_TIMELIMIT
+    if [ "${SBATCH_TIMELIMIT}X" != "X" ]
+    then
+	export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
+    else
+	Magpie_calc_slurm_magpie_timelimit
+    fi
 fi
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
@@ -41,8 +52,7 @@ then
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-	TIMELIMIT_WALLTIME=`squeue -j ${SLURM_JOB_ID} -h -o %l`
-	export MAGPIE_TIMELIMIT_MINUTES=`echo ${TIMELIMIT_WALLTIME} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
+	Magpie_calc_slurm_magpie_timelimit
     fi
 fi
 

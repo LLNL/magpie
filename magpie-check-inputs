@@ -71,11 +71,6 @@ then
 	echo "SLURM_JOB_ID environment variable must be set"
 	exit 1
     fi
-    if [ "${SBATCH_TIMELIMIT}X" == "X" ]
-    then
-	echo "SBATCH_TIMELIMIT environment variable must be set"
-	exit 1
-    fi
 fi
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
