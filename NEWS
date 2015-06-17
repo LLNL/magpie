@@ -1,3 +1,8 @@
+magpie 1.57
+-----------
+Use --time instead of SBATCH_TIMELIMIT in sbatch scripts
+Fix corner case in MAGPIE_TIMELIMIT_MINUTES calculation if job < 1 hour
+
 magpie 1.56
 -----------
 Various minor fixes.
