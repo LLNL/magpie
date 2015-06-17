@@ -57,6 +57,7 @@ then
     export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
     export MAGPIE_JOB_NAME="${MOAB_JOBNAME}"
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
+    # Legacy: Use if user set MAGPIE_TIMELIMIT_MINUTES
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
 	Magpie_calc_slurm_magpie_timelimit
