@@ -1418,6 +1418,20 @@ The following are additional tips for advanced usage of Magpie.
    HBASE_CONF_FILES, etc.) can quickly allow different files to be
    experimented with.
 
+4) It is possible to run multiple instances of Hadoop, Hbase,
+   etc. simultaneously on a cluster.  However, it is important to
+   isolate each of those instances.  In particular, if using default
+   configurations, multiple instances may attempt to read/write
+   identical locations on network filesystems, leading to problems
+   between jobs.  For example, if you configure HDFS to operate out of
+   /lustre/hdfsoverlustre/ on multiple jobs, only one namenode will be
+   able to operate correctly at a time.  
+
+   In order to solve this problem, all you need to do is create
+   different directories for each service operating out of a network
+   file system.  For example, /lustre/hdfsoverlustre1 and
+   /lustre/hdfsoverlustre2 for two different jobs using HDFS.
+
 Exported Environment Variables
 ------------------------------
 
