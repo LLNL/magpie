@@ -9,6 +9,10 @@
 # Run only on one node, no need to do it on all nodes
 if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]
 then
+    echo "**** environment variables ****"
+    printenv
+
+    echo "**** resource limits ****"
     ulimit -a
 
     # Cat conf files for documentation
