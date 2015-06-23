@@ -914,7 +914,7 @@ then
 	    fi
 
 	    if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-		&& (["${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-mr" ])
+		&& ([ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-mr" ])
 	    then
 		echo "Cannot execute MapReduce performance evaluation if HADOOP_SETUP_TYPE set to ${HADOOP_SETUP_TYPE}"
 		exit 1
