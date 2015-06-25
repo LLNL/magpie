@@ -215,7 +215,7 @@ Magpie_wait_script () {
 
 # XXX deal with viewfs & federation
 Magpie_calculate_hadoop_filesystem_paths () {
-    noderank=$1
+    local noderank=$1
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
 	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
