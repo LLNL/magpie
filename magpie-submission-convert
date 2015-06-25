@@ -25,9 +25,13 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 
 Magpie_calc_slurm_magpie_timelimit () {
-    timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
-    Magpie_walltime_to_minutes ${timelimitwalltime}
-    export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
+    # Do not excessively call this
+    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+    then
+	timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
+	Magpie_walltime_to_minutes ${timelimitwalltime}
+	export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
+    fi
 }
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
