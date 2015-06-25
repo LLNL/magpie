@@ -26,14 +26,14 @@
 # part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
-
 if [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
     exit 0
 fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 
 # zookeepernoderank set if succeed and it's a Zookeeper slave
 # Zookeeper master is only for setup/teardown management, not for actual Zookeeper
