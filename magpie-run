@@ -1163,10 +1163,9 @@ then
 	echo "*******************************************************"
 	echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
 	echo "*******************************************************"
-	magpiesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	magpiesleepamount=`expr ${magpiesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	magpiesleepseconds=`expr ${magpiesleepamount}  \* 60`
-	sleep ${magpiesleepseconds}
+	    # Will set jobtimeseconds
+	Magpie_job_time_seconds
+	sleep ${jobtimeseconds}
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
 	if [ "${PIG_MODE}" == "testpig" ]
@@ -1190,10 +1189,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Pig ${PIG_MODE} mode"
 	    echo "*******************************************************"
-	    pigsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    pigsleepamount=`expr ${pigsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    pigsleepseconds=`expr ${pigsleepamount}  \* 60`
-	    sleep ${pigsleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
@@ -1222,10 +1220,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    hadoopsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    hadoopsleepamount=`expr ${hadoopsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    hadoopsleepseconds=`expr ${hadoopsleepamount}  \* 60`
-	    sleep ${hadoopsleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
 	then
 	    echo "*******************************************************"
@@ -1262,11 +1259,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hbase ${HBASE_MODE} mode"
 	    echo "*******************************************************"
-	    
-	    hbasesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    hbasesleepamount=`expr ${hbasesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    hbasesleepseconds=`expr ${hbasesleepamount}  \* 60`
-	    sleep ${hbasesleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
@@ -1302,11 +1297,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Spark ${SPARK_MODE} mode"
 	    echo "*******************************************************"
-	    
-	    sparksleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    sparksleepamount=`expr ${sparksleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    sparksleepseconds=`expr ${sparksleepamount}  \* 60`
-	    sleep ${sparksleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
@@ -1335,11 +1328,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Storm ${STORM_MODE} mode"
 	    echo "*******************************************************"
-	    
-	    stormsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    stormsleepamount=`expr ${stormsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    stormsleepseconds=`expr ${stormsleepamount}  \* 60`
-	    sleep ${stormsleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
@@ -1357,11 +1348,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
 	    echo "*******************************************************"
-	    
-	    tachyonsleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    tachyonsleepamount=`expr ${tachyonsleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    tachyonsleepseconds=`expr ${tachyonsleepamount}  \* 60`
-	    sleep ${tachyonsleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
@@ -1379,11 +1368,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
 	    echo "*******************************************************"
-		
-	    zookeepersleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	    zookeepersleepamount=`expr ${zookeepersleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-	    zookeepersleepseconds=`expr ${zookeepersleepamount}  \* 60`
-	    sleep ${zookeepersleepseconds}
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+	    sleep ${jobtimeseconds}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
