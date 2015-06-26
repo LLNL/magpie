@@ -82,6 +82,9 @@ then
     fi
 fi
 
+# Flag for setup check
+setup_successful=true
+
 #
 # Setup ZooKeeper
 #
@@ -90,7 +93,7 @@ totalsleepwait=0
 
 # Zookeeper setup comes first, as other things like Hbase & Storm require it
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
@@ -187,7 +190,7 @@ fi
 # Setup Hadoop
 #
 
-if [ "${HADOOP_SETUP}" == "yes" ]
+if [ "${HADOOP_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
 then
     cd ${HADOOP_HOME}
 
@@ -535,6 +538,7 @@ then
 	then
 	    echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
 	    hadoopsetupcomplete=0
+	    setup_successful=false
 	else
 	    hadoopsetupcomplete=1
 	fi
@@ -561,10 +565,10 @@ else
 fi
 
 #
-# Setup Hbase
+# Setup Hbase 
 #
 
-if [ "${HBASE_SETUP}" == "yes" ]
+if [ "${HBASE_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
 then
     cd ${HBASE_HOME}
 
@@ -693,10 +697,10 @@ else
 fi
 
 #
-# Setup Spark
+# Setup Spark 
 #
 
-if [ "${SPARK_SETUP}" == "yes" ]
+if [ "${SPARK_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
 then
     cd ${SPARK_HOME}
 
@@ -837,7 +841,7 @@ fi
 # Setup Storm
 #
 
-if [ "${STORM_SETUP}" == "yes" ]
+if [ "${STORM_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
 then
     if [ ${STORM_MODE} != "setuponly" ]
     then
@@ -968,7 +972,7 @@ fi
 # Setup Tachyon
 #
 
-if [ "${TACHYON_SETUP}" == "yes" ]
+if [ "${TACHYON_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
 then
     cd ${TACHYON_HOME}
 
@@ -1146,31 +1150,24 @@ if [ "${zookeepersetupcomplete}" == "1" ] \
     && [ "${stormsetupcomplete}" == "1" ] \
     && [ "${tachyonsetupcomplete}" == "1" ]
 then
-    setupcomplete=1
-else
-    setupcomplete=0
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "script" ]
-then
-    echo "*******************************************************"
-    echo "* Executing script $MAGPIE_SCRIPT_PATH"
-    echo "*******************************************************"
-    ${MAGPIE_SCRIPT_PATH} &
-    scriptpid=$!
-    Magpie_wait_script ${scriptpid}
-elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
-then
-    echo "*******************************************************"
-    echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
-    echo "*******************************************************"
-    magpiesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-    magpiesleepamount=`expr ${magpiesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
-    magpiesleepseconds=`expr ${magpiesleepamount}  \* 60`
-    sleep ${magpiesleepseconds}
-elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $MAGPIE_SCRIPT_PATH"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPT_PATH} &
+	scriptpid=$!
+	Magpie_wait_script ${scriptpid}
+    elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
+	echo "*******************************************************"
+	magpiesleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	magpiesleepamount=`expr ${magpiesleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
+	magpiesleepseconds=`expr ${magpiesleepamount}  \* 60`
+	sleep ${magpiesleepseconds}
+    elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
 	if [ "${PIG_MODE}" == "testpig" ]
 	then
@@ -1198,19 +1195,16 @@ then
 	    pigsleepseconds=`expr ${pigsleepamount}  \* 60`
 	    sleep ${pigsleepseconds}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
 	cd ${HADOOP_HOME}
-
+	
 	if [ "${HADOOP_MODE}" == "terasort" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Running Terasort"
 	    echo "*******************************************************"
-
+	    
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
@@ -1241,13 +1235,10 @@ then
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
     then
 	cd ${HBASE_HOME}
-    
+	
 	if [ "${HBASE_MODE}" == "performanceeval" ]
 	then
 	    echo "*******************************************************"
@@ -1277,13 +1268,10 @@ then
 	    hbasesleepseconds=`expr ${hbasesleepamount}  \* 60`
 	    sleep ${hbasesleepseconds}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
 	cd ${SPARK_HOME}
-    
+	    
 	if [ "${SPARK_MODE}" == "sparkpi" ]
 	then
 	    echo "*******************************************************"
@@ -1320,13 +1308,10 @@ then
 	    sparksleepseconds=`expr ${sparksleepamount}  \* 60`
 	    sleep ${sparksleepseconds}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
 	cd ${STORM_HOME}
-    
+	    
 	if [ "${STORM_MODE}" == "stormwordcount" ]
 	then
 	    echo "*******************************************************"
@@ -1356,10 +1341,7 @@ then
 	    stormsleepseconds=`expr ${stormsleepamount}  \* 60`
 	    sleep ${stormsleepseconds}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
 	if [ "${TACHYON_MODE}" == "testtachyon" ]
 	then
@@ -1381,10 +1363,7 @@ then
 	    tachyonsleepseconds=`expr ${tachyonsleepamount}  \* 60`
 	    sleep ${tachyonsleepseconds}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
 	if [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
 	then
@@ -1400,16 +1379,13 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
 	    echo "*******************************************************"
-	    
+		
 	    zookeepersleepamounttemp=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
 	    zookeepersleepamount=`expr ${zookeepersleepamounttemp} - ${MAGPIE_SHUTDOWN_TIME}`
 	    zookeepersleepseconds=`expr ${zookeepersleepamount}  \* 60`
 	    sleep ${zookeepersleepseconds}
 	fi
-    fi
-elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
-then
-    if [ "${setupcomplete}" == "1" ]
+    elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
 	echo "*******************************************************"
 	echo "* Running Magpie TestAll"
