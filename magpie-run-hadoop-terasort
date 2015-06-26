@@ -93,10 +93,17 @@ cd ${HADOOP_HOME}
 # Remove previous runs if they are lingering
 #
 
-command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
-$command
-command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
-$command
+if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-teragen
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+    $command
+fi
+
+if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-sort
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+    $command
+fi
 
 
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
