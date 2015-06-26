@@ -31,6 +31,7 @@
 # variables, functions, etc. to have been setup.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
 Magpie_am_I_master () {
@@ -191,7 +192,12 @@ Magpie_job_time_minutes () {
 	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
     then
 	timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
-        Magpie_walltime_to_minutes ${timeleftwalltime}
+	if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]
+	then
+            walltimetominutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	else
+            Magpie_walltime_to_minutes ${timeleftwalltime}
+	fi
         jobtimeminutes=`expr ${walltimetominutes} - ${MAGPIE_SHUTDOWN_TIME}`
     else
 	timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
