@@ -1414,18 +1414,21 @@ then
 	
 	if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
 	then
-	    echo "Doing major compaction before shutting down ..."
+	    if [ "${hbasesetupcomplete}" == "1" ]
+	    then
+		echo "Doing major compaction before shutting down ..."
 
-	    command="echo list"
-	    echo "Running $command in hbase shell" >&2
-	    listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
-
-	    for table in ${listoutput}
-	    do
-		command="echo major_compact '${table}'"
+		command="echo list"
 		echo "Running $command in hbase shell" >&2
-		$command | ${hbasecmdprefix}/hbase shell
-	    done
+		listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
+		
+		for table in ${listoutput}
+		do
+		    command="echo major_compact '${table}'"
+		    echo "Running $command in hbase shell" >&2
+		    $command | ${hbasecmdprefix}/hbase shell
+		done
+	    fi
 	fi
 	
 	${hbasesetupscriptprefix}/stop-hbase.sh
@@ -1479,43 +1482,46 @@ then
 	then
 	    echo "Saving namespace before shutting down hdfs ..."
 
-	    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	    if [ "${hadoopsetupcomplete}" == "1" ]
 	    then
-		for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-		do
+		if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+		then
+		    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+		    do
 	            # First namenode is based on master
-		    if [ "${i}" == "1" ]
-		    then
-			federationnamenodehost="${HADOOP_MASTER_NODE}"
-		    else
-			numline=`expr ${i} - 1`
-			federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-		    fi
-
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+			if [ "${i}" == "1" ]
+			then
+			    federationnamenodehost="${HADOOP_MASTER_NODE}"
+			else
+			    numline=`expr ${i} - 1`
+			    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+			fi
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+			echo "Running $command" >&2
+			$command
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+			echo "Running $command" >&2
+			$command
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+			echo "Running $command" >&2
+			$command
+		    done
+		else
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
 		    echo "Running $command" >&2
 		    $command
 		    
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
 		    echo "Running $command" >&2
 		    $command
-
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+		    
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
 		    echo "Running $command" >&2
 		    $command
-		done
-	    else
-		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
-		echo "Running $command" >&2
-		$command
-		
-		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
-		echo "Running $command" >&2
-		$command
-
-		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
-		echo "Running $command" >&2
-		$command
+		fi
 	    fi
 
 	    ${hadoopsetupscriptprefix}/stop-dfs.sh 
