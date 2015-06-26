@@ -83,7 +83,7 @@ then
 fi
 
 # Flag for setup check
-setup_successful=true
+prior_setup_successful=true
 
 #
 # Setup ZooKeeper
@@ -93,7 +93,7 @@ totalsleepwait=0
 
 # Zookeeper setup comes first, as other things like Hbase & Storm require it
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
+if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
@@ -180,17 +180,19 @@ then
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
     
-    # Nothing to check for Zookeeper, setup always completes
-    zookeepersetupcomplete=1
+    # Nothing to check for Zookeeper, setup always passes
+    zookeepersetuppassed=1
+    zookeepersetupsuccessful=1
 else
-    zookeepersetupcomplete=1
+    zookeepersetuppassed=0
+    zookeepersetupsuccessful=1
 fi
 
 #
 # Setup Hadoop
 #
 
-if [ "${HADOOP_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
+if [ "${HADOOP_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
 then
     cd ${HADOOP_HOME}
 
@@ -537,18 +539,18 @@ then
 	if [ "${exittedsafemode}" == "0" ]
 	then
 	    echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-	    hadoopsetupcomplete=0
-	    setup_successful=false
+	    hadoopsetupsuccessful=0
+	    prior_setup_successful=false
 	else
-	    hadoopsetupcomplete=1
+	    hadoopsetupsuccessful=1
 	fi
     else
-	hadoopsetupcomplete=1
+	hadoopsetupsuccessful=1
     fi
 
     # Setup job history server after namenode comes up, it may need to
     # write/create in HDFS
-    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoopsetupcomplete}" == "1" ]
+    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoopsetupsuccessful}" == "1" ]
     then
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
@@ -560,19 +562,22 @@ then
 	    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
 	fi
     fi
+
+    hadoopsetuppassed=1
 else
-    hadoopsetupcomplete=1
+    hadoopsetuppassed=0
+    hadoopsetupsuccessful=1
 fi
 
 #
 # Setup Hbase 
 #
 
-if [ "${HBASE_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
+if [ "${HBASE_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
 then
     cd ${HBASE_HOME}
 
-    if [ ${HBASE_MODE} != "setuponly" ] && [ "${hadoopsetupcomplete}" == "1" ]
+    if [ ${HBASE_MODE} != "setuponly" ]
     then
 	echo "Starting hbase"
 	${hbasesetupscriptprefix}/start-hbase.sh
@@ -690,17 +695,19 @@ then
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
 
-    # Nothing to check for Hbase, setup always completes
-    hbasesetupcomplete=1
+    # Nothing to check for Hbase, setup always passes
+    hbasesetuppassed=1
+    hbasesetupsuccessful=1
 else
-    hbasesetupcomplete=1
+    hbasesetuppassed=0
+    hbasesetupsuccessful=1
 fi
 
 #
 # Setup Spark 
 #
 
-if [ "${SPARK_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
+if [ "${SPARK_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
 then
     cd ${SPARK_HOME}
 
@@ -831,17 +838,19 @@ then
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
 
-    # Nothing to check for Spark, setup always completes
-    sparksetupcomplete=1
+    # Nothing to check for Spark, setup always passes
+    sparksetuppassed=1
+    sparksetupsuccessful=1
 else
-    sparksetupcomplete=1
+    sparksetuppassed=0
+    sparksetupsuccessful=1
 fi
 
 #
 # Setup Storm
 #
 
-if [ "${STORM_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
+if [ "${STORM_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
 then
     if [ ${STORM_MODE} != "setuponly" ]
     then
@@ -962,17 +971,19 @@ then
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
 
-    # Nothing to check for Storm, setup always completes
-    stormsetupcomplete=1
+    # Nothing to check for Storm, setup always passes
+    stormsetuppassed=1
+    stormsetupsuccessful=1
 else
-    stormsetupcomplete=1
+    stormsetuppassed=0
+    stormsetupsuccessful=1
 fi
 
 #
 # Setup Tachyon
 #
 
-if [ "${TACHYON_SETUP}" == "yes" ] && [ "${setup_successful}" == "true" ]
+if [ "${TACHYON_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
 then
     cd ${TACHYON_HOME}
 
@@ -1136,19 +1147,21 @@ then
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
 
-    # Nothing to check for Tachyon, setup always completes
-    tachyonsetupcomplete=1
+    # Nothing to check for Tachyon, setup always passes
+    tachyonsetuppassed=1
+    tachyonsetupsuccessful=1
 else
-    tachyonsetupcomplete=1
+    tachyonsetuppassed=0
+    tachyonsetupsuccessful=1
 fi
 
 # Make sure all setup passed
-if [ "${zookeepersetupcomplete}" == "1" ] \
-    && [ "${hadoopsetupcomplete}" == "1" ] \
-    && [ "${hbasesetupcomplete}" == "1" ] \
-    && [ "${sparksetupcomplete}" == "1" ] \
-    && [ "${stormsetupcomplete}" == "1" ] \
-    && [ "${tachyonsetupcomplete}" == "1" ]
+if [ "${zookeepersetupsuccessful}" == "1" ] \
+    && [ "${hadoopsetupsuccessful}" == "1" ] \
+    && [ "${hbasesetupsuccessful}" == "1" ] \
+    && [ "${sparksetupsuccessful}" == "1" ] \
+    && [ "${stormsetupsuccessful}" == "1" ] \
+    && [ "${tachyonsetupsuccessful}" == "1" ]
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
@@ -1163,7 +1176,7 @@ then
 	echo "*******************************************************"
 	echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
 	echo "*******************************************************"
-	    # Will set jobtimeseconds
+	# Will set jobtimeseconds
 	Magpie_job_time_seconds
 	sleep ${jobtimeseconds}
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
@@ -1383,7 +1396,7 @@ then
     fi
 fi
 
-if [ "${STORM_SETUP}" == "yes" ]
+if [ "${STORM_SETUP}" == "yes" ] && [ "${stormsetuppassed}" == "1" ]
 then
     if [ ${STORM_MODE} != "setuponly" ]
     then
@@ -1392,7 +1405,7 @@ then
     fi
 fi
 
-if [ "${SPARK_SETUP}" == "yes" ]
+if [ "${SPARK_SETUP}" == "yes" ] && [ "${sparksetuppassed}" == "1" ]
 then
     if [ ${SPARK_MODE} != "setuponly" ]
     then
@@ -1404,7 +1417,7 @@ then
     fi
 fi
 
-if [ "${HBASE_SETUP}" == "yes" ]
+if [ "${HBASE_SETUP}" == "yes" ] && [ "${hbasesetuppassed}" == "1" ]
 then
     if [ ${HBASE_MODE} != "setuponly" ]
     then
@@ -1414,21 +1427,18 @@ then
 	
 	if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
 	then
-	    if [ "${hbasesetupcomplete}" == "1" ]
-	    then
-		echo "Doing major compaction before shutting down ..."
-
-		command="echo list"
+	    echo "Doing major compaction before shutting down ..."
+	    
+	    command="echo list"
+	    echo "Running $command in hbase shell" >&2
+	    listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
+	    
+	    for table in ${listoutput}
+	    do
+		command="echo major_compact '${table}'"
 		echo "Running $command in hbase shell" >&2
-		listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
-		
-		for table in ${listoutput}
-		do
-		    command="echo major_compact '${table}'"
-		    echo "Running $command in hbase shell" >&2
-		    $command | ${hbasecmdprefix}/hbase shell
-		done
-	    fi
+		$command | ${hbasecmdprefix}/hbase shell
+	    done
 	fi
 	
 	${hbasesetupscriptprefix}/stop-hbase.sh
@@ -1436,7 +1446,7 @@ then
 fi
 
 # Tachyon before Hadoop shutdown, may need to flush
-if [ "${TACHYON_SETUP}" == "yes" ]
+if [ "${TACHYON_SETUP}" == "yes" ] && [ "${tachyonsetuppassed}" == "1" ]
 then
     if [ ${TACHYON_MODE} != "setuponly" ]
     then
@@ -1456,7 +1466,7 @@ then
     fi
 fi
 
-if [ "${HADOOP_SETUP}" == "yes" ]
+if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoopsetuppassed}" == "1" ]
 then
     if [ ${HADOOP_MODE} != "setuponly" ]
     then
@@ -1482,48 +1492,45 @@ then
 	then
 	    echo "Saving namespace before shutting down hdfs ..."
 
-	    if [ "${hadoopsetupcomplete}" == "1" ]
+	    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
 	    then
-		if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-		then
-		    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-		    do
+		for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+		do
 	            # First namenode is based on master
-			if [ "${i}" == "1" ]
-			then
-			    federationnamenodehost="${HADOOP_MASTER_NODE}"
-			else
-			    numline=`expr ${i} - 1`
-			    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-			fi
-			
-			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
-			echo "Running $command" >&2
-			$command
-			
-			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
-			echo "Running $command" >&2
-			$command
-			
-			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
-			echo "Running $command" >&2
-			$command
-		    done
-		else
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
+		    if [ "${i}" == "1" ]
+		    then
+			federationnamenodehost="${HADOOP_MASTER_NODE}"
+		    else
+			numline=`expr ${i} - 1`
+			federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+		    fi
+		    
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
 		    echo "Running $command" >&2
 		    $command
 		    
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
 		    echo "Running $command" >&2
 		    $command
 		    
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
 		    echo "Running $command" >&2
 		    $command
-		fi
+		done
+	    else
+		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
+		echo "Running $command" >&2
+		$command
+		
+		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
+		echo "Running $command" >&2
+		$command
+		    
+		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
+		echo "Running $command" >&2
+		$command
 	    fi
-
+	    
 	    ${hadoopsetupscriptprefix}/stop-dfs.sh 
 	fi
     fi
@@ -1531,7 +1538,7 @@ fi
 
 # Zookeeper teardown comes last, as other things like Hbase & Storm require it
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${zookeepersetuppassed}" == "1" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
