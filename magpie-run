@@ -306,7 +306,12 @@ then
     echo "*"
     echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
     echo "*" 
-    echo "*   ${hadoopcmdprefix}/hadoop fs ..."
+    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+    then 
+	echo "*   ${hadoopcmdprefix}/hdfs dfs ..."
+    else
+	echo "*   ${hadoopcmdprefix}/hadoop fs ..."
+    fi
     echo "*" 
     echo "* To launch jobs you'll want to:"
     echo "*" 
