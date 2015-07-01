@@ -753,7 +753,12 @@ then
     echo "*"
     echo "* Then you can do as you please.  For example to run a job:"
     echo "*" 
-    echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+    then 
+	echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    else
+	echo "*   ${sparkcmdprefix}/spark-submit --class <class> <jar>"
+    fi
 
     if [ "${SPARK_MODE}" == "setuponly" ]
     then
