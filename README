@@ -1444,8 +1444,8 @@ Hadoop Advanced Usage
    the number of compute nodes in your allocation.  This is
    significantly superior to the Hadoop default of 1, however, it may
    not be optimal for many jobs.  Users should play around with the
-   number of reducers in their job to improve performance.  The
-   default can be tweaked in the submission scripts via the
+   number of reducers in their mapreduce jobs to improve performance.
+   The default can be tweaked in the submission scripts via the
    HADOOP_DEFAULT_REDUCE_TASKS environment variable.
 
 3) The mapreduce slowstart configuration determines the percentage of
@@ -1475,17 +1475,16 @@ Spark Advanced Usage
    Second, it can be used for quickly storing/caching RDDs to disk
    using MEMORY_AND_DISK and/or DISK_ONLY persistence levels.
 
-2) Magpie configures the default number of reducers in a Spark job to
-   the number of compute nodes in your allocation.  This is
-   significantly superior to the original Spark default of 8 (pre-1.0)
-   and likely superior than the current default of all partitions in
-   your data set (post-1.0).  However, it may not be optimal for many
-   jobs.
+2) Magpie configures the default number of reducers (or
+   partitions/parallelism) in a Spark job to the number of compute
+   nodes in your allocation.  This is significantly superior to the
+   original Spark default of 8 (pre-1.0) and likely superior than the
+   current default of all partitions in your data set (post-1.0).
+   However, it may not be optimal for many jobs.
 
-   Users should play around with the number of reducers in their job
-   to improve performance.  The default can be tweaked in the
-   submission scripts via the SPARK_DEFAULT_PARALLELISM environment
-   variable.
+   Users should play around with the parallelism in their job to
+   improve performance.  The default can be tweaked in the submission
+   scripts via the SPARK_DEFAULT_PARALLELISM environment variable.
 
 Exported Environment Variables
 ------------------------------
