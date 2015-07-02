@@ -1448,7 +1448,31 @@ Hadoop Advanced Usage
    The default can be tweaked in the submission scripts via the
    HADOOP_DEFAULT_REDUCE_TASKS environment variable.
 
-3) The mapreduce slowstart configuration determines the percentage of
+3) Magpie configures a relatively conservative amount of memory for
+   Hadoop, currently 80% of system memory.  While there should always
+   be a buffer to allow the operating system, system daemons, and
+   Hadoop daemons to operate, the 80% value may be on the conservative
+   side and users wishing to push it higher to 90% or 95% of system
+   memory may see benefits..
+
+   Users can adjust the amount of memory used on each node through the
+   YARN_RESOURCE_MEMORY environment variable in the submission
+   scripts.
+
+   (Note, this is only for Hadoop 2.0 and up)
+
+4) Depending on whether your job is map heavy or reduce heavy,
+   adjusting the memory container sizes of map and reduce tasks may
+   also benefit job performance.  These adjustments could lead to
+   larger buffer sizes on individual tasks if memory sizes are
+   increased or allow more tasks to be run in parallel if memory size
+   is decreased.
+
+   This can be adjusted through the HADOOP_CHILD_HEAPSIZE,
+   HADOOP_CHILD_MAP_HEAPSIZE, and HADOOP_CHILD_REDUCE_HEAPSIZE
+   environment variables in the submission scripts.
+
+5) The mapreduce slowstart configuration determines the percentage of
    map tasks that must complete before reducers begin.  It defaults to
    a very conservative value of 0.05 (i.e. 5%).  This will be
    non-optimal for many jobs, including jobs that have relatively
@@ -1458,6 +1482,12 @@ Hadoop Advanced Usage
    this using higher percentages.  The default can be tweaked in the
    submission scripts via the HADOOP_MAPREDUCE_SLOWSTART environment
    variable.
+
+6) By default Magpie disables compression in Hadoop.  On some jobs, if
+   the data is particularly large, the time spent
+   compressing/decompressing data may be beneficial to job
+   performance.  Compression can be enabled through the
+   HADOOP_COMPRESSION environment variable in the submission scripts.
 
 Spark Advanced Usage
 ---------------------
@@ -1485,6 +1515,17 @@ Spark Advanced Usage
    Users should play around with the parallelism in their job to
    improve performance.  The default can be tweaked in the submission
    scripts via the SPARK_DEFAULT_PARALLELISM environment variable.
+
+3) Magpie configures a relatively conservative amount of memory for
+   Spark, currently 80% of system memory.  While there should always
+   be a buffer to allow the operating system, system daemons, and
+   Spark (and potentially Hadoop HDFS) daemons to operate, the 80%
+   value may be on the conservative side and users wishing to push it
+   higher to 90% or 95% of system memory may see benefits..
+
+   Users can adjust the amount of memory used by each Spark Worker
+   through the SPARK_WORKER_MEMORY_PER_NODE environment variable in
+   the submission scripts.
 
 Exported Environment Variables
 ------------------------------
