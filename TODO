@@ -1,16 +1,3 @@
-General
--------
-do not start spark, hbase, etc. if hadoop namenode doesn't come up
-- etc. with other bringups
-
-
-Major feature support
----------------------
-script to get/patch all newest versions of stuff supported by Magpie
-- look at Stack
-
-Cassandra
-
 Minor feature support
 ---------------------
 Hadoop
