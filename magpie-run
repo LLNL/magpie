@@ -181,10 +181,10 @@ then
     fi
     
     # Nothing to check for Zookeeper, setup always passes
-    zookeepersetuppassed=1
+    zookeeper_should_be_torndown=1
     zookeepersetupsuccessful=1
 else
-    zookeepersetuppassed=0
+    zookeeper_should_be_torndown=0
     zookeepersetupsuccessful=1
 fi
 
@@ -568,9 +568,9 @@ then
 	fi
     fi
 
-    hadoopsetuppassed=1
+    hadoop_should_be_torndown=1
 else
-    hadoopsetuppassed=0
+    hadoop_should_be_torndown=0
     hadoopsetupsuccessful=1
 fi
 
@@ -701,10 +701,10 @@ then
     fi
 
     # Nothing to check for Hbase, setup always passes
-    hbasesetuppassed=1
+    hbase_should_be_torndown=1
     hbasesetupsuccessful=1
 else
-    hbasesetuppassed=0
+    hbase_should_be_torndown=0
     hbasesetupsuccessful=1
 fi
 
@@ -849,10 +849,10 @@ then
     fi
 
     # Nothing to check for Spark, setup always passes
-    sparksetuppassed=1
+    spark_should_be_torndown=1
     sparksetupsuccessful=1
 else
-    sparksetuppassed=0
+    spark_should_be_torndown=0
     sparksetupsuccessful=1
 fi
 
@@ -982,10 +982,10 @@ then
     fi
 
     # Nothing to check for Storm, setup always passes
-    stormsetuppassed=1
+    storm_should_be_torndown=1
     stormsetupsuccessful=1
 else
-    stormsetuppassed=0
+    storm_should_be_torndown=0
     stormsetupsuccessful=1
 fi
 
@@ -1158,10 +1158,10 @@ then
     fi
 
     # Nothing to check for Tachyon, setup always passes
-    tachyonsetuppassed=1
+    tachyon_should_be_torndown=1
     tachyonsetupsuccessful=1
 else
-    tachyonsetuppassed=0
+    tachyon_should_be_torndown=0
     tachyonsetupsuccessful=1
 fi
 
@@ -1406,7 +1406,7 @@ then
     fi
 fi
 
-if [ "${STORM_SETUP}" == "yes" ] && [ "${stormsetuppassed}" == "1" ]
+if [ "${STORM_SETUP}" == "yes" ] && [ "${storm_should_be_torndown}" == "1" ]
 then
     if [ ${STORM_MODE} != "setuponly" ]
     then
@@ -1415,7 +1415,7 @@ then
     fi
 fi
 
-if [ "${SPARK_SETUP}" == "yes" ] && [ "${sparksetuppassed}" == "1" ]
+if [ "${SPARK_SETUP}" == "yes" ] && [ "${spark_should_be_torndown}" == "1" ]
 then
     if [ ${SPARK_MODE} != "setuponly" ]
     then
@@ -1427,7 +1427,7 @@ then
     fi
 fi
 
-if [ "${HBASE_SETUP}" == "yes" ] && [ "${hbasesetuppassed}" == "1" ]
+if [ "${HBASE_SETUP}" == "yes" ] && [ "${hbase_should_be_torndown}" == "1" ]
 then
     if [ ${HBASE_MODE} != "setuponly" ]
     then
@@ -1456,7 +1456,7 @@ then
 fi
 
 # Tachyon before Hadoop shutdown, may need to flush
-if [ "${TACHYON_SETUP}" == "yes" ] && [ "${tachyonsetuppassed}" == "1" ]
+if [ "${TACHYON_SETUP}" == "yes" ] && [ "${tachyon_should_be_torndown}" == "1" ]
 then
     if [ ${TACHYON_MODE} != "setuponly" ]
     then
@@ -1476,7 +1476,7 @@ then
     fi
 fi
 
-if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoopsetuppassed}" == "1" ]
+if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoop_should_be_torndown}" == "1" ]
 then
     if [ ${HADOOP_MODE} != "setuponly" ]
     then
@@ -1548,7 +1548,7 @@ fi
 
 # Zookeeper teardown comes last, as other things like Hbase & Storm require it
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${zookeepersetuppassed}" == "1" ]
+if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${zookeeper_should_be_torndown}" == "1" ]
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
