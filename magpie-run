@@ -183,10 +183,10 @@ then
     
     # Nothing to check for Zookeeper, setup always passes
     zookeeper_should_be_torndown=1
-    zookeepersetupsuccessful=1
+    zookeeper_setup_successful=1
 else
     zookeeper_should_be_torndown=0
-    zookeepersetupsuccessful=1
+    zookeeper_setup_successful=1
 fi
 
 #
@@ -603,25 +603,25 @@ then
 	    then
 		echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
 		hadoop_should_be_torndown=1
-		hadoopsetupsuccessful=0
+		hadoop_setup_successful=0
 		prior_setup_successful=false
 	    else
 		hadoop_should_be_torndown=1
-		hadoopsetupsuccessful=1
+		hadoop_setup_successful=1
 	    fi
 	else
 	    hadoop_should_be_torndown=0
-	    hadoopsetupsuccessful=0
+	    hadoop_setup_successful=0
 	    prior_setup_successful=false
 	fi
     else
 	hadoop_should_be_torndown=1
-	hadoopsetupsuccessful=1
+	hadoop_setup_successful=1
     fi
 
     # Setup job history server after namenode comes up, it may need to
     # write/create in HDFS
-    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoopsetupsuccessful}" == "1" ]
+    if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoop_setup_successful}" == "1" ]
     then
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
@@ -635,7 +635,7 @@ then
     fi
 else
     hadoop_should_be_torndown=0
-    hadoopsetupsuccessful=1
+    hadoop_setup_successful=1
 fi
 
 #
@@ -766,10 +766,10 @@ then
 
     # Nothing to check for Hbase, setup always passes
     hbase_should_be_torndown=1
-    hbasesetupsuccessful=1
+    hbase_setup_successful=1
 else
     hbase_should_be_torndown=0
-    hbasesetupsuccessful=1
+    hbase_setup_successful=1
 fi
 
 #
@@ -914,10 +914,10 @@ then
 
     # Nothing to check for Spark, setup always passes
     spark_should_be_torndown=1
-    sparksetupsuccessful=1
+    spark_setup_successful=1
 else
     spark_should_be_torndown=0
-    sparksetupsuccessful=1
+    spark_setup_successful=1
 fi
 
 #
@@ -1047,10 +1047,10 @@ then
 
     # Nothing to check for Storm, setup always passes
     storm_should_be_torndown=1
-    stormsetupsuccessful=1
+    storm_setup_successful=1
 else
     storm_should_be_torndown=0
-    stormsetupsuccessful=1
+    storm_setup_successful=1
 fi
 
 #
@@ -1223,19 +1223,19 @@ then
 
     # Nothing to check for Tachyon, setup always passes
     tachyon_should_be_torndown=1
-    tachyonsetupsuccessful=1
+    tachyon_setup_successful=1
 else
     tachyon_should_be_torndown=0
-    tachyonsetupsuccessful=1
+    tachyon_setup_successful=1
 fi
 
 # Make sure all setup passed
-if [ "${zookeepersetupsuccessful}" == "1" ] \
-    && [ "${hadoopsetupsuccessful}" == "1" ] \
-    && [ "${hbasesetupsuccessful}" == "1" ] \
-    && [ "${sparksetupsuccessful}" == "1" ] \
-    && [ "${stormsetupsuccessful}" == "1" ] \
-    && [ "${tachyonsetupsuccessful}" == "1" ]
+if [ "${zookeeper_setup_successful}" == "1" ] \
+    && [ "${hadoop_setup_successful}" == "1" ] \
+    && [ "${hbase_setup_successful}" == "1" ] \
+    && [ "${spark_setup_successful}" == "1" ] \
+    && [ "${storm_setup_successful}" == "1" ] \
+    && [ "${tachyon_setup_successful}" == "1" ]
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
