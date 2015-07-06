@@ -408,13 +408,10 @@ then
 	exit 1
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    if [ "${HADOOP_VERSION}X" == "X" ]
     then
-	if [ "${HADOOP_VERSION}X" == "X" ]
-	then
-	    echo "HADOOP_VERSION must be set for HADOOP_SETUP_TYPE = ${HADOOP_SETUP_TYPE}"
-	    exit 1
-	fi
+	echo "HADOOP_VERSION must be set to run Hadoop"
+	exit 1
     fi
 
     if [ "${HADOOP_HOME}X" == "X" ]
@@ -775,6 +772,12 @@ then
 	exit 1
     fi
 
+    if [ "${PIG_VERSION}X" == "X" ]
+    then
+	echo "PIG_VERSION must be set to run Pig"
+	exit 1
+    fi
+
     if [ "${PIG_HOME}X" == "X" ]
     then
 	echo "PIG_HOME must be set to run Pig"
@@ -843,6 +846,12 @@ then
     if [ "${JAVA_HOME}X" == "X" ]
     then
 	echo "JAVA_HOME must be set for Hbase"
+	exit 1
+    fi
+
+    if [ "${HBASE_VERSION}X" == "X" ]
+    then
+	echo "HBASE_VERSION must be set to run Hbase"
 	exit 1
     fi
 
@@ -1197,6 +1206,12 @@ then
 	exit 1
     fi
 
+    if [ "${STORM_VERSION}X" == "X" ]
+    then
+	echo "STORM_VERSION must be set to run Storm"
+	exit 1
+    fi
+
     if [ "${STORM_HOME}X" == "X" ]
     then
 	echo "STORM_HOME must be set to run Storm"
@@ -1327,6 +1342,12 @@ then
 	fi
     fi
 
+    if [ "${TACHYON_VERSION}X" == "X" ]
+    then
+	echo "TACHYON_VERSION must be set to run Tachyon"
+	exit 1
+    fi
+
     if [ "${TACHYON_HOME}X" == "X" ]
     then
 	echo "TACHYON_HOME must be set to run Tachyon"
@@ -1449,6 +1470,12 @@ then
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then
 	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
+    fi
+
+    if [ "${ZOOKEEPER_VERSION}X" == "X" ]
+    then
+	echo "ZOOKEEPER_VERSION must be set to run Zookeeper"
+	exit 1
     fi
 
     if [ "${ZOOKEEPER_HOME}X" == "X" ]
