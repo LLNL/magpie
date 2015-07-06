@@ -214,8 +214,10 @@ then
 		if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 		then
 		    hdfsstoredversionpath=${HADOOP_HDFSOVERLUSTRE_PATH}/magpie.hadoop-version
+		    hdfsstorednodecountpath=${HADOOP_HDFSOVERLUSTRE_PATH}/magpie.node-count
 		else
 		    hdfsstoredversionpath=${HADOOP_HDFSOVERNETWORKFS_PATH}/magpie.hadoop-version
+		    hdfsstorednodecountpath=${HADOOP_HDFSOVERNETWORKFS_PATH}/magpie.node-count
 		fi
 
 		# Older versions of Magpie didn't store this variable
@@ -243,6 +245,30 @@ then
 			fi
 		    fi
 		fi
+
+		# Older nodecounts of Magpie didn't store this variable
+		if [ -f ${hdfsstorednodecountpath} ]
+		then
+		    hdfsstorednodecount=`cat ${hdfsstorednodecountpath}`
+
+		    if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsstorednodecount}" ]
+		    then
+			ninteypercentnodes=`echo ${hdfsstorednodecount}\*.9 | bc`
+			echo "HDFS was last built using a larger slave node count of ${hdfsstorednodecount}, compared to this job's ${HADOOP_SLAVE_COUNT}"
+			echo "Because of this, it is very likely the HDFS Namenode will not be able to find all HDFS blocks."
+			echo ""
+
+			if [ "${HADOOP_SLAVE_COUNT}" -gt "${ninteypercentnodes}" ]
+			then
+			    echo "The current slave count of ${HADOOP_SLAVE_COUNT} is atleast 90% of ${hdfsstorednodecount}, so HDFS will attempt to be"
+			    echo "started.  However, it is not recommended for future runs and there is still a decent chance HDFS will not start."
+			else
+			    echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decomissioning process to"
+			    echo "reduce the number of nodes your HDFS is built on.  See README for details on decomissioning process."
+			    continue_to_setup_hadoop=0
+			fi
+		    fi
+		fi
 	    fi
 
 	    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
@@ -260,7 +286,9 @@ then
 		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	    then
 		rm -f ${hdfsstoredversionpath}
+		rm -f ${hdfsstorednodecountpath}
 		echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+		echo "${HADOOP_SLAVE_COUNT}" > ${hdfsstorednodecountpath}
 	    fi
 	fi
 	
