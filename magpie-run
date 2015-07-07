@@ -202,7 +202,7 @@ then
     if [ ${HADOOP_MODE} != "setuponly" ]
     then
 	echo "Starting hadoop"
-	continue_to_setup_hadoop=1
+	hadoop_should_be_setup=1
 
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
@@ -233,7 +233,7 @@ then
 		    then
 			if [ "${vercomp_result}" == "1" ]
 			then
-			    echo "HDFS version at mount ${hdfspath} is older then ${HADOOP_VERSION}."
+			    echo "HDFS version at mount ${hdfspath} is older than ${HADOOP_VERSION}."
 			    echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
 			else
 			    echo "HDFS version at mount ${hdfspath} is newer than ${HADOOP_VERSION}."
@@ -243,7 +243,7 @@ then
 			# or ...vercomp_result == 1 && hadoop_mode == upgradehdfs
 			if [ "${vercomp_result}" != "1" ] || [ "${HADOOP_MODE}" != "upgradehdfs" ]
 			then
-			    continue_to_setup_hadoop=0
+			    hadoop_should_be_setup=0
 			fi
 		    fi
 		fi
@@ -255,7 +255,7 @@ then
 
 		    if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsstorednodecount}" ]
 		    then
-			ninteypercentnodes=`echo ${hdfsstorednodecount}\*.9 | bc`
+			ninteypercentnodes=$(echo "${hdfsstorednodecount} * .9" | bc -l | xargs printf "%1.0f")
 			echo "HDFS was last built using a larger slave node count of ${hdfsstorednodecount}, compared to this job's ${HADOOP_SLAVE_COUNT}"
 			echo "Because of this, it is very likely the HDFS Namenode will not be able to find all HDFS blocks."
 			echo ""
@@ -267,7 +267,7 @@ then
 			else
 			    echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decomissioning process to"
 			    echo "reduce the number of nodes your HDFS is built on.  See README for details on decomissioning process."
-			    continue_to_setup_hadoop=0
+			    hadoop_should_be_setup=0
 			fi
 		    fi
 		fi
@@ -278,23 +278,38 @@ then
 		startdfsoptions="-upgrade"
 	    fi
 
-	    if [ "${continue_to_setup_hadoop}" == "1" ]
+	    if [ "${hadoop_should_be_setup}" == "1" ]
 	    then
 		${hadoopsetupscriptprefix}/start-dfs.sh ${startdfsoptions}
 		hdfs_was_setup=1
 	    fi
 
-	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+	    if [ "${hdfs_was_setup}" == "1" ] \
+		&& ([ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+		    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ])
 	    then
-		rm -f ${hdfsstoredversionpath}
+		if [ "${HADOOP_MODE}" != "upgradehdfs" ]
+		then
+		    rm -f ${hdfsstoredversionpath}
+		    echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+		fi
+
+		if [ -f ${hdfsstorednodecountpath} ]
+                then
+                    nodecount=`cat ${hdfsstorednodecountpath}`
+		    if [ "${nodecount}" -lt "${HADOOP_SLAVE_COUNT}" ]
+		    then
+			nodecount=${HADOOP_SLAVE_COUNT}
+		    fi
+		else
+		    nodecount=${HADOOP_SLAVE_COUNT}
+		fi
 		rm -f ${hdfsstorednodecountpath}
-		echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
-		echo "${HADOOP_SLAVE_COUNT}" > ${hdfsstorednodecountpath}
+		echo "${nodecount}" > ${hdfsstorednodecountpath}
 	    fi
 	fi
 	
-	if [ "${continue_to_setup_hadoop}" == "1" ]
+	if [ "${hadoop_should_be_setup}" == "1" ]
 	then
 	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	    then
@@ -318,104 +333,71 @@ then
 	fi
     fi
 
-    echo "*******************************************************"
-    echo "*"
-    echo "* Hadoop Information"
-    echo "*"
-    echo "* You can view your Hadoop status by launching a web browser and pointing to ..."
-    echo "*"
-    if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
+    if [ "${hadoop_should_be_setup}" == "1" ]
     then
-	echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${MAPRED_JOB_TRACKER_HTTPADDRESS}"
+	echo "*******************************************************"
 	echo "*"
-    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
-    then
-	echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}"
+	echo "* Hadoop Information"
 	echo "*"
-	echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}"
+	echo "* You can view your Hadoop status by launching a web browser and pointing to ..."
 	echo "*"
-    fi
-    if [ ${HADOOP_FILESYSTEM_MODE} == "hdfs" ] \
-	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsoverlustre" ] \
-	|| [ ${HADOOP_FILESYSTEM_MODE} == "hdfsovernetworkfs" ]
-    then
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
 	then
-	    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-	    do
-	        # First namenode is based on master
-		if [ "${i}" == "1" ]
-		then
-		    federationnamenodehost="${HADOOP_MASTER_NODE}"
-		else
-		    numline=`expr ${i} - 1`
-		    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-		fi
-	    	echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
-	    done
-	else
-	    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+	    echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${MAPRED_JOB_TRACKER_HTTPADDRESS}"
+	    echo "*"
+	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+	then
+	    echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}"
+	    echo "*"
+	    echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}"
+	    echo "*"
 	fi
-	echo "* HDFS DataNode: http://<DATANODE>:${HADOOP_HDFS_DATANODE_HTTPADDRESS}"
-	echo "*"
-	echo "* HDFS can be accessed directly at:"
-	echo "*"
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	if [ ${HADOOP_FILESYSTEM_MODE} == "hdfs" ] \
+	    || [ ${HADOOP_FILESYSTEM_MODE} == "hdfsoverlustre" ] \
+	    || [ ${HADOOP_FILESYSTEM_MODE} == "hdfsovernetworkfs" ]
 	then
-	    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-	    do
+	    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	    then
+		for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+		do
 	        # First namenode is based on master
-		if [ "${i}" == "1" ]
-		then
-		    federationnamenodehost="${HADOOP_MASTER_NODE}"
-		else
-		    numline=`expr ${i} - 1`
-		    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-		fi
-	    	echo "* hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	    done
-	else
-	    echo "*   hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}" 
+		    if [ "${i}" == "1" ]
+		    then
+			federationnamenodehost="${HADOOP_MASTER_NODE}"
+		    else
+			numline=`expr ${i} - 1`
+			federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+		    fi
+	    	    echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+		done
+	    else
+		echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+	    fi
+	    echo "* HDFS DataNode: http://<DATANODE>:${HADOOP_HDFS_DATANODE_HTTPADDRESS}"
+	    echo "*"
+	    echo "* HDFS can be accessed directly at:"
+	    echo "*"
+	    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	    then
+		for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+		do
+	        # First namenode is based on master
+		    if [ "${i}" == "1" ]
+		    then
+			federationnamenodehost="${HADOOP_MASTER_NODE}"
+		    else
+			numline=`expr ${i} - 1`
+			federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+		    fi
+	    	    echo "* hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+		done
+	    else
+		echo "*   hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}" 
+	    fi
+	    echo "*" 
 	fi
 	echo "*" 
-    fi
-    echo "*" 
-    echo "* To access Hadoop directly, you'll want to:"
-    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-    if echo $MAGPIE_SHELL | grep -q csh
-    then
-	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-    else
-	echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-    fi
-    echo "*   cd $HADOOP_HOME"
-    echo "*"
-    echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
-    echo "*" 
-    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
-    then 
-	echo "*   ${hadoopcmdprefix}/hdfs dfs ..."
-	echo "*   or"
-    fi
-    echo "*   ${hadoopcmdprefix}/hadoop fs ..."
-    echo "*" 
-    echo "* To launch jobs you'll want to:"
-    echo "*" 
-    echo "*   ${hadoopcmdprefix}/hadoop jar ..."
-    echo "*" 
-    if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
-    then
-	echo "*"
-	echo "* To run pig scripts:"
-	echo "*"
-	echo "* cd $PIG_HOME"
-	echo "* ${pigcmdprefix}/pig ..."
-    fi
-    if [ "${HADOOP_MODE}" == "setuponly" ]
-    then
-	echo "*" 
- 	echo "* To setup, you probably want to run:" 
-	echo "*"
+	echo "* To access Hadoop directly, you'll want to:"
 	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
 	if echo $MAGPIE_SHELL | grep -q csh
 	then
@@ -424,142 +406,178 @@ then
 	    echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
 	fi
 	echo "*   cd $HADOOP_HOME"
+	echo "*"
+	echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
+	echo "*" 
+	if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+	then 
+	    echo "*   ${hadoopcmdprefix}/hdfs dfs ..."
+	    echo "*   or"
+	fi
+	echo "*   ${hadoopcmdprefix}/hadoop fs ..."
+	echo "*" 
+	echo "* To launch jobs you'll want to:"
+	echo "*" 
+	echo "*   ${hadoopcmdprefix}/hadoop jar ..."
+	echo "*" 
+	if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
+	then
+	    echo "*"
+	    echo "* To run pig scripts:"
+	    echo "*"
+	    echo "* cd $PIG_HOME"
+	    echo "* ${pigcmdprefix}/pig ..."
+	fi
+	if [ "${HADOOP_MODE}" == "setuponly" ]
+	then
+	    echo "*" 
+ 	    echo "* To setup, you probably want to run:" 
+	    echo "*"
+	    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	    else
+		echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	    fi
+	    echo "*   cd $HADOOP_HOME"
+	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+	    then
+		echo "*   ${hadoopsetupscriptprefix}/start-dfs.sh" 
+	    fi
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	    then
+		echo "*   ${hadoopsetupscriptprefix}/start-mapred.sh"
+	    fi
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	    then
+		echo "*   ${hadoopsetupscriptprefix}/start-yarn.sh"
+	    fi
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	    then
+		echo "*   ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
+	    fi
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	    then
+		echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
+	    fi
+	fi
+
+	echo "*" 
+	echo "* To end/cleanup your session, kill the daemons via:"
+	echo "*" 
+	echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
+	else
+	    echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
+	fi
+	echo "*   cd $HADOOP_HOME"
+	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	then
+	    echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
+	fi
+	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "*   ${hadoopsetupscriptprefix}/stop-yarn.sh"
+	fi
 	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
-	    echo "*   ${hadoopsetupscriptprefix}/start-dfs.sh" 
+	    echo "*   ${hadoopsetupscriptprefix}/stop-dfs.sh"
 	fi
 	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 	then
-	    echo "*   ${hadoopsetupscriptprefix}/start-mapred.sh"
+	    echo "*   ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
 	fi
 	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 	then
-	    echo "*   ${hadoopsetupscriptprefix}/start-yarn.sh"
+	    echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
 	fi
-	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-	then
-	    echo "*   ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
-	fi
-	if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-	then
-	    echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
-	fi
-    fi
-
-    echo "*" 
-    echo "* To end/cleanup your session, kill the daemons via:"
-    echo "*" 
-    echo "*   ${magpieremotecmd} ${HADOOP_MASTER_NODE}"
-    if echo $MAGPIE_SHELL | grep -q csh
-    then
-	echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-    else
-	echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-    fi
-    echo "*   cd $HADOOP_HOME"
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-	echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
-    fi
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-	echo "*   ${hadoopsetupscriptprefix}/stop-yarn.sh"
-    fi
-    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-	|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
-    then
-	echo "*   ${hadoopsetupscriptprefix}/stop-dfs.sh"
-    fi
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-	echo "*   ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
-    fi
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-	echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
-    fi
-    echo "*" 
-    echo "* Some additional environment variables you may sometimes wish to set"
-    echo "*" 
-    if echo $MAGPIE_SHELL | grep -q csh
-    then
-	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-	echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
-    else
-	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
-	echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
-    fi
-    if [ "${PIG_SETUP}" == "yes" ]
-    then
+	echo "*" 
+	echo "* Some additional environment variables you may sometimes wish to set"
+	echo "*" 
 	if echo $MAGPIE_SHELL | grep -q csh
 	then
-	    echo "*   setenv PIG_HOME \"${PIG_HOME}\""
-	    echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
+	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	    echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
 	else
-	    echo "*   export PIG_HOME=\"${PIG_HOME}\""
-	    echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
+	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	    echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
 	fi
-    fi
-
-    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
-    then
-	echo "*"
-	echo "* If running interactively, sourcing"
-	echo "*"
-	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
-	echo "*"
-	echo "* will set most common environment variables for your job."
-    fi
-    echo "*" 
-    echo "*******************************************************"
-
-    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
-    then
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "setenv HADOOP_HOME \"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_LOG_DIR \"${HADOOP_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_MASTER_NODE \"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_SLAVE_COUNT \"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_SLAVE_CORE_COUNT \"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_NAMENODE \"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv HADOOP_NAMENODE_PORT \"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    if [ "${HADOOP_VERSION}X" != "X" ]
-	    then
-		echo "setenv HADOOP_VERSION \"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    fi
-	else
-	    echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_MASTER_NODE=\"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_SLAVE_COUNT=\"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_SLAVE_CORE_COUNT=\"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_NAMENODE=\"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export HADOOP_NAMENODE_PORT=\"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    if [ "${HADOOP_VERSION}X" != "X" ]
-	    then
-		echo "export HADOOP_VERSION=\"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    fi
-	fi
-	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-
 	if [ "${PIG_SETUP}" == "yes" ]
 	then
 	    if echo $MAGPIE_SHELL | grep -q csh
 	    then
-		echo "setenv PIG_HOME \"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "*   setenv PIG_HOME \"${PIG_HOME}\""
+		echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
 	    else
-		echo "export PIG_HOME=\"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export PIG_CONF_DIR=\"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "*   export PIG_HOME=\"${PIG_HOME}\""
+		echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
 	    fi
 	fi
-	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    echo "*"
+	    echo "* If running interactively, sourcing"
+	    echo "*"
+	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	    echo "*"
+	    echo "* will set most common environment variables for your job."
+	fi
+	echo "*" 
+	echo "*******************************************************"
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "setenv HADOOP_HOME \"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_LOG_DIR \"${HADOOP_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_MASTER_NODE \"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_SLAVE_COUNT \"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_SLAVE_CORE_COUNT \"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_NAMENODE \"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HADOOP_NAMENODE_PORT \"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		if [ "${HADOOP_VERSION}X" != "X" ]
+		then
+		    echo "setenv HADOOP_VERSION \"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+	    else
+		echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_LOG_DIR=\"${HADOOP_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_MASTER_NODE=\"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_SLAVE_COUNT=\"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_SLAVE_CORE_COUNT=\"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_NAMENODE=\"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HADOOP_NAMENODE_PORT=\"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		if [ "${HADOOP_VERSION}X" != "X" ]
+		then
+		    echo "export HADOOP_VERSION=\"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+	    fi
+	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+	    if [ "${PIG_SETUP}" == "yes" ]
+	    then
+		if echo $MAGPIE_SHELL | grep -q csh
+		then
+		    echo "setenv PIG_HOME \"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    echo "setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		else
+		    echo "export PIG_HOME=\"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    echo "export PIG_CONF_DIR=\"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+	    fi
+	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
     fi
 
     # Ensure namenode isn't in safe mode.
@@ -1348,6 +1366,12 @@ then
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
+
+	    if [ "${hdfsstoredversionpath}X" != "X" ]
+	    then
+		rm -f ${hdfsstoredversionpath}
+		echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+	    fi
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
     then
