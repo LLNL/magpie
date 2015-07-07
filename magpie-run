@@ -213,12 +213,13 @@ then
 	    then
 		if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
 		then
-		    hdfsstoredversionpath=${HADOOP_HDFSOVERLUSTRE_PATH}/magpie.hadoop-version
-		    hdfsstorednodecountpath=${HADOOP_HDFSOVERLUSTRE_PATH}/magpie.node-count
+		    hdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
 		else
-		    hdfsstoredversionpath=${HADOOP_HDFSOVERNETWORKFS_PATH}/magpie.hadoop-version
-		    hdfsstorednodecountpath=${HADOOP_HDFSOVERNETWORKFS_PATH}/magpie.node-count
+		    hdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
 		fi
+
+		hdfsstoredversionpath=${hdfspath}/magpie.hadoop-version
+		hdfsstorednodecountpath=${hdfspath}/magpie.node-count
 
 		# Older versions of Magpie didn't store this variable
 		if [ -f ${hdfsstoredversionpath} ]
@@ -232,10 +233,11 @@ then
 		    then
 			if [ "${vercomp_result}" == "1" ]
 			then
-			    echo "Stored HDFS Version is older then ${HADOOP_VERSION}."
+			    echo "HDFS version at mount ${hdfspath} is older then ${HADOOP_VERSION}."
 			    echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
 			else
-			    echo "Stored HDFS Version is newer than ${HADOOP_VERSION}."
+			    echo "HDFS version at mount ${hdfspath} is newer than ${HADOOP_VERSION}."
+			    echo "Please use a newer Hadoop version."
 			fi
 
 			# or ...vercomp_result == 1 && hadoop_mode == upgradehdfs
