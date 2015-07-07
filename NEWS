@@ -4,6 +4,7 @@ Use --time instead of SBATCH_TIMELIMIT in sbatch scripts
 Fix corner case in MAGPIE_TIMELIMIT_MINUTES calculation if job < 1 hour
 When resource manager is slurm, calculate time left in job dynamically instead of using fixed MAGPIE_STARTUP_TIME
 In Hadoop terasort, check for old directories before removing them
+Add various error checks for HDFS over Lustre/NetworkFS, including varying node counts and mounting with different Hadoop versions.
 Fix up setup/cleanup/teardown code to fix various corner cases
 Fix msub-torque submission scripts to be able to use Tachyon.
 Various README/documentation updates/upgrades.
