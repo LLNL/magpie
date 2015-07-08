@@ -233,11 +233,20 @@ then
 		    then
 			if [ "${vercomp_result}" == "1" ]
 			then
+			    echo "**** HDFS Issue ****"
 			    echo "HDFS version at mount ${hdfspath} is older than ${HADOOP_VERSION}."
-			    echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
+			    if [ "${HADOOP_MODE}" != "upgradehdfs" ]
+			    then
+				echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
+				echo "Or if you wish to use a newer Hadoop version without upgrading HDFS, you can setup HDFS on another path"
+			    fi
+			    echo "**** HDFS Issue ****"
 			else
+			    echo "**** HDFS Issue ****"
 			    echo "HDFS version at mount ${hdfspath} is newer than ${HADOOP_VERSION}."
 			    echo "Please use a newer Hadoop version."
+			    echo "Or if you wish to use an older Hadoop version, you can setup HDFS on another path"
+			    echo "**** HDFS Issue ****"
 			fi
 
 			# or ...vercomp_result == 1 && hadoop_mode == upgradehdfs
@@ -256,19 +265,20 @@ then
 		    if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsstorednodecount}" ]
 		    then
 			ninteypercentnodes=$(echo "${hdfsstorednodecount} * .9" | bc -l | xargs printf "%1.0f")
+			echo "**** HDFS Issue ****"
 			echo "HDFS was last built using a larger slave node count of ${hdfsstorednodecount}, compared to this job's ${HADOOP_SLAVE_COUNT}"
 			echo "Because of this, it is very likely the HDFS Namenode will not be able to find all HDFS blocks."
-			echo ""
 
 			if [ "${HADOOP_SLAVE_COUNT}" -gt "${ninteypercentnodes}" ]
 			then
 			    echo "The current slave count of ${HADOOP_SLAVE_COUNT} is atleast 90% of ${hdfsstorednodecount}, so HDFS will attempt to be"
-			    echo "started.  However, it is not recommended for future runs and there is still a decent chance HDFS will not start."
+			    echo "started.  However, it is not recommended for future runs and there is still a chance HDFS will not start."
 			else
 			    echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decomissioning process to"
 			    echo "reduce the number of nodes your HDFS is built on.  See README for details on decomissioning process."
 			    hadoop_should_be_setup=0
 			fi
+			echo "**** HDFS Issue ****"
 		    fi
 		fi
 	    fi
