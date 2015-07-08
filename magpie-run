@@ -601,6 +601,10 @@ then
     then
 	if [ "${hdfs_was_setup}" == "1" ]
 	then
+	    # Could be more dynamic w/ slurm call to determine current
+	    # run time, but probably is sufficient for this trivial
+	    # part.  Minimally, have to leave the totalsleepwait code
+	    # around for non-slurm systems.
 	    namenodemaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${totalsleepwait}`
 	    
 	    if [ "${namenodemaxwaitseconds}" -lt 30 ]
