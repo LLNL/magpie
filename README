@@ -1985,10 +1985,12 @@ welcome patches to support them.
 
 To support another scheduler or resource manager, you'll want to make
 your equivalent scheduler/resource manager header, similar to
-submission-scripts/script-templates/magpie-slurm.  Then add an
+submission-scripts/script-templates/magpie-slurm.  You'll may also
+need to create a new job running variant, such as
+submission-scripts/script-templates/magpie-run-job-srun.  Then add an
 appropriate new section to
-sbumission-scripts/script-templates/Makefile and a new directory for
-these new submission scripts.
+submission-scripts/script-templates/Makefile and a new directory for
+these new submission scripts in submission-scripts.
 
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
 magpie-submission-convert and add appropriate input checks in
