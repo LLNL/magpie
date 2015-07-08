@@ -1985,8 +1985,8 @@ welcome patches to support them.
 
 To support another scheduler or resource manager, you'll want to make
 your equivalent scheduler/resource manager header, similar to
-submission-scripts/script-templates/magpie-slurm.  You'll may also
-need to create a new job running variant, such as
+submission-scripts/script-templates/magpie-slurm.  You may also need
+to create a new job running variant, such as
 submission-scripts/script-templates/magpie-run-job-srun.  Then add an
 appropriate new section to
 submission-scripts/script-templates/Makefile and a new directory for
