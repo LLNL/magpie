@@ -252,6 +252,11 @@ then
 	sed -i -e "s/SSD_DIR_PREFIX=\"\(.*\)\"/SSD_DIR_PREFIX=\"${ssddirpathsubst}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
+    if [ "${JAVA_HOME}X" != "X" ]
+    then
+    sed -i -e "s#JAVA_DEFAULT=.*#JAVA_DEFAULT=\"${JAVA_HOME}\"#" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+    fi
+
     cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 
     echo "Making launching scripts"
