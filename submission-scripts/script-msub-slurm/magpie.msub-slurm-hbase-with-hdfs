@@ -786,14 +786,7 @@ if [ $? -ne 0 ]
 then
     exit 1
 fi
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-pig
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-spark
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-storm
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-tachyon
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then

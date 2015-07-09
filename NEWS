@@ -6,6 +6,7 @@ When resource manager is slurm, calculate time left in job dynamically instead o
 In Hadoop terasort, check for old directories before removing them
 Add various error checks for HDFS over Lustre/NetworkFS, including varying node counts and mounting with different Hadoop versions.
 Fix up setup/cleanup/teardown code to fix various corner cases
+Clean up setup code into a new script, reducing number of calls to srun, etc.
 Fix msub-torque submission scripts to be able to use Tachyon.
 Various README/documentation updates/upgrades.
 Various other minor fixes

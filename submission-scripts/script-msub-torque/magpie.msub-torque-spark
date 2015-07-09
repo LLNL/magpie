@@ -547,14 +547,7 @@ ENV=$(env | grep -E '^MAGPIE|^HADOOP|^PIG|^ZOOKEEPER|^HBASE|^SPARK|^STORM|^TACHY
 
 pdsh "$ENV;
       $MAGPIE_SCRIPTS_HOME/magpie-check-inputs &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-core &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-hadoop &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-pig &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-zookeeper &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-hbase &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-spark &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-storm &&
-      $MAGPIE_SCRIPTS_HOME/magpie-setup-tachyon &&
+      $MAGPIE_SCRIPTS_HOME/magpie-setup &&
       $MAGPIE_SCRIPTS_HOME/magpie-pre-run &&
       $MAGPIE_SCRIPTS_HOME/magpie-run &&
       $MAGPIE_SCRIPTS_HOME/magpie-post-run
