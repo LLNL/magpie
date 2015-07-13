@@ -1,6 +1,6 @@
 #!/bin/sh
 #############################################################################
-#  Copyright (C) 2013 Lawrence Livermore National Security, LLC.
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
