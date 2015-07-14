@@ -48,6 +48,9 @@ define common-substitution
 	sed -i -e 's;SSDDIRPREFIX;$(SSD_DIR_PREFIX);g' $(1)
 
 	sed -i -e 's;REMOTECMDDEFAULT;$(REMOTE_CMD_DEFAULT);g' $(1)
+	if test "${REMOTE_CMD_DEFAULT}" != "ssh"; then \
+		sed -i -e "s/^# export MAGPIE_REMOTE_CMD/export MAGPIE_REMOTE_CMD/g" $(1); \
+	fi
 	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
 endef
 
