@@ -49,6 +49,27 @@ The basic idea behind these scripts are to:
 
 Additional details can be found in the project README file
 
+Requirements
+------------
+
+1) Magpie and all big data projects (Hadoop, Spark, etc.) should be
+   installed on all cluster nodes.  It can be in a known location or
+   perhaps via a network file system location.  These paths will be
+   specified in job submission scripts.
+
+2) A passwordless remote shell execution mechanism must be available
+   for scripts to launch big data daemons (Hadoop Datanodes, Hbase
+   Regionservers, etc.) on all appropriate nodes.  The most popular
+   (and default mechanism) is passwordless ssh.  However, other
+   mechanisms are more than suitable.
+
+3) A temporary local scratch space is needed on each node for Magpie
+   to store configuration files, log files, and other miscellaneous
+   files.  A very small amount of scratch space is needed.
+
+   This local scratch space need not be a local disk.  It could
+   hypothetically be memory based tmpfs.
+
 Supported Package Versions
 --------------------------
 
