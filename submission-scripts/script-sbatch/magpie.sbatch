@@ -1220,21 +1220,10 @@ export SPARK_MODE="sparkpi"
 # must be specified.
 #
 # If you have local SSDs stored on the nodes of your system, it may be
-# in your interest to set this to a local drive and adjust
-# SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.  It can improve
+# in your interest to set this to a local drive.  It can improve
 # performance of both shuffling and disk based RDD persistence.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
-
-# Set how SPARK_LOCAL_SCRATCH_DIR should be setup.
-#
-# "networkfs" - SPARK_LOCAL_SCRATCH_DIR points to a network filesystem
-#               (such as Lustre).  Local paths will be
-#               setup.
-#
-# "local" - SPARK_LOCAL_SCRATCH_DIR points to a local drive.
-#
-# export SPARK_LOCAL_SCRATCH_DIR_TYPE="networkfs"
 
 ############################################################################
 # Spark SparkPi Configuration

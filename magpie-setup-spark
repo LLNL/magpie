@@ -113,7 +113,7 @@ then
     # sets hadooptmpdir and fsdefault
     Magpie_calculate_hadoop_filesystem_paths ${sparknoderank}
 
-    sparklocalscratchdirpath="${hadooptmpdir}/spark"
+    sparklocalscratchdirpath="${hadooptmpdir}/spark/node-${sparknoderank}"
     
     if [ ! -d "${sparklocalscratchdirpath}" ]
     then
@@ -124,14 +124,8 @@ then
 	fi
     fi
 else
-    if [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "networkfs" ]
-    then
-        # Setup node directory per node 
-	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
-    elif [ "${SPARK_LOCAL_SCRATCH_DIR_TYPE}" == "local" ]
-    then
-	sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}"
-    fi
+    # Setup node directory per node 
+    sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
 
     mkdir -p ${sparklocalscratchdirpath}
     if [ $? -ne 0 ] ; then
