@@ -1209,7 +1209,8 @@ export SPARK_MODE="sparkpi"
 #
 # If you have local SSDs stored on the nodes of your system, it may be
 # in your interest to set this to a local drive and adjust
-# SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.
+# SPARK_LOCAL_SCRATCH_DIR_TYPE below to 'local'.  It can improve
+# performance of both shuffling and disk based RDD persistence.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
