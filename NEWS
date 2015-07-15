@@ -5,6 +5,7 @@ Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
   regardless if it is a network or local fs path.
   *** This may potentially break backwards compatability with Zookeeper
   data that may already exist on network file systems. ***
+Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
 
 magpie 1.59
 -----------
