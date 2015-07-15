@@ -44,27 +44,14 @@ fi
 
 if [ "${zookeepernoderank}X" != "X" ]
 then 
-    if [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "networkfs" ]
-    then
-        # Setup node directory per node 
-	zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
-	zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
+    # Setup node directory per node 
+    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+    zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
 	
-	mkdir -p ${zookeeperdatadirpath}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${zookeeperdatadirpath}"
-	    exit 1
-	fi
-    elif [ "${ZOOKEEPER_FILESYSTEM_MODE}" == "local" ]
-    then
-	zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}"
-	zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
-	
-	mkdir -p ${zookeeperdatadirpath}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${zookeeperdatadirpath}"
-	    exit 1
-	fi
+    mkdir -p ${zookeeperdatadirpath}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${zookeeperdatadirpath}"
+	exit 1
     fi
     
     echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid

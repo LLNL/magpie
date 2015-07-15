@@ -1497,13 +1497,6 @@ then
 	exit 1
     fi
 
-    if [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "networkfs" ] \
-	&& [ "${ZOOKEEPER_FILESYSTEM_MODE}" != "local" ]
-    then
-	echo "ZOOKEEPER_FILESYSTEM_MODE must be set to networkfs or local"
-	exit 1
-    fi
-
     if [ "${ZOOKEEPER_DATA_DIR}X" == "X" ]
     then
 	echo "ZOOKEEPER_DATA_DIR must be set to run Zookeeper"
