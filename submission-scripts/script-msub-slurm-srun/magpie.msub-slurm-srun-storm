@@ -402,25 +402,10 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 #
 # export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
 
-# Set how Zookeeper data directory should be setup.
+# Path base for zookeeper data to be stored on each cluster node
 #
-# "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
-#               (such as Lustre).  Zookeeper local paths will be
-#               setup.
-#
-# "local" - ZOOKEEPER_DATA_DIR points to a local drive.
-#
-export ZOOKEEPER_FILESYSTEM_MODE="networkfs"
-
-# Path base for local data to each cluster node
-#
-# If ZOOKEEPER_FILESYSTEM_MODE is set to "networkfs", this is the base
-# point for local data and per-node directories will be created
-# (e.g. ${ZOOKEEPER_DATA_DIR}/node-1/)
-#
-# If you have local SSDs stored on the nodes of your system, it may be
-# in your interest to set this to a local drive and adjust
-# ZOOKEEPER_FILESYSTEM_MODE above to 'local'.
+# ZOOKEEPER_DATA_DIR can point to either a network file system path or
+# a local drive path.
 #
 export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
 

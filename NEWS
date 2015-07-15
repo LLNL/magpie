@@ -1,3 +1,11 @@
+magpie 1.XX
+-----------
+Remove ZOOKEEPER_FILESYSTEM_MODE setting.
+Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
+  regardless if it is a network or local fs path.
+  *** This may potentially break backwards compatability with Zookeeper
+  data that may already exist on network file systems. ***
+
 magpie 1.59
 -----------
 Rename submission script directories to include launching mechansim
