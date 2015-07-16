@@ -70,8 +70,10 @@ export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
 export MAGPIE_SCRIPTS_HOME="${HOME}/magpie"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local scratch files for Magpie.
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
@@ -281,8 +283,10 @@ export HADOOP_VERSION="2.6.0"
 #
 export HADOOP_HOME="${HOME}/hadoop-${HADOOP_VERSION}"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 # This will not be used for storing intermediate files or
 # distributed cache files.  See HADOOP_LOCALSTORE above for that.
@@ -777,8 +781,10 @@ export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 #
 # export PIG_CONF_FILES="${HOME}/myconf"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export PIG_LOCAL_DIR="/tmp/${USER}/pig"
 
@@ -846,8 +852,10 @@ export HBASE_VERSION="0.98.9-hadoop2"
 #
 export HBASE_HOME="${HOME}/hbase-${HBASE_VERSION}"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 
@@ -998,8 +1006,10 @@ export SPARK_VERSION="1.3.0-bin-hadoop2.4"
 #
 export SPARK_HOME="${HOME}/spark-${SPARK_VERSION}"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 
@@ -1301,8 +1311,10 @@ export STORM_VERSION="0.9.4"
 #
 export STORM_HOME="${HOME}/apache-storm-${STORM_VERSION}"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 
@@ -1472,8 +1484,10 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 # master.
 # export TACHYON_WORKER_ON_MASTER="yes" 
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export TACHYON_LOCAL_DIR="/tmp/${USER}/tachyon"
 
@@ -1559,8 +1573,10 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 #
 export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 

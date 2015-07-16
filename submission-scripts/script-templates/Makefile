@@ -1,5 +1,7 @@
 # Creation options, set to y or n
 #
+# MAGPIE_NO_LOCAL_DIR - support MAGPIE_NO_LOCAL_DIR
+#
 # INSERT_INTELLUSTRE - insert intellustre configuration
 #
 # INSERT_MAGPIENETWORKFS - insert magpienetworkfs configuration
@@ -8,6 +10,7 @@
 #
 # INSERT_HDFS_FEDERATION - insert HDFS federation configuration 
 #
+MAGPIE_NO_LOCAL_DIR=n
 INSERT_INTELLUSTRE=n
 INSERT_MAGPIENETWORKFS=n
 INSERT_HDFSOVERNETWORKFS=y
@@ -55,6 +58,14 @@ define common-substitution
 endef
 
 define create-templates
+	cp magpie-magpie-customizations magpie-magpie-customizations-substitution
+
+	if test "${MAGPIE_NO_LOCAL_DIR}" = "y"; then \
+		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/{r magpie-magpie-customizations-no-local-dir" -e "d}" magpie-magpie-customizations-substitution; \
+	else \
+		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/,+1d" magpie-magpie-customizations-substitution; \
+	fi
+
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
 
 	if test "${INSERT_INTELLUSTRE}" = "y"; then \
@@ -108,7 +119,7 @@ define create-templates
 
 	# All configuration
 	echo "Creating magpie.$(SCHED)"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
 		magpie-uda\
 		magpie-pig\
@@ -122,7 +133,7 @@ define create-templates
 
 	# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
@@ -131,7 +142,7 @@ define create-templates
 
 	# Hadoop with UDA
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
 		magpie-uda\
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_WITH_UDA)
@@ -141,7 +152,7 @@ define create-templates
 
 	# Hadoop and Pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
 		magpie-pig\
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
@@ -153,7 +164,7 @@ define create-templates
 
 	# Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
 		magpie-hbase\
 		magpie-zookeeper\
@@ -168,7 +179,7 @@ define create-templates
 
 	# Spark
 	echo "Creating magpie.$(SCHED)-spark"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-spark\
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK)
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK)
@@ -179,7 +190,7 @@ define create-templates
 
 	# Spark with HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
 		magpie-spark\
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_HDFS)
@@ -192,7 +203,7 @@ define create-templates
 
 	# Spark with Tachyon and HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
 		magpie-spark\
 		magpie-tachyon\
@@ -207,7 +218,7 @@ define create-templates
 
 	# Storm
 	echo "Creating magpie.$(SCHED)-storm"
-	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
+	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-storm\
 		magpie-zookeeper\
 		magpie-run-job-$(DIST) > $(MAGPIE_STORM)

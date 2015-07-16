@@ -144,6 +144,13 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_NO_LOCAL_DIR}X" != "X" ] \
+    && ( [ "${MAGPIE_NO_LOCAL_DIR}" != "yes" ] && [ "${MAGPIE_NO_LOCAL_DIR}" != "no" ] )
+then
+    echo "MAGPIE_NO_LOCAL_DIR must be set to yes or no"
+    exit 1
+fi
+
 if [ "${MAGPIE_JOB_TYPE}X" == "X" ]
 then
     echo "MAGPIE_JOB_TYPE must be set"

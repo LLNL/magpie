@@ -1,5 +1,6 @@
 magpie 1.XX
 -----------
+Support MAGPIE_NO_LOCAL_DIR option.  See README.no-local-dir for details.
 Remove ZOOKEEPER_FILESYSTEM_MODE setting.
 Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
   regardless if it is a network or local fs path.

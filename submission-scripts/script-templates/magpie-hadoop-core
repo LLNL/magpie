@@ -44,8 +44,10 @@ export HADOOP_VERSION="2.6.0"
 #
 export HADOOP_HOME="PROJECTDIRPREFIX/hadoop-${HADOOP_VERSION}"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 # This will not be used for storing intermediate files or
 # distributed cache files.  See HADOOP_LOCALSTORE above for that.

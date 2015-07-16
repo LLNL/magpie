@@ -1,0 +1,11 @@
+# If your cluster does not have any node-local storage available (or
+# an extremely small amount of it) for small config files, log files,
+# and other temporary scratch space, set the following to yes and see
+# the README for patching requirements to projects.
+#
+# This option applies to all LOCAL_DIR environment variables, such as
+# MAGPIE_LOCAL_DIR, HADOOP_LOCAL_DIR, HBASE_LOCAL_DIR, etc.
+#
+# Defaults to no.
+#
+# export MAGPIE_NO_LOCAL_DIR="yes"
