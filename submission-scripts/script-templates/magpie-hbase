@@ -21,8 +21,10 @@ export HBASE_VERSION="0.98.9-hadoop2"
 #
 export HBASE_HOME="PROJECTDIRPREFIX/hbase-${HBASE_VERSION}"
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 

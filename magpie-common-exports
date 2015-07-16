@@ -28,8 +28,20 @@
 # This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
-export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+# Do not ever "use" the LOCAL_JOB_DIR variables.  They should only be
+# referenced when setting SCRATCH_DIR or CONF_DIR or LOG_DIR variables.
+
+if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+then
+    export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+else
+    export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+fi
+
+# MAGPIE_LOCAL_SCRATCH_DIR & MAGPIE_LOCAL_CONF_DIR set
+Magpie_make_magpie_local_dirs_node_specific
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
@@ -47,17 +59,22 @@ magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
-    export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
-    export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # HADOOP_LOCAL_SCRATCH_DIR & HADOOP_CONF_DIR & HADOOP_LOG_DIR set
+    # YARN_LOCAL_SCRATCH_DIR & YARN_CONF_DIR & YARN_LOG_DIR set
+    Magpie_make_hadoop_local_dirs_node_specific
+
     # For jobhistoryserver
     export HADOOP_MAPRED_HOME=${HADOOP_HOME}
 
     export HADOOP_YARN_HOME=${HADOOP_HOME}
     myusername=`whoami`
     export HADOOP_YARN_USER="${myusername}"
-    export YARN_CONF_DIR=${HADOOP_CONF_DIR}
-    export YARN_LOG_DIR=${HADOOP_LOG_DIR}
 
     # Unsure if needed, read about these online
     export HADOOP_HDFS_HOME=${HADOOP_HOME}
@@ -140,8 +157,14 @@ fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
-    export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # PIG_LOCAL_SCRATCH_DIR & PIG_CONF_DIR set
+    Magpie_make_pig_local_dirs_node_specific
 
     if [ "${PIG_OPTS}X" != "X" ]
     then
@@ -158,9 +181,14 @@ fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
-    export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
-    export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # HBASE_LOCAL_SCRATCH_DIR & HBASE_CONF_DIR & HBASE_LOG_DIR set
+    Magpie_make_hbase_local_dirs_node_specific
 
     export HBASE_MASTER_PORT="60000"
     export HBASE_MASTER_INFO_PORT="60010"
@@ -190,9 +218,14 @@ fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
 then
-    export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export SPARK_CONF_DIR=${SPARK_LOCAL_JOB_DIR}/conf
-    export SPARK_LOG_DIR=${SPARK_LOCAL_JOB_DIR}/log
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # SPARK_LOCAL_SCRATCH_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
+    Magpie_make_spark_local_dirs_node_specific
 
     export SPARK_MASTER_PORT="7077"
     export SPARK_MASTER_WEBUI_PORT="8080"
@@ -219,9 +252,14 @@ fi
 
 if [ "${STORM_SETUP}" == "yes" ]
 then
-    export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export STORM_CONF_DIR=${STORM_LOCAL_JOB_DIR}/conf
-    export STORM_LOG_DIR=${STORM_LOCAL_JOB_DIR}/log
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # STORM_LOCAL_SCRATCH_DIR & STORM_CONF_DIR & STORM_LOG_DIR set
+    Magpie_make_storm_local_dirs_node_specific
 
     # Default is 8080, but that is same as Spark.  So up by 100
     export STORM_UI_PORT="8180"
@@ -253,9 +291,14 @@ fi
 
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
-    export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export TACHYON_CONF_DIR=${TACHYON_LOCAL_JOB_DIR}/conf
-    export TACHYON_LOG_DIR=${TACHYON_LOCAL_JOB_DIR}/log
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # TACHYON_LOCAL_SCRATCH_DIR & TACHYON_CONF_DIR & TACHYON_LOG_DIR set
+    Magpie_make_tachyon_local_dirs_node_specific
 
     export TACHYON_MASTER_PORT="19998"
     export TACHYON_MASTER_WEB_PORT="19999"
@@ -279,9 +322,14 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
-    export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # ZOOKEEPER_LOCAL_SCRATCH_DIR & ZOOKEEPER_CONF_DIR & ZOOKEEPER_LOG_DIR set
+    Magpie_make_zookeeper_local_dirs_node_specific
 
     export ZOOKEEPER_CLIENT_PORT="2181"
     export ZOOKEEPER_PEER_PORT="2888"

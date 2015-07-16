@@ -69,6 +69,10 @@ Requirements
    This local scratch space need not be a local disk.  It could
    hypothetically be memory based tmpfs.
 
+   Beginning with Magpie XXX the ability to use network file paths for
+   "local scratch" space was supported, but requires some extra work.
+   See README.no-local-dir for details.
+
 4) A minor set of software dependencies are required depending on your
    environment.
 

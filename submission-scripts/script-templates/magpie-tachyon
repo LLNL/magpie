@@ -90,8 +90,10 @@ export TACHYON_STORE_PATHS="SSDDIRPREFIX/tachyon"
 # master.
 # export TACHYON_WORKER_ON_MASTER="yes" 
 
-# Path local to each cluster node, typically something in /tmp.
-# This will store local conf files and log files for your job. 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export TACHYON_LOCAL_DIR="LOCALDIRPREFIX/tachyon"
 
