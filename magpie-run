@@ -525,9 +525,17 @@ then
 	    then
 		echo "*   setenv PIG_HOME \"${PIG_HOME}\""
 		echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
+		if [ "${PIG_OPTS}X" != "X" ]
+		then
+		    echo "*   setenv PIG_OPTS \"${PIG_OPTS}\""
+		fi
 	    else
 		echo "*   export PIG_HOME=\"${PIG_HOME}\""
 		echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
+		if [ "${PIG_OPTS}X" != "X" ]
+		then
+		    echo "*   export PIG_OPTS=\"${PIG_OPTS}\""
+		fi
 	    fi
 	fi
 
@@ -581,9 +589,17 @@ then
 		then
 		    echo "setenv PIG_HOME \"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		    echo "setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    if [ "${PIG_OPTS}X" != "X" ]
+		    then
+			echo "setenv PIG_OPTS \"${PIG_OPTS}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    fi
 		else
 		    echo "export PIG_HOME=\"${PIG_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		    echo "export PIG_CONF_DIR=\"${PIG_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    if [ "${PIG_OPTS}X" != "X" ]
+		    then
+			echo "export PIG_OPTS=\"${PIG_OPTS}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    fi
 		fi
 	    fi
 	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
