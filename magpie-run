@@ -30,11 +30,15 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 if ! Magpie_am_I_master
 then
     exit 0
 fi
+
+# Initially make variables specific to node
+Magpie_make_all_local_dirs_node_specific
 
 # Output some general info
 echo "*******************************************************"
@@ -98,8 +102,14 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" 
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
+	# Make variables unspecified for launching
+	Magpie_make_all_local_dirs_unspecified
+
 	echo "Starting Zookeeper"
 	${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh start
+
+	# Make variables specific now within Magpie
+	Magpie_make_all_local_dirs_node_specific
 
         # My rough estimate for setup time is 30 seconds per 128 nodes
 	sleepwait=`expr ${ZOOKEEPER_REPLICATION_COUNT} \/ 128 \* 30`
@@ -1718,8 +1728,14 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${zookeeper_should_be_torndown}" == "
 then
     if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
     then
+	# Make variables unspecified for shutdown
+	Magpie_make_all_local_dirs_unspecified
+
 	echo "Stopping Zookeeper"
 	${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop
+
+	# Make variables specific now within Magpie
+	Magpie_make_all_local_dirs_node_specific
     fi
 fi
 

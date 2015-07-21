@@ -53,6 +53,11 @@ else
     zookeeperconfdir=${ZOOCFGDIR}
 fi
 
+orig_zookeeperconfdir=${zookeeperconfdir}
+
+myhostname=`hostname`
+zookeeperconfdir=$(echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+
 if [ ! -f ${zookeeperconfdir}/zookeeper_slaves ]
 then
     echo "Cannot find file ${zookeeperconfdir}/zookeeper_slaves"
@@ -91,5 +96,6 @@ RSH_CMD=${ZOOKEEPER_SSH_CMD:-ssh}
 
 for zookeepernode in ${zookeepernodes}
 do
+    zookeeperconfdir=$(echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$zookeepernode/g")
     ${RSH_CMD} ${ZOOKEEPER_SSH_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${zookeeperconfdir} ${ZOOKEEPER_HOME} $1
 done
