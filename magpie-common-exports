@@ -143,6 +143,16 @@ then
     export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
 
+    if [ "${PIG_OPTS}X" != "X" ]
+    then
+	if ! echo ${PIG_OPTS} | grep -q -E "java.io.tmpdir"
+	then
+	    export PIG_OPTS="${PIG_OPTS} -Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
+	fi
+    else
+	export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
+    fi
+
     pigcmdprefix="bin"
 fi
 

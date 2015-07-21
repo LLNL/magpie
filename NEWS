@@ -6,6 +6,7 @@ Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
   *** This may potentially break backwards compatability with Zookeeper
   data that may already exist on network file systems. ***
 Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
+By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
 
 magpie 1.59
 -----------
