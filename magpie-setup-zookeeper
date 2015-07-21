@@ -34,6 +34,7 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # zookeepernoderank set if succeed and it's a Zookeeper slave
 # Zookeeper master is only for setup/teardown management, not for actual Zookeeper
@@ -41,6 +42,9 @@ if ! Magpie_am_I_a_zookeeper_node
 then
     exit 0
 fi
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
 
 if [ "${zookeepernoderank}X" != "X" ]
 then 

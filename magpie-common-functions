@@ -33,9 +33,13 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 Magpie_am_I_master () {
     local myhostname=`hostname`
+
+    Magpie_make_all_local_dirs_node_specific
+
     if [ "${HADOOP_SETUP}" == "yes" ] && [ -f "${HADOOP_CONF_DIR}/masters" ]
     then
 	if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters
@@ -72,6 +76,9 @@ Magpie_am_I_master () {
 
 Magpie_am_I_a_hadoop_node () {
     local myhostname=`hostname`
+
+    Magpie_make_hadoop_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves \
 	|| grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters \
 	|| grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
@@ -93,6 +100,9 @@ Magpie_am_I_a_hadoop_node () {
 
 Magpie_am_I_a_hadoop_namenode () {
     local myhostname=`hostname`
+
+    Magpie_make_hadoop_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters \
 	|| grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
     then 
@@ -110,6 +120,9 @@ Magpie_am_I_a_hadoop_namenode () {
 
 Magpie_am_I_a_hbase_node () {
     local myhostname=`hostname`
+
+    Magpie_make_hbase_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/regionservers \
 	|| grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/masters
     then 
@@ -126,6 +139,9 @@ Magpie_am_I_a_hbase_node () {
 
 Magpie_am_I_a_spark_node () {
     local myhostname=`hostname`
+
+    Magpie_make_spark_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/slaves \
 	|| grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
     then 
@@ -142,6 +158,9 @@ Magpie_am_I_a_spark_node () {
 
 Magpie_am_I_a_storm_node () {
     local myhostname=`hostname`
+
+    Magpie_make_storm_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/workers \
 	|| grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
     then 
@@ -158,6 +177,9 @@ Magpie_am_I_a_storm_node () {
 
 Magpie_am_I_a_tachyon_node () {
     local myhostname=`hostname`
+
+    Magpie_make_tachyon_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/workers \
 	|| grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/masters
     then 
@@ -174,6 +196,9 @@ Magpie_am_I_a_tachyon_node () {
 
 Magpie_am_I_a_zookeeper_node () {
     local myhostname=`hostname`
+
+    Magpie_make_zookeeper_local_dirs_node_specific
+
     if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/zookeeper_master \
 	|| grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves
     then 
