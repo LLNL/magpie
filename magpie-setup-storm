@@ -34,6 +34,7 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # stormnoderank set if succeed
 if ! Magpie_am_I_a_storm_node
@@ -41,7 +42,10 @@ then
     exit 0
 fi
 
-stormlocaldir="${STORM_LOCAL_DIR}/local"
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+stormlocaldir="${STORM_LOCAL_SCRATCH_DIR}/local"
 
 if [ ! -d "${stormlocaldir}" ]
 then
