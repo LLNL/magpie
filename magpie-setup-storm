@@ -150,10 +150,8 @@ do
 done
 
 stormjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-stormlogdirsubst=`echo "${STORM_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 stormconfdirsubst=`echo "${STORM_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 stormhomesubst=`echo "${STORM_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-stormlocaldirsubst=`echo "${STORM_LOCAL_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_stormenvini} ${post_stormenvini}
