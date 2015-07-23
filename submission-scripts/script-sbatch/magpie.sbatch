@@ -811,7 +811,7 @@ export PIG_MODE="testpig"
 #
 # Extra Java runtime options
 #
-# export PIG_OPTS=""
+# export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
 
 ############################################################################
 # Hbase Core Configurations
