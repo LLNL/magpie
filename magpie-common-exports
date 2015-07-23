@@ -166,16 +166,6 @@ then
     # PIG_LOCAL_SCRATCH_DIR & PIG_CONF_DIR set
     Magpie_make_pig_local_dirs_node_specific
 
-    if [ "${PIG_OPTS}X" != "X" ]
-    then
-	if ! echo ${PIG_OPTS} | grep -q -E "java.io.tmpdir"
-	then
-	    export PIG_OPTS="${PIG_OPTS} -Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
-	fi
-    else
-	export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
-    fi
-
     pigcmdprefix="bin"
 fi
 
