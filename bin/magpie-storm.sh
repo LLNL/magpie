@@ -24,7 +24,7 @@
 
 # This script launches Storm across all nodes for the user
 
-# Make sure the environment variable STORM_CONF_DIR is set.
+# Make sure the environment variable STORM_CONF_DIR, STORM_LOG_DIR, and STORM_LOCAL_SCRATCH_DIR is set.
 
 # First argument is start or stop
 
@@ -46,19 +46,42 @@ then
     exit 1
 fi
 
-if [ ! -f ${STORM_CONF_DIR}/workers ]
+if [ "${STORM_LOG_DIR}X" == "X" ]
 then
-    echo "Cannot find file ${STORM_CONF_DIR}/workers"
+    echo "User must specify STORM_LOG_DIR"
     exit 1
 fi
 
-if [ ! -f ${STORM_CONF_DIR}/magpie-launch-storm-env.sh ]
+if [ "${STORM_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
-    echo "Cannot find file ${STORM_CONF_DIR}/magpie-launch-storm-env.sh"
+    echo "User must specify STORM_LOCAL_SCRATCH_DIR"
     exit 1
 fi
 
-source ${STORM_CONF_DIR}/magpie-launch-storm-env.sh
+myhostname=`hostname`
+
+orig_stormconfdir=${STORM_CONF_DIR}
+stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+
+orig_stormlogdir=${STORM_LOG_DIR}
+stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+
+orig_stormlocalscratchdir=${STORM_LOCAL_SCRATCH_DIR}
+stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+
+if [ ! -f ${stormconfdir}/workers ]
+then
+    echo "Cannot find file ${stormconfdir}/workers"
+    exit 1
+fi
+
+if [ ! -f ${stormconfdir}/magpie-launch-storm-env.sh ]
+then
+    echo "Cannot find file ${stormconfdir}/magpie-launch-storm-env.sh"
+    exit 1
+fi
+
+source ${stormconfdir}/magpie-launch-storm-env.sh
 
 if [ "${STORM_HOME}X" == "X" ]
 then
@@ -72,9 +95,9 @@ then
     exit 1
 fi
 
-if [ "${STORM_LOCAL_DIR}X" == "X" ]
+if [ "${STORM_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
-    echo "STORM_LOCAL_DIR not specified"
+    echo "STORM_LOCAL_SCRATCH_DIR not specified"
     exit 1
 fi
 
@@ -90,8 +113,9 @@ then
     exit 1
 fi
 
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_DIR} nimbus $1
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_DIR} ui $1
+# At this point, the environment variables are node-specific, it was read out of magpie-launch-storm-env.sh
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCH_DIR} nimbus $1
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCH_DIR} ui $1
 
 RSH_CMD=${STORM_SSH_CMD:-ssh}
 
@@ -99,6 +123,10 @@ stormnodes=`cat ${STORM_CONF_DIR}/workers`
 
 for stormnode in ${stormnodes}
 do
-    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_DIR} supervisor $1
-    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_DIR} logviewer $1
+    stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
+    stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
+    stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
+
+    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} supervisor $1
+    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} logviewer $1
 done
