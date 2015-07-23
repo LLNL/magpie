@@ -521,6 +521,16 @@ then
 	fi
 	if [ "${PIG_SETUP}" == "yes" ]
 	then
+	    if [ "${PIG_OPTS}X" != "X" ]
+	    then
+		if ! echo ${PIG_OPTS} | grep -q -E "java.io.tmpdir"
+		then
+		    export PIG_OPTS="${PIG_OPTS} -Djava.io.tmpdir=${PIG_LOCAL_SCRATCH_DIR}/tmp"
+		fi
+	    else
+		export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_SCRATCH_DIR}/tmp"
+	    fi
+
 	    if echo $MAGPIE_SHELL | grep -q csh
 	    then
 		echo "*   setenv PIG_HOME \"${PIG_HOME}\""
