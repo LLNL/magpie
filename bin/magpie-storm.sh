@@ -66,6 +66,12 @@ then
     exit 1
 fi
 
+if [ "${STORM_LOG_DIR}X" == "X" ]
+then
+    echo "STORM_LOG_DIR not specified"
+    exit 1
+fi
+
 if [ "${STORM_LOCAL_DIR}X" == "X" ]
 then
     echo "STORM_LOCAL_DIR not specified"
