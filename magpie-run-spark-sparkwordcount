@@ -28,6 +28,10 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+# For this run, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
 
 sparkwordcountclass="org.apache.spark.examples.JavaWordCount"
 

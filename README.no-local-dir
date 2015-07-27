@@ -24,6 +24,10 @@ configuring all projects to use this path.
 However, this requires a number of patches to various projects, which
 are as follows:
 
+Spark - patches/spark/spark-1.3.0-bin-hadoop2.4-no-local-dir.patch 
+- Requires that the spark-1.3.0-bin-hadoop2.4-alternate-all.patch be
+applied beforehand to be applied cleanly.
+ 
 The submission scripts do not include MAGPIE_NO_LOCAL_DIR
 configuration fields by default.  To include them:
 
