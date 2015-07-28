@@ -104,7 +104,7 @@ then
     HADOOP_PACKAGE_BASEDIR=`echo $HADOOP_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
     cd ${INSTALL_PATH}/${HADOOP_PACKAGE_BASEDIR}
     echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch
 fi
 
 if [ "${HBASE_DOWNLOAD}" == "Y" ]
@@ -127,7 +127,7 @@ then
     HBASE_PACKAGE_BASEDIR=`echo $HBASE_PACKAGE_BASENAME | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g'`
     cd ${INSTALL_PATH}/${HBASE_PACKAGE_BASEDIR}
     echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch
 fi
 
 if [ "${PIG_DOWNLOAD}" == "Y" ]
@@ -190,7 +190,7 @@ then
     SPARK_PACKAGE_BASEDIR=`echo $SPARK_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1\.\2/g'`
     cd ${INSTALL_PATH}/${SPARK_PACKAGE_BASEDIR}
     echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/${SPARK_PACKAGE_BASEDIR}-alternate-all.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate-all.patch
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
