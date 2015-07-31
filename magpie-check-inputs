@@ -873,6 +873,13 @@ then
 	exit 1
     fi
 
+    if ["${HBASE_START_THRIFT_SERVER}X" == "X" ] \
+       && ( [ "${HBASE_START_THRIFT_SERVER}" != "yes" ] &&  [ "${HBASE_START_THRIFT_SERVER}" != "no" ] ) 
+    then
+        echo "HBASE_START_THRIFT_SERVER must be set to run Hbase"
+        exit 1
+    fi
+
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
 	echo "Hadoop must be enabled for Hbase"

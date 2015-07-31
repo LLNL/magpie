@@ -728,6 +728,10 @@ then
     then
 	echo "Starting hbase"
 	${hbasesetupscriptprefix}/start-hbase.sh
+        if [ "${HBASE_START_THRIFT_SERVER}" == "yes" ]
+        then
+            ${hbasesetupscriptprefix}/hbase-daemon.sh start thrift -threadpool
+        fi
 	
         # My rough estimate for setup time is 30 seconds per 128 nodes
 	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
@@ -1599,6 +1603,10 @@ then
 	    done
 	fi
 	
+        if [ "${HBASE_START_THRIFT_SERVER}" == "yes" ]
+        then
+            ${hbasesetupscriptprefix}/hbase-daemon.sh stop thrift
+        fi
 	${hbasesetupscriptprefix}/stop-hbase.sh
     fi
 fi
