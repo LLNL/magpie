@@ -32,6 +32,9 @@ Spark - patches/spark/spark-1.3.0-bin-hadoop2.4-no-local-dir.patch
 - Requires that the spark-1.3.0-bin-hadoop2.4-alternate-all.patch be
 applied beforehand to be applied cleanly.
 
+Hbase - patches/hbase/hbase-0.98.3-hadoop2-no-local-dir.patch 
+- Requires that the hbase-0.98.3-hadoop2-alternate-ssh.patch be
+applied beforehand to be applied cleanly.
 
 The submission scripts do not include MAGPIE_NO_LOCAL_DIR
 configuration fields by default.  To include them:
