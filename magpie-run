@@ -758,12 +758,18 @@ then
 
     if [ ${HBASE_MODE} != "setuponly" ]
     then
+        # Make variables unspecified for launching
+	Magpie_make_all_local_dirs_unspecified
+
 	echo "Starting hbase"
 	${hbasesetupscriptprefix}/start-hbase.sh
         if [ "${HBASE_START_THRIFT_SERVER}" == "yes" ]
         then
             ${hbasesetupscriptprefix}/hbase-daemon.sh start thrift -threadpool
         fi
+
+        # Make variables specific now within Magpie
+	Magpie_make_all_local_dirs_node_specific
 	
         # My rough estimate for setup time is 30 seconds per 128 nodes
 	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
@@ -1658,11 +1664,18 @@ then
 	    done
 	fi
 	
+	# Make variables unspecified for shutdown
+	Magpie_make_all_local_dirs_unspecified
+
         if [ "${HBASE_START_THRIFT_SERVER}" == "yes" ]
         then
             ${hbasesetupscriptprefix}/hbase-daemon.sh stop thrift
         fi
+
 	${hbasesetupscriptprefix}/stop-hbase.sh
+
+        # Make variables specific now within Magpie
+	Magpie_make_all_local_dirs_node_specific
     fi
 fi
 

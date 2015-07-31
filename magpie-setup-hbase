@@ -34,12 +34,16 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # hbasenoderank set if succeed
 if ! Magpie_am_I_a_hbase_node
 then
     exit 0
 fi
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
 
 if [ "${HBASE_MASTER_DAEMON_HEAP_MAX}X" != "X" ]
 then
