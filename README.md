@@ -70,6 +70,20 @@ Requirements
    This local scratch space need not be a local disk.  It could
    hypothetically be memory based tmpfs.
 
+4) A minor set of software dependencies are required depending on your
+   environment.
+
+   The Moab/Torque submission scripts use Pdsh
+   (https://code.google.com/p/pdsh/) to launch/run scripts across
+   cluster nodes.
+
+   The 'hostlist' command from lua-hostlist
+   (https://github.com/grondo/lua-hostlist) is preferred for a variety
+   of hostrange parsing needs in Magpie.  If it is not available,
+   Magpie will use its internal tool 'magpie-expand-nodes', which
+   should be sufficient for most hostrange parsing, but may not
+   function for a number of nuanced corner cases.
+
 Supported Package Versions
 --------------------------
 

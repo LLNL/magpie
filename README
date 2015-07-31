@@ -1,7 +1,7 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated June 1, 2015
+Updated July 31, 2015
 chu11@llnl.gov
 
 What is Magpie?
@@ -89,6 +89,20 @@ Requirements
 
    This local scratch space need not be a local disk.  It could
    hypothetically be memory based tmpfs.
+
+4) A minor set of software dependencies are required depending on your
+   environment.
+
+   The Moab/Torque submission scripts use Pdsh
+   (https://code.google.com/p/pdsh/) to launch/run scripts across
+   cluster nodes.
+
+   The 'hostlist' command from lua-hostlist
+   (https://github.com/grondo/lua-hostlist) is preferred for a variety
+   of hostrange parsing needs in Magpie.  If it is not available,
+   Magpie will use its internal tool 'magpie-expand-nodes', which
+   should be sufficient for most hostrange parsing, but may not
+   function for a number of nuanced corner cases.
 
 Supported Package Versions
 --------------------------
@@ -1967,26 +1981,6 @@ There is a major bug in Pig 0.12.0 affecting reducer counts.
 https://issues.apache.org/jira/browse/PIG-3512
 
 It would be wise to recompile 0.12.0 with this fix.
-
-Dependencies
-------------
-
-This project includes a script called 'magpie-expand-nodes' which is
-used for hostrange expansion within the scripts.  It is a hack pieced
-together from other scripts.
-
-The preferred mechanism is to use the hostlist command in the
-lua-hostlist project.  You can find lua-hostlist at 
-https://github.com/grondo/lua-hostlist
-
-The main magpie-run script will use 'magpie-expand-nodes' if it cannot
-find 'hostlist' in its path.
-
-To launch the daemons on the cluster nodes, magpie normally uses
-srun provided by SLURM. However, with other resource allocation
-managers (e.g.: Moab/Torque), the mechanism used is pdsh.
-You can find pdsh at
-https://code.google.com/p/pdsh/
 
 Testing
 -------
