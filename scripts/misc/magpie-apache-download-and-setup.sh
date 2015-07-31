@@ -105,6 +105,7 @@ then
     cd ${INSTALL_PATH}/${HADOOP_PACKAGE_BASEDIR}
     echo "Applying patches"
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${HBASE_DOWNLOAD}" == "Y" ]
@@ -128,6 +129,7 @@ then
     cd ${INSTALL_PATH}/${HBASE_PACKAGE_BASEDIR}
     echo "Applying patches"
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${PIG_DOWNLOAD}" == "Y" ]
@@ -191,6 +193,7 @@ then
     cd ${INSTALL_PATH}/${SPARK_PACKAGE_BASEDIR}
     echo "Applying patches"
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate-all.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
