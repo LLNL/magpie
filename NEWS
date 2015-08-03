@@ -1,3 +1,8 @@
+magpie 1.58
+-----------
+Default teragen to use reasonable number of map tasks given blocksize.
+Support HADOOP_TERASORT_MAP_COUNT terasort configuration.
+
 magpie 1.57
 -----------
 Use --time instead of SBATCH_TIMELIMIT in sbatch scripts

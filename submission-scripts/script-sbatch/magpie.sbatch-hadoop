@@ -675,9 +675,19 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_TERASORT_SIZE=50000000
 
+# Terasort map count
+#
+# For "terasort" mode during the teragen of data.
+#
+# If not specified, will be computed to a reasonable number given
+# HADOOP_TERASORT_SIZE and the block size of the the filesyste you are
+# using (e.g. for HDFS the HADOOP_HDFS_BLOCKSIZE)
+#
+# export HADOOP_TERASORT_MAP_COUNT=4
+
 # Terasort reducer count
 #
-# For "terasort" mode.
+# For "terasort" mode during the actual terasort of data.
 #
 # If not specified, will be compute node count * 2.
 #

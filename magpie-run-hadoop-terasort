@@ -105,8 +105,86 @@ then
     $command
 fi
 
+if [ "${HADOOP_TERAGEN_MAP_COUNT:-0}" -ne "0" ]
+then
+    mtasks=$HADOOP_TERAGEN_MAP_COUNT
+else
+# XXX really should have this in a function w/ code in magpie-setup-hadoop
+# deal with later, likely need a code re-org of some sort
 
-command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+	|| [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+	||[ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    then
+	if [ "${HADOOP_HDFS_BLOCKSIZE}X" != "X" ]
+	then
+	    blocksize=${HADOOP_HDFS_BLOCKSIZE}
+	else
+	    blocksize=134217728
+	fi
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+    then
+	if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ]
+	then
+	    blocksize=${HADOOP_RAWNETWORKFS_BLOCKSIZE}
+	else
+	    blocksize=33554432
+	fi
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+    then
+	if [ "${HADOOP_INTELLUSTRE_BLOCKSIZE}X" != "X" ]
+	then
+	    blocksize=${HADOOP_INTELLUSTRE_BLOCKSIZE}
+	else
+	    blocksize=536870912
+	fi
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+    then
+	if [ "${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}X" != "X" ]
+	then
+	    blocksize=${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}
+	else
+	    blocksize=33554432
+	fi
+    else
+	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+	exit 1
+    fi
+
+# XXX really should have this in a function w/ code in magpie-setup-hadoop
+# deal with later, likely need a code re-org of some sort
+
+    # Sets threadstouse
+    Magpie_calculate_threadstouse
+
+    if [ "${HADOOP_MAX_TASKS_PER_NODE}X" != "X" ]
+    then
+	maxtaskspernode=${HADOOP_MAX_TASKS_PER_NODE}
+    else
+	maxtaskspernode=${threadstouse}
+    fi
+    
+    if [ "${HADOOP_DEFAULT_MAP_TASKS}X" != "X" ]
+    then
+	defaultmaptasks=${HADOOP_DEFAULT_MAP_TASKS}
+    else
+	defaultmaptasks=`expr ${maxtaskspernode} \* ${HADOOP_SLAVE_COUNT}`
+    fi
+    
+    # Calculate the sensible maximum number of map tasks there should be
+    # Intentionally truncate, the +/- a task doesn't matter much 
+    terasortfullsize=`expr $terasortsize \* 100`
+    mtasks=`expr $terasortfullsize \/ $blocksize`
+
+    # But use the default map task count if it is smaller than this max.
+
+    if [ "${defaultmaptasks}" -lt "${mtasks}" ]
+    then
+	mtasks=${defaultmaptasks}
+    fi
+fi
+
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} -Dmapred.map.tasks=$mtasks ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
 	    
