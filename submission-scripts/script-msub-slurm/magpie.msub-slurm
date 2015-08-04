@@ -856,6 +856,13 @@ export HBASE_HOME="${HOME}/hbase-${HBASE_VERSION}"
 #
 export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 
+# Start hbase with thrift
+# 
+# This will start up thrift alongside of hbase master
+# Defaults to 'no'
+#
+export HBASE_START_THRIFT_SERVER="no"
+
 # Directory where Hbase configuration templates are stored
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
