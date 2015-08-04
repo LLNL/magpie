@@ -684,7 +684,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # HADOOP_TERASORT_SIZE and the block size of the the filesyste you are
 # using (e.g. for HDFS the HADOOP_HDFS_BLOCKSIZE)
 #
-# export HADOOP_TERASORT_MAP_COUNT=4
+# export HADOOP_TERAGEN_MAP_COUNT=4
 
 # Terasort reducer count
 #
