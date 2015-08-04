@@ -172,9 +172,11 @@ else
     fi
     
     # Calculate the sensible maximum number of map tasks there should be
-    # Intentionally truncate, the +/- a task doesn't matter much 
+    # Want to add +1 mtasks, make each block just below blocksize
+    # instead of make each task make blocksize + scratch data.
     terasortfullsize=`expr $terasortsize \* 100`
     mtasks=`expr $terasortfullsize \/ $blocksize`
+    mtasks=`expr $mtasks + 1`
 
     # But use the default map task count if it is smaller than this max.
 
