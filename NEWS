@@ -1,3 +1,10 @@
+magpie 1.59
+-----------
+Rename submission script directories to include launching mechansim
+  script-msub-slurm/ -> script-msub-slurm-srun/
+  script-msub-torque/ -> script-msub-torque-pdsh/
+  script-sbatch/ -> script-sbatch-srun/
+
 magpie 1.58
 -----------
 Default teragen to use reasonable number of map tasks given blocksize.
