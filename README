@@ -112,7 +112,7 @@ Versions not listed below should work with Magpie if the
 configuration/setup of those versions is compatible with the versions
 listed below.
 
-* + - Requires patch against binary distro, no re-compilation needed
+* + - Requires patch against binary distro's scripts, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
 
 Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.6.0+
