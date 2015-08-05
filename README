@@ -168,15 +168,15 @@ Instructions For Running Hadoop
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    You'll likely want to start with the base hadoop script
-   (e.g. magpie.sbatch-hadoop) for your scheduler/resource manager.  If
-   you wish to configure more, you can choose to start with the base
-   script (e.g. magpie.sbatch) which contains all configuration
-   options.
+   (e.g. magpie.sbatch-srun-hadoop) for your scheduler/resource
+   manager.  If you wish to configure more, you can choose to start
+   with the base script (e.g. magpie.sbatch-srun) which contains all
+   configuration options.
 
 2) Setup your job essentials at the top of the submission script.  As
    an example, the following are the essentials for running with Moab.
@@ -549,8 +549,8 @@ HADOOP_UDA_LIBPATH : Set to location of libuda.so.  Necessary if your
                      libuda.so isn't in a common location (e.g. /usr/lib).
 
 You'll find starting point scripts such as
-magpie.sbatch-hadoop-with-uda and magpie.msub-slurm-hadoop-with-uda to
-begin configuration.
+magpie.sbatch-srun-hadoop-with-uda and
+magpie.msub-slurm-srun-hadoop-with-uda to begin configuration.
 
 If you are building UDA yourself, be aware that the jar may have
 difficulty finding the libuda.so file.  Some appropriately placed
@@ -762,15 +762,15 @@ Instructions For Using Pig
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    You'll likely want to start with the base hadoop+pig script
-   (e.g. magpie.sbatch-hadoop-and-pig) for your scheduler/resource
-   manager.  If you wish to configure more, you can choose to start
-   with the base script (e.g. magpie.sbatch) which contains all
-   configuration options.
+   (e.g. magpie.sbatch-srun-hadoop-and-pig) for your
+   scheduler/resource manager.  If you wish to configure more, you can
+   choose to start with the base script (e.g. magpie.sbatch-srun)
+   which contains all configuration options.
 
 2) Setup your job essentials at the top of the submission script.  As
    an example, the following are the essentials for running with Moab.
@@ -852,15 +852,15 @@ Instructions For Running Zookeeper
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    As Zookeeper is predominantly a node coordination service used by
    other services (e.g. Hbase, Storm), it's likely in the main
    submission scripts for those big data projects.  If the Zookeeper
    section isn't in it, just copy the Zookeeper section from base
-   script (e.g. magpie.sbatch) into it.
+   script (e.g. magpie.sbatch-srun) into it.
 
 2) Setup your job essentials at the top of the submission script.  See
    other projects (e.g. Hbase, Storm) for details on this setup.
@@ -919,15 +919,15 @@ Instructions For Running Hbase
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    You'll likely want to start with the base hbase w/ hdfs script
-   (e.g. magpie.sbatch-hbase-with-hdfs) for your scheduler/resource
-   manager.  If you wish to configure more, you can choose to start
-   with the base script (e.g. magpie.sbatch) which contains all
-   configuration options.
+   (e.g. magpie.sbatch-srun-hbase-with-hdfs) for your
+   scheduler/resource manager.  If you wish to configure more, you can
+   choose to start with the base script (e.g. magpie.sbatch-srun)
+   which contains all configuration options.
 
 2) Setup your job essentials at the top of the submission script.  As
    an example, the following are the essentials for running with Moab.
@@ -1038,16 +1038,16 @@ Instructions For Spark
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    You'll likely want to start with the base spark script
-   (e.g. magpie.sbatch-spark) or spark w/ hdfs
-   (e.g. magpie.sbatch-spark-with-hdfs) for your scheduler/resource
-   manager.  If you wish to configure more, you can choose to start
-   with the base script (e.g. magpie.sbatch) which contains all
-   configuration options.
+   (e.g. magpie.sbatch-srun-spark) or spark w/ hdfs
+   (e.g. magpie.sbatch-srun-spark-with-hdfs) for your
+   scheduler/resource manager.  If you wish to configure more, you can
+   choose to start with the base script (e.g. magpie.sbatch-srun)
+   which contains all configuration options.
 
    It should be noted that you can run Spark without HDFS.  You can
    access files normally through "file://<path>".
@@ -1334,15 +1334,15 @@ Instructions For Storm
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    You'll likely want to start with the base storm script
-   (e.g. magpie.sbatch-storm) for your scheduler/resource manager.  If
-   you wish to configure more, you can choose to start with the base
-   script (e.g. magpie.sbatch) which contains all configuration
-   options.
+   (e.g. magpie.sbatch-srun-storm) for your scheduler/resource
+   manager.  If you wish to configure more, you can choose to start
+   with the base script (e.g. magpie.sbatch-srun) which contains all
+   configuration options.
 
 2) Setup your job essentials at the top of the submissionscript.  As
    an example, the following are the essentials for running with Moab.
@@ -1427,15 +1427,15 @@ Instructions For Tachyon
 
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts in script-sbatch, Moab Msub+Slurm scripts in
-   script-msub-slurm, and Moab Msub+Torque scripts in
-   script-msub-torque.
+   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
+   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh.
 
    As Tachyon is predominantly a data caching service used by other
    services (e.g. Spark), it's likely in the main submission scripts
    for some of those big data projects.  If the Tachyon section isn't
    in it, just copy the Tachyon section from base script
-   (e.g. magpie.sbatch) into it.
+   (e.g. magpie.sbatch-srun) into it.
 
 2) Setup your job essentials at the top of the submission script.  See
    other projects (e.g. Spark) for details on this setup.
