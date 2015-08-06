@@ -682,6 +682,13 @@ then
 	exit 1
     fi
 
+    if [ "${HADOOP_TERASORT_VALIDATE}X" != "X" ] \
+	&& ( [ "${HADOOP_TERASORT_VALIDATE}" != "yes" ] && [ "${HADOOP_TERASORT_VALIDATE}" != "no" ])
+    then
+	echo "HADOOP_TERASORT_VALIDATE must be set to yes or no"
+	exit 1
+    fi
+
     if [ "${HADOOP_COMPRESSION}X" != "X" ] \
 	&& ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
     then

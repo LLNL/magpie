@@ -701,6 +701,13 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_TERASORT_CLEAR_CACHE=no
 
+# Terasort validate
+#
+# After completing the terasort, run an additional job to validate the
+# output.  Defaults to no.
+#
+# export HADOOP_TERASORT_VALIDATE=no
+
 ############################################################################
 # Hadoop Script Configurations
 ############################################################################

@@ -105,6 +105,12 @@ then
     $command
 fi
 
+if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-validate
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
+    $command
+fi
+
 if [ "${HADOOP_TERAGEN_MAP_COUNT:-0}" -ne "0" ]
 then
     mtasks=$HADOOP_TERAGEN_MAP_COUNT
@@ -204,9 +210,22 @@ command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibja
 echo "Running $command" >&2
 $command
 
+if [ "${HADOOP_TERASORT_VALIDATE}" == "yes" ]
+then
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teravalidate ${extralibjars} -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-sort ${pathprefix}terasort-validate"
+
+    echo "Running $command" >&2
+    $command
+fi 
+
 command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
 $command
 command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
 $command
+if [ "${HADOOP_TERASORT_VALIDATE}" == "yes" ]
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
+    $command
+fi
 
 exit 0
