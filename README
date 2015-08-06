@@ -1,7 +1,7 @@
 Running Big Data Software on Traditional HPC Clusters
 
 Albert Chu
-Updated July 31, 2015
+Updated August 6, 2015
 chu11@llnl.gov
 
 What is Magpie?
@@ -103,6 +103,23 @@ Requirements
    Magpie will use its internal tool 'magpie-expand-nodes', which
    should be sufficient for most hostrange parsing, but may not
    function for a number of nuanced corner cases.
+
+Local Configuration
+-------------------
+
+All HPC sites will have local differences and nuances to running jobs.
+The job submission scripts in submission-scripts/ have a number of
+defaults, such as the default location for network file systems, local
+scratch space, etc.
+
+You can adjust these defaults by editing the defaults listed in
+submission-scripts/script-templates/Makefile and running 'make'
+afterwards.
+
+In addition, if your site requires local special requirements, such as
+setting unique paths or loading specific modules before executing a
+job, this can also be configured via the LOCAL_REQUIREMENTS
+configuration in the same Makefile.
 
 Supported Package Versions
 --------------------------

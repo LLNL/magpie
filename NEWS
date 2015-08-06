@@ -3,6 +3,7 @@ magpie 1.58
 Default teragen to use reasonable number of map tasks given blocksize.
 Support HADOOP_TERAGEN_MAP_COUNT terasort configuration.
 Support enabling thrift server with Hbase.
+Support the ability to add localized configuration, see README for details.
 
 magpie 1.57
 -----------
