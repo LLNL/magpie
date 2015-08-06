@@ -25,6 +25,9 @@ REMOTE_CMD_DEFAULT=ssh
 
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.6.0-sun.x86_64/
 
+LOCAL_REQUIREMENTS=n
+LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
+
 .DEFAULT_GOAL=all
 
 all: msub-slurm sbatch msub-torque
@@ -91,6 +94,18 @@ define create-templates
 		sed -i -e "/@HDFS_FEDERATION@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
+	cp magpie-run-job-header magpie-run-job-header-substitution
+
+	if test "${LOCAL_REQUIREMENTS}" = "y"; then \
+		if ! test -f "${LOCAL_REQUIREMENTS_FILE}"; then \
+			echo "File ${LOCAL_REQUIREMENTS_FILE} is not a normal file"; \
+			exit 1; \
+		fi; \
+		sed -i -e "/@LOCALREQUIREMENTS@/{r ${LOCAL_REQUIREMENTS_FILE}" -e "d}" magpie-run-job-header-substitution; \
+	else \
+		sed -i -e "/@LOCALREQUIREMENTS@/,+1d" magpie-run-job-header-substitution; \
+	fi
+
 	$(eval SCHED := $(1))
 	$(eval DIST := $(2))
 	echo "Creating magpie.$(SCHED)"
@@ -117,7 +132,7 @@ define create-templates
 		magpie-storm\
 		magpie-tachyon\
 		magpie-zookeeper\
-		magpie-run-job-header\
+		magpie-run-job-header-substitution\
 		magpie-run-job-$(DIST) > $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
 
@@ -125,7 +140,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-hadoop"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP})
@@ -135,7 +150,7 @@ define create-templates
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
 		magpie-uda\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_WITH_UDA)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
 	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA})
@@ -145,7 +160,7 @@ define create-templates
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
 		magpie-pig\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/PIG_SETUP=no/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
@@ -158,7 +173,7 @@ define create-templates
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
 		magpie-hbase\
 		magpie-zookeeper\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_HBASE_WITH_HDFS)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HBASE_SETUP=no/HBASE_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
@@ -171,7 +186,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-spark"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-spark\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_SPARK)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_SPARK)
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR/export SPARK_LOCAL_SCRATCH_DIR/g" $(MAGPIE_SPARK)
@@ -183,7 +198,7 @@ define create-templates
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
 		magpie-spark\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_HDFS)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_HDFS)
@@ -197,7 +212,7 @@ define create-templates
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
 		magpie-spark\
 		magpie-tachyon\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/TACHYON_SETUP=no/TACHYON_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
@@ -211,7 +226,7 @@ define create-templates
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations magpie-general-configuration\
 		magpie-storm\
 		magpie-zookeeper\
-		magpie-run-job-header magpie-run-job-$(DIST) > $(MAGPIE_STORM)
+		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_STORM)
 	sed -i -e "s/STORM_SETUP=no/STORM_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/ZOOKEEPER_SETUP=no/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
