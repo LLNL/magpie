@@ -14,15 +14,15 @@ Basic Idea
 
 The basic idea behind these scripts are to:
 
-1) Allocate nodes on a cluster using your HPC scheduler/resource
-   manager.  Slurm, Moab+Slurm, and Moab+Torque are currently
-   supported.
+1) Submit a job batch script to allocate nodes on a cluster using your
+   HPC scheduler/resource manager.  Slurm, Moab+Slurm, and Moab+Torque
+   are currently supported.
 
-2) Scripts will create configuration files for all appropriate
-   projects (Hadoop, Hbase, etc.)  The configuration files will be
-   setup so the rank 0 node is the "master".  All compute nodes will
-   have configuration files created that point to the node designated
-   as the master server.
+2) The batch script will create configuration files for all
+   appropriate projects (Hadoop, Hbase, etc.)  The configuration files
+   will be setup so the rank 0 node is the "master".  All compute
+   nodes will have configuration files created that point to the node
+   designated as the master server.
 
    The configuration files will be populated with values for your
    filesystem choice and the hardware that exists in your cluster.
