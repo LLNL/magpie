@@ -25,6 +25,11 @@ REMOTE_CMD_DEFAULT=ssh
 
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.6.0-sun.x86_64/
 
+#
+# If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed
+# by LOCAL_REQUIREMENTS_FILE will be added to submission scripts
+# before the first call to magpie-check-inputs
+#
 LOCAL_REQUIREMENTS=n
 LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
