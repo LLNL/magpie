@@ -547,6 +547,17 @@ export HADOOP_MODE="terasort"
 #
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
+# Option to use unique locations per job to store hdfs data
+#
+# If this is set to yes the nodes will append the 
+# job id to the curernt HDFS, HDFSOVERLUSTER and HDFSOVERNETWORKFS 
+# path thus keeping the hdfs data isolated per job. This enables
+# the same script to be executed multiple times (usually with
+# different data) without the HDFSOVERXXX instances colliding with
+# each other
+#
+# export HADOOP_PER_JOB_HDFS_PATH="yes"
+
 # Path for HDFS when using local disk
 #
 # If you want to specify multiple paths (such as multiple drives),
@@ -1579,6 +1590,16 @@ export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"
 # MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
+
+# Option to have per job data dir
+#
+# For each batch job, if this is set to yes, the location where 
+# zookeeper stores its data dir will be unique per job. The data 
+# dir will have the job id appended to the path to keep them organized.
+# It will allows for multiple instances of the same script to be run
+# without having collisions due to different nodes being used.
+#
+# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"
 
 # ZooKeeper ticktime, measured in milliseconds.  Used by all of
 # Zookeeper for time measurement.

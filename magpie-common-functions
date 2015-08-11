@@ -276,7 +276,12 @@ Magpie_calculate_hadoop_filesystem_paths () {
 	fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
-	hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+            hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+        else
+            hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
+        fi
 	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
 	then
 	    fsdefault="viewfs:///"
@@ -285,7 +290,13 @@ Magpie_calculate_hadoop_filesystem_paths () {
 	fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-	hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+            hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+        else
+	    hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
+        fi
+        
 	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
 	then
 	    fsdefault="viewfs:///"
@@ -294,15 +305,30 @@ Magpie_calculate_hadoop_filesystem_paths () {
 	fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
-	hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+            hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+        else
+	    hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
+        fi
 	fsdefault="file:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-	hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+            hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_ID}/tmp"
+        else
+  	    hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
+        fi
 	fsdefault="lustre:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
-	hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+            hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+        else
+   	    hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
+        fi
 	fsdefault="magpienetworkfs:///"
     else
 	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"

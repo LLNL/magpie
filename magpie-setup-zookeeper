@@ -49,7 +49,12 @@ Magpie_make_all_local_dirs_node_specific
 if [ "${zookeepernoderank}X" != "X" ]
 then 
     # Setup node directory per node 
-    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+    if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" == "yes" ]
+    then
+        zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
+    else
+        zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+    fi
     zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
 	
     mkdir -p ${zookeeperdatadirpath}

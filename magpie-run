@@ -228,6 +228,11 @@ then
 		    hdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
 		fi
 
+                if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+                then
+                    hdfspath="$hdfspath/${MAGPIE_JOB_ID}"
+                fi
+
 		hdfsstoredversionpath=${hdfspath}/magpie.hadoop-version
 		hdfsstorednodecountpath=${hdfspath}/magpie.node-count
 

@@ -72,7 +72,12 @@ then
     while [ "${count}" -lt "${nodecounttodecomission}" ]
     do
 	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
-	rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-$noderank"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+  	    rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-$noderank"
+        else
+  	    rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-$noderank"
+        fi    
 	echo "Removing path ${rmpath} ..."
 	rm -rf ${rmpath}
 	count=`expr $count + 1`
@@ -85,7 +90,12 @@ then
     while [ "${count}" -lt "${nodecounttodecomission}" ]
     do
 	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
-	rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-$noderank"
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+	    rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-$noderank"
+        else
+	    rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-$noderank"
+        fi
 	echo "Removing path ${rmpath} ..."
 	rm -rf ${rmpath}
 	count=`expr $count + 1`

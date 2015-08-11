@@ -676,7 +676,7 @@ then
 		    fi
 		    j=$((j+1))
 		done
-	    done
+	   done 
 
 	    nodecount=$((nodecount-${HDFS_FEDERATION_NAMENODE_COUNT-1}))
 	fi
@@ -694,6 +694,13 @@ then
     then
 	echo "HADOOP_COMPRESSION must be set to yes or no"
 	exit 1
+    fi
+
+    if [ "${HADOOP_PER_JOB_HDFS_PATH}X" != "X" ] \
+       && ( [ "${HADOOP_PER_JOB_HDFS_PATH}" != "yes" ] &&  [ "${HADOOP_PER_JOB_HDFS_PATH}" != "no" ] )
+    then
+        echo "HADOOP_PER_JOB_HDFS_PATH must be set to yes or no"
+        exit 1
     fi
 
     if [ ${nodecount} -le "0" ]
@@ -1491,6 +1498,13 @@ then
     then
 	echo "ZOOKEEPER_LOCAL_DIR must be set to run Zookeeper"
 	exit 1
+    fi
+
+    if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}X" != "X" ] \
+       && ( [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" != "yes" ] &&  [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" != "no" ] )
+    then
+        echo "ZOOKEEPER_PER_JOB_DATA_DIR must be set to yes or no"
+        exit 1
     fi
 
     if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
