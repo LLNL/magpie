@@ -551,7 +551,12 @@ then
     then
 	for num in `seq 0 ${HADOOP_SLAVE_COUNT}`
 	do
-	    lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${num}/dfs/data/in_use.lock"
+            if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+            then
+ 	        lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${num}/dfs/data/in_use.lock"
+            else
+ 	        lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${num}/dfs/data/in_use.lock"
+            fi
 	    rm -f ${lockfile}
 	done
     fi
