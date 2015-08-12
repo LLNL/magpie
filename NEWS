@@ -8,6 +8,7 @@ Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
   data that may already exist on network file systems. ***
 Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
 By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
+Support HADOOP_PER_JOB_HDFS_PATH and ZOOKEEPER_PER_JOB_DATA_DIR.
 
 magpie 1.59
 -----------
