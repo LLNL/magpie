@@ -1520,6 +1520,12 @@ The following are additional tips for advanced usage of Magpie.
    file system.  For example, /lustre/hdfsoverlustre1 and
    /lustre/hdfsoverlustre2 for two different jobs using HDFS.
 
+   If you are not concerned about the specific path you are using,
+   perhaps because you never intend to reuse those paths, the
+   variables HADOOP_PER_JOB_HDFS_PATH and ZOOKEEPER_PER_JOB_DATA_DIR
+   can be set to always force HDFS paths and Zookeeper paths to be
+   different for each job.
+
 Hadoop Advanced Usage
 ---------------------
 
