@@ -1,8 +1,6 @@
 Magpie No Local Directory
 -------------------------
 
-XXXXXXXXXXXXXXX DO THIS
-
 Magpie requires local scratch space on each node to be available for
 creation of configuration files, log files, and other miscellaneous
 files.  This local scratch space is typically /tmp on most systems.
@@ -14,7 +12,7 @@ However, some environments may not have such local scratch space or
 the scratch space is extremely small and cannot handle these
 additional files.
 
-Begining with Magpie XXX, an option called MAGPIE_NO_LOCAL_DIR is
+Begining with Magpie 1.60, an option called MAGPIE_NO_LOCAL_DIR is
 available that would allow users to specify network mounted locations
 for all the various LOCAL_DIR configuration variables (such as
 HADOOP_LOCAL_DIR, HBASE_LOCAL_DIR, etc.).  Magpie will manipulate all
