@@ -4,6 +4,8 @@ Rename submission script directories to include launching mechansim
   script-msub-slurm/ -> script-msub-slurm-srun/
   script-msub-torque/ -> script-msub-torque-pdsh/
   script-sbatch/ -> script-sbatch-srun/
+Various documentation fixes
+Few minor bug fixes
 
 magpie 1.58
 -----------
