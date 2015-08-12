@@ -28,13 +28,6 @@ export HBASE_HOME="PROJECTDIRPREFIX/hbase-${HBASE_VERSION}"
 #
 export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 
-# Start hbase with thrift
-# 
-# This will start up thrift alongside of hbase master
-# Defaults to 'no'
-#
-# export HBASE_START_THRIFT_SERVER="no"
-
 # Directory where Hbase configuration templates are stored
 #
 # If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
@@ -98,6 +91,13 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 #               if user wants to setup daemons themselves, etc.
 #
 export HBASE_MODE="performanceeval"
+
+# Start Hbase with thrift
+# 
+# This will start up thrift alongside of Hbase master
+# Defaults to 'no'
+#
+# export HBASE_START_THRIFT_SERVER="no"
 
 # Should a major compaction be done when Hbase is being shut down.  In
 # general, this is something that should be done to compact small
