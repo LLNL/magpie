@@ -578,7 +578,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # This will start up thrift alongside of hbase master
 # Defaults to 'no'
 #
-export HBASE_START_THRIFT_SERVER="no"
+# export HBASE_START_THRIFT_SERVER="no"
 
 # Directory where Hbase configuration templates are stored
 #
