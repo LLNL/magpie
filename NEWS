@@ -1,4 +1,4 @@
-magpie 1.XX
+magpie 1.60
 -----------
 Support MAGPIE_NO_LOCAL_DIR option.  See README.no-local-dir for details.
 Remove ZOOKEEPER_FILESYSTEM_MODE setting.
