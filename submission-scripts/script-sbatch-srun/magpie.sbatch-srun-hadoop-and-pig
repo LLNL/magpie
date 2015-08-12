@@ -547,17 +547,6 @@ export HADOOP_MODE="launch"
 #
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
-# Option to use unique locations per job to store hdfs data
-#
-# If this is set to yes the nodes will append the 
-# job id to the current HDFS, HDFSOVERLUSTRE and HDFSOVERNETWORKFS 
-# path thus keeping the hdfs data isolated per job. This enables
-# the same script to be executed multiple times (usually with
-# different data) without the HDFSOVERXXX instances colliding with
-# each other
-#
-# export HADOOP_PER_JOB_HDFS_PATH="yes"
-
 # Path for HDFS when using local disk
 #
 # If you want to specify multiple paths (such as multiple drives),
@@ -645,6 +634,17 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # paths will be used for local intermediate data.
 #
 # export HADOOP_LOCALSTORE="/ssd/${USER}/localstore/"
+
+# Option to use unique locations per job to store hdfs data
+#
+# If this is set to yes the nodes will append the 
+# job id to the current HDFS, HDFSOVERLUSTRE and HDFSOVERNETWORKFS 
+# path thus keeping the hdfs data isolated per job. This enables
+# the same script to be executed multiple times (usually with
+# different data) without the HDFSOVERXXX instances colliding with
+# each other
+#
+# export HADOOP_PER_JOB_HDFS_PATH="yes"
 
 # HDFS Block Size
 #
