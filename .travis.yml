@@ -1,9 +1,9 @@
 language: bash
 
 env:
-    - TARGET=sbatch
-    - TARGET=msub-slurm
-    - TARGET=msub-torque
+    - TARGET=sbatch-srun
+    - TARGET=msub-slurm-srun
+    - TARGET=msub-torque-pdsh
 
 script:
     - cd submission-scripts/script-templates && make $TARGET
