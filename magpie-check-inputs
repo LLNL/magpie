@@ -36,15 +36,20 @@ then
     exit 1
 fi
 
+# slurmsbatch, msubslurm, msubtorque legacy
 if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ] \
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchsrun" ] \
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurm" ]\
-    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorque" ]
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurmsrun" ]\
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorque" ]\
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorquepdsh" ]
 then
-    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to slurmsbatch, msubslurm or msubtorque"
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun or msubtorquepdsh"
     exit 1
 fi
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
+# slurmsbatch legacy
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]
 then
     if [ "${SLURM_NODEID}X" == "X" ]
     then
@@ -73,7 +78,8 @@ then
     fi
 fi
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
+# msubslurm legacy
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     if [ "${SLURM_NODEID}X" == "X" ]
     then

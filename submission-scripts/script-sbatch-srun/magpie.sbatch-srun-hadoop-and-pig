@@ -58,7 +58,7 @@
 #SBATCH --no-kill
 
 # Need to tell Magpie how you are submitting this job
-export MAGPIE_SUBMISSION_TYPE="slurmsbatch"
+export MAGPIE_SUBMISSION_TYPE="sbatchsrun"
 
 
 ############################################################################

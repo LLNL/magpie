@@ -38,15 +38,15 @@ LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 .DEFAULT_GOAL=all
 
-all: msub-slurm sbatch msub-torque
+all: msub-slurm-srun sbatch-srun msub-torque-pdsh
 
-sbatch:
+sbatch-srun:
 	$(call create-templates,$@,srun)
 
-msub-slurm:
+msub-slurm-srun:
 	$(call create-templates,$@,srun)
 
-msub-torque:
+msub-torque-pdsh:
 	$(call create-templates,$@,pdsh)
 
 define common-substitution
@@ -125,16 +125,16 @@ define create-templates
 	$(eval SCHED := $(1))
 	$(eval DIST := $(2))
 	echo "Creating magpie.$(SCHED)"
-	mkdir -p ../script-$(SCHED)-$(DIST)
-	$(eval MAGPIE := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST))
-	$(eval MAGPIE_HADOOP := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-hadoop)
-	$(eval MAGPIE_HADOOP_WITH_UDA := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-hadoop-with-uda)
-	$(eval MAGPIE_HADOOP_AND_PIG := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-hadoop-and-pig)
-	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-hbase-with-hdfs)
-	$(eval MAGPIE_SPARK := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-spark)
-	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-spark-with-hdfs)
-	$(eval MAGPIE_SPARK_WITH_TACHYON_AND_HDFS := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-spark-with-tachyon-and-hdfs)
-	$(eval MAGPIE_STORM := ../script-$(SCHED)-$(DIST)/magpie.$(SCHED)-$(DIST)-storm)
+	mkdir -p ../script-$(SCHED)
+	$(eval MAGPIE := ../script-$(SCHED)/magpie.$(SCHED))
+	$(eval MAGPIE_HADOOP := ../script-$(SCHED)/magpie.$(SCHED)-hadoop)
+	$(eval MAGPIE_HADOOP_WITH_UDA := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-with-uda)
+	$(eval MAGPIE_HADOOP_AND_PIG := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-and-pig)
+	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs)
+	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
+	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
+	$(eval MAGPIE_SPARK_WITH_TACHYON_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-tachyon-and-hdfs)
+	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 	cp magpie-header $(MAGPIE)
 
 	# All configuration

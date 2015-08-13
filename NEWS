@@ -9,6 +9,11 @@ Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
 Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
 By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
 Support HADOOP_PER_JOB_HDFS_PATH and ZOOKEEPER_PER_JOB_DATA_DIR.
+Adjust MAGPIE_SUBMISSION_TYPE names given new script directories in 1.59
+       slurmsbatch -> sbatchsrun
+       msubslurm -> msubslurmsrun
+       msubtorque -> msubtorquepdsh
+  Backwards compatibility with older names is still supported.
 
 magpie 1.59
 -----------

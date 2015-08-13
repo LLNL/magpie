@@ -34,7 +34,8 @@ Magpie_calc_slurm_magpie_timelimit () {
     fi
 }
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ]
+# slurmsbatch legacy
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
     export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
@@ -50,7 +51,8 @@ then
     fi
 fi
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
+# msubslurm legacy
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
     export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
@@ -64,7 +66,8 @@ then
     fi
 fi
 
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorque" ]
+# msubtorque legacy
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorque" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorquepdsh" ]
 then
     export MAGPIE_CLUSTER_NODERANK="$(($(echo ${MOAB_NODELIST} | sed 's/&/\n/g' | grep -n ${HOSTNAME} | cut -f1 -d:) - 1))"
     export MAGPIE_NODE_COUNT="${PBS_NUM_NODES}"

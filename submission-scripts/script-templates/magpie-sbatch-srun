@@ -1,5 +1,5 @@
 ############################################################################
-# Moab Customizations
+# SLURM Customizations
 ############################################################################
 
 # Node count.  Node count should include one node for the
@@ -13,32 +13,27 @@
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
 
-#MSUB -l nodes=<my node count>
+#SBATCH --nodes=<my node count>
+#SBATCH --output="slurm-%j.out"
 
-#MSUB -o ./moab-%j.out
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+#SBATCH --time=<my time in minutes>
 
-#MSUB -l partition=<my partition> 
+# Job name.  This will be used in naming directories for the job.
+#SBATCH --job-name=<my job name>
 
-#MSUB -q <my batch queue>
+# Partition to launch job in 
+#SBATCH --partition=<my partition>
 
-# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
-# walltime should be a fair amount larger than them combined.
+## SLURM Values
+# Generally speaking, don't touch these, just need to configure slurm
 
-#MSUB -l walltime=<my time in seconds or HH:MM:SS>
-
-#MSUB -l resfailpolicy=ignore
-
-#MSUB -V
-
-export MOAB_JOBNAME="<my job name>"
-
-export SLURM_TASKS_PER_NODE=1
-export SBATCH_EXCLUSIVE="yes"
+#SBATCH --ntasks-per-node=1
+#SBATCH --exclusive
+#SBATCH --no-kill
 
 # Need to tell Magpie how you are submitting this job
-#
-# IMPORTANT: This msub file assumes Slurm is the underlying resource
-# manager.  If it is not, a new Magpie submission type should be added
-# into Magpie.
-export MAGPIE_SUBMISSION_TYPE="msubslurm"
+export MAGPIE_SUBMISSION_TYPE="sbatchsrun"
+
 

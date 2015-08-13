@@ -213,8 +213,11 @@ Magpie_am_I_a_zookeeper_node () {
 }
 
 Magpie_job_time_minutes () {
+    # slurmsbatch & msubslurm legacy
     if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
-	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ]
+	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
+	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
+	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmpdsh" ]
     then
 	timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
 	if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]

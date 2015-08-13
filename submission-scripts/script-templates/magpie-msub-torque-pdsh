@@ -37,4 +37,4 @@
 # IMPORTANT: This submit file assumes torque is the underlying resource
 # manager.  If it is not, a new Magpie submission type should be added
 # into Magpie.
-export MAGPIE_SUBMISSION_TYPE="msubtorque"
+export MAGPIE_SUBMISSION_TYPE="msubtorquepdsh"

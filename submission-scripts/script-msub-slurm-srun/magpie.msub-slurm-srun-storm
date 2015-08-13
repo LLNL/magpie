@@ -64,7 +64,7 @@ export SBATCH_EXCLUSIVE="yes"
 # IMPORTANT: This msub file assumes Slurm is the underlying resource
 # manager.  If it is not, a new Magpie submission type should be added
 # into Magpie.
-export MAGPIE_SUBMISSION_TYPE="msubslurm"
+export MAGPIE_SUBMISSION_TYPE="msubslurmsrun"
 
 ############################################################################
 # Magpie Configurations
