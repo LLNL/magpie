@@ -145,7 +145,7 @@
 
 <property>
   <name>dfs.namenode.backup.address</name>
-  <value>HADOOP_MASTER_NODE:DFSBACKUPADDRESS</value>
+  <value>HADOOP_MASTER_HOST:DFSBACKUPADDRESS</value>
   <description>
     The backup node server address and port.
     If the port is 0 then the server will start on a free port.
@@ -154,7 +154,7 @@
 
 <property>
   <name>dfs.namenode.backup.http-address</name>
-  <value>HADOOP_MASTER_NODE:DFSBACKUPHTTPADDRESS</value>
+  <value>HADOOP_MASTER_HOST:DFSBACKUPHTTPADDRESS</value>
   <description>
     The backup node http server address and port.
     If the port is 0 then the server will start on a free port.
