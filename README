@@ -12,7 +12,7 @@ HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark, Storm,
 Tachyon, and Zookeeper are supported.  It currently supports running
 over the parallel file system Lustre and running over any generic
 network filesytem.  There is scheduler/resource manager support for
-Slurm, Moab, and Torque.
+Slurm, Moab, Torque, and LSF.
 
 Some of the features presently supported:
 
@@ -37,8 +37,8 @@ Basic Idea
 The basic idea behind these scripts are to:
 
 1) Submit a job batch script to allocate nodes on a cluster using your
-   HPC scheduler/resource manager.  Slurm, Moab+Slurm, and Moab+Torque
-   are currently supported.
+   HPC scheduler/resource manager.  Slurm, Moab+Slurm, Moab+Torque and
+   LSF are currently supported.
 
 2) The batch script will create configuration files for all
    appropriate projects (Hadoop, Hbase, etc.)  The configuration files
@@ -173,8 +173,9 @@ Instructions For Running Hadoop
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base hadoop script
    (e.g. magpie.sbatch-srun-hadoop) for your scheduler/resource
@@ -255,8 +256,9 @@ Instructions For Running Hadoop
    environment variables that may be useful in scripts.
 
 5) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
-   Moab.  Add any other options you see fit.
+   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
+   Moab, or "bsub < .magpie.lsffile" for lsf.  
+   Add any other options you see fit.
 
 6) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
@@ -767,8 +769,9 @@ Instructions For Using Pig
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base hadoop+pig script
    (e.g. magpie.sbatch-srun-hadoop-and-pig) for your
@@ -857,8 +860,9 @@ Instructions For Running Zookeeper
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    As Zookeeper is predominantly a node coordination service used by
    other services (e.g. Hbase, Storm), it's likely in the main
@@ -924,8 +928,9 @@ Instructions For Running Hbase
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base hbase w/ hdfs script
    (e.g. magpie.sbatch-srun-hbase-with-hdfs) for your
@@ -1002,8 +1007,9 @@ Instructions For Running Hbase
    See above for Zookeeper setup instructions.
 
 7) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
-   Moab.  Add any other options you see fit.
+   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
+   Moab, or "bsub < ./magpie.lsffile".
+   Add any other options you see fit.
 
 8) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
@@ -1043,8 +1049,9 @@ Instructions For Spark
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base spark script
    (e.g. magpie.sbatch-srun-spark) or spark w/ hdfs
@@ -1133,8 +1140,9 @@ Instructions For Spark
    the HDFS setup.
 
 6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
-   Moab.  Add any other options you see fit.
+   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
+   Moab, or "bsub < ./magpie.lsffile" for LSF.  
+   Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
@@ -1339,8 +1347,9 @@ Instructions For Storm
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base storm script
    (e.g. magpie.sbatch-srun-storm) for your scheduler/resource
@@ -1412,8 +1421,9 @@ Instructions For Storm
    See above for Zookeeper setup instructions.
 
 6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
-   Moab.  Add any other options you see fit.
+   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
+   Moab, or "bsub < .magpie.lsffile" for lsf.  
+   Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
@@ -1432,8 +1442,9 @@ Instructions For Tachyon
 1) Select an appropriate submission script for running your job.  You
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, and Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh.
+   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
+   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
+   using mpirun in script-lsf-mpirun.
 
    As Tachyon is predominantly a data caching service used by other
    services (e.g. Spark), it's likely in the main submission scripts

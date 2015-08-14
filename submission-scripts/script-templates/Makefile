@@ -38,7 +38,7 @@ LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 .DEFAULT_GOAL=all
 
-all: msub-slurm-srun sbatch-srun msub-torque-pdsh
+all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun
 
 sbatch-srun:
 	$(call create-templates,$@,srun)
@@ -48,6 +48,9 @@ msub-slurm-srun:
 
 msub-torque-pdsh:
 	$(call create-templates,$@,pdsh)
+
+lsf-mpirun:
+	$(call create-templates,$@,mpirun)
 
 define common-substitution
 	sed -i -e 's;MAGPIESCRIPTSDIRPREFIX;$(MAGPIE_SCRIPTS_DIR_PREFIX);g' $(1)
