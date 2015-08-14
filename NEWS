@@ -1,5 +1,6 @@
 magpie 1.60
 -----------
+Add support for job submission via LSF+Mpirun.
 Support MAGPIE_NO_LOCAL_DIR option.  See README.no-local-dir for details.
 Remove ZOOKEEPER_FILESYSTEM_MODE setting.
 Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
