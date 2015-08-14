@@ -79,3 +79,26 @@ then
 	export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
     fi
 fi
+
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
+then
+    export MAGPIE_CLUSTER_NODERANK="$(echo ${LSB_HOSTS} | fmt -1 | head -1)"
+    export MAGPIE_NODE_COUNT="$(echo ${LSB_HOSTS} | tr " " "\n" | sort -u | wc -w)"
+    export MAGPIE_NODELIST=$(echo ${LSB_HOSTS} | sed 's/ /,/g')
+    export MAGPIE_JOB_NAME="${LSB_JOBNAME}"
+    export MAGPIE_JOB_ID="${LSB_JOBID}"
+    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+    then
+        jobinfo=$(bjobs -l ${LSB_JOBID})
+        if [[ $jobinfo == *"Status <P"* ]]
+        then
+            # Pending State for some reason reports mins in seconds
+            walltime=$(bc <<< $(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')/60)
+        else
+            # Run State
+            walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
+        fi
+        export MAGPIE_TIMELIMIT_MINUTES=${walltime}
+    fi
+fi
+

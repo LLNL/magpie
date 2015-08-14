@@ -6,7 +6,7 @@ HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark, Storm,
 Tachyon, and Zookeeper are supported.  It currently supports running
 over the parallel file system Lustre and running over any generic
 network filesytem.  There is scheduler/resource manager support for
-Slurm, Moab, and Torque.
+Slurm, Moab, Torque, and LSF.
 
 Basic Idea
 ----------
@@ -14,8 +14,8 @@ Basic Idea
 The basic idea behind these scripts are to:
 
 1) Submit a job batch script to allocate nodes on a cluster using your
-   HPC scheduler/resource manager.  Slurm, Moab+Slurm, and Moab+Torque
-   are currently supported.
+   HPC scheduler/resource manager.  Slurm, Moab+Slurm, Moab+Torque and
+   LSF are currently supported.
 
 2) The batch script will create configuration files for all
    appropriate projects (Hadoop, Hbase, etc.)  The configuration files

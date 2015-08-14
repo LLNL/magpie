@@ -4,6 +4,7 @@ env:
     - TARGET=sbatch-srun
     - TARGET=msub-slurm-srun
     - TARGET=msub-torque-pdsh
+    - TARGET=lsf-mpirun
 
 script:
     - cd submission-scripts/script-templates && make $TARGET
