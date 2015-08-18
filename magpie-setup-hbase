@@ -220,11 +220,13 @@ sed -i \
     ${post_hbasesitexml}
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hbasepiddirsubst=`echo "${HBASE_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_hbaseenvsh} ${post_hbaseenvsh}
 
 sed -i \
     -e "s/HBASE_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/HBASEPIDDIR/${hbasepiddirsubst}/g" \
     -e "s/HBASEMASTERDAEMONHEAP/${hbasemasterdaemonheapmax}/g" \
     -e "s/HBASEREGIONSERVERDAEMONHEAP/${hbaseregionserverdaemonheapmax}/g" \
     ${post_hbaseenvsh}

@@ -90,7 +90,8 @@ export HADOOP_SECURE_DN_LOG_DIR=${HADOOP_LOG_DIR}/${HADOOP_HDFS_USER}
 # NOTE: this should be set to a directory that can only be written to by 
 #       the user that will run the hadoop daemons.  Otherwise there is the
 #       potential for a symlink attack.
-export HADOOP_PID_DIR=${HADOOP_PID_DIR}
+export HADOOP_PID_DIR="${HADOOP_PID_DIR:-HADOOPPIDDIR}"
+export HADOOP_MAPRED_PID_DIR="${HADOOP_MAPRED_PID_DIR:-HADOOPMAPREDPIDDIR}"
 export HADOOP_SECURE_DN_PID_DIR=${HADOOP_PID_DIR}
 
 # A string representing this instance of hadoop. $USER by default.

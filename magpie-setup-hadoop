@@ -931,6 +931,8 @@ then
 
     hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     hadooplogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadooppiddirsubst=`echo "${HADOOP_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    hadoopmapredpiddirsubst=`echo "${HADOOP_MAPRED_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
@@ -948,6 +950,8 @@ then
 	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
 	-e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
 	-e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
+	-e "s/HADOOPPIDDIR/${hadooppiddirsubst}/g" \
+	-e "s/HADOOPMAPREDPIDDIR/${hadoopmapredpiddirsubst}/g" \
 	-e "s/HADOOPHOME/${hadoophomesubst}/g" \
 	-e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
 	-e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
@@ -1116,6 +1120,7 @@ then
 
     yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    yarnpiddirsubst=`echo "${YARN_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     yarncommonhomesubst=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopyarnhomesubst=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -1130,6 +1135,7 @@ then
 	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
 	-e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
 	-e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \
+	-e "s/YARNPIDDIR/${yarnpiddirsubst}/g" \
 	-e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
 	-e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
 	-e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \

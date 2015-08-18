@@ -1,6 +1,6 @@
 diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-config.sh hbase-0.98.9-hadoop2/bin/hbase-config.sh
 --- hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-config.sh	2015-07-31 10:32:26.579986000 -0700
-+++ hbase-0.98.9-hadoop2/bin/hbase-config.sh	2015-07-31 10:37:05.938344000 -0700
++++ hbase-0.98.9-hadoop2/bin/hbase-config.sh	2015-08-18 14:50:12.861984000 -0700
 @@ -48,6 +48,8 @@ if [ -z "$HBASE_HOME" ]; then
    export HBASE_HOME=`dirname "$this"`/..
  fi
@@ -31,7 +31,7 @@ diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-config.sh hbase-0.98.9-h
      HBASE_CONF_DIR=$confdir
    elif [ "--hosts" = "$1" ]
    then
-@@ -71,6 +86,19 @@ done
+@@ -71,6 +86,25 @@ done
   
  # Allow alternate hbase conf dir location.
  HBASE_CONF_DIR="${HBASE_CONF_DIR:-$HBASE_HOME/conf}"
@@ -48,13 +48,19 @@ diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-config.sh hbase-0.98.9-h
 +  export HBASE_LOG_DIR=$(echo "$HBASE_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
 +fi
 +
++if echo $HBASE_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_hbasepiddir=$HBASE_PID_DIR
++  export HBASE_PID_DIR=$(echo "$HBASE_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
  # List of hbase regions servers.
  HBASE_REGIONSERVERS="${HBASE_REGIONSERVERS:-$HBASE_CONF_DIR/regionservers}"
  # List of hbase secondary masters.
 diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-daemons.sh hbase-0.98.9-hadoop2/bin/hbase-daemons.sh
 --- hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-daemons.sh	2015-07-31 10:32:26.587976000 -0700
-+++ hbase-0.98.9-hadoop2/bin/hbase-daemons.sh	2015-07-31 10:59:38.001931000 -0700
-@@ -37,6 +37,16 @@ bin=`cd "$bin">/dev/null; pwd`
++++ hbase-0.98.9-hadoop2/bin/hbase-daemons.sh	2015-08-18 14:50:33.656169000 -0700
+@@ -37,6 +37,21 @@ bin=`cd "$bin">/dev/null; pwd`
  
  . $bin/hbase-config.sh
  
@@ -68,13 +74,18 @@ diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/hbase-daemons.sh hbase-0.98.9-
 +  export HBASE_LOG_DIR=$orig_hbaselogdir
 +fi
 +
++if [ "${HBASE_PID_DIR}X" != "X" ] && [ "${orig_hbasepiddir}X" != "X" ]
++then
++  export HBASE_PID_DIR=$orig_hbasepiddir
++fi
++
  remote_cmd="cd ${HBASE_HOME}; $bin/hbase-daemon.sh --config ${HBASE_CONF_DIR} $@"
  args="--hosts ${HBASE_REGIONSERVERS} --config ${HBASE_CONF_DIR} $remote_cmd"
  
 diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/start-hbase.sh hbase-0.98.9-hadoop2/bin/start-hbase.sh
 --- hbase-0.98.9-hadoop2-alternate-ssh/bin/start-hbase.sh	2015-07-31 10:32:26.583980000 -0700
-+++ hbase-0.98.9-hadoop2/bin/start-hbase.sh	2015-07-31 10:57:54.334699000 -0700
-@@ -49,6 +49,15 @@ fi
++++ hbase-0.98.9-hadoop2/bin/start-hbase.sh	2015-08-18 14:50:52.064746000 -0700
+@@ -49,6 +49,20 @@ fi
  # HBASE-6504 - only take the first line of the output in case verbose gc is on
  distMode=`$bin/hbase --config "$HBASE_CONF_DIR" org.apache.hadoop.hbase.util.HBaseConfTool hbase.cluster.distributed | head -n 1`
  
@@ -87,13 +98,24 @@ diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/start-hbase.sh hbase-0.98.9-ha
 +then
 +  export HBASE_LOG_DIR=$orig_hbaselogdir
 +fi
++
++if [ "${HBASE_PID_DIR}X" != "X" ] && [ "${orig_hbasepiddir}X" != "X" ]
++then
++  export HBASE_PID_DIR=$orig_hbasepiddir
++fi
  
  if [ "$distMode" == 'false' ] 
  then
+diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/stop-hbase. hbase-0.98.9-hadoop2/bin/stop-hbase.
+--- hbase-0.98.9-hadoop2-alternate-ssh/bin/stop-hbase.	1969-12-31 16:00:00.000000000 -0800
++++ hbase-0.98.9-hadoop2/bin/stop-hbase.	2015-08-18 14:55:14.493385000 -0700
+@@ -0,0 +1 @@
++s
+\ No newline at end of file
 diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/stop-hbase.sh hbase-0.98.9-hadoop2/bin/stop-hbase.sh
 --- hbase-0.98.9-hadoop2-alternate-ssh/bin/stop-hbase.sh	2015-07-31 10:32:26.487078000 -0700
-+++ hbase-0.98.9-hadoop2/bin/stop-hbase.sh	2015-07-31 10:37:06.003295000 -0700
-@@ -61,6 +61,17 @@ rm -f $pid
++++ hbase-0.98.9-hadoop2/bin/stop-hbase.sh	2015-08-18 14:51:04.833961000 -0700
+@@ -61,6 +61,22 @@ rm -f $pid
  # distributed == false means that the HMaster will kill ZK when it exits
  # HBASE-6504 - only take the first line of the output in case verbose gc is on
  distMode=`$bin/hbase --config "$HBASE_CONF_DIR" org.apache.hadoop.hbase.util.HBaseConfTool hbase.cluster.distributed | head -n 1`
@@ -106,6 +128,11 @@ diff -pruN hbase-0.98.9-hadoop2-alternate-ssh/bin/stop-hbase.sh hbase-0.98.9-had
 +if [ "${HBASE_LOG_DIR}X" != "X" ] && [ "${orig_hbaselogdir}X" != "X" ]
 +then
 +  export HBASE_LOG_DIR=$orig_hbaselogdir
++fi
++
++if [ "${HBASE_PID_DIR}X" != "X" ] && [ "${orig_hbasepiddir}X" != "X" ]
++then
++  export HBASE_PID_DIR=$orig_hbasepiddir
 +fi
 +
  if [ "$distMode" == 'true' ] 

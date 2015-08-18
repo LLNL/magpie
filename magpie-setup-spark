@@ -351,6 +351,7 @@ post_log4jproperties=${SPARK_CONF_DIR}/log4j.properties
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 sparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+sparkpiddirsubst=`echo "${SPARK_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_sparkenvsh} ${post_sparkenvsh}
@@ -358,6 +359,7 @@ cp ${pre_sparkenvsh} ${post_sparkenvsh}
 sed -i \
     -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
     -e "s/SPARKHOME/${sparkhomesubst}/g" \
+    -e "s/SPARKPIDDIR/${sparkpiddirsubst}/g" \
     -e "s/SPARK_DAEMON_HEAP_MAX/${sparkdaemonheapmax}/g" \
     -e "s/SPARKWORKERCORES/${workercores}/g" \
     -e "s/SPARKWORKERMEMORY/${workermemory}/g" \

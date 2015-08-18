@@ -57,7 +57,8 @@ export HADOOP_JOBTRACKER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_JOBTRACKER
 # NOTE: this should be set to a directory that can only be written to by 
 #       the users that are going to run the hadoop daemons.  Otherwise there is
 #       the potential for a symlink attack.
-# export HADOOP_PID_DIR=/var/hadoop/pids
+export HADOOP_PID_DIR="${HADOOP_PID_DIR:-HADOOPPIDDIR}"
+export HADOOP_MAPRED_PID_DIR="${HADOOP_MAPRED_PID_DIR:-HADOOPMAPREDPIDDIR}"
 
 # A string representing this instance of hadoop. $USER by default.
 # export HADOOP_IDENT_STRING=$USER
