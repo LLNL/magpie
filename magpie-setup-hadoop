@@ -47,6 +47,7 @@ Magpie_make_all_local_dirs_node_specific
 
 extrahadoopclasses=""
 extrahadoopopts=""
+extrayarnopts=""
 extrahadooptaskopts=""
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
@@ -707,6 +708,39 @@ fi
 # Sets hadoopstoptimeout
 Magpie_calculate_stop_timeouts
 
+# set java.io.tmpdir
+if [ "${extrahadoopopts}X" == "X" ]
+then
+    extrahadoopopts="-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
+else
+    extrahadoopopts="${extrahadoopopts} -Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
+fi
+
+if [ "${extrayarnopts}X" == "X" ]
+then
+    extrayarnopts="-Djava.io.tmpdir=${YARN_LOCAL_SCRATCH_DIR}/tmp"
+else
+    extrayarnopts="${extrayarnopts} -Djava.io.tmpdir=${YARN_LOCAL_SCRATCH_DIR}/tmp"
+fi
+
+if [ ! -d "${HADOOP_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${HADOOP_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
+	exit 1
+    fi
+fi
+
+if [ ! -d "${YARN_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${YARN_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${YARN_LOCAL_SCRATCH_DIR}/tmp"
+	exit 1
+    fi
+fi
+
 #
 # Hadoop UDA Setup
 #
@@ -1125,6 +1159,7 @@ then
     hadoopyarnhomesubst=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
     extrayarnlibrarypathsubst=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
+    extrayarnoptssubst=`echo "${extrayarnopts}" | sed "s/\\//\\\\\\\\\//g"`
 
     cp ${pre_yarnenvsh} ${post_yarnenvsh}
 
@@ -1139,6 +1174,7 @@ then
 	-e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
 	-e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
 	-e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
+	-e "s/EXTRAYARNOPTS/${extrayarnoptssubst}/g" \
 	${post_yarnenvsh}
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
