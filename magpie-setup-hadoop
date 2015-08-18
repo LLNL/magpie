@@ -699,7 +699,7 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     # If HDFS would be stored in HDFS, so pick a better path
-    yardappmapreduceamstagingdir="${HADOOP_LOCAL_DIR}/yarn/"
+    yardappmapreduceamstagingdir="${HADOOP_LOCAL_SCRATCH_DIR}/yarn/"
 else
     yardappmapreduceamstagingdir="${hadooptmpdir}/yarn/"
 fi
