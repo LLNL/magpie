@@ -68,7 +68,7 @@ Magpie_make_hadoop_local_dirs () {
 	export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
 	export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
 	export HADOOP_LOCAL_SCRATCH_DIR=${HADOOP_LOCAL_JOB_DIR}/scratch
-	export HADOOP_PID_DIR=${HADOOP_LOCAL_JOB_DIR}
+	export HADOOP_PID_DIR=${HADOOP_LOCAL_JOB_DIR}/pid
 
 	if [ "${which}" == "specific" ]
 	then
@@ -142,7 +142,7 @@ Magpie_make_hbase_local_dirs () {
 	export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
 	export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
 	export HBASE_LOCAL_SCRATCH_DIR=${HBASE_LOCAL_JOB_DIR}/scratch
-	export HBASE_PID_DIR=${HBASE_LOCAL_JOB_DIR}
+	export HBASE_PID_DIR=${HBASE_LOCAL_JOB_DIR}/pid
 
 	if [ "${which}" == "specific" ]
 	then
@@ -177,7 +177,7 @@ Magpie_make_spark_local_dirs () {
 	export SPARK_CONF_DIR=${SPARK_LOCAL_JOB_DIR}/conf
 	export SPARK_LOG_DIR=${SPARK_LOCAL_JOB_DIR}/log
 	export SPARK_LOCAL_SCRATCH_DIR=${SPARK_LOCAL_JOB_DIR}/scratch
-	export SPARK_PID_DIR=${SPARK_LOCAL_JOB_DIR}
+	export SPARK_PID_DIR=${SPARK_LOCAL_JOB_DIR}/pid
 
 	if [ "${which}" == "specific" ]
 	then
