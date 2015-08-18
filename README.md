@@ -76,8 +76,11 @@ Requirements
 4) A minor set of software dependencies are required depending on your
    environment.
 
-   The Moab/Torque submission scripts use Pdsh
+   The Moab+Torque submission scripts use Pdsh
    (https://code.google.com/p/pdsh/) to launch/run scripts across
+   cluster nodes.
+
+   The LSF submission scripts use mpirun to launch/run scripts across
    cluster nodes.
 
    The 'hostlist' command from lua-hostlist
