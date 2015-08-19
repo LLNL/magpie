@@ -644,6 +644,9 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # different data) without the HDFSOVERXXX instances colliding with
 # each other
 #
+# Be careful to cleanup the HDFS directories from time to time, as
+# Magpie will not clear data from prior jobs.
+#
 # export HADOOP_PER_JOB_HDFS_PATH="yes"
 
 # HDFS Block Size
