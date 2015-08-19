@@ -647,7 +647,7 @@ then
 	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
 	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
 	
-	if [ -d "${localstoredirtmp}" ]
+	if [ ! -d "${localstoredirtmp}" ]
 	then
 	    mkdir -p ${localstoredirtmp}
 	    if [ $? -ne 0 ] ; then
