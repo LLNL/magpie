@@ -44,6 +44,12 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
+mkdir -p $MAGPIE_LOCAL_SCRATCH_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${MAGPIE_LOCAL_SCRATCH_DIR}"
+    exit 1
+fi
+
 #
 # Setup Hadoop directories
 #
@@ -61,6 +67,12 @@ then
 	echo "mkdir failed making ${HADOOP_LOG_DIR}"
 	exit 1
     fi
+
+    mkdir -p $HADOOP_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
 fi
 
 #
@@ -72,6 +84,12 @@ then
     mkdir -p $PIG_CONF_DIR
     if [ $? -ne 0 ] ; then
 	echo "mkdir failed making ${PIG_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $PIG_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${PIG_LOCAL_SCRATCH_DIR}"
 	exit 1
     fi
 fi
@@ -93,6 +111,12 @@ then
 	echo "mkdir failed making ${HBASE_LOG_DIR}"
 	exit 1
     fi
+
+    mkdir -p $HBASE_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${HBASE_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
 fi
 
 #
@@ -110,6 +134,12 @@ then
     mkdir -p $SPARK_LOG_DIR
     if [ $? -ne 0 ] ; then
 	echo "mkdir failed making ${SPARK_LOG_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $SPARK_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${SPARK_LOCAL_SCRATCH_DIR}"
 	exit 1
     fi
 fi
@@ -131,6 +161,12 @@ then
 	echo "mkdir failed making ${STORM_LOG_DIR}"
 	exit 1
     fi
+
+    mkdir -p $STORM_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${STORM_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
 fi
 
 #
@@ -150,6 +186,12 @@ then
 	echo "mkdir failed making ${TACHYON_LOG_DIR}"
 	exit 1
     fi
+
+    mkdir -p $TACHYON_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${TACHYON_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
 fi
 
 #
@@ -167,6 +209,12 @@ then
     mkdir -p $ZOOKEEPER_LOG_DIR
     if [ $? -ne 0 ] ; then
 	echo "mkdir failed making ${ZOOKEEPER_LOG_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $ZOOKEEPER_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCH_DIR}"
 	exit 1
     fi
 fi
