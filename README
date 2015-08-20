@@ -98,7 +98,7 @@ Requirements
    environment.
 
    The Moab+Torque submission scripts use Pdsh
-   (https://code.google.com/p/pdsh/) to launch/run scripts across
+   (https://github.com/grondo/pdsh) to launch/run scripts across
    cluster nodes.
 
    The LSF submission scripts use mpirun to launch/run scripts across
