@@ -1,20 +1,23 @@
 magpie 1.60
 -----------
 Add support for job submission via LSF+Mpirun.
-Support MAGPIE_NO_LOCAL_DIR option.  See README.no-local-dir for details.
-Remove ZOOKEEPER_FILESYSTEM_MODE setting.
-Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
-  regardless if it is a network or local fs path.
-  *** This may potentially break backwards compatability with Zookeeper
-  data that may already exist on network file systems. ***
-Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
-By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
 Support HADOOP_PER_JOB_HDFS_PATH and ZOOKEEPER_PER_JOB_DATA_DIR.
 Adjust MAGPIE_SUBMISSION_TYPE names given new script directories in 1.59
-       slurmsbatch -> sbatchsrun
-       msubslurm -> msubslurmsrun
-       msubtorque -> msubtorquepdsh
-  Backwards compatibility with older names is still supported.
+  - slurmsbatch -> sbatchsrun
+  - msubslurm -> msubslurmsrun
+  - msubtorque -> msubtorquepdsh
+  - Backwards compatibility with older names is still supported.
+Support the ability to run Magpie in environments without /tmp or a
+  very small amount of space in /tmp.
+  - Support MAGPIE_NO_LOCAL_DIR option.  See README.no-local-dir for details.
+  - Remove ZOOKEEPER_FILESYSTEM_MODE setting.
+    - Add node rank into all ZOOKEEPER_DATA_DIR paths, ensuring it is unique
+      regardless if it is a network or local fs path.
+    *** This may potentially break backwards compatability with Zookeeper
+        data that may already exist on network file systems. ***
+  - Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
+  - By default, set java.io.tmpdir to a local scratch space in all projects
+  - By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
 
 magpie 1.59
 -----------
