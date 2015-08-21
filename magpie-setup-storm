@@ -45,6 +45,8 @@ fi
 # For rest of setup, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
+extrajvmopts=""
+
 stormlocaldir="${STORM_LOCAL_SCRATCH_DIR}/local"
 
 if [ ! -d "${stormlocaldir}" ]
@@ -85,6 +87,22 @@ else
     stormworkerheapmax="1024"
 fi 
 
+if [ "${extrajvmopts}X" == "X" ]
+then
+    extrajvmopts="-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR}/tmp"
+else
+    extrajvmopts="${extrajvmopts} -Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR}/tmp"
+fi
+
+if [ ! -d "${STORM_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${STORM_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${STORM_LOCAL_SCRATCH_DIR}/tmp"
+        exit 1
+    fi
+fi
+
 #
 # Get config files for setup
 #
@@ -111,6 +129,8 @@ post_stormenvsh=${STORM_CONF_DIR}/magpie-launch-storm-env.sh
 stormlocaldirsubst=`echo "${stormlocaldir}" | sed "s/\\//\\\\\\\\\//g"`
 stormlogdirsubst=`echo "${STORM_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 
+extrajvmoptssubst=`echo "${extrajvmopts}" | sed "s/\\//\\\\\\\\\//g"`
+
 cp ${pre_stormyaml} ${post_stormyaml}
 
 sed -i \
@@ -126,6 +146,7 @@ sed -i \
     -e "s/NIMBUSTHRIFTPORT/${STORM_THRIFT_PORT}/g" \
     -e "s/STORM_DAEMON_HEAP_MAX/${stormdaemonheapmax}/g" \
     -e "s/STORM_WORKER_HEAP_MAX/${stormworkerheapmax}/g" \
+    -e "s/EXTRAJVMOPTS/${extrajvmoptssubst}/g" \
     ${post_stormyaml}
 
 # Add Zookeeper servers to conf
