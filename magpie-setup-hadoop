@@ -874,6 +874,8 @@ post_yarnenvsh=${HADOOP_CONF_DIR}/yarn-env.sh
 post_hdfssitexml=${HADOOP_CONF_DIR}/hdfs-site.xml
 post_log4jproperties=${HADOOP_CONF_DIR}/log4j.properties
 
+extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
+
 #
 # Setup Hadoop configuration files and environment files
 #
@@ -973,7 +975,6 @@ then
     hadoophdfshomesubst=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
     extrahadoopclassessubst=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
-    extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
 
     cp ${pre_hadoopenvsh} ${post_hadoopenvsh}
 
@@ -1043,7 +1044,7 @@ then
 	sed -i -e "/@UDA@/,+1d" ${post_mapredsitexml}
     fi
 
-    # Space w/ HADOOPEXTRATASKJAVAOPTS substitution is intentional
+    # Space w/ HADOOPEXTRATASKJAVAOPTS & EXTRAHADOOPOPTS substitution is intentional
     sed -i \
 	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
 	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
@@ -1075,6 +1076,7 @@ then
 	-e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
 	-e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
 	-e "s/HADOOPEXTRATASKJAVAOPTS/ ${extrahadooptaskoptssubst}/g" \
+	-e "s/EXTRAHADOOPOPTS/ ${extrahadoopoptssubst}/g" \
 	${post_mapredsitexml}
 fi
 
