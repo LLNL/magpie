@@ -23,8 +23,10 @@ export HADOOP_HDFS_HOME="${HADOOP_HDFS_HOME:-HADOOPHDFSHOME}"
 # The maximum amount of heap to use, in MB. Default is 1000.
 export HADOOP_HEAPSIZE=HADOOP_DAEMON_HEAP_MAX
 
+export EXTRA_HADOOP_OPTS="EXTRAHADOOPOPTS"
+
 # Extra Java runtime options.  Empty by default.
-# export HADOOP_OPTS=-server
+export HADOOP_OPTS="$HADOOP_OPTS $EXTRA_HADOOP_OPTS"
 
 # Command specific options appended to HADOOP_OPTS when specified
 export HADOOP_NAMENODE_OPTS="-Dcom.sun.management.jmxremote -XmxHADOOP_NAMENODE_HEAP_MAXm $HADOOP_NAMENODE_OPTS"

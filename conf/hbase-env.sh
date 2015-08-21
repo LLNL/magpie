@@ -37,11 +37,13 @@ export JAVA_HOME=HBASE_JAVA_HOME
 export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -XmxHBASEMASTERDAEMONHEAPm"
 export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -XmxHBASEREGIONSERVERDAEMONHEAPm -XmsHBASEREGIONSERVERDAEMONHEAPm -Xmn128m"
 
+export EXTRA_HBASE_OPTS="EXTRAHBASEOPTS"
+
 # Extra Java runtime options.
 # Below are what we set by default.  May only work with SUN JVM.
 # For more on why as well as other possible settings,
 # see http://wiki.apache.org/hadoop/PerformanceTuning
-export HBASE_OPTS="-XX:+UseConcMarkSweepGC"
+export HBASE_OPTS="-XX:+UseConcMarkSweepGC $EXTRA_HBASE_OPTS"
 
 # Uncomment one of the below three options to enable java garbage collection logging for the server-side processes.
 

@@ -103,6 +103,8 @@ fi
 # restore ordinary behaviour
 unset IFS
 
+export EXTRA_YARN_OPTS="EXTRAYARNOPTS"
+YARN_OPTS="$YARN_OPTS $EXTRA_YARN_OPTS"
 
 YARN_OPTS="$YARN_OPTS -Dhadoop.log.dir=$YARN_LOG_DIR"
 YARN_OPTS="$YARN_OPTS -Dyarn.log.dir=$YARN_LOG_DIR"

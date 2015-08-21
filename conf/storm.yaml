@@ -53,18 +53,18 @@ nimbus.host: "NIMBUSHOST"
 
 nimbus.thrift.port: NIMBUSTHRIFTPORT
 
-nimbus.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm"
+nimbus.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 
-supervisor.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm"
+supervisor.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 
 storm.zookeeper.port: STORMZOOKEEPERPORT
 
 ui.port: STORMUIPORT
 
 logviewer.port: STORMLOGVIEWERPORT
-logviewer.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm"
+logviewer.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 
-worker.childopts: "-XmxSTORM_WORKER_HEAP_MAXm"
+worker.childopts: "-XmxSTORM_WORKER_HEAP_MAXm EXTRAJVMOPTS"
 
 drpc.port: STORMDRPCPORT
 drpc.invocations.port: STORMDRPCINVOCATIONSPORT

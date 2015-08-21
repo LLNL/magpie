@@ -45,6 +45,9 @@ fi
 # For rest of setup, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
+extrasparkjavaopts=""
+extrasparkdaemonjavaopts=""
+
 if [ "${SPARK_DAEMON_HEAP_MAX}X" != "X" ]
 then
     sparkdaemonheapmax="${SPARK_DAEMON_HEAP_MAX}"
@@ -316,6 +319,54 @@ else
     userprocessescount="unlimited"
 fi
 
+if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
+then
+    if [ "${SPARK_JAVA_OPTS}X" != "X" ]
+    then
+	SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
+    else
+	SPARK_JAVA_OPTS="${SPARK_JOB_JAVA_OPTS}"
+    fi
+fi
+
+# set java.io.tmpdir
+
+# After 1.0.0, everything in spark-defaults.conf
+# If coded correctly in this script, SPARK_JAVA_OPTS should be empty
+# unless user set something in it of their own volition.
+#
+# After 1.0.0, other configs below take care setting extra java opts
+if [ "${SPARK_JAVA_OPTS}X" != "X" ]
+then
+    if ! echo ${SPARK_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
+    then
+	export SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+    fi
+fi
+
+if [ "${extrasparkjavaopts}X" == "X" ]
+then
+    extrasparkjavaopts="-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+else
+    extrasparkjavaopts="${extrasparkjavaopts} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+fi
+
+if [ "${extrasparkdaemonjavaopts}X" == "X" ]
+then
+    extrasparkdaemonjavaopts="-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+else
+    extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+fi
+
+if [ ! -d "${SPARK_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${SPARK_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+        exit 1
+    fi
+fi
+
 #
 # Get config files for setup
 #
@@ -354,6 +405,8 @@ sparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 sparkpiddirsubst=`echo "${SPARK_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
 
+extrasparkdaemonjavaoptssubst=`echo "${extrasparkdaemonjavaopts}" | sed "s/\\//\\\\\\\\\//g"`
+
 cp ${pre_sparkenvsh} ${post_sparkenvsh}
 
 sed -i \
@@ -369,6 +422,7 @@ sed -i \
     -e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
     -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
     -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
+    -e "s/SPARKDAEMONJAVAOPTS/${extrasparkdaemonjavaoptssubst}/g" \
     ${post_sparkenvsh}
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
@@ -407,19 +461,7 @@ then
     fi
 fi
 
-if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
-then
-    if [ "${SPARK_JAVA_OPTS}X" != "X" ]
-    then
-	SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
-    else
-	SPARK_JAVA_OPTS="${SPARK_JOB_JAVA_OPTS}"
-    fi
-fi
-
 # After 1.0.0, everything in spark-defaults.conf
-# If coded correctly in this script, SPARK_JAVA_OPTS should be empty
-# unless user set something in it of their own volition.
 if [ "${SPARK_JAVA_OPTS}X" != "X" ]
 then 
     echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${post_sparkenvsh}
@@ -493,6 +535,8 @@ then
     # config" security.
     sparkauthenticatesecret=`echo -n ${MAGPIE_JOB_ID} | md5sum | awk '{print $1}'`
 
+    extrasparkjavaoptssubst=`echo "${extrasparkjavaopts}" | sed "s/\\//\\\\\\\\\//g"`
+
     sed -i \
 	-e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
 	-e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
@@ -509,6 +553,7 @@ then
 	-e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
 	-e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
 	-e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
+	-e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
 	${post_sparkdefaultsconf}
     
 fi

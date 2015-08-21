@@ -46,6 +46,8 @@ fi
 # For rest of setup, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
+extrajvmflags=""
+
 if [ "${zookeepernoderank}X" != "X" ]
 then 
     # Setup node directory per node 
@@ -84,6 +86,22 @@ then
 	zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
     else
 	zookeepersynclimit=5
+    fi
+fi
+
+if [ "${extrajvmflags}X" == "X" ]
+then
+    extrajvmflags="-Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
+else
+    extrajvmflags="${extrajvmflags} -Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
+fi
+
+if [ ! -d "${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
+        exit 1
     fi
 fi
 
@@ -138,6 +156,8 @@ zookeeperconfdirsubst=`echo "${ZOOKEEPER_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 zookeeperhomesubst=`echo "${ZOOKEEPER_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
+extrajvmflagssubst=`echo "${extrajvmflags}" | sed "s/\\//\\\\\\\\\//g"`
+
 cp ${pre_zookeeperenvsh} ${post_zookeeperenvsh}
 
 sed -i \
@@ -146,6 +166,7 @@ sed -i \
     -e "s/ZOOKEEPERCONFDIR/${zookeeperconfdirsubst}/g" \
     -e "s/ZOOKEEPERHOME/${zookeeperhomesubst}/g" \
     -e "s/MAGPIESCRIPTSHOME/${magpiescriptshome}/g" \
+    -e "s/ZOOKEEPERJVMFLAGS/${extrajvmflagssubst}/g" \
     ${post_zookeeperenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
