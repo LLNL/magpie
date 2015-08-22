@@ -16,6 +16,8 @@ Support the ability to run Magpie in environments without /tmp or a
     *** This may potentially break backwards compatability with Zookeeper
         data that may already exist on network file systems. ***
   - Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
+    - Add node rank into all scratch directory paths, ensuring it is
+      unique regardless if it is a network or local fs path.
   - By default, set java.io.tmpdir to a local scratch space in all projects
   - By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
   - Disable Java hsperfdata if MAGPIE_NO_LOCAL_DIR set.
