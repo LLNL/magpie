@@ -69,7 +69,19 @@ export MAGPIE_SUBMISSION_TYPE="msubtorquepdsh"
 # Directory your launching scripts/files are stored
 #
 # Normally an NFS mount, someplace magpie can be reached on all nodes.
-export MAGPIE_SCRIPTS_HOME="${HOME}/magpie"
+export MAGPIE_SCRIPTS_HOME="${HOME}/hadoop/magpie"
+
+# If your cluster does not have any node-local storage available (or
+# an extremely small amount of it) for small config files, log files,
+# and other temporary scratch space, set the following to yes and see
+# the README for patching requirements to projects.
+#
+# This option applies to all LOCAL_DIR environment variables, such as
+# MAGPIE_LOCAL_DIR, HADOOP_LOCAL_DIR, HBASE_LOCAL_DIR, etc.
+#
+# Defaults to no.
+#
+# export MAGPIE_NO_LOCAL_DIR="yes"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
@@ -228,8 +240,8 @@ export MAGPIE_JOB_TYPE="spark"
 #
 # Specify options to the remote shell command if necessary.
 #
-# export MAGPIE_REMOTE_CMD="ssh"
-# export MAGPIE_REMOTE_CMD_OPTS=""
+export MAGPIE_REMOTE_CMD="mrsh"
+export MAGPIE_REMOTE_CMD_OPTS=""
 
 ############################################################################
 # General Configuration
@@ -259,7 +271,7 @@ export SPARK_VERSION="1.4.1-bin-hadoop2.6"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="${HOME}/spark-${SPARK_VERSION}"
+export SPARK_HOME="${HOME}/hadoop/spark-${SPARK_VERSION}"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
@@ -488,7 +500,7 @@ export SPARK_MODE="sparkpi"
 # in your interest to set this to a local drive.  It can improve
 # performance of both shuffling and disk based RDD persistence.
 #
-export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
+export SPARK_LOCAL_SCRATCH_DIR="/p/lscratchg/${USER}/testing/sparkscratch/"
 
 ############################################################################
 # Spark SparkPi Configuration
