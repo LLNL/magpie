@@ -18,6 +18,7 @@ Support the ability to run Magpie in environments without /tmp or a
   - Remove SPARK_LOCAL_SCRATCH_DIR_TYPE setting.
   - By default, set java.io.tmpdir to a local scratch space in all projects
   - By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
+  - Disable Java hsperfdata if MAGPIE_NO_LOCAL_DIR set.
 
 magpie 1.59
 -----------
