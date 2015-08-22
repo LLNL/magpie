@@ -741,6 +741,24 @@ then
     fi
 fi
 
+# disable hsperfdata if using NO_LOCAL_DIR
+if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+then
+    if [ "${extrahadoopopts}X" == "X" ]
+    then
+	extrahadoopopts="-XX:-UsePerfData"
+    else
+	extrahadoopopts="${extrahadoopopts} -XX:-UsePerfData"
+    fi
+    
+    if [ "${extrayarnopts}X" == "X" ]
+    then
+	extrayarnopts="-XX:-UsePerfData"
+    else
+	extrayarnopts="${extrayarnopts} -XX:-UsePerfData"
+    fi
+fi
+
 #
 # Hadoop UDA Setup
 #

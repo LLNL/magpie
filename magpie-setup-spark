@@ -367,6 +367,24 @@ then
     fi
 fi
 
+# disable hsperfdata if using NO_LOCAL_DIR
+if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+then
+    if [ "${extrasparkjavaopts}X" == "X" ]
+    then
+	extrasparkjavaopts="-XX:-UsePerfData"
+    else
+	extrasparkjavaopts="${extrasparkjavaopts} -XX:-UsePerfData"
+    fi
+
+    if [ "${extrasparkdaemonjavaopts}X" == "X" ]
+    then
+	extrasparkdaemonjavaopts="-XX:-UsePerfData"
+    else
+	extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts} -XX:-UsePerfData"
+    fi
+fi
+
 #
 # Get config files for setup
 #

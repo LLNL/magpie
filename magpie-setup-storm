@@ -103,6 +103,17 @@ then
     fi
 fi
 
+# disable hsperfdata if using NO_LOCAL_DIR
+if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+then
+    if [ "${extrajvmopts}X" == "X" ]
+    then
+	extrajvmopts="-XX:-UsePerfData"
+    else
+	extrajvmopts="${extrajvmopts} -XX:-UsePerfData"
+    fi
+fi
+
 #
 # Get config files for setup
 #

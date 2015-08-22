@@ -60,6 +60,7 @@ supervisor.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 storm.zookeeper.port: STORMZOOKEEPERPORT
 
 ui.port: STORMUIPORT
+ui.childopts: "-Xmx768m EXTRAJVMOPTS"
 
 logviewer.port: STORMLOGVIEWERPORT
 logviewer.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
