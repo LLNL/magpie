@@ -1136,9 +1136,17 @@ then
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	echo "*   setenv STORM_HOME \"${STORM_HOME}\""
+	if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	then
+	    echo "*   setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+	fi
     else
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export STORM_HOME=\"${STORM_HOME}\""
+	if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	then
+	    echo "*   export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+	fi
     fi
 
     if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
@@ -1167,6 +1175,10 @@ then
 	    then
 		echo "setenv STORM_VERSION \"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    fi
+	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	    then
+		echo "setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+	    fi
 	else
 	    echo "export STORM_HOME=\"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "export STORM_CONF_DIR=\"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -1177,6 +1189,10 @@ then
 	    if [ "${STORM_VERSION}X" != "X" ]
 	    then
 		echo "export STORM_VERSION=\"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
+	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	    then
+		echo "export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    fi
 	fi
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
