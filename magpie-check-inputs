@@ -565,6 +565,14 @@ then
 	exit 1
     fi
 
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+	&& [ "${HADOOP_HDFS_PATH_CLEAR}X" != "X" ] \
+	&& ( [ "${HADOOP_HDFS_PATH_CLEAR}" != "yes" ] && [ "${HADOOP_HDFS_PATH_CLEAR}" != "no" ] )
+    then
+	echo "HADOOP_HDFS_PATH_CLEAR must be set to yes or no"
+	exit 1
+    fi
+
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
 	&& [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
     then
