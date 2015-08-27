@@ -181,12 +181,7 @@ else
 fi
 
 # set java.io.tmpdir
-if [ "${extrahbaseopts}X" == "X" ]
-then
-    extrahbaseopts="-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrahbaseopts="${extrahbaseopts} -Djava.io.tmpdir=${HBASE_LOCAL_SCRATCH_DIR}/tmp"
-fi
+extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCH_DIR}/tmp"
 
 if [ ! -d "${HBASE_LOCAL_SCRATCH_DIR}/tmp" ]
 then
@@ -200,12 +195,7 @@ fi
 # disable hsperfdata if using NO_LOCAL_DIR
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
-    if [ "${extrahbaseopts}X" == "X" ]
-    then
-	extrahbaseopts="-XX:-UsePerfData"
-    else
-	extrahbaseopts="${extrahbaseopts} -XX:-UsePerfData"
-    fi
+    extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-XX:-UsePerfData"
 fi
 
 #

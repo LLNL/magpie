@@ -87,12 +87,8 @@ else
     stormworkerheapmax="1024"
 fi 
 
-if [ "${extrajvmopts}X" == "X" ]
-then
-    extrajvmopts="-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrajvmopts="${extrajvmopts} -Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR}/tmp"
-fi
+# set java.io.tmpdir
+extrajvmopts="${extrajvmopts}${extrajvmopts:+" "}-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR}/tmp"
 
 if [ ! -d "${STORM_LOCAL_SCRATCH_DIR}/tmp" ]
 then
@@ -106,12 +102,7 @@ fi
 # disable hsperfdata if using NO_LOCAL_DIR
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
-    if [ "${extrajvmopts}X" == "X" ]
-    then
-	extrajvmopts="-XX:-UsePerfData"
-    else
-	extrajvmopts="${extrajvmopts} -XX:-UsePerfData"
-    fi
+    extrajvmopts="${extrajvmopts}${extrajvmopts:+" "}-XX:-UsePerfData"
 fi
 
 #

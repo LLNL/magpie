@@ -63,12 +63,7 @@ do
 	fi
     fi
     
-    if [ "${tachyonstorepaths}X" == "X" ]
-    then
-	tachyonstorepaths="${tachyonstorepathstmp}"
-    else
-	tachyonstorepaths="${tachyonstorepaths},${tachyonstorepathstmp}"
-    fi
+    tachyonstorepaths="${tachyonstorepaths}${tachyonstorepaths:+","}${tachyonstorepathstmp}"
 done
 IFS=${IFSORIG}
 

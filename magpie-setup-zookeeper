@@ -89,12 +89,8 @@ then
     fi
 fi
 
-if [ "${extrajvmflags}X" == "X" ]
-then
-    extrajvmflags="-Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrajvmflags="${extrajvmflags} -Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
-fi
+# set java.io.tmpdir
+extrajvmflags="${extrajvmflags}${extrajvmflags:+" "}-Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
 
 if [ ! -d "${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp" ]
 then
@@ -108,12 +104,7 @@ fi
 # disable hsperfdata if using NO_LOCAL_DIR
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
-    if [ "${extrajvmflags}X" == "X" ]
-    then
-	extrajvmflags="-XX:-UsePerfData"
-    else
-	extrajvmflags="${extrajvmflags=} -XX:-UsePerfData"
-    fi
+    extrajvmflags="${extrajvmflags}${extrajvmflags:+" "}-XX:-UsePerfData"
 fi
 
 #

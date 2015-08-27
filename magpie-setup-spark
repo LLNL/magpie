@@ -344,19 +344,9 @@ then
     fi
 fi
 
-if [ "${extrasparkjavaopts}X" == "X" ]
-then
-    extrasparkjavaopts="-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrasparkjavaopts="${extrasparkjavaopts} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
-fi
+extrasparkjavaopts="${extrasparkjavaopts}${extrasparkjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
 
-if [ "${extrasparkdaemonjavaopts}X" == "X" ]
-then
-    extrasparkdaemonjavaopts="-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
-fi
+extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts}${extrasparkdaemonjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
 
 if [ ! -d "${SPARK_LOCAL_SCRATCH_DIR}/tmp" ]
 then
@@ -370,19 +360,9 @@ fi
 # disable hsperfdata if using NO_LOCAL_DIR
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
-    if [ "${extrasparkjavaopts}X" == "X" ]
-    then
-	extrasparkjavaopts="-XX:-UsePerfData"
-    else
-	extrasparkjavaopts="${extrasparkjavaopts} -XX:-UsePerfData"
-    fi
+    extrasparkjavaopts="${extrasparkjavaopts}${extrasparkjavaopts:+" "}-XX:-UsePerfData"
 
-    if [ "${extrasparkdaemonjavaopts}X" == "X" ]
-    then
-	extrasparkdaemonjavaopts="-XX:-UsePerfData"
-    else
-	extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts} -XX:-UsePerfData"
-    fi
+    extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts}${extrasparkdaemonjavaopts:+" "}-XX:-UsePerfData"
 fi
 
 #

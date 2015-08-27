@@ -494,20 +494,10 @@ then
 
 	if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 	then
-	    if [ "${datanodedirtmp}X" == "X" ]
-	    then
-		datanodedirtmp="${hdfspath}/dfs/data"
-	    else
-		datanodedirtmp="${datanodedirtmp},${hdfspath}/dfs/data"
-	    fi
+	    datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}${hdfspath}/dfs/data"
 	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 	then
-	    if [ "${datanodedirtmp}X" == "X" ]
-	    then
-		datanodedirtmp="file://${hdfspath}/dfs/data"
-	    else
-		datanodedirtmp="${datanodedirtmp},file://${hdfspath}/dfs/data"
-	    fi
+	    datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}file://${hdfspath}/dfs/data"
 	fi
 	pathcount=$((pathcount+1))
     done
@@ -657,14 +647,8 @@ then
 	    fi
 	fi
 
-	if [ "${mapredlocalstoredir}X" == "X" ]
-	then
-	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
-	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
-	else
-	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
-	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
-	fi
+	mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
+	yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
     done
     IFS=${IFSORIG}
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
@@ -680,14 +664,8 @@ then
 	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
 	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
 	
-	if [ "${mapredlocalstoredir}X" == "X" ]
-	then
-	    mapredlocalstoredir="${mapredlocalstoredirtmp}"
-	    yarnlocalstoredir="${yarnlocalstoredirtmp}"
-	else
-	    mapredlocalstoredir="${mapredlocalstoredir},${mapredlocalstoredirtmp}"
-	    yarnlocalstoredir="${yarnlocalstoredir},${yarnlocalstoredirtmp}"
-	fi
+	mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
+	yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
     done
     IFS=${IFSORIG}
 else
@@ -709,19 +687,9 @@ fi
 Magpie_calculate_stop_timeouts
 
 # set java.io.tmpdir
-if [ "${extrahadoopopts}X" == "X" ]
-then
-    extrahadoopopts="-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrahadoopopts="${extrahadoopopts} -Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
-fi
+extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
 
-if [ "${extrayarnopts}X" == "X" ]
-then
-    extrayarnopts="-Djava.io.tmpdir=${YARN_LOCAL_SCRATCH_DIR}/tmp"
-else
-    extrayarnopts="${extrayarnopts} -Djava.io.tmpdir=${YARN_LOCAL_SCRATCH_DIR}/tmp"
-fi
+extrayarnopts="${extrayarnopts}${extrayarnopts+" "}-Djava.io.tmpdir=${YARN_LOCAL_SCRATCH_DIR}/tmp"
 
 if [ ! -d "${HADOOP_LOCAL_SCRATCH_DIR}/tmp" ]
 then
@@ -744,19 +712,9 @@ fi
 # disable hsperfdata if using NO_LOCAL_DIR
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
-    if [ "${extrahadoopopts}X" == "X" ]
-    then
-	extrahadoopopts="-XX:-UsePerfData"
-    else
-	extrahadoopopts="${extrahadoopopts} -XX:-UsePerfData"
-    fi
+    extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-XX:-UsePerfData"
     
-    if [ "${extrayarnopts}X" == "X" ]
-    then
-	extrayarnopts="-XX:-UsePerfData"
-    else
-	extrayarnopts="${extrayarnopts} -XX:-UsePerfData"
-    fi
+    extrayarnopts="${extrayarnopts}${extrayarnopts:+" "}-XX:-UsePerfData"
 fi
 
 #
@@ -766,28 +724,13 @@ fi
 if [ "${HADOOP_UDA_SETUP}" == "yes" ] \
     && [ "${HADOOP_SETUP_TYPE}"  == "MR2" ]
 then
-    if [ "${extrahadoopclasses}X" == "X" ]
-    then
-	extrahadoopclasses="${HADOOP_UDA_JAR}"
-    else
-	extrahadoopclasses="${extrahadoopclasses}:${HADOOP_UDA_JAR}"
-    fi
+    extrahadoopclasses="${extrahadoopclasses}${extrahadoopclasses:+":"}${HADOOP_UDA_JAR}"
 
     if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
     then
-	if [ "${extrahadoopopts}X" == "X" ]
-	then
-	    extrahadoopopts="-Djava.library.path=${HADOOP_UDA_LIBPATH}"
-	else
-	    extrahadoopopts="${extrahadoopopts} -Djava.library.path=${HADOOP_UDA_LIBPATH}"
-	fi
+	extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.library.path=${HADOOP_UDA_LIBPATH}"
 
-	if [ "${extrayarnlibrarypath}X" == "X" ]
-	then
-	    extrayarnlibrarypath="${HADOOP_UDA_LIBPATH}"
-	else
-	    extrayarnlibrarypath="${extrayarnlibrarypath}:${HADOOP_UDA_LIBPATH}"
-	fi
+	extrayarnlibrarypath="${extrayarnlibrarypath}${extrayarnlibrarypath:+":"}${HADOOP_UDA_LIBPATH}"
     fi
 fi
 
@@ -806,21 +749,11 @@ if [ "${TACHYON_SETUP}" == "yes" ]
 then
     tachyonjar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
 
-    if [ "${extrahadoopclasses}X" == "X" ]
-    then
-	extrahadoopclasses="${tachyonjar}"
-    else
-	extrahadoopclasses="${extrahadoopclasses}:${tachyonjar}"
-    fi
+    extrahadoopclasses="${extrahadoopclasses}${extrahadoopclasses:+":"}${tachyonjar}"
 
     if [ "${TACHYON_ASYNCHRONOUS_WRITES}" == "yes" ]
     then
-	if [ "${extrahadooptaskopts}X" == "X" ]
-	then
-	    extrahadooptaskopts="-Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
-	else
-	    extrahadooptaskopts="${extrahadooptaskopts} -Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
-	fi
+	extrahadooptaskopts="${extrahadooptaskopts}${extrahadooptaskopts:+" "}-Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
     fi
 fi
 
