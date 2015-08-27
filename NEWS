@@ -2,6 +2,7 @@ magpie 1.60
 -----------
 Add support for job submission via LSF+Mpirun.
 Support HADOOP_PER_JOB_HDFS_PATH and ZOOKEEPER_PER_JOB_DATA_DIR.
+Support HADOOP_HDFS_PATH_CLEAR
 Adjust MAGPIE_SUBMISSION_TYPE names given new script directories in 1.59
   - slurmsbatch -> sbatchsrun
   - msubslurm -> msubslurmsrun

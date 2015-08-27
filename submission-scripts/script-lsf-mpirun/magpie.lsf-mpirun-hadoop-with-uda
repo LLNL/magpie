@@ -526,7 +526,7 @@ export HADOOP_MODE="terasort"
 #          your job submission (e.g. --nodelist in sbatch) may be a
 #          way to alleviate this.
 #
-#          User must set HADOOP_HDFSOVERLUSTRE_PATH below.
+#          User must set HADOOP_HDFS_PATH below.
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
@@ -553,7 +553,18 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 # path will also store daemon data, such as namenode or jobtracker
 # data.
 #
-export HADOOP_HDFS_PATH="/ssd/${USER}/"
+export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
+
+# Path for HDFS cleanup
+#
+# After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
+# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  This may be
+# convenient for cleaning up your job after it has run.  This is
+# particularly useful for HDFS, b/c on your next job run, you may not
+# be able to get the nodes you want on your next run, leading to
+# problems.
+#
+# export HADOOP_HDFS_PATH_CLEAR="yes"
 
 # Lustre path to do Hadoop HDFS out of
 #
@@ -774,4 +785,5 @@ then
     exit 1
 fi
 mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-run
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-cleanup
 mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-post-run
