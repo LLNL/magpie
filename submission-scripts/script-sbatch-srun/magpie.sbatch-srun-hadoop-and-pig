@@ -528,7 +528,7 @@ export HADOOP_MODE="launch"
 #          your job submission (e.g. --nodelist in sbatch) may be a
 #          way to alleviate this.
 #
-#          User must set HADOOP_HDFSOVERLUSTRE_PATH below.
+#          User must set HADOOP_HDFS_PATH below.
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
