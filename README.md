@@ -53,8 +53,10 @@ Requirements
 
 1) Magpie and all big data projects (Hadoop, Spark, etc.) should be
    installed on all cluster nodes.  It can be in a known location or
-   perhaps via a network file system location.  These paths will be
-   specified in job submission scripts.
+   perhaps via a network file system location.  Many users may simply
+   install them into their NFS home directories.
+
+   These paths will be specified in job submission scripts.
 
 2) A passwordless remote shell execution mechanism must be available
    for scripts to launch big data daemons (Hadoop Datanodes, Hbase
