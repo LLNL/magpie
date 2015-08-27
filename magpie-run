@@ -542,9 +542,17 @@ then
 	then
 	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
 	    echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
+	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	    then
+		echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+	    fi
 	else
 	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	    echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
+	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	    then
+		echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+	    fi
 	fi
 	if [ "${PIG_SETUP}" == "yes" ]
 	then
@@ -604,6 +612,10 @@ then
 		then
 		    echo "setenv HADOOP_VERSION \"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		fi
+		if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+		then
+		    echo "setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+		fi
 	    else
 		echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		echo "export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -616,6 +628,10 @@ then
 		if [ "${HADOOP_VERSION}X" != "X" ]
 		then
 		    echo "export HADOOP_VERSION=\"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+		if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+		then
+		    echo "export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		fi
 	    fi
 	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
