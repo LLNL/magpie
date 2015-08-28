@@ -141,7 +141,7 @@ listed below.
 * + - Requires patch against binary distro's scripts, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
 
-Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.6.0+
+Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.6.0+, 2.7.1+
 
 Pig - 0.12.0, 0.12.1, 0.14.0
 
@@ -2045,7 +2045,7 @@ Testing
 While I did some testing w/ Hadoop 1.2.1, b/c of the problem mentioned
 above (HDFS-1835), I did most development and testing against Hadoop
 2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.  Nominal
-testing was done with Hadoop 2.4.0 and 2.6.0.
+testing was done with Hadoop 2.4.0, 2.6.0. and 2.7.1.
 
 Pig support was added/tested against version 0.12.0.  Nominal
 testing was done with Pig 0.12.1 and 0.14.0.
