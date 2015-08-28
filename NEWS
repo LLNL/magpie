@@ -3,6 +3,7 @@ magpie 1.61
 Support Hadoop 2.7.1, update default Hadoop to 2.7.1.
 Support Spark 1.4.1, update default Spark to 1.4.1-bin-hadoop2.6.
 Support Storm 0.9.5, update default Storm to 0.9.5.
+Support Pig 0.15.0, update default Pig to 0.15.0.
 
 magpie 1.60
 -----------
