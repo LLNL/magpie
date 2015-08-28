@@ -185,6 +185,7 @@ cp ${pre_stormenvini} ${post_stormenvini}
 
 sed -i \
     -e "s/MAGPIEJAVAHOME/${stormjavahomesubst}/g" \
+    -e "s/STORMJARJVMOPTS/${extrajvmoptssubst}/g" \
     ${post_stormenvini}
 
 cp ${pre_stormenvsh} ${post_stormenvsh}
