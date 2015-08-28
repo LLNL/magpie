@@ -1,6 +1,7 @@
 magpie 1.61
 -----------
 Support Spark 1.4.1, update default Spark to 1.4.1-bin-hadoop2.6.
+Support Storm 0.9.5, update default Storm to 0.9.5.
 
 magpie 1.60
 -----------

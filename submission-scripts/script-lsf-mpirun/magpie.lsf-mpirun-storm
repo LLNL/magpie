@@ -247,7 +247,7 @@ export STORM_SETUP=yes
 
 # Version
 #
-export STORM_VERSION="0.9.4"
+export STORM_VERSION="0.9.5"
 
 # Path to your Storm build/binaries
 #
