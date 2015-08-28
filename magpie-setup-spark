@@ -154,6 +154,7 @@ then
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
 	sparkshufflebufferkb=100
+	sparkshufflebuffer=100k
 	sparkshuffleconsolidatefiles="false"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
 	|| [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
@@ -162,22 +163,26 @@ then
         # XXX: If not default, can get from lctl or similar?
         # If other networkFS, just assume like Lustre
 	sparkshufflebufferkb=1024
+	sparkshufflebuffer=1024k
 	sparkshuffleconsolidatefiles="true"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
 	|| [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
         # Assuming Lustre, so copy above 1M
 	sparkshufflebufferkb=1024
+	sparkshufflebuffer=1024k
 	sparkshuffleconsolidatefiles="true"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
         # Assuming Lustre, so copy above 1M
 	sparkshufflebufferkb=1024
+	sparkshufflebuffer=1024k
 	sparkshuffleconsolidatefiles="true"
     fi 
 else
     # Accessing filesystem directly, assume Lustre
     sparkshufflebufferkb=1024
+    sparkshufflebuffer=1024k
     sparkshuffleconsolidatefiles="true"
 fi
 
@@ -539,6 +544,7 @@ then
 	-e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
 	-e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
 	-e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
+	-e "s/SPARKSHUFFLEFILEBUFFER/${sparkshufflebuffer}/g" \
 	-e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
 	-e "s/SPARKDEFAULTPARALLELISM/${sparkdefaultparallelism}/g" \
 	-e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
@@ -554,6 +560,20 @@ then
 	-e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
 	${post_sparkdefaultsconf}
     
+    # Remove lingering "-bin-hadoop2.4" and similar text"
+
+    sparktestversion=`echo $SPARK_VERSION | cut -f1 -d"-"`
+
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${sparktestversion} 1.3
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "1" ]
+    then
+	sed -i -e "s/spark.shuffle.file.buffer.kb/# spark.shuffle.file.buffer.kb/" ${post_sparkdefaultsconf}
+    else
+	sed -i -e "s/spark.shuffle.file.buffer\s/# spark.shuffle.file.buffer/" ${post_sparkdefaultsconf}
+    fi
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}

@@ -126,7 +126,8 @@ Pig - 0.12.0, 0.12.1, 0.14.0
 
 Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+
 
-Spark - 0.9.1-bin-hadoop2+, 1.0.0-bin-hadoop2^, 1.2.0-bin-hadoop2.4+, 1.3.0-bin-hadoop2.4+
+Spark - 0.9.1-bin-hadoop2+, 1.0.0-bin-hadoop2^, 1.2.0-bin-hadoop2.4+, 1.3.0-bin-hadoop2.4+,
+        1.4.1-bin-hadoop2.6
 
 Storm - 0.9.2^, 0.9.3, 0.9.4
 
