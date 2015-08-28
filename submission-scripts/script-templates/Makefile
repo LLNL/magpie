@@ -29,7 +29,7 @@ SSD_DIR_PREFIX=/ssd/$${USER}
 
 REMOTE_CMD_DEFAULT=ssh
 
-JAVA_DEFAULT=/usr/lib/jvm/jre-1.6.0-sun.x86_64/
+JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0-oracle.x86_64/
 
 #
 # If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed

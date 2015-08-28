@@ -233,7 +233,7 @@ export MAGPIE_JOB_TYPE="pig"
 ############################################################################
 
 # Necessary for Hadoop, Hbase, Pig, and Zookeeper
-export JAVA_HOME="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
+export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 
 ############################################################################
 # Hadoop Core Configurations
