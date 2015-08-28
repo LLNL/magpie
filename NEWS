@@ -1,5 +1,6 @@
 magpie 1.61
 -----------
+Default Java is now 1.7.
 Support Hadoop 2.7.1, update default Hadoop to 2.7.1.
 Support Spark 1.4.1, update default Spark to 1.4.1-bin-hadoop2.6.
 Support Storm 0.9.5, update default Storm to 0.9.5.
