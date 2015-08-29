@@ -124,7 +124,7 @@ Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.6.0+, 2.7.1+
 
 Pig - 0.12.0, 0.12.1, 0.14.0, 0.15.0
 
-Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+
+Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.2+, 1.1.1+
 
 Spark - 0.9.1-bin-hadoop2+, 1.0.0-bin-hadoop2^, 1.2.0-bin-hadoop2.4+, 1.3.0-bin-hadoop2.4+,
         1.4.1-bin-hadoop2.6
