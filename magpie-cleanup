@@ -47,4 +47,9 @@ then
     IFS=${IFSORIG}
 fi
 
+if [ "${ZOOKEEPER_DATA_DIR_CLEAR}" == "yes" ]
+then
+    rm -rf ${ZOOKEEPER_DATA_DIR}
+fi
+
 exit 0

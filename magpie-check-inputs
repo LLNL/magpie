@@ -1510,6 +1510,13 @@ then
 	exit 1
     fi
 
+    if [ "${ZOOKEEPER_DATA_DIR_CLEAR}X" != "X" ] \
+	&& ( [ "${ZOOKEEPER_DATA_DIR_CLEAR}" != "yes" ] && [ "${ZOOKEEPER_DATA_DIR_CLEAR}" != "no" ] )
+    then
+	echo "ZOOKEEPER_DATA_DIR_CLEAR must be set to yes or no"
+	exit 1
+    fi
+
     if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
     then
 	echo "ZOOKEEPER_LOCAL_DIR must be set to run Zookeeper"

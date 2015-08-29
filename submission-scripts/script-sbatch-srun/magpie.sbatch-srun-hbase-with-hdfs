@@ -777,6 +777,17 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 #
 export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
 
+# Zookeeper cleanup
+#
+# After your job has completed, if ZOOKEEPER_DATA_DIR_CLEAR is set to
+# yes, Magpie will do a rm -rf on ZOOKEEPER_DATA_DIR.  This may be
+# convenient for cleaning up your job after it has run.  This is
+# particularly useful if ZOOKEEPER_DATA_DIR is on a local ssd /drive.
+# B/c on your next job run, you may not be able to get the nodes you
+# want on your next run, leading to problems.
+#
+# export ZOOKEEPER_DATA_DIR_CLEAR="yes"
+
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
