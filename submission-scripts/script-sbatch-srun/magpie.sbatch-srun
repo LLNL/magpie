@@ -557,7 +557,7 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 #
 export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
 
-# Path for HDFS cleanup
+# HDFS cleanup
 #
 # After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
 # yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  This may be
