@@ -73,7 +73,7 @@ then
     $command
 
     echo "*** Sleeping a bit to let WordCount be killed"
-    sleep 60
+    sleep 120
 
     echo "*** Checking that Storm WordCount is no longer running"
     command="bin/storm list"
