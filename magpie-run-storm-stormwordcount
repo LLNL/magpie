@@ -63,6 +63,7 @@ echo "Running $command" >&2
 stormlistrunning=`$command`
 echo ${stormlistrunning}
 
+stormkilled=0
 if echo ${stormlistrunning} | grep "WordCount" | grep -q "ACTIVE"
 then
     echo "*** Storm appears to be executing WordCount properly"
@@ -72,21 +73,32 @@ then
     echo "Running $command" >&2
     $command
 
-    echo "*** Sleeping a bit to let WordCount be killed"
-    sleep 120
+    # Waiting for 2.5 minutes max
+    for i in {1..5}
+    do
+	echo "*** Sleeping a bit to let WordCount be killed"
+	sleep 30
+	
+	echo "*** Checking that Storm WordCount is no longer running"
+	command="bin/storm list"
+	echo "Running $command" >&2
+	stormlistkilled=`$command`
+	
+	echo ${stormlistkilled}
+	
+	if ! echo ${stormlistkilled} | grep -q "WordCount"
+	then
+	    echo "*** WordCount no longer active, appears to have been killed correctly."
+	    stormkilled=1
+	    break;
+	else
+	    echo "*** WordCount was not killed ... wait some more."
+	fi
+    done
 
-    echo "*** Checking that Storm WordCount is no longer running"
-    command="bin/storm list"
-    echo "Running $command" >&2
-    stormlistkilled=`$command`
-
-    echo ${stormlistkilled}
-
-    if ! echo ${stormlistkilled} | grep -q "WordCount"
+    if [ "${stormkilled}" != "1" ]
     then
-	echo "*** WordCount no longer active, appears to have been killed correctly."
-    else
-	echo "*** WordCount was not killed."
+	echo "*** WordCount was not killed yet, giving up."
     fi
 else
     echo "*** Storm appears to have failed to launch WordCount"

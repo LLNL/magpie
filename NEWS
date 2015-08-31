@@ -8,6 +8,7 @@ Support Pig 0.15.0, update default Pig to 0.15.0.
 Support Hbase 0.99.2.
 Support Hbase 1.1.1, update default Hbase to 1.1.1.
 Support ZOOKEEPER_DATA_DIR_CLEAR.
+Fix corner case in Storm wordcount test.
 
 magpie 1.60
 -----------
