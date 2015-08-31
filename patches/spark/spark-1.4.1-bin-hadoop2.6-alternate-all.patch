@@ -139,9 +139,36 @@ diff -pruN spark-1.4.1-bin-hadoop2.6-orig/sbin/start-slaves.sh spark-1.4.1-bin-h
  # Launch the slaves
 -"$sbin/slaves.sh" cd "$SPARK_HOME" \; "$sbin/start-slave.sh" "spark://$SPARK_MASTER_IP:$SPARK_MASTER_PORT"
 +"$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin/start-slave.sh" --config $SPARK_CONF_DIR "spark://$SPARK_MASTER_IP:$SPARK_MASTER_PORT"
+diff -pruN spark-1.4.1-bin-hadoop2.6-orig/sbin/stop-slave.sh spark-1.4.1-bin-hadoop2.6-alternate-ssh/sbin/stop-slave.sh
+--- spark-1.4.1-bin-hadoop2.6-orig/sbin/stop-slave.sh	2015-07-08 15:59:52.000000000 -0700
++++ spark-1.4.1-bin-hadoop2.6-alternate-ssh/sbin/stop-slave.sh	2015-08-31 16:26:10.823077000 -0700
+@@ -32,6 +32,23 @@ sbin="`cd "$sbin"; pwd`"
+ 
+ . "$sbin/spark-config.sh"
+ 
++# Check if --config is passed as an argument. It is an optional parameter.
++# Exit if the argument is not a directory.
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir="$1"
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    echo $usage
++    exit 1
++  else
++    export SPARK_CONF_DIR="$conf_dir"
++  fi
++  shift
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
+ if [ "$SPARK_WORKER_INSTANCES" = "" ]; then
 diff -pruN spark-1.4.1-bin-hadoop2.6-orig/sbin/stop-slaves.sh spark-1.4.1-bin-hadoop2.6-alternate-ssh/sbin/stop-slaves.sh
 --- spark-1.4.1-bin-hadoop2.6-orig/sbin/stop-slaves.sh	2015-07-08 15:59:52.000000000 -0700
-+++ spark-1.4.1-bin-hadoop2.6-alternate-ssh/sbin/stop-slaves.sh	2015-08-28 11:47:46.613138000 -0700
++++ spark-1.4.1-bin-hadoop2.6-alternate-ssh/sbin/stop-slaves.sh	2015-08-31 16:25:23.023924000 -0700
 @@ -26,7 +26,7 @@ sbin="`cd "$sbin"; pwd`"
  
  # do before the below calls as they exec
@@ -151,4 +178,4 @@ diff -pruN spark-1.4.1-bin-hadoop2.6-orig/sbin/stop-slaves.sh spark-1.4.1-bin-ha
  fi
  
 -"$sbin/slaves.sh" cd "$SPARK_HOME" \; "$sbin"/stop-slave.sh
-+"$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin"/stop-slave.sh
++"$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin"/stop-slave.sh --config $SPARK_CONF_DIR
