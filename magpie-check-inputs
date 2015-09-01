@@ -1516,6 +1516,13 @@ then
 	echo "ZOOKEEPER_DATA_DIR_CLEAR must be set to yes or no"
 	exit 1
     fi
+    
+    if [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "networkfs" ] \
+	&& [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "local" ]
+    then
+	echo "ZOOKEEPER_DATA_DIR_TYPE must be set to networkfs or local"
+	exit 1
+    fi
 
     if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
     then

@@ -78,14 +78,24 @@ then
     then
 	zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
     else
-	zookeeperinitlimit=10
+	if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+	then
+	    zookeeperinitlimit=10
+	else
+	    zookeeperinitlimit=20
+	fi
     fi
     
     if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
     then
 	zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
     else
-	zookeepersynclimit=5
+	if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+	then
+	    zookeepersynclimit=5
+	else
+	    zookeepersynclimit=10
+	fi
     fi
 fi
 

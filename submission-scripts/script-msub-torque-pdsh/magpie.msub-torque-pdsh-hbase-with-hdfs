@@ -774,7 +774,11 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # Path base for zookeeper data to be stored on each cluster node
 #
 # ZOOKEEPER_DATA_DIR can point to either a network file system path or
-# a local drive path.
+# a local drive path.  
+#
+# If a local drive or SSD is available, a local path is preferable.
+# If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
+# optimization possibilties.
 #
 export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
 
@@ -788,6 +792,22 @@ export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"
 # want on your next run, leading to problems.
 #
 # export ZOOKEEPER_DATA_DIR_CLEAR="yes"
+
+# Zookeeper data dir type
+#
+# Inform Magpie what type of directory ZOOKEEPER_DATA_DIR points to.
+#
+# This configuration isn't entirely necessary to be set, but if set to
+# networkfs, Magpie will increase a number of default timeouts in
+# Zookeeper as well as other projects to adjust for the fact Zookeeper
+# is running on a network file system.
+#
+# "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
+#               (such as Lustre).
+#
+# "local" - ZOOKEEPER_DATA_DIR points to a local drive.
+#
+export ZOOKEEPER_DATA_DIR_TYPE="networkfs"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
@@ -817,7 +837,7 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 # and sync to a leader.  May need to increase this value if the data
 # managed by ZooKeeper is large.
 #
-# Defaults to 10
+# Defaults to 10 if ZOOKEEPER_DATA_DIR_TYPE is local, 20 if networkfs
 #
 # export ZOOKEEPER_INITLIMIT=10
 
@@ -825,7 +845,7 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 # with ZooKeeper.  If they fall too far behind a leader, they will be
 # dropped.
 #
-# Defaults to 5
+# Defaults to 5 if ZOOKEEPER_DATA_DIR_TYPE is local, 10 if networkfs
 #
 # export ZOOKEEPER_SYNCLIMIT=5
 
