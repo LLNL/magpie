@@ -68,6 +68,8 @@ export PIG_MODE="testpig"
 # A particularly useful option is -l <logfile>, to indicate where you
 # would like the pig log file to go.
 #
+# Another useful option is -F or -stop_on_failure
+#
 # export PIG_SCRIPT_OPTS="-l HOMEDIRPREFIX/mypig.log"
 
 # Pig Classpath
