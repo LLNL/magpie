@@ -83,6 +83,13 @@ then
     hbaseregionserverhandlercount=200
 fi
 
+if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+then
+    zookeepersessiontimeout=90000
+else
+    zookeepersessiontimeout=120000
+fi
+
 #
 # Setup file system to use
 #
@@ -237,6 +244,7 @@ sed -i \
     -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
     -e "s/HBASEMASTERHOST/${HBASE_MASTER_NODE}/g" \
     -e "s/HBASE_HOST/${HBASE_THIS_HOST}/g" \
+    -e "s/ZOOKEEPERSESSIONTIMEOUT/${zookeepersessiontimeout}/g" \
     ${post_hbasesitexml}
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`

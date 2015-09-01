@@ -10,6 +10,8 @@ Support Hbase 1.1.1, update default Hbase to 1.1.1.
 Support ZOOKEEPER_DATA_DIR_CLEAR.
 Fix corner case in Storm wordcount test.
 Increase time for Hbase master to be brought up.
+Support ZOOKEEPER_DATA_DIR_TYPE for timeout optimization.
+Increase Zookeeper timeouts on Hbase & Storm if Zookeeper is on a network file system.
 
 magpie 1.60
 -----------

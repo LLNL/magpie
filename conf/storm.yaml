@@ -58,6 +58,8 @@ nimbus.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 supervisor.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 
 storm.zookeeper.port: STORMZOOKEEPERPORT
+storm.zookeeper.session.timeout: ZOOKEEPERSESSIONTIMEOUT
+storm.zookeeper.connection.timeout: ZOOKEEPERCONNECTIONTIMEOUT
 
 ui.port: STORMUIPORT
 ui.childopts: "-Xmx768m EXTRAJVMOPTS"

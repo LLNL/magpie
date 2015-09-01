@@ -105,6 +105,15 @@ then
     extrajvmopts="${extrajvmopts}${extrajvmopts:+" "}-XX:-UsePerfData"
 fi
 
+if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+then
+    zookeepersessiontimeout=20000
+    zookeeperconnectiontimeout=15000
+else
+    zookeepersessiontimeout=40000
+    zookeeperconnectiontimeout=30000
+fi
+
 #
 # Get config files for setup
 #
@@ -149,6 +158,8 @@ sed -i \
     -e "s/STORM_DAEMON_HEAP_MAX/${stormdaemonheapmax}/g" \
     -e "s/STORM_WORKER_HEAP_MAX/${stormworkerheapmax}/g" \
     -e "s/EXTRAJVMOPTS/${extrajvmoptssubst}/g" \
+    -e "s/ZOOKEEPERSESSIONTIMEOUT/${zookeepersessiontimeout}/g" \
+    -e "s/ZOOKEEPERCONNECTIONTIMEOUT/${zookeeperconnectiontimeout}/g" \
     ${post_stormyaml}
 
 # Add Zookeeper servers to conf
