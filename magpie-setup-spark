@@ -395,6 +395,15 @@ then
     pre_sparkdefaultsconf_tachyon=${sparkconffiledir}/spark-defaults.conf-tachyon
 fi
 
+if [ ! -f "${pre_sparkenvsh}" ] \
+    || [ ! -f "${pre_sparkdefaultsconf}" ] \
+    || [ ! -f "${pre_log4jproperties}" ] \
+    || ( [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ] && [ ! -f "${pre_sparkdefaultsconf_tachyon}" ] )
+then
+    echo "Missing configuration files in ${sparkconffiledir}"
+    exit 1
+fi
+
 post_sparkenvsh=${SPARK_CONF_DIR}/spark-env.sh
 post_sparkdefaultsconf=${SPARK_CONF_DIR}/spark-defaults.conf
 post_log4jproperties=${SPARK_CONF_DIR}/log4j.properties

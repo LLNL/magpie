@@ -220,6 +220,14 @@ pre_hbasesitexml=${hbaseconffiledir}/hbase-site.xml
 pre_hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
 pre_log4jproperties=${hbaseconffiledir}/hbase.log4j.properties
 
+if [ ! -f "${pre_hbasesitexml}" ] \
+    || [ ! -f "${pre_hbaseenvsh}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Missing configuration files in ${hbaseconffiledir}"
+    exit 1
+fi
+
 post_hbasesitexml=${HBASE_CONF_DIR}/hbase-site.xml
 post_hbaseenvsh=${HBASE_CONF_DIR}/hbase-env.sh
 post_log4jproperties=${HBASE_CONF_DIR}/log4j.properties

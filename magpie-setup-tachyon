@@ -166,6 +166,13 @@ fi
 pre_tachyonenvsh=${tachyonconffiledir}/tachyon-env.sh
 pre_log4jproperties=${tachyonconffiledir}/tachyon.log4j.properties
 
+if [ ! -f "${pre_tachyonenvsh}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Missing configuration files in ${tachyonconffiledir}"
+    exit 1
+fi
+
 post_tachyonenvsh=${TACHYON_CONF_DIR}/tachyon-env.sh
 post_log4jproperties=${TACHYON_CONF_DIR}/log4j.properties
 

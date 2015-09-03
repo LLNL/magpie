@@ -53,6 +53,13 @@ fi
 pre_pigproperties=${pigconffiledir}/pig.properties
 pre_log4jproperties=${pigconffiledir}/pig.log4j.properties
 
+if [ ! -f "${pre_pigproperties}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Missing configuration files in ${pigconffiledir}"
+    exit 1
+fi
+
 post_pigproperties=${PIG_CONF_DIR}/pig.properties
 post_log4jproperties=${PIG_CONF_DIR}/log4j.properties
 

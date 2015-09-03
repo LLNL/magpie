@@ -816,6 +816,25 @@ else
     exit 1
 fi
 
+if [ ! -f "${pre_coresitexml}" ] \
+    || [ ! -f "${pre_mapredsitexml}" ] \
+    || [ ! -f "${pre_hadoopenvsh}" ] \
+    || [ ! -f "${pre_hdfssitexml}" ] \
+    || [ ! -f "${pre_log4jproperties}" ] \
+    || ( [ "${pre_mapredenvsh}X" != "X" ] && [ ! -f "${pre_mapredenvsh}" ] ) \
+    || ( [ "${pre_yarnsitexml}X" != "X" ] && [ ! -f "${pre_yarnsitexml}" ] ) \
+    || ( [ "${pre_yarnenvsh}X" != "X" ] && [ ! -f "${pre_yarnenvsh}" ] ) \
+    || ( [ "${pre_mapredsitexml_uda}X" != "X" ] && [ ! -f "${pre_mapredsitexml_uda}" ] ) \
+    || ( [ "${pre_yarnsitexml_uda}X" != "X" ] && [ ! -f "${pre_yarnsitexml_uda}" ] ) \
+    || ( [ "${pre_coresitexml_intellustre}X" != "X" ] && [ ! -f "${pre_coresitexml_intellustre}" ] ) \
+    || ( [ "${pre_coresitexml_magpienetworkfs}X" != "X" ] && [ ! -f "${pre_coresitexml_magpienetworkfs}" ] ) \
+    || ( [ "${pre_coresitexml_tachyon}X" != "X" ] && [ ! -f "${pre_coresitexml_tachyon}" ] ) \
+    || ( [ "${pre_coresitexml_viewfsmount}X" != "X" ] && [ ! -f "${pre_coresitexml_viewfsmount}" ] )
+then
+    echo "Missing configuration files in ${hadoopconffiledir}"
+    exit 1
+fi
+
 post_coresitexml=${HADOOP_CONF_DIR}/core-site.xml
 post_mapredsitexml=${HADOOP_CONF_DIR}/mapred-site.xml
 post_hadoopenvsh=${HADOOP_CONF_DIR}/hadoop-env.sh

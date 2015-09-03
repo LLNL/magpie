@@ -132,6 +132,14 @@ pre_zookeepercfg=${zookeeperconffiledir}/zoo.cfg
 pre_zookeeperenvsh=${zookeeperconffiledir}/zookeeper-env.sh
 pre_log4jproperties=${zookeeperconffiledir}/zookeeper.log4j.properties
 
+if [ ! -f "${pre_zookeepercfg}" ] \
+    || [ ! -f "${pre_zookeeperenvsh}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Missing configuration files in ${zookeeperconffiledir}"
+    exit 1
+fi
+
 post_zookeepercfg=${ZOOKEEPER_CONF_DIR}/zoo.cfg
 post_zookeeperenvsh=${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh
 post_log4jproperties=${ZOOKEEPER_CONF_DIR}/log4j.properties
