@@ -17,10 +17,8 @@
 #
 #          User must set HADOOP_HDFS_PATH below.
 #
-# "hdfsoverlustre" - HDFS over Lustre.  See README for description.
-#
-#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below. 
-#
+@MODE_HDFSOVERLUSTRE@
+
 @MODE_HDFSOVERNETWORKFS@
 
 # "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),
@@ -56,33 +54,7 @@ export HADOOP_HDFS_PATH="SSDDIRPREFIX/hdfs"
 #
 # export HADOOP_HDFS_PATH_CLEAR="yes"
 
-# Lustre path to do Hadoop HDFS out of
-#
-# Note that different versions of Hadoop may not be compatible with
-# your current HDFS data.  If you're going to switch around to
-# different versions, perhaps set different paths for different data.
-#
-export HADOOP_HDFSOVERLUSTRE_PATH="LUSTREDIRPREFIX/hdfsoverlustre/"
-
-# HDFS over Lustre ignore lock
-#
-# Cleanup in_use.lock files before launching HDFS
-#
-# On traditional Hadoop clusters, the in_use.lock file protects
-# against a second HDFS daemon running on the same node.  The lock
-# file can similarly protect against a second HDFS daemon running on
-# another node of your cluster (which is not desired, as both
-# namenodes could change namenode data at the same time).
-#
-# However, sometimes the lock file may be there due to a prior job
-# that failed and locks were not cleaned up on teardown.  This may
-# prohibit new HDFS daemons from running correctly.
-#
-# By default, if this option is not set, the lock file will be left in
-# place and may cause HDFS daemons to not start.  If set to yes, the
-# lock files will be removed before starting HDFS.
-#
-# export HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS=yes
+@PATH_HDFSOVERLUSTRE@
 
 @PATH_HDFSOVERNETWORKFS@
 

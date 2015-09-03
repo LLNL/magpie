@@ -1,0 +1,4 @@
+# "hdfsoverlustre" - HDFS over Lustre.  See README for description.
+#
+#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below. 
+#
