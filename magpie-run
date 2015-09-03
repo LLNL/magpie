@@ -792,7 +792,7 @@ then
         # Make variables specific now within Magpie
 	Magpie_make_all_local_dirs_node_specific
 	
-        # My rough estimate for setup time is 90 seconds per 128 nodes
+        # My rough estimate for setup time is 120 seconds per 128 nodes
         #
 	# achu: I would rather spin and wait for Hbase master to come
 	# up, but it does not appear Hbase has an equivalent command
@@ -801,10 +801,10 @@ then
 	# XXX - consider submitting bug + patch for this
 	#
 	# since there isn't, we wait longer than would seem reasonable
-	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 90`
-	if [ ${sleepwait} -lt 90 ]
+	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 120`
+	if [ ${sleepwait} -lt 120 ]
 	then
-            sleepwait=90
+            sleepwait=120
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Hbase daemons to setup"
 	sleep ${sleepwait}
@@ -1092,11 +1092,11 @@ then
 	# Make variables specific now within Magpie
 	Magpie_make_all_local_dirs_node_specific
 
-        # My rough estimate for setup time is 90 seconds per 128 nodes
-	sleepwait=`expr ${STORM_WORKERS_COUNT} \/ 128 \* 90`
-	if [ ${sleepwait} -lt 90 ]
+        # My rough estimate for setup time is 60 seconds per 128 nodes
+	sleepwait=`expr ${STORM_WORKERS_COUNT} \/ 128 \* 60`
+	if [ ${sleepwait} -lt 60 ]
 	then
-            sleepwait=90
+            sleepwait=60
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Storm daemons to setup"
 	sleep ${sleepwait}
