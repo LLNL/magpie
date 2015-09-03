@@ -448,17 +448,17 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${USER}/hdfsoverlustre/"
 
 # HDFS over Lustre ignore lock
 #
-# Remove in_use.lock files before launching HDFS
+# Cleanup in_use.lock files before launching HDFS
 #
 # On traditional Hadoop clusters, the in_use.lock file protects
 # against a second HDFS daemon running on the same node.  The lock
 # file can similarly protect against a second HDFS daemon running on
-# another node of your cluster.
+# another node of your cluster (which is not desired, as both
+# namenodes could change namenode data at the same time).
 #
-# However, sometimes the lock file can be an annoyance.  If several
-# nodes in your cluster die and you simply restart the job on
-# separate nodes, the lock file may still be present and prohibit new
-# HDFS daemons to run.
+# However, sometimes the lock file may be there due to a prior job
+# that failed and locks were not cleaned up on teardown.  This may
+# prohibit new HDFS daemons from running correctly.
 #
 # By default, if this option is not set, the lock file will be left in
 # place and may cause HDFS daemons to not start.  If set to yes, the
@@ -476,17 +476,17 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 
 # HDFS over Networkfs ignore lock
 #
-# Remove in_use.lock files before launching HDFS
+# Cleanup in_use.lock files before launching HDFS
 #
 # On traditional Hadoop clusters, the in_use.lock file protects
 # against a second HDFS daemon running on the same node.  The lock
 # file can similarly protect against a second HDFS daemon running on
-# another node of your cluster.
+# another node of your cluster (which is not desired, as both
+# namenodes could change namenode data at the same time).
 #
-# However, sometimes the lock file can be an annoyance.  If several
-# nodes in your cluster die and you simply restart the job on
-# separate nodes, the lock file may still be present and prohibit new
-# HDFS daemons to run.
+# However, sometimes the lock file may be there due to a prior job
+# that failed and locks were not cleaned up on teardown.  This may
+# prohibit new HDFS daemons from running correctly.
 #
 # By default, if this option is not set, the lock file will be left in
 # place and may cause HDFS daemons to not start.  If set to yes, the
