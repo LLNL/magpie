@@ -400,7 +400,7 @@ if [ ! -f "${pre_sparkenvsh}" ] \
     || [ ! -f "${pre_log4jproperties}" ] \
     || ( [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ] && [ ! -f "${pre_sparkdefaultsconf_tachyon}" ] )
 then
-    echo "Missing configuration files in ${sparkconffiledir}"
+    echo "Missing Spark configuration files in ${sparkconffiledir}"
     exit 1
 fi
 

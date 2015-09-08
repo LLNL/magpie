@@ -862,7 +862,7 @@ if [ ! -f "${pre_coresitexml}" ] \
     || ( [ "${pre_coresitexml_tachyon}X" != "X" ] && [ ! -f "${pre_coresitexml_tachyon}" ] ) \
     || ( [ "${pre_coresitexml_viewfsmount}X" != "X" ] && [ ! -f "${pre_coresitexml_viewfsmount}" ] )
 then
-    echo "Missing configuration files in ${hadoopconffiledir}"
+    echo "Missing Hadoop configuration files in ${hadoopconffiledir}"
     exit 1
 fi
 

@@ -133,7 +133,7 @@ if [ ! -f "${pre_stormyaml}" ] \
     || [ ! -f "${pre_stormenvini}" ] \
     || [ ! -f "${pre_stormenvsh}" ]
 then
-    echo "Missing configuration files in ${stormconffiledir}"
+    echo "Missing Storm configuration files in ${stormconffiledir}"
     exit 1
 fi
 

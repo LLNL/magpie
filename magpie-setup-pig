@@ -56,7 +56,7 @@ pre_log4jproperties=${pigconffiledir}/pig.log4j.properties
 if [ ! -f "${pre_pigproperties}" ] \
     || [ ! -f "${pre_log4jproperties}" ]
 then
-    echo "Missing configuration files in ${pigconffiledir}"
+    echo "Missing Pig configuration files in ${pigconffiledir}"
     exit 1
 fi
 

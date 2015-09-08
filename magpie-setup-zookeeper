@@ -136,7 +136,7 @@ if [ ! -f "${pre_zookeepercfg}" ] \
     || [ ! -f "${pre_zookeeperenvsh}" ] \
     || [ ! -f "${pre_log4jproperties}" ]
 then
-    echo "Missing configuration files in ${zookeeperconffiledir}"
+    echo "Missing Zookeeper configuration files in ${zookeeperconffiledir}"
     exit 1
 fi
 

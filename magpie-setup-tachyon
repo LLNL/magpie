@@ -169,7 +169,7 @@ pre_log4jproperties=${tachyonconffiledir}/tachyon.log4j.properties
 if [ ! -f "${pre_tachyonenvsh}" ] \
     || [ ! -f "${pre_log4jproperties}" ]
 then
-    echo "Missing configuration files in ${tachyonconffiledir}"
+    echo "Missing Tachyon configuration files in ${tachyonconffiledir}"
     exit 1
 fi
 

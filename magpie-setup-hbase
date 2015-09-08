@@ -224,7 +224,7 @@ if [ ! -f "${pre_hbasesitexml}" ] \
     || [ ! -f "${pre_hbaseenvsh}" ] \
     || [ ! -f "${pre_log4jproperties}" ]
 then
-    echo "Missing configuration files in ${hbaseconffiledir}"
+    echo "Missing Hbase configuration files in ${hbaseconffiledir}"
     exit 1
 fi
 
