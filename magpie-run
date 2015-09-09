@@ -1730,20 +1730,23 @@ then
 	
 	echo "Stopping hbase"
 	
-	if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
+	if [ "${hbase_setup_successful}" == "1" ]
 	then
-	    echo "Doing major compaction before shutting down ..."
+	    if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
+	    then
+		echo "Doing major compaction before shutting down ..."
 	    
-	    command="echo list"
-	    echo "Running $command in hbase shell" >&2
-	    listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
-	    
-	    for table in ${listoutput}
-	    do
-		command="echo major_compact '${table}'"
+		command="echo list"
 		echo "Running $command in hbase shell" >&2
-		$command | ${hbasecmdprefix}/hbase shell
-	    done
+		listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
+		
+		for table in ${listoutput}
+		do
+		    command="echo major_compact '${table}'"
+		    echo "Running $command in hbase shell" >&2
+		    $command | ${hbasecmdprefix}/hbase shell
+		done
+	    fi
 	fi
 	
 	# Make variables unspecified for shutdown
@@ -1812,47 +1815,51 @@ then
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
-	    echo "Saving namespace before shutting down hdfs ..."
 
-	    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+	    if [ "${hadoop_setup_successful}" == "1" ]
 	    then
-		for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-		do
+		echo "Saving namespace before shutting down hdfs ..."
+
+		if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+		then
+		    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+		    do
 	            # First namenode is based on master
-		    if [ "${i}" == "1" ]
-		    then
-			federationnamenodehost="${HADOOP_MASTER_NODE}"
-		    else
-			numline=`expr ${i} - 1`
-			federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-		    fi
-		    
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+			if [ "${i}" == "1" ]
+			then
+			    federationnamenodehost="${HADOOP_MASTER_NODE}"
+			else
+			    numline=`expr ${i} - 1`
+			    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+			fi
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+			echo "Running $command" >&2
+			$command
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+			echo "Running $command" >&2
+			$command
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+			echo "Running $command" >&2
+			$command
+		    done
+		else
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
 		    echo "Running $command" >&2
 		    $command
 		    
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
 		    echo "Running $command" >&2
 		    $command
 		    
-		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+		    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
 		    echo "Running $command" >&2
 		    $command
-		done
-	    else
-		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
-		echo "Running $command" >&2
-		$command
-		
-		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
-		echo "Running $command" >&2
-		$command
-		    
-		command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
-		echo "Running $command" >&2
-		$command
+		fi
 	    fi
-	    
+
   	    # Make variables unspecified for shutdown
 	    Magpie_make_all_local_dirs_unspecified
 
