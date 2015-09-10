@@ -13,6 +13,7 @@ Increase time for Hbase master to be brought up.
 Support ZOOKEEPER_DATA_DIR_TYPE for timeout optimization.
 Increase Zookeeper timeouts on Hbase & Storm if Zookeeper is on a network file system.
 Wait for Hbase Master to come up w/ status checks before running job.
+Fix corner case in Hadoop & Hbase shutdown path. 
 
 magpie 1.60
 -----------
