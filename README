@@ -1785,11 +1785,13 @@ number of the big data services setup by Magpie.
 
 These issues are due to a variety of factors, including:
 
-1) In "traditional" big data clusters, system adminsitrators control
-who is allowed on the cluster and who is not, limiting exposure of
-data.  In HPC environments, you are setting up a "big data cluster"
-within another cluster and the users on the system are not controlled
-by those running the job.
+1) In "traditional" big data clusters, system administrators control
+what users are allowed on the cluster and who is not, limiting the
+exposure of data stored there.  In the Magpie model, a "big data
+cluster" is instantiated within a larger multi-user HPC cluster.  The
+Magpie user cannot control what other users have access to the HPC
+cluster.  This population of HPC users could access to the data of the
+Magpie user without the Magpie user's knowledge.
 
 2) In "traditional" big data clusters, important daemons are
 owned/executed by a special user (e.g. hdfs, yarn, etc.).  This may
@@ -1799,10 +1801,10 @@ processes are run under the user's ownership.  Since users are
 typically not root, they have no way to change the ownership of the
 process to a "special" user.
 
-3) While some big data software (not all) have Kerberos or similar
-security functions built it.  It is beyond the scope of HPC users to be
-able to be able to get proper kerberos configuration of Hadoop, HDFS,
-etc. from their site staff before running their job.
+3) Some big data software have Kerberos or similar security functions
+built into it.  However, it is beyond the scope of most HPC users to
+get proper kerberos configuration of Hadoop, HDFS, etc. from their
+site staff before running their job.
 
 4) Some big data software just doesn't really have any security built
 in at all.
