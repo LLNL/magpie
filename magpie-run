@@ -111,11 +111,11 @@ then
 	# Make variables specific now within Magpie
 	Magpie_make_all_local_dirs_node_specific
 
-        # My rough estimate for setup time is 60 seconds per 128 nodes
-	sleepwait=`expr ${ZOOKEEPER_REPLICATION_COUNT} \/ 128 \* 60`
-	if [ ${sleepwait} -lt 60 ]
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${ZOOKEEPER_REPLICATION_COUNT} \/ 128 \* 30`
+	if [ ${sleepwait} -lt 30 ]
 	then
-            sleepwait=60
+            sleepwait=30
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Zookeeper daemons to setup"
 	sleep ${sleepwait}
@@ -865,11 +865,11 @@ then
         # Make variables specific now within Magpie
 	Magpie_make_all_local_dirs_node_specific
 	
-        # My rough estimate for setup time is 60 seconds per 128 nodes
-	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 60`
-	if [ ${sleepwait} -lt 60 ]
+        # My rough estimate for setup time is 30 seconds per 128 nodes
+	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
+	if [ ${sleepwait} -lt 30 ]
 	then
-            sleepwait=60
+            sleepwait=30
 	fi
 	echo "Waiting ${sleepwait} seconds to allow Hbase daemons to setup"
 	sleep ${sleepwait}
