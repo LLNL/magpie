@@ -670,18 +670,25 @@ then
     then
 	if [ "${hdfs_was_setup}" == "1" ]
 	then
-	    # Could be more dynamic w/ slurm call to determine current
-	    # run time, but probably is sufficient for this trivial
-	    # part.  Minimally, have to leave the totalsleepwait code
-	    # around for non-slurm systems.
-	    namenodemaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${totalsleepwait}`
+	    magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+
+	    if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+	    then  
+	        # Could be more dynamic w/ slurm call to determine current
+	        # run time, but probably is sufficient for this trivial
+	        # part.  Minimally, have to leave the totalsleepwait code
+	        # around for non-slurm systems.
+		namenodemaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
 	    
-	    if [ "${namenodemaxwaitseconds}" -lt 30 ]
-	    then
-		namenodemaxwaitseconds=30
+		if [ "${namenodemaxwaitseconds}" -lt 30 ]
+		then
+		    namenodemaxwaitseconds=30
+		fi
+	    
+		namenodemaxwaittimes=`expr ${namenodemaxwaitseconds} \/ 30`
+	    else
+		namenodemaxwaittimes=1
 	    fi
-	    
-	    namenodemaxwaittimes=`expr ${namenodemaxwaitseconds} \/ 30`
 	
 	    cd ${HADOOP_HOME}
 
@@ -908,18 +915,25 @@ then
 
     if [ ${HBASE_MODE} != "setuponly" ]
     then
-	# Could be more dynamic w/ slurm call to determine current
-	# run time, but probably is sufficient for this trivial
-	# part.  Minimally, have to leave the totalsleepwait code
-	# around for non-slurm systems.
-	hbasemastermaxwaitseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60 - ${totalsleepwait}`
+	magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+
+	if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+	then  
+	    # Could be more dynamic w/ slurm call to determine current
+	    # run time, but probably is sufficient for this trivial
+	    # part.  Minimally, have to leave the totalsleepwait code
+	    # around for non-slurm systems.
+	    hbasemastermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
 	    
-	if [ "${hbasemastermaxwaitseconds}" -lt 30 ]
-	then
-	    hbasemastermaxwaitseconds=30
+	    if [ "${hbasemastermaxwaitseconds}" -lt 30 ]
+	    then
+		hbasemastermaxwaitseconds=30
+	    fi
+	    
+	    hbasemastermaxwaittimes=`expr ${hbasemastermaxwaitseconds} \/ 30`
+	else
+	    hbasemastermaxwaittimes=1
 	fi
-	    
-	hbasemastermaxwaittimes=`expr ${hbasemastermaxwaitseconds} \/ 30`
 	
 	cd ${HBASE_HOME}
 
