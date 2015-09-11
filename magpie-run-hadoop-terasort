@@ -126,7 +126,7 @@ else
 
     if [ "${MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS}" -lt "${mtasks}" ]
     then
-       mtasks=${defaultmaptasks}
+       mtasks=${MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS}
     fi
 fi
 
