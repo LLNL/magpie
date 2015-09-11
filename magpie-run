@@ -191,9 +191,74 @@ then
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
     
-    # Nothing to check for Zookeeper, setup always passes
-    zookeeper_should_be_torndown=1
-    zookeeper_setup_successful=1
+    if [ ${ZOOKEEPER_MODE} != "setuponly" ]
+    then
+	magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+
+	if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+	then  
+	    # Could be more dynamic w/ slurm call to determine current
+	    # run time, but probably is sufficient for this trivial
+	    # part.  Minimally, have to leave the totalsleepwait code
+	    # around for non-slurm systems.
+	    zookeepermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+	    
+	    if [ "${zookeepermaxwaitseconds}" -lt 30 ]
+	    then
+		zookeepermaxwaitseconds=30
+	    fi
+	    
+	    zookeepermaxwaittimes=`expr ${zookeepermaxwaitseconds} \/ 30`
+	else
+	    zookeepermaxwaittimes=1
+	fi
+	
+	cd ${ZOOKEEPER_HOME}
+
+	zookeepercameup=0
+	    
+	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+
+	for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
+		
+	    zookeeperbadresponse=0
+
+	    for zookeepernode in ${zookeepernodes}
+	    do
+		response=`echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}`
+		if [ "${response}" != "imok" ]
+		then
+		    zookeeperbadresponse=1
+		    break
+		fi
+	    done
+
+	    if [ "${zookeeperbadresponse}" == "0" ]
+	    then
+		zookeepercameup=1
+		break
+	    fi
+	    
+	    echo "Waiting 30 more seconds for Zookeeper daemons to come up"
+	    sleep 30
+	    totalsleepwait=`expr ${totalsleepwait} + 30`
+	done
+	
+	if [ "${zookeepercameup}" == "0" ]
+	then
+	    echo "Atleast 1 Zookeeper daemon never came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+	    zookeeper_should_be_torndown=1
+	    zookeeper_setup_successful=0
+	    prior_setup_successful=false
+	else
+	    zookeeper_should_be_torndown=1
+	    zookeeper_setup_successful=1
+	fi
+    else
+	zookeeper_should_be_torndown=1
+	zookeeper_setup_successful=1
+    fi
+
 else
     zookeeper_should_be_torndown=0
     zookeeper_setup_successful=1
