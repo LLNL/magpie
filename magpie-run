@@ -696,7 +696,7 @@ then
 		    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
 		    do
 			
-	            # First namenode is based on master
+	                # First namenode is based on master
 			if [ "${i}" == "1" ]
 			then
 			    federationnamenodehost="${HADOOP_MASTER_NODE}"
