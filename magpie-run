@@ -220,7 +220,7 @@ then
 	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
         if ! type nc >/dev/null 2>&1
         then
-            echo "Checking if zookeeper came up failed because netcat was not found. Assuming success."
+            echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
             zookeepercameup=1
         else 
             for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
