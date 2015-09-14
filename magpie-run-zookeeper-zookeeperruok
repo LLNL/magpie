@@ -35,6 +35,12 @@ Magpie_make_all_local_dirs_node_specific
 
 zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 
+if ! type nc >/dev/null 2>&1
+then
+    echo "Zookeeper ruok cannot be run b/c netcat ('nc' command) cannot be found"
+    exit 1
+fi
+
 for zookeepernode in ${zookeepernodes}
 do
     echo "Sending ruok to ${zookeepernode} ... "
