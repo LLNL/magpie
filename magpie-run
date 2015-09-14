@@ -218,31 +218,36 @@ then
 	zookeepercameup=0
 	    
 	zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
-
-	for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
-		
-	    zookeeperbadresponse=0
-
-	    for zookeepernode in ${zookeepernodes}
-	    do
-		response=`echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}`
-		if [ "${response}" != "imok" ]
-		then
-		    zookeeperbadresponse=1
-		    break
-		fi
-	    done
-
-	    if [ "${zookeeperbadresponse}" == "0" ]
-	    then
-		zookeepercameup=1
-		break
-	    fi
-	    
-	    echo "Waiting 30 more seconds for Zookeeper daemons to come up"
-	    sleep 30
-	    totalsleepwait=`expr ${totalsleepwait} + 30`
-	done
+        if ! type nc >/dev/null 2>&1
+        then
+            echo "Checking if zookeeper came up failed because netcat was not found. Assuming success."
+            zookeepercameup=1
+        else 
+            for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
+            	
+                zookeeperbadresponse=0
+            
+                for zookeepernode in ${zookeepernodes}
+                do
+            	response=`echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}`
+            	if [ "${response}" != "imok" ]
+            	then
+            	    zookeeperbadresponse=1
+            	    break
+            	fi
+                done
+            
+                if [ "${zookeeperbadresponse}" == "0" ]
+                then
+            	zookeepercameup=1
+            	break
+                fi
+                
+                echo "Waiting 30 more seconds for Zookeeper daemons to come up"
+                sleep 30
+                totalsleepwait=`expr ${totalsleepwait} + 30`
+            done
+        fi  
 	
 	if [ "${zookeepercameup}" == "0" ]
 	then
