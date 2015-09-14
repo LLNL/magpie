@@ -49,12 +49,12 @@ PRESET_LAUNCH_SCRIPT_PATHS="Y"
 # Also, patches are based on the package version number.  I may not
 # have patches for every version.
 
-HADOOP_PACKAGE="hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
-HBASE_PACKAGE="hbase/hbase-0.98.9/hbase-0.98.9-hadoop2-bin.tar.gz"
-PIG_PACKAGE="pig/pig-0.14.0/pig-0.14.0.tar.gz"
+HADOOP_PACKAGE="hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
+HBASE_PACKAGE="hbase/1.1.2/hbase-1.1.1-bin.tar.gz"
+PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
-SPARK_PACKAGE="spark/spark-1.3.0/spark-1.3.0-bin-hadoop2.4.tgz"
-STORM_PACKAGE="storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz"
+SPARK_PACKAGE="spark/spark-1.4.1/spark-1.4.1-bin-hadoop2.6.tgz"
+STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
 
 # First check some basics
 
