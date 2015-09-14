@@ -50,7 +50,7 @@ PRESET_LAUNCH_SCRIPT_PATHS="Y"
 # have patches for every version.
 
 HADOOP_PACKAGE="hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
-HBASE_PACKAGE="hbase/1.1.2/hbase-1.1.1-bin.tar.gz"
+HBASE_PACKAGE="hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
 SPARK_PACKAGE="spark/spark-1.4.1/spark-1.4.1-bin-hadoop2.6.tgz"
