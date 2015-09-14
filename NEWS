@@ -5,7 +5,7 @@ Support Hadoop 2.7.1, update default Hadoop to 2.7.1.
 Support Spark 1.4.1, update default Spark to 1.4.1-bin-hadoop2.6.
 Support Storm 0.9.5, update default Storm to 0.9.5.
 Support Pig 0.15.0, update default Pig to 0.15.0.
-Support Hbase 0.99.2.
+Support Hbase 0.99.2, Hbase 1.1.1.
 Support Hbase 1.1.2, update default Hbase to 1.1.2.
 Support ZOOKEEPER_DATA_DIR_CLEAR.
 Fix corner case in Storm wordcount test.
