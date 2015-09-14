@@ -92,6 +92,10 @@ Requirements
    should be sufficient for most hostrange parsing, but may not
    function for a number of nuanced corner cases.
 
+   Several checks for Zookeeper functionality assume netcat and the
+   'nc' command are available.  If it is not available, the checks
+   cannot be done.
+
 Local Configuration
 -------------------
 
