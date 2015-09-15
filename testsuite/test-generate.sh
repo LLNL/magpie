@@ -1141,3 +1141,13 @@ sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\${HOME}\/magpie-my-post-job-script"/
 dependencyprefix=`date +"%Y%m%d%N"`
 
 sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie*
+
+echo "Setting original submission scripts back to system default"
+
+cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
+
+git checkout Makefile
+
+make &> /dev/null
+
+cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
