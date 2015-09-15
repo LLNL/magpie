@@ -23,6 +23,12 @@ dependencytests=y
 
 largeperformanceruntests=n
 
+# Misc config
+
+jobsubmissionfile=magpie-test.log
+
+# Test Setup
+
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
     jobsubmitcmd="sbatch"
@@ -37,6 +43,12 @@ then
     jobidstripcmd="xargs"
 fi
 
+if [ -f "${jobsubmissionfile}" ]
+then
+    rm -f ${jobsubmissionfile}
+fi
+touch ${jobsubmissionfile}
+
 BasicJobSubmit () {
     local jobsubmissionscript=$1
 
@@ -44,7 +56,7 @@ BasicJobSubmit () {
     jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
     jobid=`eval ${jobidstripfullcommand}`
 
-    echo "File ${jobsubmissionscript} submitted with ID ${jobid}"
+    echo "File ${jobsubmissionscript} submitted with ID ${jobid}" >> ${jobsubmissionfile}
 
     previousjobid=${jobid}
     jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
@@ -58,7 +70,7 @@ DependentJobSubmit () {
     jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
     jobid=`eval ${jobidstripfullcommand}`
 
-    echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}"
+    echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
 
     previousjobid=${jobid}
     jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
