@@ -671,7 +671,7 @@ do
 	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*random-thread*
 	    
 	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    
 	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
@@ -703,7 +703,7 @@ do
 	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*random-thread*
 	    
 	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    
 	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
@@ -735,7 +735,7 @@ do
 	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*random-thread*
 	    
 	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    
 	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
@@ -930,7 +930,7 @@ do
 	
 	sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 
-	sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 
 	sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	
@@ -955,7 +955,7 @@ do
 	
 	sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 
-	sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 
 	sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	
@@ -980,7 +980,7 @@ do
 	
 	sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 
-	sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 
 	sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	
@@ -1040,7 +1040,7 @@ do
 
     sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local*
 
-    sed -i -e 's/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local* 
+    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local* 
 
     sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local* 
 
