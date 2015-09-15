@@ -41,6 +41,7 @@ then
     do
 	if [ -d "${hdfspath}" ]
 	then
+	    echo "Clearing directory ${hdfspath}"
 	    rm -rf ${hdfspath}
 	fi
     done
@@ -49,6 +50,7 @@ fi
 
 if [ "${ZOOKEEPER_DATA_DIR_CLEAR}" == "yes" ]
 then
+    echo "Clearing directory ${ZOOKEEPER_DATA_DIR}"
     rm -rf ${ZOOKEEPER_DATA_DIR}
 fi
 
