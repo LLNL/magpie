@@ -128,19 +128,23 @@ if [ "${hadooptests}" == "y" ]
 then
     for hadoopversion in 2.7.1
     do
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths
 	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-no-local-dir
 	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-multiple-paths-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths-no-local-dir
 	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-multiple-paths-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths-no-local-dir
 
 	if [ "${largeperformanceruntests}" == "y" ]
 	then
@@ -150,19 +154,23 @@ then
 
     for hadoopversion in 2.6.0
     do
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths
 	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths
 	
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-multiple-paths-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths-no-local-dir
 	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-multiple-paths-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths-no-local-dir
 
 	if [ "${largeperformanceruntests}" == "y" ]
 	then
@@ -172,12 +180,14 @@ then
 
     for hadoopversion in 2.4.0
     do
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths
 	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore
-	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-localstore-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local
+	BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths
 
 	if [ "${largeperformanceruntests}" == "y" ]
 	then
