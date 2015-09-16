@@ -13,7 +13,7 @@
 #
 # Are installed
 #
-# Assumes network file system lustre available & SSDs on each node
+# Assumes network file system lustre available
 #
 # Will enhance with more options as time goes on
 #
@@ -23,6 +23,8 @@
 #submissiontype=msub-slurm-srun
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
+
+generate_local_ssd_tests=y
 
 # Configs for submission types
 
@@ -1162,3 +1164,12 @@ make &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
+# achu: technically just removing files that don't meet the condition,
+# not "not generating" them.  So sue me.
+
+if [ "${generate_local_ssd_tests}" == "n" ]
+then
+    rm -f magpie.${submissiontype}-hadoop*hdfsondisk*
+    rm -f magpie.${submissiontype}-hadoop*localstore*
+    rm -f magpie.${submissiontype}-*zookeeper-local*
+fi
