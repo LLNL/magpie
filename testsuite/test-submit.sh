@@ -52,28 +52,33 @@ touch ${jobsubmissionfile}
 BasicJobSubmit () {
     local jobsubmissionscript=$1
 
-    jobsubmitoutput=`${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmissionscript}`
-    jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
-    jobid=`eval ${jobidstripfullcommand}`
-
-    echo "File ${jobsubmissionscript} submitted with ID ${jobid}" >> ${jobsubmissionfile}
-
-    previousjobid=${jobid}
-    jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
-    
+    if [ -f "${jobsubmissionscript}" ]
+    then
+	jobsubmitoutput=`${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmissionscript}`
+	jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
+	jobid=`eval ${jobidstripfullcommand}`
+	
+	echo "File ${jobsubmissionscript} submitted with ID ${jobid}" >> ${jobsubmissionfile}
+	
+	previousjobid=${jobid}
+	jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+    fi
 }
 
 DependentJobSubmit () {
     local jobsubmissionscript=$1
 
-    jobsubmitoutput=`${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmitdependencyexpand} ${jobsubmissionscript}`
-    jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
-    jobid=`eval ${jobidstripfullcommand}`
-
-    echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
-
-    previousjobid=${jobid}
-    jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+    if [ -f "${jobsubmissionscript}" ]
+    then
+	jobsubmitoutput=`${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmitdependencyexpand} ${jobsubmissionscript}`
+	jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
+	jobid=`eval ${jobidstripfullcommand}`
+	
+	echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
+    
+	previousjobid=${jobid}
+	jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+    fi
 }
 
 # Default Tests
