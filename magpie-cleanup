@@ -32,6 +32,8 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
+myhostname=`hostname`
+	    
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     && [ "${HADOOP_HDFS_PATH_CLEAR}" == "yes" ]
 then
@@ -41,7 +43,7 @@ then
     do
 	if [ -d "${hdfspath}" ]
 	then
-	    echo "Clearing directory ${hdfspath}"
+	    echo "${myhostname}: Clearing directory ${hdfspath}"
 	    rm -rf ${hdfspath}
 	fi
     done
@@ -50,7 +52,7 @@ fi
 
 if [ "${ZOOKEEPER_DATA_DIR_CLEAR}" == "yes" ]
 then
-    echo "Clearing directory ${ZOOKEEPER_DATA_DIR}"
+    echo "${myhostname}: Clearing directory ${ZOOKEEPER_DATA_DIR}"
     rm -rf ${ZOOKEEPER_DATA_DIR}
 fi
 
