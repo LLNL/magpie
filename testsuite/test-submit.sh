@@ -248,10 +248,10 @@ then
     do
 	for hadoopversion in 2.7.1
 	do
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 	done
     done
     
@@ -259,8 +259,8 @@ then
     do
 	for hadoopversion in 2.6.0
 	do
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 	done
     done
     
@@ -268,8 +268,8 @@ then
     do
 	for hadoopversion in 2.4.0 2.6.0
 	do
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
 	done
     done
 
@@ -296,23 +296,23 @@ then
 	do
 	    for zookeeperversion in 3.4.5 3.4.6
 	    do
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
 		
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
 	    done
 	done
     done
@@ -323,14 +323,14 @@ then
 	do
 	    for zookeeperversion in 3.4.5 3.4.6
 	    do
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
 	    done
 	done
     done
@@ -341,14 +341,14 @@ then
 	do
 	    for zookeeperversion in 3.4.5 3.4.6
 	    do
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
-		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
+		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
 	    done
 	done
     done

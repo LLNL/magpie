@@ -2,20 +2,19 @@
 
 # Which tests to generate
 #
-# Presently assumes
+# Presently supports
 #
 # Hadoop 2.4.0, 2.6.0, 2.7.1
 # Pig 0.12.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
-# Spark 0.9.1, 1.2.0-bin-hadoop2.4, 1.3.0-bin-hadoop2.4, 1.4.1-bin-hadoop2.6
+# Spark 0.9.1-bin-hadoop2, 1.2.0-bin-hadoop2.4, 1.3.0-bin-hadoop2.4, 1.4.1-bin-hadoop2.6
 # Storm 0.9.3, 0.9.4, 0.9.5
 # Zookeeper 3.4.5, 3.4.6
 #
-# Are installed
+# Assumes network file system such as lustre is always available
 #
-# Assumes network file system lustre available
-#
-# Will enhance with more options as time goes on
+# Assumes current defaults in Magpie are definitely available, but
+# versions can be configured for which tests will run
 #
 # XXX - haven't handled lsf-mpirun, msub-slurm-srun, or msub-torque-pdsh yet
 
@@ -24,7 +23,29 @@
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
 
-generate_local_ssd_tests=y
+# Test config
+
+no_local_ssd_tests=n
+no_hadoop_2_4_0=n
+no_hadoop_2_6_0=n
+no_hadoop_2_7_1=n
+no_pig_0_12_0=n
+no_pig_0_14_0=n
+no_pig_0_15_0=n
+no_hbase_0_98_3_bin_hadoop2=n
+no_hbase_0_98_9_bin_hadoop2=n
+no_hbase_0_99_2=n
+no_hbase_1_1_1=n
+no_hbase_1_1_2=n
+no_spark_0_9_1_bin_hadoop2=n
+no_spark_1_2_0_bin_hadoop2_4=n
+no_spark_1_3_0_bin_hadoop2_4=n
+no_spark_1_4_0_bin_hadoop2_6=n
+no_storm_0_9_3=n
+no_storm_0_9_4=n
+no_storm_0_9_5=n
+no_zookeeper_3_4_5=n
+no_zookeeper_3_4_6=n
 
 # Configs for submission types
 
@@ -564,20 +585,20 @@ for pigversion in 0.15.0
 do
     for hadoopversion in 2.7.1
     do
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-no-local-dir
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script-no-local-dir
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-no-local-dir
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 
-	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
-	sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
-	sed -i -e 's/export MAGPIE_JOB_TYPE="pig"/export MAGPIE_JOB_TYPE="script"/' ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*pig-script*
+	sed -i -e 's/export MAGPIE_JOB_TYPE="pig"/export MAGPIE_JOB_TYPE="script"/' ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*pig-script*
 
-	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\${HOME}\/my-job-script"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/mytestpig.sh"/' ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*pig-script*
+	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\${HOME}\/my-job-script"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/mytestpig.sh"/' ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*pig-script*
 
-	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
     done
 done
 
@@ -585,18 +606,18 @@ for pigversion in 0.14.0
 do
     for hadoopversion in 2.6.0
     do
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-no-local-dir
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script-no-local-dir
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-no-local-dir
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 
-	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
-	sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
-	sed -i -e 's/export MAGPIE_JOB_TYPE="pig"/export MAGPIE_JOB_TYPE="script"/' ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*pig-script*
+	sed -i -e 's/export MAGPIE_JOB_TYPE="pig"/export MAGPIE_JOB_TYPE="script"/' ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*pig-script*
 
-	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\${HOME}\/my-job-script"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/mytestpig.sh"/' ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*pig-script*
+	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\${HOME}\/my-job-script"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/mytestpig.sh"/' ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*pig-script*
 
-	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
     done
 done
 
@@ -604,18 +625,18 @@ for pigversion in 0.12.0 0.14.0
 do
     for hadoopversion in 2.4.0 2.6.0
     do
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}-pig-script
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
 
-	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
-	sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
-	sed -i -e 's/export MAGPIE_JOB_TYPE="pig"/export MAGPIE_JOB_TYPE="script"/' ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*pig-script*
+	sed -i -e 's/export MAGPIE_JOB_TYPE="pig"/export MAGPIE_JOB_TYPE="script"/' ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*pig-script*
 
-	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\${HOME}\/my-job-script"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/mytestpig.sh"/' ./magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*pig-script*
+	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\${HOME}\/my-job-script"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/mytestpig.sh"/' ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*pig-script*
 
-	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hadoop-and-pig-${pigversion}-hadoop-${hadoopversion}*
+	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
     done
 done
 
@@ -658,37 +679,37 @@ do
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
 
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
 	    
-	    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
-	    sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
-	    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 	    
-	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*random-thread*
+	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*random-thread*
 	    
-	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    
-	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
+	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
 
-	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 	done
     done
 done
@@ -699,28 +720,28 @@ do
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-no-local-dir
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
 	    
-	    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
-	    sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
-	    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 	    
-	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*random-thread*
+	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*random-thread*
 	    
-	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    
-	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
+	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
 
-	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 	done
     done
 done
@@ -731,28 +752,28 @@ do
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-local
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-local
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-random-thread-zookeeper-shared-zookeeper-local
 	    
-	    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
-	    sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
-	    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 	    
-	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*random-thread*
+	    sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"/export HBASE_PERFORMANCEEVAL_MODE="random-thread"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*random-thread*
 	    
-	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
-	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
+	    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-local*
 	    
-	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
+	    sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
 
-	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hbase-with-hdfs-${hbaseversion}-hadoop-${hadoopversion}-zookeeper-${zookeeperversion}*
+	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 	done
     done
 done
@@ -1164,12 +1185,109 @@ make &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-# achu: technically just removing files that don't meet the condition,
-# not "not generating" them.  So sue me.
-
-if [ "${generate_local_ssd_tests}" == "n" ]
+if [ "${no_local_ssd_tests}" == "y" ]
 then
     rm -f magpie.${submissiontype}-hadoop*hdfsondisk*
     rm -f magpie.${submissiontype}-hadoop*localstore*
     rm -f magpie.${submissiontype}-*zookeeper-local*
+fi
+
+if [ "${no_hadoop_2_4_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.4.0*
+fi
+
+if [ "${no_hadoop_2_6_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.6.0*
+fi
+
+if [ "${no_hadoop_2_7_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.7.1*
+fi
+
+if [ "${no_pig_0_12_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*pig-0.12.0*
+fi
+
+if [ "${no_pig_0_14_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*pig-0.14.0*
+fi
+
+if [ "${no_pig_0_15_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*pig-0.15.0*
+fi
+
+if [ "${no_hbase_0_98_3_bin_hadoop2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-0.98.3-bin-hadoop2*
+fi
+
+if [ "${no_hbase_0_98_9_bin_hadoop2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-0.98.9-bin-hadoop2*
+fi
+
+if [ "${no_hbase_0_99_2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-0.99.2*
+fi
+
+if [ "${no_hbase_1_1_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-1.1.1*
+fi
+
+if [ "${no_hbase_1_1_2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-1.1.2*
+fi
+
+if [ "${no_spark_0_9_1_bin_hadoop2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-0.9.1-bin-hadoop2*
+fi
+
+if [ "${no_spark_1_2_0_bin_hadoop2_4}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-1.2.0-bin-hadoop2.4*
+fi
+
+if [ "${no_spark_1_3_0_bin_hadoop2_4}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-1.3.0-bin-hadoop2.4*
+fi
+
+if [ "${no_spark_1_4_0_bin_hadoop2_6}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-1.4.0-bin-hadoop2.6*
+fi
+
+if [ "${no_storm_0_9_3}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*storm-0.9.3*
+fi
+
+if [ "${no_storm_0_9_4}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*storm-0.9.4*
+fi
+
+if [ "${no_storm_0_9_5}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*storm-0.9.5*
+fi
+
+if [ "${no_zookeeper_3_4_5}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.5*
+fi
+
+if [ "${no_zookeeper_3_4_6}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.6*
 fi
