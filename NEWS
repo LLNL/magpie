@@ -9,7 +9,6 @@ Support Hbase 0.99.2, Hbase 1.1.1.
 Support Hbase 1.1.2, update default Hbase to 1.1.2.
 Support ZOOKEEPER_DATA_DIR_CLEAR.
 Fix corner case in Storm wordcount test.
-Increase time for Hbase master to be brought up.
 Support ZOOKEEPER_DATA_DIR_TYPE for timeout optimization.
 Increase Zookeeper timeouts on Hbase & Storm if Zookeeper is on a network file system.
 Wait for Hbase Master to come up w/ status checks before running job.
