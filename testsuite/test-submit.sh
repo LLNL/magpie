@@ -269,6 +269,15 @@ then
 	for hadoopversion in 2.4.0 2.6.0
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
+
+	    # achu : library incompatability between hadoop 2.4.0 & pig 0.14.0, pig script will always fail with
+	    # ERROR 1066: Unable to open iterator for alias data
+	    # org.apache.pig.impl.logicalLayer.FrontendException: ERROR 1066: Unable to open iterator for alias data
+	    if [ "${pigversion}" == "0.14.0" ] && [ "${hadoopversion}" == "2.4.0" ]
+	    then
+		continue
+	    fi
+	    
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
 	done
     done
