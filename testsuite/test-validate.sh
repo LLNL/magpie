@@ -120,166 +120,199 @@ test_zookeeper_shutdown () {
     fi
 }
 
-for file in `ls ${outputprefix}-hadoop-terasort*`
-do
-    num=`grep -e "completed successfully" $file | wc -l`
-    if [ "${num}" != "2" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_hadoop_shutdown $file
-done
-
-for file in `ls ${outputprefix}-hadoop-upgradehdfs*`
-do
-    num=`grep -e "Finalize upgrade successful" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_hadoop_shutdown $file
-done
-
-for file in `ls ${outputprefix}-hadoop-hdfs-older-version*`
-do
-    num=`grep -e "HDFS version at mount" $file | grep -e "is older than" | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_no_hdfs_shutdown $file
-done
-
-for file in `ls ${outputprefix}-hadoop-hdfs-newer-version*`
-do
-    num=`grep -e "HDFS version at mount" $file | grep -e "is newer than" | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_no_hdfs_shutdown $file
-done
-
-for file in `ls ${outputprefix}-hadoop-hdfs-fewer-nodes*`
-do
-    num=`grep -e "HDFS was last built using a larger slave node count" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_no_hdfs_shutdown $file
-done
-
-for file in `ls ${outputprefix}-hadoop-and-pig*`
-do
-    # Below only works on 0.14.0 and up
-    # num=`grep -e "Pig script completed" $file | wc -l`
-
-    if echo ${file} | grep -q "pig-script"
-    then
-	num=`grep -e "1,2,3" $file | wc -l`
+if ls ${outputprefix}-hadoop-terasort* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hadoop-terasort*`
+    do
+	num=`grep -e "completed successfully" $file | wc -l`
 	if [ "${num}" != "2" ]; then
 	    echo "Job error in $file"
 	fi
-    else
+	
+	test_hadoop_shutdown $file
+    done
+fi
+
+if ls ${outputprefix}-hadoop-upgradehdfs* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hadoop-upgradehdfs*`
+    do
+	num=`grep -e "Finalize upgrade successful" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
+    done
+fi
+
+if ls ${outputprefix}-hadoop-hdfs-older-version* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hadoop-hdfs-older-version*`
+    do
+	num=`grep -e "HDFS version at mount" $file | grep -e "is older than" | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_no_hdfs_shutdown $file
+    done
+fi
+
+if ls ${outputprefix}-hadoop-hdfs-newer-version* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hadoop-hdfs-newer-version*`
+    do
+	num=`grep -e "HDFS version at mount" $file | grep -e "is newer than" | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_no_hdfs_shutdown $file
+    done
+fi
+
+if ls ${outputprefix}-hadoop-hdfs-fewer-nodes* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hadoop-hdfs-fewer-nodes*`
+    do
+	num=`grep -e "HDFS was last built using a larger slave node count" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_no_hdfs_shutdown $file
+    done
+fi
+
+if ls ${outputprefix}-hadoop-and-pig* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hadoop-and-pig*`
+    do
+    # Below only works on 0.14.0 and up
+    # num=`grep -e "Pig script completed" $file | wc -l`
+	
+	if echo ${file} | grep -q "pig-script"
+	then
+	    num=`grep -e "1,2,3" $file | wc -l`
+	    if [ "${num}" != "2" ]; then
+		echo "Job error in $file"
+	    fi
+	else
+	    
+	    if echo ${file} | grep -q "rawnetworkfs"
+	    then
+		num=`grep -e "file:\/" $file | grep "<dir>" | wc -l`
+	    else
+		num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
+	    fi
+	    if [ ! "${num}" -gt "0" ]; then
+		echo "Job error in $file"
+	    fi
+	fi
 	
 	if echo ${file} | grep -q "rawnetworkfs"
 	then
-	    num=`grep -e "file:\/" $file | grep "<dir>" | wc -l`
+	    test_yarn_shutdown $file
 	else
-	    num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
+	    test_hadoop_shutdown $file
 	fi
-	if [ ! "${num}" -gt "0" ]; then
+    done
+fi
+
+if ls ${outputprefix}-hbase* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hbase*`
+    do
+	num=`grep -e "Summary of timings" $file | wc -l`
+	if [ "${num}" != "2" ]; then
 	    echo "Job error in $file"
 	fi
-    fi
-
-    if echo ${file} | grep -q "rawnetworkfs"
-    then
-	test_yarn_shutdown $file
-    else
-	test_hadoop_shutdown $file
-    fi
-done
-
-for file in `ls ${outputprefix}-hbase*`
-do
-    num=`grep -e "Summary of timings" $file | wc -l`
-    if [ "${num}" != "2" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_hdfs_shutdown $file
-    test_zookeeper_shutdown $file
-done
-
-for file in `ls ${outputprefix}-spark-pi*`
-do
-    num=`grep -e "Pi is roughly" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_spark_shutdown $file
-done
-
-for file in `ls ${outputprefix}-spark-wordcount*`
-do
-    num=`grep -e "d: 4" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
-
-    test_spark_shutdown $file
-    if ! echo ${file} | grep -q "rawnetworkfs"
-    then
+	
 	test_hdfs_shutdown $file
-    fi
-done
+	test_zookeeper_shutdown $file
+    done
+fi
 
-for file in `ls ${outputprefix}-storm*`
-do
-    num=`grep -e "WordCount no longer active, appears to have been killed correctly" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Job error in $file"
-    fi
+if ls ${outputprefix}-spark-pi* >& /dev/null
+then
+    for file in `ls ${outputprefix}-spark-pi*`
+    do
+	num=`grep -e "Pi is roughly" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_spark_shutdown $file
+    done
+fi
 
-    num=`grep -e "Killing Storm nimbus" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "nimbus shutdown error in $file"
-    fi
+if ls ${outputprefix}-spark-wordcount* >& /dev/null
+then
+    for file in `ls ${outputprefix}-spark-wordcount*`
+    do
+	num=`grep -e "d: 4" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_spark_shutdown $file
+	if ! echo ${file} | grep -q "rawnetworkfs"
+	then
+	    test_hdfs_shutdown $file
+	fi
+    done
+fi
 
-    num=`grep -e "Killing Storm ui" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-	echo "Storm ui shutdown error in $file"
-    fi
+if ls ${outputprefix}-storm* >& /dev/null
+then
+    for file in `ls ${outputprefix}-storm*`
+    do
+	num=`grep -e "WordCount no longer active, appears to have been killed correctly" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
 
-    if echo ${file} | grep -q "zookeeper-shared"
-    then
-	numcompare=11
-    else
-	numcompare=8
-    fi
+	num=`grep -e "Killing Storm nimbus" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "nimbus shutdown error in $file"
+	fi
 
-    num=`grep -e "Killing Storm supervisor" $file | wc -l`
-    if [ "${num}" != "$numcompare" ]; then
-	echo "Storm supervisor shutdown error in $file"
-    fi
+	num=`grep -e "Killing Storm ui" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Storm ui shutdown error in $file"
+	fi
 
-    num=`grep -e "Killing Storm logviewer" $file | wc -l`
-    if [ "${num}" != "$numcompare" ]; then
-	echo "Storm logviewer shutdown error in $file"
-    fi
+	if echo ${file} | grep -q "zookeeper-shared"
+	then
+	    numcompare=11
+	else
+	    numcompare=8
+	fi
 
-    test_zookeeper_shutdown $file
-done
+	num=`grep -e "Killing Storm supervisor" $file | wc -l`
+	if [ "${num}" != "$numcompare" ]; then
+	    echo "Storm supervisor shutdown error in $file"
+	fi
 
-for file in `ls ${outputprefix}-zookeeper*`
-do
-    num=`grep -e "imok" $file | wc -l`
-    if [ "${num}" != "3" ]; then
-	echo "Job error in $file"
-    fi
+	num=`grep -e "Killing Storm logviewer" $file | wc -l`
+	if [ "${num}" != "$numcompare" ]; then
+	    echo "Storm logviewer shutdown error in $file"
+	fi
 
-    test_zookeeper_shutdown $file
-done
+	test_zookeeper_shutdown $file
+    done
+fi
+
+if ls ${outputprefix}-zookeeper* >& /dev/null
+then
+    for file in `ls ${outputprefix}-zookeeper*`
+    do
+	num=`grep -e "imok" $file | wc -l`
+	if [ "${num}" != "3" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_zookeeper_shutdown $file
+    done
+fi
