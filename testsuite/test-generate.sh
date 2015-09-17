@@ -554,7 +554,7 @@ cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoo
 
 sed -i \
     -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
-    -e 's/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
     -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop4B\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
     magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop4B-hdfs-newer-version
