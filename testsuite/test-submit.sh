@@ -106,7 +106,10 @@ then
     if [ "${dependencytests}" == "y" ]
     then
 	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyGlobalOrder1A-hadoop-2.4.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1A-hadoop-2.4.0-pig-0.14.0
+        # achu : library incompatability between hadoop 2.4.0 & pig 0.14.0, pig script will commonly fail with
+        # ERROR 1066: Unable to open iterator for alias data
+        # org.apache.pig.impl.logicalLayer.FrontendException: ERROR 1066: Unable to open iterator for alias data
+	# DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1A-hadoop-2.4.0-pig-0.14.0
 	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1A-hadoop-2.4.0-hbase-0.98.9-hadoop2-zookeeper-3.4.6
 	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1A-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
 
@@ -270,7 +273,7 @@ then
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 
-	    # achu : library incompatability between hadoop 2.4.0 & pig 0.14.0, pig script will always fail with
+	    # achu : library incompatability between hadoop 2.4.0 & pig 0.14.0, pig script will commonly fail with
 	    # ERROR 1066: Unable to open iterator for alias data
 	    # org.apache.pig.impl.logicalLayer.FrontendException: ERROR 1066: Unable to open iterator for alias data
 	    if [ "${pigversion}" == "0.14.0" ] && [ "${hadoopversion}" == "2.4.0" ]
