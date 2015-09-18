@@ -7,7 +7,7 @@
 # Hadoop 2.4.0, 2.6.0, 2.7.1
 # Pig 0.12.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
-# Spark 0.9.1-bin-hadoop2, 1.2.0-bin-hadoop2.4, 1.3.0-bin-hadoop2.4, 1.4.1-bin-hadoop2.6
+# Spark 0.9.1-bin-hadoop2, 1.2.0-bin-hadoop2.4, 1.3.0-bin-hadoop2.4, 1.4.1-bin-hadoop2.6, 1.5.1-bin-hadoop2.6
 # Storm 0.9.3, 0.9.4, 0.9.5
 # Zookeeper 3.4.5, 3.4.6
 #
@@ -251,14 +251,14 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
     ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.4.1-bin-hadoop2.6
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.5.0-bin-hadoop2.6
 
 sed -i \
     -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1C\/"/' \
-    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.4.1-bin-hadoop2.6"/' \
+    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.5.0-bin-hadoop2.6"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
-    ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.4.1-bin-hadoop2.6
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.5.0-bin-hadoop2.6
 
 # Hadoop Tests
 # Note, b/c of MAPREDUCE-5528, not testing rawnetworkfs w/ terasort
@@ -873,7 +873,7 @@ sed -i \
 
 echo "Making Spark tests"
 
-for sparkversion in 1.4.1-bin-hadoop2.6
+for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
@@ -902,7 +902,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-spark-${sparkversion}*
 done
 
-for sparkversion in 1.4.1-bin-hadoop2.6
+for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.6.0
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.6.0-no-local-dir
@@ -925,7 +925,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0*
 done
 
-for sparkversion in 1.4.1-bin-hadoop2.6
+for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
@@ -972,6 +972,15 @@ sed -i \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Spark1AC\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
     ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AC-hadoop-2.6.0-spark-1.4.1-bin-hadoop2.6
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AD-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.5.0-bin-hadoop2.6"/' \
+    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Spark1AD\/"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AD-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
 
 # Storm Tests
 

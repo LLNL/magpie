@@ -118,7 +118,7 @@ then
 	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyGlobalOrder1C-hadoop-2.7.1
 	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1C-hadoop-2.7.1-pig-0.15.0
 	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.4.1-bin-hadoop2.6
+	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.5.1-bin-hadoop2.6
     fi
 fi
 
@@ -386,7 +386,7 @@ fi
 if [ "${sparktests}" == "y" ]
 then
 
-    for sparkversion in 1.4.1-bin-hadoop2.6
+    for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
@@ -403,7 +403,7 @@ then
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
     done
 
-    for sparkversion in 1.4.1-bin-hadoop2.6
+    for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.6.0
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.6.0-no-local-dir
@@ -414,7 +414,7 @@ then
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0
     done
 
-    for sparkversion in 1.4.1-bin-hadoop2.6
+    for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
 	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
@@ -433,8 +433,11 @@ then
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AB-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
 	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AB-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
 
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AC-hadoop-2.6.0-spark-1.4.1-bin-hadoop2.6
+  	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AC-hadoop-2.6.0-spark-1.4.1-bin-hadoop2.6
 	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AC-hadoop-2.6.0-spark-1.4.1-bin-hadoop2.6
+
+  	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AC-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
+	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AC-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
     fi
 fi
 
