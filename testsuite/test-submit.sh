@@ -379,13 +379,13 @@ then
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
     done
 
-    for sparkversion in 1.3.0-bin-hadoop2.4 
+    for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4 
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
     done
 
-    for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4
+    for sparkversion in 0.9.1-bin-hadoop2
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
     done
@@ -396,13 +396,13 @@ then
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.6.0-no-local-dir
     done
 
-    for 1.3.0-bin-hadoop2.4 
+    for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4 
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0-no-local-dir
     done
 
-    for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4
+    for sparkversion in 0.9.1-bin-hadoop2
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0
     done
@@ -413,13 +413,13 @@ then
 	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
     done
 
-    for sparkversion in 1.3.0-bin-hadoop2.4
+    for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4
     do
  	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
  	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
     done
 
-    for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4
+    for sparkversion in 0.9.1-bin-hadoop2
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
     done

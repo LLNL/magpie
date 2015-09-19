@@ -851,7 +851,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-spark-${sparkversion}*
 done
 
-for sparkversion in 1.3.0-bin-hadoop2.4 
+for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4 
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
@@ -861,7 +861,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-spark-${sparkversion}*
 done
 
-for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4
+for sparkversion in 0.9.1-bin-hadoop2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}
 
@@ -882,7 +882,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.6.0*
 done
 
-for sparkversion in 1.3.0-bin-hadoop2.4 
+for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4 
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0-no-local-dir
@@ -894,7 +894,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0*
 done
 
-for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4
+for sparkversion in 0.9.1-bin-hadoop2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-2.4.0
 
@@ -917,7 +917,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 done
 
-for sparkversion in 1.3.0-bin-hadoop2.4
+for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
@@ -929,7 +929,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 done
 
-for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4
+for sparkversion in 0.9.1-bin-hadoop2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
 
