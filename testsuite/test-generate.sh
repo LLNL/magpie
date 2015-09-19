@@ -40,7 +40,8 @@ no_hbase_1_1_2=n
 no_spark_0_9_1_bin_hadoop2=n
 no_spark_1_2_0_bin_hadoop2_4=n
 no_spark_1_3_0_bin_hadoop2_4=n
-no_spark_1_4_0_bin_hadoop2_6=n
+no_spark_1_4_1_bin_hadoop2_6=n
+no_spark_1_5_0_bin_hadoop2_6=n
 no_storm_0_9_3=n
 no_storm_0_9_4=n
 no_storm_0_9_5=n
@@ -1261,9 +1262,14 @@ then
     rm -f magpie.${submissiontype}*spark-1.3.0-bin-hadoop2.4*
 fi
 
-if [ "${no_spark_1_4_0_bin_hadoop2_6}" == "y" ]
+if [ "${no_spark_1_4_1_bin_hadoop2_6}" == "y" ]
 then
-    rm -f magpie.${submissiontype}*spark-1.4.0-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-1.4.1-bin-hadoop2.6*
+fi
+
+if [ "${no_spark_1_5_0_bin_hadoop2_6}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-1.5.0-bin-hadoop2.6*
 fi
 
 if [ "${no_storm_0_9_3}" == "y" ]
