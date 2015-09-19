@@ -45,7 +45,8 @@ fi
 
 if [ -f "${jobsubmissionfile}" ]
 then
-    rm -f ${jobsubmissionfile}
+    dateappend=`date +"%Y%m%d-%N"`
+    mv ${jobsubmissionfile} ${jobsubmissionfile}.${dateappend}
 fi
 touch ${jobsubmissionfile}
 
