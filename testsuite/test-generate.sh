@@ -710,7 +710,7 @@ done
 
 for hbaseversion in 0.98.9-hadoop2
 do
-    for hadoopversion in 2.6.0 
+    for hadoopversion in 2.4.0 2.6.0 
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
