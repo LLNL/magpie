@@ -865,6 +865,8 @@ for sparkversion in 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.6.0
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.6.0-no-local-dir
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.6.0
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.6.0-no-local-dir
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
@@ -874,7 +876,7 @@ do
     sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}*hadoop-2.6.0* ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 
     sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' ./magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre*
-    sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
+    sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' ./magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs*
     
     sed -i -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' magpie.${submissiontype}-spark-with*
 
@@ -890,6 +892,8 @@ for sparkversion in 1.2.0-bin-hadoop2.4 1.3.0-bin-hadoop2.4
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.4.0
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.4.0-no-local-dir
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.4.0
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.4.0-no-local-dir
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
@@ -899,7 +903,7 @@ do
     sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}*hadoop-2.4.0* ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 
     sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' ./magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre*
-    sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
+    sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' ./magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs*
 
     sed -i -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' magpie.${submissiontype}-spark-with*
     sed -i -e 's/# export SPARK_SPARKWORDCOUNT_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/mywordcountfile\"/' magpie.${submissiontype}-spark-with-hdfs*
@@ -913,6 +917,7 @@ done
 for sparkversion in 0.9.1-bin-hadoop2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.4.0
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.4.0
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
 
@@ -921,7 +926,7 @@ do
     sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}*hadoop-2.4.0* ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 
     sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' ./magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre*
-    sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
+    sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' ./magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs*
 
     sed -i -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' magpie.${submissiontype}-spark-with*
     sed -i -e 's/# export SPARK_SPARKWORDCOUNT_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/mywordcountfile\"/' magpie.${submissiontype}-spark-with-hdfs*
@@ -932,7 +937,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}*hadoop-2.4.0*  ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 done
 
-# Dependency 1 Tests, run after another
+# Dependency 1 Tests, run after another, HDFS over Lustre
 
 cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AA-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
 
@@ -985,6 +990,60 @@ sed -i \
     -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/mywordcountfile\"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
     ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AD-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
+
+# Dependency 1 Tests, run after another, HDFS over Networkfs
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1AA-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
+    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.3.0-bin-hadoop2.4"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+    -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark1BA\/"/' \
+    -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/mywordcountfile\"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/mywordcountfile\"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BA-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BB-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
+    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.3.0-bin-hadoop2.4"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+    -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark1BB\/"/' \
+    -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/mywordcountfile\"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/mywordcountfile\"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BB-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BC-hadoop-2.6.0-spark-1.4.1-bin-hadoop2.6
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.4.1-bin-hadoop2.6"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+    -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark1BC\/"/' \
+    -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/mywordcountfile\"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/mywordcountfile\"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BC-hadoop-2.6.0-spark-1.4.1-bin-hadoop2.6
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BD-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.5.0-bin-hadoop2.6"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+    -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark1BD\/"/' \
+    -e 's/export SPARK_MODE="sparkpi"/export SPARK_MODE="sparkwordcount"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/mywordcountfile\"/' \
+    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"\/mywordcountfile\"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/mywordcountfile\"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1BD-hadoop-2.6.0-spark-1.5.0-bin-hadoop2.6
 
 # Storm Tests
 
