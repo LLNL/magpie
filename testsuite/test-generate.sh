@@ -114,7 +114,7 @@ make &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-echo "Making default tests"
+echo "Making Default tests"
 
 # Default Tests
 
@@ -267,7 +267,7 @@ sed -i \
 # Hadoop Tests
 # Note, b/c of MAPREDUCE-5528, not testing rawnetworkfs w/ terasort
 
-echo "Making hadoop tests"
+echo "Making Hadoop tests"
 
 for hadoopversion in 2.7.1
 do
