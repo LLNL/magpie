@@ -62,16 +62,21 @@ then
 	# Make directory of destination file
 	filedir=`dirname ${SPARK_SPARKWORDCOUNT_FILE}`
 	filedir=`echo ${filedir} | sed "s/^file:\/\///"`
-	command="mkdir -p ${filedir}"
-	echo "Running $command" >&2
-	$command
+
+	mkdir -p ${filedir}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${filedir}"
+            exit 1
+        fi
 
 	if echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^file:\/\/"
 	then
-	    command="${HADOOP_HOME}/${hadoopcmdprefix}/hadoop fs -cp ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} ${SPARK_SPARKWORDCOUNT_FILE}"
+	    sparkinputfile=`echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | sed "s/^file:\/\///"`
+	    sparkdestfile=`echo ${SPARK_SPARKWORDCOUNT_FILE} | sed "s/^file:\/\///"`
+	    command="cp ${sparkinputfile} ${sparkdestfile}"
 	elif echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^hdfs:\/\/"
 	then
-	    command="${HADOOP_HOME}/${hadoopcmdprefix}/hadoop fs -cpToLocal ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} ${SPARK_SPARKWORDCOUNT_FILE}"
+	    command="${HADOOP_HOME}/${hadoopcmdprefix}/hadoop fs -copyToLocal ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} ${SPARK_SPARKWORDCOUNT_FILE}"
 	fi
     fi
 
