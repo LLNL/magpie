@@ -1464,8 +1464,8 @@ fi
 sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie*no-local-dir
     
 # special node sizes first
-sed -i -e "s/<my node count>/17/" magpie.${submissiontype}*more-nodes
-sed -i -e "s/<my node count>/8/" magpie.${submissiontype}*hdfs-fewer-nodes
+sed -i -e "s/<my node count>/17/" magpie.${submissiontype}*hdfs-more-nodes*
+sed -i -e "s/<my node count>/8/" magpie.${submissiontype}*hdfs-fewer-nodes*
 sed -i -e "s/<my node count>/9/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie.${submissiontype}-zookeeper*
 sed -i -e "s/<my node count>/12/" magpie.${submissiontype}-hbase-with-hdfs* magpie.${submissiontype}-storm* 
 
