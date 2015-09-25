@@ -319,7 +319,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-hadoop-${hadoopversion}*
 done
 
-for hadoopversion in 2.6.0 2.4.0
+for hadoopversion in 2.4.0 2.6.0
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk

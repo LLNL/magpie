@@ -159,7 +159,7 @@ then
 	    fi
 	done
 
-	for hadoopversion in 2.6.0 2.4.0
+	for hadoopversion in 2.4.0 2.6.0
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
