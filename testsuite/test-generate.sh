@@ -5,7 +5,7 @@
 # Presently supports
 #
 # Hadoop 2.4.0, 2.6.0, 2.7.1
-# Pig 0.12.0, 0.14.0, 0.15.0
+# Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
 # Spark 0.9.1-bin-hadoop2, 1.2.0-bin-hadoop2.4, 1.2.1-bin-hadoop2.4,
 #   1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4, 1.3.1-bin-hadoop2.4,
@@ -32,6 +32,8 @@ no_hadoop_2_4_0=n
 no_hadoop_2_6_0=n
 no_hadoop_2_7_1=n
 no_pig_0_12_0=n
+no_pig_0_12_1=n
+no_pig_0_13_0=n
 no_pig_0_14_0=n
 no_pig_0_15_0=n
 no_hbase_0_98_3_bin_hadoop2=n
@@ -160,14 +162,14 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
     ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1A-hadoop-2.4.0
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1A-hadoop-2.4.0-pig-0.14.0
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1A-hadoop-2.4.0-pig-0.12.0
 
 sed -i \
     -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1A\/"/' \
-    -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.14.0"/' \
+    -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.12.0"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
-    ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1A-hadoop-2.4.0-pig-0.14.0
+    ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1A-hadoop-2.4.0-pig-0.12.0
 
 cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1A-hadoop-2.4.0-hbase-0.98.9-hadoop2-zookeeper-3.4.6
 
@@ -601,10 +603,12 @@ do
     done
 done
 
-for pigversion in 0.14.0
+for pigversion in 0.13.0 0.14.0
 do
     for hadoopversion in 2.6.0
     do
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-no-local-dir
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 
@@ -620,12 +624,14 @@ do
     done
 done
 
-for pigversion in 0.12.0 0.14.0
+for pigversion in 0.12.0 0.12.1
 do
-    for hadoopversion in 2.4.0 2.6.0
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-no-local-dir
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 
 	sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 
@@ -651,25 +657,45 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
     magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AA-hadoop-2.4.0-pig-0.12.0
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AB-hadoop-2.6.0-pig-0.14.0
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AB-hadoop-2.4.0-pig-0.12.1
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
+    -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.12.1"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1AB\/"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
+    magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AB-hadoop-2.4.0-pig-0.12.1
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AC-hadoop-2.6.0-pig-0.13.0
+
+sed -i \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+    -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.13.0"/' \
+    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1AC\/"/' \
+    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
+    magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AC-hadoop-2.6.0-pig-0.13.0
+
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AD-hadoop-2.6.0-pig-0.14.0
 
 sed -i \
     -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
     -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.14.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1AB\/"/' \
+    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1AD\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.6.0-sun.x86_64\/"/' \
-    magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AB-hadoop-2.6.0-pig-0.14.0
+    magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AD-hadoop-2.6.0-pig-0.14.0
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AC-hadoop-2.7.1-pig-0.15.0
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AE-hadoop-2.7.1-pig-0.15.0
 
 sed -i \
     -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
     -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.15.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1AC\/"/' \
+    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1AE\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' \
-    magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AC-hadoop-2.7.1-pig-0.15.0
+    magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AE-hadoop-2.7.1-pig-0.15.0
 
 # Hbase Tests
 
@@ -1470,6 +1496,16 @@ fi
 if [ "${no_pig_0_12_0}" == "y" ]
 then
     rm -f magpie.${submissiontype}*pig-0.12.0*
+fi
+
+if [ "${no_pig_0_12_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*pig-0.12.1*
+fi
+
+if [ "${no_pig_0_13_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*pig-0.13.0*
 fi
 
 if [ "${no_pig_0_14_0}" == "y" ]
