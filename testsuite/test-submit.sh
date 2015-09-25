@@ -145,7 +145,7 @@ if [ "${hadooptests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1
+	for hadoopversion in 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
@@ -200,7 +200,7 @@ then
 
     if [ "${dependencytests}" == "y" ]
     then
-	for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1
+	for hadoopversion in 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre
 	    DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre
@@ -219,6 +219,9 @@ then
 	done
 
 	BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop2A
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop2A-hdfs-older-version
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop2A-upgradehdfs
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop2A
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop2A-hdfs-older-version
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop2A-upgradehdfs
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop2A
@@ -226,7 +229,7 @@ then
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A-upgradehdfs
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A
 
-	for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1
+	for hadoopversion in 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre
 	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre
@@ -248,17 +251,23 @@ then
 	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes-hdfsovernetworkfs
  	done
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop4A
+	BasicJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop4A
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop4A-hdfs-newer-version
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop4B
+	BasicJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop4B
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop4B-hdfs-newer-version
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A-hdfs-newer-version
+	BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A-hdfs-newer-version
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5B
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5B-hdfs-newer-version
+	BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5B
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5B-hdfs-newer-version
+
+	BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop6A
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop6A-hdfs-newer-version
+
+	BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop6B
+	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop6B-hdfs-newer-version
     fi
 fi
     
