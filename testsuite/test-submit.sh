@@ -474,7 +474,7 @@ if [ "${sparktests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for sparkversion in 0.9.1-bin-hadoop2
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
 	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
 	done
@@ -491,7 +491,7 @@ then
 	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
 	done
 
-	for sparkversion in 0.9.1-bin-hadoop2
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
 	    for hadoopversion in 2.4.0
 	    do
@@ -530,7 +530,7 @@ then
 
     if [ "${dependencytests}" == "y" ]
     then
-	for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
 	    for hadoopversion in 2.4.0
 	    do
@@ -548,7 +548,7 @@ then
 	    done
 	done
 
-	for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
 	    for hadoopversion in 2.4.0
 	    do
@@ -566,7 +566,7 @@ then
 	    done
 	done
 
-	for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
 	    for hadoopversion in 2.4.0
 	    do

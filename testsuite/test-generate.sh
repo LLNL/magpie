@@ -7,9 +7,10 @@
 # Hadoop 2.4.0, 2.6.0, 2.7.1
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
-# Spark 0.9.1-bin-hadoop2, 1.2.0-bin-hadoop2.4, 1.2.1-bin-hadoop2.4,
-#   1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4, 1.3.1-bin-hadoop2.4,
-#   1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6, 1.5.1-bin-hadoop2.6
+# Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
+#   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
+#   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
+#   1.5.1-bin-hadoop2.6
 # Storm 0.9.3, 0.9.4, 0.9.5
 # Zookeeper 3.4.5, 3.4.6
 #
@@ -42,6 +43,7 @@ no_hbase_0_99_2=n
 no_hbase_1_1_1=n
 no_hbase_1_1_2=n
 no_spark_0_9_1_bin_hadoop2=n
+no_spark_0_9_2_bin_hadoop2=n
 no_spark_1_2_0_bin_hadoop2_4=n
 no_spark_1_2_1_bin_hadoop2_4=n
 no_spark_1_2_2_bin_hadoop2_4=n
@@ -917,7 +919,7 @@ done
 
 echo "Making Spark tests"
 
-for sparkversion in 0.9.1-bin-hadoop2
+for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}
 
@@ -946,7 +948,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="\/usr\/lib\/jvm\/jre-1.7.0-oracle.x86_64\/"/' magpie.${submissiontype}-spark-${sparkversion}*
 done
 
-for sparkversion in 0.9.1-bin-hadoop2
+for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 do
     for hadoopversion in 2.4.0
     do
@@ -1033,7 +1035,7 @@ done
 
 # Dependency 1 Tests, run after another, HDFS over Lustre
 
-for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
     for hadoopversion in 2.4.0
     do
@@ -1097,7 +1099,7 @@ done
 
 # Dependency 1 Tests, run after another, HDFS over Networkfs
  
-for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
     for hadoopversion in 2.4.0
     do
@@ -1161,7 +1163,7 @@ done
 
 # Dependency 1 Tests, run after another, rawnetworkfs
  
-for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
     for hadoopversion in 2.4.0
     do
@@ -1519,6 +1521,11 @@ fi
 if [ "${no_spark_0_9_1_bin_hadoop2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.1-bin-hadoop2*
+fi
+
+if [ "${no_spark_0_9_2_bin_hadoop2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-0.9.2-bin-hadoop2*
 fi
 
 if [ "${no_spark_1_2_0_bin_hadoop2_4}" == "y" ]
