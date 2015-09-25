@@ -689,7 +689,7 @@ echo "Making Pig tests"
 
 for pigversion in 0.12.0 0.12.1
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -710,7 +710,7 @@ done
 
 for pigversion in 0.13.0 0.14.0
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -731,7 +731,7 @@ done
 
 for pigversion in 0.15.0
 do
-    for hadoopversion in 2.7.0 2.7.1
+    for hadoopversion in 2.7.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -754,7 +754,7 @@ done
 
 for pigversion in 0.12.0 0.12.1
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 
@@ -770,7 +770,7 @@ done
 
 for pigversion in 0.13.0 0.14.0
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 
@@ -786,7 +786,7 @@ done
 
 for pigversion in 0.15.0
 do
-    for hadoopversion in 2.7.0 2.7.1 
+    for hadoopversion in 2.7.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 	
@@ -806,9 +806,9 @@ echo "Making Hbase tests"
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1 
+    for hadoopversion in 2.6.0
     do
-	for zookeeperversion in 3.4.5 3.4.6
+	for zookeeperversion in 3.4.6
 	do
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local
@@ -873,9 +873,9 @@ done
 
 for hbaseversion in 0.99.2 1.1.1 1.1.2
 do
-    for hadoopversion in 2.7.0 2.7.1 
+    for hadoopversion in 2.7.0
     do
-	for zookeeperversion in 3.4.5 3.4.6
+	for zookeeperversion in 3.4.6
 	do
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local
@@ -942,7 +942,7 @@ done
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -964,7 +964,7 @@ done
 
 for hbaseversion in 0.99.2 1.1.1 1.1.2
 do
-    for hadoopversion in 2.7.0 2.7.1
+    for hadoopversion in 2.7.0
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -988,7 +988,7 @@ done
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -1010,7 +1010,7 @@ done
 
 for hbaseversion in 0.99.2 1.1.1 1.1.2
 do
-    for hadoopversion in 2.7.0 2.7.1
+    for hadoopversion in 2.7.0
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -1065,7 +1065,7 @@ done
 
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}
@@ -1091,7 +1091,7 @@ done
 
 for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
@@ -1120,7 +1120,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
@@ -1152,7 +1152,7 @@ done
 
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1183,7 +1183,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1216,7 +1216,7 @@ done
  
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1247,7 +1247,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1280,7 +1280,7 @@ done
  
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0 2.4.1
+    for hadoopversion in 2.4.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
 	
@@ -1307,7 +1307,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0 2.6.1
+    for hadoopversion in 2.6.0
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1338,7 +1338,7 @@ echo "Making Storm tests"
 
 for stormversion in 0.9.3 0.9.4
 do
-    for zookeeperversion in 3.4.5 3.4.6
+    for zookeeperversion in 3.4.6
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local
@@ -1370,7 +1370,7 @@ done
 
 for stormversion in 0.9.5
 do
-    for zookeeperversion in 3.4.5 3.4.6
+    for zookeeperversion in 3.4.6
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local

@@ -279,7 +279,7 @@ then
     then
 	for pigversion in 0.12.0 0.12.1
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -290,7 +290,7 @@ then
 
 	for pigversion in 0.13.0 0.14.0
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -301,7 +301,7 @@ then
 
 	for pigversion in 0.15.0
 	do
-	    for hadoopversion in 2.7.0 2.7.1
+	    for hadoopversion in 2.7.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -315,7 +315,7 @@ then
     then
 	for pigversion in 0.12.0 0.12.1
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
@@ -324,7 +324,7 @@ then
 
 	for pigversion in 0.13.0 0.14.0
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
@@ -333,7 +333,7 @@ then
 
 	for pigversion in 0.15.0
 	do
-	    for hadoopversion in 2.7.0 2.7.1
+	    for hadoopversion in 2.7.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
@@ -350,9 +350,9 @@ then
     then
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 	do
-	    for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1 
+	    for hadoopversion in 2.6.0
 	    do
-		for zookeeperversion in 3.4.5 3.4.6
+		for zookeeperversion in 3.4.6
 		do
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local
@@ -395,9 +395,9 @@ then
 
 	for hbaseversion in 0.99.2 1.1.1 1.1.2 
 	do
-	    for hadoopversion in 2.7.0 2.7.1 
+	    for hadoopversion in 2.7.0
 	    do
-		for zookeeperversion in 3.4.5 3.4.6
+		for zookeeperversion in 3.4.6
 		do
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local
@@ -443,7 +443,7 @@ then
     then
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
 		for zookeeperversion in 3.4.6
 		do
@@ -455,7 +455,7 @@ then
 
 	for hbaseversion in 0.99.2 1.1.1 1.1.2
 	do
-	    for hadoopversion in 2.7.0 2.7.1
+	    for hadoopversion in 2.7.0
 	    do
 		for zookeeperversion in 3.4.6
 		do
@@ -467,7 +467,7 @@ then
 
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
 		for zookeeperversion in 3.4.6
 		do
@@ -479,7 +479,7 @@ then
 
 	for hbaseversion in 0.99.2 1.1.1 1.1.2
 	do
-	    for hadoopversion in 2.7.0 2.7.1
+	    for hadoopversion in 2.7.0
 	    do
 		for zookeeperversion in 3.4.6
 		do
@@ -516,7 +516,7 @@ then
 
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}
@@ -526,7 +526,7 @@ then
 
 	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
@@ -539,7 +539,7 @@ then
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
@@ -555,7 +555,7 @@ then
     then
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
  		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
 		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
@@ -564,7 +564,7 @@ then
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
  		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
 		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
@@ -573,7 +573,7 @@ then
 
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
  		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
 		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
@@ -582,7 +582,7 @@ then
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
  		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
 		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
@@ -591,7 +591,7 @@ then
 
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    for hadoopversion in 2.4.0 2.4.1
+	    for hadoopversion in 2.4.0
 	    do
  		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
 		DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
@@ -600,7 +600,7 @@ then
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
-	    for hadoopversion in 2.6.0 2.6.1
+	    for hadoopversion in 2.6.0
 	    do
  		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
 		DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
@@ -617,7 +617,7 @@ then
     then
 	for stormversion in 0.9.3 0.9.4
 	do
-	    for zookeeperversion in 3.4.5 3.4.6
+	    for zookeeperversion in 3.4.6
 	    do
 		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs
 		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local
@@ -633,7 +633,7 @@ then
 
 	for stormversion in 0.9.5
 	do
-	    for zookeeperversion in 3.4.5 3.4.6
+	    for zookeeperversion in 3.4.6
 	    do
 		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs
 		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local
