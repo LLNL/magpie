@@ -22,6 +22,8 @@ zookeepertests=y
 standardtests=y
 dependencytests=y
 
+verboseoutput=n
+
 largeperformanceruntests=n
 
 # Misc config
@@ -64,6 +66,11 @@ BasicJobSubmit () {
 	
 	previousjobid=${jobid}
 	jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+    else
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${jobsubmissionscript} not found" >> ${jobsubmissionfile}
+	fi
     fi
 }
 
@@ -80,6 +87,11 @@ DependentJobSubmit () {
     
 	previousjobid=${jobid}
 	jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+    else
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${jobsubmissionscript} not found" >> ${jobsubmissionfile}
+	fi
     fi
 }
 
@@ -133,32 +145,6 @@ if [ "${hadooptests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for hadoopversion in 2.7.1
-	do
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths
-
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths-no-local-dir
-
-	    if [ "${largeperformanceruntests}" == "y" ]
-	    then
-		BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-largeperformancerun
-	    fi
-	done
-
 	for hadoopversion in 2.4.0 2.6.0
 	do
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
@@ -184,18 +170,47 @@ then
 		BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-largeperformancerun
 	    fi
 	done
+
+	for hadoopversion in 2.7.1
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths
+
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfs-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-local-multiple-paths-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-local-multiple-paths-no-local-dir
+
+	    if [ "${largeperformanceruntests}" == "y" ]
+	    then
+		BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-largeperformancerun
+	    fi
+	done
     fi
 
     if [ "${dependencytests}" == "y" ]
     then
-	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1AA-hadoop-2.4.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1AA-hadoop-2.4.0
+	for hadoopversion in 2.4.0 2.6.0
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}
+	done
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1AB-hadoop-2.6.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1AB-hadoop-2.6.0
-
-	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1AC-hadoop-2.7.1
-	DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1AC-hadoop-2.7.1
+	for hadoopversion in 2.7.1
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}
+	done
 
 	BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop2A
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop2A-hdfs-older-version
@@ -205,17 +220,19 @@ then
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A-upgradehdfs
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop3A
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop3A-hdfs-more-nodes
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop3A-hdfs-fewer-nodes
-	
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop3B
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop3B-hdfs-more-nodes
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop3B-hdfs-fewer-nodes
+	for hadoopversion in 2.4.0 2.6.0
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes
+	done
 
-	BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop3C
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop3C-hdfs-more-nodes
-	DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop3C-hdfs-fewer-nodes
+	for hadoopversion in 2.7.1
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes
+ 	done
 
 	BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop4A
 	DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop4A-hdfs-newer-version
@@ -237,9 +254,9 @@ if [ "${pigtests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for pigversion in 0.15.0
+	for pigversion in 0.12.0 0.12.1
 	do
-	    for hadoopversion in 2.7.1
+	    for hadoopversion in 2.4.0
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -247,7 +264,7 @@ then
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 	    done
 	done
-	
+
 	for pigversion in 0.13.0 0.14.0
 	do
 	    for hadoopversion in 2.6.0
@@ -258,10 +275,10 @@ then
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script-no-local-dir
 	    done
 	done
-	
-	for pigversion in 0.12.0 0.12.1
+
+	for pigversion in 0.15.0
 	do
-	    for hadoopversion in 2.4.0
+	    for hadoopversion in 2.7.1
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -273,20 +290,32 @@ then
 
     if [ "${dependencytests}" == "y" ]
     then
-	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AA-hadoop-2.4.0-pig-0.12.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AA-hadoop-2.4.0-pig-0.12.0
-	
-	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AB-hadoop-2.4.0-pig-0.12.1
-	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AB-hadoop-2.4.0-pig-0.12.1
-	
-	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AC-hadoop-2.6.0-pig-0.13.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AC-hadoop-2.6.0-pig-0.13.0
-	
-	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AD-hadoop-2.6.0-pig-0.14.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AD-hadoop-2.6.0-pig-0.14.0
-	
-	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AE-hadoop-2.7.1-pig-0.15.0
-	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1AE-hadoop-2.7.1-pig-0.15.0
+	for pigversion in 0.12.0 0.12.1
+	do
+	    for hadoopversion in 2.4.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
+		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
+	    done
+	done
+
+	for pigversion in 0.13.0 0.14.0
+	do
+	    for hadoopversion in 2.6.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
+		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
+	    done
+	done
+
+	for pigversion in 0.15.0
+	do
+	    for hadoopversion in 2.7.1
+	    do
+		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
+		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
+	    done
+	done
     fi
 fi
 
@@ -296,51 +325,6 @@ if [ "${hbasetests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for hbaseversion in 0.99.2 1.1.1 1.1.2 
-	do
-	    for hadoopversion in 2.7.1 
-	    do
-		for zookeeperversion in 3.4.5 3.4.6
-		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-local
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-local
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-local
-
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-local
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-local
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-local
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-networkfs
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-local
-		    
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-local-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
-
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-local-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
-		done
-	    done
-	done
-
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 	do
 	    for hadoopversion in 2.4.0 2.6.0 
@@ -385,39 +369,102 @@ then
 		done
 	    done
 	done
+
+	for hbaseversion in 0.99.2 1.1.1 1.1.2 
+	do
+	    for hadoopversion in 2.7.1 
+	    do
+		for zookeeperversion in 3.4.5 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-local
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-local
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-local
+
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-local
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-local
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-local
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-networkfs
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-local
+		    
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-local-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
+
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-sequential-thread-zookeeper-shared-zookeeper-local-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-local-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-networkfs-no-local-dir
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-local-no-local-dir
+		done
+	    done
+	done
     fi
 
     if [ "${dependencytests}" == "y" ]
     then
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AA-hadoop-2.6.0-hbase-0.98.3-bin-hadoop2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AA-hadoop-2.6.0-hbase-0.98.3-bin-hadoop2-zookeeper-3.4.6
+	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	do
+	    for hadoopversion in 2.6.0
+	    do
+		for zookeeperversion in 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		done
+	    done
+	done
 
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AB-hadoop-2.6.0-hbase-0.98.9-bin-hadoop2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AB-hadoop-2.6.0-hbase-0.98.9-bin-hadoop2-zookeeper-3.4.6
+	for hbaseversion in 0.99.2 1.1.1 1.1.2
+	do
+	    for hadoopversion in 2.7.1
+	    do
+		for zookeeperversion in 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		done
+	    done
+	done
 
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AC-hadoop-2.7.1-hbase-0.99.2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AC-hadoop-2.7.1-hbase-0.99.2-zookeeper-3.4.6
+	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	do
+	    for hadoopversion in 2.6.0
+	    do
+		for zookeeperversion in 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		done
+	    done
+	done
 
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AD-hadoop-2.7.1-hbase-1.1.1-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AD-hadoop-2.7.1-hbase-1.1.1-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AD-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1AD-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BA-hadoop-2.6.0-hbase-0.98.3-bin-hadoop2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BA-hadoop-2.6.0-hbase-0.98.3-bin-hadoop2-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BB-hadoop-2.6.0-hbase-0.98.9-bin-hadoop2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BB-hadoop-2.6.0-hbase-0.98.9-bin-hadoop2-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BC-hadoop-2.7.1-hbase-0.99.2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BC-hadoop-2.7.1-hbase-0.99.2-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BD-hadoop-2.7.1-hbase-1.1.1-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BD-hadoop-2.7.1-hbase-1.1.1-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BD-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1BD-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
+	for hbaseversion in 0.99.2 1.1.1 1.1.2
+	do
+	    for hadoopversion in 2.7.1
+	    do
+		for zookeeperversion in 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		done
+	    done
+	done
     fi
 fi
 
@@ -427,10 +474,9 @@ if [ "${sparktests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
+	for sparkversion in 0.9.1-bin-hadoop2
 	do
 	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
-	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
 	done
 
 	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
@@ -439,36 +485,46 @@ then
 	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
 	done
 
-	for sparkversion in 0.9.1-bin-hadoop2
-	do
-	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
-	done
-
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.6.0
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.6.0-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.6.0
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.6.0-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}
+	    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-no-local-dir
+	done
+
+	for sparkversion in 0.9.1-bin-hadoop2
+	do
+	    for hadoopversion in 2.4.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
+	    done
 	done
 
 	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.4.0
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.4.0-no-local-dir
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.4.0
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.4.0-no-local-dir
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
+	    for hadoopversion in 2.4.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}-no-local-dir
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
+	    done
 	done
 
-	for sparkversion in 0.9.1-bin-hadoop2
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-2.4.0
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-2.4.0
-	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
+	    for hadoopversion in 2.6.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}
+		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-no-local-dir
+	    done
 	done
     fi
 
@@ -476,38 +532,56 @@ then
     then
 	for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-2.4.0-spark-${sparkversion}
-	    DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-2.4.0-spark-${sparkversion}-no-copy
+	    for hadoopversion in 2.4.0
+	    do
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
+		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
+	    done
 	done
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-2.4.0-spark-${sparkversion}
-	    DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-2.4.0-spark-${sparkversion}-no-copy
+	    for hadoopversion in 2.6.0
+	    do
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
+		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
+	    done
 	done
 
 	for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-2.4.0-spark-${sparkversion}
-	    DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-2.4.0-spark-${sparkversion}-no-copy
+	    for hadoopversion in 2.4.0
+	    do
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
+		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
+	    done
 	done
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-2.4.0-spark-${sparkversion}
-	    DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-2.4.0-spark-${sparkversion}-no-copy
+	    for hadoopversion in 2.6.0
+	    do
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
+		DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
+	    done
 	done
 
 	for sparkversion in 0.9.1-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-2.4.0-spark-${sparkversion}
-	    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-2.4.0-spark-${sparkversion}-no-copy
+	    for hadoopversion in 2.4.0
+	    do
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
+		DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
+	    done
 	done
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 	do
- 	    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-2.4.0-spark-${sparkversion}
-	    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-2.4.0-spark-${sparkversion}-no-copy
+	    for hadoopversion in 2.6.0
+	    do
+ 		BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
+		DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}-no-copy
+	    done
 	done
     fi
 fi
@@ -518,22 +592,6 @@ if [ "${stormtests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for stormversion in 0.9.5
-	do
-	    for zookeeperversion in 3.4.5 3.4.6
-	    do
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
-		
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-no-local-dir
-		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
-	    done
-	done
-
 	for stormversion in 0.9.3 0.9.4
 	do
 	    for zookeeperversion in 3.4.5 3.4.6
@@ -549,18 +607,43 @@ then
 		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
 	    done
 	done
+
+	for stormversion in 0.9.5
+	do
+	    for zookeeperversion in 3.4.5 3.4.6
+	    do
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local
+		
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-no-local-dir
+		BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-no-local-dir
+	    done
+	done
     fi
 
     if [ "${dependencytests}" == "y" ]
     then
-	BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1AA-storm-0.9.3-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1AA-storm-0.9.3-zookeeper-3.4.6
+	for stormversion in 0.9.3 0.9.4
+	do
+	    for zookeeperversion in 3.4.6
+	    BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}
+	    DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}
+	    do
+	    done
+	done
 
-	BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1AB-storm-0.9.4-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1AB-storm-0.9.4-zookeeper-3.4.6
-
-	BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1AC-storm-0.9.5-zookeeper-3.4.6
-	DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1AC-storm-0.9.5-zookeeper-3.4.6
+	for stormversion in 0.9.5
+	do
+	    for zookeeperversion in 3.4.6
+	    BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}
+	    DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}
+	    do
+	    done
+	done
     fi
 fi
 
