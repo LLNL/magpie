@@ -520,11 +520,13 @@ then
     if [ "${sparkclasspath}X" != "X" ]
     then
 	sparkclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
+	sparkdriverclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
     fi
     
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
     then
 	sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
+	sparkdriverlibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
     if [ "${TACHYON_SETUP}" == "yes" ]
@@ -560,6 +562,8 @@ then
 	-e "s/SPARKUIPORT/${SPARK_APPLICATION_DASHBOARD_PORT}/g" \
 	-e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
 	-e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
+	-e "s/SPARKDRIVEREXTRACLASSPATH/${sparkdriverclasspathsubst}/g" \
+	-e "s/SPARKDRIVEREXTRALIBRARYPATH/${sparkdriverlibrarypathsubst}/g" \
 	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
 	-e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
 	-e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
