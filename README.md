@@ -126,9 +126,9 @@ listed below.
 
 Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.6.0+, 2.7.1+
 
-Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
+Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
 
-Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.2+, 1.1.1+
+Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.2+, 1.1.1+, 1.1.2+
 
 Spark - 0.9.1-bin-hadoop2+, 1.0.0-bin-hadoop2^, 1.2.0-bin-hadoop2.4+,
         1.2.1-bin-hadoop2.4+, 1.2.2-bin-hadoop2.4+, 1.3.0-bin-hadoop2.4+,
@@ -141,10 +141,13 @@ Zookeeper - 3.4.5, 3.4.6
 
 UDA/uda-plugin - 3.3.2-0
 
-Tachyon - 0.6.0+, 0.6.1+ [1]
+Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
-[1] - Default Tachyon build is against Hadoop 1.0.4 and Spark may be
-      built against non-0.6.X builds.  Recompilation of Tachyon &
-      Spark may be needed depending on your environment.  See README
-      for more details
+[PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
+      is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on
+      your environment.
 
+[TachyonNote] - Default Tachyon build is against Hadoop 1.0.4 and
+      Spark may be built against non-0.6.X builds.  Recompilation of
+      Tachyon & Spark may be needed depending on your environment.
+      See README for more details
