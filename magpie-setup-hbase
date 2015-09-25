@@ -46,6 +46,7 @@ fi
 Magpie_make_all_local_dirs_node_specific
 
 extrahbaseopts=""
+hbaseclasspath=""
 
 if [ "${HBASE_MASTER_DAEMON_HEAP_MAX}X" != "X" ]
 then
@@ -259,6 +260,7 @@ javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 hbasepiddirsubst=`echo "${HBASE_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 
 extrahbaseoptssubst=`echo "${extrahbaseopts}" | sed "s/\\//\\\\\\\\\//g"`
+hbaseclasspathsubst=`echo "${hbaseclasspath}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_hbaseenvsh} ${post_hbaseenvsh}
 
@@ -268,6 +270,7 @@ sed -i \
     -e "s/HBASEMASTERDAEMONHEAP/${hbasemasterdaemonheapmax}/g" \
     -e "s/HBASEREGIONSERVERDAEMONHEAP/${hbaseregionserverdaemonheapmax}/g" \
     -e "s/EXTRAHBASEOPTS/${extrahbaseoptssubst}/g" \
+    -e "s/HBASECLASSPATH/${hbaseclasspathsubst}/g" \
     ${post_hbaseenvsh}
 
 echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
