@@ -4,7 +4,7 @@
 #
 # Presently supports
 #
-# Hadoop 2.4.0, 2.4.1, 2.6.0, 2.7.1
+# Hadoop 2.4.0, 2.4.1, 2.6.0, 2.6.1, 2.7.0, 2.7.1
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
@@ -32,6 +32,8 @@ no_local_ssd_tests=n
 no_hadoop_2_4_0=n
 no_hadoop_2_4_1=n
 no_hadoop_2_6_0=n
+no_hadoop_2_6_1=n
+no_hadoop_2_7_0=n
 no_hadoop_2_7_1=n
 no_pig_0_12_0=n
 no_pig_0_12_1=n
@@ -240,52 +242,52 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
     ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1B-hadoop-2.6.0-spark-1.3.0-bin-hadoop2.4
 
-# Dependency 1 tests, run different things after one another - Hadoop 2.7.1
+# Dependency 1 tests, run different things after one another - Hadoop 2.7.0
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1C-hadoop-2.7.1
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1C-hadoop-2.7.0
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1C\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1C-hadoop-2.7.1
+    ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1C-hadoop-2.7.0
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1C-hadoop-2.7.1-pig-0.15.0
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1C-hadoop-2.7.0-pig-0.15.0
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1C\/"/' \
     -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="0.15.0"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1C-hadoop-2.7.1-pig-0.15.0
+    ./magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1C-hadoop-2.7.0-pig-0.15.0
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.6
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1C\/"/' \
     -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="1.1.2"/' \
     -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="3.4.6"/' \
     -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
     -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/GlobalOrder1C"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-hbase-1.1.2-zookeeper-3.4.6
+    ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.6
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.5.0-bin-hadoop2.6
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1C\/"/' \
     -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="1.5.0-bin-hadoop2.6"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.1-spark-1.5.0-bin-hadoop2.6
+    ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6
 
 # Hadoop Tests
 # Note, b/c of MAPREDUCE-5528, not testing rawnetworkfs w/ terasort
 
 echo "Making Hadoop tests"
 
-for hadoopversion in 2.4.0 2.4.1 2.6.0
+for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
@@ -327,7 +329,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}*
 done
 
-for hadoopversion in 2.7.1
+for hadoopversion in 2.7.0 2.7.1
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
@@ -373,7 +375,7 @@ done
 
 # Dependency 1 Tests, run after another
 
-for hadoopversion in 2.4.0 2.4.1 2.6.0
+for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs
@@ -392,7 +394,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*
 done
 
-for hadoopversion in 2.7.1
+for hadoopversion in 2.7.0 2.7.1
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs
@@ -411,7 +413,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*
 done
 
-# Dependency 2 tests, upgrade hdfs, 2.4.0 -> 2.6.0 -> 2.7.1
+# Dependency 2 tests, upgrade hdfs, 2.4.0 -> 2.6.0 -> 2.7.0
 
 cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop2A
 
@@ -450,37 +452,37 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
     magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop2A
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A-hdfs-older-version
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A-hdfs-older-version
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop2A\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A-hdfs-older-version
+    magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A-hdfs-older-version
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A-upgradehdfs
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A-upgradehdfs
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop2A\/"/' \
     -e 's/export HADOOP_MODE="terasort"/export HADOOP_MODE="upgradehdfs"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A-upgradehdfs
+    magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A-upgradehdfs
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop2A\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop2A
+    magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A
 
 # Dependency 3 test, increase size
 
-for hadoopversion in 2.4.0 2.4.1 2.6.0
+for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre
@@ -505,7 +507,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 done
 
-for hadoopversion in 2.7.1
+for hadoopversion in 2.7.0 2.7.1 
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre
@@ -570,16 +572,16 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
     magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop4B-hdfs-newer-version
 
-# Dependency 5 test, detect newer hdfs version 2.7.1 from 2.6.0 HDFS over Lustre
+# Dependency 5 test, detect newer hdfs version 2.7.0 from 2.6.0 HDFS over Lustre
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop5A
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop5A\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop5A
+    magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A
 
 cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A-hdfs-newer-version
 
@@ -590,16 +592,16 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
     magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A-hdfs-newer-version
  
-# Dependency 5 test, detect newer hdfs version 2.7.1 from 2.6.0 HDFS over NetworkFS
+# Dependency 5 test, detect newer hdfs version 2.7.0 from 2.6.0 HDFS over NetworkFS
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop5B
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5B
 
 sed -i \
-    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.1"/' \
+    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
     -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop5B\/"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    magpie.${submissiontype}-hadoop-2.7.1-DependencyHadoop5B
+    magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5B
 
 cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5B-hdfs-newer-version
 
@@ -637,7 +639,7 @@ done
 
 for pigversion in 0.13.0 0.14.0
 do
-    for hadoopversion in 2.6.0
+    for hadoopversion in 2.6.0 2.6.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -658,7 +660,7 @@ done
 
 for pigversion in 0.15.0
 do
-    for hadoopversion in 2.7.1
+    for hadoopversion in 2.7.0 2.7.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -697,7 +699,7 @@ done
 
 for pigversion in 0.13.0 0.14.0
 do
-    for hadoopversion in 2.6.0
+    for hadoopversion in 2.6.0 2.6.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 
@@ -713,7 +715,7 @@ done
 
 for pigversion in 0.15.0
 do
-    for hadoopversion in 2.7.1 
+    for hadoopversion in 2.7.0 2.7.1 
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 	
@@ -733,7 +735,7 @@ echo "Making Hbase tests"
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.4.0 2.4.1 2.6.0 
+    for hadoopversion in 2.4.0 2.4.1 2.6.0 2.6.1 
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
@@ -800,7 +802,7 @@ done
 
 for hbaseversion in 0.99.2 1.1.1 1.1.2
 do
-    for hadoopversion in 2.7.1 
+    for hadoopversion in 2.7.0 2.7.1 
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
@@ -869,7 +871,7 @@ done
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.6.0 
+    for hadoopversion in 2.6.0 2.6.1
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -891,7 +893,7 @@ done
 
 for hbaseversion in 0.99.2 1.1.1 1.1.2
 do
-    for hadoopversion in 2.7.1
+    for hadoopversion in 2.7.0 2.7.1
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -915,7 +917,7 @@ done
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.6.0 
+    for hadoopversion in 2.6.0 2.6.1
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -937,7 +939,7 @@ done
 
 for hbaseversion in 0.99.2 1.1.1 1.1.2
 do
-    for hadoopversion in 2.7.1
+    for hadoopversion in 2.7.0 2.7.1
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -1047,7 +1049,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0
+    for hadoopversion in 2.6.0 2.6.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
@@ -1110,7 +1112,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0
+    for hadoopversion in 2.6.0 2.6.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1174,7 +1176,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0
+    for hadoopversion in 2.6.0 2.6.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1234,7 +1236,7 @@ done
 
 for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6
 do
-    for hadoopversion in 2.6.0
+    for hadoopversion in 2.6.0 2.6.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1508,6 +1510,16 @@ fi
 if [ "${no_hadoop_2_6_0}" == "y" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.6.0*
+fi
+
+if [ "${no_hadoop_2_6_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.6.1*
+fi
+
+if [ "${no_hadoop_2_7_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.7.0*
 fi
 
 if [ "${no_hadoop_2_7_1}" == "y" ]
