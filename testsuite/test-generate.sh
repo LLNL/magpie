@@ -4,7 +4,7 @@
 #
 # Presently supports
 #
-# Hadoop 2.4.0, 2.6.0, 2.7.1
+# Hadoop 2.4.0, 2.4.1, 2.6.0, 2.7.1
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
@@ -30,6 +30,7 @@ submissiontype=sbatch-srun
 
 no_local_ssd_tests=n
 no_hadoop_2_4_0=n
+no_hadoop_2_4_1=n
 no_hadoop_2_6_0=n
 no_hadoop_2_7_1=n
 no_pig_0_12_0=n
@@ -284,7 +285,7 @@ sed -i \
 
 echo "Making Hadoop tests"
 
-for hadoopversion in 2.4.0 2.6.0
+for hadoopversion in 2.4.0 2.4.1 2.6.0
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk
@@ -372,7 +373,7 @@ done
 
 # Dependency 1 Tests, run after another
 
-for hadoopversion in 2.4.0 2.6.0
+for hadoopversion in 2.4.0 2.4.1 2.6.0
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs
@@ -479,7 +480,7 @@ sed -i \
 
 # Dependency 3 test, increase size
 
-for hadoopversion in 2.4.0 2.6.0
+for hadoopversion in 2.4.0 2.4.1 2.6.0
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre
@@ -615,7 +616,7 @@ echo "Making Pig tests"
 
 for pigversion in 0.12.0 0.12.1
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-pig-script
@@ -680,7 +681,7 @@ done
 
 for pigversion in 0.12.0 0.12.1
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig ./magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}
 
@@ -732,7 +733,7 @@ echo "Making Hbase tests"
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
-    for hadoopversion in 2.4.0 2.6.0 
+    for hadoopversion in 2.4.0 2.4.1 2.6.0 
     do
 	for zookeeperversion in 3.4.5 3.4.6
 	do
@@ -991,7 +992,7 @@ done
 
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsovernetworkfs-hadoop-${hadoopversion}
@@ -1017,7 +1018,7 @@ done
 
 for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hdfsoverlustre-hadoop-${hadoopversion}-no-local-dir
@@ -1078,7 +1079,7 @@ done
 
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1142,7 +1143,7 @@ done
  
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencySpark1B-hadoop-${hadoopversion}-spark-${sparkversion}
 
@@ -1206,7 +1207,7 @@ done
  
 for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 do
-    for hadoopversion in 2.4.0
+    for hadoopversion in 2.4.0 2.4.1
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-hadoop-${hadoopversion}-spark-${sparkversion}
 	
@@ -1497,6 +1498,11 @@ fi
 if [ "${no_hadoop_2_4_0}" == "y" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.4.0*
+fi
+
+if [ "${no_hadoop_2_4_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.4.1*
 fi
 
 if [ "${no_hadoop_2_6_0}" == "y" ]
