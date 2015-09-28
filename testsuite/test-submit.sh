@@ -676,10 +676,12 @@ if [ "${zookeepertests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for zookeeperversion in 3.4.5 3.4.6
+	for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6
 	do
-	    BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}
+	    BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs
 	    BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local
+	    BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-no-local-dir
 	done
     fi
 

@@ -139,7 +139,7 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
 
 Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5
 
-Zookeeper - 3.4.5, 3.4.6
+Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6
 
 UDA/uda-plugin - 3.3.2-0
 

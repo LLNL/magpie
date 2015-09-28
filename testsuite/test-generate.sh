@@ -12,7 +12,7 @@
 #   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
 #   1.5.1-bin-hadoop2.6
 # Storm 0.9.3, 0.9.4, 0.9.5
-# Zookeeper 3.4.5, 3.4.6
+# Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6
 #
 # Assumes network file system such as lustre is always available
 #
@@ -61,6 +61,11 @@ no_spark_1_5_0_bin_hadoop2_6=n
 no_storm_0_9_3=n
 no_storm_0_9_4=n
 no_storm_0_9_5=n
+no_zookeeper_3_4_0=n
+no_zookeeper_3_4_1=n
+no_zookeeper_3_4_2=n
+no_zookeeper_3_4_3=n
+no_zookeeper_3_4_4=n
 no_zookeeper_3_4_5=n
 no_zookeeper_3_4_6=n
 
@@ -1438,7 +1443,7 @@ done
  
 echo "Making Zookeeper tests"
 
-for zookeeperversion in 3.4.5 3.4.6
+for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm ./magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm ./magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local
@@ -1725,6 +1730,41 @@ fi
 if [ "${no_storm_0_9_5}" == "y" ]
 then
     rm -f magpie.${submissiontype}*storm-0.9.5*
+fi
+
+if [ "${no_zookeeper_3_4_5}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.5*
+fi
+
+if [ "${no_zookeeper_3_4_5}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.5*
+fi
+
+if [ "${no_zookeeper_3_4_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.0*
+fi
+
+if [ "${no_zookeeper_3_4_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.1*
+fi
+
+if [ "${no_zookeeper_3_4_2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.2*
+fi
+
+if [ "${no_zookeeper_3_4_3}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.3*
+fi
+
+if [ "${no_zookeeper_3_4_4}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.4*
 fi
 
 if [ "${no_zookeeper_3_4_5}" == "y" ]
