@@ -1,6 +1,6 @@
 diff -pruN hadoop-2.5.1-alternate-ssh/libexec/hadoop-config.sh hadoop-2.5.1/libexec/hadoop-config.sh
 --- hadoop-2.5.1-alternate-ssh/libexec/hadoop-config.sh	2014-09-05 16:30:22.000000000 -0700
-+++ hadoop-2.5.1/libexec/hadoop-config.sh	2015-09-24 19:45:32.771152000 -0700
++++ hadoop-2.5.1/libexec/hadoop-config.sh	2015-09-24 19:45:32.5.1152000 -0700
 @@ -53,6 +53,8 @@ HADOOP_DEFAULT_PREFIX=$(cd -P -- "$commo
  HADOOP_PREFIX=${HADOOP_PREFIX:-$HADOOP_DEFAULT_PREFIX}
  export HADOOP_PREFIX
@@ -193,7 +193,7 @@ diff -pruN hadoop-2.5.1-alternate-ssh/sbin/start-yarn.sh hadoop-2.5.1/sbin/start
  # start nodeManager
 diff -pruN hadoop-2.5.1-alternate-ssh/sbin/stop-dfs.sh hadoop-2.5.1/sbin/stop-dfs.sh
 --- hadoop-2.5.1-alternate-ssh/sbin/stop-dfs.sh	2014-09-05 16:30:22.000000000 -0700
-+++ hadoop-2.5.1/sbin/stop-dfs.sh	2015-09-24 19:45:32.781147000 -0700
++++ hadoop-2.5.1/sbin/stop-dfs.sh	2015-09-24 19:45:32.5.1147000 -0700
 @@ -22,6 +22,21 @@ DEFAULT_LIBEXEC_DIR="$bin"/../libexec
  HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
  . $HADOOP_LIBEXEC_DIR/hdfs-config.sh
@@ -264,4 +264,20 @@ diff -pruN hadoop-2.5.1-alternate-ssh/sbin/yarn-daemons.sh hadoop-2.5.1/sbin/yar
 +fi
 +
  exec "$bin/slaves.sh" --config $YARN_CONF_DIR cd "$HADOOP_YARN_HOME" \; "$bin/yarn-daemon.sh" --config $YARN_CONF_DIR "$@"
+
+diff -pruN hadoop-2.5.1-alternate-ssh/sbin/mr-jobhistory-daemon.sh hadoop-2.5.1/sbin/mr-jobhistory-daemon.sh
+--- hadoop-2.5.1-alternate-ssh/sbin/mr-jobhistory-daemon.sh     2015-06-28 23:15:47.000000000 -0700
++++ hadoop-2.5.1/sbin/mr-jobhistory-daemon.sh   2015-08-28 10:16:44.481168000 -0700
+@@ -90,6 +90,11 @@ HADOOP_OPTS="$HADOOP_OPTS -Dhadoop.id.str=$HADOOP_MAPRED_IDENT_STRING"
+ log=$HADOOP_MAPRED_LOG_DIR/mapred-$HADOOP_MAPRED_IDENT_STRING-$command-$HOSTNAME.out
+ pid=$HADOOP_MAPRED_PID_DIR/mapred-$HADOOP_MAPRED_IDENT_STRING-$command.pid
+
++if echo $pid | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  pid=$(echo "$pid" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$(hostname)/g")
++fi
++
+ HADOOP_MAPRED_STOP_TIMEOUT=${HADOOP_MAPRED_STOP_TIMEOUT:-5}
+
+ # Set default scheduling priority
  

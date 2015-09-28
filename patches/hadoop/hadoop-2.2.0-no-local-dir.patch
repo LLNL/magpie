@@ -265,3 +265,19 @@ diff -pruN hadoop-2.2.0-alternate-ssh/sbin/yarn-daemons.sh hadoop-2.2.0/sbin/yar
 +
  exec "$bin/slaves.sh" --config $YARN_CONF_DIR cd "$HADOOP_YARN_HOME" \; "$bin/yarn-daemon.sh" --config $YARN_CONF_DIR "$@"
  
+diff -pruN hadoop-2.2.0-alternate-ssh/sbin/mr-jobhistory-daemon.sh hadoop-2.2.0/sbin/mr-jobhistory-daemon.sh
+--- hadoop-2.2.0-alternate-ssh/sbin/mr-jobhistory-daemon.sh     2015-06-28 23:15:47.000000000 -0700
++++ hadoop-2.2.0/sbin/mr-jobhistory-daemon.sh   2015-08-28 10:16:44.481168000 -0700
+@@ -90,6 +90,11 @@ HADOOP_OPTS="$HADOOP_OPTS -Dhadoop.id.str=$HADOOP_MAPRED_IDENT_STRING"
+ log=$HADOOP_MAPRED_LOG_DIR/mapred-$HADOOP_MAPRED_IDENT_STRING-$command-$HOSTNAME.out
+ pid=$HADOOP_MAPRED_PID_DIR/mapred-$HADOOP_MAPRED_IDENT_STRING-$command.pid
+
++if echo $pid | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  pid=$(echo "$pid" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$(hostname)/g")
++fi
++
+ HADOOP_MAPRED_STOP_TIMEOUT=${HADOOP_MAPRED_STOP_TIMEOUT:-5}
+
+ # Set default scheduling priority
+ 
