@@ -556,7 +556,7 @@ Basic Instructions For Running Hadoop w/ UDA
 UDA is an Infiniband plugin to alter the suffle/sort mechanism in
 Hadoop to take advantage of RDMA.  It can be found at:
 
-https://code.google.com/p/uda-plugin/
+https://github.com/Mellanox/UDA
 
 It is currently supported in Hadoop 2.3.0 and newer.  UDA can be used
 with older versions of Hadoop but will require patches against those
