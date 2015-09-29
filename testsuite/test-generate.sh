@@ -6,11 +6,13 @@
 #
 # Hadoop 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.5.2, 2.6.0, 2.6.1, 2.7.0, 2.7.1
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
-# Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.2, 1.1.1, 1.1.2
+# Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
+#   0.99.2, 1.1.1, 1.1.2
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
 #   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
 #   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
 #   1.5.1-bin-hadoop2.6
+
 # Storm 0.9.3, 0.9.4, 0.9.5
 # Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6
 #
@@ -45,6 +47,8 @@ no_pig_0_14_0=n
 no_pig_0_15_0=n
 no_hbase_0_98_3_bin_hadoop2=n
 no_hbase_0_98_9_bin_hadoop2=n
+no_hbase_0_99_0=n
+no_hbase_0_99_1=n
 no_hbase_0_99_2=n
 no_hbase_1_1_1=n
 no_hbase_1_1_2=n
@@ -876,7 +880,7 @@ do
     done
 done
 
-for hbaseversion in 0.99.2 1.1.1 1.1.2
+for hbaseversion in 0.99.0 0.99.1 0.99.2 1.1.1 1.1.2
 do
     for hadoopversion in 2.7.0
     do
@@ -967,7 +971,7 @@ do
     done
 done
 
-for hbaseversion in 0.99.2 1.1.1 1.1.2
+for hbaseversion in 0.99.0 0.99.1 0.99.2 1.1.1 1.1.2
 do
     for hadoopversion in 2.7.0
     do
@@ -1013,7 +1017,7 @@ do
     done
 done
 
-for hbaseversion in 0.99.2 1.1.1 1.1.2
+for hbaseversion in 0.99.0 0.99.1 0.99.2 1.1.1 1.1.2
 do
     for hadoopversion in 2.7.0
     do
@@ -1650,6 +1654,16 @@ fi
 if [ "${no_hbase_0_98_9_bin_hadoop2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.98.9-bin-hadoop2*
+fi
+
+if [ "${no_hbase_0_99_0}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-0.99.0*
+fi
+
+if [ "${no_hbase_0_99_1}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-0.99.1*
 fi
 
 if [ "${no_hbase_0_99_2}" == "y" ]

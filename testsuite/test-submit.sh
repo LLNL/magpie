@@ -393,7 +393,7 @@ then
 	    done
 	done
 
-	for hbaseversion in 0.99.2 1.1.1 1.1.2 
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.1.1 1.1.2 
 	do
 	    for hadoopversion in 2.7.0
 	    do
@@ -453,7 +453,7 @@ then
 	    done
 	done
 
-	for hbaseversion in 0.99.2 1.1.1 1.1.2
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.1.1 1.1.2
 	do
 	    for hadoopversion in 2.7.0
 	    do
@@ -477,7 +477,7 @@ then
 	    done
 	done
 
-	for hbaseversion in 0.99.2 1.1.1 1.1.2
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.1.1 1.1.2
 	do
 	    for hadoopversion in 2.7.0
 	    do
