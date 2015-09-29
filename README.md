@@ -124,8 +124,8 @@ listed below.
 * + - Requires patch against binary distro's scripts, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
 
-Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.4.0+, 2.4.1+, 2.5.0+, 2.5.1+,
-         2.5.2+, 2.6.0+, 2.6.1+, 2.7.0+, 2.7.1+
+Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.3.0+, 2.4.0+, 2.4.1+, 2.5.0+,
+         2.5.1+, 2.5.2+, 2.6.0+, 2.6.1+, 2.7.0+, 2.7.1+
 
 Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
 
