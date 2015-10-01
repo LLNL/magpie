@@ -1,6 +1,8 @@
 magpie 1.63
 -----------
-Add MAGPIE_SSH_CMD_OPTS to run output as needed.
+Support easy mechanism to kill jobs running in interactive mode.
+Add MAGPIE_REMOTE_CMD_OPTS to run output as needed.
+
 
 magpie 1.62
 -----------
