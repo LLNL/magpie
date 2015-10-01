@@ -1,3 +1,7 @@
+magpie 1.63
+-----------
+Add MAGPIE_SSH_CMD_OPTS to run output as needed.
+
 magpie 1.62
 -----------
 Support Spark 1.5.0, update default Spark to 1.5.0-bin-hadoop2.6

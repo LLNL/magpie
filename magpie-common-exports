@@ -53,8 +53,6 @@ then
     export MAGPIE_SHUTDOWN_TIME=30
 fi
 
-magpieremotecmd="${MAGPIE_REMOTE_CMD:=ssh}" 
-
 magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
 
 if [ "${HADOOP_SETUP}" == "yes" ]
