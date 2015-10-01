@@ -1603,7 +1603,7 @@ then
 	# Will set jobtimeseconds
 	Magpie_job_time_seconds
         # Some systems have SIGUSR1 as USR1 so lets just use the value
-        trap "echo \"Exiting and tearing down daeomons from ${MAGPIE_JOB_TYPE} mode due to user interrupt.\"" 10
+        trap "echo \"Exiting from ${MAGPIE_JOB_TYPE} mode due to user interrupt.\"" 10
 	sleep ${jobtimeseconds} &
         wait
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
@@ -1634,7 +1634,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${PIG_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${PIG_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
@@ -1670,7 +1670,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${HADOOP_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${HADOOP_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
@@ -1720,7 +1720,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${HBASE_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${HBASE_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
@@ -1763,7 +1763,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${SPARK_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${SPARK_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
@@ -1799,7 +1799,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${STORM_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${STORM_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
@@ -1824,7 +1824,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${TACHYON_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${TACHYON_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
@@ -1849,7 +1849,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${ZOOKEEPER_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting from ${ZOOKEEPER_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
