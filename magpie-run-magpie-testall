@@ -57,6 +57,15 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval)
 fi
 
+if [ "${PHOENIX_SETUP}" == "yes" ] \
+   && [ "${PHOENIX_MODE}" != "server" ]
+then
+    echo "*******************************************************"
+    echo "* Running Phoenix Performance Evaluation"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval)
+fi
+
 if [ "${SPARK_SETUP}" == "yes" ] \
    && [ "${SPARK_MODE}" != "setuponly" ]
 then

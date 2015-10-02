@@ -457,6 +457,17 @@ then
     fi
 fi
 
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    phoenix_jar="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-client.jar"
+    if [ "${sparkclasspath}X" != "X" ]
+    then
+        sparkclasspath="${phoenix_jar}:${sparkclasspath}"
+    else
+        sparkclasspath="${phoenix_jar}"
+    fi
+fi
+
 # Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
 # afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
@@ -519,14 +530,14 @@ if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
     if [ "${sparkclasspath}X" != "X" ]
     then
-	sparkclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
-	sparkdriverclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
+        sparkclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
+        sparkdriverclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
     fi
-    
+
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
     then
 	sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
-	sparkdriverlibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
+        sparkdriverlibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
     if [ "${TACHYON_SETUP}" == "yes" ]

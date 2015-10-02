@@ -22,54 +22,70 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the main setup script.  For the most part, it
-# shouldn't be editted.  See job submission files for configuration
-# details.
+# This script launches Phoenix for the user
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+# First argument is path to Phoenix config
 
-(${MAGPIE_SCRIPTS_HOME}/magpie-setup-core)
+# Second argument is path to HBase config
 
-if [ "${HADOOP_SETUP}" == "yes" ]
+# Third argument is path to Phoenix
+
+# Fourth argument is start or stop
+
+if [ "$1X" == "X" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hadoop)
+    echo "User must specify path to Phoenix config as first argument"
+    exit 1
 fi
 
-if [ "${PIG_SETUP}" == "yes" ]
+if [ ! -d $1 ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-pig)
+    echo "Phoenix config path is not a directory"
 fi
 
-if [ "${HBASE_SETUP}" == "yes" ]
+if [ "$2X" == "X" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hbase)
+    echo "User must specify path to Hbase config as second argument"
+    exit 1
 fi
 
-if [ "${PHOENIX_SETUP}" == "yes" ]
+if [ ! -d $2 ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-phoenix)
+    echo "Hbase config path is not a directory"
 fi
 
-if [ "${SPARK_SETUP}" == "yes" ]
+if [ "$3X" == "X" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-spark)
+    echo "User must specify path to Phoenix as third argument"
+    exit 1
 fi
 
-if [ "${STORM_SETUP}" == "yes" ]
+if [ ! -d $3 ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-storm)
+    echo "Phoenix path is not a directory"
 fi
 
-if [ "${TACHYON_SETUP}" == "yes" ]
+if [ "$4X" == "X" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-tachyon)
+    echo "User must specify start or stop as fourth argument"
+    exit 1
 fi
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+if [ "$4" != "start" ] && [ "$4" != "stop" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zookeeper)
+    echo "User must specify start or stop as fourth argument"
+    exit 1
 fi
 
-exit 0
+source $2/hbase-env.sh
+source $1/phoenix-env.sh
+
+myhostname=`hostname`
+if [ "$4" == "start" ]
+then
+    echo "Starting Phoenix on $myhostname"
+else
+    echo "Stopping Phoenix on $myhostname"
+fi
+python $3/bin/queryserver.py $4 
+

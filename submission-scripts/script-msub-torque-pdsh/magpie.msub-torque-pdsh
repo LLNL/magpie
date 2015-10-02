@@ -84,6 +84,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "hbase" - Run a job according to the settings of HBASE_MODE.
 #
+# "phoenix" - Run a job according to the settings of PHOENIX_MODE
+#
 # "pig" - Run a job according to the settings of PIG_MODE.
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
@@ -101,6 +103,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 #             For Hadoop, testall will run terasort
 #             For Hbase, testall will run performanceeval
+#             For Phoenix, testall will run performanceeval
 #             For Pig, testall will run testpig
 #             For Spark, testall will run sparkpi
 #             For Storm, testall will run stormwordcount
@@ -1009,6 +1012,88 @@ export HBASE_MODE="performanceeval"
 # the script.
 #
 # export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
+
+############################################################################
+# Phoenix Configurations
+############################################################################
+
+# Should Phoenix be setup
+#
+# Specify yes or no.  Defaults to no.
+# 
+# If PHOENIX_SETUP is enabled, this will inform Magpie to setup a
+# configuration files and environment variables that will hopefully
+# make it easier to run Phoenix w/ HBase.  You could leave this disabled
+# and setup/config Phoenix as you need.
+#
+export PHOENIX_SETUP=no
+
+# Phoenix Version
+#
+export PHOENIX_VERSION="4.5.2"
+
+# Phoenix HBase Version
+# 
+# In general phoenix seems to only need the major and minor release, not the patch releases
+export PHOENIX_HBASE_VERSION="$(echo $HBASE_VERSION |  cut --complement -d '.' -f 3-)"
+
+# Path to your Phoenix build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the hbase version this will run against.
+#
+export PHOENIX_HOME="${HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-bin"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export PHOENIX_LOCAL_DIR="/tmp/${USER}/phoenix"
+
+# Set how Phoenix should run
+#
+# "performanceeval" - run performance evaluation write and read.
+#              Useful for making sure things are setup the way you
+#              like.
+#
+# "server" - start up the queryserver per regionserver
+#
+# "script" - execute a phoenix script indicated by PHOENIX_SCRIPT_PATH.
+#
+# "interactive" - manually interact to run phoenix scripts. In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and run phoenix scripts directly
+#                 (e.g. bin/sqlline.py ...).
+#
+export PHOENIX_MODE="performanceeval"
+
+# Specify script to execute for "script" mode in PHOENIX_MODE.  This phoenix
+# script will be fed into phoenix via "sqline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}"
+#
+# export PHOENIX_SCRIPT_PATH="${HOME}/my-phoenix-script"
+
+# Specify options to specify when calling phoenix.
+#
+# export PHOENIX_SCRIPT_OPTS=""
+
+# Phoenix Query Server Opts
+#
+# Extra Java runtime options
+#
+# export PHOENIX_QUERYSERVER_OPTS="-Djava.io.tmpdir=${PHOENIX_LOCAL_JOB_DIR}/tmp"
+
+############################################################################
+## PHOENIX Performance Evaluation Configurations
+#############################################################################
+
+# For "performanceeval" mode.  Rows each client will run.
+#
+# Defaults to 100000
+# 
+# export PHOENIX_PERFORMANCEEVAL_ROW_COUNT=100000
 
 ############################################################################
 # Spark Core Configurations

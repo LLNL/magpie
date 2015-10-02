@@ -83,6 +83,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "hbase" - Run a job according to the settings of HBASE_MODE.
 #
+# "phoenix" - Run a job according to the settings of PHOENIX_MODE
+#
 # "pig" - Run a job according to the settings of PIG_MODE.
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
@@ -100,6 +102,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 #             For Hadoop, testall will run terasort
 #             For Hbase, testall will run performanceeval
+#             For Phoenix, testall will run performanceeval
 #             For Pig, testall will run testpig
 #             For Spark, testall will run sparkpi
 #             For Storm, testall will run stormwordcount

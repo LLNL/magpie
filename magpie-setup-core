@@ -120,6 +120,25 @@ then
 fi
 
 #
+# Setup Phoenix directories
+#
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    mkdir -p $PHOENIX_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${PHOENIX_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $PHOENIX_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${PHOENIX_LOG_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup Spark directories
 #
 
@@ -305,6 +324,11 @@ if [ "${HBASE_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${HBASE_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HBASE_CONF_DIR}/regionservers
+fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${PHOENIX_CONF_DIR}/regionservers
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]

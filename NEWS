@@ -2,7 +2,7 @@ magpie 1.63
 -----------
 Support easy mechanism to kill jobs running in interactive mode.
 Add MAGPIE_REMOTE_CMD_OPTS to run output as needed.
-
+Support Phoenix 4.5.2
 
 magpie 1.62
 -----------

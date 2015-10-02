@@ -1,0 +1,38 @@
+  <property>
+      <name>hbase.regionserver.wal.codec</name>
+      <value>org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec</value>
+  </property>
+
+  <property>
+      <name>hbase.region.server.rpc.scheduler.factory.class</name>
+      <value>org.apache.hadoop.hbase.ipc.PhoenixRpcSchedulerFactory</value>
+      <description>Factory to create the Phoenix RPC Scheduler that uses separate queues for index and metadata updates</description>
+  </property>
+
+  <property>
+      <name>hbase.rpc.controllerfactory.class</name>
+      <value>org.apache.hadoop.hbase.ipc.controller.ServerRpcControllerFactory</value>
+      <description>Factory to create the Phoenix RPC Scheduler that uses separate queues for index and metadata updates</description>
+  </property>
+
+  <property>
+      <name>hbase.coprocessor.regionserver.classes</name>
+      <value>org.apache.hadoop.hbase.regionserver.LocalIndexMerger</value>
+  </property>
+
+  <property>
+      <name>hbase.master.loadbalancer.class</name>
+      <value>org.apache.phoenix.hbase.index.balancer.IndexLoadBalancer</value>
+  </property>
+
+  <property>
+      <name>hbase.coprocessor.master.classes</name>
+      <value>org.apache.phoenix.hbase.index.master.IndexMasterObserver</value>
+  </property>
+ 
+  <property>
+      <name>phoenix.queryserver.http.port</name>
+      <value>PHOENIXQUERYSERVERPORT</value>
+      <description>Specifies a port the server will listen on. Default is 8765.</description>
+  </property>
+
