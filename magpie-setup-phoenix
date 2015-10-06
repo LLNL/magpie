@@ -93,8 +93,6 @@ post_log4jproperties=${PHOENIX_CONF_DIR}/log4j.properties
 # Setup Phoenix configuration files and environment files
 #
 
-PHOENIX_THIS_HOST=`hostname`
-
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 phoenixlogdirsubst=`echo "${PHOENIX_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 phoenixpiddirsubst=`echo "${PHOENIX_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
