@@ -15,6 +15,7 @@ defaulttests=y
 hadooptests=y
 pigtests=y
 hbasetests=y
+phoenixtests=y
 sparktests=y
 stormtests=y
 zookeepertests=y
@@ -106,6 +107,7 @@ then
 	BasicJobSubmit magpie.${submissiontype}-hadoop
 	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig
 	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs
+	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix
 	BasicJobSubmit magpie.${submissiontype}-spark
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs
 	BasicJobSubmit magpie.${submissiontype}-storm
@@ -118,6 +120,7 @@ then
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-spark-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-storm-no-local-dir
@@ -528,6 +531,79 @@ then
 		do
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
 		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		done
+	    done
+	done
+    fi
+fi
+
+# Phoenix Tests
+
+if [ "${phoenixtests}" == "y" ]
+then
+    if [ "${standardtests}" == "y" ]
+    then
+	for phoenixversion in 4.5.2
+	do
+	    for hbaseversion in 1.1.2
+	    do
+		for hadoopversion in 2.7.0
+		do
+		    for zookeeperversion in 3.4.6
+		    do
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-networkfs
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-local
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-shared-zookeeper-networkfs
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-shared-zookeeper-local
+
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-not-shared-zookeeper-networkfs
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-not-shared-zookeeper-local
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-shared-zookeeper-networkfs
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-shared-zookeeper-local
+			
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-local-no-local-dir
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-shared-zookeeper-networkfs-no-local-dir
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-shared-zookeeper-local-no-local-dir
+
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-not-shared-zookeeper-networkfs-no-local-dir
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-not-shared-zookeeper-local-no-local-dir
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-shared-zookeeper-networkfs-no-local-dir
+			BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-shared-zookeeper-local-no-local-dir
+		    done
+		done
+	    done
+	done
+    fi
+
+    if [ "${dependencytests}" == "y" ]
+    then
+	for phoenixversion in 4.5.2
+	do
+	    for hbaseversion in 1.1.2
+	    do
+		for hadoopversion in 2.7.0
+		do
+		    for zookeeperversion in 3.4.6
+		    do
+			BasicJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+			DependentJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		    done
+		done
+	    done
+	done
+
+	for phoenixversion in 4.5.2
+	do
+	    for hbaseversion in 1.1.2
+	    do
+		for hadoopversion in 2.7.0
+		do
+		    for zookeeperversion in 3.4.6
+		    do
+			BasicJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+			DependentJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+		    done
 		done
 	    done
 	done

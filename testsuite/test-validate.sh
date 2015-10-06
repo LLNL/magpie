@@ -224,8 +224,25 @@ if ls ${outputprefix}-hbase* >& /dev/null
 then
     for file in `ls ${outputprefix}-hbase*`
     do
-	num=`grep -e "Summary of timings" $file | wc -l`
-	if [ "${num}" != "2" ]; then
+	if ! echo ${file} | grep -q "phoenix"
+	then
+	    num=`grep -e "Summary of timings" $file | wc -l`
+	    if [ "${num}" != "2" ]; then
+		echo "Job error in $file"
+	    fi
+	    
+	    test_hdfs_shutdown $file
+	    test_zookeeper_shutdown $file
+	fi
+    done
+fi
+
+if ls ${outputprefix}-hbase*phoenix* >& /dev/null
+then
+    for file in `ls ${outputprefix}-hbase*phoenix*`
+    do
+	num=`grep -e "Time" $file | grep "sec(s)" | wc -l`
+	if [ "${num}" != "7" ]; then
 	    echo "Job error in $file"
 	fi
 	
