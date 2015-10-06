@@ -163,6 +163,41 @@ Magpie_make_hbase_local_dirs_node_specific () {
     Magpie_make_hbase_local_dirs "specific"
 }
 
+Magpie_make_phoenix_local_dirs () {
+    which=$1
+
+    if [ "${PHOENIX_SETUP}" == "yes" ]
+    then
+	if [ "${PHOENIX_LOCAL_JOB_DIR}X" == "X" ]
+	then
+	    echo "Fatal error, Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
+	    exit 1
+	fi
+
+	export PHOENIX_CONF_DIR=${PHOENIX_LOCAL_JOB_DIR}/conf
+	export PHOENIX_LOG_DIR=${PHOENIX_LOCAL_JOB_DIR}/log
+	export PHOENIX_LOCAL_SCRATCH_DIR=${PHOENIX_LOCAL_JOB_DIR}/scratch
+	export PHOENIX_PID_DIR=${PHOENIX_LOCAL_JOB_DIR}/pid
+
+	if [ "${which}" == "specific" ]
+	then
+	    myhostname=`hostname`
+	    export PHOENIX_CONF_DIR=$(echo $PHOENIX_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export PHOENIX_LOG_DIR=$(echo $PHOENIX_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")	
+	    export PHOENIX_LOCAL_SCRATCH_DIR=$(echo $PHOENIX_LOCAL_SCRATCH_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export PHOENIX_PID_DIR=$(echo $PHOENIX_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	fi
+    fi
+}
+
+Magpie_make_phoenix_local_dirs_unspecified () {
+    Magpie_make_phoenix_local_dirs "generic"
+}
+
+Magpie_make_phoenix_local_dirs_node_specific () {
+    Magpie_make_phoenix_local_dirs "specific"
+}
+
 Magpie_make_spark_local_dirs () {
     which=$1
 
@@ -302,6 +337,7 @@ Magpie_make_all_local_dirs () {
     Magpie_make_hadoop_local_dirs $1
     Magpie_make_pig_local_dirs $1
     Magpie_make_hbase_local_dirs $1
+    Magpie_make_phoenix_local_dirs $1
     Magpie_make_spark_local_dirs $1
     Magpie_make_storm_local_dirs $1
     Magpie_make_tachyon_local_dirs $1

@@ -23,7 +23,7 @@
 #############################################################################
 
 ############################################################################
-# SLURM Customizations
+# Moab Customizations
 ############################################################################
 
 # Node count.  Node count should include one node for the
@@ -37,29 +37,34 @@
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
 
-#SBATCH --nodes=<my node count>
-#SBATCH --output="slurm-%j.out"
+#MSUB -l nodes=<my node count>
 
-# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
-# timelimit should be a fair amount larger than them combined.
-#SBATCH --time=<my time in minutes>
+#MSUB -o ./moab-%j.out
 
-# Job name.  This will be used in naming directories for the job.
-#SBATCH --job-name=<my job name>
+#MSUB -l partition=<my partition> 
 
-# Partition to launch job in 
-#SBATCH --partition=<my partition>
+#MSUB -q <my batch queue>
 
-## SLURM Values
-# Generally speaking, don't touch these, just need to configure slurm
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
+# walltime should be a fair amount larger than them combined.
 
-#SBATCH --ntasks-per-node=1
-#SBATCH --exclusive
-#SBATCH --no-kill
+#MSUB -l walltime=<my time in seconds or HH:MM:SS>
+
+#MSUB -l resfailpolicy=ignore
+
+#MSUB -V
+
+export MOAB_JOBNAME="<my job name>"
+
+export SLURM_TASKS_PER_NODE=1
+export SBATCH_EXCLUSIVE="yes"
 
 # Need to tell Magpie how you are submitting this job
-export MAGPIE_SUBMISSION_TYPE="sbatchsrun"
-
+#
+# IMPORTANT: This msub file assumes Slurm is the underlying resource
+# manager.  If it is not, a new Magpie submission type should be added
+# into Magpie.
+export MAGPIE_SUBMISSION_TYPE="msubslurmsrun"
 
 ############################################################################
 # Magpie Configurations
@@ -125,7 +130,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #                 launch without Hadoop/Hbase/Spark/Storm (such as
 #                 Zookeeper only) and are experimenting with things..
 #
-export MAGPIE_JOB_TYPE="pig"
+export MAGPIE_JOB_TYPE="phoenix"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
@@ -267,7 +272,7 @@ export HADOOP_SETUP=yes
 # HADOOP_FILESYSTEM_MODE, such as "hdfs", "hdfsoverlustre", or
 # "hdfsovernetworkfs".
 #
-export HADOOP_SETUP_TYPE="MR2"
+export HADOOP_SETUP_TYPE="HDFS2"
 
 # Version
 #
@@ -382,137 +387,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #
 # "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
 #
-export HADOOP_MODE="launch"
-
-# Tasks per Node
-#
-# If not specified, a reasonable estimate will be calculated based on
-# number of CPUs on the system.
-#
-# If running Hbase (or other Big Data software) with Hadoop MapReduce,
-# be aware of the number of tasks and the amount of memory that may be
-# needed by other software.
-#
-# export HADOOP_MAX_TASKS_PER_NODE=8
-
-# Default Map tasks for Job
-#
-# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
-# nodes.
-#
-# If running Hbase (or other Big Data software) with Hadoop MapReduce,
-# be aware of the number of tasks and the amount of memory that may be
-# needed by other software.
-#
-# export HADOOP_DEFAULT_MAP_TASKS=8
-
-# Default Reduce tasks for Job
-#
-# If not specified, defaults to # compute nodes (i.e. 1 reducer per
-# node)
-#
-# If running Hbase (or other Big Data software) with Hadoop MapReduce,
-# be aware of the number of tasks and the amount of memory that may be
-# needed by other software.
-#
-# export HADOOP_DEFAULT_REDUCE_TASKS=8
-
-# Max Map tasks for Task Tracker
-#
-# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
-#
-# If running Hbase (or other Big Data software) with Hadoop MapReduce,
-# be aware of the number of tasks and the amount of memory that may be
-# needed by other software.
-#
-# export HADOOP_MAX_MAP_TASKS=8
-
-# Max Reduce tasks for Task Tracker
-#
-# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE
-#
-# If running Hbase (or other Big Data software) with Hadoop MapReduce,
-# be aware of the number of tasks and the amount of memory that may be
-# needed by other software.
-#
-# export HADOOP_MAX_REDUCE_TASKS=8
-
-# Heap size for JVM 
-#
-# Specified in M.  If not specified, a reasonable estimate will be
-# calculated based on total memory available and number of CPUs on the
-# system.
-#
-# HADOOP_CHILD_MAP_HEAPSIZE and HADOOP_CHILD_REDUCE_HEAPSIZE are for
-# Yarn (i.e. HADOOP_SETUP_TYPE = MR2)
-#
-# If HADOOP_CHILD_MAP_HEAPSIZE is not specified, it is assumed to be
-# HADOOP_CHILD_HEAPSIZE.
-#
-# If HADOOP_CHILD_REDUCE_HEAPSIZE is not specified, it is assumed to
-# be 2X the HADOOP_CHILD_MAP_HEAPSIZE.
-#
-# If running Hbase (or other Big Data software) with Hadoop MapReduce,
-# be aware of the number of tasks and the amount of memory that may be
-# needed by other software.
-#
-# export HADOOP_CHILD_HEAPSIZE=2048
-# export HADOOP_CHILD_MAP_HEAPSIZE=2048
-# export HADOOP_CHILD_REDUCE_HEAPSIZE=4096
-
-# Container Buffer
-#
-# Specify the amount of overhead each Yarn container will have over
-# the heap size.  Specified in M.  If not specified, a reasonable
-# estimate will be calculated based on total memory available.
-#
-# export HADOOP_CHILD_MAP_CONTAINER_BUFFER=256
-# export HADOOP_CHILD_REDUCE_CONTAINER_BUFFER=512
-
-# Mapreduce Slowstart, indicating percent of maps that should complete
-# before reducers begin.
-#
-# If not specified, defaults to 0.05
-#
-# export HADOOP_MAPREDUCE_SLOWSTART=0.05
-
-# Container Memory
-#
-# Memory on compute nodes for containers.  Typically "nice-chunk" less
-# than actual memory on machine, b/c machine needs memory for its own
-# needs (kernel, daemons, etc.).  Specified in megs.
-#
-# If not specified, a reasonable estimate will be calculated based on
-# total memory on the system.
-#
-# export YARN_RESOURCE_MEMORY=32768
-
-# Compression
-#
-# Should compression of outputs and intermediate data be enabled.
-# Specify yes or no.  Defaults to no.
-#
-# Effectively, is time spend compressing data going to save you time
-# on I/O.  Sometimes yes, sometimes no.
-#
-# export HADOOP_COMPRESSION=yes
-
-# IO Sort Factors + MB
-#
-# The number of streams of files to sort while reducing and the memory
-# amount to use while sorting.  This is a quite advanced mechanism
-# taking into account many factors.  If not specified, some reasonable
-# number will be calculated.
-#
-# export HADOOP_IO_SORT_FACTOR=10
-# export HADOOP_IO_SORT_MB=100
-
-# Parallel Copies
-#
-# The default number of parallel transfers run by reduce during the
-# copy(shuffle) phase.  If not specified, some reasonable number will
-# be calculated.
-# export HADOOP_PARALLEL_COPIES=10
+export HADOOP_MODE="hdfsonly"
 
 ############################################################################
 # Hadoop Filesystem Mode Configurations
@@ -690,91 +565,378 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 
 ############################################################################
-# Pig Configurations
+# Hbase Core Configurations
 ############################################################################
 
-# Should Pig be setup
+# Should Hbase be run
 #
 # Specify yes or no.  Defaults to no.
 # 
-# Note that unlike Hadoop or Zookeeper, Pig does not need to be
-# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
-#
-# If PIG_SETUP is enabled, this will inform Magpie to setup a
-# configuration files and environment variables that will hopefully
-# make it easier to run Pig w/ Hadoop.  You could leave this disabled
-# and setup/config Pig as you need.
-#
-export PIG_SETUP=yes
+export HBASE_SETUP=yes
 
-# Pig Version
+# Version
 #
-export PIG_VERSION="0.15.0"
+export HBASE_VERSION="1.1.2"
 
-# Path to your Pig build/binaries
+# Path to your Hbase build/binaries
 #
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-# Ensure the build matches the Hadoop version this will run against.
+# Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
-
-# Directory where Pig configuration templates are stored
-#
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
-#
-# export PIG_CONF_FILES="${HOME}/myconf"
+export HBASE_HOME="${HOME}/hbase-${HBASE_VERSION}"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
 # MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
-export PIG_LOCAL_DIR="/tmp/${USER}/pig"
+export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 
-# Set how Pig should run
+# Directory where Hbase configuration templates are stored
 #
-# "testpig" - Run a quick sanity test to see that pig is setup
-#             correctly.  Testpig will do a simple ls of the root
-#             directory of whatever filesytem you setup (e.g. hdfs,
-#             lustre, etc.).
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
 #
-# "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
+# export HBASE_CONF_FILES="${HOME}/myconf"
+
+# Master Daemon Heap Max
 #
-# "interactive" - manually interact to run pig scripts. In this mode
+# Heap size for Hbase master daemons, specified in megs.
+#
+# If not specified, defaults to 1000
+#
+# export HBASE_MASTER_DAEMON_HEAP_MAX=1000
+
+# Regionserver Daemon Heap Max
+#
+# Heap size for Hbase regionserver daemons, specified in megs.
+#
+# If not specified, defaults to 16000, or 50% of system memory,
+# whichever is smaller.
+#
+# export HBASE_REGIONSERVER_DAEMON_HEAP_MAX=16000
+
+# Environment Extra
+#
+# Specify extra environment information that should be passed into
+# Hbase.  This file will simply be appended into the hbase-env.sh.
+#
+# By default, a reasonable estimate for max user processes and open
+# file descriptors will be calculated and put into hbase-env.sh.
+# However, it's always possible they may need to be set
+# differently. Everyone's cluster/situation can be slightly different.
+#
+# See the example example-environment-extra for examples on
+# what you can/should do with adding extra environment settings.
+#
+# export HBASE_ENVIRONMENT_EXTRA_PATH="${HOME}/hbase-my-environment"
+
+############################################################################
+# Hbase Job/Run Configurations
+############################################################################
+
+# Set how Hbase should run
+#
+# "performanceeval" - run performance evaluation write and read.
+#              Useful for making sure things are setup the way you
+#              like.
+#
+#              There are additional configuration options for this
+#              example listed below.
+#
+# "script" - execute a script that lists all of your Hbase jobs.  Be
+#            sure to set HBASE_SCRIPT_PATH to your script.
+#
+# "interactive" - manually interact to submit jobs, peruse Hbase, etc.
+#                 In this mode you'll login to the cluster node that
+#                 is your 'master' node and interact with Hbase
+#                 directly (e.g. bin/hbase ...)
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+export HBASE_MODE="performanceeval"
+
+# Start Hbase with thrift
+# 
+# This will start up thrift alongside of Hbase master
+# Defaults to 'no'
+#
+# export HBASE_START_THRIFT_SERVER="no"
+
+# Should a major compaction be done when Hbase is being shut down.  In
+# general, this is something that should be done to compact small
+# files, remove flagged deletes, etc., but could take a long time.
+# MAGPIE_SHUTDOWN_TIME should be large enough to handle this.
+#
+# This can also be run via the convenience script
+# hbase-major-compaction.sh.
+#
+# Specify yes or no.  Defaults to yes.
+# export HBASE_MAJOR_COMPACTION_ON_SHUTDOWN=yes
+
+############################################################################
+# Hbase Performance Evaluation Configurations
+############################################################################
+
+# Performance Evaluation Mode
+#
+# Specify 'sequential-thread' for threaded sequential write/read 
+# Specify 'sequential-mr' for MapReduce sequential write/read
+# Specify 'random-thread' for threaded random write/read 
+# Specify 'random-mr' for MapReduce random write/read
+#
+# Defaults to 'sequential-thread' if not specified. 
+# 
+# export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"
+
+# Performance Evaluation Rows
+#
+# For "performanceeval" mode.  Rows each client will run.
+#
+# Defaults to 1048576 (1 million)
+#
+# export HBASE_PERFORMANCEEVAL_ROW_COUNT=1048576
+
+# Performance Evaluation client count
+#
+# For "performanceeval" mode.
+#
+# If not specified, defaults to 1.
+#
+# export HBASE_PERFORMANCEEVAL_CLIENT_COUNT=1
+
+############################################################################
+# Hbase Script Configurations
+############################################################################
+
+# Specify script to execute for "script" mode
+#
+# See examples/hbase-example-job-script for example of what to put in
+# the script.
+#
+# export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
+
+############################################################################
+# Phoenix Configurations
+############################################################################
+
+# Should Phoenix be setup
+#
+# Specify yes or no.  Defaults to no.
+# 
+# If PHOENIX_SETUP is enabled, this will inform Magpie to setup a
+# configuration files and environment variables that will hopefully
+# make it easier to run Phoenix w/ HBase.  You could leave this disabled
+# and setup/config Phoenix as you need.
+#
+export PHOENIX_SETUP=yes
+
+# Phoenix Version
+#
+export PHOENIX_VERSION="4.5.2"
+
+# Phoenix HBase Version
+# 
+# In general phoenix seems to only need the major and minor release, not the patch releases
+export PHOENIX_HBASE_VERSION="$(echo $HBASE_VERSION |  cut --complement -d '.' -f 3-)"
+
+# Path to your Phoenix build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the hbase version this will run against.
+#
+export PHOENIX_HOME="${HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-bin"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export PHOENIX_LOCAL_DIR="/tmp/${USER}/phoenix"
+
+# Set how Phoenix should run
+#
+# "performanceeval" - run performance evaluation write and read.
+#              Useful for making sure things are setup the way you
+#              like.
+#
+# "server" - start up the queryserver per regionserver
+#
+# "script" - execute a phoenix script indicated by PHOENIX_SCRIPT_PATH.
+#
+# "interactive" - manually interact to run phoenix scripts. In this mode
 #                 you'll login to the cluster node that is your
-#                 'master' node and run pig scripts directly
-#                 (e.g. bin/pig ...).
+#                 'master' node and run phoenix scripts directly
+#                 (e.g. bin/sqlline.py ...).
 #
-export PIG_MODE="testpig"
+export PHOENIX_MODE="performanceeval"
 
-# Specify script to execute for "script" mode in PIG_MODE.  This pig
-# script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
+# Specify script to execute for "script" mode in PHOENIX_MODE.  This phoenix
+# script will be fed into phoenix via "sqline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}"
 #
-# export PIG_SCRIPT_PATH="${HOME}/my-pig-script"
+# export PHOENIX_SCRIPT_PATH="${HOME}/my-phoenix-script"
 
-# Specify options to specify when calling pig.
+# Specify options to specify when calling phoenix.
 #
-# A particularly useful option is -l <logfile>, to indicate where you
-# would like the pig log file to go.
-#
-# Another useful option is -F or -stop_on_failure
-#
-# export PIG_SCRIPT_OPTS="-l ${HOME}/mypig.log"
+# export PHOENIX_SCRIPT_OPTS=""
 
-# Pig Classpath
-#
-# Set the classpath you desire for pig.  This is the CLASSPATH you
-# likely want to set to add additional jars for your run.
-#
-# export PIG_CLASSPATH="${HOME}/myjarfiles.jar"
-
-# Pig Opts
+# Phoenix Query Server Opts
 #
 # Extra Java runtime options
 #
-# export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
+# export PHOENIX_QUERYSERVER_OPTS="-Djava.io.tmpdir=${PHOENIX_LOCAL_JOB_DIR}/tmp"
+
+############################################################################
+## PHOENIX Performance Evaluation Configurations
+#############################################################################
+
+# For "performanceeval" mode.  Rows each client will run.
+#
+# Defaults to 100000
+# 
+# export PHOENIX_PERFORMANCEEVAL_ROW_COUNT=100000
+
+############################################################################
+# Zookeeper Configurations
+############################################################################
+
+# Should Zookeeper be run
+#
+# Specify yes or no.  Defaults to no.
+# 
+export ZOOKEEPER_SETUP=yes
+
+# Zookeeper Replication Count
+#
+# Recommended to be odd.
+#
+export ZOOKEEPER_REPLICATION_COUNT=3
+
+# Zookeeper Node Sharing
+#
+# By default, Zookeeper will not run on nodes that will run Hadoop/Hbase.
+# They will have dedicated nodes for themselves.  If you do not wish
+# for this to be the case, set the below to 'yes'.  Defaults to no.
+#
+# Keep in mind that adjustments to the number of nodes in your
+# allocation may need to be adjusted given your setting of this
+# parameter.  For example, if you want 8 nodes for Hadoop processing,
+# you should increase your allocation by ZOOKEEPER_REPLICATION_COUNT
+# if the below is 'no'.
+#
+# export ZOOKEEPER_SHARE_NODES=yes
+
+# Set how Zookeeper should run
+#
+# "zookeeperruok" - Run a quick sanity test to see that zookeeper is
+#             setup correctly.  zookeeperruok will do a simple 'ruok'
+#             to all Zookeeper daemons.
+#
+# "launch" - Magpie will launch Zookeeper daemons
+#
+# "setuponly" - Only setup conf files. useful if user wants to setup
+#               daemons themselves, etc.
+#
+export ZOOKEEPER_MODE="launch"
+
+# Zookeeper Version
+#
+export ZOOKEEPER_VERSION="3.4.6"
+
+# Path to your Zookeeper build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
+
+# Directory where Zookeeper configuration templates are stored
+#
+# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+#
+# export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
+
+# Path base for zookeeper data to be stored on each cluster node
+#
+# ZOOKEEPER_DATA_DIR can point to either a network file system path or
+# a local drive path.  
+#
+# If a local drive or SSD is available, a local path is preferable.
+# If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
+# optimization possibilties.
+#
+export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
+
+# Zookeeper cleanup
+#
+# After your job has completed, if ZOOKEEPER_DATA_DIR_CLEAR is set to
+# yes, Magpie will do a rm -rf on ZOOKEEPER_DATA_DIR.  This may be
+# convenient for cleaning up your job after it has run.  This is
+# particularly useful if ZOOKEEPER_DATA_DIR is on a local ssd /drive.
+# B/c on your next job run, you may not be able to get the nodes you
+# want on your next run, leading to problems.
+#
+# export ZOOKEEPER_DATA_DIR_CLEAR="yes"
+
+# Zookeeper data dir type
+#
+# Inform Magpie what type of directory ZOOKEEPER_DATA_DIR points to.
+#
+# This configuration isn't entirely necessary to be set, but if set to
+# networkfs, Magpie will increase a number of default timeouts in
+# Zookeeper as well as other projects to adjust for the fact Zookeeper
+# is running on a network file system.
+#
+# "networkfs" - ZOOKEEPER_DATA_DIR points to a network filesystem
+#               (such as Lustre).
+#
+# "local" - ZOOKEEPER_DATA_DIR points to a local drive.
+#
+export ZOOKEEPER_DATA_DIR_TYPE="networkfs"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
+
+# Option to have per job data dir
+#
+# For each batch job, if this is set to yes, the location where 
+# zookeeper stores its data dir will be unique per job. The data 
+# dir will have the job id appended to the path to keep them organized.
+# It will allows for multiple instances of the same script to be run
+# without having collisions due to different nodes being used.
+#
+# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"
+
+# ZooKeeper ticktime, measured in milliseconds.  Used by all of
+# Zookeeper for time measurement.
+#
+# Defaults to 2000.
+#
+# export ZOOKEEPER_TICKTIME=2000
+
+# ZooKeeper initLimit, multiple of ticks to allow followers to connect
+# and sync to a leader.  May need to increase this value if the data
+# managed by ZooKeeper is large.
+#
+# Defaults to 10 if ZOOKEEPER_DATA_DIR_TYPE is local, 20 if networkfs
+#
+# export ZOOKEEPER_INITLIMIT=10
+
+# ZooKeeper syncLimit, multiple of ticks to allow followers to sync
+# with ZooKeeper.  If they fall too far behind a leader, they will be
+# dropped.
+#
+# Defaults to 5 if ZOOKEEPER_DATA_DIR_TYPE is local, 10 if networkfs
+#
+# export ZOOKEEPER_SYNCLIMIT=5
 
 ############################################################################
 # Run Job

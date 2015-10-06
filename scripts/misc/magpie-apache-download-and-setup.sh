@@ -20,6 +20,7 @@ PIG_DOWNLOAD="N"
 ZOOKEEPER_DOWNLOAD="N"
 SPARK_DOWNLOAD="N"
 STORM_DOWNLOAD="N"
+PHOENIX_DOWNLOAD="N"
 
 # Second, indicate some paths you'd like everything to be installed into
 
@@ -55,6 +56,7 @@ PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
 SPARK_PACKAGE="spark/spark-1.5.0/spark-1.5.0-bin-hadoop2.6.tgz"
 STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
+PHOENIX_PACKAGE="phoenix/phoenix-4.5.2-HBase-1.1/bin/phoenix-4.5.2-HBase-1.1-bin.tar.gz"
 
 # First check some basics
 
@@ -215,6 +217,30 @@ then
 
     # No storm patches at the moment
 fi
+
+if [ "${PHOENIX_DOWNLOAD}" == "Y" ]
+then
+    APACHE_DOWNLOAD_PHOENIX="${APACHE_DOWNLOAD_BASE}/${PHOENIX_PACKAGE}"
+
+    PHOENIX_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_PHOENIX} | grep "${PHOENIX_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+
+    echo "Downloading from ${PHOENIX_DOWNLOAD_URL}"
+
+    PHOENIX_PACKAGE_BASENAME=`basename ${PHOENIX_PACKAGE}`
+
+    wget -O ${INSTALL_PATH}/${PHOENIX_PACKAGE_BASENAME} ${PHOENIX_DOWNLOAD_URL}
+
+    echo "Untarring ${PHOENIX_PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${PHOENIX_PACKAGE_BASENAME}
+
+    PHOENIX_PACKAGE_BASEDIR=`echo $PHOENIX_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
+    cd ${INSTALL_PATH}/${PHOENIX_PACKAGE_BASEDIR}
+    echo "Applying patches"
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
+fi
+
 
 if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]
 then

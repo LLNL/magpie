@@ -868,7 +868,7 @@ then
 
         # Make variables specific now within Magpie
 	Magpie_make_all_local_dirs_node_specific
-	
+
         # My rough estimate for setup time is 30 seconds per 128 nodes
 	sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
 	if [ ${sleepwait} -lt 30 ]
@@ -1039,6 +1039,155 @@ then
 else
     hbase_should_be_torndown=0
     hbase_setup_successful=1
+fi
+
+#
+# Setup Phoenix
+#
+
+if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+then
+    cd ${PHOENIX_HOME}
+
+    if [ ${PHOENIX_MODE} == "server" ]
+    then
+        # Make variables unspecified for launching
+	Magpie_make_all_local_dirs_unspecified
+
+	echo "Starting Phoenix Queryserver"
+        ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix.sh start 
+	
+	Magpie_make_all_local_dirs_node_specific
+
+        # My rough estimate for setup time is 30 seconds
+        sleepwait=30
+
+	echo "Waiting ${sleepwait} seconds to allow Phoenix daemons to setup"
+	sleep ${sleepwait}
+	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+    fi
+
+    echo "*******************************************************"
+    echo "*"
+    echo "* Phoenix Information"
+    echo "*"
+    echo "* To access phoenix directly, you'll want to:"
+    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
+    if echo $MAGPIE_SHELL | grep -q csh
+    then
+	echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+    else
+	echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+    fi
+    echo "*   cd $PHOENIX_HOME"
+    echo "*"
+    echo "* Then you can do as you please.  To interact with Phoenix you can use:"
+    echo "*" 
+    echo "*   ${phoenixcmdprefix}/sqlline.py"
+
+    echo "*" 
+    echo "* Some additional environment variables you may sometimes wish to set"
+    echo "*" 
+    if echo $MAGPIE_SHELL | grep -q csh
+    then
+	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+        echo "*   setenv PHOENIX_HOME=\"${PHOENIX_HOME}\""
+    else
+	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+        echo "*   export PHOENIX_HOME=\"${PHOENIX_HOME}\""
+    fi
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	echo "*"
+	echo "* If running interactively, sourcing"
+	echo "*"
+	echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	echo "*"
+	echo "* will set most common environment variables for your job."
+    fi
+    echo "*" 
+    echo "*******************************************************"
+
+    if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+    then
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+            echo "setenv PHOENIX_HOME=\"${PHOENIX_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	else
+            echo "export PHOENIX_HOME=\"${PHOENIX_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+    fi
+
+    if [ ${PHOENIX_MODE} == "server" ]
+    then
+	magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+
+	if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+	then  
+	    # Could be more dynamic w/ slurm call to determine current
+	    # run time, but probably is sufficient for this trivial
+	    # part.  Minimally, have to leave the totalsleepwait code
+	    # around for non-slurm systems.
+	    phoenixmaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+	    
+	    if [ "${phoenixmaxwaitseconds}" -lt 30 ]
+	    then
+		phoenixmaxwaitseconds=30
+	    fi
+	    
+	    phoenixmaxwaittimes=`expr ${phoenixmaxwaitseconds} \/ 30`
+	else
+	    phoenixrmaxwaittimes=1
+	fi
+	
+	cd ${PHOENIX_HOME}
+
+	phoenixcameup=0
+	    
+	for ((i = 1; i <= ${phoenixmaxwaittimes}; i++)); do
+
+            serverschk=0
+            serversup=0
+            for server in `cat ${PHOENIX_CONF_DIR}/regionservers`;
+            do
+                serverschk=$((serverschk+1))
+                if [ $(${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c queryserver.py) -gt "0" ] ;
+                then 
+                    serversup=$((serversup+1))
+                fi
+            done
+
+            echo "$serversup/$serverschk Queryservers are up."
+            if [ "$serverschk" -eq "$serversup" ]
+            then 
+                phoenixcameup=1
+                break
+            fi
+
+	    echo "Waiting 30 more seconds for Queryservers to come up"
+	    sleep 30
+	    totalsleepwait=`expr ${totalsleepwait} + 30`
+	done
+	
+	if [ "${phoenixcameup}" == "0" ]
+	then
+	    echo "Not all Phoenix Queryservers came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+	    phoenix_should_be_torndown=1
+	    phoenix_setup_successful=0
+	    prior_setup_successful=false
+	else
+	    phoenix_should_be_torndown=1
+	    phoenix_setup_successful=1
+	fi
+    else
+	phoenix_should_be_torndown=1
+	phoenix_setup_successful=1
+    fi
+else
+    phoenix_should_be_torndown=0
+    phoenix_setup_successful=1
 fi
 
 #
@@ -1581,6 +1730,7 @@ fi
 if [ "${zookeeper_setup_successful}" == "1" ] \
     && [ "${hadoop_setup_successful}" == "1" ] \
     && [ "${hbase_setup_successful}" == "1" ] \
+    && [ "${phoenix_setup_successful}" == "1" ] \
     && [ "${spark_setup_successful}" == "1" ] \
     && [ "${storm_setup_successful}" == "1" ] \
     && [ "${tachyon_setup_successful}" == "1" ]
@@ -1721,6 +1871,41 @@ then
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
             trap "echo \"Exiting from ${HBASE_MODE} mode due to user interrupt.\"" 10
+	    sleep ${jobtimeseconds} &
+            wait
+	fi
+    elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
+    then
+	cd ${PHOENIX_HOME}
+	
+	if [ "${PHOENIX_MODE}" == "performanceeval" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Performance Evaluation"
+	    echo "*******************************************************"
+	    
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${PHOENIX_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing script $PHOENIX_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${PHOENIX_MODE}" == "interactive" ] 
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Phoenix ${PHOENIX_MODE} mode"
+            echo "*"
+            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${PHOENIX_MODE} mode early."
+	    echo "*******************************************************"
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            trap "echo \"Exiting and tearing down daeomons from ${PHOENIX_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
@@ -1890,6 +2075,23 @@ then
 
 	echo "Stopping spark"
 	${sparksetupscriptprefix}/stop-all.sh
+
+        # Make variables specific now within Magpie
+	Magpie_make_all_local_dirs_node_specific
+    fi
+fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${HBASE_SETUP}" == "yes" ] && [ "${phoenix_should_be_torndown}" == "1" ]
+then
+    if [ ${PHOENIX_MODE} == "server" ]
+    then
+	cd ${PHOENIX_HOME}
+	
+	# Make variables unspecified for shutdown
+	Magpie_make_all_local_dirs_unspecified
+
+	echo "Stopping Phoenix"
+        ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix.sh stop
 
         # Make variables specific now within Magpie
 	Magpie_make_all_local_dirs_node_specific

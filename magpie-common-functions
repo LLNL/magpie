@@ -137,6 +137,10 @@ Magpie_am_I_a_hbase_node () {
     return 1
 }
 
+Magpie_am_I_a_phoenix_node () {
+    return $(Magpie_am_I_a_hbase_node)
+}
+
 Magpie_am_I_a_spark_node () {
     local myhostname=`hostname`
 

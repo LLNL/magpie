@@ -167,6 +167,7 @@ fi
 
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "phoenix" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "storm" ] \
@@ -176,7 +177,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, spark, storm, tachyon, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, phoenix, spark, storm, tachyon, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -1036,6 +1037,113 @@ then
     if [ ${nodecount} -le "0" ]
     then
 	echo "No remaining nodes for Hbase regionservers, increase node count or adjust node allocations"
+	exit 1
+    fi
+fi
+
+#
+# Check Phoenix Inputs 
+#
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Phoenix"
+	exit 1
+    fi
+
+    if [ "${PHOENIX_VERSION}X" == "X" ]
+    then
+	echo "PHOENIX_VERSION must be set to run Phoenix"
+	exit 1
+    fi
+
+    if [ "${PHOENIX_HBASE_VERSION}X" == "X" ]
+    then
+	echo "PHOENIX_HBASE_VERSION must be set to run Phoenix"
+	exit 1
+    fi
+
+    if [ "${PHOENIX_HOME}X" == "X" ]
+    then
+	echo "PHOENIX_HOME must be set to run Phoenix"
+	exit 1
+    fi
+    
+    if [ ! -d ${PHOENIX_HOME} ]
+    then
+	echo "PHOENIX_HOME does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${PHOENIX_LOCAL_DIR}X" == "X" ]
+    then
+	echo "PHOENIX_LOCAL_DIR must be set to run Phoenix"
+	exit 1
+    fi
+
+    if [ "${HBASE_SETUP}" != "yes" ]
+    then
+	echo "HBase must be enabled for Phoenix"
+	exit 1
+    fi
+
+    if [ "${PHOENIX_MODE}" != "performanceeval" ] \
+	&& [ "${PHOENIX_MODE}" != "script" ] \
+	&& [ "${PHOENIX_MODE}" != "interactive" ] \
+	&& [ "${PHOENIX_MODE}" != "server" ]
+    then
+	echo "PHOENIX_MODE must be set to performanceeval, script, interactive, server"
+	exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "performanceeval" ]
+    then
+	if [ "${PHOENIX_PERFORMANCEEVAL_ROW_COUNT}X" != "X" ]
+	then
+	    if [ "${PHOENIX_PERFORMANCEEVAL_ROW_COUNT}" -lt 1 ]
+	    then
+		echo "PHOENIX_PERFORMANCEEVAL_ROW_COUNT must be >= 1"
+		exit 1
+	    fi
+	fi
+
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval cannot be found, it is required to run phoenix performance evaluation"
+	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "script" ]
+    then
+	if [ "${PHOENIX_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script PHOENIX_SCRIPT_PATH must be specified for PHOENIX_MODE = ${PHOENIX_MODE}"
+	    exit 1
+	fi
+	
+	if [ ! -x ${PHOENIX_SCRIPT_PATH} ]
+	then
+	    echo "Script PHOENIX_SCRIPT_PATH \"$PHOENIX_SCRIPT_PATH\" does not have execute permissions"
+	    exit 1
+	fi
+    fi
+
+    if ([ "${PHOENIX_MODE}" == "performanceeval" ] \
+	|| [ "${PHOENIX_MODE}" == "script" ]) \
+	&& [ "${HBASE_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Phoenix job if hbase mode is setuponly"
+	exit 1
+    fi
+
+    if ([ "${PHOENIX_MODE}" == "performanceeval" ] \
+	|| [ "${PHOENIX_MODE}" == "script" ]) \
+	&& [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+    then
+	echo "Cannot run Phoenix job if Zookeeper mode is setuponly"
 	exit 1
     fi
 fi

@@ -1,0 +1,123 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${PHOENIX_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+if [ "${HBASE_SETUP}" != "yes" ]
+then
+    echo 'HBase must be setup in order to run Phoenix.'
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+# phoenixnoderank set if succeed 
+if ! Magpie_am_I_a_phoenix_node
+then
+    exit 0
+fi
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+extrajvmflags=""
+
+# set java.io.tmpdir
+extrajvmflags="${extrajvmflags}${extrajvmflags:+" "}-Djava.io.tmpdir=${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
+
+if [ ! -d "${PHOENIX_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
+        exit 1
+    fi
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${PHOENIX_CONF_FILES}X" == "X" ]
+then
+    phoenixconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    phoenixconffiledir=${PHOENIX_CONF_FILES}
+fi
+
+pre_phoenixenvsh=${phoenixconffiledir}/phoenix-env.sh
+pre_log4jproperties=${phoenixconffiledir}/phoenix.log4j.properties
+
+if [ ! -f "${pre_phoenixenvsh}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Phoenix is missing configuration files in ${phoenixconffiledir}"
+    exit 1
+fi
+
+post_phoenixenvsh=${PHOENIX_CONF_DIR}/phoenix-env.sh
+post_log4jproperties=${PHOENIX_CONF_DIR}/log4j.properties
+
+#
+# Setup Phoenix configuration files and environment files
+#
+
+PHOENIX_THIS_HOST=`hostname`
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+phoenixlogdirsubst=`echo "${PHOENIX_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+phoenixpiddirsubst=`echo "${PHOENIX_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+phoenixconfdirsubst=`echo "${PHOENIX_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+
+cp ${pre_phoenixenvsh} ${post_phoenixenvsh}
+
+sed -i \
+    -e "s/PHOENIX_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/PHOENIXLOGDIR/${phoenixlogdirsubst}/g" \
+    -e "s/PHOENIXPIDDIR/${phoenixpiddirsubst}/g" \
+    -e "s/PHOENIXCONFDIR/${phoenixconfdirsubst}/g" \
+    ${post_phoenixenvsh}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export PHOENIX_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_phoenixenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export PHOENIX_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_phoenixenvsh}
+fi
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+exit 0

@@ -217,13 +217,20 @@ else
     hbaseconffiledir=${HBASE_CONF_FILES}
 fi
 
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+     hbaseclasspath=${PHOENIX_HOME}/*:${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-client-minimal.jar:${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-server.jar:${hbaseclasspath}
+     pre_hbasesitexml_phoenix=${hbaseconffiledir}/hbase-site-phoenix.xml
+fi
+
 pre_hbasesitexml=${hbaseconffiledir}/hbase-site.xml
 pre_hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
 pre_log4jproperties=${hbaseconffiledir}/hbase.log4j.properties
 
 if [ ! -f "${pre_hbasesitexml}" ] \
     || [ ! -f "${pre_hbaseenvsh}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
+    || [ ! -f "${pre_log4jproperties}" ] \
+    || ( [ "${pre_hbasesitexml_phoenix}X" != "X" ] && [ ! -f "${pre_hbasesitexml_phoenix}" ] ) \
 then
     echo "Missing Hbase configuration files in ${hbaseconffiledir}"
     exit 1
@@ -238,6 +245,14 @@ post_log4jproperties=${HBASE_CONF_DIR}/log4j.properties
 #
 
 cp ${pre_hbasesitexml} ${post_hbasesitexml}
+
+if [ "${pre_hbasesitexml_phoenix}X" != "X" ]
+then
+    sed -i -e "/@PHOENIX@/{r ${pre_hbasesitexml_phoenix}" -e "d}" ${post_hbasesitexml}
+    sed -i -e "s/PHOENIXQUERYSERVERPORT/$PHOENIX_QUERYSERVER_PORT/g" ${post_hbasesitexml}
+else
+    sed -i -e "/@PHOENIX@/,+1d" ${post_hbaseitexml}
+fi
 
 HBASE_THIS_HOST=`hostname`
 
@@ -276,6 +291,7 @@ sed -i \
 echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
 
 echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${post_hbaseenvsh}
+echo "export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\"" >> ${post_hbaseenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then

@@ -161,4 +161,6 @@
       Used as sleep interval by service threads such as log roller.</description>
   </property>
 
+  @PHOENIX@
+
 </configuration>
