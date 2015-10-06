@@ -251,7 +251,7 @@ then
     sed -i -e "/@PHOENIX@/{r ${pre_hbasesitexml_phoenix}" -e "d}" ${post_hbasesitexml}
     sed -i -e "s/PHOENIXQUERYSERVERPORT/$PHOENIX_QUERYSERVER_PORT/g" ${post_hbasesitexml}
 else
-    sed -i -e "/@PHOENIX@/,+1d" ${post_hbaseitexml}
+    sed -i -e "/@PHOENIX@/,+1d" ${post_hbasesitexml}
 fi
 
 HBASE_THIS_HOST=`hostname`
