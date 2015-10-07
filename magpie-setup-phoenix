@@ -51,10 +51,10 @@ fi
 # For rest of setup, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-extrajvmflags=""
+phoenixqueryserveropts=""
 
 # set java.io.tmpdir
-extrajvmflags="${extrajvmflags}${extrajvmflags:+" "}-Djava.io.tmpdir=${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
+phoenixqueryserveropts="${phoenixqueryserveropts}${phoenixqueryserveropts:+" "}-Djava.io.tmpdir=${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
 
 if [ ! -d "${PHOENIX_LOCAL_SCRATCH_DIR}/tmp" ]
 then
@@ -63,6 +63,11 @@ then
         echo "mkdir failed making ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
         exit 1
     fi
+fi
+
+if [ "${PHOENIX_QUERYSERVER_EXTRA_OPTS}X" == "X" ]
+then
+    phoenixqueryserveropts="${phoenixqueryserveropts}${phoenixqueryserveropts:+" "}${PHOENIX_QUERYSERVER_EXTRA_OPTS}"
 fi
 
 #
@@ -97,6 +102,7 @@ javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 phoenixlogdirsubst=`echo "${PHOENIX_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 phoenixpiddirsubst=`echo "${PHOENIX_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 phoenixconfdirsubst=`echo "${PHOENIX_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+phoenixqueryserveroptssubst=`echo "${phoenixqueryserveropts}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_phoenixenvsh} ${post_phoenixenvsh}
 
@@ -105,6 +111,7 @@ sed -i \
     -e "s/PHOENIXLOGDIR/${phoenixlogdirsubst}/g" \
     -e "s/PHOENIXPIDDIR/${phoenixpiddirsubst}/g" \
     -e "s/PHOENIXCONFDIR/${phoenixconfdirsubst}/g" \
+    -e "s/PHOENIXQUERYSERVEROPTS/${phoenixqueryserveroptssubst}/g" \
     ${post_phoenixenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
