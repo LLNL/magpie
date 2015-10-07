@@ -25,10 +25,17 @@
 #
 # XXX - haven't handled lsf-mpirun, msub-slurm-srun, or msub-torque-pdsh yet
 
+# Job Submission Config
+
 #submissiontype=lsf-mpirun
 #submissiontype=msub-slurm-srun
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
+
+msubslurmsrunpartition=mycluster
+msubslurmsrunbatchqueue=pbatch
+
+sbatchsrunpartition=pc6220
 
 # Test config
 
@@ -84,13 +91,6 @@ no_zookeeper_3_4_4=n
 no_zookeeper_3_4_5=n
 no_zookeeper_3_4_6=n
 
-# Configs for submission types
-
-msubslurmsrunpartition=mycluster
-msubslurmsrunbatchqueue=pbatch
-
-sbatchsrunpartition=pc6220
-
 # Configure Makefile 
 
 # Remember to escape $ w/ \ if you want the environment variables
@@ -117,6 +117,8 @@ then
 fi
 
 magpiescriptshomesubst=`echo ${MAGPIE_SCRIPTS_HOME} | sed "s/\\//\\\\\\\\\//g"`
+
+cp ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile.testsuite-save
 
 MAGPIE_SCRIPTS_HOME_DIRNAME=`dirname ${MAGPIE_SCRIPTS_HOME}`
 magpiescriptshomedirnamesubst=`echo ${MAGPIE_SCRIPTS_HOME_DIRNAME} | sed "s/\\//\\\\\\\\\//g"`
@@ -1865,11 +1867,13 @@ dependencyprefix=`date +"%Y%m%d%N"`
 
 sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie*
 
-echo "Setting original submission scripts back to system default"
+echo "Setting original submission scripts back to prior default"
+
+cp ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile.testsuite-save ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+rm -f ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile.testsuite-save
 
 cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
-
-git checkout Makefile
 
 make &> /dev/null
 

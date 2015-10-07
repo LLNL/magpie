@@ -1,0 +1,41 @@
+A regression testsuite for Magpie is available in the subdirectory 'testsuite'.  Generally speaking, to run it first
+
+1) Test generation
+
+   - In test-generate.sh, you may need to configure
+
+     - The submissiontype to your scheduler type appropriately. 
+
+     - Job submission details such as your batch queue, etc.
+
+     - What tests shall not be run
+  
+     - Paths to your projects
+
+     - Paths to java
+
+     - The REMOTE_CMD
+
+   - After configuration, run test-generate.sh to generate test submission scripts.
+
+2) Test execution
+
+   - In test-submit.sh, you may need to configure
+
+     - The submissiontype to your scheduler type appropriately.
+
+     - Which project tests to run
+
+     - What type of tests to run
+
+       - standard tests can run in parallel on your cluster
+       - dependency tests run serially b/c they depend on the prior job running
+       - nolocaldir tests test the MAGPIE_NO_LOCAL_DIR option.
+       - largeperformanceruntests tests very large runs
+
+   - Run test-submit.sh to submit jobs for testing.  Test submissions are logged in magpie-test.log.
+
+3) Validation
+
+   - After all jobs are complete, run test-validate.sh to see if tests were successful.
+
