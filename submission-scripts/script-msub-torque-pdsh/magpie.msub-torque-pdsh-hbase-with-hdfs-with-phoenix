@@ -784,7 +784,7 @@ export PHOENIX_MODE="performanceeval"
 #
 # Extra Java runtime options
 #
-# export PHOENIX_QUERYSERVER_OPTS="-Djava.io.tmpdir=${PHOENIX_LOCAL_JOB_DIR}/tmp"
+# export PHOENIX_QUERYSERVER_EXTRA_OPTS="-Djava.io.tmpdir=${PHOENIX_LOCAL_JOB_DIR}/tmp"
 
 ############################################################################
 ## PHOENIX Performance Evaluation Configurations

@@ -13,4 +13,4 @@ export PHOENIX_PID_DIR="${PHOENIX_PID_DIR:-PHOENIXPIDDIR}"
 export PHOENIX_CONF_DIR="${PHOENIX_CONF_DIR:-PHOENIXCONFDIR}"
 
 # Query server options
-export PHOENIX_QUERYSERVER_OPTS="-Dlog4j.configuration=file:${PHOENIX_CONF_DIR}/log4j.properties -Dphoenix.root.loger=INFO,DRFA,console -Dphoenix.log.dir=${PHOENIX_LOG_DIR} -Dphoenix.log.file=phoenix-$(whoami)-$(hostname).log "
+export PHOENIX_QUERYSERVER_OPTS="${PHOENIX_QUERYSERVER_OPTS:-PHOENIXQUERYSERVEROPTS} -Dlog4j.configuration=file:${PHOENIX_CONF_DIR}/log4j.properties -Dphoenix.root.loger=INFO,DRFA,console -Dphoenix.log.dir=${PHOENIX_LOG_DIR} -Dphoenix.log.file=phoenix-$(whoami)-$(hostname).log"
