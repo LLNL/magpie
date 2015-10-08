@@ -1059,12 +1059,6 @@ then
 	exit 1
     fi
 
-    if [ "${PHOENIX_HBASE_VERSION}X" == "X" ]
-    then
-	echo "PHOENIX_HBASE_VERSION must be set to run Phoenix"
-	exit 1
-    fi
-
     if [ "${PHOENIX_HOME}X" == "X" ]
     then
 	echo "PHOENIX_HOME must be set to run Phoenix"

@@ -1387,9 +1387,6 @@ Instructions For Using Phoenix
 
    PHOENIX_VERSION : Set appropriately.
 
-   PHOENIX_HBASE_VERSION : Set appropriately. (If you have chosen the
-   proper version of Hbase, it will automatically fill this in)
-
    PHOENIX_HOME : Where your phoenix code is.  Typically in an NFS mount.
 
    PHOENIX_LOCAL_DIR : A small place for conf files and log files local to

@@ -219,7 +219,7 @@ fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
-     hbaseclasspath=${PHOENIX_HOME}/*:${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-client-minimal.jar:${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-server.jar:${hbaseclasspath}
+     hbaseclasspath=${PHOENIX_HOME}/*:${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-client-minimal.jar:${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar:${hbaseclasspath}
      pre_hbasesitexml_phoenix=${hbaseconffiledir}/hbase-site-phoenix.xml
 fi
 
