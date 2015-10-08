@@ -543,7 +543,7 @@ if [ "${phoenixtests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	for phoenixversion in 4.5.2
+	for phoenixversion in 4.5.2-HBase-1.1
 	do
 	    for hbaseversion in 1.1.2
 	    do
@@ -578,7 +578,7 @@ then
 
     if [ "${dependencytests}" == "y" ]
     then
-	for phoenixversion in 4.5.2
+	for phoenixversion in 4.5.2-HBase-1.1
 	do
 	    for hbaseversion in 1.1.2
 	    do
@@ -593,7 +593,7 @@ then
 	    done
 	done
 
-	for phoenixversion in 4.5.2
+	for phoenixversion in 4.5.2-HBase-1.1
 	do
 	    for hbaseversion in 1.1.2
 	    do

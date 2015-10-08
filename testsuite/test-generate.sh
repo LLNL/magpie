@@ -9,7 +9,7 @@
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
 #   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2
-# Phoenix 4.5.2
+# Phoenix 4.5.2-Hbase-1.1
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
 #   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
 #   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
@@ -69,7 +69,7 @@ no_hbase_1_1_0=n
 no_hbase_1_1_0_1=n
 no_hbase_1_1_1=n
 no_hbase_1_1_2=n
-no_phoenix_4_5_2=n
+no_phoenix_4_5_2_Hbase_1_1=n
 no_spark_0_9_1_bin_hadoop2=n
 no_spark_0_9_2_bin_hadoop2=n
 no_spark_1_2_0_bin_hadoop2_4=n
@@ -1179,7 +1179,7 @@ done
 
 echo "Making Phoenix tests"
 
-for phoenixversion in 4.5.2
+for phoenixversion in 4.5.2-Hbase-1.1
 do
     for hbaseversion in 1.1.2
     do
@@ -1233,7 +1233,7 @@ done
 
 # Dependency 1 Tests, run after another, HFDS over Lustre
 
-for phoenixversion in 4.5.2
+for phoenixversion in 4.5.2-HBase-1.1
 do
     for hbaseversion in 1.1.2
     do
@@ -1261,7 +1261,7 @@ done
 
 # Dependency 1 Tests, run after another, HFDS over NetworkFS
 
-for phoenixversion in 4.5.2
+for phoenixversion in 4.5.2-HBase-1.1
 do
     for hbaseversion in 1.1.2
     do
@@ -2031,9 +2031,9 @@ then
     rm -f magpie.${submissiontype}*hbase-1.1.2*
 fi
 
-if [ "${no_phoenix_4_5_2}" == "y" ]
+if [ "${no_phoenix_4_5_2_Hbase_1_1}" == "y" ]
 then
-    rm -f magpie.${submissiontype}*phoenix-4.5.2*
+    rm -f magpie.${submissiontype}*phoenix-4.5.2-HBase-1.1*
 fi
 
 if [ "${no_spark_0_9_1_bin_hadoop2}" == "y" ]
