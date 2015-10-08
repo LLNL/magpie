@@ -1796,6 +1796,12 @@ HADOOP_LOG_DIR : the directory Hadoop log files are stored
 PIG_CONF_DIR : the directory that Pig configuration files
                local to the node are stored.
 
+ZOOKEEPER_NODES : comma separated list of Zookeeper nodes, may be
+                  helpful as input to some tools / scripts
+
+ZOOKEEPER_NODES_FIRST : first node in the ZOOKEEPER_NODES environment
+                        variable, for convenience
+
 ZOOKEEPER_CONF_DIR : the directory that Zookeeper configuration files
           	     local to the node are stored.
 

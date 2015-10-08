@@ -22,21 +22,34 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script executes scripts on behalf of the user.  For the most
-# part, it shouldn't be editted.  See job submission files for
-# configuration details.
+# Export environment variables we promised to export in documentation
+# and various variables needed.
+#
+# Unlke magpie-common-exports, this must only be called before
+# magpie-pre-run, magpie-run, and magpie-post-run, as it is dependent
+# on the magpie setup.
+#
+# This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 
+# Initially make variables specific to node
 Magpie_make_all_local_dirs_node_specific
 
-if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
-then    
-    ${MAGPIE_PRE_JOB_RUN}
-    exit $?
-fi
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+    zookeepernodesfirst=`echo "${zookeepernodes}" | head -1`
 
-exit 0
+    export ZOOKEEPER_NODES_FIRST="${zookeepernodesfirst}"
+
+    zookeepernodeslist=""
+    for zookeepernode in ${zookeepernodes}
+    do
+	zookeepernodeslist="${zookeepernodeslist}${zookeepernodeslist:+","}${zookeepernode}"
+    done
+
+    export ZOOKEEPER_NODES="${zookeepernodeslist}"
+fi

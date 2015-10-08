@@ -119,12 +119,7 @@ zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 hbasezookeeperquorum=""
 for zookeepernode in ${zookeepernodes}
 do
-    if [ "${hbasezookeeperquorum}X" == "X" ]
-    then
-	hbasezookeeperquorum=${zookeepernode}
-    else
-	hbasezookeeperquorum="${hbasezookeeperquorum},${zookeepernode}"
-    fi
+    hbasezookeeperquorum="${hbasezookeeperquorum}${hbasezookeeperquorum:+","}${zookeepernode}"
 done
 
 # Sets hbase_slave_timeout
