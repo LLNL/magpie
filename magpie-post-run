@@ -28,6 +28,9 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+Magpie_make_all_local_dirs_node_specific
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then    
