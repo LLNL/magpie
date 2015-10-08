@@ -459,7 +459,7 @@ fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
-    phoenix_jar="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-HBase-${PHOENIX_HBASE_VERSION}-client.jar"
+    phoenix_jar="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-client.jar"
     if [ "${sparkclasspath}X" != "X" ]
     then
         sparkclasspath="${phoenix_jar}:${sparkclasspath}"
