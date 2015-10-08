@@ -183,6 +183,32 @@ Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
       Tachyon & Spark may be needed depending on your environment.
       See README for more details
 
+Package Version Combinations
+----------------------------
+
+Many packages function together, for example Pig requires Hadooop,
+Spark may use Hadoop to access HDFS, Hbase and Storm require
+Zookeeper, and Phoenix requires Hbase.  While the range of project
+versions that work together is very large, we've found the following
+to be a good starting point to use in running jobs.
+
+Pig 0.12.X w/ Hadoop 2.4.X
+Pig 0.13.X, 0.14.X w/ Hadoop 2.6.X
+Pig 0.15.X w/ Hadoop 2.7.X
+
+Hbase 0.98.X w/ Hadoop 2.6.X, Zookeeper 3.4.X
+Hbase 0.99.X, 1.0.X, 1.1.X w/ Hadoop 2.7.X
+
+Phoenix 4.4.X, 4.5.X - Beginning w/ Phoenix 4.4.0, versions prebuilt
+  for Hbase 0.98, 1.0, and 1.1 are available.  Use the version it is
+  prebuilt for appropriately.
+
+Spark 0.9.X-bin-hadoop2 w/ Hadoop 2.2.X
+Spark 1.X - Beginning w/ Spark 1.0 versions prebuilt for Hadoop 2.2,
+  2.4, 2.6, etc. are available Use the version it is prebuilt for
+  appropriately.
+
+Storm 0.9.X w/ Zookeeper 3.4.X 
 
 Instructions For Running Hadoop
 -------------------------------
