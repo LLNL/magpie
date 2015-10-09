@@ -1287,6 +1287,92 @@ do
     done
 done
 
+# Dependency 2 Tests, run after another with hbase, HFDS over Lustre
+
+for phoenixversion in 4.5.2-HBase-1.1
+do
+    for hbaseversion in 1.1.2
+    do
+	for hadoopversion in 2.7.0
+	do
+	    for zookeeperversion in 3.4.6
+	    do
+		cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+
+		sed -i \
+		    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+		    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+		    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Phoenix2A\/'"${phoenixversion}"'"/' \
+		    -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
+		    -e 's/export PHOENIX_VERSION="\(.*\)"/export PHOENIX_VERSION="'"${phoenixversion}"'"/' \
+		    -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Phoenix2A\/'"${phoenixversion}"'"/' \
+		    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+		    ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+
+		cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hbaseperformanceeval
+
+		sed -i \
+		    -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="hbase"/' \
+		    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+		    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+		    -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Phoenix2A\/'"${phoenixversion}"'"/' \
+		    -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
+		    -e 's/export PHOENIX_VERSION="\(.*\)"/export PHOENIX_VERSION="'"${phoenixversion}"'"/' \
+		    -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Phoenix2A\/'"${phoenixversion}"'"/' \
+		    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+		    ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+	    done
+	done
+    done
+done
+
+# Dependency 2 Tests, run after another with hbase, HFDS over NetworkFS
+
+for phoenixversion in 4.5.2-HBase-1.1
+do
+    for hbaseversion in 1.1.2
+    do
+	for hadoopversion in 2.7.0
+	do
+	    for zookeeperversion in 3.4.6
+	    do
+		cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+
+		sed -i \
+		    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+		    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+		    -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Phoenix2B\/'"${phoenixversion}"'"/' \
+		    -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
+		    -e 's/export PHOENIX_VERSION="\(.*\)"/export PHOENIX_VERSION="'"${phoenixversion}"'"/' \
+		    -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Phoenix2B\/'"${phoenixversion}"'"/' \
+		    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+		    ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+
+		cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hbaseperformanceeval
+
+		sed -i \
+		    -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="hbase"/' \
+		    -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+		    -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+		    -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Phoenix2B\/'"${phoenixversion}"'"/' \
+		    -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
+		    -e 's/export PHOENIX_VERSION="\(.*\)"/export PHOENIX_VERSION="'"${phoenixversion}"'"/' \
+		    -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+		    -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Phoenix2B\/'"${phoenixversion}"'"/' \
+		    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+		    ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}
+	    done
+	done
+    done
+done
+
 # Spark Tests
 
 echo "Making Spark tests"
@@ -1798,6 +1884,10 @@ then
     sed -i -e "s/slurm-hbase-%j.out/slurm-hbase-zookeeper-shared-%j.out/" magpie.${submissiontype}-hbase*zookeeper*zookeeper-shared*
     sed -i -e "s/slurm-hbase-phoenix-%j.out/slurm-hbase-phoenix-zookeeper-shared-%j.out/" magpie.${submissiontype}-hbase*phoenix*zookeeper*zookeeper-shared*
     
+    # XXX - rearch testsuite, this is BS
+    sed -i -e "s/slurm-hbase-phoenix-%j.out/slurm-hbase-%j.out/" magpie.${submissiontype}-hbase*phoenix*hbaseperformanceeval
+    sed -i -e "s/slurm-hbase-phoenix-zookeeper-shared-%j.out/slurm-hbase-zookeeper-shared-%j.out/" magpie.${submissiontype}-hbase*phoenix*zookeeper*zookeeper-shared*hbaseperformanceeval
+
     sed -i -e "s/slurm-%j.out/slurm-spark-pi-%j.out/" magpie.${submissiontype}-spark*
     sed -i -e "s/slurm-spark-pi-%j.out/slurm-spark-wordcount-%j.out/" magpie.${submissiontype}-spark-with-hdfs*
     sed -i -e "s/slurm-spark-pi-%j.out/slurm-spark-wordcount-rawnetworkfs-%j.out/" magpie.${submissiontype}-spark-with-rawnetworkfs*
@@ -1830,6 +1920,10 @@ then
     sed -i -e "s/moab-hbase-%j.out/moab-hbase-zookeeper-shared-%j.out/" magpie.${submissiontype}-hbase*zookeeper*zookeeper-shared*
     sed -i -e "s/moab-hbase-phoenix-%j.out/moab-hbase-phoenix-zookeeper-shared-%j.out/" magpie.${submissiontype}-hbase*phoenix*zookeeper*zookeeper-shared*
     
+    # XXX - rearch testsuite, this is BS
+    sed -i -e "s/moab-hbase-phoenix-%j.out/moab-hbase-%j.out/" magpie.${submissiontype}-hbase*phoenix*hbaseperformanceeval
+    sed -i -e "s/moab-hbase-phoenix-zookeeper-shared-%j.out/moab-hbase-zookeeper-shared-%j.out/" magpie.${submissiontype}-hbase*phoenix*zookeeper*zookeeper-shared*hbaseperformanceeval
+
     sed -i -e "s/moab-%j.out/moab-spark-pi-%j.out/" magpie.${submissiontype}-spark*
     sed -i -e "s/moab-spark-pi-%j.out/moab-spark-wordcount-%j.out/" magpie.${submissiontype}-spark-with-hdfs*
     sed -i -e "s/moab-spark-pi-%j.out/moab-spark-wordcount-rawnetworkfs-%j.out/" magpie.${submissiontype}-spark-with-rawnetworkfs*
