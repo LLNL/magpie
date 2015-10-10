@@ -18,6 +18,8 @@ then
     outputprefix="slurm"
 fi
 
+verboseoutput=n
+
 test_yarn_shutdown () {
     local file=$1
     num=`grep -e "stopping yarn daemons" $file | wc -l`
@@ -120,9 +122,9 @@ test_zookeeper_shutdown () {
     fi
 }
 
-if ls ${outputprefix}-hadoop-terasort* >& /dev/null
+if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hadoop-terasort*`
+    for file in `ls ${outputprefix}*run-hadoopterasort*`
     do
 	num=`grep -e "completed successfully" $file | wc -l`
 	if [ "${num}" != "2" ]; then
@@ -130,12 +132,17 @@ then
 	fi
 	
 	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-hadoop-upgradehdfs* >& /dev/null
+if ls ${outputprefix}*run-hadoopupgradehdfs* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hadoop-upgradehdfs*`
+    for file in `ls ${outputprefix}*run-hadoopupgradehdfs*`
     do
 	num=`grep -e "Finalize upgrade successful" $file | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -143,12 +150,17 @@ then
 	fi
 	
 	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-hadoop-hdfs-older-version* >& /dev/null
+if ls ${outputprefix}*hdfs-older-version*expected-failure* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hadoop-hdfs-older-version*`
+    for file in `ls ${outputprefix}*hdfs-older-version*expected-failure*`
     do
 	num=`grep -e "HDFS version at mount" $file | grep -e "is older than" | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -156,12 +168,17 @@ then
 	fi
 	
 	test_no_hdfs_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-hadoop-hdfs-newer-version* >& /dev/null
+if ls ${outputprefix}*hdfs-newer-version*expected-failure* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hadoop-hdfs-newer-version*`
+    for file in `ls ${outputprefix}*hdfs-newer-version*expected-failure*`
     do
 	num=`grep -e "HDFS version at mount" $file | grep -e "is newer than" | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -169,12 +186,17 @@ then
 	fi
 	
 	test_no_hdfs_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-hadoop-hdfs-fewer-nodes* >& /dev/null
+if ls ${outputprefix}*hdfs-fewer-nodes*expected-failure* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hadoop-hdfs-fewer-nodes*`
+    for file in `ls ${outputprefix}*hdfs-fewer-nodes*expected-failure*`
     do
 	num=`grep -e "HDFS was last built using a larger slave node count" $file | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -182,64 +204,83 @@ then
 	fi
 	
 	test_no_hdfs_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-hadoop-and-pig* >& /dev/null
+if ls ${outputprefix}*run-testpig* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hadoop-and-pig*`
+    for file in `ls ${outputprefix}*run-testpig*`
     do
     # Below only works on 0.14.0 and up
     # num=`grep -e "Pig script completed" $file | wc -l`
 	
-	if echo ${file} | grep -q "pig-script"
-	then
-	    num=`grep -e "1,2,3" $file | wc -l`
-	    if [ "${num}" != "2" ]; then
-		echo "Job error in $file"
-	    fi
-	else
-	    
-	    if echo ${file} | grep -q "rawnetworkfs"
-	    then
-		num=`grep -e "file:\/" $file | grep "<dir>" | wc -l`
-	    else
-		num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
-	    fi
-	    if [ ! "${num}" -gt "0" ]; then
-		echo "Job error in $file"
-	    fi
-	fi
-	
 	if echo ${file} | grep -q "rawnetworkfs"
 	then
-	    test_yarn_shutdown $file
+	    num=`grep -e "file:\/" $file | grep "<dir>" | wc -l`
 	else
-	    test_hadoop_shutdown $file
+	    num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
 	fi
-    done
-fi
+	if [ ! "${num}" -gt "0" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
 
-if ls ${outputprefix}-hbase* >& /dev/null
-then
-    for file in `ls ${outputprefix}-hbase*`
-    do
-	if ! echo ${file} | grep -q "phoenix"
+	if [ "${verboseoutput}" = "y" ]
 	then
-	    num=`grep -e "Summary of timings" $file | wc -l`
-	    if [ "${num}" != "2" ]; then
-		echo "Job error in $file"
-	    fi
-	    
-	    test_hdfs_shutdown $file
-	    test_zookeeper_shutdown $file
+	    echo "File ${file} run through validation"
 	fi
     done
 fi
 
-if ls ${outputprefix}-hbase*phoenix* >& /dev/null
+if ls ${outputprefix}*run-pigscript* >& /dev/null
 then
-    for file in `ls ${outputprefix}-hbase*phoenix*`
+    for file in `ls ${outputprefix}*run-pigscript*`
+    do
+    # Below only works on 0.14.0 and up
+    # num=`grep -e "Pig script completed" $file | wc -l`
+	
+	num=`grep -e "1,2,3" $file | wc -l`
+	if [ "${num}" != "2" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
+if ls ${outputprefix}*run-hbaseperformanceeval* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-hbaseperformanceeval*`
+    do
+	num=`grep -e "Summary of timings" $file | wc -l`
+	if [ "${num}" != "2" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hdfs_shutdown $file
+	test_zookeeper_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
+if ls ${outputprefix}*run-phoenixperformanceeval* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-phoenixperformanceeval*`
     do
 	num=`grep -e "Time" $file | grep "sec(s)" | wc -l`
 	if [ "${num}" != "7" ]; then
@@ -248,12 +289,17 @@ then
 	
 	test_hdfs_shutdown $file
 	test_zookeeper_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-spark-pi* >& /dev/null
+if ls ${outputprefix}*run-sparkpi* >& /dev/null
 then
-    for file in `ls ${outputprefix}-spark-pi*`
+    for file in `ls ${outputprefix}*run-sparkpi*`
     do
 	num=`grep -e "Pi is roughly" $file | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -261,12 +307,17 @@ then
 	fi
 	
 	test_spark_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-spark-wordcount* >& /dev/null
+if ls ${outputprefix}*run-sparkwordcount* >& /dev/null
 then
-    for file in `ls ${outputprefix}-spark-wordcount*`
+    for file in `ls ${outputprefix}*run-sparkwordcount*`
     do
 	num=`grep -e "d: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -278,12 +329,17 @@ then
 	then
 	    test_hdfs_shutdown $file
 	fi
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-storm* >& /dev/null
+if ls ${outputprefix}*run-stormwordcount* >& /dev/null
 then
-    for file in `ls ${outputprefix}-storm*`
+    for file in `ls ${outputprefix}*run-stormwordcount*`
     do
 	num=`grep -e "WordCount no longer active, appears to have been killed correctly" $file | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -318,12 +374,17 @@ then
 	fi
 
 	test_zookeeper_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
 
-if ls ${outputprefix}-zookeeper* >& /dev/null
+if ls ${outputprefix}*run-zookeeperruok* >& /dev/null
 then
-    for file in `ls ${outputprefix}-zookeeper*`
+    for file in `ls ${outputprefix}*run-zookeeperruok*`
     do
 	num=`grep -e "imok" $file | wc -l`
 	if [ "${num}" != "3" ]; then
@@ -331,5 +392,10 @@ then
 	fi
 	
 	test_zookeeper_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
     done
 fi
