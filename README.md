@@ -133,7 +133,7 @@ Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.0+,
         0.99.1+, 0.99.2+, 1.0.0+, 1.0.1+, 1.0.1.1+, 1.0.2+, 1.1.0+,
         1.1.0.1+, 1.1.1+, 1.1.2+
 
-Phoenix - 4.5.2-HBase-1.1+ [PhoenixNote]
+Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+ [PhoenixNote]
 
 Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
         1.2.0-bin-hadoop2.4+, 1.2.1-bin-hadoop2.4+,

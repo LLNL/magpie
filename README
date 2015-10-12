@@ -160,7 +160,7 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
         1.3.1-bin-hadoop2.4+, 1.4.0-bin-hadoop2.6+,
         1.4.1-bin-hadoop2.6+, 1.5.0-bin-hadoop2.6+
 
-Phoenix - 4.5.2-HBase-1.1+ [PhoenixNote]
+Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+ [PhoenixNote]
 
 Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5
 
@@ -2245,8 +2245,9 @@ Hbase 0.98.3-hadoop2, 0.98.9-hadoop2, 0.99.0, 0.99.1, 0.99.2, 1.0.0,
 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, and 1.1.2.
 
 Phoenix was tested against phoenix-4.5.2-HBase-1.1-bin. It has been
-tested against hbase-1.1.2-bin. It has also been tested to be used 
-with spark-1.3.1-bin-hadoop2.4
+tested against hbase-1.1.2-bin. It has also been tested to be used
+with spark-1.3.1-bin-hadoop2.4.  Nominal testing as done with
+phoenix-4.5.1-Hbase-1.1-bin.
 
 Spark was added/tested against spark-0.9.1 and spark-1.0.0.  Nominal
 testing was done with Spark 0.9.2, 1.2.0, 1.2.1, 1.2.2, 1.3.0. 1.3.1,

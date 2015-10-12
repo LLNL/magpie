@@ -2,7 +2,7 @@ magpie 1.63
 -----------
 Support easy mechanism to kill jobs running in interactive mode.
 Add MAGPIE_REMOTE_CMD_OPTS to run output as needed.
-Support Phoenix 4.5.2
+Support Phoenix 4.5.1, 4.5.2
 Support Spark 1.5.1, update default Spark to 1.5.1.
 Support new convenience environment variables ZOOKEEPER_NODES and
   ZOOKEEPER_NODES_FIRST.
