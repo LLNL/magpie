@@ -1,3 +1,7 @@
+magpie 1.64
+-----------
+Support Phoenix 4.6.0.  Update default to 4.6.0.
+
 magpie 1.63
 -----------
 Support easy mechanism to kill jobs running in interactive mode.

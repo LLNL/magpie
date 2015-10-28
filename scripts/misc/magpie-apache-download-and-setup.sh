@@ -56,7 +56,7 @@ PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
 SPARK_PACKAGE="spark/spark-1.5.0/spark-1.5.0-bin-hadoop2.6.tgz"
 STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
-PHOENIX_PACKAGE="phoenix/phoenix-4.5.2-HBase-1.1/bin/phoenix-4.5.2-HBase-1.1-bin.tar.gz"
+PHOENIX_PACKAGE="phoenix/phoenix-4.6.0-HBase-1.1/bin/phoenix-4.6.0-HBase-1.1-bin.tar.gz"
 
 # First check some basics
 
