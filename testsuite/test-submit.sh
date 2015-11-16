@@ -14,6 +14,7 @@ submissiontype=sbatch-srun
 defaulttests=y
 hadooptests=y
 pigtests=y
+mahouttests=y
 hbasetests=y
 phoenixtests=y
 sparktests=y
@@ -106,6 +107,7 @@ then
     then
 	BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort
 	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig
+	BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol
 	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval
 	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval
 	BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi
@@ -119,6 +121,7 @@ then
 	then
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-no-local-dir
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-no-local-dir
 	    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-no-local-dir
@@ -147,6 +150,7 @@ then
 
 	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyGlobalOrder1D-hadoop-2.7.0-run-hadoopterasort
 	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1D-hadoop-2.7.0-pig-0.15.0-run-testpig
+	DependentJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyGlobalOrder1D-hadoop-2.7.0-mahout-0.11.1-run-clustersyntheticcontrol
 	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.6-run-hbaseperformanceeval
 	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6-run-sparkwordcount
     fi
@@ -404,6 +408,47 @@ then
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1B-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
 		DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1B-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
+	    done
+	done
+    fi
+fi
+
+# Mahout Tests
+
+if [ "${mahouttests}" == "y" ]
+then
+    if [ "${standardtests}" == "y" ]
+    then
+	for mahoutversion in 0.11.0 0.11.1
+	do
+	    for hadoopversion in 2.7.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
+		if [ "${nolocaldirtests}" == "y" ]
+		then
+		    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol-no-local-dir
+		fi
+	    done
+	done
+    fi
+
+    if [ "${dependencytests}" == "y" ]
+    then
+	for mahoutversion in 0.11.0 0.11.1
+	do
+	    for hadoopversion in 2.7.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1A-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
+		DependentJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1A-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
+	    done
+	done
+
+	for mahoutversion in 0.11.0 0.11.1
+	do
+	    for hadoopversion in 2.7.0
+	    do
+		BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1B-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
+		DependentJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1B-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
 	    done
 	done
     fi

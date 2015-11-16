@@ -142,6 +142,8 @@ Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5
 
 Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
 
+Mahout - 0.11.0+, 0.11.1+
+
 UDA/uda-plugin - 3.3.2-0
 
 Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+ [PhoenixNote]

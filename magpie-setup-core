@@ -95,6 +95,25 @@ then
 fi
 
 #
+# Setup Mahout directories
+#
+
+if [ "${MAHOUT_SETUP}" == "yes" ]
+then
+    mkdir -p $MAHOUT_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${MAHOUT_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $MAHOUT_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${MAHOUT_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup Hbase directories
 #
 

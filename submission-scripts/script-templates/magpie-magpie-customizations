@@ -26,6 +26,8 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #
 # "pig" - Run a job according to the settings of PIG_MODE.
 #
+# "mahout" - Run a job according to the settings of MAHOUT_MODE.
+#
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
@@ -43,6 +45,7 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #             For Hbase, testall will run performanceeval
 #             For Phoenix, testall will run performanceeval
 #             For Pig, testall will run testpig
+#             For Mahout, testall will run clustersyntheticcontrol
 #             For Spark, testall will run sparkpi
 #             For Storm, testall will run stormwordcount
 #             For tachyon, testall will run testtachyon

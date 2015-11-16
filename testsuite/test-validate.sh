@@ -259,6 +259,24 @@ then
     done
 fi
 
+if ls ${outputprefix}*run-clustersyntheticcontrol* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-clustersyntheticcontrol*`
+    do
+	num=`grep -e "Dumping out clusters from clusters" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
 if ls ${outputprefix}*run-hbaseperformanceeval* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hbaseperformanceeval*`
