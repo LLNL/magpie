@@ -2,11 +2,11 @@ magpie
 ======
 
 Magpie contains a number of scripts for running Big Data software in
-HPC environments.  Thus far, Hadoop, Hbase, Pig, Spark, Storm,
-Tachyon, and Zookeeper are supported.  It currently supports running
-over the parallel file system Lustre and running over any generic
-network filesytem.  There is scheduler/resource manager support for
-Slurm, Moab, Torque, and LSF.
+HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig,
+Phoenix, Tachyon, and Zookeeper are supported.  It currently supports
+running over the parallel file system Lustre and running over any
+generic network filesytem.  There is scheduler/resource manager
+support for Slurm, Moab, Torque, and LSF.
 
 Basic Idea
 ----------
@@ -127,27 +127,27 @@ listed below.
 Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.3.0+, 2.4.0+, 2.4.1+, 2.5.0+,
          2.5.1+, 2.5.2+, 2.6.0+, 2.6.1+, 2.7.0+, 2.7.1+
 
-Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
-
-Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.0+,
-        0.99.1+, 0.99.2+, 1.0.0+, 1.0.1+, 1.0.1.1+, 1.0.2+, 1.1.0+,
-        1.1.0.1+, 1.1.1+, 1.1.2+
-
-Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+ [PhoenixNote]
-
 Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
         1.2.0-bin-hadoop2.4+, 1.2.1-bin-hadoop2.4+,
         1.2.2-bin-hadoop2.4+, 1.3.0-bin-hadoop2.4+,
         1.3.1-bin-hadoop2.4+, 1.4.0-bin-hadoop2.6+,
         1.4.1-bin-hadoop2.6+, 1.5.0-bin-hadoop2.6+
 
+Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.0+,
+        0.99.1+, 0.99.2+, 1.0.0+, 1.0.1+, 1.0.1.1+, 1.0.2+, 1.1.0+,
+        1.1.0.1+, 1.1.1+, 1.1.2+
+
 Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5
 
-Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6
+Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
 
 UDA/uda-plugin - 3.3.2-0
 
+Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+ [PhoenixNote]
+
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
+
+Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6
 
 [PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
       is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on
