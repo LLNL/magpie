@@ -167,6 +167,21 @@ then
     pigcmdprefix="bin"
 fi
 
+if [ "${MAHOUT_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+	export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+	export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # MAHOUT_LOCAL_SCRATCH_DIR & MAHOUT_CONF_DIR set
+    Magpie_make_mahout_local_dirs_node_specific
+
+    mahoutexamplesprefix="examples"
+    mahoutcmdprefix="bin"
+fi
+
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]

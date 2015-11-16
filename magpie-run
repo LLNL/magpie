@@ -531,13 +531,21 @@ then
 	echo "*" 
 	echo "*   ${hadoopcmdprefix}/hadoop jar ..."
 	echo "*" 
-	if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
+ 	if [ "${PIG_SETUP}" == "yes" ] && [ "${PIG_MODE}" == "interactive" ]
 	then
 	    echo "*"
 	    echo "* To run pig scripts:"
 	    echo "*"
 	    echo "* cd $PIG_HOME"
 	    echo "* ${pigcmdprefix}/pig ..."
+	fi
+ 	if [ "${MAHOUT_SETUP}" == "yes" ] && [ "${MAHOUT_MODE}" == "interactive" ]
+	then
+	    echo "*"
+	    echo "* To run mahout:"
+	    echo "*"
+	    echo "* cd $MAHOUT_HOME"
+	    echo "* ${mahoutcmdprefix}/mahout ..."
 	fi
 	if [ "${HADOOP_MODE}" == "setuponly" ]
 	then
@@ -657,6 +665,33 @@ then
 		fi
 	    fi
 	fi
+	if [ "${MAHOUT_SETUP}" == "yes" ]
+	then
+	    if [ "${MAHOUT_OPTS}X" != "X" ]
+	    then
+		if ! echo ${MAHOUT_OPTS} | grep -q -E "java.io.tmpdir"
+		then
+		    export MAHOUT_OPTS="${MAHOUT_OPTS} -Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCH_DIR}/tmp"
+		fi
+	    else
+		export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCH_DIR}/tmp"
+	    fi
+
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "*   setenv MAHOUT_HOME \"${MAHOUT_HOME}\""
+		if [ "${MAHOUT_OPTS}X" != "X" ]
+		then
+		    echo "*   setenv MAHOUT_OPTS \"${MAHOUT_OPTS}\""
+		fi
+	    else
+		echo "*   export MAHOUT_HOME=\"${MAHOUT_HOME}\""
+		if [ "${MAHOUT_OPTS}X" != "X" ]
+		then
+		    echo "*   export MAHOUT_OPTS=\"${MAHOUT_OPTS}\""
+		fi
+	    fi
+	fi
 
 	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
 	then
@@ -729,6 +764,25 @@ then
 		    fi
 		fi
 	    fi
+
+	    if [ "${MAHOUT_SETUP}" == "yes" ]
+	    then
+		if echo $MAGPIE_SHELL | grep -q csh
+		then
+		    echo "setenv MAHOUT_HOME \"${MAHOUT_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    if [ "${MAHOUT_OPTS}X" != "X" ]
+		    then
+			echo "setenv MAHOUT_OPTS \"${MAHOUT_OPTS}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    fi
+		else
+		    echo "export MAHOUT_HOME=\"${MAHOUT_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    if [ "${MAHOUT_OPTS}X" != "X" ]
+		    then
+			echo "export MAHOUT_OPTS=\"${MAHOUT_OPTS}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    fi
+		fi
+	    fi
+
 	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	fi
     fi
@@ -1790,6 +1844,46 @@ then
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
             trap "echo \"Exiting from ${PIG_MODE} mode due to user interrupt.\"" 10
+	    sleep ${jobtimeseconds} &
+            wait
+	fi
+    elif [ "${MAGPIE_JOB_TYPE}" == "mahout" ]
+    then
+	if [ "${MAHOUT_MODE}" == "classifywikipedia" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Classifywikipedia"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-classifywikipedia &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Running Clustersyntheticcontrol"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${MAHOUT_MODE}" == "script" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Executing Mahout script $MAHOUT_SCRIPT_PATH"
+	    echo "*******************************************************"
+	    ${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH} &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
+	elif [ "${MAHOUT_MODE}" == "interactive" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Mahout ${MAHOUT_MODE} mode"
+            echo "*"
+            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${MAHOUT_MODE} mode early."
+	    echo "*******************************************************"
+	    # Will set jobtimeseconds
+	    Magpie_job_time_seconds
+            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            trap "echo \"Exiting from ${MAHOUT_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi

@@ -1,6 +1,7 @@
 magpie 1.64
 -----------
 Support Phoenix 4.6.0.  Update default to 4.6.0.
+Support Mahout 0.11.0, 0.11.1.
 
 magpie 1.63
 -----------

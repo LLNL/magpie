@@ -22,59 +22,30 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the main setup script.  For the most part, it
-# shouldn't be editted.  See job submission files for configuration
-# details.
+# This script is for running the mahout clustersyntheticcontrol sanity
+# test.  For the most part, it shouldn't be editted.  See job
+# submission files for configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
-(${MAGPIE_SCRIPTS_HOME}/magpie-setup-core)
+# For this run, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
 
-if [ "${HADOOP_SETUP}" == "yes" ]
+export MAHOUT_WORK_DIR="${MAHOUT_LOCAL_SCRATCH_DIR}/mahout"
+
+if [ ! -d "${MAHOUT_WORK_DIR}" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hadoop)
+    mkdir -p ${MAHOUT_WORK_DIR}
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${MAHOUT_WORK_DIR}"
+        exit 1
+    fi
 fi
 
-if [ "${PIG_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-pig)
-fi
-
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-mahout)
-fi
-
-if [ "${HBASE_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hbase)
-fi
-
-if [ "${PHOENIX_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-phoenix)
-fi
-
-if [ "${SPARK_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-spark)
-fi
-
-if [ "${STORM_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-storm)
-fi
-
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-tachyon)
-fi
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zookeeper)
-fi
+command="${MAHOUT_HOME}/${mahoutexamplesprefix}/${mahoutcmdprefix}/cluster-syntheticcontrol.sh"
+echo "Running $command" >&2
+echo "1" | $command
 
 exit 0

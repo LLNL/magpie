@@ -169,6 +169,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "phoenix" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "mahout" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "storm" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tachyon" ] \
@@ -177,7 +178,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, phoenix, spark, storm, tachyon, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, storm, tachyon, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -287,6 +288,13 @@ then
     exit 1
 fi
 
+if [ "${MAHOUT_SETUP}X" != "X" ] \
+    && ( [ "${MAHOUT_SETUP}" != "yes" ] && [ "${MAHOUT_SETUP}" != "no" ] )
+then
+    echo "MAHOUT_SETUP must be set to yes or no"
+    exit 1
+fi
+
 if [ "${HBASE_SETUP}X" != "X" ] \
     && ( [ "${HBASE_SETUP}" != "yes" ] && [ "${HBASE_SETUP}" != "no" ] )
 then
@@ -325,6 +333,7 @@ fi
 # Did user turn on SOMETHING to run
 #
 # Pig is not "something", b/c it needs hadoop 
+# Mahout is not "something", b/c it needs hadoop 
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
@@ -350,6 +359,13 @@ if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
     && [ "${PIG_SETUP}" != "yes" ]
 then
     echo "Cannot run pig job type if PIG_SETUP is not enabled"
+    exit 1
+fi
+
+if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
+    && [ "${MAHOUT_SETUP}" != "yes" ]
+then
+    echo "Cannot run mahout job type if MAHOUT_SETUP is not enabled"
     exit 1
 fi
 
@@ -389,6 +405,7 @@ fi
 if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${PIG_SETUP}" != "yes" ] \
+    && [ "${MAHOUT_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
@@ -859,6 +876,93 @@ then
 	if [ "${HADOOP_MODE}" == "setuponly" ]
 	then
 	    echo "Cannot run Pig job if Hadoop mode is setuponly"
+	    exit 1
+	fi
+    fi
+fi
+
+#
+# Check Mahout Inputs 
+#
+
+if [ "${MAHOUT_SETUP}" == "yes" ]
+then
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Mahout"
+	exit 1
+    fi
+
+    if [ "${HADOOP_SETUP}" != "yes" ]
+    then
+	echo "Mahout requires Hadoop to be setup, set HADOOP_SETUP to yes"
+	exit 1
+    fi
+
+    if [ "${MAHOUT_VERSION}X" == "X" ]
+    then
+	echo "MAHOUT_VERSION must be set to run Mahout"
+	exit 1
+    fi
+
+    if [ "${MAHOUT_HOME}X" == "X" ]
+    then
+	echo "MAHOUT_HOME must be set to run Mahout"
+	exit 1
+    fi
+    
+    if [ ! -d ${MAHOUT_HOME} ]
+    then
+	echo "MAHOUT_HOME does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${MAHOUT_LOCAL_DIR}X" == "X" ]
+    then
+	echo "MAHOUT_LOCAL_DIR must be set to run Mahout"
+	exit 1
+    fi
+
+    if [ "${MAHOUT_MODE}" != "classifywikipedia" ] \
+	&& [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
+	&& [ "${MAHOUT_MODE}" != "script" ] \
+	&& [ "${MAHOUT_MODE}" != "interactive" ]
+    then
+	echo "MAHOUT_MODE must be set to classifywikipedia, clustersyntheticcontrol, script, interactive"
+	exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
+	&& ( [ "${MAHOUT_MODE}" == "classifywikipedia" ] || [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ] )
+    then
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-classifywikipedia" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-classifywikipedia cannot be found, it is required to run the classifywikipedia sanity test"
+	    exit 1
+	fi
+
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol cannot be found, it is required to run the clustersyntheticcontrol sanity test"
+	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] && [ "${MAHOUT_MODE}" == "script" ]
+    then
+	if [ "${MAHOUT_SCRIPT_PATH}X" == "X" ]
+	then
+	    echo "Script MAHOUT_SCRIPT_PATH must be specified for MAHOUT_MODE = ${MAHOUT_MODE}"
+	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
+	&& ([ "${MAHOUT_MODE}" == "classifywikipedia" ] || [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ] || [ "${MAHOUT_MODE}" == "script" ])
+    then
+	if [ "${HADOOP_MODE}" == "setuponly" ]
+	then
+	    echo "Cannot run Mahout job if Hadoop mode is setuponly"
 	    exit 1
 	fi
     fi
