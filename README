@@ -310,7 +310,7 @@ Instructions For Running Hadoop
 
 5) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < .magpie.lsffile" for lsf.  
+   Moab, or "bsub < .magpie.lsffile" for LSF.  
    Add any other options you see fit.
 
 6) Look at your job output file to see your output.  There will also
@@ -834,8 +834,9 @@ Instructions For Using Pig
    your submission script.  See above for Hadoop setup instructions.
 
 6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
-   Moab.  Add any other options you see fit.
+   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
+   Moab, or "bsub < .magpie.lsffile" for LSF.
+   Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
@@ -1005,7 +1006,7 @@ Instructions For Running Hbase
 
 7) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile".
+   Moab, or "bsub < ./magpie.lsffile" for LSF.
    Add any other options you see fit.
 
 8) Look at your job output file to see your output.  There will also
@@ -1418,8 +1419,9 @@ Instructions For Using Phoenix
    your submission script.  See above for Hbase setup instructions.
 
 6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm or "msub ./magpie.msubfile" for
-   Moab.  Add any other options you see fit.
+   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
+   Moab, or "bsub < .magpie.lsffile" for LSF.
+   Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
    be some notes/instructions/tips in the output file for viewing the
@@ -1519,7 +1521,7 @@ Instructions For Storm
 
 6) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < .magpie.lsffile" for lsf.  
+   Moab, or "bsub < .magpie.lsffile" for LSF.
    Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
