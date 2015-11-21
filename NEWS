@@ -1,6 +1,7 @@
 magpie 1.64
 -----------
 Support Phoenix 4.6.0.  Update default to 4.6.0.
+On initial HDFS setup, create user home directory if it does not exist (/user/$USER).
 
 magpie 1.63
 -----------

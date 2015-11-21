@@ -846,6 +846,18 @@ then
 	    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
 	fi
     fi
+
+    # A number of applications assume the user home directory has been
+    # created.  If it hasn't yet, lets create it for the user.
+    if [ "${hadoop_setup_successful}" == "1" ]
+    then
+	${hadoopcmdprefix}/hadoop fs -ls "/user/${USER}" >& /dev/null
+	if [ $? -ne 0 ]
+	then
+	    echo "User home directory /user/${USER} not found, creating it"
+	    ${hadoopcmdprefix}/hadoop fs -mkdir -p "/user/${USER}"
+	fi
+    fi
 else
     hadoop_should_be_torndown=0
     hadoop_setup_successful=1
