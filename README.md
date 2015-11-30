@@ -13,9 +13,9 @@ Basic Idea
 
 The basic idea behind these scripts are to:
 
-1) Submit a job batch script to allocate nodes on a cluster using your
-   HPC scheduler/resource manager.  Slurm, Moab+Slurm, Moab+Torque and
-   LSF are currently supported.
+1) Submit a Magpie job batch script to allocate nodes on a cluster
+   using your HPC scheduler/resource manager.  Slurm, Moab+Slurm,
+   Moab+Torque and LSF+mpirun are currently supported.
 
 2) The batch script will create configuration files for all
    appropriate projects (Hadoop, Hbase, etc.)  The configuration files
@@ -27,8 +27,8 @@ The basic idea behind these scripts are to:
    filesystem choice and the hardware that exists in your cluster.
    Reasonable attempts are made to determine optimal values for your
    system and hardware (they are almost certainly better than the
-   default values).  A number of options exist to adjust these values
-   for individual jobs.
+   default values).  A number of options exist in the batch scripts to
+   adjust these values for individual jobs.
 
 3) Launch daemons on all nodes.  The rank 0 node will run master
    daemons, such as the Hadoop Namenode or the Hbase Master.  All
@@ -57,6 +57,11 @@ Requirements
    install them into their NFS home directories.
 
    These paths will be specified in job submission scripts.
+
+   Some projects may need patches applied.  You can find patches in
+   Magpie's 'patches' directory.  Most patches are only needed against
+   scripts within the projects, but on occassion a recompilation of
+   the source may also be necessary.
 
 2) A passwordless remote shell execution mechanism must be available
    for scripts to launch big data daemons (Hadoop Datanodes, Hbase
