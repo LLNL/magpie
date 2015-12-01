@@ -36,8 +36,8 @@ Basic Idea
 
 The basic idea behind these scripts are to:
 
-1) Submit a Magpie job batch script to allocate nodes on a cluster
-   using your HPC scheduler/resource manager.  Slurm, Moab+Slurm,
+1) Submit a Magpie batch script to allocate nodes on a cluster using
+   your HPC scheduler/resource manager.  Slurm, Moab+Slurm,
    Moab+Torque and LSF+mpirun are currently supported.
 
 2) The batch script will create configuration files for all
