@@ -1,11 +1,12 @@
 Magpie Network File System Option
 ---------------------------------
 
-As noted in the README file, there are some portability or "gotchas"
-when using Rawnetworkfs.  In attempt to get around some of those
-issues, the "Magpie Network FS" patch is available as a plugin for
-Hadoop 2.0.  It is a file system plugin that is a small layer above
-the Raw Local FileSystem.
+As noted in the section "Pro vs Con of HDFS over Lustre/NetworkFS" in
+README.hadoop, there are some portability or "gotchas" when using
+Rawnetworkfs.  In attempt to get around some of those issues, the
+"Magpie Network FS" patch is available as a plugin for Hadoop 2.0.  It
+is a file system plugin that is a small layer above the Raw Local
+FileSystem.
 
 The patch runs very similarly to rawnetworkfs except that it handles
 the following extra cases.
@@ -31,7 +32,8 @@ ${HADOOP_MAGPIENETWORKFS_PATH}/mypath/file.
 This can help w/ portability of code/scripts that usually assume HDFS,
 which does not have a current working directory.
 
-A patch for Magpie Network FS can be found in the patches directory.
+A patch for Magpie Network FS can be found in the patches/hadoop/
+directory.
 
 The submission scripts do not include 'MagpieNetworkFS' fields by
 default.  To include them:
