@@ -154,10 +154,10 @@ The following job scripts may be convenient.  They can be run by
 running in 'script' mode and setting HADOOP_SCRIPT_PATH to the script.
 
 job-scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh
-- See HDFS over Lustre section for details.
+- See "Basics of HDFS over Lustre/NetworkFS" section for details.
 
 job-scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh
-- See HDFS over Lustre section for details.
+- See "Basics of HDFS over Lustre/NetworkFS" section for details.
 
 job-scripts/hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh -
 Cleanup/remove corrupted blocks in HDFS.
