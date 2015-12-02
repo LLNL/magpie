@@ -147,6 +147,9 @@ HADOOP_LOG_DIR : the directory Hadoop log files are stored
 Hadoop Convenience Scripts
 --------------------------
 
+The following job scripts may be convenient.  They can be run by
+running in 'script' mode and setting HADOOP_SCRIPT_PATH to the script.
+
 job-scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decomission-script.sh
 - See HDFS over Lustre section for details.
 
