@@ -274,6 +274,45 @@ MAGPIE_JOB_ID : Job ID
 
 MAGPIE_TIMELIMIT_MINUTES : Timelimit of job in minutes
 
+Convenience Scripts
+-------------------
+
+A number of convenience scripts are included in the scripts/
+directory, both for possible usefulness and as examples.  They are
+organized within the directory as follows:
+
+job-scripts - These are scripts that you would run as a possible job
+in Magpie.  You would set these scripts in Magpie job scripts in
+environment variables such as MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH,
+HBASE_SCRIPT_PATH, etc.
+
+pre-job-run-scripts - These are scripts that you would run before the
+actual calculation is executed.  You would set these scripts in the
+MAGPIE_PRE_JOB_RUN environment variable.
+
+post-job-run-scripts - These are scripts that you would run after the
+actual calculation is executed.  You would set these scripts in the
+MAGPIE_POST_JOB_RUN environment variable.
+
+misc - Other miscellaneous scripts.  These may be useful outside of
+Magpie or are convenient in some other way.
+
+Notable scripts worth mentioning:
+
+pre-job-run-scripts/magpie-output-config-files-script.sh - This script
+will output all of the conf files from your job.  It's convenient for
+debugging.
+
+post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
+This script will get all of the conf files and log files from Hadoop,
+Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
+for post-analysis of your job.  It's convenient for debugging.
+
+misc/magpie-apache-download-and-setup.sh - Script will automatically
+download and patch Apache projects for you so you don't have to
+manually download them.  It'll also configure several paths for you in
+the launch scripts automatically.
+
 General Advanced Usage
 ----------------------
 
@@ -325,45 +364,6 @@ The following are additional tips for advanced usage of Magpie.
    can be set to always force HDFS paths and Zookeeper paths to be
    different for each job.  Be careful to cleanup these directories
    from time to time, as Magpie will not clear data from prior jobs.
-
-Convenience Scripts
--------------------
-
-A number of convenience scripts are included in the scripts/
-directory, both for possible usefulness and as examples.  They are
-organized within the directory as follows:
-
-job-scripts - These are scripts that you would run as a possible job
-in Magpie.  You would set these scripts in Magpie job scripts in
-environment variables such as MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH,
-HBASE_SCRIPT_PATH, etc.
-
-pre-job-run-scripts - These are scripts that you would run before the
-actual calculation is executed.  You would set these scripts in the
-MAGPIE_PRE_JOB_RUN environment variable.
-
-post-job-run-scripts - These are scripts that you would run after the
-actual calculation is executed.  You would set these scripts in the
-MAGPIE_POST_JOB_RUN environment variable.
-
-misc - Other miscellaneous scripts.  These may be useful outside of
-Magpie or are convenient in some other way.
-
-Notable scripts worth mentioning:
-
-pre-job-run-scripts/magpie-output-config-files-script.sh - This script
-will output all of the conf files from your job.  It's convenient for
-debugging.
-
-post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
-This script will get all of the conf files and log files from Hadoop,
-Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
-for post-analysis of your job.  It's convenient for debugging.
-
-misc/magpie-apache-download-and-setup.sh - Script will automatically
-download and patch Apache projects for you so you don't have to
-manually download them.  It'll also configure several paths for you in
-the launch scripts automatically.
 
 Security
 --------
