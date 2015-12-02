@@ -112,6 +112,9 @@ Instructions For Using Phoenix
 Phoenix Exported Environment Variables
 ---------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 PHOENIX_QUERYSERVER_OPTS : list of options for the phoenix queryserver
 
 PHOENIX_CONF_DIR : the directory that Phoenix configuration files local

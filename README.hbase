@@ -124,6 +124,9 @@ over the new nodes.
 Hbase Exported Environment Variables
 ------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 HBASE_CONF_DIR : the directory that Hbase configuration files local
                  to the node are stored.
 

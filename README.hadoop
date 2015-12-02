@@ -119,6 +119,9 @@ Instructions For Running Hadoop
 Hadoop Exported Environment Variables
 -------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 HADOOP_MASTER_NODE : the master node of the Hadoop allocation
 
 HADOOP_SLAVE_COUNT : number of compute/data nodes in your allocation

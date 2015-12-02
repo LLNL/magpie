@@ -69,6 +69,9 @@ Instructions For Tachyon
 Tachyon Exported Environment Variables
 --------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 TACHYON_MASTER_NODE : the master node of the Tachyon allocation.  Often
 		      used for accessing tachyon
 		      (e.g. tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT})

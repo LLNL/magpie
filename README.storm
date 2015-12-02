@@ -109,6 +109,9 @@ Instructions For Storm
 Storm Exported Environment Variables
 ------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 STORM_MASTER_NODE : the master node of the Storm allocation
 
 STORM_NIMBUS_HOST : Identical to STORM_MASTER_NODE

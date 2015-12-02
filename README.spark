@@ -135,6 +135,9 @@ Instructions For Spark
 Spark Exported Environment Variables
 ------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 SPARK_MASTER_NODE : the master node of the Spark allocation.  Often
 		    used for launching Spark jobs
 		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})

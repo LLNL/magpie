@@ -78,6 +78,9 @@ Instructions For Running Zookeeper
 Zookeeper Exported Environment Variables
 ----------------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 ZOOKEEPER_NODES : comma separated list of Zookeeper nodes, may be
                   helpful as input to some tools / scripts
 

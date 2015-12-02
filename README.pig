@@ -114,6 +114,9 @@ Instructions For Using Pig
 Pig Exported Environment Variables
 ----------------------------------
 
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
 PIG_CONF_DIR : the directory that Pig configuration files
                local to the node are stored.
 
