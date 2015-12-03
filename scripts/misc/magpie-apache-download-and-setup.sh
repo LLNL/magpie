@@ -17,6 +17,7 @@
 HADOOP_DOWNLOAD="N"
 HBASE_DOWNLOAD="N"
 PIG_DOWNLOAD="N"
+MAHOUT_DOWNLOAD="N"
 ZOOKEEPER_DOWNLOAD="N"
 SPARK_DOWNLOAD="N"
 STORM_DOWNLOAD="N"
@@ -53,6 +54,7 @@ PRESET_LAUNCH_SCRIPT_PATHS="Y"
 HADOOP_PACKAGE="hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
 HBASE_PACKAGE="hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
+MAHOUT_PACKAGE="mahout/0.11.1/apache-mahout-distribution-0.11.1.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
 SPARK_PACKAGE="spark/spark-1.5.0/spark-1.5.0-bin-hadoop2.6.tgz"
 STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
@@ -152,6 +154,29 @@ then
     tar -xzf ${PIG_PACKAGE_BASENAME}
 
     # No pig patches at the moment
+fi
+
+if [ "${MAHOUT_DOWNLOAD}" == "Y" ]
+then
+    APACHE_DOWNLOAD_MAHOUT="${APACHE_DOWNLOAD_BASE}/${MAHOUT_PACKAGE}"
+
+    MAHOUT_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_MAHOUT} | grep "${MAHOUT_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+
+    echo "Downloading from ${MAHOUT_DOWNLOAD_URL}"
+
+    MAHOUT_PACKAGE_BASENAME=`basename ${MAHOUT_PACKAGE}`
+
+    wget -O ${INSTALL_PATH}/${MAHOUT_PACKAGE_BASENAME} ${MAHOUT_DOWNLOAD_URL}
+
+    echo "Untarring ${MAHOUT_PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${MAHOUT_PACKAGE_BASENAME}
+
+    MAHOUT_PACKAGE_BASEDIR=`echo $MAHOUT_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
+    cd ${INSTALL_PATH}/${MAHOUT_PACKAGE_BASEDIR}
+    echo "Applying patches"
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/mahout/${MAHOUT_PACKAGE_BASEDIR}.patch
 fi
 
 if [ "${ZOOKEEPER_DOWNLOAD}" == "Y" ]
