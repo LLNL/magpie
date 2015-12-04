@@ -460,11 +460,19 @@ fi
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     phoenix_jar="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-client.jar"
+
+    # Phoenix contains its own version of Jackson and can conflicts with the
+    # version of spark running, so we can put sparks jars in front
+    for j in $(ls $SPARK_HOME/lib)
+    do 
+        spark_jars="$SPARK_HOME/lib/$j:$spark_jars"
+    done
+
     if [ "${sparkclasspath}X" != "X" ]
     then
-        sparkclasspath="${phoenix_jar}:${sparkclasspath}"
+        sparkclasspath="${sparkclasspath}:${spark_jars}:${phoenix_jar}"
     else
-        sparkclasspath="${phoenix_jar}"
+        sparkclasspath="${spark_jars}:${phoenix_jar}"
     fi
 fi
 
