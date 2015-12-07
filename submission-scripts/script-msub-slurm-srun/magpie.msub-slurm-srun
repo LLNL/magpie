@@ -1109,7 +1109,7 @@ export SPARK_SETUP=no
 
 # Version
 #
-export SPARK_VERSION="1.5.1-bin-hadoop2.6"
+export SPARK_VERSION="1.5.2-bin-hadoop2.6"
 
 # Path to your Spark build/binaries
 #

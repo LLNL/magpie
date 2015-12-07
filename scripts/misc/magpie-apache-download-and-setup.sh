@@ -56,7 +56,7 @@ HBASE_PACKAGE="hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.11.1/apache-mahout-distribution-0.11.1.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
-SPARK_PACKAGE="spark/spark-1.5.1/spark-1.5.1-bin-hadoop2.6.tgz"
+SPARK_PACKAGE="spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz"
 STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
 PHOENIX_PACKAGE="phoenix/phoenix-4.6.0-HBase-1.1/bin/phoenix-4.6.0-HBase-1.1-bin.tar.gz"
 

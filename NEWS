@@ -1,5 +1,6 @@
 magpie 1.65
 -----------
+Support Spark 1.5.2, update default Spark to 1.5.2.
 
 magpie 1.64
 -----------

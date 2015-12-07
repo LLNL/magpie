@@ -1,0 +1,579 @@
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/slaves.sh spark-1.5.2-bin-hadoop2.6/sbin/slaves.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/slaves.sh	2015-12-07 10:48:13.724088000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/slaves.sh	2015-12-07 10:51:16.580049000 -0800
+@@ -50,23 +50,61 @@ if [ -f "$SPARK_SLAVES" ]; then
+   HOSTLIST=`cat "$SPARK_SLAVES"`
+ fi
+ 
++myhostname=`hostname`
++
+ # Check if --config is passed as an argument. It is an optional parameter.
+ # Exit if the argument is not a directory.
+ if [ "$1" == "--config" ]
+ then
+   shift
+   conf_dir="$1"
++  if echo $conf_dir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++  then
++      orig_conf_dir="$1"
++      conf_dir=$(echo "$conf_dir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++  fi
+   if [ ! -d "$conf_dir" ]
+   then
+     echo "ERROR : $conf_dir is not a directory"
+     echo $usage
+     exit 1
+   else
++    if [ "${orig_conf_dir}X" != "X" ]
++    then
++	orig_sparkconfdir=$orig_conf_dir
++    fi
+     export SPARK_CONF_DIR="$conf_dir"
+   fi
+   shift
+ fi
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparklogdir=$SPARK_LOG_DIR
++        export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkpiddir=$SPARK_PID_DIR
++        export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
+ if [ "$HOSTLIST" = "" ]; then
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/spark-daemon.sh spark-1.5.2-bin-hadoop2.6/sbin/spark-daemon.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/spark-daemon.sh	2015-12-07 10:48:13.726085000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/spark-daemon.sh	2015-12-07 10:51:16.582049000 -0800
+@@ -47,17 +47,28 @@ sbin="`cd "$sbin"; pwd`"
+ # Check if --config is passed as an argument. It is an optional parameter.
+ # Exit if the argument is not a directory.
+ 
++myhostname=`hostname`
++
+ if [ "$1" == "--config" ]
+ then
+   shift
+-  conf_dir="$1"
++  conf_dir=$1
++  if echo $conf_dir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++  then
++      orig_conf_dir="$1"
++      conf_dir=$(echo "$conf_dir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++  fi
+   if [ ! -d "$conf_dir" ]
+   then
+     echo "ERROR : $conf_dir is not a directory"
+     echo $usage
+     exit 1
+   else
+-    export SPARK_CONF_DIR="$conf_dir"
++    if [ "${orig_conf_dir}X" != "X" ]
++    then
++        orig_sparkconfdir=$orig_conf_dir
++    fi
++    export SPARK_CONF_DIR=$conf_dir
+   fi
+   shift
+ fi
+@@ -69,6 +80,33 @@ shift
+ instance=$1
+ shift
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparklogdir=$SPARK_LOG_DIR
++        export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkpiddir=$SPARK_PID_DIR
++        export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ spark_rotate_log ()
+ {
+     log=$1;
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/spark-daemons.sh spark-1.5.2-bin-hadoop2.6/sbin/spark-daemons.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/spark-daemons.sh	2015-12-07 10:48:13.729082000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/spark-daemons.sh	2015-12-07 10:51:16.588043000 -0800
+@@ -30,6 +30,8 @@ fi
+ sbin=`dirname "$0"`
+ sbin=`cd "$sbin"; pwd`
+ 
++myhostname=`hostname`
++
+ # Check if --config is passed as an argument. It is an optional parameter.
+ # Exit if the argument is not a directory.
+ 
+@@ -37,12 +39,21 @@ if [ "$1" == "--config" ]
+ then
+   shift
+   conf_dir=$1
++  if echo $conf_dir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++  then
++      orig_conf_dir="$1"
++      conf_dir=$(echo "$conf_dir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++  fi
+   if [ ! -d "$conf_dir" ]
+   then
+     echo "ERROR : $conf_dir is not a directory"
+     echo $usage
+     exit 1
+   else
++    if [ "${orig_conf_dir}X" != "X" ]
++    then
++        orig_sparkconfdir=$orig_conf_dir
++    fi
+     export SPARK_CONF_DIR=$conf_dir
+   fi
+   shift
+@@ -50,4 +61,18 @@ fi
+ 
+ . "$sbin/spark-config.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
+ exec "$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin/spark-daemon.sh" --config $SPARK_CONF_DIR "$@"
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/start-master.sh spark-1.5.2-bin-hadoop2.6/sbin/start-master.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/start-master.sh	2015-11-03 10:05:51.000000000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/start-master.sh	2015-12-07 10:51:16.591037000 -0800
+@@ -26,6 +26,8 @@ ORIGINAL_ARGS="$@"
+ 
+ START_TACHYON=false
+ 
++myhostname=`hostname`
++	
+ while (( "$#" )); do
+ case $1 in
+     --with-tachyon)
+@@ -41,6 +43,33 @@ done
+ 
+ . "$sbin/spark-config.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++	orig_sparkconfdir=$SPARK_CONF_DIR
++	export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++	orig_sparklogdir=$SPARK_LOG_DIR
++	export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++	orig_sparkpiddir=$SPARK_PID_DIR
++	export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
+ if [ "$SPARK_MASTER_PORT" = "" ]; then
+@@ -55,6 +84,21 @@ if [ "$SPARK_MASTER_WEBUI_PORT" = "" ]; 
+   SPARK_MASTER_WEBUI_PORT=8080
+ fi
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ] && [ "${orig_sparklogdir}X" != "X" ]
++then
++    export SPARK_LOG_DIR=$orig_sparklogdir
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ] && [ "${orig_sparkpiddir}X" != "X" ]
++then
++    export SPARK_PID_DIR=$orig_sparkpiddir
++fi
++
+ "$sbin"/spark-daemon.sh start org.apache.spark.deploy.master.Master 1 \
+   --ip $SPARK_MASTER_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT \
+   $ORIGINAL_ARGS
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/start-slave.sh spark-1.5.2-bin-hadoop2.6/sbin/start-slave.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/start-slave.sh	2015-12-07 10:48:13.731080000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/start-slave.sh	2015-12-07 10:51:16.593037000 -0800
+@@ -45,16 +45,27 @@ sbin="`cd "$sbin"; pwd`"
+ # Check if --config is passed as an argument. It is an optional parameter.
+ # Exit if the argument is not a directory.
+ 
++myhostname=`hostname`
++
+ if [ "$1" == "--config" ]
+ then
+   shift
+   conf_dir=$1
++  if echo $conf_dir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++  then
++      orig_conf_dir="$1"
++      conf_dir=$(echo "$conf_dir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++  fi
+   if [ ! -d "$conf_dir" ]
+   then
+     echo "ERROR : $conf_dir is not a directory"
+     echo $usage
+     exit 1
+   else
++    if [ "${orig_conf_dir}X" != "X" ]
++    then
++        orig_sparkconfdir=$orig_conf_dir
++    fi
+     export SPARK_CONF_DIR=$conf_dir
+   fi
+   shift
+@@ -62,6 +73,33 @@ fi
+ 
+ . "$sbin/spark-config.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparklogdir=$SPARK_LOG_DIR
++        export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkpiddir=$SPARK_PID_DIR
++        export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
+ # First argument should be the master; we need to store it aside because we may
+@@ -74,6 +112,21 @@ if [ "$SPARK_WORKER_WEBUI_PORT" = "" ]; 
+   SPARK_WORKER_WEBUI_PORT=8081
+ fi
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ] && [ "${orig_sparklogdir}X" != "X" ]
++then
++    export SPARK_LOG_DIR=$orig_sparklogdir
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ] && [ "${orig_sparkpiddir}X" != "X" ]
++then
++    export SPARK_PID_DIR=$orig_sparkpiddir
++fi
++
+ # Start up the appropriate number of workers on this machine.
+ # quick local function to start a worker
+ function start_instance {
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/start-slaves.sh spark-1.5.2-bin-hadoop2.6/sbin/start-slaves.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/start-slaves.sh	2015-12-07 10:48:13.733080000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/start-slaves.sh	2015-12-07 10:51:16.596031000 -0800
+@@ -25,6 +25,8 @@ sbin="`cd "$sbin"; pwd`"
+ 
+ START_TACHYON=false
+ 
++myhostname=`hostname`
++
+ while (( "$#" )); do
+ case $1 in
+     --with-tachyon)
+@@ -40,6 +42,33 @@ done
+ 
+ . "$sbin/spark-config.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++	orig_sparkconfdir=$SPARK_CONF_DIR
++	export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++	orig_sparklogdir=$SPARK_LOG_DIR
++	export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++	orig_sparkpiddir=$SPARK_PID_DIR
++	export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
+ # Find the port number for the master
+@@ -51,6 +80,21 @@ if [ "$SPARK_MASTER_IP" = "" ]; then
+   SPARK_MASTER_IP="`hostname`"
+ fi
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ] && [ "${orig_sparklogdir}X" != "X" ]
++then
++    export SPARK_LOG_DIR=$orig_sparklogdir
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ] && [ "${orig_sparkpiddir}X" != "X" ]
++then
++    export SPARK_PID_DIR=$orig_sparkpiddir
++fi
++
+ if [ "$START_TACHYON" == "true" ]; then
+   "$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin"/../tachyon/bin/tachyon bootstrap-conf "$SPARK_MASTER_IP"
+ 
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/stop-master.sh spark-1.5.2-bin-hadoop2.6/sbin/stop-master.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/stop-master.sh	2015-11-03 10:05:51.000000000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/stop-master.sh	2015-12-07 10:51:16.598030000 -0800
+@@ -22,8 +22,24 @@
+ sbin=`dirname "$0"`
+ sbin=`cd "$sbin"; pwd`
+ 
++myhostname=`hostname`
++
+ . "$sbin/spark-config.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
+ "$sbin"/spark-daemon.sh stop org.apache.spark.deploy.master.Master 1
+ 
+ if [ -e "$sbin"/../tachyon/bin/tachyon ]; then
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/stop-slave.sh spark-1.5.2-bin-hadoop2.6/sbin/stop-slave.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/stop-slave.sh	2015-12-07 10:48:13.735081000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/stop-slave.sh	2015-12-07 10:51:16.600030000 -0800
+@@ -32,25 +32,78 @@ sbin="`cd "$sbin"; pwd`"
+ 
+ . "$sbin/spark-config.sh"
+ 
++myhostname=`hostname`
++
+ # Check if --config is passed as an argument. It is an optional parameter.
+ # Exit if the argument is not a directory.
+ if [ "$1" == "--config" ]
+ then
+   shift
+-  conf_dir="$1"
++  conf_dir=$1
++  if echo $conf_dir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++  then
++      orig_conf_dir="$1"
++      conf_dir=$(echo "$conf_dir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++  fi
+   if [ ! -d "$conf_dir" ]
+   then
+     echo "ERROR : $conf_dir is not a directory"
+     echo $usage
+     exit 1
+   else
+-    export SPARK_CONF_DIR="$conf_dir"
++    if [ "${orig_conf_dir}X" != "X" ]
++    then
++        orig_sparkconfdir=$orig_conf_dir
++    fi
++    export SPARK_CONF_DIR=$conf_dir
+   fi
+   shift
+ fi
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparklogdir=$SPARK_LOG_DIR
++        export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkpiddir=$SPARK_PID_DIR
++        export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ] && [ "${orig_sparklogdir}X" != "X" ]
++then
++    export SPARK_LOG_DIR=$orig_sparklogdir
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ] && [ "${orig_sparkpiddir}X" != "X" ]
++then
++    export SPARK_PID_DIR=$orig_sparkpiddir
++fi
++
+ if [ "$SPARK_WORKER_INSTANCES" = "" ]; then
+   "$sbin"/spark-daemon.sh stop org.apache.spark.deploy.worker.Worker 1
+ else
+diff -pruN spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/stop-slaves.sh spark-1.5.2-bin-hadoop2.6/sbin/stop-slaves.sh
+--- spark-1.5.2-bin-hadoop2.6-alternate-ssh/sbin/stop-slaves.sh	2015-12-07 10:48:13.738073000 -0800
++++ spark-1.5.2-bin-hadoop2.6/sbin/stop-slaves.sh	2015-12-07 10:51:16.602031000 -0800
+@@ -20,10 +20,54 @@
+ sbin="`dirname "$0"`"
+ sbin="`cd "$sbin"; pwd`"
+ 
++myhostname=`hostname`
++
+ . "$sbin/spark-config.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ]
++then
++    if echo $SPARK_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkconfdir=$SPARK_CONF_DIR
++        export SPARK_CONF_DIR=$(echo "$SPARK_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ]
++then
++    if echo $SPARK_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparklogdir=$SPARK_LOG_DIR
++        export SPARK_LOG_DIR=$(echo "$SPARK_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ]
++then
++    if echo $SPARK_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++    then
++        orig_sparkpiddir=$SPARK_PID_DIR
++        export SPARK_PID_DIR=$(echo "$SPARK_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++fi
++
+ . "$SPARK_PREFIX/bin/load-spark-env.sh"
+ 
++if [ "${SPARK_CONF_DIR}X" != "X" ] && [ "${orig_sparkconfdir}X" != "X" ]
++then
++    export SPARK_CONF_DIR=$orig_sparkconfdir
++fi
++
++if [ "${SPARK_LOG_DIR}X" != "X" ] && [ "${orig_sparklogdir}X" != "X" ]
++then
++    export SPARK_LOG_DIR=$orig_sparklogdir
++fi
++
++if [ "${SPARK_PID_DIR}X" != "X" ] && [ "${orig_sparkpiddir}X" != "X" ]
++then
++    export SPARK_PID_DIR=$orig_sparkpiddir
++fi
++
+ # do before the below calls as they exec
+ if [ -e "$sbin"/../tachyon/bin/tachyon ]; then
+   "$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin"/../tachyon/bin/tachyon killAll tachyon.worker.Worker
