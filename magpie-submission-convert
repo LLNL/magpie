@@ -89,15 +89,17 @@ then
     export MAGPIE_JOB_ID="${LSB_JOBID}"
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
+        while [[ $(bjobs -l ${LSB_JOBID}) == *"Status <P"* ]]
+        do
+            # Pending state gives time in hours, mins, or seconds and it
+            # seems that there is no way of know which it is giving. By 
+            # waiting for running status we can get it properly.
+            sleep 1
+        done
+
         jobinfo=$(bjobs -l ${LSB_JOBID})
-        if [[ $jobinfo == *"Status <P"* ]]
-        then
-            # Pending State for some reason reports mins in seconds
-            walltime=$(bc <<< $(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')/60)
-        else
-            # Run State
-            walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
-        fi
+        # Run State
+        walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
 fi
