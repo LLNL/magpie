@@ -115,6 +115,9 @@ JAVA17PATH="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 
 REMOTE_CMD=mrsh
 
+DEFAULT_LOCAL_REQUIREMENTS=n
+DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
+
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
 if [ ! -d "${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates" ]
@@ -152,6 +155,10 @@ sed -i -e "s/SSD_DIR_PREFIX=\(.*\)/SSD_DIR_PREFIX=${ssddirpathsubst}/" ${MAGPIE_
 sed -i -e "s/REMOTE_CMD_DEFAULT=ssh/REMOTE_CMD_DEFAULT=${REMOTE_CMD}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 sed -i -e "s/MAGPIE_NO_LOCAL_DIR=n/MAGPIE_NO_LOCAL_DIR=y/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+defaultlocalreqpathsubstr=`echo ${DEFAULT_LOCAL_REQUIREMENTS_FILE} | sed "s/\\//\\\\\\\\\//g"`
+sed -i -e "s/LOCAL_REQUIREMENTS=n/LOCAL_REQUIREMENTS=${DEFAULT_LOCAL_REQUIREMENTS}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/LOCAL_REQUIREMENTS_FILE="\(.*\)"/LOCAL_REQUIREMENTS_FILE=${defaultlocalreqpathsubstring}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
