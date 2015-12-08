@@ -103,6 +103,8 @@ no_zookeeper_3_4_6=n
 # Remember to escape $ w/ \ if you want the environment variables
 # placed into the submission scripts instead of being expanded out
 
+DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverluster"
+
 LOCAL_DIR_PATH="/tmp/\${USER}"
 PROJECT_DIR_PATH="\${HOME}/hadoop"
 HOME_DIR_PATH="\${HOME}"
@@ -114,6 +116,9 @@ JAVA16PATH="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 JAVA17PATH="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 
 REMOTE_CMD=mrsh
+
+DEFAULT_LOCAL_REQUIREMENTS=n
+DEFAULT_LOCAL_REUQIREMENTS_FILE=/tmp/mylocal
 
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
@@ -152,6 +157,10 @@ sed -i -e "s/SSD_DIR_PREFIX=\(.*\)/SSD_DIR_PREFIX=${ssddirpathsubst}/" ${MAGPIE_
 sed -i -e "s/REMOTE_CMD_DEFAULT=ssh/REMOTE_CMD_DEFAULT=${REMOTE_CMD}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 sed -i -e "s/MAGPIE_NO_LOCAL_DIR=n/MAGPIE_NO_LOCAL_DIR=y/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+defaultlocalreqpathsubstr=`echo ${DEFAULT_LOCAL_REQUIREMENTS_FILE} | sed "s/\\//\\\\\\\\\//g"`
+sed -i -e "s/LOCAL_REQUIREMENTS=n/LOCAL_REQUIREMENTS=${DEFAULT_LOCAL_REQUIREMENTS}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/LOCAL_REQUIREMENTS_FILE="\(.*\)"/LOCAL_REQUIREMENTS_FILE=${defaultlocalreqpathsubstring}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
@@ -197,6 +206,12 @@ cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm
 sed -i -e 's/export STORM_SETUP=yes/export STORM_SETUP=no/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="zookeeper"/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
+
+# Set JAVA_HOME on defaults
+sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ./magpie.${submissiontype}-*
+
+# Set HADOOP_FILESYTEM_MODE on defaults
+sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="'"${DEFAULT_HADOOP_FILESYSTEM_MODE}"'"/' ./magpie.${submissiontype}-*
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.2.0
 
@@ -2275,61 +2290,73 @@ fi
 if [ "${no_spark_0_9_1_bin_hadoop2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.1-bin-hadoop2*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-0.9.1-bin-hadoop2*
 fi
 
 if [ "${no_spark_0_9_2_bin_hadoop2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.2-bin-hadoop2*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-0.9.2-bin-hadoop2*
 fi
 
 if [ "${no_spark_1_2_0_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.0-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.0-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_2_1_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.1-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.1-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_2_2_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.2-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.2-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_3_0_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.3.0-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.3.0-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_3_1_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.3.1-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.3.1-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_4_0_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.4.0-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.4.0-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_4_1_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.4.1-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.4.1-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_5_0_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.0-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.0-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_5_1_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.1-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.1-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_5_2_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.2-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.2-bin-hadoop2.6*
 fi
 
 if [ "${no_storm_0_9_3}" == "y" ]
