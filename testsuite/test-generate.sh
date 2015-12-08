@@ -103,6 +103,8 @@ no_zookeeper_3_4_6=n
 # Remember to escape $ w/ \ if you want the environment variables
 # placed into the submission scripts instead of being expanded out
 
+DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverluster"
+
 LOCAL_DIR_PATH="/tmp/\${USER}"
 PROJECT_DIR_PATH="\${HOME}/hadoop"
 HOME_DIR_PATH="\${HOME}"
@@ -197,6 +199,9 @@ cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm
 sed -i -e 's/export STORM_SETUP=yes/export STORM_SETUP=no/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="zookeeper"/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
+
+# Set HADOOP_FILESYTEM_MODE on defaults
+sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="'"${DEFAULT_HADOOP_FILESYSTEM_MODE}"'"/' ./magpie.${submissiontype}-*
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.2.0
 
