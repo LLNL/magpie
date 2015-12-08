@@ -207,6 +207,9 @@ sed -i -e 's/export STORM_SETUP=yes/export STORM_SETUP=no/' magpie.${submissiont
 sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="zookeeper"/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 
+# Set JAVA_HOME on defaults
+sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ./magpie.${submissiontype}-*
+
 # Set HADOOP_FILESYTEM_MODE on defaults
 sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="'"${DEFAULT_HADOOP_FILESYSTEM_MODE}"'"/' ./magpie.${submissiontype}-*
 
