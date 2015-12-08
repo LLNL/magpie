@@ -2275,61 +2275,73 @@ fi
 if [ "${no_spark_0_9_1_bin_hadoop2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.1-bin-hadoop2*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-0.9.1-bin-hadoop2*
 fi
 
 if [ "${no_spark_0_9_2_bin_hadoop2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.2-bin-hadoop2*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-0.9.2-bin-hadoop2*
 fi
 
 if [ "${no_spark_1_2_0_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.0-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.0-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_2_1_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.1-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.1-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_2_2_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.2-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.2-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_3_0_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.3.0-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.3.0-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_3_1_bin_hadoop2_4}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.3.1-bin-hadoop2.4*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.3.1-bin-hadoop2.4*
 fi
 
 if [ "${no_spark_1_4_0_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.4.0-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.4.0-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_4_1_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.4.1-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.4.1-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_5_0_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.0-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.0-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_5_1_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.1-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.1-bin-hadoop2.6*
 fi
 
 if [ "${no_spark_1_5_2_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.2-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.2-bin-hadoop2.6*
 fi
 
 if [ "${no_storm_0_9_3}" == "y" ]
