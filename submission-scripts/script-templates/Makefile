@@ -34,6 +34,8 @@ REMOTE_CMD_DEFAULT=ssh
 
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0-oracle.x86_64/
 
+HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+
 #
 # If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed
 # by LOCAL_REQUIREMENTS_FILE will be added to submission scripts
@@ -72,6 +74,7 @@ define common-substitution
 		sed -i -e "s/^# export MAGPIE_REMOTE_CMD/export MAGPIE_REMOTE_CMD/g" $(1); \
 	fi
 	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
+        sed -i -e 's;HADOOPFILESYSTEMMODE;\"$(HADOOP_FILESYSTEM_MODE)\";g' $(1)
 endef
 
 define create-templates

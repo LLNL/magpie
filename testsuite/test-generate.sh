@@ -103,6 +103,8 @@ no_zookeeper_3_4_6=n
 # Remember to escape $ w/ \ if you want the environment variables
 # placed into the submission scripts instead of being expanded out
 
+DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+
 LOCAL_DIR_PATH="/tmp/\${USER}"
 PROJECT_DIR_PATH="\${HOME}/hadoop"
 HOME_DIR_PATH="\${HOME}"
@@ -159,6 +161,8 @@ sed -i -e "s/MAGPIE_NO_LOCAL_DIR=n/MAGPIE_NO_LOCAL_DIR=y/" ${MAGPIE_SCRIPTS_HOME
 defaultlocalreqpathsubstr=`echo ${DEFAULT_LOCAL_REQUIREMENTS_FILE} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/LOCAL_REQUIREMENTS=n/LOCAL_REQUIREMENTS=${DEFAULT_LOCAL_REQUIREMENTS}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 sed -i -e "s/LOCAL_REQUIREMENTS_FILE="\(.*\)"/LOCAL_REQUIREMENTS_FILE=${defaultlocalreqpathsubstring}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="'"${DEFAULT_HADOOP_FILESYSTEM_MODE}"'"/' ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
