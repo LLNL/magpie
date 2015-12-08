@@ -114,6 +114,7 @@ SSD_DIR_PATH="/ssd/tmp1/\${USER}"
 
 JAVA16PATH="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 JAVA17PATH="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+DEFAULT_JAVA_HOME=$JAVA17PATH
 
 REMOTE_CMD=mrsh
 
@@ -163,6 +164,9 @@ sed -i -e "s/LOCAL_REQUIREMENTS=n/LOCAL_REQUIREMENTS=${DEFAULT_LOCAL_REQUIREMENT
 sed -i -e "s/LOCAL_REQUIREMENTS_FILE="\(.*\)"/LOCAL_REQUIREMENTS_FILE=${defaultlocalreqpathsubstring}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="'"${DEFAULT_HADOOP_FILESYSTEM_MODE}"'"/' ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+defaultjavahomesubst=`echo ${DEFAULT_JAVA_HOME} | sed "s/\\//\\\\\\\\\//g"`
+sed -i -e "s/JAVA_DEFAULT=\(.*\)/JAVA_DEFAULT=${defaultjavahomesubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
