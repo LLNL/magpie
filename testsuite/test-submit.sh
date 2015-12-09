@@ -153,7 +153,7 @@ then
 	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyGlobalOrder1D-hadoop-2.7.0-run-hadoopterasort
 	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1D-hadoop-2.7.0-pig-0.15.0-run-testpig
 	DependentJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyGlobalOrder1D-hadoop-2.7.0-mahout-0.11.1-run-clustersyntheticcontrol
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.6-run-hbaseperformanceeval
+	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.7-run-hbaseperformanceeval
 	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6-run-sparkwordcount
     fi
 fi
@@ -525,7 +525,7 @@ then
     do
         for hadoopversion in 2.7.0
         do
-            for zookeeperversion in 3.4.6
+            for zookeeperversion in 3.4.7
             do
                 if [ "${standardtests}" == "y" ]
                 then
@@ -590,7 +590,7 @@ then
 	do
 	    for hadoopversion in 2.7.0
 	    do
-		for zookeeperversion in 3.4.6
+		for zookeeperversion in 3.4.7
 		do
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
 		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
@@ -614,7 +614,7 @@ then
 	do
 	    for hadoopversion in 2.7.0
 	    do
-		for zookeeperversion in 3.4.6
+		for zookeeperversion in 3.4.7
 		do
 		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
 		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
@@ -634,7 +634,7 @@ then
         do
             for hadoopversion in 2.7.0
             do
-                for zookeeperversion in 3.4.6
+                for zookeeperversion in 3.4.7
                 do
                     if [ "${standardtests}" == "y" ]
                     then
@@ -674,7 +674,7 @@ then
 	    do
 		for hadoopversion in 2.7.0
 		do
-		    for zookeeperversion in 3.4.6
+		    for zookeeperversion in 3.4.7
 		    do
 			BasicJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-phoenixperformanceeval
 			DependentJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-phoenixperformanceeval
@@ -689,7 +689,7 @@ then
 	    do
 		for hadoopversion in 2.7.0
 		do
-		    for zookeeperversion in 3.4.6
+		    for zookeeperversion in 3.4.7
 		    do
 			BasicJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-phoenixperformanceeval
 			DependentJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-phoenixperformanceeval
@@ -704,7 +704,7 @@ then
 	    do
 		for hadoopversion in 2.7.0
 		do
-		    for zookeeperversion in 3.4.6
+		    for zookeeperversion in 3.4.7
 		    do
 			BasicJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-phoenixperformanceeval
 			DependentJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-hdfsoverlustre-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
@@ -721,7 +721,7 @@ then
 	    do
 		for hadoopversion in 2.7.0
 		do
-		    for zookeeperversion in 3.4.6
+		    for zookeeperversion in 3.4.7
 		    do
 			BasicJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-phoenixperformanceeval
 			DependentJobSubmit ./magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2B-hdfsovernetworkfs-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
@@ -921,7 +921,7 @@ then
     
     for stormversion in 0.9.5
     do
-        for zookeeperversion in 3.4.6
+        for zookeeperversion in 3.4.7
         do
             if [ "${standardtests}" == "y" ]
             then
@@ -954,7 +954,7 @@ then
 
 	for stormversion in 0.9.5
 	do
-	    for zookeeperversion in 3.4.6
+	    for zookeeperversion in 3.4.7
 	    do
 		BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
 		DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
@@ -967,7 +967,7 @@ fi
 
 if [ "${zookeepertests}" == "y" ]
 then
-    for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6
+    for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7
     do
         if [ "${standardtests}" == "y" ]
         then

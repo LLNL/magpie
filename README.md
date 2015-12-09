@@ -94,7 +94,7 @@ Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+
 
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
-Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6
+Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
 
 [PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
       is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on
