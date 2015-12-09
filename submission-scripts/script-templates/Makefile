@@ -74,7 +74,7 @@ define common-substitution
 		sed -i -e "s/^# export MAGPIE_REMOTE_CMD/export MAGPIE_REMOTE_CMD/g" $(1); \
 	fi
 	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
-        sed -i -e 's;HADOOPFILESYSTEMMODE;\"$(HADOOP_FILESYSTEM_MODE)\";g' $(1)
+        sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
 endef
 
 define create-templates
