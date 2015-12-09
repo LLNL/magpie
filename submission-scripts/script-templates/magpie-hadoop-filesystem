@@ -31,7 +31,7 @@
 
 @MODE_MAGPIENETWORKFS@
 
-export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+export HADOOP_FILESYSTEM_MODE=HADOOPFILESYSTEMMODE
 
 # Path for HDFS when using local disk
 #
