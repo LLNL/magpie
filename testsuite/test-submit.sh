@@ -51,6 +51,12 @@ then
     jobsubmitcmdoption=""
     jobsubmitdependency="-l depend=\${previousjobid}"
     jobidstripcmd="xargs"
+elif [ "${submissiontype}" == "lsf-mpirun" ]
+then
+    jobsubmitcmd="bsub"
+    jobsubmitcmdoption="<"
+    jobsubmitdependency="-w 'exit\(\${previousjobid}\)'"
+    jobidstripcmd="sed -n -e 's/Job <\([0-9]*\)>.*/\1/p'"
 fi
 
 if [ -f "${jobsubmissionfile}" ]
@@ -65,14 +71,14 @@ BasicJobSubmit () {
 
     if [ -f "${jobsubmissionscript}" ]
     then
-	jobsubmitoutput=`${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmissionscript}`
-	jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
-	jobid=`eval ${jobidstripfullcommand}`
+	jobsubmitoutput=$(eval "${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmissionscript}")
+	jobidstripfullcommand="echo '${jobsubmitoutput}' | ${jobidstripcmd}"
+	jobid=$(eval ${jobidstripfullcommand})
 	
 	echo "File ${jobsubmissionscript} submitted with ID ${jobid}" >> ${jobsubmissionfile}
 	
 	previousjobid=${jobid}
-	jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+	jobsubmitdependencyexpand=$(eval echo ${jobsubmitdependency})
     else
 	if [ "${verboseoutput}" = "y" ]
 	then
@@ -86,14 +92,14 @@ DependentJobSubmit () {
 
     if [ -f "${jobsubmissionscript}" ]
     then
-	jobsubmitoutput=`${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmitdependencyexpand} ${jobsubmissionscript}`
-	jobidstripfullcommand="echo ${jobsubmitoutput} | ${jobidstripcmd}"
-	jobid=`eval ${jobidstripfullcommand}`
+	jobsubmitoutput=$(eval "${jobsubmitcmd} ${jobsubmitdependencyexpand} ${jobsubmitcmdoption} ${jobsubmissionscript}")
+	jobidstripfullcommand="echo '${jobsubmitoutput}' | ${jobidstripcmd}"
+	jobid=$(eval ${jobidstripfullcommand})
 	
 	echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
     
 	previousjobid=${jobid}
-	jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
+	jobsubmitdependencyexpand=$(eval echo ${jobsubmitdependency})
     else
 	if [ "${verboseoutput}" = "y" ]
 	then

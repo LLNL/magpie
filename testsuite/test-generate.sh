@@ -38,6 +38,8 @@ msubslurmsrunbatchqueue=pbatch
 
 sbatchsrunpartition=pc6220
 
+lsfqueue=standard
+
 # Test config
 
 no_local_ssd_tests=n
@@ -2079,6 +2081,44 @@ then
 
     sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie*
     sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie*
+elif [ "${submissiontype}" == "lsf-mpirun" ]
+then
+    sed -i -e "s/lsf-%J.out/lsf-run-hadoopterasort-%J.out/" magpie.${submissiontype}*run-hadoopterasort*
+    sed -i -e "s/lsf-run-hadoopterasort-%J.out/lsf-run-hadoopterasort-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-hadoopterasort*
+
+    sed -i -e "s/lsf-%J.out/lsf-run-hadoopupgradehdfs-%J.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs
+
+    sed -i -e "s/lsf-%J.out/lsf-hdfs-fewer-nodes-expected-failure-%J.out/" magpie.${submissiontype}-hadoop*hdfs-fewer-nodes*expected-failure
+
+    sed -i -e "s/lsf-%J.out/lsf-hdfs-older-version-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
+    sed -i -e "s/lsf-%J.out/lsf-hdfs-newer-version-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
+    
+    sed -i -e "s/lsf-%J.out/lsf-run-testpig-%J.out/" magpie.${submissiontype}*run-testpig*
+    sed -i -e "s/lsf-%J.out/lsf-run-pigscript-%J.out/" magpie.${submissiontype}*run-pigscript*
+
+    sed -i -e "s/lsf-%J.out/lsf-run-clustersyntheticcontrol-%J.out/" magpie.${submissiontype}*run-clustersyntheticcontrol*
+
+    sed -i -e "s/lsf-%J.out/lsf-run-hbaseperformanceeval-%J.out/" magpie.${submissiontype}*run-hbaseperformanceeval*
+    sed -i -e "s/lsf-run-hbaseperformanceeval-%J.out/lsf-run-hbaseperformanceeval-zookeeper-shared-%J.out/" magpie.${submissiontype}*zookeeper-shared*run-hbaseperformanceeval*
+
+    sed -i -e "s/lsf-%J.out/lsf-run-phoenixperformanceeval-%J.out/" magpie.${submissiontype}*run-phoenixperformanceeval*
+    sed -i -e "s/lsf-run-phoenixperformanceeval-%J.out/lsf-run-phoenixperformanceeval-zookeeper-shared-%J.out/" magpie.${submissiontype}*zookeeper-shared*run-phoenixperformanceeval*
+
+    sed -i -e "s/lsf-%J.out/lsf-run-sparkpi-%J.out/" magpie.${submissiontype}*run-sparkpi*
+    sed -i -e "s/lsf-%J.out/lsf-run-sparkwordcount-%J.out/" magpie.${submissiontype}*run-sparkwordcount*
+    sed -i -e "s/lsf-run-sparkwordcount-%J.out/lsf-run-sparkwordcount-rawnetworkfs-%J.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*
+    sed -i -e "s/lsf-%J.out/lsf-run-stormwordcount-%J.out/" magpie.${submissiontype}*run-stormwordcount*
+    sed -i -e "s/lsf-run-stormwordcount-%J.out/lsf-run-stormwordcount-zookeeper-shared-%J.out/" magpie.${submissiontype}*zookeeper-shared*run-stormwordcount*
+    
+    sed -i -e "s/lsf-%J.out/lsf-run-zookeeper-%J.out/" magpie.${submissiontype}-zookeeper*
+    
+    sed -i -e "s/-%J.out/-Dependency-%J.out/" magpie.${submissiontype}*Dependency*
+
+    sed -i -e "s/<my time in hours:minutes>/5:00/" magpie.${submissiontype}-*largeperformancerun*
+    sed -i -e "s/<my time in hours:minutes>/1:30/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie.${submissiontype}-storm* magpie.${submissiontype}-zookeeper*
+    sed -i -e "s/<my time in hours:minutes>/2:00/" magpie.${submissiontype}-hbase-with-hdfs*
+
+    sed -i -e "s/<my queue>/${lsfqueue}/" magpie*
 fi
     
 sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie*no-local-dir
