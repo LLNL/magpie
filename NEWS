@@ -1,6 +1,7 @@
 magpie 1.65
 -----------
 Support Spark 1.5.2, update default Spark to 1.5.2.
+Support Zookeeper 3.4.7, update default Zookeeper to 3.4.7.
 
 magpie 1.64
 -----------
