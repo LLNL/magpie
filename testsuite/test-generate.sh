@@ -14,8 +14,9 @@
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
 #   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
 #   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
-#   1.5.0-bin-hadoop2.6, 1.5.1-bin-hadoop2.6, 1.5.2-bin-hadoop2.6
-
+#   1.5.0-bin-hadoop2.6, 1.5.1-bin-hadoop2.6, 1.5.2-bin-hadoop2.6,
+#   1.6.0-bin-hadoop2.6
+#
 # Storm 0.9.3, 0.9.4, 0.9.5
 # Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
 #
@@ -89,6 +90,7 @@ no_spark_1_4_1_bin_hadoop2_6=n
 no_spark_1_5_0_bin_hadoop2_6=n
 no_spark_1_5_1_bin_hadoop2_6=n
 no_spark_1_5_2_bin_hadoop2_6=n
+no_spark_1_6_0_bin_hadoop2_6=n
 no_storm_0_9_3=n
 no_storm_0_9_4=n
 no_storm_0_9_5=n
@@ -1532,7 +1534,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-spark-${sparkversion}*
 done
 
-for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6
+for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
@@ -1597,7 +1599,7 @@ do
     done
 done
 
-for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6
+for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
 do
     for hadoopversion in 2.6.0
     do
@@ -1691,7 +1693,7 @@ do
     done
 done
 
-for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6
+for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
 do
     for hadoopversion in 2.6.0
     do
@@ -1786,7 +1788,7 @@ do
     done
 done
 
-for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 .5.2-bin-hadoop2.6
+for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
 do
     for hadoopversion in 2.6.0
     do
@@ -1843,7 +1845,7 @@ do
 	./magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-spark-${sparkversion}-no-copy-run-sparkwordcount
 done
 
-for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6
+for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1C-spark-${sparkversion}-run-sparkwordcount
 
@@ -2398,6 +2400,12 @@ if [ "${no_spark_1_5_2_bin_hadoop2_6}" == "y" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.2-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.2-bin-hadoop2.6*
+fi
+
+if [ "${no_spark_1_6_0_bin_hadoop2_6}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*spark-1.6.0-bin-hadoop2.6*
+    rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.6.0-bin-hadoop2.6*
 fi
 
 if [ "${no_storm_0_9_3}" == "y" ]
