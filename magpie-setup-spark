@@ -235,6 +235,20 @@ then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.memoryFraction=${sparkshufflememoryfraction}"
 fi
 
+if [ "${SPARK_MEMORY_FRACTION}X" == "X" ]
+then
+    sparkmemoryfraction="0.75"
+else
+    sparkmemoryfraction="${SPARK_MEMORY_FRACTION}"
+fi
+
+if [ "${SPARK_MEMORY_STORAGE_FRACTION}X" == "X" ]
+then
+    sparkmemorystoragefraction="0.5"
+else
+    sparkmemorystoragefraction="${SPARK_MEMORY_STORAGE_FRACTION}"
+fi
+
 if [ "${SPARK_DEPLOY_SPREADOUT}X" == "X" ]
 then
     sparkdeployspreadout="true"
@@ -586,6 +600,8 @@ then
 	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
 	-e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
 	-e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
+	-e "s/SPARKMEMORYFRACTION/${sparkmemoryfraction}/g" \
+	-e "s/SPARKMEMORYSTORAGEFRACTION/${sparkmemorystoragefraction}/g" \
 	-e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
 	-e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
 	-e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
@@ -612,6 +628,19 @@ then
 	sed -i -e "s/spark.shuffle.file.buffer.kb/# spark.shuffle.file.buffer.kb/" ${post_sparkdefaultsconf}
     else
 	sed -i -e "s/spark.shuffle.file.buffer\s/# spark.shuffle.file.buffer/" ${post_sparkdefaultsconf}
+    fi
+
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${sparktestversion} 1.5
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "1" ]
+    then
+	sed -i -e "s/spark.storage.memoryFraction/# spark.storage.memoryFraction/" ${post_sparkdefaultsconf}
+	sed -i -e "s/spark.shuffle.memoryFraction/# spark.shuffle.memoryFraction/" ${post_sparkdefaultsconf}
+    else
+	sed -i -e "s/spark.memory.fraction/# spark.memory.fraction/" ${post_sparkdefaultsconf}
+	sed -i -e "s/spark.memory.storageFraction/# spark.memory.storageFraction/" ${post_sparkdefaultsconf}
     fi
 fi
 

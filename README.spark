@@ -427,3 +427,6 @@ Spark Advanced Usage
    You may wish to adjust these for your specific job, as they can
    have a large influence on job performance.  Please see submission
    scripts for more information.
+
+   Note that beginning Spark 1.6.0 memory fractions have been
+   deprecated.
