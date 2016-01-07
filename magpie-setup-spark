@@ -596,6 +596,13 @@ then
 
     sparktestversion=`echo $SPARK_VERSION | cut -f1 -d"-"`
 
+    # Get only the major and minor version, we don't care about the release
+
+    sparkmajor=`echo $sparktestversion | cut -d. -f1`
+    sparkminor=`echo $sparktestversion | cut -d. -f2`
+
+    sparktestversion="$sparkmajor.$sparkminor"
+
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
     Magpie_vercomp ${sparktestversion} 1.3
