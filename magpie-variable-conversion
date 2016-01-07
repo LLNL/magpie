@@ -264,6 +264,41 @@ Magpie_make_spark_local_dirs_node_specific () {
     Magpie_make_spark_local_dirs "specific"
 }
 
+Magpie_make_kafka_local_dirs () {
+    which=$1
+
+    if [ "${KAFKA_SETUP}" == "yes" ]
+    then
+	if [ "${KAFKA_LOCAL_JOB_DIR}X" == "X" ]
+	then
+	    echo "Fatal error, Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
+	    exit 1
+	fi
+
+	export KAFKA_CONF_DIR=${KAFKA_LOCAL_JOB_DIR}/conf
+	export KAFKA_LOG_DIR=${KAFKA_LOCAL_JOB_DIR}/log
+	export KAFKA_LOCAL_SCRATCH_DIR=${KAFKA_LOCAL_JOB_DIR}/scratch
+	export KAFKA_PID_DIR=${KAFKA_LOCAL_JOB_DIR}/pid
+
+	if [ "${which}" == "specific" ]
+	then
+	    myhostname=`hostname`
+	    export KAFKA_CONF_DIR=$(echo $KAFKA_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export KAFKA_LOG_DIR=$(echo $KAFKA_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export KAFKA_LOCAL_SCRATCH_DIR=$(echo $KAFKA_LOCAL_SCRATCH_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export KAFKA_PID_DIR=$(echo $KAFKA_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	fi
+    fi
+}
+
+Magpie_make_kafka_local_dirs_unspecified () {
+    Magpie_make_kafka_local_dirs "generic"
+}
+
+Magpie_make_kafka_local_dirs_node_specific () {
+    Magpie_make_kafka_local_dirs "specific"
+}
+
 Magpie_make_storm_local_dirs () {
     which=$1
 
@@ -370,6 +405,7 @@ Magpie_make_all_local_dirs () {
     Magpie_make_hbase_local_dirs $1
     Magpie_make_phoenix_local_dirs $1
     Magpie_make_spark_local_dirs $1
+    Magpie_make_kafka_local_dirs $1
     Magpie_make_storm_local_dirs $1
     Magpie_make_tachyon_local_dirs $1
     Magpie_make_zookeeper_local_dirs $1

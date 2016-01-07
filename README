@@ -2,10 +2,10 @@ Magpie
 ------
 
 Magpie contains a number of scripts for running Big Data software in
-HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig, Mahout,
-Phoenix, Tachyon, and Zookeeper are supported.  It currently supports
-running over the parallel file system Lustre and running over any
-generic network filesytem.  There is scheduler/resource manager
+HPC environments.  Thus far, Hadoop, Spark,  Hbase, Storm, Pig, Mahout
+Phoenix, Kafka, Tachyon, and Zookeeper are supported.  It currently 
+supports running over the parallel file system Lustre and running over
+any generic network filesytem.  There is scheduler/resource manager
 support for Slurm, Moab, Torque, and LSF.
 
 Some of the features presently supported:
@@ -163,6 +163,8 @@ UDA/uda-plugin - 3.3.2-0
 
 Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+
 
+Kafka - 2.11-0.9.0.0
+
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
 Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
@@ -205,6 +207,8 @@ Spark 1.X - Beginning w/ Spark 1.0 versions prebuilt for Hadoop 2.2,
 
 Storm 0.9.X w/ Zookeeper 3.4.X 
 
+Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
+
 Documentation
 -------------
 
@@ -221,6 +225,7 @@ Spark - See README.spark
 Storm - See README.storm
 Tachyon - See README.tachyon
 Phoenix - See README.phoenix
+Kafka - See README.kafka
 Zookeeper - See README.zookeeper
 
 Documentation on some optional features:
@@ -488,4 +493,4 @@ Thanks
 Thanks to the following for contributions
 
 Felix-Antoine Fortin (felix-antoine.fortin@calculquebec.ca) - Msub-Torque-Pdsh support & other misc patches
-Brian Panneton (brian.c.panneton.ctr@mail.mil) - LSF support, Phoenix support & Number of misc patches
+Brian Panneton (brian.c.panneton.ctr@mail.mil) - LSF support, Phoenix support, Kafka support & Number of misc patches

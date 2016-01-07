@@ -183,6 +183,31 @@ then
 fi
 
 #
+# Setup Kafka directories
+#
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    mkdir -p $KAFKA_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${KAFKA_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $KAFKA_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${KAFKA_LOG_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $KAFKA_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${KAFKA_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup Storm directories
 #
 
@@ -354,6 +379,12 @@ if [ "${SPARK_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${SPARK_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${SPARK_CONF_DIR}/slaves
+fi
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${KAFKA_CONF_DIR}/masters
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${KAFKA_CONF_DIR}/slaves
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]

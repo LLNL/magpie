@@ -113,6 +113,17 @@ test_spark_shutdown () {
     fi
 }
 
+test_kafka_shutdown () {
+    local file=$1
+
+    numcompare=$(grep 'Kafka Servers are up.' $file | awk -F "/" '{ print $1 }')
+
+    num=`grep -e "Stopping Kafka" $file | wc -l`
+    if [ "${num}" != ${numcompare} ]; then
+	echo "Kafka worker server shutdown error in $file" ${num}
+    fi
+}
+
 test_zookeeper_shutdown () {
     local file=$1
     
@@ -347,6 +358,24 @@ then
 	then
 	    test_hdfs_shutdown $file
 	fi
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
+if ls ${outputprefix}*run-kafkaperformance* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-kafkaperformance*`
+    do
+	num=`grep -e "50000000 records sent" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_kafka_shutdown $file
 
 	if [ "${verboseoutput}" = "y" ]
 	then

@@ -83,6 +83,15 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi)
 fi
 
+if [ "${KAFKA_SETUP}" == "yes" ] \
+   && [ "${KAFKA_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Kafka Performance"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance)
+fi
+
 if [ "${STORM_SETUP}" == "yes" ] \
    && [ "${STORM_MODE}" != "setuponly" ]
 then

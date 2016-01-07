@@ -160,6 +160,25 @@ Magpie_am_I_a_spark_node () {
     return 1
 }
 
+Magpie_am_I_a_kafka_node () {
+    local myhostname=`hostname`
+
+    Magpie_make_kafka_local_dirs_node_specific
+
+    if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/slaves \
+	|| grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
+    then 
+	if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
+	then
+	    kafkanoderank=0
+	else
+	    kafkanoderank=`grep -n -E "^${myhostname}$" ${KAFKA_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
+	fi
+	return 0
+    fi
+    return 1
+}
+
 Magpie_am_I_a_storm_node () {
     local myhostname=`hostname`
 
