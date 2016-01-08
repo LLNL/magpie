@@ -1,0 +1,60 @@
+FAQ
+---
+
+* Why was Magpie written so users modify a job submission batch file
+  instead of using a command line tool to automatically allocate nodes
+  and setup daemons for you?
+
+  This is something I've been asked about a few times because it may
+  make Magpie more difficult for some users and some other Magpie-like
+  tools out there are command line tools.
+
+  The biggest reason is cultural to Lawrence Livermore.  Historically
+  there have been multiple OSes, file systems, hardware, etc. on all
+  of the clusters here.  So our users are taught to use our systems by
+  learning how to write batch files for job submission and not taught
+  to use a specific command line tool to automatically do things.
+
+  So by extension, Magpie offers pre-made batch scripts for users to
+  modify and submit.
+
+  I believe other locations have a much lower permutation of systems
+  and/or situations, which make a command line tool more feasible.
+  
+* Will you write a command line tool for Magpie someday?
+
+  Maybe, it's not a high priority.
+
+* Can Magpie work with Big Data distros, such as those from Cloudera
+  and Hortonworks?
+
+  I've never tested with them, so I don't know.  It could if all the
+  same files/scripts from the Apache releases are still there.
+
+* Why does Magpie work against Apache releases of Hadoop, Spark,
+  etc. but not necessarily those from Cloudera and Hortonworks?
+
+  The reason is for somewhat legacy reasons.  In the original scripts
+  I wrote to support Hadoop (in a set of house made scripts before
+  Magpie), I utilized the Hadoop scripts 'start-all.sh',
+  'start-dfs.sh', etc. to start and stop daemons on all nodes of an
+  allocation.  These scripts had to be modified/patched, but the core
+  of the scripts was used.
+
+  Similar scripts also existed in Hbase, Spark, and other projects.
+
+  When looking at a Cloudera distribution, I noticed that these
+  scripts were removed from their distribution in favor of system
+  scripts out of /etc/init.d.
+
+  Since scripts out of /etc/init.d require root, I stuck to the
+  'start-all.sh' + etc. scripts for starting/stopping daemons and
+  carried it forward.
+
+  I don't know if those scripts are distributed in newer versions of
+  Cloudera and/or Hortonworks.
+
+* I have a question, can you help?
+
+  Please post questions to Github issue tracker.  I'm glad to answer
+  questions.
