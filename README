@@ -227,7 +227,8 @@ Documentation on some optional features:
 
 - Support HPC systems without (or very small) /tmp filesystems - See README.no-local-dir
 
-Documentation on some experimental features currently supported:
+Documentation on some experimental features that range from
+sorta-supported to barely-supported:
 
 - Support MagpieNetworkFS - See README.magpienetworkfs
 - Support intellustre - See README.intellustre
