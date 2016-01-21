@@ -46,10 +46,17 @@ then
     exit 1
 fi
 
-
 myhostname=`hostname`
 phoenixconfdir=$(echo ${PHOENIX_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
 orig_phoenixconfdir=${PHOENIX_CONF_DIR}
+
+if [ ! -f ${phoenixconfdir}/phoenix-env.sh ]
+then
+    echo "Cannot find file ${phoenixconfdir}/phoenix-env.sh"
+    exit 1
+fi
+
+source ${phoenixconfdir}/phoenix-env.sh
 
 if [ ! -f ${phoenixconfdir}/regionservers ]
 then

@@ -1,7 +1,7 @@
 # Set phoenix environment variables here.
 
 # The java implementation to use.  Java 1.6 required.
-export JAVA_HOME=HBASE_JAVA_HOME
+export JAVA_HOME=PHOENIX_JAVA_HOME
 
 # The directory where logs should go
 export PHOENIX_LOG_DIR="${PHOENIX_LOG_DIR:-PHOENIXLOGDIR}"
