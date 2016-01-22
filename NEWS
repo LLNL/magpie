@@ -1,6 +1,7 @@
 magpie 1.66
 -----------
 Support Spark 1.6.0, update default Spark to 1.6.0.
+Fix bug in Phoenix launch due to mis-setting of ssh.
 
 magpie 1.65
 -----------
