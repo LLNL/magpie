@@ -143,7 +143,12 @@ else
     rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
 fi
 
-command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+if [ "${HADOOP_TERASORT_OUTPUT_REPLICATION}X" != "X" ]
+then
+    replicationcount="-Dmapreduce.terasort.output.replication=${HADOOP_TERASORT_OUTPUT_REPLICATION}"
+fi
+
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$rtasks ${replicationcount} ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
 
 echo "Running $command" >&2
 $command
