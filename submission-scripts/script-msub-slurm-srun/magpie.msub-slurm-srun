@@ -757,6 +757,16 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_TERASORT_OUTPUT_REPLICATION=1
 
+# Teravalidate
+#
+# For "terasort" mode after the actual terasort of data
+#
+# After executing the sort, run teravalidate to validate the sorted data.
+#
+# Defaults to no
+#
+# export HADOOP_TERASORT_RUN_TERAVALIDATE=no 
+
 ############################################################################
 # Hadoop Script Configurations
 ############################################################################

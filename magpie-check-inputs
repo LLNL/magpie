@@ -740,6 +740,13 @@ then
 	exit 1
     fi
 
+    if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}X" != "X" ] \
+	&& ( [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" != "yes" ] && [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" != "no" ])
+    then
+	echo "HADOOP_TERASORT_RUN_TERAVALIDATE must be set to yes or no"
+	exit 1
+    fi
+
     if [ "${HADOOP_COMPRESSION}X" != "X" ] \
 	&& ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
     then
