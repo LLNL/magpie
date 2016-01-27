@@ -109,6 +109,12 @@ then
     $command
 fi
 
+if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-checksum
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-checksum"
+    $command
+fi
+
 if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-validate
 then
     command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
@@ -140,6 +146,22 @@ command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjar
 echo "Running $command" >&2
 $command
 	    
+if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
+then
+    sleep 30
+
+    # I assume no user is concerned with performance here, we just go with this fixed number 
+    sumreducetasks=`expr $HADOOP_SLAVE_COUNT`
+
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terachecksum ${extralibjars} -Dmapred.reduce.tasks=$sumreducetasks ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
+
+    echo "Running $command" >&2
+    $command
+
+    inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    echo "TeraChecksum Checksum: ${inputchecksum}"
+fi
+
 sleep 30
 	    
 if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
@@ -184,10 +206,28 @@ then
     echo "TeraValidate Checksum: ${outputchecksum}"
 fi
 
+if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ] && [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
+then
+    inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
+
+    if [ "${inputchecksum}" == "${outputchecksum}" ]
+    then
+	echo "TeraSort Checksum Comparison: Input and output checksums match - ${inputchecksum}"
+    else
+	echo "TeraSort Checksum Comparison: Input checksum ${inputchecksum} != output checksum ${outputchecksum}"
+    fi
+fi
+
 command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
 $command
 command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
 $command
+if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-checksum"
+    $command
+fi
 if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
 then
     command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"

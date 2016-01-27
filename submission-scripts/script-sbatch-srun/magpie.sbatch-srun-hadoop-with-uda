@@ -752,11 +752,28 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_TERASORT_OUTPUT_REPLICATION=1
 
+# Terachecksum
+#
+# For "terasort" mode after the teragen of data
+#
+# After executing the teragen, run terachecksum to calculate a checksum of
+# the input.
+#
+# If both this and HADOOP_TERASORT_RUN_TERAVALIDATE are set, the
+# checksums will be compared afterwards for equality.
+#
+# Defaults to no
+#
+# export HADOOP_TERASORT_RUN_TERACHECKSUM=no 
+
 # Teravalidate
 #
 # For "terasort" mode after the actual terasort of data
 #
 # After executing the sort, run teravalidate to validate the sorted data.
+#
+# If both this and HADOOP_TERASORT_RUN_TERACHECKSUM are set, the
+# checksums will be compared afterwards for equality.
 #
 # Defaults to no
 #
