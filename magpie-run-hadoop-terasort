@@ -142,6 +142,10 @@ else
     fi
 fi
 
+echo "*******************************************************"
+echo "* Executing TeraGen"
+echo "*******************************************************"
+
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} -Dmapred.map.tasks=$mtasks ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
@@ -149,6 +153,10 @@ $command
 if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
 then
     sleep 30
+
+    echo "*******************************************************"
+    echo "* Executing TeraChecksum"
+    echo "*******************************************************"
 
     # I assume no user is concerned with performance here, we just go with this fixed number 
     sumreducetasks=`expr $HADOOP_SLAVE_COUNT`
@@ -176,6 +184,10 @@ then
     replicationcount="-Dmapreduce.terasort.output.replication=${HADOOP_TERASORT_OUTPUT_REPLICATION}"
 fi
 
+echo "*******************************************************"
+echo "* Executing TeraSort"
+echo "*******************************************************"
+
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$sortreducetasks ${replicationcount} ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
 
 echo "Running $command" >&2
@@ -184,6 +196,10 @@ $command
 if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
 then
     sleep 30
+
+    echo "*******************************************************"
+    echo "* Executing TeraValidate"
+    echo "*******************************************************"
 
     # I assume no user is concerned with performance here, we just go with this fixed number 
     validatereducetasks=`expr $HADOOP_SLAVE_COUNT`
@@ -208,6 +224,10 @@ fi
 
 if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ] && [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
 then
+    echo "*******************************************************"
+    echo "* Comparing Checksums"
+    echo "*******************************************************"
+
     inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
     outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
 
