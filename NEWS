@@ -1,3 +1,7 @@
+magpie 1.67
+-----------
+Support Kafka, initially with version 2_11-0.9.0.0.
+
 magpie 1.66
 -----------
 Support Spark 1.6.0, update default Spark to 1.6.0.
