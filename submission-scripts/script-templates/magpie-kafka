@@ -1,0 +1,75 @@
+############################################################################
+# Kafka Configurations
+############################################################################
+
+# Should Kafka be setup
+#
+# Specify yes or no.  Defaults to no.
+# 
+# If KAFKA_SETUP is enabled, this will inform Magpie to setup a
+# configuration files and environment variables that will hopefully
+# make it easier to run Kafka w/ HBase.  You could leave this disabled
+# and setup/config Kafka as you need.
+#
+export KAFKA_SETUP=no
+
+# Kafka Version
+#
+export KAFKA_VERSION="2.11-0.9.0.0"
+
+# Path to your Kafka build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the hbase version this will run against.
+#
+export KAFKA_HOME="PROJECTDIRPREFIX/kafka_${KAFKA_VERSION}"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export KAFKA_LOCAL_DIR="LOCALDIRPREFIX/kafka"
+
+# Set how Kafka should run
+#
+# "performance" - run performance test. Useful for making sure things are
+#                 setup and running properly
+#
+# "server" - setup the server
+#
+# "setuponly" - Like 'server' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+#
+export KAFKA_MODE="performance"
+
+# Set the Zookeeper connection timeout for Kafka
+#
+# export KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT=6000
+
+############################################################################
+# Kafka Performance Configuration
+############################################################################
+
+# Performance Record Count
+#
+# Number of records to run performance test with
+#
+# export KAFKA_PERFORMANCE_RECORD_COUNT=50000000
+
+# Performance Record Size 
+#
+# The size of each record in bytes to run performance test with
+#
+# export KAFKA_PERFORMANCE_RECORD_SIZE=100
+
+# Performance Throughput 
+#
+# The approximate throughput to throttle messages at for the performance test
+# (in messages/sec) Note: -1 does not throttle
+#
+# export KAFKA_PERFORMANCE_THROUGHPUT=-1
+

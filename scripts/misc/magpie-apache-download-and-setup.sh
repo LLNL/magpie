@@ -22,6 +22,7 @@ ZOOKEEPER_DOWNLOAD="N"
 SPARK_DOWNLOAD="N"
 STORM_DOWNLOAD="N"
 PHOENIX_DOWNLOAD="N"
+KAFKA_DOWNLOAD="N"
 
 # Second, indicate some paths you'd like everything to be installed into
 
@@ -59,6 +60,7 @@ ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz"
 SPARK_PACKAGE="spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz"
 STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
 PHOENIX_PACKAGE="phoenix/phoenix-4.6.0-HBase-1.1/bin/phoenix-4.6.0-HBase-1.1-bin.tar.gz"
+KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
 
 # First check some basics
 
@@ -266,6 +268,30 @@ then
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
 fi
 
+if [ "${KAFKA_DOWNLOAD}" == "Y" ]
+then
+    APACHE_DOWNLOAD_KAFKA="${APACHE_DOWNLOAD_BASE}/${KAFKA_PACKAGE}"
+
+    KAFKA_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_KAFKA} | grep "${KAFKA_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+
+    echo "Downloading from ${KAFKA_DOWNLOAD_URL}"
+
+    KAFKA_PACKAGE_BASENAME=`basename ${KAFKA_PACKAGE}`
+
+    wget -O ${INSTALL_PATH}/${KAFKA_PACKAGE_BASENAME} ${KAFKA_DOWNLOAD_URL}
+
+    echo "Untarring ${KAFKA_PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${KAFKA_PACKAGE_BASENAME}
+
+    KAFKA_PACKAGE_BASEDIR=`echo $KAFKA_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
+    cd ${INSTALL_PATH}/${KAFKA_PACKAGE_BASEDIR}
+
+    echo 'Applying patches'
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/kafka/${KAFKA_PACKAGE_BASEDIR}-no-local-dir.patch
+
+fi
 
 if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]
 then

@@ -1,0 +1,178 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${KAFKA_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+# kafkanoderank set if succeed
+if ! Magpie_am_I_a_kafka_node
+then
+    exit 0
+fi
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+if [ "${KAFKA_LOCAL_SCRATCH_DIR}X" == "X" ]
+then
+    # sets hadooptmpdir and fsdefault
+    Magpie_calculate_hadoop_filesystem_paths ${kafkanoderank}
+
+    kafkalocalscratchdirpath="${hadooptmpdir}/kafka/node-${kafkanoderank}"
+    
+    if [ ! -d "${kafkalocalscratchdirpath}" ]
+    then
+	mkdir -p ${kafkalocalscratchdirpath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${kafkalocalscratchdirpath}"
+	    exit 1
+	fi
+    fi
+else
+    # Setup node directory per node 
+    kafkalocalscratchdirpath="${KAFKA_LOCAL_SCRATCH_DIR}/node-${kafkanoderank}"
+
+    mkdir -p ${kafkalocalscratchdirpath}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${kafkalocalscratchdirpath}"
+	exit 1
+    fi
+fi
+
+if [ "${KAFKA_JAVA_OPTS}X" != "X" ]
+then
+    if ! echo ${KAFKA_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
+    then
+	export KAFKA_JAVA_OPTS="${KAFKA_JAVA_OPTS} -Djava.io.tmpdir=${KAFKA_LOCAL_SCRATCH_DIR}/tmp"
+    fi
+fi
+extrakafkajavaopts="${extrakafkajavaopts}${extrakafkajavaopts:+" "}-Djava.io.tmpdir=${KAFKA_LOCAL_SCRATCH_DIR}/tmp"
+
+if [ ! -d "${KAFKA_LOCAL_SCRATCH_DIR}/tmp" ]
+then
+    mkdir -p ${KAFKA_LOCAL_SCRATCH_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${KAFKA_LOCAL_SCRATCH_DIR}/tmp"
+        exit 1
+    fi
+fi
+
+KAFKA_DATA_DIR=${KAFKA_LOCAL_SCRATCH_DIR}/tmp/kafka-logs
+
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+
+kafkazookeeperconnect=""
+for zookeepernode in ${zookeepernodes}
+do
+    kafkazookeeperconnect="${kafkazookeeperconnect}${kafkazookeeperconnect:+","}${zookeepernode}:${ZOOKEEPER_CLIENT_PORT}"
+done
+
+if [ "${KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT}X" == "X" ]
+then
+    kafkazookeepertimeout=6000
+else
+    kafkazookeepertimeout=${KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT}
+fi
+
+#
+# Get config files for setup
+#
+
+if [ "${KAFKA_CONF_FILES}X" == "X" ]
+then
+    kafkaconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    kafkaconffiledir=${KAFKA_CONF_FILES}
+fi
+
+pre_kafkaenvsh=${kafkaconffiledir}/kafka-env.sh
+pre_kafkaproperties=${kafkaconffiledir}/kafka.server.properties
+pre_log4jproperties=${kafkaconffiledir}/kafka.log4j.properties
+
+if [ ! -f "${pre_kafkaenvsh}" ] \
+    || [ ! -f "${pre_kafkaproperties}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Missing Kafka configuration files in ${kafkaconffiledir}"
+    exit 1
+fi
+
+post_kafkaenvsh=${KAFKA_CONF_DIR}/kafka-env.sh
+post_kafkaproperties=${KAFKA_CONF_DIR}/server.properties
+post_log4jproperties=${KAFKA_CONF_DIR}/log4j.properties
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+kafkahomesubst=`echo "${KAFKA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+kafkalogdirsubst=`echo "${KAFKA_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+kafkapiddirsubst=`echo "${KAFKA_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+kafkaconfdirsubst=`echo "${KAFKA_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+kafkadatadirsubst=`echo "${KAFKA_DATA_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+kafkadlog4joptssubst=`echo "${KAFKA_LOG4J_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
+
+#
+# Setup Kafka configuration files and environment files
+#
+cp ${pre_kafkaenvsh} ${post_kafkaenvsh}
+
+sed -i \
+    -e "s/KAFKA_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/KAFKALOGDIR/${kafkalogdirsubst}/g" \
+    -e "s/KAFKAPIDDIR/${kafkapiddirsubst}/g" \
+    -e "s/KAFKACONFDIR/${kafkaconfdirsubst}/g" \
+    -e "s/KAFKALOG4JOPTS/${kafkalog4jopts}/g" \
+    ${post_kafkaenvsh}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export KAFKA_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_kafkaenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export KAFKA_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_kafkaenvsh}
+fi
+
+cp ${pre_kafkaproperties} ${post_kafkaproperties}
+
+sed -i \
+    -e "s/KAFKABROKERID/${kafkanoderank}/g" \
+    -e "s/KAFKAPORT/${KAFKA_PORT}/g" \
+    -e "s/KAFKALOGDIRS/${kafkadatadirsubst}/g" \
+    -e "s/KAFKAZOOKEEPERCNT/${kafkazookeeperconnect}/g" \
+    -e "s/KAFKAZOOKEEPERTIMEOUT/${kafkazookeepertimeout}/g" \
+    ${post_kafkaproperties}
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+exit 0

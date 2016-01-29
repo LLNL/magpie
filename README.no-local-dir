@@ -31,6 +31,8 @@ Spark - Patches in /patches/spark with 'no-local-dir' in the filename.
 Hbase - Patches in /patches/hbase with 'no-local-dir' in the filename.
       - Requires 'alternate-ssh' patch to be applied first.
 
+Kafka - Patches in /patches/kafka with 'no-local-dir' in the filename.
+
 The submission scripts do not include MAGPIE_NO_LOCAL_DIR
 configuration fields by default.  To include them:
 

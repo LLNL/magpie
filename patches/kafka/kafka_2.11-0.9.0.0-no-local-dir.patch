@@ -1,0 +1,18 @@
+diff --git a/bin/kafka-server-start.sh b/bin/kafka-server-start.sh
+index dc01d46..8aaae03 100755
+--- a/bin/kafka-server-start.sh
++++ b/bin/kafka-server-start.sh
+@@ -41,4 +41,12 @@ case $COMMAND in
+     ;;
+ esac
+ 
+-exec $base_dir/kafka-run-class.sh $EXTRA_ARGS kafka.Kafka $@
++myhostname=`hostname`
++
++args="$@"
++if echo $args | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    args=$(echo $args | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
++exec $base_dir/kafka-run-class.sh $EXTRA_ARGS kafka.Kafka $args

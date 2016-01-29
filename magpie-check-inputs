@@ -171,6 +171,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "mahout" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "kafka" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "storm" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tachyon" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
@@ -178,7 +179,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, storm, tachyon, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, kafka, storm, tachyon, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -309,6 +310,13 @@ then
     exit 1
 fi
 
+if [ "${KAFKA_SETUP}X" != "X" ] \
+    && ( [ "${KAFKA_SETUP}" != "yes" ] && [ "${KAFKA_SETUP}" != "no" ] )
+then
+    echo "KAFKA_SETUP must be set to yes or no"
+    exit 1
+fi
+
 if [ "${STORM_SETUP}X" != "X" ] \
     && ( [ "${STORM_SETUP}" != "yes" ] && [ "${STORM_SETUP}" != "no" ] )
 then
@@ -338,11 +346,12 @@ fi
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
+    && [ "${KAFKA_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${TACHYON_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor STORM_SETUP nor TACHYON_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor KAFKA_SETUP nor STORM_SETUP nor TACHYON_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -383,6 +392,13 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_JOB_TYPE}" == "kafka" ] \
+    && [ "${KAFKA_SETUP}" != "yes" ]
+then
+    echo "Cannot run kafka job type if KAFKA_SETUP is not enabled"
+    exit 1
+fi
+
 if [ "${MAGPIE_JOB_TYPE}" == "storm" ] \
     && [ "${STORM_SETUP}" != "yes" ]
 then
@@ -408,6 +424,7 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${MAHOUT_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
+    && [ "${KAFKA_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${TACHYON_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
@@ -1407,6 +1424,66 @@ then
     then
 	echo "No remaining nodes for Spark slaves, increase node count or adjust node allocations"
 	exit 1
+    fi
+fi
+
+#
+# Check Kafka Inputs 
+#
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Kafka"
+	exit 1
+    fi
+
+    if [ "${KAFKA_VERSION}X" == "X" ]
+    then
+	echo "KAFKA_VERSION must be set to run Kafka"
+	exit 1
+    fi
+
+    if [ "${KAFKA_HOME}X" == "X" ]
+    then
+	echo "KAFKA_HOME must be set to run Kafka"
+	exit 1
+    fi
+    
+    if [ ! -d ${KAFKA_HOME} ]
+    then
+	echo "KAFKA_HOME does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${KAFKA_LOCAL_DIR}X" == "X" ]
+    then
+	echo "KAFKA_LOCAL_DIR must be set to run Kafka"
+	exit 1
+    fi
+
+    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
+    then
+	echo "Zookeeper must be enabled for Kafka"
+	exit 1
+    fi
+
+    if [ "${KAFKA_MODE}" != "performance" ] \
+        && [ "${KAFKA_MODE}" != "server" ] \
+        && [ "${KAFKA_MODE}" != "setuponly" ]
+    then
+        echo "KAFKA_MODE must be set to performance, server or setuponly"
+        exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "kafka" ] && [ "${KAFKA_MODE}" == "performance" ]
+    then
+        if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance" ]
+        then
+            echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance cannot be found, it is required to run performance test"
+            exit 1
+        fi
     fi
 fi
 

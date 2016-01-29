@@ -168,6 +168,7 @@ define create-templates
 		magpie-hbase\
                 magpie-phoenix\
 		magpie-spark\
+		magpie-kafka\
 		magpie-storm\
 		magpie-tachyon\
 		magpie-zookeeper\
