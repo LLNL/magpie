@@ -161,12 +161,31 @@ then
     # I assume no user is concerned with performance here, we just go with this fixed number 
     sumreducetasks=`expr $HADOOP_SLAVE_COUNT`
 
-    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terachecksum ${extralibjars} -Dmapred.reduce.tasks=$sumreducetasks ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
+    # To my surprise, TeraChecksum isn't in the mapreduce examples
+    # driver.  I wrote a patch for this and submitted it in
+    # MAPREDUCE-6624.  If it isn't available in a future version of
+    # Hadoop, we can just use teravalidate.
+
+    ${hadoopcmdprefix}/hadoop jar ${terasortexamples} terachecksum 2>&1 | grep -q "Unknown program"
+    if [ $? -eq 0 ]
+    then
+	whichchecksumcommand="teravalidate"
+	echo "TeraChecksum not available, using TeraValidate instead"
+    else
+	whichchecksumcommand="terachecksum"
+    fi
+
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} ${whichchecksumcommand} ${extralibjars} -Dmapred.reduce.tasks=$sumreducetasks ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
 
     echo "Running $command" >&2
     $command
 
-    inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    if [ "${whichchecksumcommand}" == "teravalidate" ]
+    then
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
+    else
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    fi
     echo "TeraChecksum Checksum: ${inputchecksum}"
 fi
 
@@ -228,7 +247,12 @@ then
     echo "* Comparing Checksums"
     echo "*******************************************************"
 
-    inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    if [ "${whichchecksumcommand}" == "teravalidate" ]
+    then
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
+    else
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    fi
     outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
 
     if [ "${inputchecksum}" == "${outputchecksum}" ]
