@@ -109,6 +109,18 @@ then
     $command
 fi
 
+if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-checksum
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-checksum"
+    $command
+fi
+
+if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-validate
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
+    $command
+fi
+
 if [ "${HADOOP_TERAGEN_MAP_COUNT:-0}" -ne "0" ]
 then
     mtasks=$HADOOP_TERAGEN_MAP_COUNT
@@ -130,27 +142,140 @@ else
     fi
 fi
 
+echo "*******************************************************"
+echo "* Executing TeraGen"
+echo "*******************************************************"
+
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} -Dmapred.map.tasks=$mtasks ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
 	    
+if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
+then
+    sleep 30
+
+    echo "*******************************************************"
+    echo "* Executing TeraChecksum"
+    echo "*******************************************************"
+
+    # I assume no user is concerned with performance here, we just go with this fixed number 
+    sumreducetasks=`expr $HADOOP_SLAVE_COUNT`
+
+    # To my surprise, TeraChecksum isn't in the mapreduce examples
+    # driver.  I wrote a patch for this and submitted it in
+    # MAPREDUCE-6624.  If it isn't available in a future version of
+    # Hadoop, we can just use teravalidate.
+
+    ${hadoopcmdprefix}/hadoop jar ${terasortexamples} terachecksum 2>&1 | grep -q "Unknown program"
+    if [ $? -eq 0 ]
+    then
+	whichchecksumcommand="teravalidate"
+	echo "TeraChecksum not available, using TeraValidate instead"
+    else
+	whichchecksumcommand="terachecksum"
+    fi
+
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} ${whichchecksumcommand} ${extralibjars} -Dmapred.reduce.tasks=$sumreducetasks ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
+
+    echo "Running $command" >&2
+    $command
+
+    if [ "${whichchecksumcommand}" == "teravalidate" ]
+    then
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
+    else
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    fi
+    echo "TeraChecksum Checksum: ${inputchecksum}"
+fi
+
 sleep 30
 	    
 if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
 then
-    rtasks=$HADOOP_TERASORT_REDUCER_COUNT
+    sortreducetasks=$HADOOP_TERASORT_REDUCER_COUNT
 else
-    rtasks=`expr $HADOOP_SLAVE_COUNT \* 2`
+    sortreducetasks=`expr $HADOOP_SLAVE_COUNT \* 2`
 fi
 
-command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$rtasks -Ddfs.replication=1 ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+if [ "${HADOOP_TERASORT_OUTPUT_REPLICATION}X" != "X" ]
+then
+    replicationcount="-Dmapreduce.terasort.output.replication=${HADOOP_TERASORT_OUTPUT_REPLICATION}"
+fi
+
+echo "*******************************************************"
+echo "* Executing TeraSort"
+echo "*******************************************************"
+
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$sortreducetasks ${replicationcount} ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
 
 echo "Running $command" >&2
 $command
+
+if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
+then
+    sleep 30
+
+    echo "*******************************************************"
+    echo "* Executing TeraValidate"
+    echo "*******************************************************"
+
+    # I assume no user is concerned with performance here, we just go with this fixed number 
+    validatereducetasks=`expr $HADOOP_SLAVE_COUNT`
+
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teravalidate ${extralibjars} -Dmapred.reduce.tasks=$validatereducetasks ${pathprefix}terasort-sort ${pathprefix}terasort-validate"
+
+    echo "Running $command" >&2
+    $command
+
+    validateerrors=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | grep error | wc -l`
+
+    if [ "${validateerrors}" != "0" ]
+    then
+	echo "TeraValidate Result: Errors in terasort output"
+    else
+	echo "TeraValidate Result: No errors in terasort output"
+    fi
+
+    outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
+    echo "TeraValidate Checksum: ${outputchecksum}"
+fi
+
+if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ] && [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
+then
+    echo "*******************************************************"
+    echo "* Comparing Checksums"
+    echo "*******************************************************"
+
+    if [ "${whichchecksumcommand}" == "teravalidate" ]
+    then
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
+    else
+	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+    fi
+    outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
+
+    if [ "${inputchecksum}" == "${outputchecksum}" ]
+    then
+	echo "TeraSort Checksum Comparison: Input and output checksums match - ${inputchecksum}"
+    else
+	echo "TeraSort Checksum Comparison: Input checksum ${inputchecksum} != output checksum ${outputchecksum}"
+    fi
+fi
 
 command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
 $command
 command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
 $command
+if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-checksum"
+    $command
+fi
+if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
+then
+    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
+    $command
+fi
 
 exit 0

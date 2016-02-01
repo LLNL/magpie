@@ -739,6 +739,47 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_TERASORT_CLEAR_CACHE=no
 
+# Terasort output replication count
+#
+# For "terasort" mode during the actual terasort of data
+#
+# In some circumstances, replication of the output from the terasort
+# must be equal to the replication of data for the input.  In other
+# cases it can be less.  The below can be adjusted to tweak for
+# benchmarking purposes.
+#
+# If not specified, defaults to Terasort default, which is 1 in most
+# versions of Hadoop
+#
+# export HADOOP_TERASORT_OUTPUT_REPLICATION=1
+
+# Terachecksum
+#
+# For "terasort" mode after the teragen of data
+#
+# After executing the teragen, run terachecksum to calculate a checksum of
+# the input.
+#
+# If both this and HADOOP_TERASORT_RUN_TERAVALIDATE are set, the
+# checksums will be compared afterwards for equality.
+#
+# Defaults to no
+#
+# export HADOOP_TERASORT_RUN_TERACHECKSUM=no 
+
+# Teravalidate
+#
+# For "terasort" mode after the actual terasort of data
+#
+# After executing the sort, run teravalidate to validate the sorted data.
+#
+# If both this and HADOOP_TERASORT_RUN_TERACHECKSUM are set, the
+# checksums will be compared afterwards for equality.
+#
+# Defaults to no
+#
+# export HADOOP_TERASORT_RUN_TERAVALIDATE=no 
+
 ############################################################################
 # Hadoop Script Configurations
 ############################################################################
