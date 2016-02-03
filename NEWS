@@ -4,6 +4,7 @@ Support Kafka, initially with version 2_11-0.9.0.0.
 Support HADOOP_TERASORT_OUTPUT_REPLICATION option.
 Support HADOOP_TERASORT_RUN_TERAVALIDATE option.
 Support HADOOP_TERASORT_RUN_TERACHECKSUM option.
+Move most documentation to doc/ subdirectory.
 
 magpie 1.66
 -----------

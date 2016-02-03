@@ -39,7 +39,7 @@ FAQ
   Magpie), I utilized the Hadoop scripts 'start-all.sh',
   'start-dfs.sh', etc. to start and stop daemons on all nodes of an
   allocation.  These scripts had to be modified/patched, but the core
-  of the scripts was used.
+  of the scripts was unchanged.
 
   Similar scripts also existed in Hbase, Spark, and other projects.
 
