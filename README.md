@@ -111,6 +111,8 @@ Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
 Documentation
 -------------
 
-Please see the doc/README file for full instructions, pointers to
-documentation for each project, setup requirements, ability to do
-local configurations, tips & tricks, and all information.
+All documentation is in the 'doc' subdirectory.  Please see the
+doc/README file as a starting point.  It provides general instructions
+as well as pointers to documentation for each project, setup
+requirements, ability to do local configurations, tips & tricks, and
+more information.
