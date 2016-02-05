@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/chu11/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -32,7 +32,7 @@
 #
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
-# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
@@ -47,7 +47,7 @@
 # Job name.  This will be used in naming directories for the job.
 #SBATCH --job-name=<my job name>
 
-# Partition to launch job in 
+# Partition to launch job in
 #SBATCH --partition=<my partition>
 
 ## SLURM Values
@@ -95,7 +95,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
-# "tachyon" - Run a job according ot the settings of TACHYON_MODE. 
+# "tachyon" - Run a job according ot the settings of TACHYON_MODE.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
@@ -178,7 +178,7 @@ export MAGPIE_JOB_TYPE="storm"
 # The post-job script is typically used for cleaning up something or
 # gathering info (such as logs) for post-debugging/analysis.  If it is
 # set, MAGPIE_SHUTDOWN_TIME above must be > 5.
-# 
+#
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
@@ -223,7 +223,7 @@ export MAGPIE_JOB_TYPE="storm"
 #
 # export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
 
-# Remote Shell 
+# Remote Shell
 #
 # Magpie requires a passwordless remote shell command to launch
 # necessary daemons across your job allocation.  Magpie defaults to
@@ -253,7 +253,7 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 # Should Storm be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export STORM_SETUP=yes
 
 # Version
@@ -357,7 +357,7 @@ export STORM_MODE="stormwordcount"
 # Should Zookeeper be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export ZOOKEEPER_SETUP=yes
 
 # Zookeeper Replication Count
@@ -413,13 +413,13 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # Path base for zookeeper data to be stored on each cluster node
 #
 # ZOOKEEPER_DATA_DIR can point to either a network file system path or
-# a local drive path.  
+# a local drive path.
 #
 # If a local drive or SSD is available, a local path is preferable.
 # If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
 # optimization possibilties.
 #
-export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
+export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"
 
 # Zookeeper cleanup
 #
@@ -457,8 +457,8 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 
 # Option to have per job data dir
 #
-# For each batch job, if this is set to yes, the location where 
-# zookeeper stores its data dir will be unique per job. The data 
+# For each batch job, if this is set to yes, the location where
+# zookeeper stores its data dir will be unique per job. The data
 # dir will have the job id appended to the path to keep them organized.
 # It will allows for multiple instances of the same script to be run
 # without having collisions due to different nodes being used.

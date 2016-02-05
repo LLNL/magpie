@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/chu11/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -32,7 +32,7 @@
 #
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
-# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
@@ -47,7 +47,7 @@
 # Job name.  This will be used in naming directories for the job.
 #SBATCH --job-name=<my job name>
 
-# Partition to launch job in 
+# Partition to launch job in
 #SBATCH --partition=<my partition>
 
 ## SLURM Values
@@ -95,7 +95,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
-# "tachyon" - Run a job according ot the settings of TACHYON_MODE. 
+# "tachyon" - Run a job according ot the settings of TACHYON_MODE.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
@@ -178,7 +178,7 @@ export MAGPIE_JOB_TYPE="mahout"
 # The post-job script is typically used for cleaning up something or
 # gathering info (such as logs) for post-debugging/analysis.  If it is
 # set, MAGPIE_SHUTDOWN_TIME above must be > 5.
-# 
+#
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
@@ -223,7 +223,7 @@ export MAGPIE_JOB_TYPE="mahout"
 #
 # export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
 
-# Remote Shell 
+# Remote Shell
 #
 # Magpie requires a passwordless remote shell command to launch
 # necessary daemons across your job allocation.  Magpie defaults to
@@ -253,7 +253,7 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 # Should Hadoop be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HADOOP_SETUP=yes
 
 # Set Hadoop Setup Type
@@ -264,7 +264,7 @@ export HADOOP_SETUP=yes
 #
 # MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS1 - HDFS only w/ Hadoop 1.0 
+# HDFS1 - HDFS only w/ Hadoop 1.0
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
 # The HDFS only options may be useful when you want to use HDFS with
@@ -386,7 +386,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.
 #
-# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2.
 #
 export HADOOP_MODE="launch"
 
@@ -443,7 +443,7 @@ export HADOOP_MODE="launch"
 #
 # export HADOOP_MAX_REDUCE_TASKS=8
 
-# Heap size for JVM 
+# Heap size for JVM
 #
 # Specified in M.  If not specified, a reasonable estimate will be
 # calculated based on total memory available and number of CPUs on the
@@ -541,7 +541,7 @@ export HADOOP_MODE="launch"
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
-#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below. 
+#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below.
 #
 # "hdfsovernetworkfs" - HDFS over Network FS.  Identical to HDFS over
 #                       Lustre, but filesystem agnostic.
@@ -702,9 +702,9 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # Should Mahout be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # Note that unlike Hadoop or Zookeeper, Mahout does not need to be
-# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.
 #
 # If MAHOUT_SETUP is enabled, this will inform Magpie to setup
 # environment variables that will hopefully make it easier to run

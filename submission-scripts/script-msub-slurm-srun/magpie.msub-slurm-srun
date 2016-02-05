@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/chu11/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -32,7 +32,7 @@
 #
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
-# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
@@ -41,7 +41,7 @@
 
 #MSUB -o ./moab-%j.out
 
-#MSUB -l partition=<my partition> 
+#MSUB -l partition=<my partition>
 
 #MSUB -q <my batch queue>
 
@@ -100,7 +100,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
-# "tachyon" - Run a job according ot the settings of TACHYON_MODE. 
+# "tachyon" - Run a job according ot the settings of TACHYON_MODE.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
@@ -183,7 +183,7 @@ export MAGPIE_JOB_TYPE="script"
 # The post-job script is typically used for cleaning up something or
 # gathering info (such as logs) for post-debugging/analysis.  If it is
 # set, MAGPIE_SHUTDOWN_TIME above must be > 5.
-# 
+#
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
@@ -228,7 +228,7 @@ export MAGPIE_JOB_TYPE="script"
 #
 # export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
 
-# Remote Shell 
+# Remote Shell
 #
 # Magpie requires a passwordless remote shell command to launch
 # necessary daemons across your job allocation.  Magpie defaults to
@@ -258,7 +258,7 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 # Should Hadoop be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HADOOP_SETUP=no
 
 # Set Hadoop Setup Type
@@ -269,7 +269,7 @@ export HADOOP_SETUP=no
 #
 # MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS1 - HDFS only w/ Hadoop 1.0 
+# HDFS1 - HDFS only w/ Hadoop 1.0
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
 # The HDFS only options may be useful when you want to use HDFS with
@@ -391,7 +391,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.
 #
-# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2.
 #
 export HADOOP_MODE="terasort"
 
@@ -448,7 +448,7 @@ export HADOOP_MODE="terasort"
 #
 # export HADOOP_MAX_REDUCE_TASKS=8
 
-# Heap size for JVM 
+# Heap size for JVM
 #
 # Specified in M.  If not specified, a reasonable estimate will be
 # calculated based on total memory available and number of CPUs on the
@@ -546,7 +546,7 @@ export HADOOP_MODE="terasort"
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
-#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below. 
+#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below.
 #
 # "hdfsovernetworkfs" - HDFS over Network FS.  Identical to HDFS over
 #                       Lustre, but filesystem agnostic.
@@ -769,7 +769,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # Defaults to no
 #
-# export HADOOP_TERASORT_RUN_TERACHECKSUM=no 
+# export HADOOP_TERASORT_RUN_TERACHECKSUM=no
 
 # Teravalidate
 #
@@ -782,7 +782,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # Defaults to no
 #
-# export HADOOP_TERASORT_RUN_TERAVALIDATE=no 
+# export HADOOP_TERASORT_RUN_TERAVALIDATE=no
 
 ############################################################################
 # Hadoop Script Configurations
@@ -802,7 +802,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # Should Hadoop run with UDA
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HADOOP_UDA_SETUP=no
 
 # Specify UDA jar
@@ -820,7 +820,7 @@ export HADOOP_UDA_JAR="${HOME}/uda/uda-hadoop-2.x.jar"
 #
 # Specify in kilobytes, should generally be multiples of 1024.
 # Defaults to 1024.
-# 
+#
 # export HADOOP_UDA_RDMA_BUFFER_SIZE=1024
 
 ############################################################################
@@ -830,9 +830,9 @@ export HADOOP_UDA_JAR="${HOME}/uda/uda-hadoop-2.x.jar"
 # Should Pig be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # Note that unlike Hadoop or Zookeeper, Pig does not need to be
-# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.
 #
 # If PIG_SETUP is enabled, this will inform Magpie to setup a
 # configuration files and environment variables that will hopefully
@@ -917,7 +917,7 @@ export PIG_MODE="testpig"
 # Should Hbase be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HBASE_SETUP=no
 
 # Version
@@ -1005,7 +1005,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 export HBASE_MODE="performanceeval"
 
 # Start Hbase with thrift
-# 
+#
 # This will start up thrift alongside of Hbase master
 # Defaults to 'no'
 #
@@ -1028,13 +1028,13 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Mode
 #
-# Specify 'sequential-thread' for threaded sequential write/read 
+# Specify 'sequential-thread' for threaded sequential write/read
 # Specify 'sequential-mr' for MapReduce sequential write/read
-# Specify 'random-thread' for threaded random write/read 
+# Specify 'random-thread' for threaded random write/read
 # Specify 'random-mr' for MapReduce random write/read
 #
-# Defaults to 'sequential-thread' if not specified. 
-# 
+# Defaults to 'sequential-thread' if not specified.
+#
 # export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"
 
 # Performance Evaluation Rows
@@ -1071,7 +1071,7 @@ export HBASE_MODE="performanceeval"
 # Should Phoenix be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # If PHOENIX_SETUP is enabled, this will inform Magpie to setup a
 # configuration files and environment variables that will hopefully
 # make it easier to run Phoenix w/ HBase.  You could leave this disabled
@@ -1138,7 +1138,7 @@ export PHOENIX_MODE="performanceeval"
 # For "performanceeval" mode.  Rows each client will run.
 #
 # Defaults to 100000
-# 
+#
 # export PHOENIX_PERFORMANCEEVAL_ROW_COUNT=100000
 
 ############################################################################
@@ -1148,7 +1148,7 @@ export PHOENIX_MODE="performanceeval"
 # Should Spark be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export SPARK_SETUP=no
 
 # Version
@@ -1227,7 +1227,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # memory will be configured differently than the executor memory
 # indicated above with SPARK_JOB_MEMORY.
 #
-# If running Spark < 1.0, this option does nothing. 
+# If running Spark < 1.0, this option does nothing.
 #
 # export SPARK_DRIVER_MEMORY="2048"
 
@@ -1400,7 +1400,7 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_JOB_LIBRARY_PATH=""
 
-# SPARK_JOB_JAVA_OPTS  
+# SPARK_JOB_JAVA_OPTS
 #
 # May be necessary to set options to set Spark options
 #
@@ -1439,7 +1439,7 @@ export SPARK_MODE="sparkpi"
 # speaking, more should lead to more accurate estimates.
 #
 # If not specified, equals number of nodes.
-# 
+#
 # export SPARK_SPARKPI_SLICES=4
 
 ############################################################################
@@ -1450,7 +1450,7 @@ export SPARK_MODE="sparkpi"
 #
 # Specify the file to do the word count on.  Specify the scheme, such
 # as hdfs:// or file://, appropriately.
-# 
+#
 # export SPARK_SPARKWORDCOUNT_FILE="/mywordcountfile"
 
 # SparkWordCount Copy In File
@@ -1460,7 +1460,7 @@ export SPARK_MODE="sparkpi"
 #
 # If specified below, the file will be copied to the location
 # specified by SPARK_SPARKWORDCOUNT_FILE before the word count is
-# executed.  
+# executed.
 #
 # Specify the scheme appropriately.  At this moment, the schemes of
 # file:// and hdfs:// are recognized for this option.
@@ -1489,7 +1489,7 @@ export SPARK_MODE="sparkpi"
 # Should Kafka be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # If KAFKA_SETUP is enabled, this will inform Magpie to setup a
 # configuration files and environment variables that will hopefully
 # make it easier to run Kafka w/ HBase.  You could leave this disabled
@@ -1544,13 +1544,13 @@ export KAFKA_MODE="performance"
 #
 # export KAFKA_PERFORMANCE_RECORD_COUNT=50000000
 
-# Performance Record Size 
+# Performance Record Size
 #
 # The size of each record in bytes to run performance test with
 #
 # export KAFKA_PERFORMANCE_RECORD_SIZE=100
 
-# Performance Throughput 
+# Performance Throughput
 #
 # The approximate throughput to throttle messages at for the performance test
 # (in messages/sec) Note: -1 does not throttle
@@ -1564,7 +1564,7 @@ export KAFKA_MODE="performance"
 # Should Storm be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export STORM_SETUP=no
 
 # Version
@@ -1668,7 +1668,7 @@ export STORM_MODE="stormwordcount"
 # Should Tachyon be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export TACHYON_SETUP=no
 
 # Set how Tachyon should run
@@ -1751,7 +1751,7 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 # It is not required to run a worker on the master, but it can be
 # convenient.  Specify the below to "yes" to run a worker on the
 # master.
-# export TACHYON_WORKER_ON_MASTER="yes" 
+# export TACHYON_WORKER_ON_MASTER="yes"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
@@ -1782,7 +1782,7 @@ export TACHYON_LOCAL_DIR="/tmp/${USER}/tachyon"
 # Should Zookeeper be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export ZOOKEEPER_SETUP=no
 
 # Zookeeper Replication Count
@@ -1838,13 +1838,13 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # Path base for zookeeper data to be stored on each cluster node
 #
 # ZOOKEEPER_DATA_DIR can point to either a network file system path or
-# a local drive path.  
+# a local drive path.
 #
 # If a local drive or SSD is available, a local path is preferable.
 # If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
 # optimization possibilties.
 #
-export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"  
+export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"
 
 # Zookeeper cleanup
 #
@@ -1882,8 +1882,8 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 
 # Option to have per job data dir
 #
-# For each batch job, if this is set to yes, the location where 
-# zookeeper stores its data dir will be unique per job. The data 
+# For each batch job, if this is set to yes, the location where
+# zookeeper stores its data dir will be unique per job. The data
 # dir will have the job id appended to the path to keep them organized.
 # It will allows for multiple instances of the same script to be run
 # without having collisions due to different nodes being used.

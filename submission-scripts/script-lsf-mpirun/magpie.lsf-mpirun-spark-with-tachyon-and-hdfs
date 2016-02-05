@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/chu11/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -32,7 +32,7 @@
 #
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
-# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
@@ -47,7 +47,7 @@
 # Job name.  This will be used in naming directories for the job.
 #BSUB -J <my job name>
 
-# Queue to launch job in 
+# Queue to launch job in
 #BSUB -q <my queue>
 
 ## LSF Values
@@ -93,7 +93,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
-# "tachyon" - Run a job according ot the settings of TACHYON_MODE. 
+# "tachyon" - Run a job according ot the settings of TACHYON_MODE.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
@@ -176,7 +176,7 @@ export MAGPIE_JOB_TYPE="spark"
 # The post-job script is typically used for cleaning up something or
 # gathering info (such as logs) for post-debugging/analysis.  If it is
 # set, MAGPIE_SHUTDOWN_TIME above must be > 5.
-# 
+#
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
@@ -221,7 +221,7 @@ export MAGPIE_JOB_TYPE="spark"
 #
 # export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
 
-# Remote Shell 
+# Remote Shell
 #
 # Magpie requires a passwordless remote shell command to launch
 # necessary daemons across your job allocation.  Magpie defaults to
@@ -251,7 +251,7 @@ export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 # Should Hadoop be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HADOOP_SETUP=yes
 
 # Set Hadoop Setup Type
@@ -262,7 +262,7 @@ export HADOOP_SETUP=yes
 #
 # MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS1 - HDFS only w/ Hadoop 1.0 
+# HDFS1 - HDFS only w/ Hadoop 1.0
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
 # The HDFS only options may be useful when you want to use HDFS with
@@ -384,7 +384,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup daemons themselves, etc.
 #
-# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2. 
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2.
 #
 export HADOOP_MODE="hdfsonly"
 
@@ -409,7 +409,7 @@ export HADOOP_MODE="hdfsonly"
 #
 # "hdfsoverlustre" - HDFS over Lustre.  See README for description.
 #
-#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below. 
+#                    User must set HADOOP_HDFSOVERLUSTRE_PATH below.
 #
 # "hdfsovernetworkfs" - HDFS over Network FS.  Identical to HDFS over
 #                       Lustre, but filesystem agnostic.
@@ -570,7 +570,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # Should Spark be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export SPARK_SETUP=yes
 
 # Version
@@ -649,7 +649,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # memory will be configured differently than the executor memory
 # indicated above with SPARK_JOB_MEMORY.
 #
-# If running Spark < 1.0, this option does nothing. 
+# If running Spark < 1.0, this option does nothing.
 #
 # export SPARK_DRIVER_MEMORY="2048"
 
@@ -822,7 +822,7 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_JOB_LIBRARY_PATH=""
 
-# SPARK_JOB_JAVA_OPTS  
+# SPARK_JOB_JAVA_OPTS
 #
 # May be necessary to set options to set Spark options
 #
@@ -861,7 +861,7 @@ export SPARK_MODE="sparkpi"
 # speaking, more should lead to more accurate estimates.
 #
 # If not specified, equals number of nodes.
-# 
+#
 # export SPARK_SPARKPI_SLICES=4
 
 ############################################################################
@@ -872,7 +872,7 @@ export SPARK_MODE="sparkpi"
 #
 # Specify the file to do the word count on.  Specify the scheme, such
 # as hdfs:// or file://, appropriately.
-# 
+#
 # export SPARK_SPARKWORDCOUNT_FILE="/mywordcountfile"
 
 # SparkWordCount Copy In File
@@ -882,7 +882,7 @@ export SPARK_MODE="sparkpi"
 #
 # If specified below, the file will be copied to the location
 # specified by SPARK_SPARKWORDCOUNT_FILE before the word count is
-# executed.  
+# executed.
 #
 # Specify the scheme appropriately.  At this moment, the schemes of
 # file:// and hdfs:// are recognized for this option.
@@ -911,7 +911,7 @@ export SPARK_MODE="sparkpi"
 # Should Tachyon be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export TACHYON_SETUP=yes
 
 # Set how Tachyon should run
@@ -994,7 +994,7 @@ export TACHYON_STORE_PATHS="/ssd/${USER}/tachyon"
 # It is not required to run a worker on the master, but it can be
 # convenient.  Specify the below to "yes" to run a worker on the
 # master.
-# export TACHYON_WORKER_ON_MASTER="yes" 
+# export TACHYON_WORKER_ON_MASTER="yes"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
