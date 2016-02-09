@@ -285,7 +285,7 @@ then
     cd ${INSTALL_PATH}
     tar -xzf ${KAFKA_PACKAGE_BASENAME}
 
-    KAFKA_PACKAGE_BASEDIR=`echo $KAFKA_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
+    KAFKA_PACKAGE_BASEDIR=`echo $KAFKA_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)/\1/g'`
     cd ${INSTALL_PATH}/${KAFKA_PACKAGE_BASEDIR}
 
     echo 'Applying patches'
