@@ -67,6 +67,11 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-kafka)
 fi
 
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zeppelin)
+fi
+
 if [ "${STORM_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-storm)

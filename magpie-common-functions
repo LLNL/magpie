@@ -179,6 +179,19 @@ Magpie_am_I_a_kafka_node () {
     return 1
 }
 
+Magpie_am_I_a_zeppelin_node() {
+    local myhostname=`hostname`
+
+    Magpie_make_zeppelin_local_dirs_node_specific
+
+    if grep -q -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters
+    then
+	zeppelinnoderank=`grep -n -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters | awk --field-separator=':' '{print $1}'`
+	return 0
+    fi
+    return 1
+}
+
 Magpie_am_I_a_storm_node () {
     local myhostname=`hostname`
 

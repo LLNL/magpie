@@ -93,6 +93,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "kafka" - Run a job according to the settings of KAFKA_MODE.
 #
+# "zeppelin" - Run a job according to the settings of ZEPPELIN_MODE.
+#
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
 # "tachyon" - Run a job according ot the settings of TACHYON_MODE.
@@ -1551,6 +1553,68 @@ export KAFKA_MODE="performance"
 # (in messages/sec) Note: -1 does not throttle
 #
 # export KAFKA_PERFORMANCE_THROUGHPUT=-1
+
+############################################################################
+# Zeppelin Configurations
+############################################################################
+
+# Should Zeppelin be setup
+#
+# Specify yes or no.  Defaults to no.
+#
+# If ZEPPELIN_SETUP is enabled, this will inform Magpie to setup a
+# configuration files and environment variables that will hopefully
+# make it easier to run Zeppelin w/ HBase.  You could leave this disabled
+# and setup/config Zeppelin as you need.
+#
+export ZEPPELIN_SETUP=no
+
+# Zeppelin Version
+#
+export ZEPPELIN_VERSION="0.5.6"
+
+# Path to your Zeppelin build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the hbase version this will run against.
+#
+export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-incubating-bin-all"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
+
+# Path to the root scala dir
+#
+# This may need to be modified if the interpreter uses the wrong
+# version of scala.
+#
+# The default does not add anything to your paths
+# export ZEPPELIN_SCALA_PATH=${HOME}/scala-2.10.4
+
+# Zeppelin Spark Submit Options
+#
+# Add additional options for starting Zeppelin with Spark.
+#
+# Note that when Zeppelin starts up it will use all cores and memory that
+# Spark has available, this can be changed by adjusting Spark submit options.
+# e.g. --total-executor-cores 20 --executor-memory 16G
+# ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
+
+# Set how Zeppelin should run
+#
+# "server" - setup the server
+#
+# "setuponly" - Like 'server' but only setup conf files. useful
+#               if user wants to setup daemons themselves, etc.
+#
+#
+export ZEPPELIN_MODE="server"
 
 ############################################################################
 # Storm Core Configurations

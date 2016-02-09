@@ -208,6 +208,31 @@ then
 fi
 
 #
+# Setup Zeppelin directories
+#
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    mkdir -p $ZEPPELIN_CONF_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${ZEPPELIN_CONF_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $ZEPPELIN_LOG_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${ZEPPELIN_LOG_DIR}"
+	exit 1
+    fi
+
+    mkdir -p $ZEPPELIN_LOCAL_SCRATCH_DIR
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${ZEPPELIN_LOCAL_SCRATCH_DIR}"
+	exit 1
+    fi
+fi
+
+#
 # Setup Storm directories
 #
 
@@ -385,6 +410,11 @@ if [ "${KAFKA_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${KAFKA_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${KAFKA_CONF_DIR}/slaves
+fi
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${ZEPPELIN_CONF_DIR}/masters
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]

@@ -169,6 +169,7 @@ define create-templates
                 magpie-phoenix\
 		magpie-spark\
 		magpie-kafka\
+                magpie-zeppelin\
 		magpie-storm\
 		magpie-tachyon\
 		magpie-zookeeper\
