@@ -5,9 +5,9 @@
 # Should Mahout be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # Note that unlike Hadoop or Zookeeper, Mahout does not need to be
-# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.
 #
 # If MAHOUT_SETUP is enabled, this will inform Magpie to setup
 # environment variables that will hopefully make it easier to run

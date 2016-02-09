@@ -5,9 +5,9 @@
 # Should Pig be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # Note that unlike Hadoop or Zookeeper, Pig does not need to be
-# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.  
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.
 #
 # If PIG_SETUP is enabled, this will inform Magpie to setup a
 # configuration files and environment variables that will hopefully

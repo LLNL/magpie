@@ -5,7 +5,7 @@
 # Should Phoenix be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # If PHOENIX_SETUP is enabled, this will inform Magpie to setup a
 # configuration files and environment variables that will hopefully
 # make it easier to run Phoenix w/ HBase.  You could leave this disabled
@@ -72,6 +72,6 @@ export PHOENIX_MODE="performanceeval"
 # For "performanceeval" mode.  Rows each client will run.
 #
 # Defaults to 100000
-# 
+#
 # export PHOENIX_PERFORMANCEEVAL_ROW_COUNT=100000
 

@@ -5,7 +5,7 @@
 # Should Hbase be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HBASE_SETUP=no
 
 # Version
@@ -93,7 +93,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 export HBASE_MODE="performanceeval"
 
 # Start Hbase with thrift
-# 
+#
 # This will start up thrift alongside of Hbase master
 # Defaults to 'no'
 #
@@ -116,13 +116,13 @@ export HBASE_MODE="performanceeval"
 
 # Performance Evaluation Mode
 #
-# Specify 'sequential-thread' for threaded sequential write/read 
+# Specify 'sequential-thread' for threaded sequential write/read
 # Specify 'sequential-mr' for MapReduce sequential write/read
-# Specify 'random-thread' for threaded random write/read 
+# Specify 'random-thread' for threaded random write/read
 # Specify 'random-mr' for MapReduce random write/read
 #
-# Defaults to 'sequential-thread' if not specified. 
-# 
+# Defaults to 'sequential-thread' if not specified.
+#
 # export HBASE_PERFORMANCEEVAL_MODE="sequential-thread"
 
 # Performance Evaluation Rows

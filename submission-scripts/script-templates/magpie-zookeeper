@@ -5,7 +5,7 @@
 # Should Zookeeper be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export ZOOKEEPER_SETUP=no
 
 # Zookeeper Replication Count
@@ -61,13 +61,13 @@ export ZOOKEEPER_HOME="PROJECTDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
 # Path base for zookeeper data to be stored on each cluster node
 #
 # ZOOKEEPER_DATA_DIR can point to either a network file system path or
-# a local drive path.  
+# a local drive path.
 #
 # If a local drive or SSD is available, a local path is preferable.
 # If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
 # optimization possibilties.
 #
-export ZOOKEEPER_DATA_DIR="LUSTREDIRPREFIX/zookeeper"  
+export ZOOKEEPER_DATA_DIR="LUSTREDIRPREFIX/zookeeper"
 
 # Zookeeper cleanup
 #
@@ -105,8 +105,8 @@ export ZOOKEEPER_LOCAL_DIR="LOCALDIRPREFIX/zookeeper"
 
 # Option to have per job data dir
 #
-# For each batch job, if this is set to yes, the location where 
-# zookeeper stores its data dir will be unique per job. The data 
+# For each batch job, if this is set to yes, the location where
+# zookeeper stores its data dir will be unique per job. The data
 # dir will have the job id appended to the path to keep them organized.
 # It will allows for multiple instances of the same script to be run
 # without having collisions due to different nodes being used.

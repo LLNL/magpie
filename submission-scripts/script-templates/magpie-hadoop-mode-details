@@ -67,7 +67,7 @@
 #
 # Defaults to no
 #
-# export HADOOP_TERASORT_RUN_TERACHECKSUM=no 
+# export HADOOP_TERASORT_RUN_TERACHECKSUM=no
 
 # Teravalidate
 #
@@ -80,7 +80,7 @@
 #
 # Defaults to no
 #
-# export HADOOP_TERASORT_RUN_TERAVALIDATE=no 
+# export HADOOP_TERASORT_RUN_TERAVALIDATE=no
 
 ############################################################################
 # Hadoop Script Configurations

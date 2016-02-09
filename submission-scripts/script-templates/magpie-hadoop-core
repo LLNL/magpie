@@ -5,7 +5,7 @@
 # Should Hadoop be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HADOOP_SETUP=no
 
 # Set Hadoop Setup Type
@@ -16,7 +16,7 @@ export HADOOP_SETUP=no
 #
 # MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS1 - HDFS only w/ Hadoop 1.0 
+# HDFS1 - HDFS only w/ Hadoop 1.0
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
 # The HDFS only options may be useful when you want to use HDFS with
