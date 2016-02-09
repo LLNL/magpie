@@ -1,0 +1,114 @@
+diff --git a/bin/hbase-cleanup.sh b/bin/hbase-cleanup.sh
+index 596e366..4144cd4 100755
+--- a/bin/hbase-cleanup.sh
++++ b/bin/hbase-cleanup.sh
+@@ -28,6 +28,8 @@
+ #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
+ #   HBASE_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
+ #   HBASE_SLAVE_TIMEOUT Seconds to wait for timing out a remote command.
++#   HBASE_SSH_CMD Specify an alternate remote shell command.
++#     Defaults to ssh if not specified.
+ #   HBASE_SSH_OPTS Options passed to ssh when running remote commands.
+ #
+ 
+diff --git a/bin/master-backup.sh b/bin/master-backup.sh
+index feca4ab..9e6a457 100755
+--- a/bin/master-backup.sh
++++ b/bin/master-backup.sh
+@@ -27,6 +27,8 @@
+ #   HADOOP_CONF_DIR  Alternate conf dir. Default is ${HADOOP_HOME}/conf.
+ #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
+ #   HBASE_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
++#   HBASE_SSH_CMD Specify an alternate remote shell command.
++#     Defaults to ssh if not specified.
+ #   HBASE_SSH_OPTS Options passed to ssh when running remote commands.
+ #
+ # Modelled after $HADOOP_HOME/bin/slaves.sh.
+@@ -60,10 +62,11 @@ fi
+ 
+ args=${@// /\\ }
+ args=${args/master-backup/master}
++RSH_CMD=${HBASE_SSH_CMD:-ssh}
+ 
+ if [ -f $HOSTLIST ]; then
+   for hmaster in `cat "$HOSTLIST"`; do
+-   ssh $HBASE_SSH_OPTS $hmaster $"$args --backup" \
++   $RSH_CMD $HBASE_SSH_OPTS $hmaster $"$args --backup" \
+      2>&1 | sed "s/^/$hmaster: /" &
+    if [ "$HBASE_SLAVE_SLEEP" != "" ]; then
+      sleep $HBASE_SLAVE_SLEEP
+diff --git a/bin/regionservers.sh b/bin/regionservers.sh
+index af26ba9..4bc6ac7 100755
+--- a/bin/regionservers.sh
++++ b/bin/regionservers.sh
+@@ -27,6 +27,8 @@
+ #   HADOOP_CONF_DIR  Alternate conf dir. Default is ${HADOOP_HOME}/conf.
+ #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
+ #   HBASE_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
++#   HBASE_SSH_CMD Specify an alternate remote shell command.
++#     Defaults to ssh if not specified.
+ #   HBASE_SSH_OPTS Options passed to ssh when running remote commands.
+ #
+ # Modelled after $HADOOP_HOME/bin/slaves.sh.
+@@ -48,6 +50,7 @@ bin=`cd "$bin">/dev/null; pwd`
+ # then it takes precedence over the definition in 
+ # hbase-env.sh. Save it here.
+ HOSTLIST=$HBASE_REGIONSERVERS
++RSH_CMD=${HBASE_SSH_CMD:-ssh}
+ 
+ if [ "$HOSTLIST" = "" ]; then
+   if [ "$HBASE_REGIONSERVERS" = "" ]; then
+@@ -63,10 +66,10 @@ if [ "$regionservers" = "localhost" ]; then
+ else
+   for regionserver in `cat "$HOSTLIST"`; do
+     if ${HBASE_SLAVE_PARALLEL:-true}; then
+-      ssh $HBASE_SSH_OPTS $regionserver $"${@// /\\ }" \
++      $RSH_CMD $HBASE_SSH_OPTS $regionserver $"${@// /\\ }" \
+         2>&1 | sed "s/^/$regionserver: /" &
+     else # run each command serially
+-      ssh $HBASE_SSH_OPTS $regionserver $"${@// /\\ }" \
++      $RSH_CMD $HBASE_SSH_OPTS $regionserver $"${@// /\\ }" \
+         2>&1 | sed "s/^/$regionserver: /"
+     fi
+     if [ "$HBASE_SLAVE_SLEEP" != "" ]; then
+diff --git a/bin/rolling-restart.sh b/bin/rolling-restart.sh
+index b3ac67f..4ef1998 100755
+--- a/bin/rolling-restart.sh
++++ b/bin/rolling-restart.sh
+@@ -28,6 +28,8 @@
+ #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
+ #   HBASE_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
+ #   HBASE_SLAVE_TIMEOUT Seconds to wait for timing out a remote command. 
++#   HBASE_SSH_CMD Specify an alternate remote shell command.
++#     Defaults to ssh if not specified.
+ #   HBASE_SSH_OPTS Options passed to ssh when running remote commands.
+ #
+ # Modelled after $HADOOP_HOME/bin/slaves.sh.
+diff --git a/bin/zookeepers.sh b/bin/zookeepers.sh
+index 97bf41b..24c6e2a 100755
+--- a/bin/zookeepers.sh
++++ b/bin/zookeepers.sh
+@@ -24,6 +24,8 @@
+ #
+ #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
+ #   HBASE_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
++#   HADOOP_SSH_CMD Specify an alternate remote shell command.
++#     Defaults to ssh if not specified.
+ #   HBASE_SSH_OPTS Options passed to ssh when running remote commands.
+ #
+ # Modelled after $HADOOP_HOME/bin/slaves.sh.
+@@ -45,11 +47,13 @@ if [ "$HBASE_MANAGES_ZK" = "" ]; then
+   HBASE_MANAGES_ZK=true
+ fi
+ 
++RSH_CMD=${HBASE_SSH_CMD:-ssh}
++
+ if [ "$HBASE_MANAGES_ZK" = "true" ]; then
+   hosts=`"$bin"/hbase org.apache.hadoop.hbase.zookeeper.ZKServerTool | grep '^ZK host:' | sed 's,^ZK host:,,'`
+   cmd=$"${@// /\\ }"
+   for zookeeper in $hosts; do
+-   ssh $HBASE_SSH_OPTS $zookeeper $cmd 2>&1 | sed "s/^/$zookeeper: /" &
++   $RSH_CMD $HBASE_SSH_OPTS $zookeeper $cmd 2>&1 | sed "s/^/$zookeeper: /" &
+    if [ "$HBASE_SLAVE_SLEEP" != "" ]; then
+      sleep $HBASE_SLAVE_SLEEP
+    fi

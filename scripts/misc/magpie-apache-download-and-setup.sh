@@ -53,7 +53,7 @@ PRESET_LAUNCH_SCRIPT_PATHS="Y"
 # have patches for every version.
 
 HADOOP_PACKAGE="hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
-HBASE_PACKAGE="hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
+HBASE_PACKAGE="hbase/1.1.3/hbase-1.1.3-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.11.1/apache-mahout-distribution-0.11.1.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz"
