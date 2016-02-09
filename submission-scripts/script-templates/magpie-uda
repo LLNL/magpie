@@ -5,7 +5,7 @@
 # Should Hadoop run with UDA
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export HADOOP_UDA_SETUP=no
 
 # Specify UDA jar
@@ -23,6 +23,6 @@ export HADOOP_UDA_JAR="PROJECTDIRPREFIX/uda/uda-hadoop-2.x.jar"
 #
 # Specify in kilobytes, should generally be multiples of 1024.
 # Defaults to 1024.
-# 
+#
 # export HADOOP_UDA_RDMA_BUFFER_SIZE=1024
 

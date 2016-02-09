@@ -5,7 +5,7 @@
 # Should Storm be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export STORM_SETUP=no
 
 # Version

@@ -8,7 +8,7 @@
 #
 # If including Zookeeper, include expected Zookeeper nodes.  For
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
-# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper) 
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
@@ -17,7 +17,7 @@
 
 #MSUB -o ./moab-%j.out
 
-#MSUB -l partition=<my partition> 
+#MSUB -l partition=<my partition>
 
 #MSUB -q <my batch queue>
 

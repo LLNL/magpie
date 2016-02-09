@@ -5,7 +5,7 @@
 # Should Tachyon be run
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 export TACHYON_SETUP=no
 
 # Set how Tachyon should run
@@ -88,7 +88,7 @@ export TACHYON_STORE_PATHS="SSDDIRPREFIX/tachyon"
 # It is not required to run a worker on the master, but it can be
 # convenient.  Specify the below to "yes" to run a worker on the
 # master.
-# export TACHYON_WORKER_ON_MASTER="yes" 
+# export TACHYON_WORKER_ON_MASTER="yes"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your

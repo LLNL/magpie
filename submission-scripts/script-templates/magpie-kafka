@@ -5,7 +5,7 @@
 # Should Kafka be setup
 #
 # Specify yes or no.  Defaults to no.
-# 
+#
 # If KAFKA_SETUP is enabled, this will inform Magpie to setup a
 # configuration files and environment variables that will hopefully
 # make it easier to run Kafka w/ HBase.  You could leave this disabled
@@ -60,13 +60,13 @@ export KAFKA_MODE="performance"
 #
 # export KAFKA_PERFORMANCE_RECORD_COUNT=50000000
 
-# Performance Record Size 
+# Performance Record Size
 #
 # The size of each record in bytes to run performance test with
 #
 # export KAFKA_PERFORMANCE_RECORD_SIZE=100
 
-# Performance Throughput 
+# Performance Throughput
 #
 # The approximate throughput to throttle messages at for the performance test
 # (in messages/sec) Note: -1 does not throttle

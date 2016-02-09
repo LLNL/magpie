@@ -18,7 +18,6 @@
 #          User must set HADOOP_HDFS_PATH below.
 #
 @MODE_HDFSOVERLUSTRE@
-
 @MODE_HDFSOVERNETWORKFS@
 
 # "rawnetworkfs" - Use Hadoop RawLocalFileSystem (i.e. file: scheme),

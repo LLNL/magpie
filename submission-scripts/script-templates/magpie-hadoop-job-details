@@ -51,7 +51,7 @@
 #
 # export HADOOP_MAX_REDUCE_TASKS=8
 
-# Heap size for JVM 
+# Heap size for JVM
 #
 # Specified in M.  If not specified, a reasonable estimate will be
 # calculated based on total memory available and number of CPUs on the
