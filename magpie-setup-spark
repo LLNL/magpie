@@ -471,6 +471,22 @@ then
     fi
 fi
 
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    # Spark contains its own version of hbase, so sometime the jars conflict.
+    # Putting hbase jars in front should fix this
+    hbase_jars="${HBASE_HOME}/lib/hbase-client-${HBASE_VERSION}.jar:$hbase_jars"
+    hbase_jars="${HBASE_HOME}/lib/hbase-common-${HBASE_VERSION}.jar:$hbase_jars"
+    hbase_jars="${HBASE_HOME}/lib/hbase-protocol-${HBASE_VERSION}.jar:$hbase_jars"
+
+    if [ "${sparkclasspath}X" != "X" ]
+    then
+        sparkclasspath="${hbase_jars}:${sparkclasspath}"
+    else
+        sparkclasspath="${hbase_jars}"
+    fi
+fi
+
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     phoenix_jar="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-client.jar"
