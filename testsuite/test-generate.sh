@@ -9,7 +9,8 @@
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Mahout 0.11.0, 0.11.1
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
-#   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2
+#   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2,
+#   1.1.3
 # Phoenix 4.5.1-Hbase-1.1, 4.5.2-HBase-1.1, 4.6.0-HBase-1.1
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
 #   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
@@ -75,6 +76,7 @@ no_hbase_1_1_0=n
 no_hbase_1_1_0_1=n
 no_hbase_1_1_1=n
 no_hbase_1_1_2=n
+no_hbase_1_1_3=n
 no_phoenix_4_5_1_HBase_1_1=n
 no_phoenix_4_5_2_HBase_1_1=n
 no_phoenix_4_6_0_HBase_1_1=n
@@ -367,17 +369,17 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
     ./magpie.${submissiontype}-hadoop-and-mahout-DependencyGlobalOrder1D-hadoop-2.7.0-mahout-0.11.1-run-clustersyntheticcontrol
 
-cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.7-run-hbaseperformanceeval
+cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.3-zookeeper-3.4.7-run-hbaseperformanceeval
 
 sed -i \
     -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
     -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/GlobalOrder1D\/"/' \
-    -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="1.1.2"/' \
+    -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="1.1.3"/' \
     -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="3.4.7"/' \
     -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
     -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${lustredirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/GlobalOrder1D"/' \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-    ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.7-run-hbaseperformanceeval
+    ./magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.3-zookeeper-3.4.7-run-hbaseperformanceeval
 
 cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs ./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6-run-sparkwordcount
 
@@ -1155,7 +1157,7 @@ do
     done
 done
 
-for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2
+for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
 do
     for hadoopversion in 2.7.0
     do
@@ -1246,7 +1248,7 @@ do
     done
 done
 
-for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2
+for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
 do
     for hadoopversion in 2.7.0
     do
@@ -1292,7 +1294,7 @@ do
     done
 done
 
-for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2
+for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
 do
     for hadoopversion in 2.7.0
     do
@@ -1320,7 +1322,7 @@ echo "Making Phoenix tests"
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
-    for hbaseversion in 1.1.2
+    for hbaseversion in 1.1.3
     do
 	for hadoopversion in 2.7.0
 	do
@@ -1374,7 +1376,7 @@ done
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
-    for hbaseversion in 1.1.2
+    for hbaseversion in 1.1.3
     do
 	for hadoopversion in 2.7.0
 	do
@@ -1402,7 +1404,7 @@ done
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
-    for hbaseversion in 1.1.2
+    for hbaseversion in 1.1.3
     do
 	for hadoopversion in 2.7.0
 	do
@@ -1430,7 +1432,7 @@ done
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
-    for hbaseversion in 1.1.2
+    for hbaseversion in 1.1.3
     do
 	for hadoopversion in 2.7.0
 	do
@@ -1473,7 +1475,7 @@ done
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
-    for hbaseversion in 1.1.2
+    for hbaseversion in 1.1.3
     do
 	for hadoopversion in 2.7.0
 	do
@@ -2377,6 +2379,11 @@ fi
 if [ "${no_hbase_1_1_2}" == "y" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.2*
+fi
+
+if [ "${no_hbase_1_1_3}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hbase-1.1.3*
 fi
 
 if [ "${no_phoenix_4_5_1_HBase_1_1}" == "y" ]

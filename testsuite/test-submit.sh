@@ -160,7 +160,7 @@ then
 	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyGlobalOrder1D-hadoop-2.7.0-run-hadoopterasort
 	DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyGlobalOrder1D-hadoop-2.7.0-pig-0.15.0-run-testpig
 	DependentJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyGlobalOrder1D-hadoop-2.7.0-mahout-0.11.1-run-clustersyntheticcontrol
-	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.2-zookeeper-3.4.7-run-hbaseperformanceeval
+	DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-hbase-1.1.3-zookeeper-3.4.7-run-hbaseperformanceeval
 	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6-run-sparkwordcount
     fi
 fi
@@ -528,7 +528,7 @@ then
         done
     done
     
-    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 
+    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
     do
         for hadoopversion in 2.7.0
         do
@@ -593,7 +593,7 @@ then
 	    done
 	done
 
-	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
 	do
 	    for hadoopversion in 2.7.0
 	    do
@@ -617,7 +617,7 @@ then
 	    done
 	done
 
-	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
 	do
 	    for hadoopversion in 2.7.0
 	    do
@@ -637,7 +637,7 @@ if [ "${phoenixtests}" == "y" ]
 then
     for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
     do
-        for hbaseversion in 1.1.2
+        for hbaseversion in 1.1.3
         do
             for hadoopversion in 2.7.0
             do
@@ -677,7 +677,7 @@ then
     then
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 	do
-	    for hbaseversion in 1.1.2
+	    for hbaseversion in 1.1.3
 	    do
 		for hadoopversion in 2.7.0
 		do
@@ -692,7 +692,7 @@ then
 
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 	do
-	    for hbaseversion in 1.1.2
+	    for hbaseversion in 1.1.3
 	    do
 		for hadoopversion in 2.7.0
 		do
@@ -707,7 +707,7 @@ then
 
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 	do
-	    for hbaseversion in 1.1.2
+	    for hbaseversion in 1.1.3
 	    do
 		for hadoopversion in 2.7.0
 		do
@@ -724,7 +724,7 @@ then
 
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 	do
-	    for hbaseversion in 1.1.2
+	    for hbaseversion in 1.1.3
 	    do
 		for hadoopversion in 2.7.0
 		do
