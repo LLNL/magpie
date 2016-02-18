@@ -1,0 +1,253 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see <URL>.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${ZEPPELIN_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+# zeppelinnoderank set if succeed
+if ! Magpie_am_I_a_zeppelin_node
+then
+    exit 0
+fi
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+# Set up shared location for notebooks, and things like that
+Magpie_calculate_hadoop_filesystem_paths ${zeppelinnoderank}
+zeppelinsharedscratchdirpath="${hadooptmpdir}/zeppelin/"
+if [ ! -d "${zeppelinsharedscratchdirpath}" ]
+then
+    mkdir -p ${zeppelinsharedscratchdirpath}
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${zeppelinsharedscratchdirpath}"
+        exit 1
+    fi
+fi
+
+if [ "${ZEPPELIN_LOCAL_SCRATCH_DIR}X" == "X" ]
+then
+    # sets hadooptmpdir and fsdefault
+    Magpie_calculate_hadoop_filesystem_paths ${zeppelinnoderank}
+
+    zeppelinlocalscratchdirpath="${hadooptmpdir}/zeppelin/node-${zeppelinnoderank}"
+
+    if [ ! -d "${zeppelinlocalscratchdirpath}" ]
+    then
+	mkdir -p ${zeppelinlocalscratchdirpath}
+	if [ $? -ne 0 ] ; then
+	    echo "mkdir failed making ${zeppelinlocalscratchdirpath}"
+	    exit 1
+	fi
+    fi
+else
+    # Setup node directory per node
+    zeppelinlocalscratchdirpath="${ZEPPELIN_LOCAL_SCRATCH_DIR}/node-${zeppelinnoderank}"
+
+    mkdir -p ${zeppelinlocalscratchdirpath}
+    if [ $? -ne 0 ] ; then
+	echo "mkdir failed making ${zeppelinlocalscratchdirpath}"
+	exit 1
+    fi
+fi
+
+# Set the default memory if not set
+if [ "${ZEPPELIN_MEM}X" == "X" ]
+then
+    export ZEPPELIN_MEM="-Xmx4096m"
+fi
+
+if [ "${ZEPPELIN_JAVA_OPTS}X" != "X" ]
+then
+    if ! echo ${ZEPPELIN_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
+    then
+	export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} -Djava.io.tmpdir=${zeppelinlocalscratchdirpath}/tmp"
+    fi
+fi
+extrazeppelinjavaopts="${extrazeppelinjavaopts}${extrazeppelinjavaopts:+" "}-Djava.io.tmpdir=${zeppelinlocalscratchdirpath}/tmp"
+
+if [ ! -d "${zeppelinlocalscratchdirpath}/tmp" ]
+then
+    mkdir -p ${zeppelinlocalscratchdirpath}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${zeppelinlocalscratchdirpath}/tmp"
+        exit 1
+    fi
+fi
+
+#
+# Get config files for setup
+#
+
+# Get Jars for Interpreter
+# Put the spark jars first to avoid dependency issues
+for j in $(ls $SPARK_HOME/lib)
+do
+    zeppelin_jars="$SPARK_HOME/lib/$j,$zeppelin_jars"
+done
+zeppelin_jars="${zeppelin_jars},${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}-incubating.jar"
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    hbase_jars="${HBASE_HOME}/lib/hbase-annotations-${HBASE_VERSION}.jar"
+    hbase_jars="${HBASE_HOME}/lib/hbase-client-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-common-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-hadoop2-compat-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-it-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-prefix-tree-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-procedure-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-protocol-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-resource-bundle-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-rest-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-server-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-shell-${HBASE_VERSION}.jar,${hbase_jars}"
+    hbase_jars="${HBASE_HOME}/lib/hbase-thrift-${HBASE_VERSION}.jar,${hbase_jars}"
+    zeppelin_jars="${hbase_jars},${zeppelin_jars}"
+fi
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    kafka_jar="${KAFKA_HOME}/libs/kafka_${KAFKA_VERSION}.jar"
+    zeppelin_jars="${zeppelin_jars},${kafka_jar}"
+fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    phoenix_jars="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-client.jar"
+    phoenix_jars="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar,$phoenix_jars"
+    phoenix_jars="${PHOENIX_HOME}/phoenix-spark-${PHOENIX_VERSION}.jar,$phoenix_jars"
+    phoenix_jars="${PHOENIX_HOME}/phoenix-core-${PHOENIX_VERSION}.jar,$phoenix_jars"
+    phoenix_jars="${PHOENIX_HOME}/phoenix-server-${PHOENIX_VERSION}.jar,$phoenix_jars"
+    phoenix_jars="${PHOENIX_HOME}/phoenix-server-client-${PHOENIX_VERSION}.jar,$phoenix_jars"
+    zeppelin_jars="${zeppelin_jars},${phoenix_jars}"
+fi
+
+ZEPPELIN_SPARK_SUBMIT_OPTS="${ZEPPELIN_SPARK_SUBMIT_OPTIONS} --jars $zeppelin_jars"
+
+zeppelinclasspath=${SPARK_HOME}/lib/*:${CLASSPATH}
+
+if [ "${ZEPPELIN_CONF_FILES}X" == "X" ]
+then
+    zeppelinconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+else
+    zeppelinconffiledir=${ZEPPELIN_CONF_FILES}
+fi
+
+pre_zeppelinenvsh=${zeppelinconffiledir}/zeppelin-env.sh
+pre_zeppelinsitexml=${zeppelinconffiledir}/zeppelin-site.xml
+pre_log4jproperties=${zeppelinconffiledir}/zeppelin.log4j.properties
+
+if [ ! -f "${pre_zeppelinenvsh}" ] \
+    || [ ! -f "${pre_zeppelinsitexml}" ] \
+    || [ ! -f "${pre_log4jproperties}" ]
+then
+    echo "Missing Zeppelin configuration files in ${zeppelinconffiledir}"
+    exit 1
+fi
+
+post_zeppelinenvsh=${ZEPPELIN_CONF_DIR}/zeppelin-env.sh
+post_zeppelinsitexml=${ZEPPELIN_CONF_DIR}/zeppelin-site.xml
+post_log4jproperties=${ZEPPELIN_CONF_DIR}/log4j.properties
+
+zeppelin_spark_master="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinclasspathsubst=`echo "${zeppelinclasspath}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinhomesubst=`echo "${ZEPPELIN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinlogdirsubst=`echo "${ZEPPELIN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinpiddirsubst=`echo "${ZEPPELIN_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinconfdirsubst=`echo "${ZEPPELIN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+sparkconfdirsubst=`echo "${SPARK_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+#hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+#zeppelinhadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+#hbaseconfdirsubst=`echo "${HBASE_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+#zeppelinhbasehomesubst=`echo "${HBASE_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinsparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinsparkmastersubst=`echo "${zeppelin_spark_master}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinsparksubmitoptionssubst=`echo "${ZEPPELIN_SPARK_SUBMIT_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinjavaoptssubst=`echo "${ZEPPELIN_JAVA_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinnotebook=`echo "${zeppelinsharedscratchdirpath}/notebook" | sed "s/\\//\\\\\\\\\//g"`
+zeppelininterpreterdir=`echo "${ZEPPELIN_HOME}/interpreter" | sed "s/\\//\\\\\\\\\//g"`
+
+#
+# Setup Kafka configuration files and environment files
+#
+cp ${pre_zeppelinenvsh} ${post_zeppelinenvsh}
+
+#    -e "s/ZEPPELIN_HADOOP_CONF/${hadoopconfdirsubst}/g" \
+#    -e "s/ZEPPELIN_HADOOP_HOME/${zeppelinhadoophomesubst}/g" \
+#    -e "s/ZEPPELIN_HBASE_CONF/${hbaseconfdirsubst}/g" \
+#    -e "s/ZEPPELIN_HBASE_HOME/${zeppelinhbasehomesubst}/g" \
+sed -i \
+    -e "s/ZEPPELIN_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/ZEPPELINLOGDIR/${zeppelinlogdirsubst}/g" \
+    -e "s/ZEPPELINPIDDIR/${zeppelinpiddirsubst}/g" \
+    -e "s/ZEPPELINCONFDIR/${zeppelinconfdirsubst}/g" \
+    -e "s/ZEPPELIN_SPARK_CONF/${sparkconfdirsubst}/g" \
+    -e "s/ZEPPELIN_SPARK_HOME/${zeppelinsparkhomesubst}/g" \
+    -e "s/ZEPPELIN_SPARK_MASTER/${zeppelinsparkmastersubst}/g" \
+    -e "s/ZEPPELIN_SPARK_SUBMIT_OPTIONS/${zeppelinsparksubmitoptionssubst}/g" \
+    -e "s/ZEPPELINJAVAOPTS/${zeppelinjavaoptssubstr}/g" \
+    -e "s/ZEPPELINMEM/${ZEPPELIN_MEM}/g" \
+    -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
+    -e "s/ZEPPELINCLASSPATH/${zeppelinclasspathsubstr}/g" \
+    ${post_zeppelinenvsh}
+
+if [ "${ZEPPELIN_SCALA_PATH}X" != "X" ]
+then
+    echo "export PATH=${ZEPPELIN_SCALA_PATH}/bin:\$PATH" >> ${post_zeppelinenvsh}
+    echo "export LD_LIBRARY_PATH=${ZEPPELIN_SCALA_PATH}/lib:\$LD_LIBRARY_PATH" >> ${post_zeppelinenvsh}
+fi
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export ZEPPELIN_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_zeppelinenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export ZEPPELIN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_zeppelinenvsh}
+fi
+
+cp ${pre_zeppelinsitexml} ${post_zeppelinsitexml}
+
+sed -i \
+    -e "s/ZEPPELIN_PORT/${ZEPPELIN_PORT}/g" \
+    -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
+    -e "s/ZEPPELININTERPRETERDIR/${zeppelininterpreterdir}/g" \
+    ${post_zeppelinsitexml}
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+exit 0

@@ -23,6 +23,7 @@ SPARK_DOWNLOAD="N"
 STORM_DOWNLOAD="N"
 PHOENIX_DOWNLOAD="N"
 KAFKA_DOWNLOAD="N"
+ZEPPELIN_DOWNLOAD="N"
 
 # Second, indicate some paths you'd like everything to be installed into
 
@@ -61,6 +62,7 @@ SPARK_PACKAGE="spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz"
 STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
 PHOENIX_PACKAGE="phoenix/phoenix-4.6.0-HBase-1.1/bin/phoenix-4.6.0-HBase-1.1-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
+ZEPPELIN_PACKAGE="incubator/zeppelin/0.5.6-incubating/zeppelin-0.5.6-incubating-bin-all.tgz"
 
 # First check some basics
 
@@ -291,6 +293,29 @@ then
     echo 'Applying patches'
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/kafka/${KAFKA_PACKAGE_BASEDIR}-no-local-dir.patch
 
+fi
+
+if [ "${ZEPPELIN_DOWNLOAD}" == "Y" ]
+then
+    APACHE_DOWNLOAD_ZEPPELIN="${APACHE_DOWNLOAD_BASE}/${ZEPPELIN_PACKAGE}"
+
+    ZEPPELIN_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_ZEPPELIN} | grep "${ZEPPELIN_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+
+    echo "Downloading from ${ZEPPELIN_DOWNLOAD_URL}"
+
+    ZEPPELIN_PACKAGE_BASENAME=`basename ${ZEPPELIN_PACKAGE}`
+
+    wget -O ${INSTALL_PATH}/${ZEPPELIN_PACKAGE_BASENAME} ${ZEPPELIN_DOWNLOAD_URL}
+
+    echo "Untarring ${ZEPPELIN_PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${ZEPPELIN_PACKAGE_BASENAME}
+
+    ZEPPELIN_PACKAGE_BASEDIR=`echo $ZEPPELIN_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)/\1/g'`
+    cd ${INSTALL_PATH}/${ZEPPELIN_PACKAGE_BASEDIR}
+
+    echo 'No patched needed currently.'
 fi
 
 if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]

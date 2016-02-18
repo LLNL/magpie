@@ -172,6 +172,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "mahout" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "kafka" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "zeppelin" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "storm" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tachyon" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
@@ -179,7 +180,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, kafka, storm, tachyon, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, kafka, zeppelin, storm, tachyon, zookeeper, testall, script, or interactive"
     exit 1
 fi
 
@@ -317,6 +318,13 @@ then
     exit 1
 fi
 
+if [ "${ZEPPELIN_SETUP}X" != "X" ] \
+    && ( [ "${ZEPPELIN_SETUP}" != "yes" ] && [ "${ZEPPELIN_SETUP}" != "no" ] )
+then
+    echo "ZEPPELIN_SETUP must be set to yes or no"
+    exit 1
+fi
+
 if [ "${STORM_SETUP}X" != "X" ] \
     && ( [ "${STORM_SETUP}" != "yes" ] && [ "${STORM_SETUP}" != "no" ] )
 then
@@ -347,11 +355,12 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${KAFKA_SETUP}" != "yes" ] \
+    && [ "${ZEPPELIN_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${TACHYON_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
 then
-    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor KAFKA_SETUP nor STORM_SETUP nor TACHYON_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
+    echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor KAFKA_SETUP nor ZEPPELIN_SETUP nor STORM_SETUP nor TACHYON_SETUP nor ZOOKEEPER_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -399,6 +408,13 @@ then
     exit 1
 fi
 
+if [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ] \
+    && [ "${ZEPPELIN_SETUP}" != "yes" ]
+then
+    echo "Cannot run zeppelin job type if ZEPPELIN_SETUP is not enabled"
+    exit 1
+fi
+
 if [ "${MAGPIE_JOB_TYPE}" == "storm" ] \
     && [ "${STORM_SETUP}" != "yes" ]
 then
@@ -425,6 +441,7 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${KAFKA_SETUP}" != "yes" ] \
+    && [ "${ZEPPELIN_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${TACHYON_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ]
@@ -1498,6 +1515,56 @@ then
             echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance cannot be found, it is required to run performance test"
             exit 1
         fi
+    fi
+fi
+
+#
+# Check Zeppelin Inputs
+#
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    if [ "${SPARK_SETUP}" != "yes" ]
+    then
+	echo "Zeppelin requires Spark to be setup, set SPARK_SETUP to yes"
+	exit 1
+    fi
+
+    if [ "${JAVA_HOME}X" == "X" ]
+    then
+	echo "JAVA_HOME must be set for Zeppelin"
+	exit 1
+    fi
+
+    if [ "${ZEPPELIN_VERSION}X" == "X" ]
+    then
+	echo "ZEPPELIN_VERSION must be set to run Zeppelin"
+	exit 1
+    fi
+
+    if [ "${ZEPPELIN_HOME}X" == "X" ]
+    then
+	echo "ZEPPELIN_HOME must be set to run Zeppelin"
+	exit 1
+    fi
+
+    if [ ! -d ${ZEPPELIN_HOME} ]
+    then
+	echo "ZEPPELIN_HOME does not point to a directory"
+	exit 1
+    fi
+
+    if [ "${ZEPPELIN_LOCAL_DIR}X" == "X" ]
+    then
+	echo "ZEPPELIN_LOCAL_DIR must be set to run Zeppelin"
+	exit 1
+    fi
+
+    if [ "${ZEPPELIN_MODE}" != "server" ] \
+        && [ "${ZEPPELIN_MODE}" != "setuponly" ]
+    then
+        echo "ZEPPELIN_MODE must be set to performance, server or setuponly"
+        exit 1
     fi
 fi
 

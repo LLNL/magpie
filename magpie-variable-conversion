@@ -299,6 +299,41 @@ Magpie_make_kafka_local_dirs_node_specific () {
     Magpie_make_kafka_local_dirs "specific"
 }
 
+Magpie_make_zeppelin_local_dirs () {
+    which=$1
+
+    if [ "${ZEPPELIN_SETUP}" == "yes" ]
+    then
+	if [ "${ZEPPELIN_LOCAL_JOB_DIR}X" == "X" ]
+	then
+	    echo "Fatal error, Magpie_make_zeppelin_local_dirs called without ZEPPELIN_LOCAL_JOB_DIR set"
+	    exit 1
+	fi
+
+	export ZEPPELIN_CONF_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/conf
+	export ZEPPELIN_LOG_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/log
+	export ZEPPELIN_LOCAL_SCRATCH_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/scratch
+	export ZEPPELIN_PID_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/pid
+
+	if [ "${which}" == "specific" ]
+	then
+	    myhostname=`hostname`
+	    export ZEPPELIN_CONF_DIR=$(echo $ZEPPELIN_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export ZEPPELIN_LOG_DIR=$(echo $ZEPPELIN_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export ZEPPELIN_LOCAL_SCRATCH_DIR=$(echo $ZEPPELIN_LOCAL_SCRATCH_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export ZEPPELIN_PID_DIR=$(echo $ZEPPELIN_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	fi
+    fi
+}
+
+Magpie_make_zeppelin_local_dirs_unspecified () {
+    Magpie_make_zeppelin_local_dirs "generic"
+}
+
+Magpie_make_zeppelin_local_dirs_node_specific () {
+    Magpie_make_zeppelin_local_dirs "specific"
+}
+
 Magpie_make_storm_local_dirs () {
     which=$1
 

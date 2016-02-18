@@ -95,6 +95,8 @@ Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+
 
 Kafka - 2.11-0.9.0.0
 
+Zeppelin - 0.0.5
+
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
 Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7

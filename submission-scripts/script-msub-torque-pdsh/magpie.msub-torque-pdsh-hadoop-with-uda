@@ -94,6 +94,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "kafka" - Run a job according to the settings of KAFKA_MODE.
 #
+# "zeppelin" - Run a job according to the settings of ZEPPELIN_MODE.
+#
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
 # "tachyon" - Run a job according ot the settings of TACHYON_MODE.

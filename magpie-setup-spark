@@ -506,6 +506,18 @@ then
     fi
 fi
 
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    zeppelin_jars="${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}-incubating.jar"
+    zeppelin_jars="${zeppelin_jars}:${ZEPPELIN_HOME}/lib/*"
+    if [ "${sparkclasspath}X" != "X" ]
+    then
+        sparkclasspath="${sparkclasspath}:${zeppelin_jars}"
+    else
+        sparkclasspath="${zeppelin_jars}"
+    fi
+fi
+
 # Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
 # afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
