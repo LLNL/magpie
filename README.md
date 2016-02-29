@@ -118,3 +118,10 @@ doc/README file as a starting point.  It provides general instructions
 as well as pointers to documentation for each project, setup
 requirements, ability to do local configurations, tips & tricks, and
 more information.
+
+Release
+-------
+
+Magpie is release under a GPL license. For more information, see the [COPYING](/COPYING) file.
+
+`LLNL-CODE-644248`
