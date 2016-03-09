@@ -125,7 +125,7 @@ if [ "${HADOOP_TERAGEN_MAP_COUNT:-0}" -ne "0" ]
 then
     mtasks=$HADOOP_TERAGEN_MAP_COUNT
 else
-    source ${HADOOP_LOCAL_SCRATCH_DIR}/magpie.terasort-defaults
+    source ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
 
     # Calculate the sensible maximum number of map tasks there should be
     # Want to add +1 mtasks, make each block just below blocksize

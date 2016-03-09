@@ -44,9 +44,9 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
-mkdir -p $MAGPIE_LOCAL_SCRATCH_DIR
+mkdir -p $MAGPIE_LOCAL_SCRATCHSPACE_DIR
 if [ $? -ne 0 ] ; then
-    echo "mkdir failed making ${MAGPIE_LOCAL_SCRATCH_DIR}"
+    echo "mkdir failed making ${MAGPIE_LOCAL_SCRATCHSPACE_DIR}"
     exit 1
 fi
 
@@ -68,9 +68,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $HADOOP_LOCAL_SCRATCH_DIR
+    mkdir -p $HADOOP_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -87,9 +87,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $PIG_LOCAL_SCRATCH_DIR
+    mkdir -p $PIG_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${PIG_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${PIG_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -106,9 +106,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $MAHOUT_LOCAL_SCRATCH_DIR
+    mkdir -p $MAHOUT_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${MAHOUT_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${MAHOUT_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -131,9 +131,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $HBASE_LOCAL_SCRATCH_DIR
+    mkdir -p $HBASE_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HBASE_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${HBASE_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -175,9 +175,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $SPARK_LOCAL_SCRATCH_DIR
+    mkdir -p $SPARK_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${SPARK_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${SPARK_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -200,9 +200,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $KAFKA_LOCAL_SCRATCH_DIR
+    mkdir -p $KAFKA_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${KAFKA_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${KAFKA_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -225,9 +225,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $STORM_LOCAL_SCRATCH_DIR
+    mkdir -p $STORM_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${STORM_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${STORM_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -250,9 +250,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $TACHYON_LOCAL_SCRATCH_DIR
+    mkdir -p $TACHYON_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${TACHYON_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${TACHYON_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
@@ -275,9 +275,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $ZOOKEEPER_LOCAL_SCRATCH_DIR
+    mkdir -p $ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi

@@ -626,14 +626,14 @@ then
 	    echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
 	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 	    then
-		echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+		echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
 	    fi
 	else
 	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	    echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
 	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 	    then
-		echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+		echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
 	    fi
 	fi
 	if [ "${PIG_SETUP}" == "yes" ]
@@ -642,10 +642,10 @@ then
 	    then
 		if ! echo ${PIG_OPTS} | grep -q -E "java.io.tmpdir"
 		then
-		    export PIG_OPTS="${PIG_OPTS} -Djava.io.tmpdir=${PIG_LOCAL_SCRATCH_DIR}/tmp"
+		    export PIG_OPTS="${PIG_OPTS} -Djava.io.tmpdir=${PIG_LOCAL_SCRATCHSPACE_DIR}/tmp"
 		fi
 	    else
-		export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_SCRATCH_DIR}/tmp"
+		export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_SCRATCHSPACE_DIR}/tmp"
 	    fi
 
 	    if echo $MAGPIE_SHELL | grep -q csh
@@ -671,10 +671,10 @@ then
 	    then
 		if ! echo ${MAHOUT_OPTS} | grep -q -E "java.io.tmpdir"
 		then
-		    export MAHOUT_OPTS="${MAHOUT_OPTS} -Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCH_DIR}/tmp"
+		    export MAHOUT_OPTS="${MAHOUT_OPTS} -Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCHSPACE_DIR}/tmp"
 		fi
 	    else
-		export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCH_DIR}/tmp"
+		export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCHSPACE_DIR}/tmp"
 	    fi
 
 	    if echo $MAGPIE_SHELL | grep -q csh
@@ -723,7 +723,7 @@ then
 		fi
 		if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 		then
-		    echo "setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+		    echo "setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
 		fi
 	    else
 		echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -740,7 +740,7 @@ then
 		fi
 		if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 		then
-		    echo "export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		    echo "export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 		fi
 	    fi
 	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -1663,14 +1663,14 @@ then
 	echo "*   setenv STORM_HOME \"${STORM_HOME}\""
 	if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 	then
-	    echo "*   setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+	    echo "*   setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
 	fi
     else
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
 	echo "*   export STORM_HOME=\"${STORM_HOME}\""
 	if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 	then
-	    echo "*   export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" 
+	    echo "*   export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
 	fi
     fi
 
@@ -1702,7 +1702,7 @@ then
 	    fi
 	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 	    then
-		echo "setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+		echo "setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
 	    fi
 	else
 	    echo "export STORM_HOME=\"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -1717,7 +1717,7 @@ then
 	    fi
 	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 	    then
-		echo "export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    fi
 	fi
 	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}

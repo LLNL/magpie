@@ -359,19 +359,19 @@ if [ "${SPARK_JAVA_OPTS}X" != "X" ]
 then
     if ! echo ${SPARK_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
     then
-	export SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+	export SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
     fi
 fi
 
-extrasparkjavaopts="${extrasparkjavaopts}${extrasparkjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+extrasparkjavaopts="${extrasparkjavaopts}${extrasparkjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts}${extrasparkdaemonjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+extrasparkdaemonjavaopts="${extrasparkdaemonjavaopts}${extrasparkdaemonjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${SPARK_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${SPARK_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${SPARK_LOCAL_SCRATCH_DIR}/tmp"
+        echo "mkdir failed making ${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
         exit 1
     fi
 fi

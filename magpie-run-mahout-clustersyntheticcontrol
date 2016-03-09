@@ -33,7 +33,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-export MAHOUT_WORK_DIR="${MAHOUT_LOCAL_SCRATCH_DIR}/mahout"
+export MAHOUT_WORK_DIR="${MAHOUT_LOCAL_SCRATCHSPACE_DIR}/mahout"
 
 if [ ! -d "${MAHOUT_WORK_DIR}" ]
 then

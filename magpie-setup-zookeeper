@@ -100,13 +100,13 @@ then
 fi
 
 # set java.io.tmpdir
-extrajvmflags="${extrajvmflags}${extrajvmflags:+" "}-Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
+extrajvmflags="${extrajvmflags}${extrajvmflags:+" "}-Djava.io.tmpdir=${ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCH_DIR}/tmp"
+        echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR}/tmp"
         exit 1
     fi
 fi

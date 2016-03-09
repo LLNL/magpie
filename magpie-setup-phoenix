@@ -54,13 +54,13 @@ Magpie_make_all_local_dirs_node_specific
 phoenixqueryserveropts=""
 
 # set java.io.tmpdir
-phoenixqueryserveropts="${phoenixqueryserveropts}${phoenixqueryserveropts:+" "}-Djava.io.tmpdir=${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
+phoenixqueryserveropts="${phoenixqueryserveropts}${phoenixqueryserveropts:+" "}-Djava.io.tmpdir=${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${PHOENIX_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp"
+        echo "mkdir failed making ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp"
         exit 1
     fi
 fi

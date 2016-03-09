@@ -40,7 +40,7 @@ else
     export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
 fi
 
-# MAGPIE_LOCAL_SCRATCH_DIR & MAGPIE_LOCAL_CONF_DIR set
+# MAGPIE_LOCAL_SCRATCHSPACE_DIR & MAGPIE_LOCAL_CONF_DIR set
 Magpie_make_magpie_local_dirs_node_specific
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
@@ -63,8 +63,8 @@ then
     else
 	export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # HADOOP_LOCAL_SCRATCH_DIR & HADOOP_CONF_DIR & HADOOP_LOG_DIR set
-    # YARN_LOCAL_SCRATCH_DIR & YARN_CONF_DIR & YARN_LOG_DIR set
+    # HADOOP_LOCAL_SCRATCHSPACE_DIR & HADOOP_CONF_DIR & HADOOP_LOG_DIR set
+    # YARN_LOCAL_SCRATCHSPACE_DIR & YARN_CONF_DIR & YARN_LOG_DIR set
     Magpie_make_hadoop_local_dirs_node_specific
 
     # For jobhistoryserver
@@ -161,7 +161,7 @@ then
     else
 	export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # PIG_LOCAL_SCRATCH_DIR & PIG_CONF_DIR set
+    # PIG_LOCAL_SCRATCHSPACE_DIR & PIG_CONF_DIR set
     Magpie_make_pig_local_dirs_node_specific
 
     pigcmdprefix="bin"
@@ -175,7 +175,7 @@ then
     else
 	export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # MAHOUT_LOCAL_SCRATCH_DIR & MAHOUT_CONF_DIR set
+    # MAHOUT_LOCAL_SCRATCHSPACE_DIR & MAHOUT_CONF_DIR set
     Magpie_make_mahout_local_dirs_node_specific
 
     mahoutexamplesprefix="examples"
@@ -190,7 +190,7 @@ then
     else
 	export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # HBASE_LOCAL_SCRATCH_DIR & HBASE_CONF_DIR & HBASE_LOG_DIR set
+    # HBASE_LOCAL_SCRATCHSPACE_DIR & HBASE_CONF_DIR & HBASE_LOG_DIR set
     Magpie_make_hbase_local_dirs_node_specific
 
     export HBASE_MASTER_PORT="60000"
@@ -227,7 +227,7 @@ then
     else
 	export PHOENIX_LOCAL_JOB_DIR=${PHOENIX_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # SPARK_LOCAL_SCRATCH_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
+    # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
     Magpie_make_phoenix_local_dirs_node_specific
 
     export PHOENIX_QUERYSERVER_PORT="8765"
@@ -243,7 +243,7 @@ then
     else
 	export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # SPARK_LOCAL_SCRATCH_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
+    # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
     Magpie_make_spark_local_dirs_node_specific
 
     export SPARK_MASTER_PORT="7077"
@@ -277,7 +277,7 @@ then
     else
 	export KAFKA_LOCAL_JOB_DIR=${KAFKA_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # KAFKA_LOCAL_SCRATCH_DIR & KAFKA_CONF_DIR & KAFKA_LOG_DIR set
+    # KAFKA_LOCAL_SCRATCHSPACE_DIR & KAFKA_CONF_DIR & KAFKA_LOG_DIR set
     Magpie_make_kafka_local_dirs_node_specific
 
     export KAFKA_PORT="6667"
@@ -308,7 +308,7 @@ then
     else
 	export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # STORM_LOCAL_SCRATCH_DIR & STORM_CONF_DIR & STORM_LOG_DIR set
+    # STORM_LOCAL_SCRATCHSPACE_DIR & STORM_CONF_DIR & STORM_LOG_DIR set
     Magpie_make_storm_local_dirs_node_specific
 
     # Default is 8080, but that is same as Spark.  So up by 100
@@ -347,7 +347,7 @@ then
     else
 	export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # TACHYON_LOCAL_SCRATCH_DIR & TACHYON_CONF_DIR & TACHYON_LOG_DIR set
+    # TACHYON_LOCAL_SCRATCHSPACE_DIR & TACHYON_CONF_DIR & TACHYON_LOG_DIR set
     Magpie_make_tachyon_local_dirs_node_specific
 
     export TACHYON_MASTER_PORT="19998"
@@ -378,7 +378,7 @@ then
     else
 	export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # ZOOKEEPER_LOCAL_SCRATCH_DIR & ZOOKEEPER_CONF_DIR & ZOOKEEPER_LOG_DIR set
+    # ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR & ZOOKEEPER_CONF_DIR & ZOOKEEPER_LOG_DIR set
     Magpie_make_zookeeper_local_dirs_node_specific
 
     export ZOOKEEPER_CLIENT_PORT="2181"
