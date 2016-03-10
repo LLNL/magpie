@@ -1,5 +1,6 @@
 magpie 1.68
 -----------
+Fix use of SPARK_LOCAL_SCRATCH_DIR.
 Support Hbase 1.1.3, update default Hbase to 1.1.3.
 Support Zeppelin 0.5.6.
 
