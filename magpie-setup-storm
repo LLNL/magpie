@@ -47,7 +47,7 @@ Magpie_make_all_local_dirs_node_specific
 
 extrajvmopts=""
 
-stormlocaldir="${STORM_LOCAL_SCRATCH_DIR}/local"
+stormlocaldir="${STORM_LOCAL_SCRATCHSPACE_DIR}/local"
 
 if [ ! -d "${stormlocaldir}" ]
 then
@@ -88,13 +88,13 @@ else
 fi 
 
 # set java.io.tmpdir
-extrajvmopts="${extrajvmopts}${extrajvmopts:+" "}-Djava.io.tmpdir=${STORM_LOCAL_SCRATCH_DIR}/tmp"
+extrajvmopts="${extrajvmopts}${extrajvmopts:+" "}-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${STORM_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${STORM_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${STORM_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${STORM_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${STORM_LOCAL_SCRATCH_DIR}/tmp"
+        echo "mkdir failed making ${STORM_LOCAL_SCRATCHSPACE_DIR}/tmp"
         exit 1
     fi
 fi

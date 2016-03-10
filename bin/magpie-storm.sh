@@ -24,7 +24,7 @@
 
 # This script launches Storm across all nodes for the user
 
-# Make sure the environment variable STORM_CONF_DIR, STORM_LOG_DIR, and STORM_LOCAL_SCRATCH_DIR is set.
+# Make sure the environment variable STORM_CONF_DIR, STORM_LOG_DIR, and STORM_LOCAL_SCRATCHSPACE_DIR is set.
 
 # First argument is start or stop
 
@@ -52,9 +52,9 @@ then
     exit 1
 fi
 
-if [ "${STORM_LOCAL_SCRATCH_DIR}X" == "X" ]
+if [ "${STORM_LOCAL_SCRATCHSPACE_DIR}X" == "X" ]
 then
-    echo "User must specify STORM_LOCAL_SCRATCH_DIR"
+    echo "User must specify STORM_LOCAL_SCRATCHSPACE_DIR"
     exit 1
 fi
 
@@ -66,7 +66,7 @@ stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$my
 orig_stormlogdir=${STORM_LOG_DIR}
 stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
 
-orig_stormlocalscratchdir=${STORM_LOCAL_SCRATCH_DIR}
+orig_stormlocalscratchdir=${STORM_LOCAL_SCRATCHSPACE_DIR}
 stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
 
 if [ ! -f ${stormconfdir}/workers ]
@@ -95,9 +95,9 @@ then
     exit 1
 fi
 
-if [ "${STORM_LOCAL_SCRATCH_DIR}X" == "X" ]
+if [ "${STORM_LOCAL_SCRATCHSPACE_DIR}X" == "X" ]
 then
-    echo "STORM_LOCAL_SCRATCH_DIR not specified"
+    echo "STORM_LOCAL_SCRATCHSPACE_DIR not specified"
     exit 1
 fi
 
@@ -114,8 +114,8 @@ then
 fi
 
 # At this point, the environment variables are node-specific, it was read out of magpie-launch-storm-env.sh
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCH_DIR} nimbus $1
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCH_DIR} ui $1
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} nimbus $1
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} ui $1
 
 RSH_CMD=${STORM_SSH_CMD:-ssh}
 

@@ -678,7 +678,7 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     # If HDFS would be stored in HDFS, so pick a better path
-    yardappmapreduceamstagingdir="${HADOOP_LOCAL_SCRATCH_DIR}/yarn/"
+    yardappmapreduceamstagingdir="${HADOOP_LOCAL_SCRATCHSPACE_DIR}/yarn/"
 else
     yardappmapreduceamstagingdir="${hadooptmpdir}/yarn/"
 fi
@@ -687,24 +687,24 @@ fi
 Magpie_calculate_stop_timeouts
 
 # set java.io.tmpdir
-extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
+extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-extrayarnopts="${extrayarnopts}${extrayarnopts+" "}-Djava.io.tmpdir=${YARN_LOCAL_SCRATCH_DIR}/tmp"
+extrayarnopts="${extrayarnopts}${extrayarnopts+" "}-Djava.io.tmpdir=${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${HADOOP_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${HADOOP_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCH_DIR}/tmp"
+	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp"
 	exit 1
     fi
 fi
 
-if [ ! -d "${YARN_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${YARN_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${YARN_LOCAL_SCRATCH_DIR}/tmp"
+	echo "mkdir failed making ${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp"
 	exit 1
     fi
 fi
@@ -763,7 +763,7 @@ fi
 
 if [ "${HADOOP_MODE}" == "terasort" ]
 then
-    rm -rf ${HADOOP_LOCAL_SCRATCH_DIR}/magpie.terasort-defaults
+    rm -rf ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
 	|| [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
@@ -784,8 +784,8 @@ then
 	exit 1
     fi
     
-    echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_BLOCKSIZE=\"${blocksize}\"" >> ${HADOOP_LOCAL_SCRATCH_DIR}/magpie.terasort-defaults
-    echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS=\"${defaultmaptasks}\"" >> ${HADOOP_LOCAL_SCRATCH_DIR}/magpie.terasort-defaults
+    echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_BLOCKSIZE=\"${blocksize}\"" >> ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
+    echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS=\"${defaultmaptasks}\"" >> ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
 fi
 
 #

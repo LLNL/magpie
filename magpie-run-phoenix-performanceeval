@@ -42,20 +42,20 @@ fi
 
 # lets cd into the tmp dir because of https://issues.apache.org/jira/browse/PHOENIX-2311
 cwd=`pwd`
-cd ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp
+cd ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp
 
 # Make sure the correct java gets used
 command="python ${PHOENIX_HOME}/${phoenixcmdprefix}/performance.py $ZOOKEEPER_NODES_FIRST $phoenixrowcount"
 echo "Running $command" >&2
 $command
 
-echo "drop table PERFORMANCE_$phoenixrowcount" > ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp/cleanup.sql
+echo "drop table PERFORMANCE_$phoenixrowcount" > ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql
 echo "Cleanup Files:"
-cat ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp/cleanup.sql
-command="python ${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py $ZOOKEEPER_NODES_FIRST ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp/cleanup.sql"
+cat ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql
+command="python ${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py $ZOOKEEPER_NODES_FIRST ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql"
 echo "Dropping Tables: $command" >&2
 $command
-rm ${PHOENIX_LOCAL_SCRATCH_DIR}/tmp/cleanup.sql
+rm ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql
 
 # and back to where we were
 cd $cwd

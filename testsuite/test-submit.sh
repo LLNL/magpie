@@ -2,7 +2,7 @@
 
 # How to submit
 
-# XXX - haven't handled lsf-mpirun or msub-torque-pdsh yet
+# XXX - haven't handled msub-torque-pdsh yet
 
 #submissiontype=lsf-mpirun
 #submissiontype=msub-slurm-srun

@@ -45,51 +45,25 @@ fi
 # For rest of setup, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-if [ "${KAFKA_LOCAL_SCRATCH_DIR}X" == "X" ]
-then
-    # sets hadooptmpdir and fsdefault
-    Magpie_calculate_hadoop_filesystem_paths ${kafkanoderank}
-
-    kafkalocalscratchdirpath="${hadooptmpdir}/kafka/node-${kafkanoderank}"
-    
-    if [ ! -d "${kafkalocalscratchdirpath}" ]
-    then
-	mkdir -p ${kafkalocalscratchdirpath}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${kafkalocalscratchdirpath}"
-	    exit 1
-	fi
-    fi
-else
-    # Setup node directory per node 
-    kafkalocalscratchdirpath="${KAFKA_LOCAL_SCRATCH_DIR}/node-${kafkanoderank}"
-
-    mkdir -p ${kafkalocalscratchdirpath}
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${kafkalocalscratchdirpath}"
-	exit 1
-    fi
-fi
-
 if [ "${KAFKA_JAVA_OPTS}X" != "X" ]
 then
     if ! echo ${KAFKA_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
     then
-	export KAFKA_JAVA_OPTS="${KAFKA_JAVA_OPTS} -Djava.io.tmpdir=${KAFKA_LOCAL_SCRATCH_DIR}/tmp"
+	export KAFKA_JAVA_OPTS="${KAFKA_JAVA_OPTS} -Djava.io.tmpdir=${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp"
     fi
 fi
-extrakafkajavaopts="${extrakafkajavaopts}${extrakafkajavaopts:+" "}-Djava.io.tmpdir=${KAFKA_LOCAL_SCRATCH_DIR}/tmp"
+extrakafkajavaopts="${extrakafkajavaopts}${extrakafkajavaopts:+" "}-Djava.io.tmpdir=${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${KAFKA_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${KAFKA_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${KAFKA_LOCAL_SCRATCH_DIR}/tmp"
+        echo "mkdir failed making ${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp"
         exit 1
     fi
 fi
 
-KAFKA_DATA_DIR=${KAFKA_LOCAL_SCRATCH_DIR}/tmp/kafka-logs
+KAFKA_DATA_DIR=${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp/kafka-logs
 
 zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
 

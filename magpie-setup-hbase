@@ -184,13 +184,13 @@ else
 fi
 
 # set java.io.tmpdir
-extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCH_DIR}/tmp"
+extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${HBASE_LOCAL_SCRATCH_DIR}/tmp" ]
+if [ ! -d "${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${HBASE_LOCAL_SCRATCH_DIR}/tmp
+    mkdir -p ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HBASE_LOCAL_SCRATCH_DIR}/tmp"
+	echo "mkdir failed making ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
 	exit 1
     fi
 fi
