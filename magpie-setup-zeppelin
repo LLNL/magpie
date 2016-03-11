@@ -46,40 +46,13 @@ fi
 Magpie_make_all_local_dirs_node_specific
 
 # Set up shared location for notebooks, and things like that
-Magpie_calculate_hadoop_filesystem_paths ${zeppelinnoderank}
-zeppelinsharedscratchdirpath="${hadooptmpdir}/zeppelin/"
+zeppelinsharedscratchdirpath="${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/zeppelin/"
 if [ ! -d "${zeppelinsharedscratchdirpath}" ]
 then
     mkdir -p ${zeppelinsharedscratchdirpath}
     if [ $? -ne 0 ] ; then
         echo "mkdir failed making ${zeppelinsharedscratchdirpath}"
         exit 1
-    fi
-fi
-
-if [ "${ZEPPELIN_LOCAL_SCRATCH_DIR}X" == "X" ]
-then
-    # sets hadooptmpdir and fsdefault
-    Magpie_calculate_hadoop_filesystem_paths ${zeppelinnoderank}
-
-    zeppelinlocalscratchdirpath="${hadooptmpdir}/zeppelin/node-${zeppelinnoderank}"
-
-    if [ ! -d "${zeppelinlocalscratchdirpath}" ]
-    then
-	mkdir -p ${zeppelinlocalscratchdirpath}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${zeppelinlocalscratchdirpath}"
-	    exit 1
-	fi
-    fi
-else
-    # Setup node directory per node
-    zeppelinlocalscratchdirpath="${ZEPPELIN_LOCAL_SCRATCH_DIR}/node-${zeppelinnoderank}"
-
-    mkdir -p ${zeppelinlocalscratchdirpath}
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${zeppelinlocalscratchdirpath}"
-	exit 1
     fi
 fi
 
@@ -93,16 +66,16 @@ if [ "${ZEPPELIN_JAVA_OPTS}X" != "X" ]
 then
     if ! echo ${ZEPPELIN_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
     then
-	export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} -Djava.io.tmpdir=${zeppelinlocalscratchdirpath}/tmp"
+	export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} -Djava.io.tmpdir=${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp"
     fi
 fi
-extrazeppelinjavaopts="${extrazeppelinjavaopts}${extrazeppelinjavaopts:+" "}-Djava.io.tmpdir=${zeppelinlocalscratchdirpath}/tmp"
+extrazeppelinjavaopts="${extrazeppelinjavaopts}${extrazeppelinjavaopts:+" "}-Djava.io.tmpdir=${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
-if [ ! -d "${zeppelinlocalscratchdirpath}/tmp" ]
+if [ ! -d "${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
-    mkdir -p ${zeppelinlocalscratchdirpath}/tmp
+    mkdir -p ${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${zeppelinlocalscratchdirpath}/tmp"
+        echo "mkdir failed making ${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp"
         exit 1
     fi
 fi
