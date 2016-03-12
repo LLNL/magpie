@@ -2131,7 +2131,7 @@ then
 	echo "*******************************************************"
 	# Will set jobtimeseconds
 	Magpie_job_time_seconds
-        # Some systems have SIGUSR1 as USR1 so lets just use the value
+        # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
         trap "echo \"Exiting from ${MAGPIE_JOB_TYPE} mode due to user interrupt.\"" 10
 	sleep ${jobtimeseconds} &
         wait
@@ -2162,7 +2162,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${PIG_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2202,7 +2202,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${MAHOUT_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2238,7 +2238,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${HADOOP_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2288,7 +2288,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${HBASE_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2323,7 +2323,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting and tearing down daemons from ${PHOENIX_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2366,7 +2366,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${SPARK_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2392,7 +2392,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${KAFKA_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2411,7 +2411,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${ZEPPELIN_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2447,7 +2447,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${STORM_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2472,7 +2472,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${TACHYON_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
@@ -2497,7 +2497,7 @@ then
 	    echo "*******************************************************"
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so lets just use the value
+            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${ZOOKEEPER_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
