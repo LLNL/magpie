@@ -2209,8 +2209,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
-	cd ${HADOOP_HOME}
-	
 	if [ "${HADOOP_MODE}" == "terasort" ]
 	then
 	    echo "*******************************************************"
@@ -2266,8 +2264,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
     then
-	cd ${HBASE_HOME}
-	
 	if [ "${HBASE_MODE}" == "performanceeval" ]
 	then
 	    echo "*******************************************************"
@@ -2309,8 +2305,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
-	cd ${PHOENIX_HOME}
-	
 	if [ "${PHOENIX_MODE}" == "performanceeval" ]
 	then
 	    echo "*******************************************************"
@@ -2344,8 +2338,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
-	cd ${SPARK_HOME}
-	    
 	if [ "${SPARK_MODE}" == "sparkpi" ]
 	then
 	    echo "*******************************************************"
@@ -2394,8 +2386,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "kafka" ]
     then
-	cd ${KAFKA_HOME}
-	    
 	if [ "${KAFKA_MODE}" == "performance" ]
 	then
 	    echo "*******************************************************"
@@ -2415,8 +2405,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ]
     then
-	cd ${ZEPPELIN_HOME}
-
 	if [ "${ZEPPELIN_MODE}" == "server" ]
 	then
 	    echo "*******************************************************"
@@ -2441,8 +2429,6 @@ then
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
-	cd ${STORM_HOME}
-	    
 	if [ "${STORM_MODE}" == "stormwordcount" ]
 	then
 	    echo "*******************************************************"
