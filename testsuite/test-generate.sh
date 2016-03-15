@@ -5,7 +5,7 @@
 # Presently supports
 #
 # Hadoop 2.2.0, 2.3.0, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.5.2, 2.6.0,
-# 2.6.1, 2.7.0, 2.7.1
+# 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.7.0, 2.7.1, 2.7.2
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
 # Mahout 0.11.0, 0.11.1
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
@@ -54,8 +54,12 @@ no_hadoop_2_5_1=n
 no_hadoop_2_5_2=n
 no_hadoop_2_6_0=n
 no_hadoop_2_6_1=n
+no_hadoop_2_6_2=n
+no_hadoop_2_6_3=n
+no_hadoop_2_6_4=n
 no_hadoop_2_7_0=n
 no_hadoop_2_7_1=n
+no_hadoop_2_7_2=n
 no_pig_0_12_0=n
 no_pig_0_12_1=n
 no_pig_0_13_0=n
@@ -395,7 +399,7 @@ sed -i \
 
 echo "Making Hadoop tests"
 
-for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1
+for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-run-hadoopterasort
@@ -437,7 +441,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}*
 done
 
-for hadoopversion in 2.7.0 2.7.1
+for hadoopversion in 2.7.0 2.7.1 2.7.2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-run-hadoopterasort
@@ -483,7 +487,7 @@ done
 
 # Dependency 1 Tests, run after another
 
-for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1
+for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
@@ -502,7 +506,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*
 done
 
-for hadoopversion in 2.7.0 2.7.1
+for hadoopversion in 2.7.0 2.7.1 2.7.2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
@@ -618,7 +622,7 @@ sed -i \
 
 # Dependency 3 test, increase size
 
-for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1
+for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre-run-hadoopterasort
@@ -643,7 +647,7 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 done
 
-for hadoopversion in 2.7.0 2.7.1 
+for hadoopversion in 2.7.0 2.7.1 2.7.2
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre-run-hadoopterasort
@@ -2271,6 +2275,21 @@ then
     rm -f magpie.${submissiontype}*hadoop-2.6.1*
 fi
 
+if [ "${no_hadoop_2_6_2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.6.2*
+fi
+
+if [ "${no_hadoop_2_6_3}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.6.3*
+fi
+
+if [ "${no_hadoop_2_6_4}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.6.4*
+fi
+
 if [ "${no_hadoop_2_7_0}" == "y" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.7.0*
@@ -2279,6 +2298,11 @@ fi
 if [ "${no_hadoop_2_7_1}" == "y" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.7.1*
+fi
+
+if [ "${no_hadoop_2_7_2}" == "y" ]
+then
+    rm -f magpie.${submissiontype}*hadoop-2.7.2*
 fi
 
 if [ "${no_pig_0_12_0}" == "y" ]
