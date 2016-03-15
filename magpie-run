@@ -2241,7 +2241,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
 	then
 	    echo "*******************************************************"
@@ -2293,7 +2295,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hbase ${HBASE_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
@@ -2370,7 +2374,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Spark ${SPARK_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "kafka" ]
     then
@@ -2387,7 +2393,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Kafka ${KAFKA_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ]
     then
@@ -2407,7 +2415,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
@@ -2445,7 +2455,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Storm ${STORM_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
@@ -2473,7 +2485,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
@@ -2501,7 +2515,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    scriptpid=$!
+	    Magpie_wait_script ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
