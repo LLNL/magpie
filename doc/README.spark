@@ -402,8 +402,10 @@ Spark Advanced Usage
    However, it may not be optimal for many jobs.
 
    Users should play around with the parallelism in their job to
-   improve performance.  The default can be tweaked in the submission
-   scripts via the SPARK_DEFAULT_PARALLELISM environment variable.
+   improve performance.  A number of Spark collectives can take a
+   partition number as an argument (such as reduceByKey).  The default
+   can be tweaked in the submission scripts via the
+   SPARK_DEFAULT_PARALLELISM environment variable.
 
 3) Magpie configures a relatively conservative amount of memory for
    Spark, currently 80% of system memory.  While there should always
