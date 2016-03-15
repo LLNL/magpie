@@ -17,7 +17,7 @@
 #   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
 #   1.5.0-bin-hadoop2.6, 1.5.1-bin-hadoop2.6, 1.5.2-bin-hadoop2.6,
 #   1.6.0-bin-hadoop2.6
-#
+# Kafka 2.11-0.9.0.0
 # Storm 0.9.3, 0.9.4, 0.9.5
 # Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
 #
