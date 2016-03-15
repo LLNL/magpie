@@ -2121,7 +2121,7 @@ then
 	echo "*******************************************************"
 	${MAGPIE_SCRIPT_PATH} &
 	scriptpid=$!
-	Magpie_wait_script ${scriptpid}
+	Magpie_wait_script_kill_on_job_timeout ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
     then
 	echo "*******************************************************"
@@ -2145,7 +2145,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${PIG_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2153,7 +2153,7 @@ then
 	    echo "*******************************************************"
 	    ${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${PIG_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
@@ -2178,7 +2178,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-classifywikipedia &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
 	then
 	    echo "*******************************************************"
@@ -2186,7 +2186,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${MAHOUT_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2194,7 +2194,7 @@ then
 	    echo "*******************************************************"
 	    ${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${MAHOUT_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
@@ -2222,7 +2222,7 @@ then
 	    
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2230,7 +2230,7 @@ then
 	    echo "*******************************************************"
 	    ${HADOOP_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
@@ -2260,7 +2260,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 
 	    if [ "${hdfsstoredversionpath}X" != "X" ]
 	    then
@@ -2280,7 +2280,7 @@ then
 	    
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${HBASE_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2288,7 +2288,7 @@ then
 	    echo "*******************************************************"
 	    ${HBASE_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${HBASE_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
@@ -2324,7 +2324,7 @@ then
 	    
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${PHOENIX_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2332,7 +2332,7 @@ then
 	    echo "*******************************************************"
 	    ${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${PHOENIX_MODE}" == "interactive" ] 
 	then
 	    echo "*******************************************************"
@@ -2359,7 +2359,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "sparkwordcount" ]
 	then
 	    echo "*******************************************************"
@@ -2367,7 +2367,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkwordcount &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2375,7 +2375,7 @@ then
 	    echo "*******************************************************"
 	    ${SPARK_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
@@ -2410,7 +2410,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${KAFKA_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
@@ -2458,7 +2458,7 @@ then
 	    
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${STORM_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
@@ -2466,7 +2466,7 @@ then
 	    echo "*******************************************************"
 	    ${STORM_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${STORM_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
@@ -2499,7 +2499,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${TACHYON_MODE}" == "launch" ]
 	then
 	    echo "*******************************************************"
@@ -2531,7 +2531,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
 	elif [ "${ZOOKEEPER_MODE}" == "launch" ]
 	then
 	    echo "*******************************************************"
@@ -2561,7 +2561,7 @@ then
 	echo "*******************************************************"
 	${MAGPIE_SCRIPTS_HOME}/magpie-run-magpie-testall &
 	scriptpid=$!
-	Magpie_wait_script ${scriptpid}
+	Magpie_wait_script_kill_on_job_timeout ${scriptpid}
     fi
 fi
 
