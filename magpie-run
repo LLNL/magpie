@@ -2129,13 +2129,9 @@ then
 	echo "*******************************************************"
 	echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
 	echo "*******************************************************"
-	echo "*******************************************************"
-        echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${MAGPIE_JOB_TYPE} mode early."
-	echo "*******************************************************"
-        # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-        trap "echo \"Exiting from ${MAGPIE_JOB_TYPE} mode due to user interrupt.\"" 10
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-        wait
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	scriptpid=$!
+        wait $scriptpid
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
 	if [ "${PIG_MODE}" == "testpig" ]
@@ -2159,13 +2155,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Pig ${PIG_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${PIG_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${PIG_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "mahout" ]
     then
@@ -2198,13 +2190,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Mahout ${MAHOUT_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${MAHOUT_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${MAHOUT_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
@@ -2229,13 +2217,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${HADOOP_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${HADOOP_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${HADOOP_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
@@ -2283,13 +2267,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hbase ${HBASE_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${HBASE_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${HBASE_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${HBASE_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
@@ -2323,13 +2303,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Phoenix ${PHOENIX_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${PHOENIX_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting and tearing down daemons from ${PHOENIX_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
@@ -2362,13 +2338,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Spark ${SPARK_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${SPARK_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${SPARK_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${SPARK_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
@@ -2443,13 +2415,9 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Storm ${STORM_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${STORM_MODE} mode early."
-	    echo "*******************************************************"
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${STORM_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-interactive-mode &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${STORM_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
