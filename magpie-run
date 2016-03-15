@@ -2324,7 +2324,7 @@ then
 	    # Will set jobtimeseconds
 	    Magpie_job_time_seconds
             # Some systems have SIGUSR1 as USR1 so lets just use the value
-            trap "echo \"Exiting and tearing down daeomons from ${PHOENIX_MODE} mode due to user interrupt.\"" 10
+            trap "echo \"Exiting and tearing down daemons from ${PHOENIX_MODE} mode due to user interrupt.\"" 10
 	    sleep ${jobtimeseconds} &
             wait
 	fi
