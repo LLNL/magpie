@@ -2111,6 +2111,8 @@ if [ "${zookeeper_setup_successful}" == "1" ] \
     && [ "${hbase_setup_successful}" == "1" ] \
     && [ "${phoenix_setup_successful}" == "1" ] \
     && [ "${spark_setup_successful}" == "1" ] \
+    && [ "${kafka_setup_successful}" == "1" ] \
+    && [ "${zeppelin_setup_successful}" == "1" ] \
     && [ "${storm_setup_successful}" == "1" ] \
     && [ "${tachyon_setup_successful}" == "1" ]
 then
