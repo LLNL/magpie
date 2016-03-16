@@ -2227,7 +2227,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
 	then
 	    echo "*******************************************************"
@@ -2277,7 +2277,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
@@ -2348,7 +2348,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "kafka" ]
     then
@@ -2367,7 +2367,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ]
     then
@@ -2386,7 +2386,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
@@ -2422,7 +2422,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
@@ -2449,7 +2449,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
@@ -2476,7 +2476,7 @@ then
 	    echo "*******************************************************"
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
-	    Magpie_wait_script ${scriptpid}
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
