@@ -2225,7 +2225,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
@@ -2275,7 +2275,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hbase ${HBASE_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
@@ -2346,7 +2346,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Spark ${SPARK_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
@@ -2365,7 +2365,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Kafka ${KAFKA_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
@@ -2380,14 +2380,14 @@ then
 	    echo "*******************************************************"
             # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${ZEPPELIN_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
             wait
 	elif [ "${ZEPPELIN_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
@@ -2423,7 +2423,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Storm ${STORM_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
@@ -2446,14 +2446,14 @@ then
 	    echo "*******************************************************"
             # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${TACHYON_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep normal &
             wait
 	elif [ "${TACHYON_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
@@ -2476,14 +2476,14 @@ then
 	    echo "*******************************************************"
             # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
             trap "echo \"Exiting from ${ZOOKEEPER_MODE} mode due to user interrupt.\"" 10
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep normal &
             wait
 	elif [ "${ZOOKEEPER_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-countdown-sleep &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    Magpie_wait_script ${scriptpid}
 	fi
