@@ -88,7 +88,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 #                 directly (e.g. bin/hbase ...)
 #
 # "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup daemons themselves, etc.
+#               if user wants to setup & teardown daemons themselves.
 #
 export HBASE_MODE="performanceeval"
 

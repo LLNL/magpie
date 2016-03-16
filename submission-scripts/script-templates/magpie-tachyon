@@ -16,8 +16,8 @@ export TACHYON_SETUP=no
 #
 # "launch" - Magpie will launch Tachyon daemons
 #
-# "setuponly" - Only setup conf files. useful if user wants to setup
-#               daemons themselves, etc.
+# "setuponly" - Like 'launch' but only setup conf files. useful
+#               if user wants to setup & teardown daemons themselves.
 #
 export TACHYON_MODE="launch"
 

@@ -391,7 +391,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #            uses Hadoop MapReduce.
 #
 # "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup daemons themselves, etc.
+#               if user wants to setup & teardown daemons themselves.
 #
 # "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2.
 #
@@ -662,7 +662,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 #                 directly (e.g. bin/hbase ...)
 #
 # "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup daemons themselves, etc.
+#               if user wants to setup & teardown daemons themselves.
 #
 export HBASE_MODE="performanceeval"
 
@@ -841,8 +841,8 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 #
 # "launch" - Magpie will launch Zookeeper daemons
 #
-# "setuponly" - Only setup conf files. useful if user wants to setup
-#               daemons themselves, etc.
+# "setuponly" - Like 'launch' but only setup conf files. useful
+#               if user wants to setup & teardown daemons themselves.
 #
 export ZOOKEEPER_MODE="launch"
 

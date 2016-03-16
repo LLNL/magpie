@@ -87,7 +87,7 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 #                 directly (e.g. bin/storm ...)
 #
 # "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup daemons themselves, etc.
+#               if user wants to setup & teardown daemons themselves.
 #
 export STORM_MODE="stormwordcount"
 
