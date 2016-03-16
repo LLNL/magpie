@@ -2229,7 +2229,7 @@ then
 	    ${HADOOP_SCRIPT_PATH} &
 	    scriptpid=$!
 	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
-	elif [ "${HADOOP_MODE}" == "interactive" ]
+	elif [ "${HADOOP_MODE}" == "interactive" ] || [ "${HADOOP_MODE}" == "launch" ] || [ "${HADOOP_MODE}" == "hdfsonly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
