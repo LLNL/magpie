@@ -2233,7 +2233,7 @@ then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
