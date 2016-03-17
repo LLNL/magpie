@@ -274,9 +274,10 @@ Magpie_job_time_seconds () {
     jobtimeseconds=`expr ${jobtimeminutes}  \* 60`
 }
 
-Magpie_wait_script_kill_on_timeout () {
+Magpie_wait_script_signal_on_timeout () {
     scriptpid=$1
     timeoutminutes=$2
+    signalnumber=$3
 
     # We sleep in 30 second chunks, so times 2
     scriptsleepiterations=`expr ${timeoutminutes}  \* 2`
@@ -294,7 +295,7 @@ Magpie_wait_script_kill_on_timeout () {
     if [ "${scriptexitted}" == "0" ]
     then
 	echo "Killing script, did not exit within time limit"
-	kill ${scriptpid}
+	kill -s ${signalnumber} ${scriptpid}
     fi
     return 0
 }
@@ -305,7 +306,18 @@ Magpie_wait_script_kill_on_job_timeout () {
     # Will set jobtimeminutes
     Magpie_job_time_minutes
 
-    Magpie_wait_script_kill_on_timeout $scriptpid $jobtimeminutes
+    Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 9
+
+    return 0
+}
+
+Magpie_wait_script_sigusr2_on_job_timeout () {
+    scriptpid=$1
+
+    # Will set jobtimeminutes
+    Magpie_job_time_minutes
+
+    Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 12
 
     return 0
 }

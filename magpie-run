@@ -2121,23 +2121,17 @@ then
 	echo "*******************************************************"
 	echo "* Executing script $MAGPIE_SCRIPT_PATH"
 	echo "*******************************************************"
-	${MAGPIE_SCRIPT_PATH} &
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPT_PATH} &
 	scriptpid=$!
-	Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
     then
 	echo "*******************************************************"
 	echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
 	echo "*******************************************************"
-	echo "*******************************************************"
-        echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${MAGPIE_JOB_TYPE} mode early."
-	echo "*******************************************************"
-	# Will set jobtimeseconds
-	Magpie_job_time_seconds
-        # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-        trap "echo \"Exiting from ${MAGPIE_JOB_TYPE} mode due to user interrupt.\"" 10
-	sleep ${jobtimeseconds} &
-        wait
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	scriptpid=$!
+        wait $scriptpid
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
 	if [ "${PIG_MODE}" == "testpig" ]
@@ -2145,31 +2139,25 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Testpig"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${PIG_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing Pig script $PIG_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script "${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}" &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${PIG_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Pig ${PIG_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${PIG_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${PIG_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "mahout" ]
     then
@@ -2178,39 +2166,33 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Classifywikipedia"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-classifywikipedia &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-classifywikipedia &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Running Clustersyntheticcontrol"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${MAHOUT_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing Mahout script $MAHOUT_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script "${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}" &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${MAHOUT_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Mahout ${MAHOUT_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${MAHOUT_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${MAHOUT_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
@@ -2219,48 +2201,41 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Terasort"
 	    echo "*******************************************************"
-	    
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing script $HADOOP_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${HADOOP_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${HADOOP_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "interactive" ] || [ "${HADOOP_MODE}" == "launch" ] || [ "${HADOOP_MODE}" == "hdfsonly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${HADOOP_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${HADOOP_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${HADOOP_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-upgradehdfs &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
 	    if [ "${hdfsstoredversionpath}X" != "X" ]
 	    then
@@ -2275,40 +2250,33 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Performance Evaluation"
 	    echo "*******************************************************"
-	    
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${HBASE_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing script $HBASE_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${HBASE_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${HBASE_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${HBASE_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Hbase ${HBASE_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${HBASE_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${HBASE_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${HBASE_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Hbase ${HBASE_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
@@ -2317,32 +2285,25 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Performance Evaluation"
 	    echo "*******************************************************"
-	    
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${PHOENIX_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing script $PHOENIX_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${PHOENIX_MODE}" == "interactive" ] 
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Phoenix ${PHOENIX_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${PHOENIX_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting and tearing down daemons from ${PHOENIX_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
@@ -2351,47 +2312,41 @@ then
 	    echo "*******************************************************"
 	    echo "* Running SparkPi"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "sparkwordcount" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Running SparkWordCount"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkwordcount &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkwordcount &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing script $SPARK_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${SPARK_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${SPARK_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Spark ${SPARK_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${SPARK_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${SPARK_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${SPARK_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Spark ${SPARK_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "kafka" ]
     then
@@ -2400,17 +2355,17 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Performance"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${KAFKA_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Kafka ${KAFKA_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ]
     then
@@ -2418,23 +2373,18 @@ then
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
-            echo "*"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${ZEPPELIN_MODE} mode early."
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${ZEPPELIN_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode server &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${ZEPPELIN_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
@@ -2443,40 +2393,33 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Storm WordCount"
 	    echo "*******************************************************"
-	    
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${STORM_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Executing script $STORM_SCRIPT_PATH"
 	    echo "*******************************************************"
-	    ${STORM_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${STORM_SCRIPT_PATH} &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${STORM_MODE}" == "interactive" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Storm ${STORM_MODE} mode"
 	    echo "*******************************************************"
-	    echo "*******************************************************"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${STORM_MODE} mode early."
-	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${STORM_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode interactive &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${STORM_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Storm ${STORM_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
@@ -2485,30 +2428,25 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Testtachyon"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${TACHYON_MODE}" == "launch" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
-            echo "*"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${TACHYON_MODE} mode early."
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${TACHYON_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode launch &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${TACHYON_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
@@ -2517,39 +2455,34 @@ then
 	    echo "*******************************************************"
 	    echo "* Running Zookeeper ruok"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok &
 	    scriptpid=$!
-	    Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${ZOOKEEPER_MODE}" == "launch" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-	    echo "*"
-            echo "* Run '${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 $$' to exit ${ZOOKEEPER_MODE} mode early."
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-            # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
-            trap "echo \"Exiting from ${ZOOKEEPER_MODE} mode due to user interrupt.\"" 10
-	    sleep ${jobtimeseconds} &
-            wait
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode launch &
+	    scriptpid=$!
+            wait $scriptpid
 	elif [ "${ZOOKEEPER_MODE}" == "setuponly" ]
 	then
 	    echo "*******************************************************"
 	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
 	    echo "*******************************************************"
-	    # Will set jobtimeseconds
-	    Magpie_job_time_seconds
-	    sleep ${jobtimeseconds}
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+	    scriptpid=$!
+	    wait ${scriptpid}
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
 	echo "*******************************************************"
 	echo "* Running Magpie TestAll"
 	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-magpie-testall &
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPTS_HOME}/magpie-run-magpie-testall &
 	scriptpid=$!
-	Magpie_wait_script_kill_on_job_timeout ${scriptpid}
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     fi
 fi
 
