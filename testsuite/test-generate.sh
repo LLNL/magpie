@@ -620,17 +620,19 @@ sed -i \
     -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
     magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop2A-run-hadoopterasort
 
-# Dependency 3 test, increase size
+# Dependency 3 test, increase & decrease size
 
 for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
 do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsovernetworkfs-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsovernetworkfs-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
     
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 
@@ -643,6 +645,11 @@ do
 	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
 	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop3A\/'"${hadoopversion}"'\/"/' \
 	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsovernetworkfs*
+
+    sed -i \
+	-e 's/export HADOOP_MODE="terasort"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*decommissionhdfsnodes*
 
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 done
@@ -652,10 +659,12 @@ do
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsovernetworkfs-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-hdfsovernetworkfs-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
     
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
     
@@ -668,6 +677,11 @@ do
 	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
 	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop3A\/'"${hadoopversion}"'\/"/' \
 	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsovernetworkfs*
+
+    sed -i \
+	-e 's/export HADOOP_MODE="terasort"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*decommissionhdfsnodes*
 
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 done
@@ -2227,6 +2241,7 @@ then
     sed -i -e "s/slurm-%j.out/slurm-hdfs-fewer-nodes-expected-failure-%j.out/" magpie.${submissiontype}-hadoop*hdfs-fewer-nodes*expected-failure
     sed -i -e "s/slurm-%j.out/slurm-hdfs-older-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
     sed -i -e "s/slurm-%j.out/slurm-hdfs-newer-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
+    sed -i -e "s/slurm-%j.out/slurm-hdfs-more-nodes-decommissionhdfsnodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes-decommissionhdfsnodes*
 
     sed -i -e "s/slurm-%j.out/slurm-run-testpig-%j.out/" magpie.${submissiontype}*run-testpig*
     sed -i -e "s/slurm-%j.out/slurm-run-pigscript-%j.out/" magpie.${submissiontype}*run-pigscript*
@@ -2266,6 +2281,7 @@ then
     sed -i -e "s/moab-%j.out/moab-hdfs-fewer-nodes-expected-failure-%j.out/" magpie.${submissiontype}-hadoop*hdfs-fewer-nodes*expected-failure
     sed -i -e "s/moab-%j.out/moab-hdfs-older-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
     sed -i -e "s/moab-%j.out/moab-hdfs-newer-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
+    sed -i -e "s/moab-%j.out/moab-hdfs-more-nodes-decommissionhdfsnodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes-decommissionhdfsnodes*
     
     sed -i -e "s/moab-%j.out/moab-run-testpig-%j.out/" magpie.${submissiontype}*run-testpig*
     sed -i -e "s/moab-%j.out/moab-run-pigscript-%j.out/" magpie.${submissiontype}*run-pigscript*
@@ -2307,6 +2323,7 @@ then
 
     sed -i -e "s/lsf-%J.out/lsf-hdfs-older-version-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
     sed -i -e "s/lsf-%J.out/lsf-hdfs-newer-version-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
+    sed -i -e "s/lsf-%J.out/lsf-hdfs-more-nodes-decommissionhdfsnodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes-decommissionhdfsnodes*
     
     sed -i -e "s/lsf-%J.out/lsf-run-testpig-%J.out/" magpie.${submissiontype}*run-testpig*
     sed -i -e "s/lsf-%J.out/lsf-run-pigscript-%J.out/" magpie.${submissiontype}*run-pigscript*
@@ -2341,7 +2358,8 @@ sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"
     
 # special node sizes first
 sed -i -e "s/<my node count>/17/" magpie.${submissiontype}*hdfs-more-nodes*
-sed -i -e "s/<my node count>/8/" magpie.${submissiontype}*hdfs-fewer-nodes*
+sed -i -e "s/<my node count>/9/" magpie.${submissiontype}*hdfs-fewer-nodes*
+sed -i -e "s/<my node count>/17/" magpie.${submissiontype}*hdfs-more-nodes-decommissionhdfsnodes*
 sed -i -e "s/<my node count>/9/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie.${submissiontype}-kafka*  magpie.${submissiontype}-zookeeper*
 sed -i -e "s/<my node count>/12/" magpie.${submissiontype}-hbase-with-hdfs* magpie.${submissiontype}-storm* 
 

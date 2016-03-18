@@ -315,7 +315,7 @@ if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
 then
     hdfsreplication=${HADOOP_HDFS_REPLICATION}
 else
-    hdfsreplication=3
+    hdfsreplication=${default_hdfs_replication}
 fi
 
 if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ] \

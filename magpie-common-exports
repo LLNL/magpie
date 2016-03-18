@@ -151,6 +151,8 @@ then
     then
 	export HDFS_FEDERATION_NAMENODE_COUNT=1
     fi
+
+    default_hdfs_replication=3
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]

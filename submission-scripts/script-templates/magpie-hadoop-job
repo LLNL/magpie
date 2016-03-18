@@ -32,6 +32,20 @@
 #
 #		  Beware, once you upgrade it'll be difficult to rollback.
 #
+# "decommissionhdfsnodes" - decrease your HDFS over Lustre or HDFS
+#                           over NetworkFS node size just as if you
+#                           were on a cluster with local disk.  Launch
+#                           your job with the current present node
+#                           size and set
+#                           HADOOP_DECOMMISSION_HDFS_NODE_SIZE to the
+#                           smaller node size to decommission into.
+#
+#		            Please set your job time to be quite large
+#		            when performing this upgrade.  If your job
+#		            times out and this process does not
+#		            complete fully, it can leave HDFS in a bad
+#		            state.
+#
 # "launch" - Launch Hadoop but do nothing, usually set to this because
 #            another project (e.g. Hbase, Pig) will run something that
 #            uses Hadoop MapReduce.
