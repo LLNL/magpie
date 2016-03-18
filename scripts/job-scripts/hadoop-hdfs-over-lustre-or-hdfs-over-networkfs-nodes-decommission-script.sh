@@ -1,39 +1,39 @@
 #!/bin/bash
 
-# This is a basic script to decomission "nodes" in HDFS over Lustre if
+# This is a basic script to decommission "nodes" in HDFS over Lustre if
 # you want to start using fewer nodes in your job.  You can run it
 # under 'script' mode in the main job submission file and setting
 # HADOOP_SCRIPT_PATH to this script.
 #
 # You the user must make only one input into this file, indicate the
-# number of nodes you want to decomission at the top of this file in
-# the variable "nodecounttodecomission", the input is a positive numer.
+# number of nodes you want to decommission at the top of this file in
+# the variable "nodecounttodecommission", the input is a positive numer.
 #
 # You can technically put in any number you want up to the slave
 # count, but generally speaking, you shouldn't be too aggressive, as
 # other configuration parameters in the Hadoop universe could be
 # affected.  For example, if you have HDFS replication of 3 and you
-# decomission down to 2 nodes, there'll be issues.
+# decommission down to 2 nodes, there'll be issues.
 #
 # Some corner case checks will be handled below, but be careful in
 # general.
 
 # Edit this number
-nodecounttodecomission=0
+nodecounttodecommission=0
 
-if [ "${nodecounttodecomission}" == "0" ]
+if [ "${nodecounttodecommission}" == "0" ]
 then
-    echo "No nodes specified for decomission"
+    echo "No nodes specified for decommission"
     exit 0
 fi
 
-if [ "${nodecounttodecomission}" -ge "${HADOOP_SLAVE_COUNT}" ]
+if [ "${nodecounttodecommission}" -ge "${HADOOP_SLAVE_COUNT}" ]
 then
-    echo "Cannot decomission more nodes than are available"
+    echo "Cannot decommission more nodes than are available"
     exit 1
 fi
 
-nodesleft=`expr ${HADOOP_SLAVE_COUNT} - ${nodecounttodecomission}`
+nodesleft=`expr ${HADOOP_SLAVE_COUNT} - ${nodecounttodecommission}`
 
 if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
 then
@@ -45,7 +45,7 @@ then
 fi
 
 echo "Creating ${HADOOP_CONF_DIR}/hosts-exclude"
-tail -n ${nodecounttodecomission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
+tail -n ${nodecounttodecommission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
 
 cd ${HADOOP_HOME}
 
@@ -55,21 +55,21 @@ bin/hadoop dfsadmin -refreshNodes
 while true 
 do
     count=`bin/hadoop dfsadmin -report | grep 'Decommission Status : Decommissioned' | wc -l`
-    if [ ${count} -lt "${nodecounttodecomission}" ]
+    if [ ${count} -lt "${nodecounttodecommission}" ]
     then
-	echo "Done decomissioning ${count} nodes out of ${nodecounttodecomission} ... sleeping for a bit "
+	echo "Done decommissioning ${count} nodes out of ${nodecounttodecommission} ... sleeping for a bit "
         sleep 30
         continue
     fi
 
-    echo "Decomissioned ${count} nodes"
+    echo "Decommissioned ${count} nodes"
     break
 done
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
     count=0
-    while [ "${count}" -lt "${nodecounttodecomission}" ]
+    while [ "${count}" -lt "${nodecounttodecommission}" ]
     do
 	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
@@ -87,7 +87,7 @@ fi
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
 then
     count=0
-    while [ "${count}" -lt "${nodecounttodecomission}" ]
+    while [ "${count}" -lt "${nodecounttodecommission}" ]
     do
 	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
