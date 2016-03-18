@@ -363,8 +363,8 @@ then
 			    echo "The current slave count of ${HADOOP_SLAVE_COUNT} is atleast 90% of ${hdfsstorednodecount}, so HDFS will attempt to be"
 			    echo "started.  However, it is not recommended for future runs and there is still a chance HDFS will not start."
 			else
-			    echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decomissioning process to"
-			    echo "reduce the number of nodes your HDFS is built on.  See README for details on decomissioning process."
+			    echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decommissioning process to"
+			    echo "reduce the number of nodes your HDFS is built on.  See README for details on decommissioning process."
 			    hadoop_should_be_setup=0
 			fi
 			echo "**** HDFS Issue ****"
