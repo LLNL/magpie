@@ -384,6 +384,11 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #                 without upgrading.  Only works with HDFS versions >=
 #                 2.2.0.
 #
+#	          Please set your job time to be quite large when
+#		  performing this upgrade.  If your job times out and
+#		  this process does not complete fully, it can leave
+#		  HDFS in a bad state.
+#
 #		  Beware, once you upgrade it'll be difficult to rollback.
 #
 # "launch" - Launch Hadoop but do nothing, usually set to this because
