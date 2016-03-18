@@ -2237,10 +2237,13 @@ then
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
-	    if [ "${hdfsstoredversionpath}X" != "X" ]
+	    if [ $? -eq 0 ]
 	    then
-		rm -f ${hdfsstoredversionpath}
-		echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+		if [ "${hdfsstoredversionpath}X" != "X" ]
+		then
+		    rm -f ${hdfsstoredversionpath}
+		    echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+		fi
 	    fi
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]

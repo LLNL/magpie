@@ -296,7 +296,9 @@ Magpie_wait_script_signal_on_timeout () {
     then
 	echo "Killing script, did not exit within time limit"
 	kill -s ${signalnumber} ${scriptpid}
+	return $?
     fi
+
     return 0
 }
 
@@ -308,7 +310,7 @@ Magpie_wait_script_kill_on_job_timeout () {
 
     Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 9
 
-    return 0
+    return $?
 }
 
 Magpie_wait_script_sigusr2_on_job_timeout () {
@@ -319,7 +321,7 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
 
     Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 12
 
-    return 0
+    return $?
 }
 
 # XXX deal with viewfs & federation

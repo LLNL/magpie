@@ -116,3 +116,5 @@ then
     echo "* End of ${typemessage}"
     echo "*******************************************************"
 fi
+
+exit $childstatus
