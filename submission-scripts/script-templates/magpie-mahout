@@ -68,3 +68,4 @@ export MAHOUT_MODE="clustersyntheticcontrol"
 # Extra Java runtime options
 #
 # export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_JOB_DIR}/tmp"
+
