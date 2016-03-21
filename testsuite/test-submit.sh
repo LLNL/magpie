@@ -80,31 +80,53 @@ BasicJobSubmit () {
 	
 	previousjobid=${jobid}
 	jobsubmitdependencyexpand=$(eval echo ${jobsubmitdependency})
+	previousjobsubmitted=y
     else
 	if [ "${verboseoutput}" = "y" ]
 	then
 	    echo "File ${jobsubmissionscript} not found" >> ${jobsubmissionfile}
 	fi
+	previousjobsubmitted=n
     fi
 }
 
 DependentJobSubmit () {
     local jobsubmissionscript=$1
 
-    if [ -f "${jobsubmissionscript}" ]
+    if [ "${previousjobsubmitted}" == "y" ]
     then
-	jobsubmitoutput=$(eval "${jobsubmitcmd} ${jobsubmitdependencyexpand} ${jobsubmitcmdoption} ${jobsubmissionscript}")
-	jobidstripfullcommand="echo '${jobsubmitoutput}' | ${jobidstripcmd}"
-	jobid=$(eval ${jobidstripfullcommand})
-	
-	echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
-    
-	previousjobid=${jobid}
-	jobsubmitdependencyexpand=$(eval echo ${jobsubmitdependency})
-    else
-	if [ "${verboseoutput}" = "y" ]
+	if [ -f "${jobsubmissionscript}" ]
 	then
-	    echo "File ${jobsubmissionscript} not found" >> ${jobsubmissionfile}
+	    jobsubmitoutput=$(eval "${jobsubmitcmd} ${jobsubmitdependencyexpand} ${jobsubmitcmdoption} ${jobsubmissionscript}")
+	    jobidstripfullcommand="echo '${jobsubmitoutput}' | ${jobidstripcmd}"
+	    jobid=$(eval ${jobidstripfullcommand})
+	    
+	    echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
+	    
+	    previousjobid=${jobid}
+	    jobsubmitdependencyexpand=$(eval echo ${jobsubmitdependency})
+	    previousjobsubmitted=y
+	else
+	    if [ "${verboseoutput}" = "y" ]
+	    then
+		echo "File ${jobsubmissionscript} not found" >> ${jobsubmissionfile}
+	    fi
+	    previousjobsubmitted=n
+	fi
+    else
+	if [ -f "${jobsubmissionscript}" ]
+	then
+	    if [ "${verboseoutput}" = "y" ]
+	    then
+		echo "File ${jobsubmissionscript} not submitted - prior job in dependency chain not submitted" >> ${jobsubmissionfile}
+	    fi
+	    previousjobsubmitted=n
+	else
+	    if [ "${verboseoutput}" = "y" ]
+	    then
+		echo "File ${jobsubmissionscript} not found" >> ${jobsubmissionfile}
+	    fi
+	    previousjobsubmitted=n
 	fi
     fi
 }
