@@ -1,0 +1,124 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core upgradehdfs script.  For the most part, it
+# shouldn't be editted.  See job submission files for configuration
+# details.
+
+# XXX does this work w/ federation?
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+# For this run, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -ge "${HADOOP_SLAVE_COUNT}" ]
+then
+    echo "Cannot decommission more nodes than are available"
+    exit 1
+fi
+
+if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
+then
+    if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt "${HADOOP_HDFS_REPLICATION}" ]
+    then
+	echo "Cannot have fewer nodes than HDFS replication"
+	exit 1
+    fi
+else
+    if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt ${default_hdfs_replication} ]
+    then
+	echo "Cannot have fewer nodes than HDFS replication"
+	exit 1
+    fi
+fi
+
+nodecounttodecommission=`expr ${HADOOP_SLAVE_COUNT} - ${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}`
+
+echo "Creating ${HADOOP_CONF_DIR}/hosts-exclude"
+tail -n ${nodecounttodecommission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
+
+cd ${HADOOP_HOME}
+
+echo "Refreshing nodes in namenode"
+${hadoopcmdprefix}/hdfs dfsadmin -refreshNodes
+
+while true 
+do
+    count=`${hadoopcmdprefix}/hdfs dfsadmin -report | grep 'Decommission Status : Decommissioned' | wc -l`
+    if [ ${count} -lt "${nodecounttodecommission}" ]
+    then
+	echo "Done decommissioning ${count} nodes out of ${nodecounttodecommission} ... sleeping for a bit "
+        sleep 30
+        continue
+    fi
+
+    echo "Decommissioned ${count} nodes"
+    break
+done
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+then
+    count=0
+    while [ "${count}" -lt "${nodecounttodecommission}" ]
+    do
+	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+  	    rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-$noderank"
+        else
+  	    rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-$noderank"
+        fi    
+	echo "Removing path ${rmpath} ..."
+	rm -rf ${rmpath}
+	count=`expr $count + 1`
+    done
+fi
+
+if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+then
+    count=0
+    while [ "${count}" -lt "${nodecounttodecommission}" ]
+    do
+	noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
+        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        then
+	    rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-$noderank"
+        else
+	    rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-$noderank"
+        fi
+	echo "Removing path ${rmpath} ..."
+	rm -rf ${rmpath}
+	count=`expr $count + 1`
+    done
+fi
+
+# If HADOOP_FILESYSTEM_MODE == hdfs, then we probably don't need to remove anything.
+# In the event file system is grown again, paths will be rebuilt
+
+# OR should handle in magpie-cleanup??? TBD
+
+exit 0

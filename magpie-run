@@ -2245,6 +2245,20 @@ then
 		    echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
 		fi
 	    fi
+	elif [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-decommissionhdfsnodes &
+	    scriptpid=$!
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+
+	    if [ $? -eq 0 ]
+	    then
+		rm -f ${hdfsstorednodecountpath}
+		echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${hdfsstorednodecountpath}
+	    fi
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
     then

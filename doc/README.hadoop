@@ -153,9 +153,6 @@ Hadoop Convenience Scripts
 The following job scripts may be convenient.  They can be run by
 running in 'script' mode and setting HADOOP_SCRIPT_PATH to the script.
 
-job-scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decommission-script.sh
-- See "Basics of HDFS over Lustre/NetworkFS" section for details.
-
 job-scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh
 - See "Basics of HDFS over Lustre/NetworkFS" section for details.
 
@@ -530,10 +527,9 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    Decreasing nodes is a bit more dangerous, as data can "disappear"
    just like if it were on a traditional Hadoop cluster.  If you try
    to scale down the number of nodes, you should go through the
-   process of "decommissioning" nodes like on a real cluster, otherwise
-   you may lose data.  You can decommission nodes through the
-   hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decommission-script.sh
-   convenience script.
+   process of "decommissioning" nodes like on a real cluster,
+   otherwise you may lose data.  You can decommission nodes through
+   the "decommissionhdfsnodes" option in HADOOP_MODE.
 
 Q: What should HDFS replication be?
 

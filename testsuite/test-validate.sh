@@ -223,6 +223,24 @@ then
     done
 fi
 
+if ls ${outputprefix}*hdfs-decommissionhdfsnodes* >& /dev/null
+then
+    for file in `ls ${outputprefix}*hdfs-decommissionhdfsnodes*`
+    do
+	num=`grep -e "Decommissioned 8 nodes" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
 if ls ${outputprefix}*run-testpig* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-testpig*`

@@ -391,6 +391,20 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #
 #		  Beware, once you upgrade it'll be difficult to rollback.
 #
+# "decommissionhdfsnodes" - decrease your HDFS over Lustre or HDFS
+#                           over NetworkFS node size just as if you
+#                           were on a cluster with local disk.  Launch
+#                           your job with the current present node
+#                           size and set
+#                           HADOOP_DECOMMISSION_HDFS_NODE_SIZE to the
+#                           smaller node size to decommission into.
+#
+#		            Please set your job time to be quite large
+#		            when performing this upgrade.  If your job
+#		            times out and this process does not
+#		            complete fully, it can leave HDFS in a bad
+#		            state.
+#
 # "launch" - Launch Hadoop but do nothing, usually set to this because
 #            another project (e.g. Hbase, Pig) will run something that
 #            uses Hadoop MapReduce.
@@ -801,6 +815,18 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # the script.
 #
 # export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
+
+############################################################################
+# Hadoop Decommission HDFS Nodes Configurations
+############################################################################
+
+# Specify decommission node size for "decommissionhdfsnodes" mode
+#
+# For example, if your current HDFS node size is 16, your job size is
+# likely 17 nodes (including the master).  If you wish to decommission
+# to 8 data nodes (job size of 9 nodes total), set this to 8.
+#
+# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=8
 
 ############################################################################
 # Hadoop UDA Configurations

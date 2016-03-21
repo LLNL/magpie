@@ -503,11 +503,12 @@ then
 	&& [ "${HADOOP_MODE}" != "script" ] \
 	&& [ "${HADOOP_MODE}" != "interactive" ] \
 	&& [ "${HADOOP_MODE}" != "upgradehdfs" ] \
+	&& [ "${HADOOP_MODE}" != "decommissionhdfsnodes" ] \
 	&& [ "${HADOOP_MODE}" != "launch" ] \
 	&& [ "${HADOOP_MODE}" != "setuponly" ] \
 	&& [ "${HADOOP_MODE}" != "hdfsonly" ]
     then
-	echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, launch, setuponly, or hdfsonly"
+	echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, decommissionhdfsnodes, launch, setuponly, or hdfsonly"
 	exit 1
     fi
 
@@ -571,6 +572,42 @@ then
 	fi
     fi
 
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decomissionhdfsnodes" ]
+    then
+	if [ "${HADOOP_VERSION}X" == "X" ]
+	then
+	    echo "HADOOP_VERSION must be set for HADOOP_MODE = ${HADOOP_MODE}"
+	    exit 1
+	fi
+
+	if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
+	then 
+	    echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
+	    exit 1
+	fi
+
+	if [ ! -f "${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-decommissionhdfsnodes" ]
+	then
+	    echo "${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-decommissionhdfsnodes cannot be found, it is required for HADOOP_MODE = ${HADOOP_MODE}"
+	    exit 1
+	fi
+
+	if [ "${HADOOP_DECOMISSION_HDFS_NODE_SIZE}X" == "X" ]
+	then
+	    echo "HADOOP_DECOMISSION_HDFS_NODE_SIZE must be specified for HADOOP_MODE = ${HADOOP_MODE}"
+	    exit 1
+	fi
+
+	if [ ! "${HADOOP_DECOMISSION_HDFS_NODE_SIZE}" -gt "0" ]
+	then
+	    echo "HADOOP_DECOMISSION_HDFS_NODE_SIZE must be > 0"
+	    exit 1
+	fi
+
+	# Few additional checks can only be done later, such as HADOOP_SLAVE_COUNT > replication
+	# and HADOOP_DECOMISSION_HDFS_NODE_SIZE < current HADOOP_SLAVE_COUNT 
+    fi
+
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
 	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
 	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ] \
@@ -589,6 +626,14 @@ then
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ])
     then
 	echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs, hdfsoverlustre, or hdfsovernetworkfs"
+	exit 1
+    fi
+
+    if [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    then
+	echo "HADOOP_MODE of ${HADOOP_MODE} only supported with HADOOP_FILESYSTEM_MODE of hdfsoverlustre or hdfsovernetworkfs"
 	exit 1
     fi
 
