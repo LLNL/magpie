@@ -1476,7 +1476,7 @@ do
     done
 done
 
-# Dependency 1 Tests, run after another, HFDS over Lustre
+# Dependency 1 Tests, run after another, HDFS over Lustre
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
@@ -1522,7 +1522,7 @@ do
     done
 done
 
-# Dependency 1 Tests, run after another, HFDS over NetworkFS
+# Dependency 1 Tests, run after another, HDFS over NetworkFS
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
@@ -1624,7 +1624,7 @@ do
     done
 done
 
-# Dependency 1 Tests, run after another, HFDS over Lustre
+# Dependency 1 Tests, run after another, HDFS over Lustre
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
@@ -1652,7 +1652,7 @@ do
     done
 done
 
-# Dependency 1 Tests, run after another, HFDS over NetworkFS
+# Dependency 1 Tests, run after another, HDFS over NetworkFS
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
@@ -1680,7 +1680,7 @@ do
     done
 done
 
-# Dependency 2 Tests, run after another with hbase, HFDS over Lustre
+# Dependency 2 Tests, run after another with hbase, HDFS over Lustre
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
@@ -1723,7 +1723,7 @@ do
     done
 done
 
-# Dependency 2 Tests, run after another with hbase, HFDS over NetworkFS
+# Dependency 2 Tests, run after another with hbase, HDFS over NetworkFS
 
 for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
 do
