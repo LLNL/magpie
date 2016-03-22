@@ -364,7 +364,7 @@ then
 			    echo "started.  However, it is not recommended for future runs and there is still a chance HDFS will not start."
 			else
 			    echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decommissioning process to"
-			    echo "reduce the number of nodes your HDFS is built on.  See README for details on decommissioning process."
+			    echo "reduce the number of nodes your HDFS is built on via HADOOP_MODE=decommissionhdfsnodes."
 			    hadoop_should_be_setup=0
 			fi
 			echo "**** HDFS Issue ****"
