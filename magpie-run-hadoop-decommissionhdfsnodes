@@ -116,9 +116,4 @@ then
     done
 fi
 
-# If HADOOP_FILESYSTEM_MODE == hdfs, then we probably don't need to remove anything.
-# In the event file system is grown again, paths will be rebuilt
-
-# OR should handle in magpie-cleanup??? TBD
-
 exit 0
