@@ -259,7 +259,7 @@ then
     done
 fi
 
-if ls ${outputprefix}*hdfs-decommissionhdfsnodes* >& /dev/null
+if ls ${outputprefix}*decommissionhdfsnodes* >& /dev/null
 then
     for file in `ls ${outputprefix}*hdfs-decommissionhdfsnodes*`
     do
