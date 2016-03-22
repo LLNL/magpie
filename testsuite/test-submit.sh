@@ -689,8 +689,8 @@ then
 	    do
 		for zookeeperversion in 3.4.6
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
 		done
 	    done
 	done
@@ -701,8 +701,8 @@ then
 	    do
 		for zookeeperversion in 3.4.7
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
 		done
 	    done
 	done
