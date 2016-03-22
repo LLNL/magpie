@@ -151,6 +151,42 @@ then
     done
 fi
 
+if ls ${outputprefix}*run-scriptteragen* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-scriptteragen*`
+    do
+	num=`grep -e "completed successfully" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
+if ls ${outputprefix}*run-scriptterasort* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-scriptterasort*`
+    do
+	num=`grep -e "completed successfully" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hadoop_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
 if ls ${outputprefix}*run-hadoopupgradehdfs* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopupgradehdfs*`
