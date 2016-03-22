@@ -67,8 +67,8 @@ no_pig_0_14_0=n
 no_pig_0_15_0=n
 no_mahout_0_11_0=n
 no_mahout_0_11_1=n
-no_hbase_0_98_3_bin_hadoop2=n
-no_hbase_0_98_9_bin_hadoop2=n
+no_hbase_0_98_3_hadoop2=n
+no_hbase_0_98_9_hadoop2=n
 no_hbase_0_99_0=n
 no_hbase_0_99_1=n
 no_hbase_0_99_2=n
@@ -2610,14 +2610,14 @@ then
     rm -f magpie.${submissiontype}*mahout-0.11.1*
 fi
 
-if [ "${no_hbase_0_98_3_bin_hadoop2}" == "y" ]
+if [ "${no_hbase_0_98_3_hadoop2}" == "y" ]
 then
-    rm -f magpie.${submissiontype}*hbase-0.98.3-bin-hadoop2*
+    rm -f magpie.${submissiontype}*hbase-0.98.3-hadoop2*
 fi
 
-if [ "${no_hbase_0_98_9_bin_hadoop2}" == "y" ]
+if [ "${no_hbase_0_98_9_hadoop2}" == "y" ]
 then
-    rm -f magpie.${submissiontype}*hbase-0.98.9-bin-hadoop2*
+    rm -f magpie.${submissiontype}*hbase-0.98.9-hadoop2*
 fi
 
 if [ "${no_hbase_0_99_0}" == "y" ]
