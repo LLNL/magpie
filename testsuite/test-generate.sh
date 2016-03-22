@@ -133,6 +133,10 @@ REMOTE_CMD=mrsh
 DEFAULT_LOCAL_REQUIREMENTS=n
 DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
+# Adjust accordingly.  On very busy clusters/machines, SHUTDOWN_TIME may need to be larger.
+STARTUP_TIME=30
+SHUTDOWN_TIME=30
+
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
 if [ ! -d "${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates" ]
@@ -2486,6 +2490,9 @@ cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 make &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
+sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
 
 if [ "${no_local_ssd_tests}" == "y" ]
 then
