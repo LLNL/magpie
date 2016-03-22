@@ -2294,6 +2294,28 @@ then
 	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
 	    scriptpid=$!
 	    wait ${scriptpid}
+	elif [ "${HBASE_MODE}" == "decommissionhbasenodes" ]
+	then
+	    echo "*******************************************************"
+	    echo "* Entering Hbase ${HBASE_MODE} mode"
+	    echo "*******************************************************"
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-decommissionhbasenodes &
+	    scriptpid=$!
+	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+
+	    if [ $? -eq 0 ]
+	    then
+		export HADOOP_DECOMMISSION_HDFS_NODE_SIZE="${HBASE_DECOMMISSION_NODE_SIZE}"
+		${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-decommissionhdfsnodes &
+		scriptpid=$!
+		Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+		
+		if [ $? -eq 0 ]
+		then
+		    rm -f ${hdfsstorednodecountpath}
+		    echo "${HBASE_DECOMMISSION_NODE_SIZE}" > ${hdfsstorednodecountpath}
+		fi
+	    fi
 	fi
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then

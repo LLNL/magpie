@@ -1032,6 +1032,23 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 #                 is your 'master' node and interact with Hbase
 #                 directly (e.g. bin/hbase ...)
 #
+# "decommissionhbasenodes" - decrease the number of Hbase region
+#                           servers running on HDFS over Lustre or
+#                           HDFS over NetworkFS just as if you were on
+#                           a cluster with local disk.  Launch your
+#                           job with the current present node size and
+#                           set HBASE_DECOMMISSION_NODE_SIZE to the
+#                           smaller node size to decommission into.
+#
+#                           This will also run the equivalent of
+#                           'decommissionhdfsnodes' under HADOOP_MODE.
+#
+#		            Please set your job time to be quite large
+#		            when performing this update.  If your job
+#		            times out and this process does not
+#		            complete fully, it can leave Hbase & HDFS
+#		            in a bad state.
+#
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
@@ -1097,6 +1114,18 @@ export HBASE_MODE="performanceeval"
 #
 # export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
 
+############################################################################
+# Hbase Decommission Nodes Configurations
+############################################################################
+
+# Specify decommission node size for "decommissionhbasenodes" mode
+#
+# For example, if your current Hbase Regionserver count is 16, your
+# job size is likely 20 nodes (including the master & 3 zookeeper
+# nodes).  If you wish to decommission to 8 data nodes (job size of 12
+# nodes total), set this to 8.
+#
+# export HBASE_DECOMMISSION_NODE_SIZE=8
 ############################################################################
 # Phoenix Configurations
 ############################################################################

@@ -1138,9 +1138,10 @@ then
     if [ "${HBASE_MODE}" != "performanceeval" ] \
 	&& [ "${HBASE_MODE}" != "script" ] \
 	&& [ "${HBASE_MODE}" != "interactive" ] \
+	&& [ "${HBASE_MODE}" != "decommissionhbasenodes" ] \
 	&& [ "${HBASE_MODE}" != "setuponly" ]
     then
-	echo "HBASE_MODE must be set to performanceeval, script, interactive, setuponly"
+	echo "HBASE_MODE must be set to performanceeval, script, interactive, decommissionhbasenodes, setuponly"
 	exit 1
     fi
 
@@ -1202,6 +1203,30 @@ then
 	then
 	    echo "Script HBASE_SCRIPT_PATH \"$HBASE_SCRIPT_PATH\" does not have execute permissions"
 	    exit 1
+	fi
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_MODE}" == "decommissionhbasenodes" ]
+    then
+	if [ "${HBASE_DECOMMISSION_NODE_SIZE}X" == "X" ]
+	then
+	    echo "Script HBASE_DECOMMISSION_NODE_SIZE must be specified for HBASE_MODE = ${HBASE_MODE}"
+	    exit 1
+	fi
+
+	if [ ! "${HBASE_DECOMMISSION_NODE_SIZE}" -gt "0" ]
+	then
+	    echo "HBASE_DECOMMISSION_NODE_SIZE must be > 0"
+	    exit 1
+	fi
+
+	# Few additional checks can only be done later
+	
+	if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+    	    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+	then
+    	    echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs for HBASE_MODE = ${HBASE_MODE}"
+    	    exit 1
 	fi
     fi
 

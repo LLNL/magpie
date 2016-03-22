@@ -1,0 +1,88 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core 'decommissionhbasenodes' script.  For the
+# most part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+# XXX does this work w/ federation?
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+
+# For this run, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+if [ "${HBASE_DECOMMISSION_NODE_SIZE}" -ge "${HBASE_REGIONSERVER_COUNT}" ]
+then
+    echo "Cannot decommission more nodes than are available"
+    exit 1
+fi
+
+if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
+then
+    if [ "${HBASE_DECOMMISSION_NODE_SIZE}" -lt "${HADOOP_HDFS_REPLICATION}" ]
+    then
+	echo "Cannot have fewer nodes than HDFS replication"
+	exit 1
+    fi
+else
+    if [ "${HBASE_DECOMMISSION_NODE_SIZE}" -lt ${default_hdfs_replication} ]
+    then
+	echo "Cannot have fewer nodes than HDFS replication"
+	exit 1
+    fi
+fi
+
+nodecounttodecommission=`expr ${HBASE_REGIONSERVER_COUNT} - ${HBASE_DECOMMISSION_NODE_SIZE}`
+
+echo "Creating ${HBASE_CONF_DIR}/regionservers_decommission"
+tail -n ${nodecounttodecommission} ${HBASE_CONF_DIR}/regionservers > ${HBASE_CONF_DIR}/regionservers_decommission
+
+cd ${HBASE_HOME}
+
+echo balance_switch false | ${hbasecmdprefix}/hbase shell
+
+# Make variables unspecified for launching
+Magpie_make_all_local_dirs_unspecified
+
+exitcode=0
+
+for server in `cat ${HBASE_CONF_DIR}/regionservers_decommission`
+do
+    echo "Decommissioning ${server}"
+    ${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} ${server} ${HBASE_HOME}/${hbasecmdprefix}/graceful_stop.sh --config ${HBASE_CONF_DIR} -e ${server}
+
+    if [ $? -ne 0 ]
+    then
+	exitcode=1
+	break
+    fi
+done
+
+# Make variables specific now within Magpie
+Magpie_make_all_local_dirs_node_specific
+
+exit ${exitcode}
