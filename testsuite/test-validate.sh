@@ -261,7 +261,7 @@ fi
 
 if ls ${outputprefix}*decommissionhdfsnodes* >& /dev/null
 then
-    for file in `ls ${outputprefix}*hdfs-decommissionhdfsnodes*`
+    for file in `ls ${outputprefix}*decommissionhdfsnodes*`
     do
 	num=`grep -e "Decommissioned 8 nodes" $file | wc -l`
 	if [ "${num}" != "1" ]; then
