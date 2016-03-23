@@ -587,6 +587,29 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 
 ############################################################################
+# Hadoop Script Configurations
+############################################################################
+
+# Specify script to execute for "script" mode
+#
+# See examples/hadoop-example-job-script for example of what to put in
+# the script.
+#
+# export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
+
+############################################################################
+# Hadoop Decommission HDFS Nodes Configurations
+############################################################################
+
+# Specify decommission node size for "decommissionhdfsnodes" mode
+#
+# For example, if your current HDFS node size is 16, your job size is
+# likely 17 nodes (including the master).  If you wish to decommission
+# to 8 data nodes (job size of 9 nodes total), set this to 8.
+#
+# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=8
+
+############################################################################
 # Spark Core Configurations
 ############################################################################
 

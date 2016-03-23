@@ -203,7 +203,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
-		magpie-pig\
+		magpie-hadoop-mode-details magpie-pig\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_PIG)
@@ -215,7 +215,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
-		magpie-mahout\
+		magpie-hadoop-mode-details magpie-mahout\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_MAHOUT)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
@@ -227,7 +227,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
-		magpie-hbase\
+		magpie-hadoop-mode-details magpie-hbase\
 		magpie-zookeeper\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HBASE_WITH_HDFS)
@@ -242,7 +242,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
-		magpie-hbase\
+		magpie-hadoop-mode-details magpie-hbase\
                 magpie-phoenix\
 		magpie-zookeeper\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
@@ -270,7 +270,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
-		magpie-spark\
+		magpie-hadoop-mode-details magpie-spark\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
@@ -283,7 +283,7 @@ define create-templates
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
 		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-filesystem-substitution\
-		magpie-spark\
+		magpie-hadoop-mode-details magpie-spark\
 		magpie-tachyon\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
