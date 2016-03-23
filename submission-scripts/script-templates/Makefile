@@ -162,7 +162,8 @@ define create-templates
 	# All configuration
 	echo "Creating magpie.$(SCHED)"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
-		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution \
+		magpie-hadoop-mode-terasort magpie-hadoop-mode-details\
 		magpie-uda\
 		magpie-pig\
 		magpie-hbase\
@@ -180,7 +181,8 @@ define create-templates
 	# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
-		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution \
+		magpie-hadoop-mode-terasort magpie-hadoop-mode-details\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
@@ -189,7 +191,8 @@ define create-templates
 	# Hadoop with UDA
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
 	cat 	magpie-header magpie-$(SCHED) magpie-magpie-customizations-substitution magpie-general-configuration\
-		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution magpie-hadoop-mode-details\
+		magpie-hadoop-core magpie-hadoop-job magpie-hadoop-job-details magpie-hadoop-filesystem-substitution\
+		magpie-hadoop-mode-terasort magpie-hadoop-mode-details\
 		magpie-uda\
 		magpie-run-job-header-substitution magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/HADOOP_SETUP=no/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
