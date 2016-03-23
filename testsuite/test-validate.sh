@@ -268,7 +268,8 @@ then
 	    echo "Job error in $file"
 	fi
 	
-	test_hadoop_shutdown $file
+	# On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
+	test_hdfs_shutdown $file
 
 	if [ "${verboseoutput}" = "y" ]
 	then
@@ -348,6 +349,44 @@ then
     do
 	num=`grep -e "Summary of timings" $file | wc -l`
 	if [ "${num}" != "2" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hdfs_shutdown $file
+	test_zookeeper_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
+if ls ${outputprefix}*run-scripthbasewritedata* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-scripthbasewritedata*`
+    do
+	num=`grep -e "Summary of timings" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_hdfs_shutdown $file
+	test_zookeeper_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
+if ls ${outputprefix}*run-scripthbasereaddata* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-scripthbasereaddata*`
+    do
+	num=`grep -e "Summary of timings" $file | wc -l`
+	if [ "${num}" != "1" ]; then
 	    echo "Job error in $file"
 	fi
 	

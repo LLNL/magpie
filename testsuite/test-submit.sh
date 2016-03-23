@@ -706,6 +706,70 @@ then
 		done
 	    done
 	done
+
+	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	do
+	    for hadoopversion in 2.6.0
+	    do
+		for zookeeperversion in 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		done
+	    done
+	done
+	
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
+	do
+	    for hadoopversion in 2.7.0
+	    do
+		for zookeeperversion in 3.4.7
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		done
+	    done
+	done
+
+	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	do
+	    for hadoopversion in 2.6.0
+	    do
+		for zookeeperversion in 3.4.6
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		done
+	    done
+	done
+	
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
+	do
+	    for hadoopversion in 2.7.0
+	    do
+		for zookeeperversion in 3.4.7
+		do
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		done
+	    done
+	done
     fi
 fi
 
