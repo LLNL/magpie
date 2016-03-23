@@ -393,7 +393,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #                           smaller node size to decommission into.
 #
 #		            Please set your job time to be quite large
-#		            when performing this upgrade.  If your job
+#		            when performing this update.  If your job
 #		            times out and this process does not
 #		            complete fully, it can leave HDFS in a bad
 #		            state.
