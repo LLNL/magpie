@@ -572,7 +572,7 @@ then
 	fi
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decomissionhdfsnodes" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
     then
 	if [ "${HADOOP_VERSION}X" == "X" ]
 	then
@@ -592,20 +592,20 @@ then
 	    exit 1
 	fi
 
-	if [ "${HADOOP_DECOMISSION_HDFS_NODE_SIZE}X" == "X" ]
+	if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}X" == "X" ]
 	then
-	    echo "HADOOP_DECOMISSION_HDFS_NODE_SIZE must be specified for HADOOP_MODE = ${HADOOP_MODE}"
+	    echo "HADOOP_DECOMMISSION_HDFS_NODE_SIZE must be specified for HADOOP_MODE = ${HADOOP_MODE}"
 	    exit 1
 	fi
 
-	if [ ! "${HADOOP_DECOMISSION_HDFS_NODE_SIZE}" -gt "0" ]
+	if [ ! "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -gt "0" ]
 	then
-	    echo "HADOOP_DECOMISSION_HDFS_NODE_SIZE must be > 0"
+	    echo "HADOOP_DECOMMISSION_HDFS_NODE_SIZE must be > 0"
 	    exit 1
 	fi
 
 	# Few additional checks can only be done later, such as HADOOP_SLAVE_COUNT > replication
-	# and HADOOP_DECOMISSION_HDFS_NODE_SIZE < current HADOOP_SLAVE_COUNT 
+	# and HADOOP_DECOMMISSION_HDFS_NODE_SIZE < current HADOOP_SLAVE_COUNT 
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
