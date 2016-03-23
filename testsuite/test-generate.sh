@@ -45,6 +45,8 @@ lsfqueue=standard
 # Test config
 
 no_local_ssd_tests=n
+no_hdfsoverlustre_tests=n
+no_hdfsovernetworkfs_tests=n
 no_hadoop_2_2_0=n
 no_hadoop_2_3_0=n
 no_hadoop_2_4_0=n
@@ -2499,6 +2501,16 @@ then
     rm -f magpie.${submissiontype}-hadoop*hdfsondisk*
     rm -f magpie.${submissiontype}-hadoop*localstore*
     rm -f magpie.${submissiontype}-*zookeeper-local*
+fi
+
+if [ "${no_hdfsoverlustre_tests}" == "y" ]
+then
+    rm -f magpie.${submissiontype}-*hdfsoverlustre*
+fi
+
+if [ "${no_hdfsovernetworkfs_tests}" == "y" ]
+then
+    rm -f magpie.${submissiontype}-*hdfsovernetworkfs*
 fi
 
 if [ "${no_hadoop_2_2_0}" == "y" ]
