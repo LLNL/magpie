@@ -665,8 +665,8 @@ then
 	    do
 		for zookeeperversion in 3.4.6
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
 		done
 	    done
 	done
@@ -677,8 +677,8 @@ then
 	    do
 		for zookeeperversion in 3.4.7
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
 		done
 	    done
 	done
@@ -689,8 +689,8 @@ then
 	    do
 		for zookeeperversion in 3.4.6
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
 		done
 	    done
 	done
@@ -701,8 +701,8 @@ then
 	    do
 		for zookeeperversion in 3.4.7
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-hbaseperformanceeval
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
 		done
 	    done
 	done
@@ -713,12 +713,12 @@ then
 	    do
 		for zookeeperversion in 3.4.6
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasereaddata
 		done
 	    done
 	done
@@ -729,12 +729,12 @@ then
 	    do
 		for zookeeperversion in 3.4.7
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hdfsoverlustre-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasereaddata
 		done
 	    done
 	done
@@ -745,12 +745,12 @@ then
 	    do
 		for zookeeperversion in 3.4.6
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-scripthbasereaddata
 		done
 	    done
 	done
@@ -761,12 +761,12 @@ then
 	    do
 		for zookeeperversion in 3.4.7
 		do
-		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasewritedata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-run-scripthbasereaddata
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
-		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hdfsovernetworkfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-run-scripthbasereaddata
+		    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-scripthbasewritedata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-more-nodes-run-scripthbasereaddata
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+		    DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2B-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-scripthbasereaddata
 		done
 	    done
 	done
