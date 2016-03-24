@@ -1702,7 +1702,7 @@ do
     done
 done
 
-# Dependency 2 Tests, leave data in HDFS, read/write from different jobs, HDFS over Lustre
+# Dependency 2 Tests, leave data in HDFS, read/write from different jobs, HDFS over NetworkFS
 
 for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 do
