@@ -108,7 +108,13 @@ test_spark_shutdown () {
     fi
 
     num=`grep -e "stopping org.apache.spark.deploy.worker.Worker" $file | wc -l`
-    if [ "${num}" != "8" ]; then
+    if echo ${file} | grep -q "more-nodes"
+    then
+	numcompare=16
+    else
+	numcompare=8
+    fi
+    if [ "${num}" != "$numcompare" ]; then
 	echo "Spark worker shutdown error in $file"
     fi
 }
