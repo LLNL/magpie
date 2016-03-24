@@ -1002,6 +1002,92 @@ do
     sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop9A*
 done
 
+# Dependency 10 test, ensure data exists between runs, decommission data filled blocks
+
+for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+do
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptterasort
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsoverlustre-run-scriptterasort
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptteragen
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptterasort
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsovernetworkfs-run-scriptterasort
+
+    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*
+
+    sed -i \
+	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop10A\/'"${hadoopversion}"'\/"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*hdfsoverlustre*
+
+    sed -i \
+	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop10A\/'"${hadoopversion}"'\/"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*hdfsovernetworkfs*
+    
+    sed -i \
+	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*scriptteragen*
+
+    sed -i \
+	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*scriptterasort*
+
+    sed -i \
+	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=8/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*decommissionhdfsnodes*
+
+    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*
+done
+
+for hadoopversion in 2.7.0 2.7.1 2.7.2
+do
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptterasort
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsoverlustre-run-scriptterasort
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptteragen
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptterasort
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsovernetworkfs-run-scriptterasort
+
+    sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*
+
+    sed -i \
+	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop10A\/'"${hadoopversion}"'\/"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*hdfsoverlustre*
+
+    sed -i \
+	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${lustredirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop10A\/'"${hadoopversion}"'\/"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*hdfsovernetworkfs*
+    
+    sed -i \
+	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH='"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*scriptteragen*
+
+    sed -i \
+	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH='"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*scriptterasort*
+
+    sed -i \
+	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=8/' \
+	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*decommissionhdfsnodes*
+
+    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*
+done
+
 # Pig Tests
 
 echo "Making Pig tests"
@@ -2476,6 +2562,7 @@ then
 
     sed -i -e "s/slurm-%j.out/slurm-run-scriptteragen-%j.out/" magpie.${submissiontype}-hadoop*run-scriptteragen
     sed -i -e "s/slurm-%j.out/slurm-run-scriptterasort-%j.out/" magpie.${submissiontype}-hadoop*run-scriptterasort
+    sed -i -e "s/slurm-run-scriptteragen-%j.out/slurm-run-scriptteragen-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptteragen
     sed -i -e "s/slurm-run-scriptterasort-%j.out/slurm-run-scriptterasort-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptterasort
 
     sed -i -e "s/slurm-%j.out/slurm-run-hadoopupgradehdfs-%j.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs
@@ -2525,6 +2612,7 @@ then
 
     sed -i -e "s/moab-%j.out/moab-run-scriptteragen-%j.out/" magpie.${submissiontype}-hadoop*run-scriptteragen
     sed -i -e "s/moab-%j.out/moab-run-scriptterasort-%j.out/" magpie.${submissiontype}-hadoop*run-scriptterasort
+    sed -i -e "s/moab-run-scriptteragen-%j.out/moab-run-scriptteragen-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptteragen
     sed -i -e "s/moab-run-scriptterasort-%j.out/moab-run-scriptterasort-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptterasort
 
     sed -i -e "s/moab-%j.out/moab-run-hadoopupgradehdfs-%j.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs
@@ -2575,6 +2663,7 @@ then
 
     sed -i -e "s/lsf-%J.out/lsf-run-scriptteragen-%J.out/" magpie.${submissiontype}-hadoop*run-scriptteragen
     sed -i -e "s/lsf-%J.out/lsf-run-scriptterasort-%J.out/" magpie.${submissiontype}-hadoop*run-scriptterasort
+    sed -i -e "s/lsf-run-scriptteragen-%J.out/lsf-run-scriptteragen-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptteragen
     sed -i -e "s/lsf-run-scriptterasort-%J.out/lsf-run-scriptterasort-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptterasort
 
     sed -i -e "s/lsf-%J.out/lsf-run-hadoopupgradehdfs-%J.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs

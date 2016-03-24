@@ -381,6 +381,31 @@ then
 	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop9A-hdfsovernetworkfs-run-scriptterasort
 	done
 
+	for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptterasort
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsoverlustre-run-scriptterasort
+
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptteragen
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptterasort
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsovernetworkfs-run-scriptterasort
+	done
+
+	for hadoopversion in 2.7.0 2.7.1 2.7.2
+	do
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsoverlustre-run-scriptterasort
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsoverlustre
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsoverlustre-run-scriptterasort
+
+	    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptteragen
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-hdfsovernetworkfs-run-scriptterasort
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
+	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsovernetworkfs-run-scriptterasort
+	done
     fi
 fi
     
