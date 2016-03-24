@@ -296,7 +296,7 @@ Magpie_wait_script_signal_on_timeout () {
     then
 	echo "Killing script, did not exit within time limit"
 	kill -s ${signalnumber} ${scriptpid}
-	return $?
+	return 1
     fi
 
     return 0
