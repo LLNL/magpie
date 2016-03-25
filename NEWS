@@ -7,6 +7,8 @@ Support ability to kill scripts and other jobs early and begin
 Support new 'decommissionhdfsnodes' option to HADOOP_MODE.
 Remove convenience
   job-scripts/hadoop-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decommission-script.sh
+  and
+  hbase-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decommission-script.sh
   script which is now obsoleted by 'decommissionhdfsnodes' option.
 Support Hadoop 2.6.2, 2.6.3, 2.6.4, 2.7.2.
 Update default Hadoop to 2.7.2.
