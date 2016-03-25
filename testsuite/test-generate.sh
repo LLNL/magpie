@@ -986,12 +986,12 @@ do
     
     sed -i \
 	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH='"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
 	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop9A*scriptteragen*
 
     sed -i \
 	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH='"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
 	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop9A*scriptterasort*
 
     sed -i \
@@ -1072,12 +1072,12 @@ do
     
     sed -i \
 	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH='"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
 	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*scriptteragen*
 
     sed -i \
 	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH='"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
+	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
 	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*scriptterasort*
 
     sed -i \
