@@ -1557,7 +1557,9 @@ export KAFKA_MODE="performance"
 
 # Set the Zookeeper connection timeout for Kafka
 #
-# export KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT=6000
+# Defaults to 30000
+#
+# export KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT=30000
 
 ############################################################################
 # Kafka Performance Configuration

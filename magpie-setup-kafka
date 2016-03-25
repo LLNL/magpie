@@ -75,7 +75,7 @@ done
 
 if [ "${KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT}X" == "X" ]
 then
-    kafkazookeepertimeout=6000
+    kafkazookeepertimeout=30000
 else
     kafkazookeepertimeout=${KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT}
 fi
