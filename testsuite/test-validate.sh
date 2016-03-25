@@ -116,7 +116,7 @@ test_spark_shutdown () {
 test_kafka_shutdown () {
     local file=$1
 
-    numcompare=$(grep 'Kafka Servers are up.' $file | awk -F "/" '{ print $1 }')
+    numcompare=$(grep 'Kafka Servers are up.' $file | tail -1 | awk -F "/" '{ print $1 }')
 
     num=`grep -e "Stopping Kafka" $file | wc -l`
     if [ "${num}" != ${numcompare} ]; then
