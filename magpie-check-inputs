@@ -604,6 +604,22 @@ then
 	    exit 1
 	fi
 
+	# Few things can't be running at the same time
+	if [ "${HBASE_SETUP}" == "yes" ]; then
+	    echo "HBASE_SETUP must be set to no for HADOOP_MODE = ${HADOOP_MODE}"
+	    exit 1
+	fi
+
+	if [ "${PHOENIX_SETUP}" == "yes" ]; then
+	    echo "PHOENIX_SETUP must be set to no for HADOOP_MODE = ${HADOOP_MODE}"
+	    exit 1
+	fi
+
+	if [ "${SPARK_SETUP}" == "yes" ]; then
+	    echo "SPARK_SETUP must be set to no for HADOOP_MODE = ${HADOOP_MODE}"
+	    exit 1
+	fi
+
 	# Few additional checks can only be done later, such as HADOOP_SLAVE_COUNT > replication
 	# and HADOOP_DECOMMISSION_HDFS_NODE_SIZE < current HADOOP_SLAVE_COUNT 
     fi
