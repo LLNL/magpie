@@ -252,8 +252,8 @@ then
     then
 	SubmitZookeeperStandardTests
     fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitZookeeperDependencyTests
-    fi
+    # if [ "${dependencytests}" == "y" ]
+    # then
+    # 	SubmitZookeeperDependencyTests
+    # fi
 fi
