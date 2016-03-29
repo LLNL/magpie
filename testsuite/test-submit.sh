@@ -140,60 +140,120 @@ DependentJobSubmit () {
 
 if [ "${defaulttests}" == "y" ]
 then
-    SubmitDefaultStandardTests
-    SubmitDefaultDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitDefaultStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitDefaultDependencyTests
+    fi
 fi
 
 if [ "${hadooptests}" == "y" ]
 then
-    SubmitHadoopStandardTests
-    SubmitHadoopDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitHadoopStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitHadoopDependencyTests
+    fi
 fi
 
 if [ "${hbasetests}" == "y" ]
 then
-    SubmitHbaseStandardTests
-    SubmitHbaseDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitHbaseStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitHbaseDependencyTests
+    fi
 fi
 
 if [ "${kafkatests}" == "y" ]
 then
-    SubmitKafkaStandardTests
-    SubmitKafkaDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitKafkaStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitKafkaDependencyTests
+    fi
 fi
 
 if [ "${mahouttests}" == "y" ]
 then
-    SubmitMahoutStandardTests
-    SubmitMahoutDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitMahoutStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitMahoutDependencyTests
+    fi
 fi
 
 if [ "${phoenixtests}" == "y" ]
 then
-    SubmitPhoenixStandardTests
-    SubmitPhoenixDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitPhoenixStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitPhoenixDependencyTests
+    fi
 fi
 
 if [ "${pigtests}" == "y" ]
 then
-    SubmitPigStandardTests
-    SubmitPigDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitPigStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitPigDependencyTests
+    fi
 fi
 
 if [ "${sparktests}" == "y" ]
 then
-    SubmitSparkStandardTests
-    SubmitSparkDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitSparkStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitSparkDependencyTests
+    fi
 fi
 
 if [ "${stormtests}" == "y" ]
 then
-    SubmitStormStandardTests
-    SubmitStormDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitStormStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitStormDependencyTests
+    fi
 fi
 
 if [ "${zookeepertests}" == "y" ]
 then
-    SubmitZookeeperStandardTests
-    SubmitZookeeperDependencyTests
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitZookeeperStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitZookeeperDependencyTests
+    fi
 fi
