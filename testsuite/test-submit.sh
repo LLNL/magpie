@@ -138,13 +138,52 @@ DependentJobSubmit () {
     fi
 }
 
-SubmitDefaultTests
-SubmitHadoopTests
-SubmitHbaseTests
-SubmitKafkaTests
-SubmitMahoutTests
-SubmitPhoenixTests
-SubmitPigTests
-SubmitSparkTests
-SubmitStormTests
-SubmitZookeeperTests
+if [ "${defaulttests}" == "y" ]
+then
+    SubmitDefaultTests
+fi
+
+if [ "${hadooptests}" == "y" ]
+then
+    SubmitHadoopTests
+fi
+
+if [ "${hbasetests}" == "y" ]
+then
+    SubmitHbaseTests
+fi
+
+if [ "${kafkatests}" == "y" ]
+then
+    SubmitKafkaTests
+fi
+
+if [ "${mahouttests}" == "y" ]
+then
+    SubmitMahoutTests
+fi
+
+if [ "${phoenixtests}" == "y" ]
+then
+    SubmitPhoenixTests
+fi
+
+if [ "${pigtests}" == "y" ]
+then
+    SubmitPigTests
+fi
+
+if [ "${sparktests}" == "y" ]
+then
+    SubmitSparkTests
+fi
+
+if [ "${stormtests}" == "y" ]
+then
+    SubmitStormTests
+fi
+
+if [ "${zookeepertests}" == "y" ]
+then
+    SubmitZookeeperTests
+fi
