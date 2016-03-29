@@ -162,27 +162,15 @@ then
     fi
 fi
 
-if [ "${hbasetests}" == "y" ]
+if [ "${pigtests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
     then
-	SubmitHbaseStandardTests
+	SubmitPigStandardTests
     fi
     if [ "${dependencytests}" == "y" ]
     then
-	SubmitHbaseDependencyTests
-    fi
-fi
-
-if [ "${kafkatests}" == "y" ]
-then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitKafkaStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitKafkaDependencyTests
+	SubmitPigDependencyTests
     fi
 fi
 
@@ -198,6 +186,18 @@ then
     fi
 fi
 
+if [ "${hbasetests}" == "y" ]
+then
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitHbaseStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitHbaseDependencyTests
+    fi
+fi
+
 if [ "${phoenixtests}" == "y" ]
 then
     if [ "${standardtests}" == "y" ]
@@ -207,18 +207,6 @@ then
     if [ "${dependencytests}" == "y" ]
     then
 	SubmitPhoenixDependencyTests
-    fi
-fi
-
-if [ "${pigtests}" == "y" ]
-then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitPigStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitPigDependencyTests
     fi
 fi
 
@@ -243,6 +231,18 @@ then
     if [ "${dependencytests}" == "y" ]
     then
 	SubmitStormDependencyTests
+    fi
+fi
+
+if [ "${kafkatests}" == "y" ]
+then
+    if [ "${standardtests}" == "y" ]
+    then
+	SubmitKafkaStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]
+    then
+	SubmitKafkaDependencyTests
     fi
 fi
 
