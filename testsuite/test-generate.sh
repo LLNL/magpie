@@ -60,10 +60,13 @@ lsfqueue=standard
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
-
+# largeperformanceruntests - run performance tests
+# nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
+largeperformanceruntests=n
+nolocaldirtests=y
 
 # Version specific tests, set to y to test, n to not
 hadoop_2_2_0=y
@@ -460,6 +463,16 @@ fi
 if [ "${hdfsovernetworkfs_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-*hdfsovernetworkfs*
+fi
+
+if [ "${largeperformanceruntests}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*largeperformancerun*
+fi
+
+if [ "${nolocaldirtests}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*no-local-dir*
 fi
 
 if [ "${hadoop_2_2_0}" == "n" ]

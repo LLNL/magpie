@@ -30,8 +30,6 @@ A regression testsuite for Magpie is available in the subdirectory 'testsuite'. 
 
        - standard tests can run in parallel on your cluster
        - dependency tests run serially b/c they depend on the prior job running
-       - nolocaldir tests test the MAGPIE_NO_LOCAL_DIR option.
-       - largeperformanceruntests tests very large runs
 
    - Run test-submit.sh to submit jobs for testing.  Test submissions are logged in magpie-test.log.
 
