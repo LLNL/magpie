@@ -123,32 +123,32 @@ SubmitHadoopDependencyTests() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.3.0-DependencyHadoop4A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.2.0-DependencyHadoop4A-hdfsoverlustre-hdfs-newer-version-expected-failure
 
-    BasicJobSubmit magpie.${submissiontype}-hadoop-2.3.0-DependencyHadoop4B-hdfsovernetworkfs-run-hadoopterasort
-    DependentJobSubmit magpie.${submissiontype}-hadoop-2.2.0-DependencyHadoop4B-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+    BasicJobSubmit magpie.${submissiontype}-hadoop-2.3.0-DependencyHadoop4A-hdfsovernetworkfs-run-hadoopterasort
+    DependentJobSubmit magpie.${submissiontype}-hadoop-2.2.0-DependencyHadoop4A-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.3.0-DependencyHadoop5A-hdfsoverlustre-hdfs-newer-version-expected-failure
 
-    BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5B-hdfsovernetworkfs-run-hadoopterasort
-    DependentJobSubmit magpie.${submissiontype}-hadoop-2.3.0-DependencyHadoop5B-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+    BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A-hdfsovernetworkfs-run-hadoopterasort
+    DependentJobSubmit magpie.${submissiontype}-hadoop-2.3.0-DependencyHadoop5A-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop6A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop6A-hdfsoverlustre-hdfs-newer-version-expected-failure
 
-    BasicJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop6B-hdfsovernetworkfs-run-hadoopterasort
-    DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop6B-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+    BasicJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop6A-hdfsovernetworkfs-run-hadoopterasort
+    DependentJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop6A-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop7A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop7A-hdfsoverlustre-hdfs-newer-version-expected-failure
 
-    BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop7B-hdfsovernetworkfs-run-hadoopterasort
-    DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop7B-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+    BasicJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop7A-hdfsovernetworkfs-run-hadoopterasort
+    DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop7A-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop8A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop8A-hdfsoverlustre-hdfs-newer-version-expected-failure
 
-    BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop8B-hdfsovernetworkfs-run-hadoopterasort
-    DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop8B-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+    BasicJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop8A-hdfsovernetworkfs-run-hadoopterasort
+    DependentJobSubmit magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop8A-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
     do
