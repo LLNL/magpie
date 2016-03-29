@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitSparkTests() {
+SubmitSparkStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
@@ -60,7 +60,9 @@ SubmitSparkTests() {
 	    done
 	done
     fi
+}
 
+SubmitSparkDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2

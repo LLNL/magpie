@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitMahoutTests() {
+SubmitMahoutStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for mahoutversion in 0.11.0 0.11.1
@@ -13,7 +13,9 @@ SubmitMahoutTests() {
 	    done
 	done
     fi
+}
 
+SubmitMahoutDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for mahoutversion in 0.11.0 0.11.1

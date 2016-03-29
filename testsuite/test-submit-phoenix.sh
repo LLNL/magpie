@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitPhoenixTests() {
+SubmitPhoenixStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
@@ -35,7 +35,9 @@ SubmitPhoenixTests() {
 	    done
 	done
     fi
+}
 
+SubmitPhoenixDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1

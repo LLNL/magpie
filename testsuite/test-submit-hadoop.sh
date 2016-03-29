@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitHadoopTests() {
+SubmitHadoopStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
@@ -50,6 +50,8 @@ SubmitHadoopTests() {
 	done
     fi
 
+
+SubmitHadoopDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
@@ -202,4 +204,4 @@ SubmitHadoopTests() {
 	    DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A-hdfsovernetworkfs-run-scriptterasort
 	done
     fi
-}
+}}

@@ -12,7 +12,9 @@ SubmitZookeeperTests() {
 	    BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok-no-local-dir
 	done
     fi
+}
 
+SubmitZookeeperDependencyTests() {
     # No Zookeeper Dependency Tests
     if [ "${dependencytests}" == "y" ]
     then

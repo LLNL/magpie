@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitPigTests() {
+SubmitPigStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for pigversion in 0.12.0 0.12.1
@@ -40,6 +40,8 @@ SubmitPigTests() {
 	done
     fi
 
+
+SubmitPigDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for pigversion in 0.12.0 0.12.1
@@ -108,4 +110,4 @@ SubmitPigTests() {
 	    done
 	done
     fi
-}
+}}

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitKafkaTests() {
+SubmitKafkaStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for kafkaversion in 2.11-0.9.0.0
@@ -19,7 +19,9 @@ SubmitKafkaTests() {
 	    done
 	done
     fi
+}
 
+SubmitKafkaDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for kafkaversion in 2.11-0.9.0.0

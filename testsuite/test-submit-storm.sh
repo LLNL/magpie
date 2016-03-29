@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitStormTests() {
+SubmitStormStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for stormversion in 0.9.3 0.9.4
@@ -35,7 +35,9 @@ SubmitStormTests() {
 	    done
 	done
     fi
+}
 
+SubmitStormDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for stormversion in 0.9.3 0.9.4

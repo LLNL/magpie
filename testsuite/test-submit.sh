@@ -140,50 +140,60 @@ DependentJobSubmit () {
 
 if [ "${defaulttests}" == "y" ]
 then
-    SubmitDefaultTests
+    SubmitDefaultStandardTests
+    SubmitDefaultDependencyTests
 fi
 
 if [ "${hadooptests}" == "y" ]
 then
-    SubmitHadoopTests
+    SubmitHadoopStandardTests
+    SubmitHadoopDependencyTests
 fi
 
 if [ "${hbasetests}" == "y" ]
 then
-    SubmitHbaseTests
+    SubmitHbaseStandardTests
+    SubmitHbaseDependencyTests
 fi
 
 if [ "${kafkatests}" == "y" ]
 then
-    SubmitKafkaTests
+    SubmitKafkaStandardTests
+    SubmitKafkaDependencyTests
 fi
 
 if [ "${mahouttests}" == "y" ]
 then
-    SubmitMahoutTests
+    SubmitMahoutStandardTests
+    SubmitMahoutDependencyTests
 fi
 
 if [ "${phoenixtests}" == "y" ]
 then
-    SubmitPhoenixTests
+    SubmitPhoenixStandardTests
+    SubmitPhoenixDependencyTests
 fi
 
 if [ "${pigtests}" == "y" ]
 then
-    SubmitPigTests
+    SubmitPigStandardTests
+    SubmitPigDependencyTests
 fi
 
 if [ "${sparktests}" == "y" ]
 then
-    SubmitSparkTests
+    SubmitSparkStandardTests
+    SubmitSparkDependencyTests
 fi
 
 if [ "${stormtests}" == "y" ]
 then
-    SubmitStormTests
+    SubmitStormStandardTests
+    SubmitStormDependencyTests
 fi
 
 if [ "${zookeepertests}" == "y" ]
 then
-    SubmitZookeeperTests
+    SubmitZookeeperStandardTests
+    SubmitZookeeperDependencyTests
 fi

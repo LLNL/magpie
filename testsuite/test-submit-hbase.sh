@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitHbaseTests() {
+SubmitHbaseStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
@@ -93,7 +93,9 @@ SubmitHbaseTests() {
 	    done
 	done
     fi
-    
+}
+
+SubmitHbaseDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
@@ -190,4 +192,4 @@ SubmitHbaseTests() {
 	    done
 	done
     fi
-}
+}}

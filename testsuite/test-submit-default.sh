@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SubmitDefaultTests() {
+SubmitDefaultStandardTests() {
     if [ "${standardtests}" == "y" ]
     then
         BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort
@@ -23,7 +23,9 @@ SubmitDefaultTests() {
         BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-no-local-dir
         BasicJobSubmit magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
     fi
+}
 
+SubmitDefaultDependencyTests() {
     if [ "${dependencytests}" == "y" ]
     then
 	BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyGlobalOrder1A-hadoop-2.2.0-run-hadoopterasort
