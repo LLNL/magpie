@@ -1449,7 +1449,7 @@ then
     echo "* Kafka Information"
     echo "*"
     echo "* To access kafka directly, you'll want to:"
-    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
+    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${KAFKA_MASTER_NODE}"
     if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv KAFKA_CONF_DIR \"${KAFKA_CONF_DIR}\""
