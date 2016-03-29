@@ -68,6 +68,13 @@ GeneratePigStandardTests() {
 	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
 	done
     done
+}
+
+GeneratePigDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Pig Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre
 
@@ -190,13 +197,6 @@ GeneratePigStandardTests() {
 		magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-no-copy-run-pigscript
 	done
     done
-}
-
-GeneratePigDependencyTests() {
-
-    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-
-    echo "Making Pig Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Networkfs
 
