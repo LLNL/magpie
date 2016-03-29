@@ -1162,7 +1162,7 @@ then
     if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-        echo "*   setenv PHOENIX_HOME=\"${PHOENIX_HOME}\""
+        echo "*   setenv PHOENIX_HOME \"${PHOENIX_HOME}\""
     else
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
         echo "*   export PHOENIX_HOME=\"${PHOENIX_HOME}\""
@@ -1184,7 +1184,7 @@ then
     then
 	if echo $MAGPIE_SHELL | grep -q csh
 	then
-            echo "setenv PHOENIX_HOME=\"${PHOENIX_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            echo "setenv PHOENIX_HOME \"${PHOENIX_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	else
             echo "export PHOENIX_HOME=\"${PHOENIX_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	fi
@@ -1468,7 +1468,7 @@ then
     if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-        echo "*   setenv KAFKA_HOME=\"${KAFKA_HOME}\""
+        echo "*   setenv KAFKA_HOME \"${KAFKA_HOME}\""
     else
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
         echo "*   export KAFKA_HOME=\"${KAFKA_HOME}\""
@@ -1490,7 +1490,7 @@ then
     then
 	if echo $MAGPIE_SHELL | grep -q csh
 	then
-            echo "setenv KAFKA_HOME=\"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            echo "setenv KAFKA_HOME \"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	else
             echo "export KAFKA_HOME=\"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	fi
@@ -1624,7 +1624,7 @@ then
     if echo $MAGPIE_SHELL | grep -q csh
     then
 	echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-        echo "*   setenv ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\""
+        echo "*   setenv ZEPPELIN_HOME \"${ZEPPELIN_HOME}\""
     else
 	echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
         echo "*   export ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\""
@@ -1646,7 +1646,7 @@ then
     then
 	if echo $MAGPIE_SHELL | grep -q csh
 	then
-            echo "setenv ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            echo "setenv ZEPPELIN_HOME \"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	else
             echo "export ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	fi
