@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateSparkTests() {
+GenerateSparkStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Spark tests"
+    echo "Making Spark Standard Tests"
 
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
     do
@@ -121,6 +121,13 @@ GenerateSparkTests() {
 	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}* ./magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}*
 	done
     done
+}
+
+GenerateSparkDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Spark Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre/Networkfs
 

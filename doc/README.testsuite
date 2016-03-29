@@ -8,7 +8,7 @@ A regression testsuite for Magpie is available in the subdirectory 'testsuite'. 
 
      - Job submission details such as your batch queue, etc.
 
-     - What tests shall not be run
+     - What tests to generate/not generate
   
      - Paths to your projects
 

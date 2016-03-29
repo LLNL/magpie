@@ -1,15 +1,13 @@
 #!/bin/sh
 
-GenerateHadoopTests() {
+GenerateHadoopStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Default tests"
+    echo "Making Hadoop Standard Tests"
 
 # Hadoop Tests
 # Note, b/c of MAPREDUCE-5528, not testing rawnetworkfs w/ terasort
-
-    echo "Making Hadoop tests"
 
     for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
     do
@@ -94,6 +92,13 @@ GenerateHadoopTests() {
 
 	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}*
     done
+}
+
+GenerateHadoopDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Hadoop Dependency Tests"
 
 # Dependency Tests for Hadoop
 
@@ -673,5 +678,4 @@ GenerateHadoopTests() {
 	
 	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop10A*
     done
-
 }

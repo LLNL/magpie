@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateDefaultTests() {
+GenerateDefaultStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Default tests"
+    echo "Making Default Standard Tests"
 
 # Default Tests
 
@@ -45,6 +45,13 @@ GenerateDefaultTests() {
     sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-no-local-dir
     sed -i -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-no-local-dir
     sed -i -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-no-local-dir
+}
+
+GenerateDefaultDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Default Dependency Tests"
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.2.0
 
@@ -226,5 +233,4 @@ GenerateDefaultTests() {
 	-e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
 	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
 	./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6-run-sparkwordcount-copy-in
-
 }

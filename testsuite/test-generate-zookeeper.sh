@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateZookeeperTests() {
+GenerateZookeeperStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
     
-    echo "Making Zookeeper tests"
+    echo "Making Zookeeper Standard Tests"
 
     for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7
     do

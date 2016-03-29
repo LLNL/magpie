@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateKafkaTests() {
+GenerateKafkaStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Kafka tests"
+    echo "Making Kafka Standard Tests"
 
     for kafkaversion in 2.11-0.9.0.0
     do
@@ -40,6 +40,13 @@ GenerateKafkaTests() {
 	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*
 	done
     done
+}
+
+GenerateKafkaDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Kafka Dependency Tests"
 
 # Dependency 1 Tests, run after another
 

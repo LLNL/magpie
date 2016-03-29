@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateStormTests() {
+GenerateStormStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Storm tests"
+    echo "Making Storm Standard Tests"
 
     for stormversion in 0.9.3 0.9.4
     do
@@ -69,6 +69,13 @@ GenerateStormTests() {
 	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}*
 	done
     done
+}
+
+GenerateStormDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Storm Dependency Tests"
 
 # Dependency 1 Tests, run after another
 

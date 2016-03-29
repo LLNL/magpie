@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GeneratePigTests() {
+GeneratePigStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Pig tests"
+    echo "Making Pig Standard Tests"
 
     for pigversion in 0.12.0 0.12.1
     do
@@ -190,6 +190,13 @@ GeneratePigTests() {
 		magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-no-copy-run-pigscript
 	done
     done
+}
+
+GeneratePigDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Pig Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Networkfs
 
@@ -312,5 +319,4 @@ GeneratePigTests() {
 		magpie.${submissiontype}-hadoop-and-pig-DependencyPig1B-hadoop-${hadoopversion}-pig-${pigversion}-no-copy-run-pigscript
 	done
     done
-
 }

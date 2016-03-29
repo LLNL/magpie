@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateHbaseTests() {
+GenerateHbaseStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Hbase tests"
+    echo "Making Hbase Standard Tests"
 
     for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
     do
@@ -139,6 +139,13 @@ GenerateHbaseTests() {
 	    done
 	done
     done
+}
+
+GenerateHbaseDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Hbase Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre/NetworkFS
 

@@ -55,73 +55,81 @@ lsfqueue=standard
 
 # Test config
 
-no_local_ssd_tests=n
-no_hdfsoverlustre_tests=n
-no_hdfsovernetworkfs_tests=n
-no_hadoop_2_2_0=n
-no_hadoop_2_3_0=n
-no_hadoop_2_4_0=n
-no_hadoop_2_4_1=n
-no_hadoop_2_5_0=n
-no_hadoop_2_5_1=n
-no_hadoop_2_5_2=n
-no_hadoop_2_6_0=n
-no_hadoop_2_6_1=n
-no_hadoop_2_6_2=n
-no_hadoop_2_6_3=n
-no_hadoop_2_6_4=n
-no_hadoop_2_7_0=n
-no_hadoop_2_7_1=n
-no_hadoop_2_7_2=n
-no_pig_0_12_0=n
-no_pig_0_12_1=n
-no_pig_0_13_0=n
-no_pig_0_14_0=n
-no_pig_0_15_0=n
-no_mahout_0_11_0=n
-no_mahout_0_11_1=n
-no_hbase_0_98_3_hadoop2=n
-no_hbase_0_98_9_hadoop2=n
-no_hbase_0_99_0=n
-no_hbase_0_99_1=n
-no_hbase_0_99_2=n
-no_hbase_1_0_0=n
-no_hbase_1_0_0_1=n
-no_hbase_1_0_1=n
-no_hbase_1_0_2=n
-no_hbase_1_1_0=n
-no_hbase_1_1_0_1=n
-no_hbase_1_1_1=n
-no_hbase_1_1_2=n
-no_hbase_1_1_3=n
-no_phoenix_4_5_1_HBase_1_1=n
-no_phoenix_4_5_2_HBase_1_1=n
-no_phoenix_4_6_0_HBase_1_1=n
-no_spark_0_9_1_bin_hadoop2=n
-no_spark_0_9_2_bin_hadoop2=n
-no_spark_1_2_0_bin_hadoop2_4=n
-no_spark_1_2_1_bin_hadoop2_4=n
-no_spark_1_2_2_bin_hadoop2_4=n
-no_spark_1_3_0_bin_hadoop2_4=n
-no_spark_1_3_1_bin_hadoop2_4=n
-no_spark_1_4_0_bin_hadoop2_6=n
-no_spark_1_4_1_bin_hadoop2_6=n
-no_spark_1_5_0_bin_hadoop2_6=n
-no_spark_1_5_1_bin_hadoop2_6=n
-no_spark_1_5_2_bin_hadoop2_6=n
-no_spark_1_6_0_bin_hadoop2_6=n
-no_storm_0_9_3=n
-no_storm_0_9_4=n
-no_storm_0_9_5=n
-no_kafka_2_11_0_9_0_0=n
-no_zookeeper_3_4_0=n
-no_zookeeper_3_4_1=n
-no_zookeeper_3_4_2=n
-no_zookeeper_3_4_3=n
-no_zookeeper_3_4_4=n
-no_zookeeper_3_4_5=n
-no_zookeeper_3_4_6=n
-no_zookeeper_3_4_7=n
+# Higher level configuration, add or eliminate certain types of tests
+#
+# local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
+# hdfsoverlustre_tests - anything that uses hdfs over lustre
+# hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
+
+local_drive_tests=y
+hdfsoverlustre_tests=y
+hdfsovernetworkfs_tests=y
+
+# Version specific tests, set to y to test, n to not
+hadoop_2_2_0=y
+hadoop_2_3_0=y
+hadoop_2_4_0=y
+hadoop_2_4_1=y
+hadoop_2_5_0=y
+hadoop_2_5_1=y
+hadoop_2_5_2=y
+hadoop_2_6_0=y
+hadoop_2_6_1=y
+hadoop_2_6_2=y
+hadoop_2_6_3=y
+hadoop_2_6_4=y
+hadoop_2_7_0=y
+hadoop_2_7_1=y
+hadoop_2_7_2=y
+pig_0_12_0=y
+pig_0_12_1=y
+pig_0_13_0=y
+pig_0_14_0=y
+pig_0_15_0=y
+mahout_0_11_0=y
+mahout_0_11_1=y
+hbase_0_98_3_hadoop2=y
+hbase_0_98_9_hadoop2=y
+hbase_0_99_0=y
+hbase_0_99_1=y
+hbase_0_99_2=y
+hbase_1_0_0=y
+hbase_1_0_0_1=y
+hbase_1_0_1=y
+hbase_1_0_2=y
+hbase_1_1_0=y
+hbase_1_1_0_1=y
+hbase_1_1_1=y
+hbase_1_1_2=y
+hbase_1_1_3=y
+phoenix_4_5_1_HBase_1_1=y
+phoenix_4_5_2_HBase_1_1=y
+phoenix_4_6_0_HBase_1_1=y
+spark_0_9_1_bin_hadoop2=y
+spark_0_9_2_bin_hadoop2=y
+spark_1_2_0_bin_hadoop2_4=y
+spark_1_2_1_bin_hadoop2_4=y
+spark_1_2_2_bin_hadoop2_4=y
+spark_1_3_0_bin_hadoop2_4=y
+spark_1_3_1_bin_hadoop2_4=y
+spark_1_4_0_bin_hadoop2_6=y
+spark_1_4_1_bin_hadoop2_6=y
+spark_1_5_0_bin_hadoop2_6=y
+spark_1_5_1_bin_hadoop2_6=y
+spark_1_5_2_bin_hadoop2_6=y
+spark_1_6_0_bin_hadoop2_6=y
+storm_0_9_3=y
+storm_0_9_4=y
+storm_0_9_5=y
+kafka_2_11_0_9_0_0=y
+zookeeper_3_4_0=y
+zookeeper_3_4_1=y
+zookeeper_3_4_2=y
+zookeeper_3_4_3=y
+zookeeper_3_4_4=y
+zookeeper_3_4_5=y
+zookeeper_3_4_6=y
+zookeeper_3_4_7=y
 
 # Configure Makefile 
 
@@ -208,25 +216,26 @@ make &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-GenerateDefaultTests
+GenerateDefaultStandardTests
+GenerateHadoopStandardTests
+GeneratePigStandardTests
+GenerateMahoutStandardTests
+GenerateHbaseStandardTests
+GeneratePhoenixStandardTests
+GenerateSparkStandardTests
+GenerateStormStandardTests
+GenerateKafkaStandardTests
+GenerateZookeeperStandardTests
 
-GenerateHadoopTests
-
-GeneratePigTests
-
-GenerateMahoutTests
-
-GenerateHbaseTests
-
-GeneratePhoenixTests
-
-GenerateSparkTests
-
-GenerateStormTests
-
-GenerateKafkaTests
-
-GenerateZookeeperTests
+GenerateDefaultDependencyTests
+GenerateHadoopDependencyTests
+GeneratePigDependencyTests
+GenerateMahoutDependencyTests
+GenerateHbaseDependencyTests
+GeneratePhoenixDependencyTests
+GenerateSparkDependencyTests
+GenerateStormDependencyTests
+GenerateKafkaDependencyTests
 
 # Seds for all tests
 
@@ -432,351 +441,355 @@ cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
 sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
 
-if [ "${no_local_ssd_tests}" == "y" ]
+# Remove any tests we don't want
+
+echo "Removing tests we do not want"
+
+if [ "${local_drive_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-hadoop*hdfsondisk*
     rm -f magpie.${submissiontype}-hadoop*localstore*
     rm -f magpie.${submissiontype}-*zookeeper-local*
 fi
 
-if [ "${no_hdfsoverlustre_tests}" == "y" ]
+if [ "${hdfsoverlustre_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-*hdfsoverlustre*
 fi
 
-if [ "${no_hdfsovernetworkfs_tests}" == "y" ]
+if [ "${hdfsovernetworkfs_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-*hdfsovernetworkfs*
 fi
 
-if [ "${no_hadoop_2_2_0}" == "y" ]
+if [ "${hadoop_2_2_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.2.0*
 fi
 
-if [ "${no_hadoop_2_3_0}" == "y" ]
+if [ "${hadoop_2_3_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.3.0*
 fi
 
-if [ "${no_hadoop_2_4_0}" == "y" ]
+if [ "${hadoop_2_4_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.4.0*
 fi
 
-if [ "${no_hadoop_2_4_1}" == "y" ]
+if [ "${hadoop_2_4_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.4.1*
 fi
-if [ "${no_hadoop_2_5_0}" == "y" ]
+if [ "${hadoop_2_5_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.5.0*
 fi
 
-if [ "${no_hadoop_2_5_1}" == "y" ]
+if [ "${hadoop_2_5_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.5.1*
 fi
 
-if [ "${no_hadoop_2_5_2}" == "y" ]
+if [ "${hadoop_2_5_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.5.2*
 fi
 
-if [ "${no_hadoop_2_6_0}" == "y" ]
+if [ "${hadoop_2_6_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.6.0*
 fi
 
-if [ "${no_hadoop_2_6_1}" == "y" ]
+if [ "${hadoop_2_6_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.6.1*
 fi
 
-if [ "${no_hadoop_2_6_2}" == "y" ]
+if [ "${hadoop_2_6_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.6.2*
 fi
 
-if [ "${no_hadoop_2_6_3}" == "y" ]
+if [ "${hadoop_2_6_3}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.6.3*
 fi
 
-if [ "${no_hadoop_2_6_4}" == "y" ]
+if [ "${hadoop_2_6_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.6.4*
 fi
 
-if [ "${no_hadoop_2_7_0}" == "y" ]
+if [ "${hadoop_2_7_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.7.0*
 fi
 
-if [ "${no_hadoop_2_7_1}" == "y" ]
+if [ "${hadoop_2_7_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.7.1*
 fi
 
-if [ "${no_hadoop_2_7_2}" == "y" ]
+if [ "${hadoop_2_7_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hadoop-2.7.2*
 fi
 
-if [ "${no_pig_0_12_0}" == "y" ]
+if [ "${pig_0_12_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*pig-0.12.0*
 fi
 
-if [ "${no_pig_0_12_1}" == "y" ]
+if [ "${pig_0_12_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*pig-0.12.1*
 fi
 
-if [ "${no_pig_0_13_0}" == "y" ]
+if [ "${pig_0_13_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*pig-0.13.0*
 fi
 
-if [ "${no_pig_0_14_0}" == "y" ]
+if [ "${pig_0_14_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*pig-0.14.0*
 fi
 
-if [ "${no_pig_0_15_0}" == "y" ]
+if [ "${pig_0_15_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*pig-0.15.0*
 fi
 
-if [ "${no_mahout_0_11_0}" == "y" ]
+if [ "${mahout_0_11_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*mahout-0.11.0*
 fi
 
-if [ "${no_mahout_0_11_1}" == "y" ]
+if [ "${mahout_0_11_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*mahout-0.11.1*
 fi
 
-if [ "${no_hbase_0_98_3_hadoop2}" == "y" ]
+if [ "${hbase_0_98_3_hadoop2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.98.3-hadoop2*
 fi
 
-if [ "${no_hbase_0_98_9_hadoop2}" == "y" ]
+if [ "${hbase_0_98_9_hadoop2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.98.9-hadoop2*
 fi
 
-if [ "${no_hbase_0_99_0}" == "y" ]
+if [ "${hbase_0_99_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.99.0*
 fi
 
-if [ "${no_hbase_0_99_1}" == "y" ]
+if [ "${hbase_0_99_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.99.1*
 fi
 
-if [ "${no_hbase_0_99_2}" == "y" ]
+if [ "${hbase_0_99_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.99.2*
 fi
 
-if [ "${no_hbase_1_0_0}" == "y" ]
+if [ "${hbase_1_0_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.0.0*
 fi
 
-if [ "${no_hbase_1_0_0_1}" == "y" ]
+if [ "${hbase_1_0_0_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.0.0.1*
 fi
 
-if [ "${no_hbase_1_0_1}" == "y" ]
+if [ "${hbase_1_0_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.0.1*
 fi
 
-if [ "${no_hbase_1_0_2}" == "y" ]
+if [ "${hbase_1_0_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.0.2*
 fi
 
-if [ "${no_hbase_1_1_0}" == "y" ]
+if [ "${hbase_1_1_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.0*
 fi
 
-if [ "${no_hbase_1_1_0_1}" == "y" ]
+if [ "${hbase_1_1_0_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.0.1*
 fi
 
-if [ "${no_hbase_1_1_1}" == "y" ]
+if [ "${hbase_1_1_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.1*
 fi
 
-if [ "${no_hbase_1_1_2}" == "y" ]
+if [ "${hbase_1_1_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.2*
 fi
 
-if [ "${no_hbase_1_1_3}" == "y" ]
+if [ "${hbase_1_1_3}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.3*
 fi
 
-if [ "${no_phoenix_4_5_1_HBase_1_1}" == "y" ]
+if [ "${phoenix_4_5_1_HBase_1_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*phoenix-4.5.1-HBase-1.1*
 fi
 
-if [ "${no_phoenix_4_5_2_HBase_1_1}" == "y" ]
+if [ "${phoenix_4_5_2_HBase_1_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*phoenix-4.5.2-HBase-1.1*
 fi
 
-if [ "${no_phoenix_4_6_0_HBase_1_1}" == "y" ]
+if [ "${phoenix_4_6_0_HBase_1_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*phoenix-4.6.0-HBase-1.1*
 fi
 
-if [ "${no_spark_0_9_1_bin_hadoop2}" == "y" ]
+if [ "${spark_0_9_1_bin_hadoop2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.1-bin-hadoop2*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-0.9.1-bin-hadoop2*
 fi
 
-if [ "${no_spark_0_9_2_bin_hadoop2}" == "y" ]
+if [ "${spark_0_9_2_bin_hadoop2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-0.9.2-bin-hadoop2*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-0.9.2-bin-hadoop2*
 fi
 
-if [ "${no_spark_1_2_0_bin_hadoop2_4}" == "y" ]
+if [ "${spark_1_2_0_bin_hadoop2_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.0-bin-hadoop2.4*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.0-bin-hadoop2.4*
 fi
 
-if [ "${no_spark_1_2_1_bin_hadoop2_4}" == "y" ]
+if [ "${spark_1_2_1_bin_hadoop2_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.1-bin-hadoop2.4*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.1-bin-hadoop2.4*
 fi
 
-if [ "${no_spark_1_2_2_bin_hadoop2_4}" == "y" ]
+if [ "${spark_1_2_2_bin_hadoop2_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.2.2-bin-hadoop2.4*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.2.2-bin-hadoop2.4*
 fi
 
-if [ "${no_spark_1_3_0_bin_hadoop2_4}" == "y" ]
+if [ "${spark_1_3_0_bin_hadoop2_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.3.0-bin-hadoop2.4*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.3.0-bin-hadoop2.4*
 fi
 
-if [ "${no_spark_1_3_1_bin_hadoop2_4}" == "y" ]
+if [ "${spark_1_3_1_bin_hadoop2_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.3.1-bin-hadoop2.4*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.3.1-bin-hadoop2.4*
 fi
 
-if [ "${no_spark_1_4_0_bin_hadoop2_6}" == "y" ]
+if [ "${spark_1_4_0_bin_hadoop2_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.4.0-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.4.0-bin-hadoop2.6*
 fi
 
-if [ "${no_spark_1_4_1_bin_hadoop2_6}" == "y" ]
+if [ "${spark_1_4_1_bin_hadoop2_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.4.1-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.4.1-bin-hadoop2.6*
 fi
 
-if [ "${no_spark_1_5_0_bin_hadoop2_6}" == "y" ]
+if [ "${spark_1_5_0_bin_hadoop2_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.0-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.0-bin-hadoop2.6*
 fi
 
-if [ "${no_spark_1_5_1_bin_hadoop2_6}" == "y" ]
+if [ "${spark_1_5_1_bin_hadoop2_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.1-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.1-bin-hadoop2.6*
 fi
 
-if [ "${no_spark_1_5_2_bin_hadoop2_6}" == "y" ]
+if [ "${spark_1_5_2_bin_hadoop2_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.5.2-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.5.2-bin-hadoop2.6*
 fi
 
-if [ "${no_spark_1_6_0_bin_hadoop2_6}" == "y" ]
+if [ "${spark_1_6_0_bin_hadoop2_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*spark-1.6.0-bin-hadoop2.6*
     rm -f magpie.${submissiontype}*spark-with-rawnetworkfs-1.6.0-bin-hadoop2.6*
 fi
 
-if [ "${no_storm_0_9_3}" == "y" ]
+if [ "${storm_0_9_3}" == "n" ]
 then
     rm -f magpie.${submissiontype}*storm-0.9.3*
 fi
 
-if [ "${no_storm_0_9_4}" == "y" ]
+if [ "${storm_0_9_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*storm-0.9.4*
 fi
 
-if [ "${no_storm_0_9_5}" == "y" ]
+if [ "${storm_0_9_5}" == "n" ]
 then
     rm -f magpie.${submissiontype}*storm-0.9.5*
 fi
 
-if [ "${no_kafka_2_11_0_9_0_0}" == "y" ]
+if [ "${kafka_2_11_0_9_0_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*kafka-2.11-0.9.0.0*
 fi
 
-if [ "${no_zookeeper_3_4_0}" == "y" ]
+if [ "${zookeeper_3_4_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.0*
 fi
 
-if [ "${no_zookeeper_3_4_1}" == "y" ]
+if [ "${zookeeper_3_4_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.1*
 fi
 
-if [ "${no_zookeeper_3_4_2}" == "y" ]
+if [ "${zookeeper_3_4_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.2*
 fi
 
-if [ "${no_zookeeper_3_4_3}" == "y" ]
+if [ "${zookeeper_3_4_3}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.3*
 fi
 
-if [ "${no_zookeeper_3_4_4}" == "y" ]
+if [ "${zookeeper_3_4_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.4*
 fi
 
-if [ "${no_zookeeper_3_4_5}" == "y" ]
+if [ "${zookeeper_3_4_5}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.5*
 fi
 
-if [ "${no_zookeeper_3_4_6}" == "y" ]
+if [ "${zookeeper_3_4_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.6*
 fi
 
-if [ "${no_zookeeper_3_4_7}" == "y" ]
+if [ "${zookeeper_3_4_7}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.7*
 fi

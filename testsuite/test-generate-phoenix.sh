@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GeneratePhoenixTests() {
+GeneratePhoenixStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Phoenix tests"
+    echo "Making Phoenix Standard Tests"
 
     for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
     do
@@ -57,6 +57,13 @@ GeneratePhoenixTests() {
 	    done
 	done
     done
+}
+
+GeneratePhoenixDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Phoenix Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre
 

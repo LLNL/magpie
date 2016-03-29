@@ -1,10 +1,10 @@
 #!/bin/sh
 
-GenerateMahoutTests() {
+GenerateMahoutStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-    echo "Making Mahout tests"
+    echo "Making Mahout Standard Tests"
 
     for mahoutversion in 0.11.0 0.11.1
     do
@@ -20,6 +20,13 @@ GenerateMahoutTests() {
 	    sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}*
 	done
     done
+}
+
+GenerateMahoutDependencyTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Mahout Dependency Tests"
 
 # Dependency 1 Tests, run after another
 
