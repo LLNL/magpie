@@ -183,10 +183,10 @@ fi
 
 if [ "${hadooptests}" == "y" ]
 then
-    for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    do
-        if [ "${standardtests}" == "y" ]
-        then
+    if [ "${standardtests}" == "y" ]
+    then
+	for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+	do
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-run-hadoopterasort
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths-run-hadoopterasort
@@ -206,13 +206,10 @@ then
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-localstore-multiple-paths-run-hadoopterasort-no-local-dir
 
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-largeperformancerun-run-hadoopterasort
-        fi
-    done
+	done
     
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-        if [ "${standardtests}" == "y" ]
-        then
+	for hadoopversion in 2.7.0 2.7.1 2.7.2
+	do
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-run-hadoopterasort
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths-run-hadoopterasort
@@ -232,8 +229,8 @@ then
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-localstore-multiple-paths-run-hadoopterasort-no-local-dir
 
             BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-largeperformancerun-run-hadoopterasort
-        fi
-    done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -393,51 +390,44 @@ fi
 
 if [ "${pigtests}" == "y" ]
 then
-    for pigversion in 0.12.0 0.12.1
-    do
-        for hadoopversion in 2.4.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+    if [ "${standardtests}" == "y" ]
+    then
+	for pigversion in 0.12.0 0.12.1
+	do
+            for hadoopversion in 2.4.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript
 
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript-no-local-dir
-            fi
-        done
-    done
-    
-    for pigversion in 0.13.0 0.14.0
-    do
-        for hadoopversion in 2.6.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+            done
+	done
+	
+	for pigversion in 0.13.0 0.14.0
+	do
+            for hadoopversion in 2.6.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript
 
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript-no-local-dir
-            fi
-        done
-    done
-    
-    for pigversion in 0.15.0
-    do
-        for hadoopversion in 2.7.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+            done
+	done
+	
+	for pigversion in 0.15.0
+	do
+            for hadoopversion in 2.7.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript
 
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript-no-local-dir
-            fi
-        done
-    done
-
+            done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -513,18 +503,18 @@ fi
 
 if [ "${mahouttests}" == "y" ]
 then
-    for mahoutversion in 0.11.0 0.11.1
-    do
-        for hadoopversion in 2.7.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+    if [ "${standardtests}" == "y" ]
+    then
+	for mahoutversion in 0.11.0 0.11.1
+	do
+            for hadoopversion in 2.7.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
-
+		
                 BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol-no-local-dir
-            fi
-        done
-    done
+            done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -552,14 +542,14 @@ fi
 
 if [ "${hbasetests}" == "y" ]
 then
-    for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
-    do
-        for hadoopversion in 2.6.0
-        do
-            for zookeeperversion in 3.4.6
+    if [ "${standardtests}" == "y" ]
+    then
+	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	do
+            for hadoopversion in 2.6.0
             do
-                if [ "${standardtests}" == "y" ]
-                then
+		for zookeeperversion in 3.4.6
+		do
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-run-hbaseperformanceeval
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local-run-hbaseperformanceeval
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-networkfs-run-hbaseperformanceeval
@@ -595,19 +585,16 @@ then
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-local-run-hbaseperformanceeval-no-localdir
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-networkfs-run-hbaseperformanceeval-no-localdir
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-local-run-hbaseperformanceeval-no-localdir
-                fi
+		done
             done
-        done
-    done
+	done
     
-    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
-    do
-        for hadoopversion in 2.7.0
-        do
-            for zookeeperversion in 3.4.7
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3
+	do
+            for hadoopversion in 2.7.0
             do
-                if [ "${standardtests}" == "y" ]
-                then
+		for zookeeperversion in 3.4.7
+		do
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-run-hbaseperformanceeval
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local-run-hbaseperformanceeval
                     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-shared-zookeeper-networkfs-run-hbaseperformanceeval
@@ -643,11 +630,11 @@ then
             	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-not-shared-zookeeper-local-run-hbaseperformanceeval-no-localdir
             	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-networkfs-run-hbaseperformanceeval-no-localdir
             	    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-random-thread-zookeeper-shared-zookeeper-local-run-hbaseperformanceeval-no-localdir
-                fi
+		done
             done
-        done
-    done
-
+	done
+    fi
+	
     if [ "${dependencytests}" == "y" ]
     then
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
@@ -750,16 +737,16 @@ fi
 
 if [ "${phoenixtests}" == "y" ]
 then
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
-    do
-        for hbaseversion in 1.1.3
-        do
-            for hadoopversion in 2.7.0
+    if [ "${standardtests}" == "y" ]
+    then
+	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+	do
+            for hbaseversion in 1.1.3
             do
-                for zookeeperversion in 3.4.7
-                do
-                    if [ "${standardtests}" == "y" ]
-                    then
+		for hadoopversion in 2.7.0
+		do
+                    for zookeeperversion in 3.4.7
+                    do
                         BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-networkfs-run-phoenixperformanceeval
                         BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-local-run-phoenixperformanceeval
                         BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-shared-zookeeper-networkfs-run-phoenixperformanceeval
@@ -779,11 +766,11 @@ then
                         BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-not-shared-zookeeper-local-run-phoenixperformanceeval-no-local-dir
                         BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-shared-zookeeper-networkfs-run-phoenixperformanceeval-no-local-dir
                         BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-performanceeval-zookeeper-shared-zookeeper-local-run-phoenixperformanceeval-no-local-dir
-                    fi
-                done
+                    done
+		done
             done
-        done
-    done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -857,53 +844,41 @@ fi
 
 if [ "${sparktests}" == "y" ]
 then
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-        if [ "${standardtests}" == "y" ]
-        then
+    if [ "${standardtests}" == "y" ]
+    then
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	do
             BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
-        fi
-    done
-    
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-        if [ "${standardtests}" == "y" ]
-        then
+	done
+	
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	do
             BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
 
             BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
-        fi
-    done
-    
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
-    do
-        if [ "${standardtests}" == "y" ]
-        then
+	done
+	
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
+	do
             BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
 
             BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
-        fi
-    done
-    
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-        for hadoopversion in 2.2.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+	done
+	
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	do
+            for hadoopversion in 2.2.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
                 BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in
-            fi
-        done
-    done
-    
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-        for hadoopversion in 2.4.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+            done
+	done
+	
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	do
+            for hadoopversion in 2.4.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
                 BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in
@@ -911,16 +886,13 @@ then
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in-no-local-dir
-            fi
-        done
-    done
-    
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
-    do
-        for hadoopversion in 2.6.0
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+            done
+	done
+	
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6
+	do
+            for hadoopversion in 2.6.0
+            do
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
                 BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in
@@ -928,9 +900,9 @@ then
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in-no-local-dir
-            fi
-        done
-    done
+            done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -1084,12 +1056,12 @@ fi
 
 if [ "${stormtests}" == "y" ]
 then
-    for stormversion in 0.9.3 0.9.4
-    do
-        for zookeeperversion in 3.4.6
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+    if [ "${standardtests}" == "y" ]
+    then
+	for stormversion in 0.9.3 0.9.4
+	do
+            for zookeeperversion in 3.4.6
+            do
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-stormwordcount
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-stormwordcount
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-run-stormwordcount
@@ -1099,16 +1071,13 @@ then
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-no-run-stormwordcount-local-dir
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-no-run-stormwordcount-local-dir
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-run-stormwordcount-no-local-dir
-            fi
-        done
-    done
-    
-    for stormversion in 0.9.5
-    do
-        for zookeeperversion in 3.4.7
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+            done
+	done
+	
+	for stormversion in 0.9.5
+	do
+            for zookeeperversion in 3.4.7
+            do
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-stormwordcount
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-stormwordcount
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-run-stormwordcount
@@ -1118,9 +1087,9 @@ then
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-stormwordcount-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-run-stormwordcount-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-run-stormwordcount-no-local-dir
-            fi
-        done
-    done
+            done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -1148,12 +1117,12 @@ fi
 
 if [ "${kafkatests}" == "y" ]
 then
-    for kafkaversion in 2.11-0.9.0.0
-    do
-        for zookeeperversion in 3.4.7
-        do
-            if [ "${standardtests}" == "y" ]
-            then
+    if [ "${standardtests}" == "y" ]
+    then
+	for kafkaversion in 2.11-0.9.0.0
+	do
+            for zookeeperversion in 3.4.7
+            do
                 BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-kafkaperformance
                 BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-kafkaperformance
                 BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-run-kafkaperformance
@@ -1163,9 +1132,9 @@ then
                 BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-kafkaperformance-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-run-kafkaperformance-no-local-dir
                 BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-run-kafkaperformance-no-local-dir
-            fi
-        done
-    done
+            done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
@@ -1184,17 +1153,17 @@ fi
 
 if [ "${zookeepertests}" == "y" ]
 then
-    for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7
-    do
-        if [ "${standardtests}" == "y" ]
-        then
+    if [ "${standardtests}" == "y" ]
+    then
+	for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7
+	do
             BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok
             BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok
-
+	    
             BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok-no-local-dir
             BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok-no-local-dir
-        fi
-    done
+	done
+    fi
 
     if [ "${dependencytests}" == "y" ]
     then
