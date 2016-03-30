@@ -146,6 +146,7 @@ PROJECT_DIR_PATH="\${HOME}/hadoop"
 HOME_DIR_PATH="\${HOME}"
 LUSTRE_DIR_PATH="/p/lscratchg/\${USER}/testing"
 NETWORKFS_DIR_PATH="/p/lscratchg/\${USER}/testing"
+ZOOKEEPER_DATA_DIR_PATH="/p/lscratchg/\${USER}/testing"
 SSD_DIR_PATH="/ssd/tmp1/\${USER}"
 
 JAVA16PATH="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
@@ -191,6 +192,9 @@ sed -i -e "s/LUSTRE_DIR_PREFIX=\(.*\)/LUSTRE_DIR_PREFIX=${lustredirpathsubst}/" 
 
 networkfsdirpathsubst=`echo ${NETWORKFS_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/NETWORKFS_DIR_PREFIX=\(.*\)/NETWORKFS_DIR_PREFIX=${networkfsdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+zookeeperdatadirpathsubst=`echo ${ZOOKEEPER_DATA_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+sed -i -e "s/ZOOKEEPER_DATA_DIR_PREFIX=\(.*\)/ZOOKEEPER_DATA_DIR_PREFIX=${zookeeperdatadirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 ssddirpathsubst=`echo ${SSD_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/SSD_DIR_PREFIX=\(.*\)/SSD_DIR_PREFIX=${ssddirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
