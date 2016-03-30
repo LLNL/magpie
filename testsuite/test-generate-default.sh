@@ -54,7 +54,8 @@ GenerateDefaultDependencyTests() {
     echo "Making Default Dependency Tests"
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.2.0
-
+# Intetionally no hdfsovernetworkfs version, don't set HADOOP_FILESYSTEM_MODE, use defaults
+    
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1A-hadoop-2.2.0-run-hadoopterasort
 
     sed -i \
@@ -97,6 +98,7 @@ GenerateDefaultDependencyTests() {
 	./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1A-hadoop-2.2.0-spark-0.9.1-bin-hadoop2-run-sparkwordcount-copy-in
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.4.0
+# Intetionally no hdfsovernetworkfs version, don't set HADOOP_FILESYSTEM_MODE, use defaults
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1B-hadoop-2.4.0-run-hadoopterasort
 
@@ -140,6 +142,7 @@ GenerateDefaultDependencyTests() {
 	./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1B-hadoop-2.4.0-spark-1.3.0-bin-hadoop2.4-run-sparkwordcount-copy-in
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.6.0
+# Intetionally no hdfsovernetworkfs version, don't set HADOOP_FILESYSTEM_MODE, use defaults
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1C-hadoop-2.6.0-run-hadoopterasort
 
@@ -183,6 +186,7 @@ GenerateDefaultDependencyTests() {
 	./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1C-hadoop-2.6.0-spark-1.3.0-bin-hadoop2.4-run-sparkwordcount-copy-in
 
 # Dependency 1 tests, run different things after one another - Hadoop 2.7.0
+# Intetionally no hdfsovernetworkfs version, don't set HADOOP_FILESYSTEM_MODE, use defaults
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-DependencyGlobalOrder1D-hadoop-2.7.0-run-hadoopterasort
 
