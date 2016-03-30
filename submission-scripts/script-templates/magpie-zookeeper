@@ -67,7 +67,7 @@ export ZOOKEEPER_HOME="PROJECTDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
 # If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
 # optimization possibilties.
 #
-export ZOOKEEPER_DATA_DIR="LUSTREDIRPREFIX/zookeeper"
+export ZOOKEEPER_DATA_DIR="ZOOKEEPERDATADIRPREFIX/zookeeper"
 
 # Zookeeper cleanup
 #
