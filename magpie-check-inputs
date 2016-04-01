@@ -580,9 +580,9 @@ then
 	    exit 1
 	fi
 
-	if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
+	if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[3-9]\.[0-9]"
 	then 
-	    echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
+	    echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.3.0 and more recent versions"
 	    exit 1
 	fi
 
