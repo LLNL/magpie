@@ -39,6 +39,7 @@
 #                           size and set
 #                           HADOOP_DECOMMISSION_HDFS_NODE_SIZE to the
 #                           smaller node size to decommission into.
+#                           Only works on Hadoop versions >= 2.3.0.
 #
 #		            Please set your job time to be quite large
 #		            when performing this update.  If your job
