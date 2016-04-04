@@ -17,7 +17,7 @@ SubmitStormStandardTests() {
 	done
     done
     
-    for stormversion in 0.9.5
+    for stormversion in 0.9.5 0.9.6
     do
 	for zookeeperversion in 3.4.7
 	do
@@ -44,7 +44,7 @@ SubmitStormDependencyTests() {
 	done
     done
 
-    for stormversion in 0.9.5
+    for stormversion in 0.9.5 0.9.6
     do
 	for zookeeperversion in 3.4.7
 	do
