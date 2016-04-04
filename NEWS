@@ -19,6 +19,8 @@ Support Hbase 1.1.4.
 Update default Hbase to 1.1.4.
 Support Storm 0.9.6.
 Update default Storm to 0.9.6.
+Support Mahout 0.11.2
+Update default Mahout to 0.11.2.
 
 magpie 1.68
 -----------

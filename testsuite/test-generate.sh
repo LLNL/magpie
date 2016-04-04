@@ -7,7 +7,7 @@
 # Hadoop 2.2.0, 2.3.0, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.5.2, 2.6.0,
 # 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.7.0, 2.7.1, 2.7.2
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
-# Mahout 0.11.0, 0.11.1
+# Mahout 0.11.0, 0.11.1, 0.11.2
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
 #   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2,
 #   1.1.3, 1.1.4
@@ -91,6 +91,7 @@ pig_0_14_0=y
 pig_0_15_0=y
 mahout_0_11_0=y
 mahout_0_11_1=y
+mahout_0_11_2=y
 hbase_0_98_3_hadoop2=y
 hbase_0_98_9_hadoop2=y
 hbase_0_99_0=y
@@ -589,6 +590,11 @@ fi
 if [ "${mahout_0_11_1}" == "n" ]
 then
     rm -f magpie.${submissiontype}*mahout-0.11.1*
+fi
+
+if [ "${mahout_0_11_2}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*mahout-0.11.2*
 fi
 
 if [ "${hbase_0_98_3_hadoop2}" == "n" ]

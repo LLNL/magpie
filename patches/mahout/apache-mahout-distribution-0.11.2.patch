@@ -1,0 +1,131 @@
+diff -pruN apache-mahout-distribution-0.11.2-orig/examples/bin/classify-20newsgroups.sh apache-mahout-distribution-0.11.2/examples/bin/classify-20newsgroups.sh
+--- apache-mahout-distribution-0.11.2-orig/examples/bin/classify-20newsgroups.sh	2016-03-11 13:45:54.000000000 -0800
++++ apache-mahout-distribution-0.11.2/examples/bin/classify-20newsgroups.sh	2016-04-04 16:50:04.158327000 -0700
+@@ -36,7 +36,11 @@ START_PATH=`pwd`
+ # Set commands for dfs
+ source ${START_PATH}/set-dfs-commands.sh
+ 
+-WORK_DIR=/tmp/mahout-work-${USER}
++if [[ -z "$MAHOUT_WORK_DIR" ]]; then
++  WORK_DIR=/tmp/mahout-work-${USER}
++else
++  WORK_DIR=$MAHOUT_WORK_DIR
++fi
+ algorithm=( cnaivebayes-MapReduce naivebayes-MapReduce cnaivebayes-Spark naivebayes-Spark sgd clean)
+ if [ -n "$1" ]; then
+   choice=$1
+@@ -105,7 +109,7 @@ if  ( [ "x$alg" == "xnaivebayes-MapReduc
+     echo "Copying 20newsgroups data to HDFS"
+     set +e
+     $DFSRM ${WORK_DIR}/20news-all
+-    $DFS -mkdir ${WORK_DIR}
++    $DFS -mkdir -p ${WORK_DIR}
+     $DFS -mkdir ${WORK_DIR}/20news-all
+     set -e
+     if [ $HVERSION -eq "1" ] ; then
+diff -pruN apache-mahout-distribution-0.11.2-orig/examples/bin/classify-wikipedia.sh apache-mahout-distribution-0.11.2/examples/bin/classify-wikipedia.sh
+--- apache-mahout-distribution-0.11.2-orig/examples/bin/classify-wikipedia.sh	2016-03-11 13:45:54.000000000 -0800
++++ apache-mahout-distribution-0.11.2/examples/bin/classify-wikipedia.sh	2016-04-04 16:50:04.177304000 -0700
+@@ -42,7 +42,11 @@ START_PATH=`pwd`
+ # Set commands for dfs
+ source ${START_PATH}/set-dfs-commands.sh
+ 
+-WORK_DIR=/tmp/mahout-work-wiki
++if [[ -z "$MAHOUT_WORK_DIR" ]]; then
++  WORK_DIR=/tmp/mahout-work-wiki
++else
++  WORK_DIR=$MAHOUT_WORK_DIR
++fi
+ algorithm=( CBayes BinaryCBayes clean)
+ if [ -n "$1" ]; then
+   choice=$1
+@@ -110,7 +114,7 @@ if [ "x$alg" == "xCBayes" ] || [ "x$alg"
+     echo "Copying wikipedia data to HDFS"
+     set +e
+     $DFSRM ${WORK_DIR}/wikixml
+-    $DFS -mkdir ${WORK_DIR}
++    $DFS -mkdir -p ${WORK_DIR}
+     set -e
+     $DFS -put ${WORK_DIR}/wikixml ${WORK_DIR}/wikixml
+   fi
+diff -pruN apache-mahout-distribution-0.11.2-orig/examples/bin/cluster-reuters.sh apache-mahout-distribution-0.11.2/examples/bin/cluster-reuters.sh
+--- apache-mahout-distribution-0.11.2-orig/examples/bin/cluster-reuters.sh	2016-03-11 13:45:54.000000000 -0800
++++ apache-mahout-distribution-0.11.2/examples/bin/cluster-reuters.sh	2016-04-04 16:53:22.193090000 -0700
+@@ -43,7 +43,11 @@ if [ ! -e $MAHOUT ]; then
+   exit 1
+ fi
+ 
+-WORK_DIR=/tmp/mahout-work-${USER}
++if [[ -z "$MAHOUT_WORK_DIR" ]]; then
++  WORK_DIR=/tmp/mahout-work-${USER}
++else
++  WORK_DIR=$MAHOUT_WORK_DIR
++fi
+ 
+ algorithm=( kmeans fuzzykmeans lda streamingkmeans clean)
+ if [ -n "$1" ]; then
+@@ -98,7 +102,7 @@ if [ ! -e ${WORK_DIR}/reuters-out-seqdir
+         set +e
+         $DFSRM ${WORK_DIR}/reuters-sgm
+         $DFSRM ${WORK_DIR}/reuters-out
+-        $DFS -mkdir ${WORK_DIR}/
++        $DFS -mkdir -p ${WORK_DIR}/
+         $DFS -mkdir ${WORK_DIR}/reuters-sgm
+         $DFS -mkdir ${WORK_DIR}/reuters-out
+         $DFS -put ${WORK_DIR}/reuters-sgm ${WORK_DIR}/reuters-sgm
+diff -pruN apache-mahout-distribution-0.11.2-orig/examples/bin/cluster-syntheticcontrol.sh apache-mahout-distribution-0.11.2/examples/bin/cluster-syntheticcontrol.sh
+--- apache-mahout-distribution-0.11.2-orig/examples/bin/cluster-syntheticcontrol.sh	2016-03-11 13:45:54.000000000 -0800
++++ apache-mahout-distribution-0.11.2/examples/bin/cluster-syntheticcontrol.sh	2016-04-04 16:50:04.201290000 -0700
+@@ -48,7 +48,11 @@ START_PATH=`pwd`
+ # Set commands for dfs
+ source ${START_PATH}/set-dfs-commands.sh
+ 
+-WORK_DIR=/tmp/mahout-work-${USER}
++if [[ -z "$MAHOUT_WORK_DIR" ]]; then
++  WORK_DIR=/tmp/mahout-work-${USER}
++else
++  WORK_DIR=$MAHOUT_WORK_DIR
++fi
+ 
+ echo "creating work directory at ${WORK_DIR}"
+ mkdir -p ${WORK_DIR}
+diff -pruN apache-mahout-distribution-0.11.2-orig/examples/bin/factorize-movielens-1M.sh apache-mahout-distribution-0.11.2/examples/bin/factorize-movielens-1M.sh
+--- apache-mahout-distribution-0.11.2-orig/examples/bin/factorize-movielens-1M.sh	2016-03-11 13:45:54.000000000 -0800
++++ apache-mahout-distribution-0.11.2/examples/bin/factorize-movielens-1M.sh	2016-04-04 16:50:04.205282000 -0700
+@@ -43,7 +43,12 @@ fi
+ export MAHOUT_LOCAL=true
+ MAHOUT="$MAHOUT_HOME/bin/mahout"
+ 
+-WORK_DIR=/tmp/mahout-work-${USER}
++if [[ -z "$MAHOUT_WORK_DIR" ]]; then
++  WORK_DIR=/tmp/mahout-work-${USER}
++else
++  WORK_DIR=$MAHOUT_WORK_DIR
++fi
++
+ echo "creating work directory at ${WORK_DIR}"
+ mkdir -p ${WORK_DIR}/movielens
+ 
+@@ -77,4 +82,4 @@ shuf ${WORK_DIR}/recommendations/part-m-
+ echo -e "\n\n"
+ 
+ echo "removing work directory"
+-rm -rf ${WORK_DIR}
+\ No newline at end of file
++rm -rf ${WORK_DIR}
+diff -pruN apache-mahout-distribution-0.11.2-orig/examples/bin/factorize-netflix.sh apache-mahout-distribution-0.11.2/examples/bin/factorize-netflix.sh
+--- apache-mahout-distribution-0.11.2-orig/examples/bin/factorize-netflix.sh	2016-03-11 13:45:54.000000000 -0800
++++ apache-mahout-distribution-0.11.2/examples/bin/factorize-netflix.sh	2016-04-04 16:50:04.214270000 -0700
+@@ -45,7 +45,11 @@ fi
+ 
+ MAHOUT="../../bin/mahout"
+ 
+-WORK_DIR=/tmp/mahout-work-${USER}
++if [[ -z "$MAHOUT_WORK_DIR" ]]; then
++  WORK_DIR=/tmp/mahout-work-${USER}
++else
++  WORK_DIR=$MAHOUT_WORK_DIR
++fi
+ 
+ START_PATH=`pwd`
+ 
