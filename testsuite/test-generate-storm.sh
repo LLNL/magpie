@@ -38,9 +38,9 @@ GenerateStormStandardTests() {
 	done
     done
 
-    for stormversion in 0.9.5
+    for stormversion in 0.9.5 0.9.6
     do
-	for zookeeperversion in 3.4.7
+	for zookeeperversion in 3.4.8
 	do
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-stormwordcount
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-stormwordcount
@@ -95,9 +95,9 @@ GenerateStormDependencyTests() {
 	done
     done
 
-    for stormversion in 0.9.5
+    for stormversion in 0.9.5 0.9.6
     do
-	for zookeeperversion in 3.4.7
+	for zookeeperversion in 3.4.8
 	do
 	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm ./magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
 

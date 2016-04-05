@@ -627,7 +627,7 @@ export HBASE_SETUP=yes
 
 # Version
 #
-export HBASE_VERSION="1.1.3"
+export HBASE_VERSION="1.1.4"
 
 # Path to your Hbase build/binaries
 #
@@ -891,7 +891,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.7"
+export ZOOKEEPER_VERSION="3.4.8"
 
 # Path to your Zookeeper build/binaries
 #

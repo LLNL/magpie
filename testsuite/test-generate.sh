@@ -7,10 +7,10 @@
 # Hadoop 2.2.0, 2.3.0, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.5.2, 2.6.0,
 # 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.7.0, 2.7.1, 2.7.2
 # Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
-# Mahout 0.11.0, 0.11.1
+# Mahout 0.11.0, 0.11.1, 0.11.2
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
 #   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2,
-#   1.1.3
+#   1.1.3, 1.1.4
 # Phoenix 4.5.1-Hbase-1.1, 4.5.2-HBase-1.1, 4.6.0-HBase-1.1
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
 #   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
@@ -18,8 +18,9 @@
 #   1.5.0-bin-hadoop2.6, 1.5.1-bin-hadoop2.6, 1.5.2-bin-hadoop2.6,
 #   1.6.0-bin-hadoop2.6, 1.6.1-bin-hadoop2.6
 # Kafka 2.11-0.9.0.0
-# Storm 0.9.3, 0.9.4, 0.9.5
+# Storm 0.9.3, 0.9.4, 0.9.5, 0.9.6
 # Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
+#   3.4.8
 #
 # Assumes network file system such as lustre is always available
 #
@@ -91,6 +92,7 @@ pig_0_14_0=y
 pig_0_15_0=y
 mahout_0_11_0=y
 mahout_0_11_1=y
+mahout_0_11_2=y
 hbase_0_98_3_hadoop2=y
 hbase_0_98_9_hadoop2=y
 hbase_0_99_0=y
@@ -105,6 +107,7 @@ hbase_1_1_0_1=y
 hbase_1_1_1=y
 hbase_1_1_2=y
 hbase_1_1_3=y
+hbase_1_1_4=y
 phoenix_4_5_1_HBase_1_1=y
 phoenix_4_5_2_HBase_1_1=y
 phoenix_4_6_0_HBase_1_1=y
@@ -125,6 +128,7 @@ spark_1_6_1_bin_hadoop2_6=y
 storm_0_9_3=y
 storm_0_9_4=y
 storm_0_9_5=y
+storm_0_9_6=y
 kafka_2_11_0_9_0_0=y
 zookeeper_3_4_0=y
 zookeeper_3_4_1=y
@@ -134,6 +138,7 @@ zookeeper_3_4_4=y
 zookeeper_3_4_5=y
 zookeeper_3_4_6=y
 zookeeper_3_4_7=y
+zookeeper_3_4_8=y
 
 # Configure Makefile 
 
@@ -589,6 +594,11 @@ then
     rm -f magpie.${submissiontype}*mahout-0.11.1*
 fi
 
+if [ "${mahout_0_11_2}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*mahout-0.11.2*
+fi
+
 if [ "${hbase_0_98_3_hadoop2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-0.98.3-hadoop2*
@@ -657,6 +667,11 @@ fi
 if [ "${hbase_1_1_3}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.3*
+fi
+
+if [ "${hbase_1_1_4}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*hbase-1.1.4*
 fi
 
 if [ "${phoenix_4_5_1_HBase_1_1}" == "n" ]
@@ -773,6 +788,11 @@ then
     rm -f magpie.${submissiontype}*storm-0.9.5*
 fi
 
+if [ "${storm_0_9_6}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*storm-0.9.6*
+fi
+
 if [ "${kafka_2_11_0_9_0_0}" == "n" ]
 then
     rm -f magpie.${submissiontype}*kafka-2.11-0.9.0.0*
@@ -816,4 +836,9 @@ fi
 if [ "${zookeeper_3_4_7}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.7*
+fi
+
+if [ "${zookeeper_3_4_8}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.8*
 fi

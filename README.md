@@ -82,13 +82,13 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
 
 Hbase - 0.96.1.1-hadoop2+, 0.98.3-hadoop2+, 0.98.9-hadoop2+, 0.99.0+,
         0.99.1+, 0.99.2+, 1.0.0+, 1.0.1+, 1.0.1.1+, 1.0.2+, 1.1.0+,
-        1.1.0.1+, 1.1.1+, 1.1.2+, 1.1.3+
+        1.1.0.1+, 1.1.1+, 1.1.2+, 1.1.3+, 1.1.4+
 
-Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5
+Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5, 0.9.6
 
 Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
 
-Mahout - 0.11.0+, 0.11.1+
+Mahout - 0.11.0+, 0.11.1+, 0.11.2+
 
 UDA/uda-plugin - 3.3.2-0
 
@@ -100,7 +100,8 @@ Zeppelin - 0.5.6
 
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
-Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
+Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7,
+            3.4.8
 
 [PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
       is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on

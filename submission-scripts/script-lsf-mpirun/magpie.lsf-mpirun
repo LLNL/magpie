@@ -949,7 +949,7 @@ export HBASE_SETUP=no
 
 # Version
 #
-export HBASE_VERSION="1.1.3"
+export HBASE_VERSION="1.1.4"
 
 # Path to your Hbase build/binaries
 #
@@ -1659,7 +1659,7 @@ export STORM_SETUP=no
 
 # Version
 #
-export STORM_VERSION="0.9.5"
+export STORM_VERSION="0.9.6"
 
 # Path to your Storm build/binaries
 #
@@ -1910,7 +1910,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.7"
+export ZOOKEEPER_VERSION="3.4.8"
 
 # Path to your Zookeeper build/binaries
 #

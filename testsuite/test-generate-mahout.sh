@@ -6,7 +6,7 @@ GenerateMahoutStandardTests() {
 
     echo "Making Mahout Standard Tests"
 
-    for mahoutversion in 0.11.0 0.11.1
+    for mahoutversion in 0.11.0 0.11.1 0.11.2
     do
 	for hadoopversion in 2.7.0
 	do
@@ -30,7 +30,7 @@ GenerateMahoutDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for mahoutversion in 0.11.0 0.11.1
+    for mahoutversion in 0.11.0 0.11.1 0.11.2
     do
 	for hadoopversion in 2.7.0
 	do
