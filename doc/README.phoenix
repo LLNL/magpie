@@ -148,5 +148,6 @@ Phoenix Testing
 
 Phoenix was tested against phoenix-4.5.2-HBase-1.1-bin. It has been
 tested against hbase-1.1.2-bin. It has also been tested to be used
-with spark-1.3.1-bin-hadoop2.4.  Nominal testing as done with
-phoenix-4.5.1-Hbase-1.1-bin and phoenix-4.6.0-Hbase-1.1-bin.
+with spark-1.3.1-bin-hadoop2.4.  Please see testsuite to see all
+versions of Phoenix that Magpie has been atleast nominally tested
+with.
