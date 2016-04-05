@@ -32,7 +32,7 @@ export HADOOP_SETUP_TYPE="MR2"
 # Make sure the version for Mapreduce version 1 or 2 matches whatever
 # you set in HADOOP_SETUP_TYPE
 #
-export HADOOP_VERSION="2.7.2"
+export HADOOP_VERSION="HADOOPVERSIONDEFAULT"
 
 # Path to your Hadoop build/binaries
 #
