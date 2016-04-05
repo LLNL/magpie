@@ -3,7 +3,7 @@
 SubmitKafkaStandardTests() {
     for kafkaversion in 2.11-0.9.0.0
     do
-	for zookeeperversion in 3.4.7
+	for zookeeperversion in 3.4.8
 	do
             BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-kafkaperformance
             BasicJobSubmit magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-kafkaperformance
@@ -21,7 +21,7 @@ SubmitKafkaStandardTests() {
 SubmitKafkaDependencyTests() {
     for kafkaversion in 2.11-0.9.0.0
     do
-	for zookeeperversion in 3.4.7
+	for zookeeperversion in 3.4.8
 	do
 	    BasicJobSubmit magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
 	    DependentJobSubmit magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance

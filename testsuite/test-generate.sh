@@ -20,6 +20,7 @@
 # Kafka 2.11-0.9.0.0
 # Storm 0.9.3, 0.9.4, 0.9.5, 0.9.6
 # Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
+#   3.4.8
 #
 # Assumes network file system such as lustre is always available
 #
@@ -137,6 +138,7 @@ zookeeper_3_4_4=y
 zookeeper_3_4_5=y
 zookeeper_3_4_6=y
 zookeeper_3_4_7=y
+zookeeper_3_4_8=y
 
 # Configure Makefile 
 
@@ -834,4 +836,9 @@ fi
 if [ "${zookeeper_3_4_7}" == "n" ]
 then
     rm -f magpie.${submissiontype}*zookeeper-3.4.7*
+fi
+
+if [ "${zookeeper_3_4_8}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*zookeeper-3.4.8*
 fi

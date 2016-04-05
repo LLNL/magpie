@@ -50,7 +50,7 @@ SubmitHbaseStandardTests() {
     do
 	for hadoopversion in 2.7.0
 	do
-	    for zookeeperversion in 3.4.7
+	    for zookeeperversion in 3.4.8
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-run-hbaseperformanceeval
 		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local-run-hbaseperformanceeval
@@ -112,7 +112,7 @@ SubmitHbaseDependencyTests() {
     do
 	for hadoopversion in 2.7.0
 	do
-	    for zookeeperversion in 3.4.7
+	    for zookeeperversion in 3.4.8
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
 		DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
@@ -150,7 +150,7 @@ SubmitHbaseDependencyTests() {
     do
 	for hadoopversion in 2.7.0
 	do
-	    for zookeeperversion in 3.4.7
+	    for zookeeperversion in 3.4.8
 	    do
 		BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasewritedata
 		DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasereaddata
