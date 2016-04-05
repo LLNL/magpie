@@ -135,5 +135,6 @@ Pig Patching
 Pig Testing
 -----------
 
-Pig support was added/tested against version 0.12.0.  Nominal
-testing was done with Pig 0.12.1, 0.13.0, 0.14.0, 0.15.0.
+Pig support was added/tested against version 0.12.0.  Please see
+testsuite to see all versions of Pig that Magpie has been atleast
+nominally tested with.

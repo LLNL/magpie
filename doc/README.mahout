@@ -131,5 +131,6 @@ Mahout Patching
 Mahout Testing
 --------------
 
-Mahout support was added/tested against verison 0.11.1.  Nominal
-testing was done with Mahout 0.11.0.
+Mahout support was added/tested against verison 0.11.1.  Please see
+testsuite to see all versions of Mahout that Magpie has been atleast
+nominally tested with.

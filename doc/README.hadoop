@@ -472,9 +472,9 @@ Hadoop Testing
 
 While I did some testing w/ Hadoop 1.2.1, b/c of the problem mentioned
 above (HDFS-1835), I did most development and testing against Hadoop
-2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.  Nominal
-testing was done with Hadoop 2.3.0, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.5.2,
-2.6.0. 2.6.1, 2.7.0, and 2.7.1.
+2.1.0-beta.  I also regularly tested against Hadoop 2.2.0.  Please see
+testsuite to see all versions of Hadoop that Magpie has been atleast
+nominally tested with.
 
 Basics of HDFS over Lustre/NetworkFS
 ------------------------------------

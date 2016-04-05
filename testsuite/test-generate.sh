@@ -18,7 +18,7 @@
 #   1.5.0-bin-hadoop2.6, 1.5.1-bin-hadoop2.6, 1.5.2-bin-hadoop2.6,
 #   1.6.0-bin-hadoop2.6, 1.6.1-bin-hadoop2.6
 # Kafka 2.11-0.9.0.0
-# Storm 0.9.3, 0.9.4, 0.9.5, 0.9.6
+# Storm 0.9.3, 0.9.4, 0.9.5, 0.9.6, 0.10.0
 # Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
 #   3.4.8
 #
@@ -129,6 +129,7 @@ storm_0_9_3=y
 storm_0_9_4=y
 storm_0_9_5=y
 storm_0_9_6=y
+storm_0_10_0=y
 kafka_2_11_0_9_0_0=y
 zookeeper_3_4_0=y
 zookeeper_3_4_1=y
@@ -791,6 +792,11 @@ fi
 if [ "${storm_0_9_6}" == "n" ]
 then
     rm -f magpie.${submissiontype}*storm-0.9.6*
+fi
+
+if [ "${storm_0_10_0}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*storm-0.10.0*
 fi
 
 if [ "${kafka_2_11_0_9_0_0}" == "n" ]

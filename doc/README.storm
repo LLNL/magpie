@@ -170,5 +170,6 @@ Storm Recompilation
 Storm Testing
 -------------
 
-Storm was added/tested against storm-0.9.2.  Nominal testing was done
-with Storm 0.9.3, Storm 0.9.4, and Storm 0.9.5.
+Storm was added/tested against storm-0.9.2.  Please see testsuite to
+see all versions of Storm that Magpie has been atleast nominally
+tested with.

@@ -38,7 +38,7 @@ GenerateStormStandardTests() {
 	done
     done
 
-    for stormversion in 0.9.5 0.9.6
+    for stormversion in 0.9.5 0.9.6 0.10.0
     do
 	for zookeeperversion in 3.4.8
 	do
@@ -95,7 +95,7 @@ GenerateStormDependencyTests() {
 	done
     done
 
-    for stormversion in 0.9.5 0.9.6
+    for stormversion in 0.9.5 0.9.6 0.10.0
     do
 	for zookeeperversion in 3.4.8
 	do
