@@ -13,6 +13,8 @@ Remove convenience
 Increase default Kafka Zookeeper timeout from 6000 to 30000  
 Support Hadoop 2.6.2, 2.6.3, 2.6.4, 2.7.2.
 Update default Hadoop to 2.7.2.
+Support Spark 1.6.1.
+Update default Spark to 1.6.1.
 
 magpie 1.68
 -----------
