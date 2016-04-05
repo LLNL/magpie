@@ -71,10 +71,7 @@ Instructions For Spark
 
    SPARK_LOCAL_SCRATCH_DIR : A scratch directory for Spark to use.  If
    a local SSD/NVRAM is available, it would be preferable to set this
-   to that path and set SPARK_LOCAL_SCRATCH_DIR_TYPE to "local".
-
-   SPARK_LOCAL_SCRATCH_DIR_TYPE : Indicates if SPARK_LOCAL_SCRATCH_DIR
-   if a network file path or local store path.
+   to that path.
 
 4) Select how your job will run by setting SPARK_MODE.  The first time
    you'll probably want to run w/ 'sparkpi' mode just to try things
@@ -383,8 +380,7 @@ Spark Advanced Usage
 
 1) If your cluster has a local SSD/NVRAM on each node, set a path to
    it via the SPARK_LOCAL_SCRATCH_DIR environment variable in your
-   submission scripts.  In addition set SPARK_LOCAL_SCRATCH_DIR_TYPE
-   appropriately to indicate it is local.
+   submission scripts.
 
    Setting this SSD/NVRAM serves two purposes.  One, this local
    scratch directory can be used for spillover from map outputs to aid

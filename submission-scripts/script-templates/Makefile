@@ -265,7 +265,6 @@ define create-templates
 	sed -i -e "s/SPARK_SETUP=no/SPARK_SETUP=yes/" $(MAGPIE_SPARK)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"script\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR/export SPARK_LOCAL_SCRATCH_DIR/g" $(MAGPIE_SPARK)
-	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR_TYPE/export SPARK_LOCAL_SCRATCH_DIR_TYPE/g" $(MAGPIE_SPARK)
 	$(call common-substitution, ${MAGPIE_SPARK})
 
 	# Spark with HDFS
