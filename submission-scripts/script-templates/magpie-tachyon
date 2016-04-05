@@ -55,7 +55,7 @@ export TACHYON_STORE_TYPE="SSD"
 # If TACHYON_STORE_TYPE is "MEM", this must be an already created
 # ramdisk.
 #
-export TACHYON_STORE_PATHS="SSDDIRPREFIX/tachyon"
+export TACHYON_STORE_PATHS="LOCALDRIVEPREFIX/tachyon"
 
 # TACHYON_STORE_QUOTA
 #
