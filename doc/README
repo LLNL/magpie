@@ -209,7 +209,7 @@ Spark 1.X - Beginning w/ Spark 1.0 versions prebuilt for Hadoop 2.2,
   2.4, 2.6, etc. are available Use the version it is prebuilt for
   appropriately.
 
-Storm 0.9.X w/ Zookeeper 3.4.X 
+Storm 0.9.X, 0.10.0 w/ Zookeeper 3.4.X 
 
 Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
 
