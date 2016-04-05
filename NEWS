@@ -17,8 +17,8 @@ Support Spark 1.6.1.
 Update default Spark to 1.6.1.
 Support Hbase 1.1.4.
 Update default Hbase to 1.1.4.
-Support Storm 0.9.6.
-Update default Storm to 0.9.6.
+Support Storm 0.9.6, 0.10.0.
+Update default Storm to 0.10.0.
 Support Mahout 0.11.2
 Update default Mahout to 0.11.2.
 Support Zookeeper 3.4.8.
