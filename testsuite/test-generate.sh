@@ -10,7 +10,7 @@
 # Mahout 0.11.0, 0.11.1, 0.11.2
 # Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
 #   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2,
-#   1.1.3, 1.1.4
+#   1.1.3, 1.1.4, 1.2.0
 # Phoenix 4.5.1-Hbase-1.1, 4.5.2-HBase-1.1, 4.6.0-HBase-1.1
 # Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
 #   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
@@ -108,6 +108,7 @@ hbase_1_1_1=y
 hbase_1_1_2=y
 hbase_1_1_3=y
 hbase_1_1_4=y
+hbase_1_2_0=y
 phoenix_4_5_1_HBase_1_1=y
 phoenix_4_5_2_HBase_1_1=y
 phoenix_4_6_0_HBase_1_1=y
@@ -673,6 +674,11 @@ fi
 if [ "${hbase_1_1_4}" == "n" ]
 then
     rm -f magpie.${submissiontype}*hbase-1.1.4*
+fi
+
+if [ "${hbase_1_2_0}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*hbase-1.2.0*
 fi
 
 if [ "${phoenix_4_5_1_HBase_1_1}" == "n" ]
