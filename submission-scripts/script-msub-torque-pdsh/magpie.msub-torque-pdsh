@@ -662,14 +662,14 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
-# If you have a local SSD, performance may be better to store
+# If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked
 # filesystem.  If the below environment variable is specified, local
 # intermediate data will be stored in the specified directory.
 # Otherwise it will go to an appropriate directory in Lustre/networked
 # FS.
 #
-# Be wary, local SSDs stores may have less space than HDDs or
+# Be wary, local SSDs/NVRAM stores may have less space than HDDs or
 # networked file systems.  It can be easy to run out of space.
 #
 # If you want to specify multiple paths (such as multiple drives),
@@ -1453,9 +1453,10 @@ export SPARK_MODE="sparkpi"
 # be calculated and configured.  If Hadoop is not setup, the following
 # must be specified.
 #
-# If you have local SSDs stored on the nodes of your system, it may be
-# in your interest to set this to a local drive.  It can improve
-# performance of both shuffling and disk based RDD persistence.
+# If you have local SSDs or NVRAM stored on the nodes of your system,
+# it may be in your interest to set this to a local drive.  It can
+# improve performance of both shuffling and disk based RDD
+# persistence.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
@@ -1933,9 +1934,9 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # ZOOKEEPER_DATA_DIR can point to either a network file system path or
 # a local drive path.
 #
-# If a local drive or SSD is available, a local path is preferable.
-# If set to local, please see ZOOKEEPER_DATA_DIR_TYPE below for
-# optimization possibilties.
+# If a local drive or SSD/NVRAM is available, a local path is
+# preferable.  If set to local, please see ZOOKEEPER_DATA_DIR_TYPE
+# below for optimization possibilties.
 #
 export ZOOKEEPER_DATA_DIR="/lustre/${USER}/zookeeper"
 

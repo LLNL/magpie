@@ -604,10 +604,10 @@ must be handled by the user to ensure satisfactory performance.
 Hadoop Advanced Usage
 ---------------------
 
-1) If your cluster has a local SSD on each node, set a path to it via
-   the HADOOP_LOCALSTORE environment variable in your submission
-   scripts.  It will allow Hadoop to store intermediate shuffle data
-   to it.  It should significantly improve performance.
+1) If your cluster has a local SSD or NVRAM on each node, set a path
+   to it via the HADOOP_LOCALSTORE environment variable in your
+   submission scripts.  It will allow Hadoop to store intermediate
+   shuffle data to it.  It should significantly improve performance.
 
 2) Magpie configures the default number of reducers in a Hadoop job to
    the number of compute nodes in your allocation.  This is

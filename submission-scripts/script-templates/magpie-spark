@@ -280,9 +280,10 @@ export SPARK_MODE="sparkpi"
 # be calculated and configured.  If Hadoop is not setup, the following
 # must be specified.
 #
-# If you have local SSDs stored on the nodes of your system, it may be
-# in your interest to set this to a local drive.  It can improve
-# performance of both shuffling and disk based RDD persistence.
+# If you have local SSDs or NVRAM stored on the nodes of your system,
+# it may be in your interest to set this to a local drive.  It can
+# improve performance of both shuffling and disk based RDD
+# persistence.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="LUSTREDIRPREFIX/sparkscratch/"
 

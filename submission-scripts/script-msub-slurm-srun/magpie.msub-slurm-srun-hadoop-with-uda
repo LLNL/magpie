@@ -666,14 +666,14 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
-# If you have a local SSD, performance may be better to store
+# If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked
 # filesystem.  If the below environment variable is specified, local
 # intermediate data will be stored in the specified directory.
 # Otherwise it will go to an appropriate directory in Lustre/networked
 # FS.
 #
-# Be wary, local SSDs stores may have less space than HDDs or
+# Be wary, local SSDs/NVRAM stores may have less space than HDDs or
 # networked file systems.  It can be easy to run out of space.
 #
 # If you want to specify multiple paths (such as multiple drives),

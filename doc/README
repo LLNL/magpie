@@ -15,7 +15,7 @@ Some of the features presently supported:
 - Run against a number of filesystem options, such as HDFS, HDFS over
   Lustre, HDFS over a generic network filesystem, Lustre directly, or
   a generic network filesystem.
-- Take advantage of SSDs for local caching if available
+- Take advantage of SSDs/NVRAM for local caching if available
 - Run the UDA Infiniband optimization plugin for Hadoop.
 - Make decent optimizations for your hardware
 
