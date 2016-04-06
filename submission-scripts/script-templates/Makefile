@@ -201,6 +201,7 @@ define create-templates
 		magpie-hadoop-mode-details \
 		magpie-uda \
 		magpie-pig \
+		magpie-mahout \
 		magpie-hbase \
                 magpie-phoenix \
 		magpie-spark \
