@@ -119,6 +119,53 @@ define common-substitution
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
 endef
 
+define common-removals
+	# User passes in string of everything they want
+	if ! echo $(2) | grep -q hadoop; then \
+		sed -i -e '/Run a job according to the settings of HADOOP_MODE/,+1d' $(1); \
+		sed -i -e '/For Hadoop, testall will run terasort/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q hbase; then \
+		sed -i -e '/Run a job according to the settings of HBASE_MODE/,+1d' $(1); \
+		sed -i -e '/For Hbase, testall will run performanceeval/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q phoenix; then \
+		sed -i -e '/Run a job according to the settings of PHOENIX_MODE/,+1d' $(1); \
+		sed -i -e '/For Phoenix, testall will run performanceeval/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q pig; then \
+		sed -i -e '/Run a job according to the settings of PIG_MODE/,+1d' $(1); \
+		sed -i -e '/For Pig, testall will run testpig/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q mahout; then \
+		sed -i -e '/Run a job according to the settings of MAHOUT_MODE/,+1d' $(1); \
+		sed -i -e '/For Mahout, testall will run clustersyntheticcontrol/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q spark; then \
+		sed -i -e '/Run a job according to the settings of SPARK_MODE/,+1d' $(1); \
+		sed -i -e '/For Spark, testall will run sparkpi/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q kafka; then \
+		sed -i -e '/Run a job according to the settings of KAFKA_MODE/,+1d' $(1); \
+		sed -i -e '/For Kafka, testall will run performance/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q zeppelin; then \
+		sed -i -e '/Run a job according to the settings of ZEPPELIN_MODE/,+1d' $(1); \
+	fi
+	if ! echo $(2) | grep -q storm; then \
+		sed -i -e '/Run a job according to the settings of STORM_MODE/,+1d' $(1); \
+		sed -i -e '/For Storm, testall will run stormwordcount/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q tachyon; then \
+		sed -i -e '/Run a job according to the settings of TACHYON_MODE/,+1d' $(1); \
+		sed -i -e '/For tachyon, testall will run testtachyon/d' $(1); \
+	fi
+	if ! echo $(2) | grep -q zookeeper; then \
+		sed -i -e '/Run a job according to the settings of ZOOKEEPER_MODE/,+1d' $(1); \
+		sed -i -e '/For Zookeeper, testall will run zookeeperruok/d' $(1); \
+	fi
+endef
+
 define create-templates
 	cp magpie-magpie-customizations magpie-magpie-customizations-substitution
 
@@ -221,6 +268,7 @@ define create-templates
 
 		if test "${MAHOUT_INCLUDE}" = "y"; then \
 			cat magpie-mahout >> $(MAGPIE); \
+			$(eval mahoutinclude := mahout) \
 		fi
 
 
@@ -228,30 +276,37 @@ define create-templates
 
 		if test "${PHOENIX_INCLUDE}" = "y"; then \
 			cat magpie-phoenix >> $(MAGPIE); \
+			$(eval phoenixinclude := phoenix) \
 		fi
 
 	cat	magpie-spark >> $(MAGPIE)
 
 		if test "${KAFKA_INCLUDE}" = "y"; then \
 			cat magpie-kafka >> $(MAGPIE); \
+			$(eval kafkainclude := kafka) \
 		fi
 
 		if test "${ZEPPELIN_INCLUDE}" = "y"; then \
 			cat magpie-zeppelin >> $(MAGPIE); \
+			$(eval zeppelininclude := zeppelin) \
 		fi
 
 		if test "${STORM_INCLUDE}" = "y"; then \
 			cat magpie-storm >> $(MAGPIE); \
+			$(eval storminclude := storm) \
 		fi
 
 		if test "${TACHYON_INCLUDE}" = "y"; then \
 			cat magpie-tachyon >> $(MAGPIE); \
+			$(eval tachyoninclude := tachyon) \
 		fi
 
 	cat	magpie-zookeeper \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
+	$(eval toincludeflags := ${mahoutinclude} ${phoenixinclude} ${kafkainclude} ${zeppelininclude} ${storminclude} ${tachyoninclude})
+	$(call common-removals, ${MAGPIE}, hadoop pig spark hbase zookeeper ${toincludeflags})
 
 	# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
