@@ -53,6 +53,19 @@ TACHYON_VERSION_DEFAULT=0.6.1
 ZEPPELIN_VERSION_DEFAULT=0.5.6
 
 #
+# Adjust to include/remove non-core elements of Magpie
+#
+# Core is Hadoop, Pig, Hbase, Spark, and Zookeeper
+#
+MAHOUT_INCLUDE=y
+UDA_INCLUDE=y
+PHOENIX_INCLUDE=y
+KAFKA_INCLUDE=y
+STORM_INCLUDE=y
+TACHYON_INCLUDE=y
+ZEPPELIN_INCLUDE=y
+
+#
 # If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed
 # by LOCAL_REQUIREMENTS_FILE will be added to submission scripts
 # before the first call to magpie-check-inputs
@@ -198,20 +211,46 @@ define create-templates
 		magpie-hadoop-job-details \
 		magpie-hadoop-filesystem-substitution \
 		magpie-hadoop-mode-terasort \
-		magpie-hadoop-mode-details \
-		magpie-uda \
-		magpie-pig \
-		magpie-mahout \
-		magpie-hbase \
-                magpie-phoenix \
-		magpie-spark \
-		magpie-kafka \
-                magpie-zeppelin \
-		magpie-storm \
-		magpie-tachyon \
-		magpie-zookeeper \
+		magpie-hadoop-mode-details > $(MAGPIE)
+
+		if test "${UDA_INCLUDE}" = "y"; then \
+			cat magpie-uda >> $(MAGPIE); \
+		fi
+
+	cat	magpie-pig >> $(MAGPIE)
+
+		if test "${MAHOUT_INCLUDE}" = "y"; then \
+			cat magpie-mahout >> $(MAGPIE); \
+		fi
+
+
+	cat	magpie-hbase >> $(MAGPIE)
+
+		if test "${PHOENIX_INCLUDE}" = "y"; then \
+			cat magpie-phoenix >> $(MAGPIE); \
+		fi
+
+	cat	magpie-spark >> $(MAGPIE)
+
+		if test "${KAFKA_INCLUDE}" = "y"; then \
+			cat magpie-kafka >> $(MAGPIE); \
+		fi
+
+		if test "${ZEPPELIN_INCLUDE}" = "y"; then \
+			cat magpie-zeppelin >> $(MAGPIE); \
+		fi
+
+		if test "${STORM_INCLUDE}" = "y"; then \
+			cat magpie-storm >> $(MAGPIE); \
+		fi
+
+		if test "${TACHYON_INCLUDE}" = "y"; then \
+			cat magpie-tachyon >> $(MAGPIE); \
+		fi
+
+	cat	magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE)
+		magpie-run-job-$(DIST) >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
 
 	# Just Hadoop
