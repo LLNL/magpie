@@ -226,7 +226,12 @@ define create-templates
 	cp magpie-header $(MAGPIE)
 
 	# All configuration
+	# I am not a Makefile expert, I eventually did many hacks here
+	# to get it to do what I wanted.  Perhaps someday I'm automake
+	# this or do something smarter.
 	echo "Creating magpie.$(SCHED)"
+	rm -f include_flags_file
+	touch include_flags_file
 	cat 	magpie-header \
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
@@ -239,51 +244,51 @@ define create-templates
 
 		if test "${UDA_INCLUDE}" = "y"; then \
 			cat magpie-uda >> $(MAGPIE); \
+			echo -n "uda " >> include_flags_file; \
 		fi
 
 	cat	magpie-pig >> $(MAGPIE)
 
 		if test "${MAHOUT_INCLUDE}" = "y"; then \
 			cat magpie-mahout >> $(MAGPIE); \
-			$(eval mahoutinclude := mahout) \
+			echo -n "mahout " >> include_flags_file; \
 		fi
-
 
 	cat	magpie-hbase >> $(MAGPIE)
 
 		if test "${PHOENIX_INCLUDE}" = "y"; then \
 			cat magpie-phoenix >> $(MAGPIE); \
-			$(eval phoenixinclude := phoenix) \
+			echo -n "phoenix " >> include_flags_file; \
 		fi
 
 	cat	magpie-spark >> $(MAGPIE)
 
 		if test "${KAFKA_INCLUDE}" = "y"; then \
 			cat magpie-kafka >> $(MAGPIE); \
-			$(eval kafkainclude := kafka) \
+			echo -n "kafka " >> include_flags_file; \
 		fi
 
 		if test "${ZEPPELIN_INCLUDE}" = "y"; then \
 			cat magpie-zeppelin >> $(MAGPIE); \
-			$(eval zeppelininclude := zeppelin) \
+			echo -n "zeppelin " >> include_flags_file; \
 		fi
 
 		if test "${STORM_INCLUDE}" = "y"; then \
 			cat magpie-storm >> $(MAGPIE); \
-			$(eval storminclude := storm) \
+			echo -n "storm " >> include_flags_file; \
 		fi
 
 		if test "${TACHYON_INCLUDE}" = "y"; then \
 			cat magpie-tachyon >> $(MAGPIE); \
-			$(eval tachyoninclude := tachyon) \
+			echo -n "tachyon " >> include_flags_file; \
 		fi
-
 	cat	magpie-zookeeper \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
-	$(eval toincludeflags := ${mahoutinclude} ${phoenixinclude} ${kafkainclude} ${zeppelininclude} ${storminclude} ${tachyoninclude})
-	$(call common-additions, ${MAGPIE}, hadoop pig spark hbase zookeeper ${toincludeflags})
+	echo "" >> include_flags_file
+	$(eval includeflags := $(shell cat include_flags_file))
+	$(call common-additions, ${MAGPIE}, hadoop pig spark hbase zookeeper $(includeflags))
 
 	# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
@@ -301,6 +306,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP})
+	echo $(INCLUDES_STRING)
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 
 	# Hadoop with UDA
