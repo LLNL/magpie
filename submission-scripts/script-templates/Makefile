@@ -290,7 +290,7 @@ define create-templates
 	$(eval includeflags := $(shell cat include_flags_file))
 	$(call common-additions, ${MAGPIE}, hadoop pig spark hbase zookeeper $(includeflags))
 
-	# Just Hadoop
+# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
