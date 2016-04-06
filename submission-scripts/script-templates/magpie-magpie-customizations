@@ -36,7 +36,7 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_MODE.
 #
-# "tachyon" - Run a job according ot the settings of TACHYON_MODE.
+# "tachyon" - Run a job according to the settings of TACHYON_MODE.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
