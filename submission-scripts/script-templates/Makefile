@@ -119,51 +119,28 @@ define common-substitution
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
 endef
 
-define common-removals
+define common-additions
 	# User passes in string of everything they want
-	if ! echo $(2) | grep -q hadoop; then \
-		sed -i -e '/Run a job according to the settings of HADOOP_MODE/,+1d' $(1); \
-		sed -i -e '/For Hadoop, testall will run terasort/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q hbase; then \
-		sed -i -e '/Run a job according to the settings of HBASE_MODE/,+1d' $(1); \
-		sed -i -e '/For Hbase, testall will run performanceeval/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q phoenix; then \
-		sed -i -e '/Run a job according to the settings of PHOENIX_MODE/,+1d' $(1); \
-		sed -i -e '/For Phoenix, testall will run performanceeval/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q pig; then \
-		sed -i -e '/Run a job according to the settings of PIG_MODE/,+1d' $(1); \
-		sed -i -e '/For Pig, testall will run testpig/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q mahout; then \
-		sed -i -e '/Run a job according to the settings of MAHOUT_MODE/,+1d' $(1); \
-		sed -i -e '/For Mahout, testall will run clustersyntheticcontrol/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q spark; then \
-		sed -i -e '/Run a job according to the settings of SPARK_MODE/,+1d' $(1); \
-		sed -i -e '/For Spark, testall will run sparkpi/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q kafka; then \
-		sed -i -e '/Run a job according to the settings of KAFKA_MODE/,+1d' $(1); \
-		sed -i -e '/For Kafka, testall will run performance/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q zeppelin; then \
-		sed -i -e '/Run a job according to the settings of ZEPPELIN_MODE/,+1d' $(1); \
-	fi
-	if ! echo $(2) | grep -q storm; then \
-		sed -i -e '/Run a job according to the settings of STORM_MODE/,+1d' $(1); \
-		sed -i -e '/For Storm, testall will run stormwordcount/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q tachyon; then \
-		sed -i -e '/Run a job according to the settings of TACHYON_MODE/,+1d' $(1); \
-		sed -i -e '/For tachyon, testall will run testtachyon/d' $(1); \
-	fi
-	if ! echo $(2) | grep -q zookeeper; then \
-		sed -i -e '/Run a job according to the settings of ZOOKEEPER_MODE/,+1d' $(1); \
-		sed -i -e '/For Zookeeper, testall will run zookeeperruok/d' $(1); \
-	fi
+	# Perhaps there is a niftier way to do this in sed than what I'm doing, glad
+	# to take suggestions.  I couldn't figure out a way to do it in 1 pass.
+	for project in hadoop hbase phoenix pig mahout spark kafka zeppelin storm tachyon zookeeper; do \
+		if echo $(2) | grep -q $$project; then \
+			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
+			sed -i -e "/@MAGPIE_JOB_TYPES@/{r magpie-magpie-customizations-job-$$project" -e "}" $(1); \
+			sed -i -e "/@MAGPIE_JOB_TYPES@/d" $(1); \
+			sed -i -e "s/@MAGPIE_JOB_TYPES_TEMP@/@MAGPIE_JOB_TYPES@/" $(1); \
+		fi \
+	done
+	for project in hadoop hbase phoenix pig mahout spark kafka storm tachyon zookeeper; do \
+		if echo $(2) | grep -q $$project; then \
+			sed -i -e "/@MAGPIE_TESTALL_TYPES@/a @MAGPIE_TESTALL_TYPES_TEMP@/" $(1); \
+			sed -i -e "/@MAGPIE_TESTALL_TYPES@/{r magpie-magpie-customizations-testall-$$project" -e "}" $(1); \
+			sed -i -e "/@MAGPIE_TESTALL_TYPES@/d" $(1); \
+			sed -i -e "s/@MAGPIE_TESTALL_TYPES_TEMP@/@MAGPIE_TESTALL_TYPES@/" $(1); \
+		fi \
+	done
+	sed -i -e "/@MAGPIE_JOB_TYPES@/d" $(1)
+	sed -i -e "/@MAGPIE_TESTALL_TYPES@/d" $(1)
 endef
 
 define create-templates
@@ -306,7 +283,7 @@ define create-templates
 		magpie-run-job-$(DIST) >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
 	$(eval toincludeflags := ${mahoutinclude} ${phoenixinclude} ${kafkainclude} ${zeppelininclude} ${storminclude} ${tachyoninclude})
-	$(call common-removals, ${MAGPIE}, hadoop pig spark hbase zookeeper ${toincludeflags})
+	$(call common-additions, ${MAGPIE}, hadoop pig spark hbase zookeeper ${toincludeflags})
 
 	# Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
@@ -324,7 +301,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP})
-	$(call common-removals, ${MAGPIE_HADOOP}, hadoop)
+	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 
 	# Hadoop with UDA
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
@@ -343,7 +320,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
 	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA})
-	$(call common-removals, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
+	$(call common-additions, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
 
 	# Hadoop and Pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
@@ -364,7 +341,7 @@ define create-templates
 	sed -i -e "s/PIG_SETUP=.*/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
-	$(call common-removals, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
+	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 
 	# Hadoop and Mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
@@ -385,7 +362,7 @@ define create-templates
 	sed -i -e "s/MAHOUT_SETUP=.*/MAHOUT_SETUP=yes/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"mahout\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_MAHOUT})
-	$(call common-removals, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
+	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 
 	# Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
@@ -407,7 +384,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
-	$(call common-removals, ${MAGPIE_HBASE_WITH_HDFS}, hadoop hbase zookeeper)
+	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hadoop hbase zookeeper)
 
 	# Hbase with HDFS with Phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
@@ -432,7 +409,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
-	$(call common-removals, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hadoop hbase phoenix zookeeper)
+	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hadoop hbase phoenix zookeeper)
 
 	# Spark
 	echo "Creating magpie.$(SCHED)-spark"
@@ -447,7 +424,7 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR/export SPARK_LOCAL_SCRATCH_DIR/g" $(MAGPIE_SPARK)
 	$(call common-substitution, ${MAGPIE_SPARK})
-	$(call common-removals, ${MAGPIE_SPARK}, spark)
+	$(call common-additions, ${MAGPIE_SPARK}, spark)
 
 	# Spark with HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
@@ -468,7 +445,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
-	$(call common-removals, ${MAGPIE_SPARK_WITH_HDFS}, hadoop spark)
+	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, hadoop spark)
 
 	# Spark with Tachyon and HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
@@ -491,7 +468,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
-	$(call common-removals, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, hadoop spark tachyon)
+	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, hadoop spark tachyon)
 
 	# Storm
 	echo "Creating magpie.$(SCHED)-storm"
@@ -507,6 +484,6 @@ define create-templates
 	sed -i -e "s/ZOOKEEPER_SETUP=.*/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
 	$(call common-substitution, ${MAGPIE_STORM})
-	$(call common-removals, ${MAGPIE_STORM}, storm zookeeper)
+	$(call common-additions, ${MAGPIE_STORM}, storm zookeeper)
 endef
 
