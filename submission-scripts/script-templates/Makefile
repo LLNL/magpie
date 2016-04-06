@@ -324,6 +324,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP})
+	$(call common-removals, ${MAGPIE_HADOOP}, hadoop)
 
 	# Hadoop with UDA
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
@@ -342,6 +343,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
 	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA})
+	$(call common-removals, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
 
 	# Hadoop and Pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
@@ -362,6 +364,7 @@ define create-templates
 	sed -i -e "s/PIG_SETUP=.*/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
+	$(call common-removals, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 
 	# Hadoop and Mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
@@ -382,6 +385,7 @@ define create-templates
 	sed -i -e "s/MAHOUT_SETUP=.*/MAHOUT_SETUP=yes/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"mahout\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_MAHOUT})
+	$(call common-removals, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 
 	# Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
@@ -403,6 +407,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
+	$(call common-removals, ${MAGPIE_HBASE_WITH_HDFS}, hadoop hbase zookeeper)
 
 	# Hbase with HDFS with Phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
@@ -427,6 +432,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
+	$(call common-removals, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hadoop hbase phoenix zookeeper)
 
 	# Spark
 	echo "Creating magpie.$(SCHED)-spark"
@@ -441,6 +447,7 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR/export SPARK_LOCAL_SCRATCH_DIR/g" $(MAGPIE_SPARK)
 	$(call common-substitution, ${MAGPIE_SPARK})
+	$(call common-removals, ${MAGPIE_SPARK}, spark)
 
 	# Spark with HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
@@ -461,6 +468,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
+	$(call common-removals, ${MAGPIE_SPARK_WITH_HDFS}, hadoop spark)
 
 	# Spark with Tachyon and HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
@@ -483,6 +491,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"terasort\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
+	$(call common-removals, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, hadoop spark tachyon)
 
 	# Storm
 	echo "Creating magpie.$(SCHED)-storm"
@@ -498,5 +507,6 @@ define create-templates
 	sed -i -e "s/ZOOKEEPER_SETUP=.*/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
 	$(call common-substitution, ${MAGPIE_STORM})
+	$(call common-removals, ${MAGPIE_STORM}, storm zookeeper)
 endef
 

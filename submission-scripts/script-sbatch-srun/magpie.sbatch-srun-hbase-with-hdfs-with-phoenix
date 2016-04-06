@@ -85,20 +85,6 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "phoenix" - Run a job according to the settings of PHOENIX_MODE
 #
-# "pig" - Run a job according to the settings of PIG_MODE.
-#
-# "mahout" - Run a job according to the settings of MAHOUT_MODE.
-#
-# "spark" - Run a job according to the settings of SPARK_MODE.
-#
-# "kafka" - Run a job according to the settings of KAFKA_MODE.
-#
-# "zeppelin" - Run a job according to the settings of ZEPPELIN_MODE.
-#
-# "storm" - Run a job according to the settings of STORM_MODE.
-#
-# "tachyon" - Run a job according to the settings of TACHYON_MODE.
-#
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
 # "testall" - Run a job that runs all basic sanity tests for all
@@ -109,12 +95,6 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             For Hadoop, testall will run terasort
 #             For Hbase, testall will run performanceeval
 #             For Phoenix, testall will run performanceeval
-#             For Pig, testall will run testpig
-#             For Mahout, testall will run clustersyntheticcontrol
-#             For Spark, testall will run sparkpi
-#             For Kafka, testall will run performance
-#             For Storm, testall will run stormwordcount
-#             For tachyon, testall will run testtachyon
 #             For Zookeeper, testall will run zookeeperruok
 #
 # "script" - Run an arbitraty script, as specified by
