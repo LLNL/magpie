@@ -77,8 +77,6 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
-# "hadoop" - Run a job according to the settings of HADOOP_MODE.
-#
 # "hbase" - Run a job according to the settings of HBASE_MODE.
 #
 # "phoenix" - Run a job according to the settings of PHOENIX_MODE.
@@ -90,7 +88,6 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             way to sanity check that everything has been setup
 #             correctly and the way you like.
 #
-#             For Hadoop, testall will run terasort
 #             For Hbase, testall will run performanceeval
 #             For Phoenix, testall will run performanceeval
 #             For Zookeeper, testall will run zookeeperruok

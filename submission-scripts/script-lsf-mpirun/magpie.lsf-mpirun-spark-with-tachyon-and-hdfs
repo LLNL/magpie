@@ -77,8 +77,6 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
-# "hadoop" - Run a job according to the settings of HADOOP_MODE.
-#
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
 # "tachyon" - Run a job according to the settings of TACHYON_MODE.
@@ -88,7 +86,6 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             way to sanity check that everything has been setup
 #             correctly and the way you like.
 #
-#             For Hadoop, testall will run terasort
 #             For Spark, testall will run sparkpi
 #             For tachyon, testall will run testtachyon
 #

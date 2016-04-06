@@ -390,7 +390,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
-	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hadoop hbase zookeeper)
+	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hbase zookeeper)
 
 	# Hbase with HDFS with Phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
@@ -415,7 +415,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
-	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hadoop hbase phoenix zookeeper)
+	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
 
 	# Spark
 	echo "Creating magpie.$(SCHED)-spark"
@@ -451,7 +451,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
-	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, hadoop spark)
+	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, spark)
 
 	# Spark with Tachyon and HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
@@ -474,7 +474,7 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
-	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, hadoop spark tachyon)
+	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, spark tachyon)
 
 	# Storm
 	echo "Creating magpie.$(SCHED)-storm"
