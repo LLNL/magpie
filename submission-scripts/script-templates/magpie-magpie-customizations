@@ -22,7 +22,7 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #
 # "hbase" - Run a job according to the settings of HBASE_MODE.
 #
-# "phoenix" - Run a job according to the settings of PHOENIX_MODE
+# "phoenix" - Run a job according to the settings of PHOENIX_MODE.
 #
 # "pig" - Run a job according to the settings of PIG_MODE.
 #

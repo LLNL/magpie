@@ -81,7 +81,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "hbase" - Run a job according to the settings of HBASE_MODE.
 #
-# "phoenix" - Run a job according to the settings of PHOENIX_MODE
+# "phoenix" - Run a job according to the settings of PHOENIX_MODE.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
