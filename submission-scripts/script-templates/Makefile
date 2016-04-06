@@ -119,10 +119,10 @@ define common-substitution
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
 endef
 
+# User passes in string of everything they want
+# Perhaps there is a niftier way to do this in sed than what I'm doing, glad
+# to take suggestions.  I couldn't figure out a way to do it in 1 pass.
 define common-additions
-	# User passes in string of everything they want
-	# Perhaps there is a niftier way to do this in sed than what I'm doing, glad
-	# to take suggestions.  I couldn't figure out a way to do it in 1 pass.
 	for project in hadoop hbase phoenix pig mahout spark kafka zeppelin storm tachyon zookeeper; do \
 		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
@@ -225,10 +225,10 @@ define create-templates
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 	cp magpie-header $(MAGPIE)
 
-	# All configuration
-	# I am not a Makefile expert, I eventually did many hacks here
-	# to get it to do what I wanted.  Perhaps someday I'm automake
-	# this or do something smarter.
+# All configuration
+# I am not a Makefile expert, I eventually did many hacks here
+# to get it to do what I wanted.  Perhaps someday I'm automake
+# this or do something smarter.
 	echo "Creating magpie.$(SCHED)"
 	rm -f include_flags_file
 	touch include_flags_file
@@ -309,7 +309,7 @@ define create-templates
 	echo $(INCLUDES_STRING)
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 
-	# Hadoop with UDA
+# Hadoop with UDA
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -328,7 +328,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA})
 	$(call common-additions, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
 
-	# Hadoop and Pig
+# Hadoop and Pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -349,7 +349,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 
-	# Hadoop and Mahout
+# Hadoop and Mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -370,7 +370,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_MAHOUT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 
-	# Hbase with HDFS
+# Hbase with HDFS
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -392,7 +392,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hbase zookeeper)
 
-	# Hbase with HDFS with Phoenix
+# Hbase with HDFS with Phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -417,7 +417,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
 
-	# Spark
+# Spark
 	echo "Creating magpie.$(SCHED)-spark"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -432,7 +432,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_SPARK})
 	$(call common-additions, ${MAGPIE_SPARK}, spark)
 
-	# Spark with HDFS
+# Spark with HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -453,7 +453,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, spark)
 
-	# Spark with Tachyon and HDFS
+# Spark with Tachyon and HDFS
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -476,7 +476,7 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, spark tachyon)
 
-	# Storm
+# Storm
 	echo "Creating magpie.$(SCHED)-storm"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
