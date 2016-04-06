@@ -1,5 +1,7 @@
 # Creation options, set to y or n
 #
+# Core projects are Hadoop, Pig, Hbase, Spark, and Zookeeper, rest are configurable
+#
 # MAGPIE_NO_LOCAL_DIR - support MAGPIE_NO_LOCAL_DIR
 #
 # INSERT_INTELLUSTRE - insert intellustre configuration
@@ -12,6 +14,14 @@
 #
 # INSERT_HDFS_FEDERATION - insert HDFS federation configuration 
 #
+MAHOUT_INCLUDE=y
+UDA_INCLUDE=y
+PHOENIX_INCLUDE=y
+KAFKA_INCLUDE=y
+STORM_INCLUDE=y
+TACHYON_INCLUDE=y
+ZEPPELIN_INCLUDE=y
+
 MAGPIE_NO_LOCAL_DIR=n
 INSERT_INTELLUSTRE=n
 INSERT_MAGPIENETWORKFS=n
@@ -51,19 +61,6 @@ STORM_VERSION_DEFAULT=0.10.0
 ZOOKEEPER_VERSION_DEFAULT=3.4.8
 TACHYON_VERSION_DEFAULT=0.6.1
 ZEPPELIN_VERSION_DEFAULT=0.5.6
-
-#
-# Adjust to include/remove non-core elements of Magpie
-#
-# Core is Hadoop, Pig, Hbase, Spark, and Zookeeper
-#
-MAHOUT_INCLUDE=y
-UDA_INCLUDE=y
-PHOENIX_INCLUDE=y
-KAFKA_INCLUDE=y
-STORM_INCLUDE=y
-TACHYON_INCLUDE=y
-ZEPPELIN_INCLUDE=y
 
 #
 # If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed
