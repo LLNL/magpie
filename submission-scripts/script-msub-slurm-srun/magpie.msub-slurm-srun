@@ -125,18 +125,18 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or
-#            SPARK_MODE or STORM_MODE.
+#            SPARK_MODE.
 #
 #            It is primarily used if you want to launch without
-#            Hadoop/Hbase/Spark/Storm (such as Zookeeper only) and are
-#            experimenting with things..
+#            Hadoop/Hbase/Spark and are experimenting with things..
 #
 # "interactive" - manually interact with job run.  This functionally
 #                 is very similar to setting "interactive" in
-#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, STORM_MODE, or
-#                 PIG_MODE.  It is primarily used if you want to
-#                 launch without Hadoop/Hbase/Spark/Storm (such as
-#                 Zookeeper only) and are experimenting with things..
+#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, etc.  It is
+#                 primarily used if you want to launch without
+#                 Hadoop/Hbase/Spark/etc. and are experimenting with
+#                 things.
+
 #
 export MAGPIE_JOB_TYPE="script"
 
@@ -943,6 +943,77 @@ export PIG_MODE="testpig"
 # Extra Java runtime options
 #
 # export PIG_OPTS="-Djava.io.tmpdir=${PIG_LOCAL_JOB_DIR}/tmp"
+
+############################################################################
+# Mahout Configurations
+############################################################################
+
+# Should Mahout be setup
+#
+# Specify yes or no.  Defaults to no.
+#
+# Note that unlike Hadoop or Zookeeper, Mahout does not need to be
+# enabled/disabled to be run with Hadoop.  For example, no daemons are setup.
+#
+# If MAHOUT_SETUP is enabled, this will inform Magpie to setup
+# environment variables that will hopefully make it easier to run
+# Mahout w/ Hadoop.  You could leave this disabled and setup/config
+# Mahout as you need.
+#
+export MAHOUT_SETUP=no
+
+# Mahout Version
+#
+export MAHOUT_VERSION="0.11.2"
+
+# Path to your Mahout build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop version this will run against.
+#
+export MAHOUT_HOME="${HOME}/apache-mahout-distribution-${MAHOUT_VERSION}"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export MAHOUT_LOCAL_DIR="/tmp/${USER}/mahout"
+
+# Set how Mahout should run
+#
+# "classifywikipedia" - Run the Mahout classify-wikipedia.sh example.
+#                       An internet connection outside of your cluster
+#                       is required, as data will be downloaded for
+#                       the test.
+#
+# "clustersyntheticcontrol" - Run the Mahout
+#                             cluster-syntheticcontrol.sh example.  An
+#                             internet connection outside of your
+#                             cluster is required, as data will be
+#                             downloaded for the test.
+#
+# "script" - execute a mahout script indicated by MAHOUT_SCRIPT_PATH.
+#
+# "interactive" - manually interact to run mahout scripts. In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and run mahout scripts directly
+#                 (e.g. bin/mahout ...).
+#
+export MAHOUT_MODE="clustersyntheticcontrol"
+
+# Specify script to execute for "script" mode in MAHOUT_MODE.  This mahout
+# script will be fed into mahout via "mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}"
+#
+# export MAHOUT_SCRIPT_PATH="${HOME}/my-mahout-script"
+
+# Mahout Opts
+#
+# Extra Java runtime options
+#
+# export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_JOB_DIR}/tmp"
 
 ############################################################################
 # Hbase Core Configurations
