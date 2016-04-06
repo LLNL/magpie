@@ -125,18 +125,18 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_MODE or HBASE_MODE or
-#            SPARK_MODE or STORM_MODE.
+#            SPARK_MODE.
 #
 #            It is primarily used if you want to launch without
-#            Hadoop/Hbase/Spark/Storm (such as Zookeeper only) and are
-#            experimenting with things..
+#            Hadoop/Hbase/Spark and are experimenting with things..
 #
 # "interactive" - manually interact with job run.  This functionally
 #                 is very similar to setting "interactive" in
-#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, STORM_MODE, or
-#                 PIG_MODE.  It is primarily used if you want to
-#                 launch without Hadoop/Hbase/Spark/Storm (such as
-#                 Zookeeper only) and are experimenting with things..
+#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, etc.  It is
+#                 primarily used if you want to launch without
+#                 Hadoop/Hbase/Spark/etc. and are experimenting with
+#                 things.
+
 #
 export MAGPIE_JOB_TYPE="pig"
 
