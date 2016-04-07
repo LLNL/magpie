@@ -1,6 +1,5 @@
 # Creation options, set to y or n
 #
-# Project configs are for inclusion in "main" submission script
 # Note that Hbase requires Hadoop, Hbase & Storm require Zookeeper
 #
 # MAGPIE_NO_LOCAL_DIR - support MAGPIE_NO_LOCAL_DIR
@@ -310,7 +309,19 @@ define create-templates
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ZOOKEEPER_INCLUDE}", "y"), "zookeeper"))
 	$(call common-addition-end, ${MAGPIE})
 
-# Just Hadoop
+	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
+	$(if $(findstring "${HADOOP_INCLUDE}${UDA_INCLUDE}", "yy"), $(call create-hadoop-uda))
+	$(if $(findstring "${HADOOP_INCLUDE}${PIG_INCLUDE}", "yy"), $(call create-hadoop-pig))
+	$(if $(findstring "${HADOOP_INCLUDE}${MAHOUT_INCLUDE}", "yy"), $(call create-hadoop-mahout))
+	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hadoop-hbase-zookeeper))
+	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hadoop-hbase-phoenix-zookeeper))
+	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-hadoop-spark))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-hadoop-spark-tachyon))
+	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm-zookeeper))
+endef
+
+define create-hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -327,8 +338,9 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP})
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
+endef
 
-# Hadoop with UDA
+define create-hadoop-uda
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -346,8 +358,9 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
 	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA})
 	$(call common-additions, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
+endef
 
-# Hadoop and Pig
+define create-hadoop-pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -367,8 +380,9 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
+endef
 
-# Hadoop and Mahout
+define create-hadoop-mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -388,8 +402,9 @@ define create-templates
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"mahout\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_MAHOUT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
+endef
 
-# Hbase with HDFS
+define create-hadoop-hbase-zookeeper
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -410,8 +425,9 @@ define create-templates
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hbase zookeeper)
+endef
 
-# Hbase with HDFS with Phoenix
+define create-hadoop-hbase-phoenix-zookeeper 
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -435,8 +451,9 @@ define create-templates
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
+endef
 
-# Spark
+define create-spark
 	echo "Creating magpie.$(SCHED)-spark"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -450,8 +467,9 @@ define create-templates
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR/export SPARK_LOCAL_SCRATCH_DIR/g" $(MAGPIE_SPARK)
 	$(call common-substitution, ${MAGPIE_SPARK})
 	$(call common-additions, ${MAGPIE_SPARK}, spark)
+endef
 
-# Spark with HDFS
+define create-hadoop-spark
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -471,8 +489,9 @@ define create-templates
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, spark)
+endef
 
-# Spark with Tachyon and HDFS
+define create-hadoop-spark-tachyon
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -494,8 +513,9 @@ define create-templates
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, spark tachyon)
+endef
 
-# Storm
+define create-storm-zookeeper
 	echo "Creating magpie.$(SCHED)-storm"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
