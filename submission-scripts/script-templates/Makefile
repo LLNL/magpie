@@ -79,6 +79,12 @@ LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun
 
+clean:
+	rm -f ../script-lsf-mpirun/magpie.lsf-mpirun*
+	rm -f ../script-msub-slurm-srun/magpie.msub-slurm*
+	rm -f ../script-msub-torque-pdsh/magpie.msub-torque*
+	rm -f ../script-sbatch-srun/magpie.sbatch-srun*
+
 sbatch-srun:
 	$(call create-templates,$@,srun)
 
