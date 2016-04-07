@@ -137,10 +137,6 @@ define common-addition
 			sed -i -e "/@MAGPIE_JOB_TYPES@/{r magpie-magpie-customizations-job-$$project" -e "}" $(1); \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/d" $(1); \
 			sed -i -e "s/@MAGPIE_JOB_TYPES_TEMP@/@MAGPIE_JOB_TYPES@/" $(1); \
-		fi \
-	done
-	for project in hadoop hbase phoenix pig mahout spark kafka storm tachyon zookeeper; do \
-		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_TESTALL_TYPES@/a @MAGPIE_TESTALL_TYPES_TEMP@/" $(1); \
 			sed -i -e "/@MAGPIE_TESTALL_TYPES@/{r magpie-magpie-customizations-testall-$$project" -e "}" $(1); \
 			sed -i -e "/@MAGPIE_TESTALL_TYPES@/d" $(1); \
