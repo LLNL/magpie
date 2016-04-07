@@ -1,6 +1,7 @@
 # Creation options, set to y or n
 #
-# Core projects are Hadoop, Pig, Hbase, Spark, and Zookeeper, rest are configurable
+# Project configs are for inclusion in "main" submission script
+# Note that Hbase requires Hadoop, Hbase & Storm require Zookeeper
 #
 # MAGPIE_NO_LOCAL_DIR - support MAGPIE_NO_LOCAL_DIR
 #
@@ -14,13 +15,18 @@
 #
 # INSERT_HDFS_FEDERATION - insert HDFS federation configuration 
 #
+HADOOP_INCLUDE=y
+PIG_INCLUDE=y
 MAHOUT_INCLUDE=y
 UDA_INCLUDE=y
+HBASE_INCLUDE=y
 PHOENIX_INCLUDE=y
+SPARK_INCLUDE=y
 KAFKA_INCLUDE=y
 STORM_INCLUDE=y
 TACHYON_INCLUDE=y
 ZEPPELIN_INCLUDE=y
+ZOOKEEPER_INCLUDE=y
 
 MAGPIE_NO_LOCAL_DIR=n
 INSERT_INTELLUSTRE=n
@@ -235,30 +241,38 @@ define create-templates
 	cat 	magpie-header \
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
-		magpie-hadoop-core magpie-hadoop-job \
-		magpie-hadoop-job-details \
-		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-terasort \
-		magpie-hadoop-mode-details > $(MAGPIE)
+		magpie-general-configuration > $(MAGPIE)
 
+		if test "${HADOOP_INCLUDE}" = "y"; then \
+			cat magpie-hadoop-core magpie-hadoop-job \
+				magpie-hadoop-job-details \
+				magpie-hadoop-filesystem-substitution \
+				magpie-hadoop-mode-terasort \
+				magpie-hadoop-mode-details >> $(MAGPIE); \
+		fi
 		if test "${UDA_INCLUDE}" = "y"; then \
 			cat magpie-uda >> $(MAGPIE); \
 		fi
 
-	cat	magpie-pig >> $(MAGPIE)
+		if test "${PIG_INCLUDE}" = "y"; then \
+			cat magpie-pig >> $(MAGPIE); \
+		fi
 
 		if test "${MAHOUT_INCLUDE}" = "y"; then \
 			cat magpie-mahout >> $(MAGPIE); \
 		fi
 
-	cat	magpie-hbase >> $(MAGPIE)
+		if test "${HBASE_INCLUDE}" = "y"; then \
+			cat magpie-hbase >> $(MAGPIE); \
+		fi
 
 		if test "${PHOENIX_INCLUDE}" = "y"; then \
 			cat magpie-phoenix >> $(MAGPIE); \
 		fi
 
-	cat	magpie-spark >> $(MAGPIE)
+		if test "${SPARK_INCLUDE}" = "y"; then \
+			cat magpie-spark >> $(MAGPIE); \
+		fi
 
 		if test "${KAFKA_INCLUDE}" = "y"; then \
 			cat magpie-kafka >> $(MAGPIE); \
@@ -275,21 +289,25 @@ define create-templates
 		if test "${TACHYON_INCLUDE}" = "y"; then \
 			cat magpie-tachyon >> $(MAGPIE); \
 		fi
-	cat	magpie-zookeeper \
-		magpie-run-job-header-substitution \
+
+		if test "${ZOOKEEPER_INCLUDE}" = "y"; then \
+			cat magpie-zookeeper >> $(MAGPIE); \
+		fi
+
+	cat	magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
-	$(call common-addition, ${MAGPIE}, hadoop)
-	$(call common-addition, ${MAGPIE}, hbase)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${HADOOP_INCLUDE}" "y", "hadoop"))
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${HBASE_INCLUDE}" "y", "hbase"))
 	$(call common-addition, ${MAGPIE}, $(if ifeq "${PHOENIX_INCLUDE}" "y", "phoenix"))
-	$(call common-addition, ${MAGPIE}, pig)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${PIG_INCLUDE}" "y", "pig"))
 	$(call common-addition, ${MAGPIE}, $(if ifeq "${MAHOUT_INCLUDE}" "y", "mahout"))
-	$(call common-addition, ${MAGPIE}, spark)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${SPARK_INCLUDE}" "y", "spark"))
 	$(call common-addition, ${MAGPIE}, $(if ifeq "${KAFKA_INCLUDE}" "y", "kafka"))
 	$(call common-addition, ${MAGPIE}, $(if ifeq "${ZEPPELIN_INCLUDE}" "y", "zeppelin"))
 	$(call common-addition, ${MAGPIE}, $(if ifeq "${STORM_INCLUDE}" "y", "storm"))
 	$(call common-addition, ${MAGPIE}, $(if ifeq "${TACHYON_INCLUDE}" "y", "tachyon"))
-	$(call common-addition, ${MAGPIE}, zookeeper)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${ZOOKEEPER_INCLUDE}" "y", "zookeeper"))
 	$(call common-addition-end, ${MAGPIE})
 
 # Just Hadoop
