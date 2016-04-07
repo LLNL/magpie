@@ -119,7 +119,7 @@ endef
 # User passes in string of everything they want
 # Perhaps there is a niftier way to do this in sed than what I'm doing, glad
 # to take suggestions.  I couldn't figure out a way to do it in 1 pass.
-define common-additions
+define common-addition
 	for project in hadoop hbase phoenix pig mahout spark kafka zeppelin storm tachyon zookeeper; do \
 		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
@@ -136,8 +136,16 @@ define common-additions
 			sed -i -e "s/@MAGPIE_TESTALL_TYPES_TEMP@/@MAGPIE_TESTALL_TYPES@/" $(1); \
 		fi \
 	done
+endef
+
+define common-addition-end
 	sed -i -e "/@MAGPIE_JOB_TYPES@/d" $(1)
 	sed -i -e "/@MAGPIE_TESTALL_TYPES@/d" $(1)
+endef
+
+define common-additions
+	$(call common-addition, $(1), $(2))
+	$(call common-addition-end, $(1))
 endef
 
 define create-templates
@@ -223,12 +231,7 @@ define create-templates
 	cp magpie-header $(MAGPIE)
 
 # All configuration
-# I am not a Makefile expert, I eventually did many hacks here
-# to get it to do what I wanted.  Perhaps someday I'm automake
-# this or do something smarter.
 	echo "Creating magpie.$(SCHED)"
-	rm -f include_flags_file
-	touch include_flags_file
 	cat 	magpie-header \
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
@@ -241,51 +244,53 @@ define create-templates
 
 		if test "${UDA_INCLUDE}" = "y"; then \
 			cat magpie-uda >> $(MAGPIE); \
-			echo -n "uda " >> include_flags_file; \
 		fi
 
 	cat	magpie-pig >> $(MAGPIE)
 
 		if test "${MAHOUT_INCLUDE}" = "y"; then \
 			cat magpie-mahout >> $(MAGPIE); \
-			echo -n "mahout " >> include_flags_file; \
 		fi
 
 	cat	magpie-hbase >> $(MAGPIE)
 
 		if test "${PHOENIX_INCLUDE}" = "y"; then \
 			cat magpie-phoenix >> $(MAGPIE); \
-			echo -n "phoenix " >> include_flags_file; \
 		fi
 
 	cat	magpie-spark >> $(MAGPIE)
 
 		if test "${KAFKA_INCLUDE}" = "y"; then \
 			cat magpie-kafka >> $(MAGPIE); \
-			echo -n "kafka " >> include_flags_file; \
 		fi
 
 		if test "${ZEPPELIN_INCLUDE}" = "y"; then \
 			cat magpie-zeppelin >> $(MAGPIE); \
-			echo -n "zeppelin " >> include_flags_file; \
 		fi
 
 		if test "${STORM_INCLUDE}" = "y"; then \
 			cat magpie-storm >> $(MAGPIE); \
-			echo -n "storm " >> include_flags_file; \
 		fi
 
 		if test "${TACHYON_INCLUDE}" = "y"; then \
 			cat magpie-tachyon >> $(MAGPIE); \
-			echo -n "tachyon " >> include_flags_file; \
 		fi
 	cat	magpie-zookeeper \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE})
-	echo "" >> include_flags_file
-	$(eval includeflags := $(shell cat include_flags_file))
-	$(call common-additions, ${MAGPIE}, hadoop pig spark hbase zookeeper $(includeflags))
+	$(call common-addition, ${MAGPIE}, hadoop)
+	$(call common-addition, ${MAGPIE}, hbase)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${PHOENIX_INCLUDE}" "y", "phoenix"))
+	$(call common-addition, ${MAGPIE}, pig)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${MAHOUT_INCLUDE}" "y", "mahout"))
+	$(call common-addition, ${MAGPIE}, spark)
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${KAFKA_INCLUDE}" "y", "kafka"))
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${ZEPPELIN_INCLUDE}" "y", "zeppelin"))
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${STORM_INCLUDE}" "y", "storm"))
+	$(call common-addition, ${MAGPIE}, $(if ifeq "${TACHYON_INCLUDE}" "y", "tachyon"))
+	$(call common-addition, ${MAGPIE}, zookeeper)
+	$(call common-addition-end, ${MAGPIE})
 
 # Just Hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
@@ -303,7 +308,6 @@ define create-templates
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP})
-	echo $(INCLUDES_STRING)
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 
 # Hadoop with UDA
@@ -489,4 +493,3 @@ define create-templates
 	$(call common-substitution, ${MAGPIE_STORM})
 	$(call common-additions, ${MAGPIE_STORM}, storm zookeeper)
 endef
-
