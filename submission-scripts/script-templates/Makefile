@@ -237,7 +237,20 @@ define create-templates
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 	cp magpie-header $(MAGPIE)
 
-# All configuration
+	$(call create-all)
+	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
+	$(if $(findstring "${HADOOP_INCLUDE}${UDA_INCLUDE}", "yy"), $(call create-hadoop-uda))
+	$(if $(findstring "${HADOOP_INCLUDE}${PIG_INCLUDE}", "yy"), $(call create-hadoop-pig))
+	$(if $(findstring "${HADOOP_INCLUDE}${MAHOUT_INCLUDE}", "yy"), $(call create-hadoop-mahout))
+	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hadoop-hbase-zookeeper))
+	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hadoop-hbase-phoenix-zookeeper))
+	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-hadoop-spark))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-hadoop-spark-tachyon))
+	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm-zookeeper))
+endef
+
+define create-all
 	echo "Creating magpie.$(SCHED)"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -310,17 +323,6 @@ define create-templates
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${TACHYON_INCLUDE}", "y"), "tachyon"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ZOOKEEPER_INCLUDE}", "y"), "zookeeper"))
 	$(call common-addition-end, ${MAGPIE})
-
-	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
-	$(if $(findstring "${HADOOP_INCLUDE}${UDA_INCLUDE}", "yy"), $(call create-hadoop-uda))
-	$(if $(findstring "${HADOOP_INCLUDE}${PIG_INCLUDE}", "yy"), $(call create-hadoop-pig))
-	$(if $(findstring "${HADOOP_INCLUDE}${MAHOUT_INCLUDE}", "yy"), $(call create-hadoop-mahout))
-	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hadoop-hbase-zookeeper))
-	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hadoop-hbase-phoenix-zookeeper))
-	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
-	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-hadoop-spark))
-	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-hadoop-spark-tachyon))
-	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm-zookeeper))
 endef
 
 define create-hadoop
