@@ -79,22 +79,30 @@ LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun
 
-clean:
-	rm -f ../script-lsf-mpirun/magpie.lsf-mpirun*
-	rm -f ../script-msub-slurm-srun/magpie.msub-slurm*
-	rm -f ../script-msub-torque-pdsh/magpie.msub-torque*
+clean-sbatch-srun:
 	rm -f ../script-sbatch-srun/magpie.sbatch-srun*
 
-sbatch-srun:
+clean-msub-slurm-srun:
+	rm -f ../script-msub-slurm-srun/magpie.msub-slurm*
+
+clean-msub-torque-pdsh:
+	rm -f ../script-msub-torque-pdsh/magpie.msub-torque*
+
+clean-lsf-mpirun:
+	rm -f ../script-lsf-mpirun/magpie.lsf-mpirun*
+
+clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun
+
+sbatch-srun: clean-sbatch-srun
 	$(call create-templates,$@,srun)
 
-msub-slurm-srun:
+msub-slurm-srun: clean-msub-slurm-srun
 	$(call create-templates,$@,srun)
 
-msub-torque-pdsh:
+msub-torque-pdsh: clean-msub-torque-pdsh
 	$(call create-templates,$@,pdsh)
 
-lsf-mpirun:
+lsf-mpirun: clean-lsf-mpirun
 	$(call create-templates,$@,mpirun)
 
 define common-substitution
