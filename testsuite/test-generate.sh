@@ -252,6 +252,8 @@ GenerateSparkDependencyTests
 GenerateStormDependencyTests
 GenerateKafkaDependencyTests
 
+GenerateDefaultRegressionTests
+
 # Seds for all tests
 
 echo "Finishing up test creation"

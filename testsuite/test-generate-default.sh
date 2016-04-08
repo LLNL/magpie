@@ -238,3 +238,27 @@ GenerateDefaultDependencyTests() {
 	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
 	./magpie.${submissiontype}-spark-with-hdfs-DependencyGlobalOrder1D-hadoop-2.7.0-spark-1.5.0-bin-hadoop2.6-run-sparkwordcount-copy-in
 }
+
+GenerateDefaultRegressionTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Default Regression Tests"
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-whitespace
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop ./magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-dollarsign
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-whitespace
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark ./magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-dollarsign
+
+    # Some job scripts use environment variable, some use command line
+    # options.  So check for quoted situation first.  If no quotes,
+    # add them.
+    sed -i -e 's/\"<my job name>\"/test job/' ./magpie.${submissiontype}*regression-job-name-whitespace
+    sed -i -e 's/<my job name>/\"test job\"/' ./magpie.${submissiontype}*regression-job-name-whitespace
+
+    sed -i -e 's/\"<my job name>\"/test$job/' ./magpie.${submissiontype}*regression-job-name-dollarsign
+    sed -i -e 's/<my job name>/test$job/' ./magpie.${submissiontype}*regression-job-name-dollarsign
+}

@@ -38,6 +38,7 @@ zookeepertests=y
 # dependencytests: check dependencies
 standardtests=y
 dependencytests=y
+regressiontests=y
 
 verboseoutput=n
 
@@ -147,6 +148,10 @@ then
     if [ "${dependencytests}" == "y" ]
     then
 	SubmitDefaultDependencyTests
+    fi
+    if [ "${regressiontests}" == "y" ]
+    then
+	SubmitDefaultRegressionTests
     fi
 fi
 
