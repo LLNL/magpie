@@ -119,3 +119,17 @@ SubmitDefaultDependencyTests() {
 	fi
     fi
 }
+
+SubmitDefaultRegressionTests() {
+    if [ "${hadooptests}" == "y" ]
+    then
+	BasicJobSubmit ./magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-whitespace
+	BasicJobSubmit ./magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-dollarsign
+    fi
+
+    if [ "${sparktests}" == "y" ]
+    then
+	BasicJobSubmit ./magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-whitespace
+	BasicJobSubmit ./magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-dollarsign
+    fi
+}

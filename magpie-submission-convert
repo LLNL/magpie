@@ -34,6 +34,19 @@ Magpie_calc_slurm_magpie_timelimit () {
     fi
 }
 
+Magpie_handle_job_name_corner_cases () {
+    # Handle special corner cases where user's job name may not
+    # play nice, as we use it in file paths and what not
+    if [[ $MAGPIE_JOB_NAME =~ "\$" ]]; then
+	echo "Job name contains dollar sign, internally replacing with underscore" 
+	export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//\$/_}
+    fi
+    if [[ $MAGPIE_JOB_NAME =~ [[:space:]] ]]; then
+	echo "Job name contains whitespace, internally replacing with underscore" 
+	export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//[[:space:]]/_}
+    fi
+}
+
 # slurmsbatch legacy
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]
 then
@@ -49,6 +62,7 @@ then
     else
 	Magpie_calc_slurm_magpie_timelimit
     fi
+    Magpie_handle_job_name_corner_cases
 fi
 
 # msubslurm legacy
@@ -64,6 +78,7 @@ then
     then
 	Magpie_calc_slurm_magpie_timelimit
     fi
+    Magpie_handle_job_name_corner_cases
 fi
 
 # msubtorque legacy
@@ -78,6 +93,7 @@ then
     then
 	export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
     fi
+    Magpie_handle_job_name_corner_cases
 fi
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
@@ -102,5 +118,6 @@ then
         walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
+    Magpie_handle_job_name_corner_cases
 fi
 

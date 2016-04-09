@@ -810,6 +810,10 @@ then
     exit 1
 fi
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
 srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then
