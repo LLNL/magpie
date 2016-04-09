@@ -1,8 +1,9 @@
 magpie 1.70
 -----------
 Handle corner cases where job name contains dollar sign or whitespace.
-Can lead to problems because job name is used internally within Magpie
-for file paths, etc.
+  Can lead to problems because job name is used internally within Magpie
+  for file paths, etc.
+Exit job if an error occurs during magpie-setup phase.
 
 magpie 1.69
 -----------
