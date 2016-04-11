@@ -123,13 +123,39 @@ SubmitDefaultDependencyTests() {
 SubmitDefaultRegressionTests() {
     if [ "${hadooptests}" == "y" ]
     then
-	BasicJobSubmit ./magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-whitespace
-	BasicJobSubmit ./magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-dollarsign
+	BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-dollarsign
     fi
-
+    if [ "${pigtests}" == "y" ]
+    then
+	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-job-name-dollarsign
+    fi
+    if [ "${mahouttests}" == "y" ]
+    then
+	BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-regression-job-name-dollarsign
+    fi
+    if [ "${hbasetests}" == "y" ]
+    then
+	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-job-name-dollarsign
+    fi
+    if [ "${phoenixtests}" == "y" ]
+    then
+	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-job-name-dollarsign
+    fi
     if [ "${sparktests}" == "y" ]
     then
-	BasicJobSubmit ./magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-whitespace
-	BasicJobSubmit ./magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-dollarsign
+	BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-regression-job-name-dollarsign
+	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name-dollarsign
+    fi
+    if [ "${stormtests}" == "y" ]
+    then
+	BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-job-name-whitespace
+	BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-job-name-dollarsign
     fi
 }
