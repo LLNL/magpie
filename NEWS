@@ -4,6 +4,9 @@ Handle corner cases where job name contains dollar sign or whitespace.
   Can lead to problems because job name is used internally within Magpie
   for file paths, etc.
 Exit job if an error occurs during magpie-setup phase.
+Adjust defaults of some projects based on dependency requirements.
+- default of Spark w/ HDFS to Hadoop 2.6.4
+- default of Phoenix w/ Hbase to Hbase 1.1.4
 
 magpie 1.69
 -----------

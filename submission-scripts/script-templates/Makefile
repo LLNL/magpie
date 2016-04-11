@@ -60,7 +60,9 @@ PIG_VERSION_DEFAULT=0.15.0
 MAHOUT_VERSION_DEFAULT=0.11.2
 HBASE_VERSION_DEFAULT=1.2.0
 PHOENIX_VERSION_DEFAULT=4.6.0-HBase-1.1
+PHOENIX_HBASE_VERSION_DEFAULT=1.1.4
 SPARK_VERSION_DEFAULT=1.6.1-bin-hadoop2.6
+SPARK_HADOOP_VERSION_DEFAULT=2.6.4
 KAFKA_VERSION_DEFAULT=2.11-0.9.0.0
 STORM_VERSION_DEFAULT=0.10.0
 ZOOKEEPER_VERSION_DEFAULT=3.4.8
@@ -463,6 +465,7 @@ define create-hadoop-hbase-phoenix-zookeeper
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
+	sed -i -e "s/HBASE_VERSION=\"\(.*\)\"/HBASE_VERSION=\"$(PHOENIX_HBASE_VERSION_DEFAULT)\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 endef
 
 define create-spark
@@ -501,6 +504,7 @@ define create-hadoop-spark
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, spark)
+	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_HDFS)
 endef
 
 define create-hadoop-spark-tachyon
@@ -525,6 +529,7 @@ define create-hadoop-spark-tachyon
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, spark tachyon)
+	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 endef
 
 define create-storm-zookeeper
