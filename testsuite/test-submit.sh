@@ -145,10 +145,10 @@ then
     then
 	SubmitDefaultStandardTests
     fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitDefaultDependencyTests
-    fi
+    # if [ "${dependencytests}" == "y" ]
+    # then
+    # 	SubmitDefaultDependencyTests
+    # fi
     if [ "${regressiontests}" == "y" ]
     then
 	SubmitDefaultRegressionTests

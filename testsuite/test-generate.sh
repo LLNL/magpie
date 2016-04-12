@@ -242,7 +242,6 @@ GenerateStormStandardTests
 GenerateKafkaStandardTests
 GenerateZookeeperStandardTests
 
-GenerateDefaultDependencyTests
 GenerateHadoopDependencyTests
 GeneratePigDependencyTests
 GenerateMahoutDependencyTests
