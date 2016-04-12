@@ -59,12 +59,15 @@ HADOOP_VERSION_DEFAULT=2.7.2
 PIG_VERSION_DEFAULT=0.15.0
 MAHOUT_VERSION_DEFAULT=0.11.2
 HBASE_VERSION_DEFAULT=1.2.0
+HBASE_ZOOKEEPER_VERSION_DEFAULT=3.4.8
 PHOENIX_VERSION_DEFAULT=4.6.0-HBase-1.1
 PHOENIX_HBASE_VERSION_DEFAULT=1.1.4
+PHOENIX_ZOOKEEPER_VERSION_DEFAULT=3.4.8
 SPARK_VERSION_DEFAULT=1.6.1-bin-hadoop2.6
 SPARK_HADOOP_VERSION_DEFAULT=2.6.4
 KAFKA_VERSION_DEFAULT=2.11-0.9.0.0
 STORM_VERSION_DEFAULT=0.10.0
+STORM_ZOOKEEPER_VERSION_DEFAULT=3.4.8
 ZOOKEEPER_VERSION_DEFAULT=3.4.8
 TACHYON_VERSION_DEFAULT=0.6.1
 ZEPPELIN_VERSION_DEFAULT=0.5.6
@@ -439,6 +442,7 @@ define create-hadoop-hbase-zookeeper
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hbase zookeeper)
+	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(HBASE_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_HBASE_WITH_HDFS)
 endef
 
 define create-hadoop-hbase-phoenix-zookeeper 
@@ -466,6 +470,7 @@ define create-hadoop-hbase-phoenix-zookeeper
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
 	sed -i -e "s/HBASE_VERSION=\"\(.*\)\"/HBASE_VERSION=\"$(PHOENIX_HBASE_VERSION_DEFAULT)\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
+	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(PHOENIX_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 endef
 
 define create-spark
@@ -547,4 +552,5 @@ define create-storm-zookeeper
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
 	$(call common-substitution, ${MAGPIE_STORM})
 	$(call common-additions, ${MAGPIE_STORM}, storm zookeeper)
+	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(STORM_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_STORM)
 endef
