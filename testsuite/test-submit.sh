@@ -33,6 +33,10 @@ stormtests=y
 kafkatests=y
 zookeepertests=y
 
+# defaultonly runs only default tests and nothing else.
+# Good for sanity tests on changes but not substantialy rigorous
+defaultonly=n
+
 # Toggle y/n for different test types
 # standardtests: not using MAGPIE_NO_LOCAL_DIR
 # dependencytests: check dependencies
@@ -153,6 +157,11 @@ then
     then
 	SubmitDefaultRegressionTests
     fi
+fi
+
+if [ "${defaultonly}" == "y" ]
+then
+    exit 0
 fi
 
 if [ "${hadooptests}" == "y" ]
