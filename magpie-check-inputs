@@ -1380,6 +1380,12 @@ then
 	exit 1
     fi
 
+    if [ "${MAGPIE_PYTHON}X" == "X" ]
+    then
+	echo "MAGPIE_PYTHON must be set for Spark"
+	exit 1
+    fi
+
     if [ "${SPARK_VERSION}X" == "X" ]
     then
 	echo "SPARK_VERSION must be set to run Spark"
