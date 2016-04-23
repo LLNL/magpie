@@ -29,9 +29,9 @@ SubmitSparkStandardTests() {
     do
 	for hadoopversion in 2.2.0
 	do
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
-            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-copy-in
 	done
     done
     
@@ -39,13 +39,13 @@ SubmitSparkStandardTests() {
     do
 	for hadoopversion in 2.4.0
 	do
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
-            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-copy-in
 
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
-            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in-no-local-dir
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
+            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-copy-in-no-local-dir
 	done
     done
     
@@ -53,13 +53,13 @@ SubmitSparkStandardTests() {
     do
 	for hadoopversion in 2.6.0
 	do
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
-            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
+            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-copy-in
 
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
-            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
-            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-${sparkversion}-run-sparkwordcount-copy-in-no-local-dir
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
+            BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
+            BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-copy-in-no-local-dir
 	done
     done
 }
