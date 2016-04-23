@@ -49,6 +49,7 @@ LOCAL_DRIVE_PREFIX=/ssd/$${USER}
 REMOTE_CMD_DEFAULT=ssh
 
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0-oracle.x86_64/
+PYTHON_DEFAULT=/usr/bin/python
 
 HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
@@ -137,6 +138,7 @@ define common-substitution
 		sed -i -e "s/^# export MAGPIE_REMOTE_CMD/export MAGPIE_REMOTE_CMD/g" $(1); \
 	fi
 	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
+	sed -i -e 's;PYTHONDEFAULT;$(PYTHON_DEFAULT);g' $(1)
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
 endef
 
@@ -268,7 +270,8 @@ define create-all
 	cat 	magpie-header \
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration > $(MAGPIE)
+		magpie-general-configuration \
+		magpie-general-configuration-python > $(MAGPIE)
 
 		if test "${HADOOP_INCLUDE}" = "y"; then \
 			cat magpie-hadoop-core magpie-hadoop-job \
@@ -479,6 +482,7 @@ define create-spark
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
+		magpie-general-configuration-python \
 		magpie-spark \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK)
@@ -495,6 +499,7 @@ define create-hadoop-spark
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
+		magpie-general-configuration-python \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -518,6 +523,7 @@ define create-hadoop-spark-tachyon
 		magpie-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
+		magpie-general-configuration-python \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \

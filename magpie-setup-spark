@@ -427,6 +427,7 @@ post_log4jproperties=${SPARK_CONF_DIR}/log4j.properties
 #
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+pysparkpythonsubst=`echo "${MAGPIE_PYTHON}" | sed "s/\\//\\\\\\\\\//g"`
 sparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 sparkpiddirsubst=`echo "${SPARK_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
@@ -449,6 +450,7 @@ sed -i \
     -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
     -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
     -e "s/SPARKDAEMONJAVAOPTS/${extrasparkdaemonjavaoptssubst}/g" \
+    -e "s/SPARKPYSPARKPYTHON/${pysparkpythonsubst}/g" \
     ${post_sparkenvsh}
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
