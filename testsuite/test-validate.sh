@@ -465,6 +465,24 @@ then
     done
 fi
 
+if ls ${outputprefix}*run-pysparkwordcount* >& /dev/null
+then
+    for file in `ls ${outputprefix}*run-pysparkwordcount*`
+    do
+	num=`grep -e "d: 4" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+	
+	test_spark_shutdown $file
+
+	if [ "${verboseoutput}" = "y" ]
+	then
+	    echo "File ${file} run through validation"
+	fi
+    done
+fi
+
 if ls ${outputprefix}*run-kafkaperformance* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-kafkaperformance*`
