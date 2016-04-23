@@ -264,6 +264,15 @@ then
     fi
 fi
 
+if [ "${MAGPIE_PYTHON}X" != "X" ]
+then
+    if [ ! -x ${MAGPIE_PYTHON} ]
+    then
+	echo "MAGPIE_PYTHON does not point to an executable"
+	exit 1
+    fi
+fi
+
 nodecount=${MAGPIE_NODE_COUNT}
 
 # nodecountmaster is a counter to count the master only once

@@ -223,6 +223,14 @@ export MAGPIE_JOB_TYPE="spark"
 export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
 
 ############################################################################
+# General Configuration
+############################################################################
+
+# MAGPIE_PYTHON path used for:
+# - Spark PySpark path
+export MAGPIE_PYTHON="/usr/bin/python"
+
+############################################################################
 # Hadoop Core Configurations
 ############################################################################
 
