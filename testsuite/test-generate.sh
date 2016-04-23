@@ -294,6 +294,7 @@ then
 
     sed -i -e "s/slurm-%j.out/slurm-run-sparkpi-%j.out/" magpie.${submissiontype}*run-sparkpi*
     sed -i -e "s/slurm-%j.out/slurm-run-sparkwordcount-%j.out/" magpie.${submissiontype}*run-sparkwordcount*
+    sed -i -e "s/slurm-%j.out/slurm-run-pysparkwordcount-%j.out/" magpie.${submissiontype}*run-pysparkwordcount*
     sed -i -e "s/slurm-run-sparkwordcount-%j.out/slurm-run-sparkwordcount-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-sparkwordcount*
 
     sed -i -e "s/slurm-run-sparkwordcount-%j.out/slurm-run-sparkwordcount-rawnetworkfs-%j.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*
@@ -347,6 +348,7 @@ then
 
     sed -i -e "s/moab-%j.out/moab-run-sparkpi-%j.out/" magpie.${submissiontype}*run-sparkpi*
     sed -i -e "s/moab-%j.out/moab-run-sparkwordcount-%j.out/" magpie.${submissiontype}*run-sparkwordcount*
+    sed -i -e "s/moab-%j.out/moab-run-pysparkwordcount-%j.out/" magpie.${submissiontype}*run-pysparkwordcount*
     sed -i -e "s/moab-run-sparkwordcount-%j.out/moab-run-sparkwordcount-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-sparkwordcount*
 
     sed -i -e "s/moab-run-sparkwordcount-%j.out/moab-run-sparkwordcount-rawnetworkfs-%j.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*
@@ -401,6 +403,7 @@ then
 
     sed -i -e "s/lsf-%J.out/lsf-run-sparkpi-%J.out/" magpie.${submissiontype}*run-sparkpi*
     sed -i -e "s/lsf-%J.out/lsf-run-sparkwordcount-%J.out/" magpie.${submissiontype}*run-sparkwordcount*
+    sed -i -e "s/lsf-%J.out/lsf-run-pysparkwordcount-%J.out/" magpie.${submissiontype}*run-pysparkwordcount*
     sed -i -e "s/lsf-run-sparkwordcount-%J.out/lsf-run-sparkwordcount-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-sparkwordcount*
 
     sed -i -e "s/lsf-run-sparkwordcount-%J.out/lsf-run-sparkwordcount-rawnetworkfs-%J.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*

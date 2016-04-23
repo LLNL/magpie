@@ -4,20 +4,25 @@ SubmitSparkStandardTests() {
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
+	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
     done
     
     for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
-
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
+
+	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
+	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount-no-local-dir
     done
     
     for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
     do
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
-
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
+
+	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
+	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount-no-local-dir
     done
     
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
