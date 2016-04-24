@@ -601,6 +601,23 @@ blocks.  The same job may create a single 1 terabyte file under access
 to the Posix FS directly.  In the case of Lustre, striping of the file
 must be handled by the user to ensure satisfactory performance.
 
+Hadoop Troubleshooting
+----------------------
+
+1) What does "Waiting 30 more seconds for namenode to exit safe mode"
+   mean?
+
+   When HDFS (regardless if it is HDFS over Lustre or otherwise) is
+   being brought up, the HDFS namenode must communicate with all
+   datanodes to discover what blocks of data are available.  This
+   process can take awhile if you have a very large amount of data in
+   HDFS.
+
+   In rarer circumstances, it can be due to a bug/error in which the
+   HDFS namenode has not come up at all (i.e. the HDFS namenode isn't
+   running) or a large number of datanodes have not come up due to
+   errors.  Check the appropriate log files to debug further. 
+
 Hadoop Advanced Usage
 ---------------------
 

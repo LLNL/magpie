@@ -375,6 +375,22 @@ Spark was added/tested against spark-0.9.1 and spark-1.0.0.  Please
 see testsuite to see all versions of Spark that Magpie has been
 atleast nominally tested with.
 
+Spark Troubleshooting
+---------------------
+
+1) What does the error "Initial job has not accepted any resources;
+   check your cluster UI to ensure that workers are registered and have
+   sufficient resources" mean?
+
+   This means that you are trying to submit a Spark job that desires
+   more resources than you have allocated.  For example, you may be
+   requesting more memory or CPUs than Spark can schedule.
+
+   Incorrect settings may occur in several ways, such as the
+   --executor-memory or --executor-cores options in spark-submit or
+   the SPARK_JOB_MEMORY environment variable in the job submission
+   script.
+
 Spark Advanced Usage
 ---------------------
 
