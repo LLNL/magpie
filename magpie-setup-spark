@@ -427,10 +427,16 @@ post_log4jproperties=${SPARK_CONF_DIR}/log4j.properties
 #
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-pysparkpythonsubst=`echo "${MAGPIE_PYTHON}" | sed "s/\\//\\\\\\\\\//g"`
 sparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 sparkpiddirsubst=`echo "${SPARK_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 workerdirectorysubst=`echo "${workerdirectory}" | sed "s/\\//\\\\\\\\\//g"`
+
+if [ "${MAGPIE_PYTHON}X" == "X" ]
+then
+    export MAGPIE_PYTHON="/usr/bin/python"
+    echo "MAGPIE_PYTHON not set, assuming Python at /usr/bin/python"
+fi
+pysparkpythonsubst=`echo "${MAGPIE_PYTHON}" | sed "s/\\//\\\\\\\\\//g"`
 
 extrasparkdaemonjavaoptssubst=`echo "${extrasparkdaemonjavaopts}" | sed "s/\\//\\\\\\\\\//g"`
 
