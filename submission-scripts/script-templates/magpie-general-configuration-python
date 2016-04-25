@@ -1,7 +1,3 @@
-############################################################################
-# General Configuration
-############################################################################
-
 # MAGPIE_PYTHON path used for:
 # - Spark PySpark path
 export MAGPIE_PYTHON="PYTHONDEFAULT"
