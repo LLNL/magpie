@@ -33,6 +33,34 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
+yarn_job_kill_handler () {
+    childpid=$1
+
+    echo "Received interrupt from user, killing yarn jobs and script"
+
+    prepjobs=`${HADOOP_HOME}/bin/mapred job -list 2> /dev/null | grep PREP | awk '{print $1}'`
+
+    for jobid in $prepjobs
+    do
+	echo "Killing Yarn job id ${jobid}"
+	command="${HADOOP_HOME}/bin/mapred job -kill ${jobid}"
+	echo "Running $command" >&2
+	$command
+    done
+
+    runningjobs=`${HADOOP_HOME}/bin/mapred job -list 2> /dev/null | grep RUNNING | awk '{print $1}'`
+
+    for jobid in $runningjobs
+    do
+	echo "Killing Yarn job id ${jobid}"
+	command="${HADOOP_HOME}/bin/mapred job -kill ${jobid}"
+	echo "Running $command" >&2
+	$command
+    done
+
+    kill -s 9 ${childpid}
+}
+
 if [ "$1X" == "X" ]
 then
     echo "Internal error - magpie-run-job-wait-mode, first argument unset"
@@ -97,6 +125,20 @@ then
 	echo "* Warning: killing early may not kill jobs submitted to an internally"
 	echo "* managed scheduler within Magpie.  The job will be canceled during teardown"
 	echo "* of daemons.  Extraneous error messages from your job may occur until then."
+
+	# We use SIGUSR1 and SIGUSR2 above & below.  Signal 28, SIGWINCH seems a good choice
+	# to use.
+	if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	then
+	    echo "*"
+	    echo "* Magpie is aware that Yarn has been launched.  If user wishes to"
+	    echo "* kill all currently submitted Yarn jobs in the PREP or" 
+	    echo "* RUNNING state to be killed before killing the job, run:"
+	    echo "*"
+	    echo "* ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 28 ${mypid}"
+
+	    trap "yarn_job_kill_handler ${childpid}" 28
+	fi
     fi
     echo "*******************************************************"
 
