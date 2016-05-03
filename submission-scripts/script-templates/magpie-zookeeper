@@ -50,7 +50,7 @@ export ZOOKEEPER_VERSION="ZOOKEEPERVERSIONDEFAULT"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export ZOOKEEPER_HOME="PROJECTDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
+export ZOOKEEPER_HOME="ZOOKEEPERDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
 
 # Directory where Zookeeper configuration templates are stored
 #

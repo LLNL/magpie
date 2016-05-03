@@ -27,7 +27,7 @@ export PIG_VERSION="PIGVERSIONDEFAULT"
 #
 # Ensure the build matches the Hadoop version this will run against.
 #
-export PIG_HOME="PROJECTDIRPREFIX/pig-${PIG_VERSION}"
+export PIG_HOME="PIGDIRPREFIX/pig-${PIG_VERSION}"
 
 # Directory where Pig configuration templates are stored
 #

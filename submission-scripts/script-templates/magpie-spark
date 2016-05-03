@@ -19,7 +19,7 @@ export SPARK_VERSION="SPARKVERSIONDEFAULT"
 #
 # Ensure the build matches the Hadoop/HDFS version this will run against.
 #
-export SPARK_HOME="PROJECTDIRPREFIX/spark-${SPARK_VERSION}"
+export SPARK_HOME="SPARKDIRPREFIX/spark-${SPARK_VERSION}"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your

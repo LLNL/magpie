@@ -30,7 +30,7 @@ export TACHYON_VERSION="TACHYONVERSIONDEFAULT"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export TACHYON_HOME="PROJECTDIRPREFIX/tachyon-${TACHYON_VERSION}"
+export TACHYON_HOME="TACHYONDIRPREFIX/tachyon-${TACHYON_VERSION}"
 
 # Directory where Tachyon configuration templates are stored
 #
