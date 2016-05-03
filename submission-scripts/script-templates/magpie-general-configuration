@@ -2,6 +2,6 @@
 # General Configuration
 ############################################################################
 
-# Necessary for Hadoop, Hbase, Pig, and Zookeeper
+# Necessary for most projects
 export JAVA_HOME="JAVADEFAULT"
 
