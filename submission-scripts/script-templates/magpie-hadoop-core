@@ -42,7 +42,7 @@ export HADOOP_VERSION="HADOOPVERSIONDEFAULT"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export HADOOP_HOME="PROJECTDIRPREFIX/hadoop-${HADOOP_VERSION}"
+export HADOOP_HOME="HADOOPDIRPREFIX/hadoop-${HADOOP_VERSION}"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your

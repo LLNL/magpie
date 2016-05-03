@@ -10,14 +10,14 @@ export HADOOP_UDA_SETUP=no
 
 # Specify UDA jar
 #
-export HADOOP_UDA_JAR="PROJECTDIRPREFIX/uda/uda-hadoop-2.x.jar"
+export HADOOP_UDA_JAR="UDADIRPREFIX/uda/uda-hadoop-2.x.jar"
 
 # Specify UDA shared object file
 #
 # Does not need to be specified, but if it is not installed in a
 # common library path (e.g. /usr/lib), specify the path.
 #
-# export HADOOP_UDA_LIBPATH="PROJECTDIRPREFIX/uda/lib/"
+# export HADOOP_UDA_LIBPATH="UDADIRPREFIX/uda/lib/"
 
 # Specify RDMA buffer size
 #
