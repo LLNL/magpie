@@ -537,6 +537,7 @@ then
 	    echo "* To run pig scripts:"
 	    echo "*"
 	    echo "* cd $PIG_HOME"
+	    echo "*"
 	    echo "* ${pigcmdprefix}/pig ..."
 	fi
  	if [ "${MAHOUT_SETUP}" == "yes" ] && [ "${MAHOUT_MODE}" == "interactive" ]
@@ -545,6 +546,7 @@ then
 	    echo "* To run mahout:"
 	    echo "*"
 	    echo "* cd $MAHOUT_HOME"
+	    echo "*"
 	    echo "* ${mahoutcmdprefix}/mahout ..."
 	fi
 	if [ "${HADOOP_MODE}" == "setuponly" ]
