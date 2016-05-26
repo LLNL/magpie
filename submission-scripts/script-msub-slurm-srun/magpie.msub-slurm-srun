@@ -1190,7 +1190,7 @@ export PHOENIX_SETUP=no
 
 # Phoenix Version
 #
-export PHOENIX_VERSION="4.6.0-HBase-1.1"
+export PHOENIX_VERSION="4.7.0-HBase-1.1"
 
 # Path to your Phoenix build/binaries
 #

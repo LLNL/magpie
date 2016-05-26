@@ -6,7 +6,7 @@ GeneratePhoenixStandardTests() {
 
     echo "Making Phoenix Standard Tests"
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
 	for hbaseversion in 1.1.0
 	do
@@ -67,7 +67,7 @@ GeneratePhoenixDependencyTests() {
 
 # Dependency 1 Tests, run after another, HDFS over Lustre / NetworkFS
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
 	for hbaseversion in 1.1.0
 	do
@@ -104,7 +104,7 @@ GeneratePhoenixDependencyTests() {
 
 # Dependency 2 Tests, run after another with hbase, HDFS over Lustre / NetworkFS
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
 	for hbaseversion in 1.1.0
 	do

@@ -162,7 +162,8 @@ Mahout - 0.11.0+, 0.11.1+, 0.11.2+, 0.12.0+, 0.12.1+
 
 UDA/uda-plugin - 3.3.2-0
 
-Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+
+Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+,
+	  4.7.0-Hbase-1.1
 
 Kafka - 2.11-0.9.0.0
 

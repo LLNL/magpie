@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SubmitPhoenixStandardTests() {
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
 	for hbaseversion in 1.1.0
 	do
@@ -35,7 +35,7 @@ SubmitPhoenixStandardTests() {
 }
 
 SubmitPhoenixDependencyTests() {
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
 	for hbaseversion in 1.1.0
 	do
@@ -53,7 +53,7 @@ SubmitPhoenixDependencyTests() {
 	done
     done
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1
+    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
 	for hbaseversion in 1.1.0
 	do
