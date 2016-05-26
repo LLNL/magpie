@@ -1,0 +1,12 @@
+diff -pruN apache-mahout-distribution-0.12.0-orig/examples/bin/cluster-syntheticcontrol.sh apache-mahout-distribution-0.12.0/examples/bin/cluster-syntheticcontrol.sh
+--- apache-mahout-distribution-0.12.0-orig/examples/bin/cluster-syntheticcontrol.sh	2016-04-11 05:21:52.000000000 -0700
++++ apache-mahout-distribution-0.12.0/examples/bin/cluster-syntheticcontrol.sh	2016-05-25 15:07:18.310822000 -0700
+@@ -76,7 +76,7 @@ if [ "$HADOOP_HOME" != "" ] && [ "$MAHOU
+     echo "Uploading Synthetic control data to HDFS"
+     $DFSRM ${WORK_DIR}/testdata
+     $DFS -mkdir ${WORK_DIR}/testdata
+-    $DFS -put ${WORK_DIR}/synthetic_control.data ${WORK_DIR}/testdata
++    $DFS -put ${WORK_DIR}/synthetic_control.data testdata
+     echo "Successfully Uploaded Synthetic control data to HDFS "
+ 
+     ../../bin/mahout org.apache.mahout.clustering.syntheticcontrol."${clustertype}".Job

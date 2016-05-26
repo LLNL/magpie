@@ -1,3 +1,8 @@
+magpie 1.71
+-----------
+Support Mahout 0.12.0, 0.12.1
+Update default Mahout to 0.12.1
+
 magpie 1.70
 -----------
 Handle corner cases where job name contains dollar sign or whitespace.
