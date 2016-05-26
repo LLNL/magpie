@@ -94,6 +94,8 @@ pig_0_15_0=y
 mahout_0_11_0=y
 mahout_0_11_1=y
 mahout_0_11_2=y
+mahout_0_12_0=y
+mahout_0_12_1=y
 hbase_0_98_3_hadoop2=y
 hbase_0_98_9_hadoop2=y
 hbase_0_99_0=y
@@ -605,6 +607,16 @@ fi
 if [ "${mahout_0_11_2}" == "n" ]
 then
     rm -f magpie.${submissiontype}*mahout-0.11.2*
+fi
+
+if [ "${mahout_0_12_0}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*mahout-0.12.0*
+fi
+
+if [ "${mahout_0_12_1}" == "n" ]
+then
+    rm -f magpie.${submissiontype}*mahout-0.12.1*
 fi
 
 if [ "${hbase_0_98_3_hadoop2}" == "n" ]
