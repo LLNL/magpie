@@ -586,6 +586,9 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
+    sparkmaster=spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}
+    sparkmastersubst=`echo "${sparkmaster}" | sed "s/\\//\\\\\\\\\//g"`
+
     if [ "${sparkclasspath}X" != "X" ]
     then
         sparkclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
@@ -621,8 +624,7 @@ then
     extrasparkjavaoptssubst=`echo "${extrasparkjavaopts}" | sed "s/\\//\\\\\\\\\//g"`
 
     sed -i \
-	-e "s/SPARKMASTERNODE/${SPARK_MASTER_NODE}/g" \
-	-e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
+	-e "s/SPARKMASTER/${sparkmastersubst}/g" \
 	-e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
 	-e "s/SPARKSHUFFLEFILEBUFFER/${sparkshufflebuffer}/g" \
 	-e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
