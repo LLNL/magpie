@@ -257,11 +257,7 @@ then
     yarnmincontainer=${reducecontainermb}
 fi
 
-yarnmaxcontainer=8192
-if [ ${mapcontainermb} -gt ${yarnmaxcontainer} ]
-then
-    yarnmaxcontainer=${mapcontainermb}
-fi
+yarnmaxcontainer=${yarnresourcememory}
 
 if [ ${reducecontainermb} -gt ${yarnmaxcontainer} ]
 then
