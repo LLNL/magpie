@@ -279,15 +279,15 @@ define create-templates
 
 	$(call create-all)
 	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
-	$(if $(findstring "${HADOOP_INCLUDE}${UDA_INCLUDE}", "yy"), $(call create-hadoop-uda))
-	$(if $(findstring "${HADOOP_INCLUDE}${PIG_INCLUDE}", "yy"), $(call create-hadoop-pig))
-	$(if $(findstring "${HADOOP_INCLUDE}${MAHOUT_INCLUDE}", "yy"), $(call create-hadoop-mahout))
-	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hadoop-hbase-zookeeper))
-	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hadoop-hbase-phoenix-zookeeper))
+	$(if $(findstring "${HADOOP_INCLUDE}${UDA_INCLUDE}", "yy"), $(call create-hadoop-with-uda))
+	$(if $(findstring "${HADOOP_INCLUDE}${PIG_INCLUDE}", "yy"), $(call create-hadoop-and-pig))
+	$(if $(findstring "${HADOOP_INCLUDE}${MAHOUT_INCLUDE}", "yy"), $(call create-hadoop-and-mahout))
+	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hbase-with-hdfs))
+	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hbase-with-hdfs-with-phoenix))
 	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
-	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-hadoop-spark))
-	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-hadoop-spark-tachyon))
-	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm-zookeeper))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-hdfs))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-spark-with-tachyon-and-hdfs))
+	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
 endef
 
 define create-all
@@ -385,7 +385,7 @@ define create-hadoop
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 endef
 
-define create-hadoop-uda
+define create-hadoop-with-uda
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -405,7 +405,7 @@ define create-hadoop-uda
 	$(call common-additions, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
 endef
 
-define create-hadoop-pig
+define create-hadoop-and-pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -427,7 +427,7 @@ define create-hadoop-pig
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 endef
 
-define create-hadoop-mahout
+define create-hadoop-and-mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -449,7 +449,7 @@ define create-hadoop-mahout
 	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 endef
 
-define create-hadoop-hbase-zookeeper
+define create-hbase-with-hdfs
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -473,7 +473,7 @@ define create-hadoop-hbase-zookeeper
 	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(HBASE_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_HBASE_WITH_HDFS)
 endef
 
-define create-hadoop-hbase-phoenix-zookeeper 
+define create-hbase-with-hdfs-with-phoenix 
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -518,7 +518,7 @@ define create-spark
 	$(call common-additions, ${MAGPIE_SPARK}, spark)
 endef
 
-define create-hadoop-spark
+define create-spark-with-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -542,7 +542,7 @@ define create-hadoop-spark
 	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_HDFS)
 endef
 
-define create-hadoop-spark-tachyon
+define create-spark-with-tachyon-and-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
@@ -568,7 +568,7 @@ define create-hadoop-spark-tachyon
 	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 endef
 
-define create-storm-zookeeper
+define create-storm
 	echo "Creating magpie.$(SCHED)-storm"
 	cat 	magpie-header \
 		magpie-$(SCHED) \
