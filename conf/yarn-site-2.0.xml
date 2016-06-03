@@ -62,6 +62,31 @@
 </property>
 
 <property>
+  <description>The minimum allocation for every container request at the RM,
+  in terms of virtual CPU cores. Requests lower than this won't take effect,
+  and the specified value will get allocated the minimum.</description>
+  <name>yarn.scheduler.minimum-allocation-vcores</name>
+  <value>1</value>
+</property>
+
+<property>
+  <description>The maximum allocation for every container request at the RM,
+  in terms of virtual CPU cores. Requests higher than this won't take effect,
+  and will get capped to this value.</description>
+  <name>yarn.scheduler.maximum-allocation-vcores</name>
+  <value>YARNRESROUCECPUVCORES</value>
+</property>
+
+<property>
+  <description>Number of vcores that can be allocated
+  for containers. This is used by the RM scheduler when allocating
+  resources for containers. This is not used to limit the number of
+  physical cores used by YARN containers.</description>
+  <name>yarn.nodemanager.resource.cpu-vcores</name>
+  <value>YARNRESROUCECPUVCORES</value>
+</property>
+
+<property>
   <name>yarn.nodemanager.aux-services</name>
   <value>YARNAUXSERVICES</value>
 </property>

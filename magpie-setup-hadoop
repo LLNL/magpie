@@ -1130,6 +1130,7 @@ then
 	-e "s/YARNLOCALIZERADDRESS/${YARN_NODEMANAGER_LOCALIZER_ADDRESS}/g" \
 	-e "s/YARNNODEMANAGERWEBAPPADDRESS/${YARN_NODEMANAGER_WEBAPP_ADDRESS}/g" \
 	-e "s/YARNDEFAULTUSER/${USER}/g" \
+	-e "s/YARNRESROUCECPUVCORES/${proccount}/g" \
 	${post_yarnsitexml}
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
