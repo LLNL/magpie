@@ -1,0 +1,10 @@
+# Misc Test Files
+testsuite/magpie-test.log*
+testsuite/magpie.sbatch-srun*
+testsuite/slurm-*.out
+
+# # Misc Created Temp Files
+submission-scripts/script-templates/magpie-hadoop-filesystem-substitution
+submission-scripts/script-templates/magpie-magpie-customizations-substitution
+submission-scripts/script-templates/magpie-run-job-header-substitution
+
