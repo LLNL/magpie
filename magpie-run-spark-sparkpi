@@ -48,7 +48,12 @@ cd ${SPARK_HOME}
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
     # For some reason need to set MASTER environment variable for run-example, makes no sense
-    export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    if [ "${SPARK_USE_YARN}" == "yes" ]
+    then
+	export MASTER="yarn-client"
+    else
+	export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    fi
     command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
 else
     command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"

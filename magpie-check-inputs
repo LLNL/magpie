@@ -1518,6 +1518,29 @@ then
 	fi
     fi
 
+    if [ "${SPARK_USE_YARN}X" != "X" ] \
+	&& ( [ "${SPARK_USE_YARN}" != "yes" ] && [ "${SPARK_USE_YARN}" != "no" ] )
+    then
+	echo "SPARK_USE_YARN must be set to yes or no"
+	exit 1
+    fi
+
+    if [ "${SPARK_USE_YARN}" == "yes" ]
+    then
+	if [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+	then
+	    echo "SPARK_USE_YARN set to '${SPARK_USE_YARN}' but HADOOP_SETUP_TYPE set to '${HADOOP_SETUP_TYPE}'"
+	    echo "HADOOP_SETUP_TYPE must be set to 'MR2'"
+	    exit 1
+	fi
+
+	if ! echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+	then
+	    echo "SPARK_USE_YARN only works with SPARK_VERSION >= 1.0.0"
+	    exit 1
+	fi
+    fi
+
     if ([ "${SPARK_MODE}" == "sparkpi" ] \
 	|| [ "${SPARK_MODE}" == "sparkwordcount" ] \
 	|| [ "${SPARK_MODE}" == "script" ]) \

@@ -95,6 +95,13 @@ else
     sparkmem=${workermemory}
 fi
 
+# Need to calculate in overhead appropriately
+if [ "${SPARK_USE_YARN}" == "yes" ]
+then
+    sparkmemoverhead=`expr ${sparkmem} \/ 10`
+    sparkmem=`expr ${sparkmem} - ${sparkmemoverhead}`
+fi
+
 if [ "${SPARK_DRIVER_MEMORY}X" != "X" ]
 then
     sparkdrivermemory=${SPARK_DRIVER_MEMORY}
@@ -409,10 +416,16 @@ then
     pre_sparkdefaultsconf_tachyon=${sparkconffiledir}/spark-defaults.conf-tachyon
 fi
 
+if [ "${SPARK_USE_YARN}" == "yes" ]
+then
+    pre_sparkdefaultsconf_yarn=${sparkconffiledir}/spark-defaults.conf-yarn
+fi
+
 if [ ! -f "${pre_sparkenvsh}" ] \
     || [ ! -f "${pre_sparkdefaultsconf}" ] \
     || [ ! -f "${pre_log4jproperties}" ] \
-    || ( [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ] && [ ! -f "${pre_sparkdefaultsconf_tachyon}" ] )
+    || ( [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ] && [ ! -f "${pre_sparkdefaultsconf_tachyon}" ] ) \
+    || ( [ "${pre_sparkdefaultsconf_yarn}X" != "X" ] && [ ! -f "${pre_sparkdefaultsconf_yarn}" ] )
 then
     echo "Missing Spark configuration files in ${sparkconffiledir}"
     exit 1
@@ -458,6 +471,16 @@ sed -i \
     -e "s/SPARKDAEMONJAVAOPTS/${extrasparkdaemonjavaoptssubst}/g" \
     -e "s/SPARKPYSPARKPYTHON/${pysparkpythonsubst}/g" \
     ${post_sparkenvsh}
+
+# Comment out a few lines we don't need if using Yarn
+if [ "${SPARK_USE_YARN}" == "yes" ]
+then
+    sed -i \
+	-e "s/export SPARK_MASTER_PORT/# export SPARK_MASTER_PORT/g" \
+	-e "s/export SPARK_MASTER_WEBUI_PORT/# export SPARK_MASTER_WEBUI_PORT/g" \
+	-e "s/export SPARK_WORKER_WEBUI_PORT/# export SPARK_WORKER_WEBUI_PORT/g" \
+	${post_sparkenvsh}
+fi
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
 
@@ -586,7 +609,12 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    if [ "${SPARK_USE_YARN}" == "yes" ]
+    then
+	sparkmaster="yarn-client"
+    else
+	sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    fi
     sparkmastersubst=`echo "${sparkmaster}" | sed "s/\\//\\\\\\\\\//g"`
 
     if [ "${sparkclasspath}X" != "X" ]
@@ -614,6 +642,13 @@ then
 	sed -i -e "/@TACHYON@/{r ${pre_sparkdefaultsconf_tachyon}" -e "d}" ${post_sparkdefaultsconf}
     else
 	sed -i -e "/@TACHYON@/,+1d" ${post_sparkdefaultsconf}
+    fi
+
+    if [ "${pre_sparkdefaultsconf_yarn}X" != "X" ]
+    then
+	sed -i -e "/@YARN@/{r ${pre_sparkdefaultsconf_yarn}" -e "d}" ${post_sparkdefaultsconf}
+    else
+	sed -i -e "/@YARN@/,+1d" ${post_sparkdefaultsconf}
     fi
 
     # This is not for legitimate security as it can easily be
@@ -644,6 +679,9 @@ then
 	-e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
 	-e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
 	-e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
+	-e "s/SPARKYARNEXECUTORCORES/${workercores}/g" \
+	-e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_SLAVE_COUNT}/g" \
+	-e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
 	${post_sparkdefaultsconf}
     
     # Remove lingering "-bin-hadoop2.4" and similar text"
@@ -679,6 +717,23 @@ then
     else
 	sed -i -e "s/spark.memory.fraction/# spark.memory.fraction/" ${post_sparkdefaultsconf}
 	sed -i -e "s/spark.memory.storageFraction/# spark.memory.storageFraction/" ${post_sparkdefaultsconf}
+    fi
+    
+    # spark authenticate doesn't work with yarn in Spark 1.2 -> 1.5.
+    # Unclear why it works on Spark 1.6.  Not sure of subtlety in
+    # implementation or what.  No apparent bug fix upstream that would
+    # fix this.
+
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${sparktestversion} 1.5
+    vercomp_result=$?
+    # Comment out a few lines we don't need if using Yarn
+    if [ "${SPARK_USE_YARN}" == "yes" ] && [ "${vercomp_result}" != "1" ]
+    then
+	sed -i \
+	    -e "s/spark.authenticate/# spark.authenticate/g" \
+	    ${post_sparkdefaultsconf}
     fi
 fi
 

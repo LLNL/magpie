@@ -872,6 +872,33 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
+# SPARK_USE_YARN
+#
+# By default, Magpie uses the Spark standalone scheduler.  As
+# resources do not need to be competed for in a Magpie environment
+# (you the user have all the resources allocated via the
+# scheduler/resource manager of your cluster), the Spark scheduler is
+# more appropriate for use under Magpie.
+#
+# However, users who may have scripted/coded against Yarn before may
+# find porting into Magpie easier if Yarn was defaulted to instead of
+# the standalone scheduler.  If SPARK_USE_YARN is set to 'yes' below,
+# the following differences will happen within Magpie.
+#
+# - The Spark standalone scheduler will not be launched 
+# - The default Spark master will be set to 'yarn-client' in all
+#   appropriate locations (e.g. spark-defaults.conf)
+# - All situations that would otherwise use the standalone scheduler
+#   (e.g. SPARK_MODE="sparkpi" or SPARK_MODE="script") will now use
+#   Yarn instead.
+# 
+# Make sure that HADOOP_SETUP_TYPE is set to MR2 so Yarn will be
+# launched if you set SPARK_USE_YARN to yes.
+#
+# Defaults to no.
+#
+# export SPARK_USE_YARN=yes
+
 ############################################################################
 # Spark SparkPi Configuration
 ############################################################################
