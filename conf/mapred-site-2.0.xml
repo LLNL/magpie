@@ -107,6 +107,22 @@
 </property>
 
 <property>
+  <name>mapreduce.map.cpu.vcores</name>
+  <value>1</value>
+  <description>The number of virtual cores to request from the scheduler for
+  each map task.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.reduce.cpu.vcores</name>
+  <value>1</value>
+  <description>The number of virtual cores to request from the scheduler for
+  each reduce task.
+  </description>
+</property>
+
+<property>
   <name>mapreduce.job.reduces</name>
   <value>DEFAULTREDUCETASKS</value>
   <description>The default number of reduce tasks per job. Typically set to 99%
