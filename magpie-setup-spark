@@ -586,7 +586,7 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    sparkmaster=spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}
+    sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
     sparkmastersubst=`echo "${sparkmaster}" | sed "s/\\//\\\\\\\\\//g"`
 
     if [ "${sparkclasspath}X" != "X" ]
