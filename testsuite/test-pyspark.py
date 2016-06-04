@@ -6,8 +6,7 @@ import sys
 
 conf = SparkConf()
 
-#sparkmaster="spark://" + os.environ['SPARK_MASTER_NODE'] + ":" + os.environ['SPARK_MASTER_PORT']
-sparkmaster="local"
+sparkmaster="spark://" + os.environ['SPARK_MASTER_NODE'] + ":" + os.environ['SPARK_MASTER_PORT']
 conf.setMaster(sparkmaster)
 conf.setAppName("test")
 
