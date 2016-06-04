@@ -797,46 +797,46 @@ fi
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 then
-    pre_coresitexml=${hadoopconffiledir}/core-site-1.0.xml
-    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-1.0.xml
-    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.0.sh
-    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-1.0.xml
+    pre_coresitexml=${hadoopconffiledir}/core-site-1.X.xml
+    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-1.X.xml
+    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.X.sh
+    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-1.X.xml
     pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
 elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 then
-    pre_coresitexml=${hadoopconffiledir}/core-site-2.0.xml
-    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-2.0.xml
-    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.0.sh
-    pre_mapredenvsh=${hadoopconffiledir}/mapred-env-2.0.sh
-    pre_yarnsitexml=${hadoopconffiledir}/yarn-site-2.0.xml
-    pre_yarnenvsh=${hadoopconffiledir}/yarn-env-2.0.sh
-    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.0.xml
+    pre_coresitexml=${hadoopconffiledir}/core-site-2.X.xml
+    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-2.X.xml
+    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.X.sh
+    pre_mapredenvsh=${hadoopconffiledir}/mapred-env-2.X.sh
+    pre_yarnsitexml=${hadoopconffiledir}/yarn-site-2.X.xml
+    pre_yarnenvsh=${hadoopconffiledir}/yarn-env-2.X.sh
+    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.X.xml
     pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
 
     if [ "${HADOOP_UDA_SETUP}" == "yes" ]
     then
-	pre_mapredsitexml_uda=${hadoopconffiledir}/mapred-site-2.0-uda.xml
-	pre_yarnsitexml_uda=${hadoopconffiledir}/yarn-site-2.0-uda.xml
+	pre_mapredsitexml_uda=${hadoopconffiledir}/mapred-site-2.X-uda.xml
+	pre_yarnsitexml_uda=${hadoopconffiledir}/yarn-site-2.X-uda.xml
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-	pre_coresitexml_intellustre=${hadoopconffiledir}/core-site-2.0-intellustre.xml
+	pre_coresitexml_intellustre=${hadoopconffiledir}/core-site-2.X-intellustre.xml
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
-	pre_coresitexml_magpienetworkfs=${hadoopconffiledir}/core-site-2.0-magpienetworkfs.xml
+	pre_coresitexml_magpienetworkfs=${hadoopconffiledir}/core-site-2.X-magpienetworkfs.xml
     fi
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-	pre_coresitexml_tachyon=${hadoopconffiledir}/core-site-2.0-tachyon.xml
+	pre_coresitexml_tachyon=${hadoopconffiledir}/core-site-2.X-tachyon.xml
     fi
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	pre_coresitexml_viewfsmount=${hadoopconffiledir}/core-site-2.0-viewfsmount.xml
+	pre_coresitexml_viewfsmount=${hadoopconffiledir}/core-site-2.X-viewfsmount.xml
     fi
 else
     echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
@@ -1203,9 +1203,9 @@ then
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.0-hdfs-federation.xml
+	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.X-hdfs-federation.xml
     else
-	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.0-hdfs-namenode.xml
+	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.X-hdfs-namenode.xml
     fi
 
     sed -i -e "/@NAMENODE@/{r ${pre_hdfssitexml_namenode}" -e "d}" ${post_hdfssitexml}
@@ -1220,7 +1220,7 @@ then
 
 	sed -i -e "s/NAMESERVICES/${nameservices}/g" ${post_hdfssitexml}
 
-	pre_hdfssitexml_namenodeinfo=${hadoopconffiledir}/hdfs-site-2.0-hdfs-federation-namenode.xml
+	pre_hdfssitexml_namenodeinfo=${hadoopconffiledir}/hdfs-site-2.X-hdfs-federation-namenode.xml
 
 	# Now fill each additional namenode
 	for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`

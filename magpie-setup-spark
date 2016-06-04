@@ -397,9 +397,9 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    pre_sparkenvsh=${sparkconffiledir}/spark-env-post-1-0.sh
+    pre_sparkenvsh=${sparkconffiledir}/spark-env-1.X.sh
 else
-    pre_sparkenvsh=${sparkconffiledir}/spark-env-pre-1-0.sh
+    pre_sparkenvsh=${sparkconffiledir}/spark-env-0.X.sh
 fi
 pre_sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
 pre_log4jproperties=${sparkconffiledir}/spark.log4j.properties
