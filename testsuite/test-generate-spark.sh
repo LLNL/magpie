@@ -6,6 +6,8 @@ GenerateSparkStandardTests() {
 
     echo "Making Spark Standard Tests"
 
+# Basic tests
+
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
     do
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
@@ -56,6 +58,8 @@ GenerateSparkStandardTests() {
 	    -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pyspark.sh"/' \
 	    magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount*
     done
+
+# Spark w/ HDFS & Rawnetworkfs tests
 
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
     do
