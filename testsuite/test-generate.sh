@@ -264,172 +264,60 @@ echo "Finishing up test creation"
 
 # Names important, will be used in validation
 
+# Replace output filename with common strings so we can do the same
+# search & replace regardless of the submission type.
+
+# achu: I know this is not the most efficient thing to do, but it makes the logic way easier.
+
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
-    sed -i -e "s/slurm-%j.out/slurm-run-hadoopterasort-%j.out/" magpie.${submissiontype}*run-hadoopterasort*
-    sed -i -e "s/slurm-run-hadoopterasort-%j.out/slurm-run-hadoopterasort-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-hadoopterasort*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-scriptteragen-%j.out/" magpie.${submissiontype}-hadoop*run-scriptteragen
-    sed -i -e "s/slurm-%j.out/slurm-run-scriptterasort-%j.out/" magpie.${submissiontype}-hadoop*run-scriptterasort
-    sed -i -e "s/slurm-run-scriptteragen-%j.out/slurm-run-scriptteragen-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptteragen
-    sed -i -e "s/slurm-run-scriptterasort-%j.out/slurm-run-scriptterasort-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptterasort
-
-    sed -i -e "s/slurm-%j.out/slurm-run-hadoopupgradehdfs-%j.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs
-
-    sed -i -e "s/slurm-%j.out/slurm-hdfs-fewer-nodes-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure
-    sed -i -e "s/slurm-%j.out/slurm-hdfs-older-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
-    sed -i -e "s/slurm-%j.out/slurm-hdfs-newer-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
-
-    sed -i -e "s/slurm-%j.out/slurm-hdfs-more-nodes-decommissionhdfsnodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*decommissionhdfsnodes*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-testpig-%j.out/" magpie.${submissiontype}*run-testpig*
-    sed -i -e "s/slurm-%j.out/slurm-run-pigscript-%j.out/" magpie.${submissiontype}*run-pigscript*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-clustersyntheticcontrol-%j.out/" magpie.${submissiontype}*run-clustersyntheticcontrol*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-hbaseperformanceeval-%j.out/" magpie.${submissiontype}*run-hbaseperformanceeval*
-    sed -i -e "s/slurm-run-hbaseperformanceeval-%j.out/slurm-run-hbaseperformanceeval-zookeeper-shared-%j.out/" magpie.${submissiontype}*zookeeper-shared*run-hbaseperformanceeval*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-scripthbasewritedata-%j.out/" magpie.${submissiontype}*run-scripthbasewritedata*
-    sed -i -e "s/slurm-%j.out/slurm-run-scripthbasereaddata-%j.out/" magpie.${submissiontype}*run-scripthbasereaddata*
-    sed -i -e "s/slurm-run-scripthbasereaddata-%j.out/slurm-run-scripthbasereaddata-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scripthbasereaddata*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-phoenixperformanceeval-%j.out/" magpie.${submissiontype}*run-phoenixperformanceeval*
-    sed -i -e "s/slurm-run-phoenixperformanceeval-%j.out/slurm-run-phoenixperformanceeval-zookeeper-shared-%j.out/" magpie.${submissiontype}*zookeeper-shared*run-phoenixperformanceeval*
-
-    sed -i -e "s/slurm-%j.out/slurm-run-sparkpi-%j.out/" magpie.${submissiontype}*run-sparkpi*
-    sed -i -e "s/slurm-%j.out/slurm-run-sparkwordcount-%j.out/" magpie.${submissiontype}*run-sparkwordcount*
-    sed -i -e "s/slurm-%j.out/slurm-run-pysparkwordcount-%j.out/" magpie.${submissiontype}*run-pysparkwordcount*
-    sed -i -e "s/slurm-run-sparkwordcount-%j.out/slurm-run-sparkwordcount-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-sparkwordcount*
-
-    sed -i -e "s/slurm-run-sparkwordcount-%j.out/slurm-run-sparkwordcount-rawnetworkfs-%j.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*
-    sed -i -e "s/slurm-run-sparkwordcount-%j.out/slurm-run-sparkwordcount-rawnetworkfs-more-nodes-%j.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*rawnetworkfs-more-nodes*run-sparkwordcount*
-    
-    sed -i -e "s/slurm-%j.out/slurm-run-stormwordcount-%j.out/" magpie.${submissiontype}*run-stormwordcount*
-    sed -i -e "s/slurm-run-stormwordcount-%j.out/slurm-run-stormwordcount-zookeeper-shared-%j.out/" magpie.${submissiontype}*zookeeper-shared*run-stormwordcount*
-    sed -i -e "s/slurm-%j.out/slurm-run-kafkaperformance-%j.out/" magpie.${submissiontype}*run-kafkaperformance*
-    
-    sed -i -e "s/slurm-%j.out/slurm-run-zookeeperruok-%j.out/" magpie.${submissiontype}*run-zookeeperruok*
-    
-    sed -i -e "s/-%j.out/-Dependency-%j.out/" magpie.${submissiontype}*Dependency*
-
-    sed -i -e "s/<my time in minutes>/300/" magpie.${submissiontype}-*largeperformancerun*
-    sed -i -e "s/<my time in minutes>/90/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie.${submissiontype}-storm* magpie.${submissiontype}-kafka* magpie.${submissiontype}-zookeeper*
-    sed -i -e "s/<my time in minutes>/120/" magpie.${submissiontype}-hbase-with-hdfs*
-
-    sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie*
+    sed -i -e "s/slurm-%j.out/FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out/" magpie.${submissiontype}*
 elif [ "${submissiontype}" == "msub-slurm-srun" ]
 then
-    sed -i -e "s/moab-%j.out/moab-run-hadoopterasort-%j.out/" magpie.${submissiontype}*run-hadoopterasort*
-    sed -i -e "s/moab-run-hadoopterasort-%j.out/moab-run-hadoopterasort-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-hadoopterasort*
-
-    sed -i -e "s/moab-%j.out/moab-run-scriptteragen-%j.out/" magpie.${submissiontype}-hadoop*run-scriptteragen
-    sed -i -e "s/moab-%j.out/moab-run-scriptterasort-%j.out/" magpie.${submissiontype}-hadoop*run-scriptterasort
-    sed -i -e "s/moab-run-scriptteragen-%j.out/moab-run-scriptteragen-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptteragen
-    sed -i -e "s/moab-run-scriptterasort-%j.out/moab-run-scriptterasort-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptterasort
-
-    sed -i -e "s/moab-%j.out/moab-run-hadoopupgradehdfs-%j.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs
-
-    sed -i -e "s/moab-%j.out/moab-hdfs-fewer-nodes-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure
-    sed -i -e "s/moab-%j.out/moab-hdfs-older-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
-    sed -i -e "s/moab-%j.out/moab-hdfs-newer-version-expected-failure-%j.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
-
-    sed -i -e "s/moab-%j.out/moab-hdfs-more-nodes-decommissionhdfsnodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*decommissionhdfsnodes*
-    
-    sed -i -e "s/moab-%j.out/moab-run-testpig-%j.out/" magpie.${submissiontype}*run-testpig*
-    sed -i -e "s/moab-%j.out/moab-run-pigscript-%j.out/" magpie.${submissiontype}*run-pigscript*
-
-    sed -i -e "s/moab-%j.out/moab-run-clustersyntheticcontrol-%j.out/" magpie.${submissiontype}*run-clustersyntheticcontrol*
-
-    sed -i -e "s/moab-%j.out/moab-run-hbaseperformanceeval-%j.out/" magpie.${submissiontype}*run-hbaseperformanceeval*
-    sed -i -e "s/moab-run-hbaseperformanceeval-%j.out/moab-run-hbaseperformanceeval-zookeeper-shared-%j.out/" magpie.${submissiontype}*zookeeper-shared*run-hbaseperformanceeval*
-
-    sed -i -e "s/moab-%j.out/moab-run-scripthbasewritedata-%j.out/" magpie.${submissiontype}*run-scripthbasewritedata*
-    sed -i -e "s/moab-%j.out/moab-run-scripthbasereaddata-%j.out/" magpie.${submissiontype}*run-scripthbasereaddata*
-    sed -i -e "s/moab-run-scripthbasereaddata-%j.out/moab-run-scripthbasereaddata-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scripthbasereaddata*
-
-    sed -i -e "s/moab-%j.out/moab-run-phoenixperformanceeval-%j.out/" magpie.${submissiontype}*run-phoenixperformanceeval*
-    sed -i -e "s/moab-run-phoenixperformanceeval-%j.out/moab-run-phoenixperformanceeval-zookeeper-shared-%j.out/" magpie.${submissiontype}*zookeeper-shared*run-phoenixperformanceeval*
-
-    sed -i -e "s/moab-%j.out/moab-run-sparkpi-%j.out/" magpie.${submissiontype}*run-sparkpi*
-    sed -i -e "s/moab-%j.out/moab-run-sparkwordcount-%j.out/" magpie.${submissiontype}*run-sparkwordcount*
-    sed -i -e "s/moab-%j.out/moab-run-pysparkwordcount-%j.out/" magpie.${submissiontype}*run-pysparkwordcount*
-    sed -i -e "s/moab-run-sparkwordcount-%j.out/moab-run-sparkwordcount-hdfs-more-nodes-%j.out/" magpie.${submissiontype}*hdfs-more-nodes*run-sparkwordcount*
-
-    sed -i -e "s/moab-run-sparkwordcount-%j.out/moab-run-sparkwordcount-rawnetworkfs-%j.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*
-    sed -i -e "s/moab-run-sparkwordcount-%j.out/moab-run-sparkwordcount-rawnetworkfs-more-nodes-%j.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*rawnetworkfs-more-nodes*run-sparkwordcount*
-
-    sed -i -e "s/moab-%j.out/moab-run-stormwordcount-%j.out/" magpie.${submissiontype}*run-stormwordcount*
-    sed -i -e "s/moab-run-stormwordcount-%j.out/moab-run-stormwordcount-zookeeper-shared-%j.out/" magpie.${submissiontype}*zookeeper-shared*run-stormwordcount*
-    sed -i -e "s/moab-%j.out/moab-run-kafkaperformance-%j.out/" magpie.${submissiontype}*run-kafkaperformance*
-    
-    sed -i -e "s/moab-%j.out/moab-zookeeper-%j.out/" magpie.${submissiontype}-zookeeper*
-    
-    sed -i -e "s/-%j.out/-Dependency-%j.out/" magpie.${submissiontype}*Dependency*
-
-    sed -i -e "s/<my time in seconds or HH:MM:SS>/18000/" magpie.${submissiontype}-*largeperformancerun*
-    sed -i -e "s/<my time in seconds or HH:MM:SS>/5400/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie-${submissiontype}-kafka* magpie.${submissiontype}-storm* magpie.${submissiontype}-zookeeper*
-    sed -i -e "s/<my time in seconds or HH:MM:SS>/7200/" magpie.${submissiontype}-hbase-with-hdfs*
-
-    sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie*
-    sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie*
+    sed -i -e "s/moab-%j.out/FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out/" magpie.${submissiontype}*
 elif [ "${submissiontype}" == "lsf-mpirun" ]
 then
-    sed -i -e "s/lsf-%J.out/lsf-run-hadoopterasort-%J.out/" magpie.${submissiontype}*run-hadoopterasort*
-    sed -i -e "s/lsf-run-hadoopterasort-%J.out/lsf-run-hadoopterasort-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-hadoopterasort*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-scriptteragen-%J.out/" magpie.${submissiontype}-hadoop*run-scriptteragen
-    sed -i -e "s/lsf-%J.out/lsf-run-scriptterasort-%J.out/" magpie.${submissiontype}-hadoop*run-scriptterasort
-    sed -i -e "s/lsf-run-scriptteragen-%J.out/lsf-run-scriptteragen-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptteragen
-    sed -i -e "s/lsf-run-scriptterasort-%J.out/lsf-run-scriptterasort-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scriptterasort
-
-    sed -i -e "s/lsf-%J.out/lsf-run-hadoopupgradehdfs-%J.out/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs
-
-    sed -i -e "s/lsf-%J.out/lsf-hdfs-fewer-nodes-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure
-    sed -i -e "s/lsf-%J.out/lsf-hdfs-older-version-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-older-version*expected-failure
-    sed -i -e "s/lsf-%J.out/lsf-hdfs-newer-version-expected-failure-%J.out/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
-
-    sed -i -e "s/lsf-%J.out/lsf-hdfs-more-nodes-decommissionhdfsnodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*decommissionhdfsnodes*
-    
-    sed -i -e "s/lsf-%J.out/lsf-run-testpig-%J.out/" magpie.${submissiontype}*run-testpig*
-    sed -i -e "s/lsf-%J.out/lsf-run-pigscript-%J.out/" magpie.${submissiontype}*run-pigscript*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-clustersyntheticcontrol-%J.out/" magpie.${submissiontype}*run-clustersyntheticcontrol*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-hbaseperformanceeval-%J.out/" magpie.${submissiontype}*run-hbaseperformanceeval*
-    sed -i -e "s/lsf-run-hbaseperformanceeval-%J.out/lsf-run-hbaseperformanceeval-zookeeper-shared-%J.out/" magpie.${submissiontype}*zookeeper-shared*run-hbaseperformanceeval*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-scripthbasewritedata-%J.out/" magpie.${submissiontype}*run-scripthbasewritedata*
-    sed -i -e "s/lsf-%J.out/lsf-run-scripthbasereaddata-%J.out/" magpie.${submissiontype}*run-scripthbasereaddata*
-    sed -i -e "s/lsf-run-scripthbasereaddata-%J.out/lsf-run-scripthbasereaddata-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-scripthbasereaddata*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-phoenixperformanceeval-%J.out/" magpie.${submissiontype}*run-phoenixperformanceeval*
-    sed -i -e "s/lsf-run-phoenixperformanceeval-%J.out/lsf-run-phoenixperformanceeval-zookeeper-shared-%J.out/" magpie.${submissiontype}*zookeeper-shared*run-phoenixperformanceeval*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-sparkpi-%J.out/" magpie.${submissiontype}*run-sparkpi*
-    sed -i -e "s/lsf-%J.out/lsf-run-sparkwordcount-%J.out/" magpie.${submissiontype}*run-sparkwordcount*
-    sed -i -e "s/lsf-%J.out/lsf-run-pysparkwordcount-%J.out/" magpie.${submissiontype}*run-pysparkwordcount*
-    sed -i -e "s/lsf-run-sparkwordcount-%J.out/lsf-run-sparkwordcount-hdfs-more-nodes-%J.out/" magpie.${submissiontype}*hdfs-more-nodes*run-sparkwordcount*
-
-    sed -i -e "s/lsf-run-sparkwordcount-%J.out/lsf-run-sparkwordcount-rawnetworkfs-%J.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*run-sparkwordcount*
-    sed -i -e "s/lsf-run-sparkwordcount-%J.out/lsf-run-sparkwordcount-rawnetworkfs-more-nodes-%J.out/" magpie.${submissiontype}*spark-with-rawnetworkfs*rawnetworkfs-more-nodes*run-sparkwordcount*
-
-    sed -i -e "s/lsf-%J.out/lsf-run-stormwordcount-%J.out/" magpie.${submissiontype}*run-stormwordcount*
-    sed -i -e "s/lsf-run-stormwordcount-%J.out/lsf-run-stormwordcount-zookeeper-shared-%J.out/" magpie.${submissiontype}*zookeeper-shared*run-stormwordcount*
-    sed -i -e "s/lsf-%J.out/lsf-run-kafkaperformance-%J.out/" magpie.${submissiontype}*run-kafkaperformance*
-    
-    sed -i -e "s/lsf-%J.out/lsf-run-zookeeper-%J.out/" magpie.${submissiontype}-zookeeper*
-    
-    sed -i -e "s/-%J.out/-Dependency-%J.out/" magpie.${submissiontype}*Dependency*
-
-    sed -i -e "s/<my time in hours:minutes>/5:00/" magpie.${submissiontype}-*largeperformancerun*
-    sed -i -e "s/<my time in hours:minutes>/1:30/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie.${submissiontype}-kafka* magpie.${submissiontype}-storm* magpie.${submissiontype}-zookeeper*
-    sed -i -e "s/<my time in hours:minutes>/2:00/" magpie.${submissiontype}-hbase-with-hdfs*
-
-    sed -i -e "s/<my queue>/${lsfqueue}/" magpie*
+    sed -i -e "s/lsf-%J.out/FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out/" magpie.${submissiontype}*
 fi
-    
-sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie*no-local-dir
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hadoopterasort*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptteragen-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptteragen
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptterasort
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopupgradehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/decommissionhdfsnodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*decommissionhdfsnodes*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-fewer-nodes-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-older-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-older-version*expected-failure
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-newer-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-newer-version*expected-failure
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-testpig*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pigscript*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-clustersyntheticcontrol-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-clustersyntheticcontrol*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hbaseperformanceeval*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasewritedata*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasereaddata*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-phoenixperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-phoenixperformanceeval*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-stormwordcount*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkpi-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkpi*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkwordcount*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pysparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pysparkwordcount*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-more-nodes*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-rawnetworkfs*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-kafkaperformance-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-kafkaperformance*
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-zookeeperruok-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-zookeeperruok*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*zookeeper-shared*
+
+sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*Dependency*
+
+sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
     
 # special node sizes first
 sed -i -e "s/<my node count>/20/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
@@ -439,16 +327,51 @@ sed -i -e "s/<my node count>/9/" magpie.${submissiontype}*hdfs-fewer-nodes*
 sed -i -e "s/<my node count>/9/" magpie.${submissiontype}-hadoop* magpie.${submissiontype}-spark* magpie.${submissiontype}-kafka*  magpie.${submissiontype}-zookeeper*
 sed -i -e "s/<my node count>/12/" magpie.${submissiontype}-hbase-with-hdfs* magpie.${submissiontype}-storm* 
 
-sed -i -e "s/<my job name>/test/" magpie*
+sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
 
-ls magpie* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="yes"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
-ls magpie* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
+ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="yes"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
+ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
 
-sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\${HOME}\/magpie-my-post-job-script"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie*
+sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\${HOME}\/magpie-my-post-job-script"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*
 
 dependencyprefix=`date +"%Y%m%d%N"`
 
-sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie*
+sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie.${submissiontype}*
+
+# Put back original filename contents and do some last replaces that are submission type specific
+
+if [ "${submissiontype}" == "sbatch-srun" ]
+then
+    sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+
+    sed -i -e "s/<my time in minutes>/300/" magpie.${submissiontype}-*largeperformancerun*
+    sed -i -e "s/<my time in minutes>/120/" magpie.${submissiontype}-hbase-with-hdfs*
+    sed -i -e "s/<my time in minutes>/90/" magpie.${submissiontype}*
+
+    sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
+elif [ "${submissiontype}" == "msub-slurm-srun" ]
+then
+    sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+
+    sed -i -e "s/<my time in seconds or HH:MM:SS>/18000/" magpie.${submissiontype}-*largeperformancerun*
+    sed -i -e "s/<my time in seconds or HH:MM:SS>/7200/" magpie.${submissiontype}-hbase-with-hdfs*
+    sed -i -e "s/<my time in seconds or HH:MM:SS>/5400/" magpie.${submissiontype}*
+
+    sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
+    sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
+elif [ "${submissiontype}" == "lsf-mpirun" ]
+then
+    sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
+
+    sed -i -e "s/<my time in hours:minutes>/5:00/" magpie.${submissiontype}-*largeperformancerun*
+    sed -i -e "s/<my time in hours:minutes>/2:00/" magpie.${submissiontype}-hbase-with-hdfs*
+    sed -i -e "s/<my time in hours:minutes>/1:30/" magpie.${submissiontype}*
+
+    sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
+fi
 
 echo "Setting original submission scripts back to prior default"
 
