@@ -54,7 +54,7 @@ GenerateKafkaDependencyTests() {
     do
 	for zookeeperversion in 3.4.8
 	do
-	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} ./magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
+	    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
 
 	    sed -i \
 		-e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="kafka"/' \
