@@ -40,6 +40,7 @@ source test-generate-pig.sh
 source test-generate-spark.sh
 source test-generate-storm.sh
 source test-generate-zookeeper.sh
+source test-generate-common.sh
 
 # Job Submission Config
 

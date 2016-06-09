@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source test-generate-common.sh
+
 GenerateDefaultStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/

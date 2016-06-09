@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source test-generate-common.sh
+
 GenerateZookeeperStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -28,6 +30,6 @@ GenerateZookeeperStandardTests() {
 	sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-networkfs* 
 	sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-local* 
 
-	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*
+	JavaCommonSubstitution "1.7" `ls magpie.${submissiontype}-zookeeper-${zookeeperversion}*`
     done
 }
