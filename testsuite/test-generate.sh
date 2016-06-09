@@ -57,6 +57,8 @@ lsfqueue=standard
 
 # Test config
 
+# Toggle y/n for different test types
+
 # High Level, what tests to generate
 # - specific versions can be configured below
 
@@ -73,11 +75,17 @@ zookeepertests=y
 
 # Higher level configuration, add or eliminate certain types of tests
 #
+# standardtests: basic tests, terasort, sparkpi, etc.
+# dependencytests: check dependencies
+# regressiontests: regression tests
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
 # largeperformanceruntests - run performance tests
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
+standardtests=y
+dependencytests=y
+regressiontests=y
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
@@ -260,46 +268,82 @@ make &> /dev/null
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
 if [ "${defaulttests}" == "y" ]; then
-    GenerateDefaultStandardTests
-    GenerateDefaultRegressionTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateDefaultStandardTests
+    fi
+    if [ "${regressiontests}" == "y" ]; then
+	GenerateDefaultRegressionTests
+    fi
 fi
 if [ "${hadooptests}" == "y" ]; then
-    GenerateHadoopStandardTests
-    GenerateHadoopDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateHadoopStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateHadoopDependencyTests
+    fi
 fi
 if [ "${pigtests}" == "y" ]; then
-    GeneratePigStandardTests
-    GeneratePigDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GeneratePigStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GeneratePigDependencyTests
+    fi
 fi
 if [ "${mahouttests}" == "y" ]; then
-    GenerateMahoutStandardTests
-    GenerateMahoutDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateMahoutStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateMahoutDependencyTests
+    fi
 fi
 if [ "${hbasetests}" == "y" ]; then
-    GenerateHbaseStandardTests
-    GenerateHbaseDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateHbaseStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateHbaseDependencyTests
+    fi
 fi
 if [ "${phoenixtests}" == "y" ]; then
-    GeneratePhoenixStandardTests
-    GeneratePhoenixDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GeneratePhoenixStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GeneratePhoenixDependencyTests
+    fi
 fi
 if [ "${sparktest}" == "y" ]; then
-    GenerateSparkStandardTests
-    GenerateSparkDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateSparkStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateSparkDependencyTests
+    fi
 fi
 if [ "${stormtests}" == "y" ]; then
-    GenerateStormStandardTests
-    GenerateStormDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateStormStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateStormDependencyTests
+    fi
 fi
 if [ "${kafkatests}" == "y" ]; then
-    GenerateKafkaStandardTests
-    GenerateKafkaDependencyTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateKafkaStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateKafkaDependencyTests
+    fi
 fi
 if [ "${zookeepertests}" == "y" ]; then
-    GenerateZookeeperStandardTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateZookeeperStandardTests
+    fi
 fi
-
-
 
 # Seds for all tests
 

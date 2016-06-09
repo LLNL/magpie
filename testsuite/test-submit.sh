@@ -20,13 +20,6 @@ source test-submit-zookeeper.sh
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
 
-# Toggle y/n for different test types
-# standardtests: not using MAGPIE_NO_LOCAL_DIR
-# dependencytests: check dependencies
-standardtests=y
-dependencytests=y
-regressiontests=y
-
 verboseoutput=n
 
 # Misc config
@@ -126,96 +119,33 @@ DependentJobSubmit () {
     fi
 }
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitDefaultStandardTests
-fi
-# if [ "${dependencytests}" == "y" ]
-# then
-# 	SubmitDefaultDependencyTests
-# fi
-if [ "${regressiontests}" == "y" ]
-then
-    SubmitDefaultRegressionTests
-fi
+SubmitDefaultStandardTests
+# SubmitDefaultDependencyTests
+SubmitDefaultRegressionTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitHadoopStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitHadoopDependencyTests
-fi
+SubmitHadoopStandardTests
+SubmitHadoopDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitPigStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitPigDependencyTests
-fi
+SubmitPigStandardTests
+SubmitPigDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitMahoutStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitMahoutDependencyTests
-fi
+SubmitMahoutStandardTests
+SubmitMahoutDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitHbaseStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitHbaseDependencyTests
-fi
+SubmitHbaseStandardTests
+SubmitHbaseDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitPhoenixStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitPhoenixDependencyTests
-fi
+SubmitPhoenixStandardTests
+SubmitPhoenixDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitSparkStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitSparkDependencyTests
-fi
+SubmitSparkStandardTests
+SubmitSparkDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitStormStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitStormDependencyTests
-fi
+SubmitStormStandardTests
+SubmitStormDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitKafkaStandardTests
-fi
-if [ "${dependencytests}" == "y" ]
-then
-    SubmitKafkaDependencyTests
-fi
+SubmitKafkaStandardTests
+SubmitKafkaDependencyTests
 
-if [ "${standardtests}" == "y" ]
-then
-    SubmitZookeeperStandardTests
-fi
-# if [ "${dependencytests}" == "y" ]
-# then
-# 	SubmitZookeeperDependencyTests
-# fi
+SubmitZookeeperStandardTests
+# SubmitZookeeperDependencyTests
