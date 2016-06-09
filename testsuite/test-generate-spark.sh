@@ -18,8 +18,10 @@ GenerateSparkStandardTests() {
 	    magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi*
 
 	sed -i \
+	    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
 	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
 	    -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pyspark.sh"/' \
+	    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
 	    magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount*
     done
 
@@ -36,8 +38,10 @@ GenerateSparkStandardTests() {
 	    magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi*
 
 	sed -i \
+	    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
 	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
 	    -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pyspark.sh"/' \
+	    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
 	    magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount*
     done
 
@@ -54,8 +58,10 @@ GenerateSparkStandardTests() {
 	    magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi*
 
 	sed -i \
+	    -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
 	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
 	    -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pyspark.sh"/' \
+	    -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
 	    magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount*
     done
 
