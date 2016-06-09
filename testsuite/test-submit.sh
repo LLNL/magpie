@@ -20,19 +20,6 @@ source test-submit-zookeeper.sh
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
 
-# Tests to run
-
-defaulttests=y
-hadooptests=y
-pigtests=y
-mahouttests=y
-hbasetests=y
-phoenixtests=y
-sparktests=y
-stormtests=y
-kafkatests=y
-zookeepertests=y
-
 # defaultonly runs only default tests and nothing else.
 # Good for sanity tests on changes but not substantialy rigorous
 defaultonly=n
@@ -143,20 +130,17 @@ DependentJobSubmit () {
     fi
 }
 
-if [ "${defaulttests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitDefaultStandardTests
-    fi
-    # if [ "${dependencytests}" == "y" ]
-    # then
-    # 	SubmitDefaultDependencyTests
-    # fi
-    if [ "${regressiontests}" == "y" ]
-    then
-	SubmitDefaultRegressionTests
-    fi
+    SubmitDefaultStandardTests
+fi
+# if [ "${dependencytests}" == "y" ]
+# then
+# 	SubmitDefaultDependencyTests
+# fi
+if [ "${regressiontests}" == "y" ]
+then
+    SubmitDefaultRegressionTests
 fi
 
 if [ "${defaultonly}" == "y" ]
@@ -164,110 +148,83 @@ then
     exit 0
 fi
 
-if [ "${hadooptests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitHadoopStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitHadoopDependencyTests
-    fi
+    SubmitHadoopStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitHadoopDependencyTests
 fi
 
-if [ "${pigtests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitPigStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitPigDependencyTests
-    fi
+    SubmitPigStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitPigDependencyTests
 fi
 
-if [ "${mahouttests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitMahoutStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitMahoutDependencyTests
-    fi
+    SubmitMahoutStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitMahoutDependencyTests
 fi
 
-if [ "${hbasetests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitHbaseStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitHbaseDependencyTests
-    fi
+    SubmitHbaseStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitHbaseDependencyTests
 fi
 
-if [ "${phoenixtests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitPhoenixStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitPhoenixDependencyTests
-    fi
+    SubmitPhoenixStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitPhoenixDependencyTests
 fi
 
-if [ "${sparktests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitSparkStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitSparkDependencyTests
-    fi
+    SubmitSparkStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitSparkDependencyTests
 fi
 
-if [ "${stormtests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitStormStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitStormDependencyTests
-    fi
+    SubmitStormStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitStormDependencyTests
 fi
 
-if [ "${kafkatests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitKafkaStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]
-    then
-	SubmitKafkaDependencyTests
-    fi
+    SubmitKafkaStandardTests
+fi
+if [ "${dependencytests}" == "y" ]
+then
+    SubmitKafkaDependencyTests
 fi
 
-if [ "${zookeepertests}" == "y" ]
+if [ "${standardtests}" == "y" ]
 then
-    if [ "${standardtests}" == "y" ]
-    then
-	SubmitZookeeperStandardTests
-    fi
-    # if [ "${dependencytests}" == "y" ]
-    # then
-    # 	SubmitZookeeperDependencyTests
-    # fi
+    SubmitZookeeperStandardTests
 fi
+# if [ "${dependencytests}" == "y" ]
+# then
+# 	SubmitZookeeperDependencyTests
+# fi

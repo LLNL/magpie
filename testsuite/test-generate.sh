@@ -57,6 +57,20 @@ lsfqueue=standard
 
 # Test config
 
+# High Level, what tests to generate
+# - specific versions can be configured below
+
+defaulttests=y
+hadooptests=y
+pigtests=y
+mahouttests=y
+hbasetests=y
+phoenixtests=y
+sparktests=y
+stormtests=y
+kafkatests=y
+zookeepertests=y
+
 # Higher level configuration, add or eliminate certain types of tests
 #
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
@@ -245,27 +259,47 @@ make &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-GenerateDefaultStandardTests
-GenerateHadoopStandardTests
-GeneratePigStandardTests
-GenerateMahoutStandardTests
-GenerateHbaseStandardTests
-GeneratePhoenixStandardTests
-GenerateSparkStandardTests
-GenerateStormStandardTests
-GenerateKafkaStandardTests
-GenerateZookeeperStandardTests
+if [ "${defaulttests}" == "y" ]; then
+    GenerateDefaultStandardTests
+    GenerateDefaultRegressionTests
+fi
+if [ "${hadooptests}" == "y" ]; then
+    GenerateHadoopStandardTests
+    GenerateHadoopDependencyTests
+fi
+if [ "${pigtests}" == "y" ]; then
+    GeneratePigStandardTests
+    GeneratePigDependencyTests
+fi
+if [ "${mahouttests}" == "y" ]; then
+    GenerateMahoutStandardTests
+    GenerateMahoutDependencyTests
+fi
+if [ "${hbasetests}" == "y" ]; then
+    GenerateHbaseStandardTests
+    GenerateHbaseDependencyTests
+fi
+if [ "${phoenixtests}" == "y" ]; then
+    GeneratePhoenixStandardTests
+    GeneratePhoenixDependencyTests
+fi
+if [ "${sparktest}" == "y" ]; then
+    GenerateSparkStandardTests
+    GenerateSparkDependencyTests
+fi
+if [ "${stormtests}" == "y" ]; then
+    GenerateStormStandardTests
+    GenerateStormDependencyTests
+fi
+if [ "${kafkatests}" == "y" ]; then
+    GenerateKafkaStandardTests
+    GenerateKafkaDependencyTests
+fi
+if [ "${zookeepertests}" == "y" ]; then
+    GenerateZookeeperStandardTests
+fi
 
-GenerateHadoopDependencyTests
-GeneratePigDependencyTests
-GenerateMahoutDependencyTests
-GenerateHbaseDependencyTests
-GeneratePhoenixDependencyTests
-GenerateSparkDependencyTests
-GenerateStormDependencyTests
-GenerateKafkaDependencyTests
 
-GenerateDefaultRegressionTests
 
 # Seds for all tests
 
