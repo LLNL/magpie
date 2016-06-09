@@ -20,10 +20,6 @@ source test-submit-zookeeper.sh
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
 
-# defaultonly runs only default tests and nothing else.
-# Good for sanity tests on changes but not substantialy rigorous
-defaultonly=n
-
 # Toggle y/n for different test types
 # standardtests: not using MAGPIE_NO_LOCAL_DIR
 # dependencytests: check dependencies
@@ -141,11 +137,6 @@ fi
 if [ "${regressiontests}" == "y" ]
 then
     SubmitDefaultRegressionTests
-fi
-
-if [ "${defaultonly}" == "y" ]
-then
-    exit 0
 fi
 
 if [ "${standardtests}" == "y" ]
