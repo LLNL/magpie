@@ -263,7 +263,7 @@ cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 
 echo "Making launching scripts"
 
-make &> /dev/null
+make ${submissiontype} &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
@@ -936,7 +936,7 @@ rm -f ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile.testsu
 
 cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 
-make &> /dev/null
+make ${submissiontype} &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
