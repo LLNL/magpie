@@ -315,7 +315,7 @@ if [ "${phoenixtests}" == "y" ]; then
 	GeneratePhoenixDependencyTests
     fi
 fi
-if [ "${sparktest}" == "y" ]; then
+if [ "${sparktests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateSparkStandardTests
     fi
