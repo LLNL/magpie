@@ -43,7 +43,7 @@
 
 #PBS -l nodes=<my node count>
 
-#PBS -o ./moab-%j.out
+#PBS -o moab-%j.out
 
 #PBS -l partition=<my partition>
 

@@ -15,7 +15,7 @@
 
 #MSUB -l nodes=<my node count>
 
-#MSUB -o ./moab-%j.out
+#MSUB -o moab-%j.out
 
 #MSUB -l partition=<my partition>
 
