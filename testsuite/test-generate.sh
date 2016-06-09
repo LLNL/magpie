@@ -225,6 +225,15 @@ sed -i -e "s/HADOOP_FILESYSTEM_MODE=\"\(.*\)\"/HADOOP_FILESYSTEM_MODE=\"${DEFAUL
 defaultjavahomesubst=`echo ${DEFAULT_JAVA_HOME} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/JAVA_DEFAULT=\(.*\)/JAVA_DEFAULT=${defaultjavahomesubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
+# Replace output filename with common strings so we can do the same
+# search & replace later on regardless of the job submission type.
+
+defaultjoboutputfile=FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out
+sed -i -e "s/SBATCH_SRUN_DEFAULT_JOB_FILE=\(.*\)/SBATCH_SRUN_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=\(.*\)/MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=\(.*\)/MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/LSF_MPIRUN_DEFAULT_JOB_FILE=\(.*\)/LSF_MPIRUN_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
 
@@ -263,22 +272,6 @@ GenerateDefaultRegressionTests
 echo "Finishing up test creation"
 
 # Names important, will be used in validation
-
-# Replace output filename with common strings so we can do the same
-# search & replace regardless of the submission type.
-
-# achu: I know this is not the most efficient thing to do, but it makes the logic way easier.
-
-if [ "${submissiontype}" == "sbatch-srun" ]
-then
-    sed -i -e "s/slurm-%j.out/FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out/" magpie.${submissiontype}*
-elif [ "${submissiontype}" == "msub-slurm-srun" ]
-then
-    sed -i -e "s/moab-%j.out/FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out/" magpie.${submissiontype}*
-elif [ "${submissiontype}" == "lsf-mpirun" ]
-then
-    sed -i -e "s/lsf-%J.out/FILENAMESEARCHREPLACEPREFIX-FILENAMESEARCHREPLACEKEY.out/" magpie.${submissiontype}*
-fi
 
 sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hadoopterasort*
 sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptteragen-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptteragen
@@ -338,7 +331,7 @@ dependencyprefix=`date +"%Y%m%d%N"`
 
 sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie.${submissiontype}*
 
-# Put back original filename contents and do some last replaces that are submission type specific
+# Put back original/desired filename names and do some last replaces that are submission type specific
 
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
