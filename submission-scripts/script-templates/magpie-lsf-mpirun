@@ -14,7 +14,7 @@
 # for example HDFS federation.
 
 #BSUB -n <my node count>
-#BSUB -o "lsf-%J.out"
+#BSUB -o "DEFAULTJOBOUTPUTFILE"
 
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
 # timelimit should be a fair amount larger than them combined.

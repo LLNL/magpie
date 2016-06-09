@@ -14,7 +14,7 @@
 # for example HDFS federation.
 
 #SBATCH --nodes=<my node count>
-#SBATCH --output="slurm-%j.out"
+#SBATCH --output="DEFAULTJOBOUTPUTFILE"
 
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
 # timelimit should be a fair amount larger than them combined.

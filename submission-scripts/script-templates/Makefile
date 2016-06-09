@@ -94,6 +94,12 @@ ZEPPELIN_VERSION_DEFAULT=0.5.6
 LOCAL_REQUIREMENTS=n
 LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
+# Default job files
+SBATCH_SRUN_DEFAULT_JOB_FILE=slurm-%j.out
+MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=moab-%j.out
+MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=moab-%j.out
+LSF_MPIRUN_DEFAULT_JOB_FILE=lsf-%J.out
+
 .DEFAULT_GOAL=all
 
 all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun
@@ -113,16 +119,16 @@ clean-lsf-mpirun:
 clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun
 
 sbatch-srun: clean-sbatch-srun
-	$(call create-templates,$@,srun)
+	$(call create-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
 
 msub-slurm-srun: clean-msub-slurm-srun
-	$(call create-templates,$@,srun)
+	$(call create-templates,$@,srun,$(MSUB_SLURM_SRUN_DEFAULT_JOB_FILE))
 
 msub-torque-pdsh: clean-msub-torque-pdsh
-	$(call create-templates,$@,pdsh)
+	$(call create-templates,$@,pdsh,$(MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE))
 
 lsf-mpirun: clean-lsf-mpirun
-	$(call create-templates,$@,mpirun)
+	$(call create-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
 
 define common-substitution
 	sed -i -e 's;MAGPIESCRIPTSDIRPREFIX;$(MAGPIE_SCRIPTS_DIR_PREFIX);g' $(1)
@@ -165,6 +171,7 @@ define common-substitution
 	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
 	sed -i -e 's;PYTHONDEFAULT;$(PYTHON_DEFAULT);g' $(1)
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
+	sed -i -e 's;DEFAULTJOBOUTPUTFILE;$(JOBOUTPUTFILE);g' $(1)
 endef
 
 # User passes in string of everything they want
@@ -262,6 +269,7 @@ define create-templates
 
 	$(eval SCHED := $(1))
 	$(eval DIST := $(2))
+	$(eval JOBOUTPUTFILE := $(3))
 	echo "Creating magpie.$(SCHED)"
 	mkdir -p ../script-$(SCHED)
 	$(eval MAGPIE := ../script-$(SCHED)/magpie.$(SCHED))
