@@ -13,7 +13,7 @@ JavaCommonSubstitution() {
     then
 	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ${files}
     else
-	echo "Invalid Java Version Specified"
+	echo "Invalid Java Version Specified - ${javaversion}"
 	exit 1
     fi
 }
