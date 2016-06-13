@@ -190,49 +190,29 @@ GenerateHbaseDependencyTests() {
     echo "Making Hbase Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre/NetworkFS
-
-    for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
-    do
-	for hadoopversion in 2.6.0
-	do
-	    for zookeeperversion in 3.4.6
-	    do
-		GenerateHbaseDependencyTests_Dependency1 ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.6"
-	    done
-	done
-    done
-
-    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
-    do
-	for hadoopversion in 2.7.0
-	do
-	    for zookeeperversion in 3.4.8
-	    do
-		GenerateHbaseDependencyTests_Dependency1 ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
-	    done
-	done
-    done
-
 # Dependency 2 Tests, leave data in HDFS, read/write from different jobs, HDFS over Lustre
 
-    for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+    for testfunction in GenerateHbaseDependencyTests_Dependency1 GenerateHbaseDependencyTests_Dependency2
     do
-	for hadoopversion in 2.6.0
+	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 	do
-	    for zookeeperversion in 3.4.6
+	    for hadoopversion in 2.6.0
 	    do
-		GenerateHbaseDependencyTests_Dependency2 ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.6"
+		for zookeeperversion in 3.4.6
+		do
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.6"
+		done
 	    done
 	done
-    done
 
-    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
-    do
-	for hadoopversion in 2.7.0
+	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
 	do
-	    for zookeeperversion in 3.4.8
+	    for hadoopversion in 2.7.0
 	    do
-		GenerateHbaseDependencyTests_Dependency2 ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
+		for zookeeperversion in 3.4.8
+		do
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
+		done
 	    done
 	done
     done

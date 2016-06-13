@@ -149,32 +149,20 @@ GeneratePhoenixDependencyTests() {
     echo "Making Phoenix Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre / NetworkFS
-
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
-    do
-	for hbaseversion in 1.1.0
-	do
-	    for hadoopversion in 2.7.0
-	    do
-		for zookeeperversion in 3.4.8
-		do
-		    GeneratePhoenixDependencyTests_Dependency1 ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
-		done
-	    done
-	done
-    done
-
 # Dependency 2 Tests, run after another with hbase, HDFS over Lustre / NetworkFS
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
+    for testfunction in GeneratePhoenixDependencyTests_Dependency1 GeneratePhoenixDependencyTests_Dependency2
     do
-	for hbaseversion in 1.1.0
+	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
 	do
-	    for hadoopversion in 2.7.0
+	    for hbaseversion in 1.1.0
 	    do
-		for zookeeperversion in 3.4.8
+		for hadoopversion in 2.7.0
 		do
-		    GeneratePhoenixDependencyTests_Dependency2 ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
+		    for zookeeperversion in 3.4.8
+		    do
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
+		    done
 		done
 	    done
 	done

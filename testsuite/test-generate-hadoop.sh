@@ -279,42 +279,21 @@ GenerateHadoopDependencyTests() {
     done
 
 # Dependency 2 test, increase & decrease size
-
-# decommissionhdfsnodes doesn't work reliably in 2.2.0, removing it
-    for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    do
-	GenerateHadoopDependencyTests_Dependency2 ${hadoopversion} "1.6"
-    done
-
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-	GenerateHadoopDependencyTests_Dependency2 ${hadoopversion} "1.7"
-    done
-
 # Dependency 3 test, ensure data exists between runs, including increase node size and decrease node size
-
-# decommissionhdfsnodes doesn't work reliably in 2.2.0, removing it
-    for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    do
-	GenerateHadoopDependencyTests_Dependency3 ${hadoopversion} "1.6"
-    done
-
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-	GenerateHadoopDependencyTests_Dependency3 ${hadoopversion} "1.7"
-    done
-
 # Dependency 4 test, ensure data exists between runs, decommission data filled blocks
 
+    for testfunction in GenerateHadoopDependencyTests_Dependency2 GenerateHadoopDependencyTests_Dependency3 GenerateHadoopDependencyTests_Dependency4
+    do
 # decommissionhdfsnodes doesn't work reliably in 2.2.0, removing it
-    for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    do
-	GenerateHadoopDependencyTests_Dependency4 ${hadoopversion} "1.6"
-    done
-
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-	GenerateHadoopDependencyTests_Dependency4 ${hadoopversion} "1.7"
+	for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+	do
+	    ${testfunction} ${hadoopversion} "1.6"
+	done
+	
+	for hadoopversion in 2.7.0 2.7.1 2.7.2
+	do
+	    ${testfunction} ${hadoopversion} "1.7"
+	done
     done
 
 # Dependency 5 tests, upgrade hdfs, 2.4.0 -> 2.5.0 -> 2.6.0 -> 2.7.0, HDFS over Lustre / NetworkFS

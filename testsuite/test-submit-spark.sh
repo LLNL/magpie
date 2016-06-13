@@ -2,7 +2,8 @@
 
 SubmitSparkStandardTests_BasicTests() {
     sparkversion=$1
-    localdirtests=$2
+    hadoopversion=$2 #unused in this function
+    localdirtests=$3
 
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
@@ -32,42 +33,30 @@ SubmitSparkStandardTests_WordCount() {
 }
 
 SubmitSparkStandardTests() {
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+    for testfunction in SubmitSparkStandardTests_BasicTests SubmitSparkStandardTests_WordCount
     do
-	SubmitSparkStandardTests_BasicTests ${sparkversion} "n"
-    done
-    
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	SubmitSparkStandardTests_BasicTests ${sparkversion} "y"
-    done
-    
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	SubmitSparkStandardTests_BasicTests ${sparkversion} "y"
-    done
-    
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-	for hadoopversion in 2.2.0
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
-	    SubmitSparkStandardTests_WordCount ${sparkversion} ${hadoopversion} "n"
+	    for hadoopversion in 2.2.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "n"
+	    done
 	done
-    done
     
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	for hadoopversion in 2.4.0
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    SubmitSparkStandardTests_WordCount ${sparkversion} ${hadoopversion} "y"
+	    for hadoopversion in 2.4.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "y"
+	    done
 	done
-    done
     
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	for hadoopversion in 2.6.0
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
 	do
-	    SubmitSparkStandardTests_WordCount ${sparkversion} ${hadoopversion} "y"
+	    for hadoopversion in 2.6.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "y"
+	    done
 	done
     done
 }
