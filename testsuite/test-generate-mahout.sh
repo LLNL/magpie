@@ -25,6 +25,11 @@ GenerateMahoutStandardTests() {
 
     for mahoutversion in 0.11.0 0.11.1 0.11.2 0.12.0 0.12.1
     do
+	if [ "${hadoop_2_7_0}" != "y" ]
+	then
+	    echo "Cannot generate Mahout standard tests that depend on Hadoop 2.7.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.7.0
 	do
 	    GenerateMahoutStandardTests_ClusterSyntheticcontrol ${mahoutversion} ${hadoopversion} "1.7"
@@ -68,6 +73,11 @@ GenerateMahoutDependencyTests() {
 
     for mahoutversion in 0.11.0 0.11.1 0.11.2 0.12.0 0.12.1
     do
+	if [ "${hadoop_2_7_0}" != "y" ]
+	then
+	    echo "Cannot generate Mahout dependency tests that depend on Hadoop 2.7.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.7.0
 	do
 	    GenerateMahoutDependencyTests_Dependency1 ${mahoutversion} ${hadoopversion} "1.7"

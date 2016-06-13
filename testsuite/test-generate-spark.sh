@@ -89,6 +89,11 @@ GenerateSparkStandardTests() {
         # 0.9.X no local dir tests
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
+	    if [ "${hadoop_2_2_0}" != "y" ]
+	    then
+		echo "Cannot generate Spark standard tests that depend on Hadoop 2.2.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.2.0
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "n"
@@ -97,6 +102,11 @@ GenerateSparkStandardTests() {
 
 	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
+	    if [ "${hadoop_2_4_0}" != "y" ]
+	    then
+		echo "Cannot generate Spark standard tests that depend on Hadoop 2.4.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.4.0
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
@@ -105,6 +115,11 @@ GenerateSparkStandardTests() {
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
 	do
+	    if [ "${hadoop_2_6_0}" != "y" ]
+	    then
+		echo "Cannot generate Spark standard tests that depend on Hadoop 2.6.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.6.0
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"
@@ -311,6 +326,11 @@ GenerateSparkDependencyTests() {
 # No decommissionhdfsnodes for Hadoop 2.2.0
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
+	    if [ "${hadoop_2_2_0}" != "y" ]
+	    then
+		echo "Cannot generate Spark dependency tests that depend on Hadoop 2.2.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.2.0
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "n"
@@ -319,6 +339,11 @@ GenerateSparkDependencyTests() {
 
 	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
+	    if [ "${hadoop_2_4_0}" != "y" ]
+	    then
+		echo "Cannot generate Spark dependency tests that depend on Hadoop 2.4.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.4.0
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
@@ -327,6 +352,11 @@ GenerateSparkDependencyTests() {
 
 	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
 	do
+	    if [ "${hadoop_2_6_0}" != "y" ]
+	    then
+		echo "Cannot generate Spark dependency tests that depend on Hadoop 2.6.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.6.0
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"

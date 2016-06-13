@@ -31,6 +31,11 @@ GeneratePigStandardTests() {
 
     for pigversion in 0.12.0 0.12.1
     do
+	if [ "${hadoop_2_4_0}" != "y" ]
+	then
+	    echo "Cannot generate Pig standard tests that depend on Hadoop 2.4.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.4.0
 	do
 	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} "1.6"
@@ -39,6 +44,11 @@ GeneratePigStandardTests() {
 
     for pigversion in 0.13.0 0.14.0
     do
+	if [ "${hadoop_2_6_0}" != "y" ]
+	then
+	    echo "Cannot generate Pig standard tests that depend on Hadoop 2.6.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.6.0
 	do
 	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} "1.6"
@@ -47,6 +57,11 @@ GeneratePigStandardTests() {
 
     for pigversion in 0.15.0
     do
+	if [ "${hadoop_2_7_0}" != "y" ]
+	then
+	    echo "Cannot generate Pig standard tests that depend on Hadoop 2.7.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.7.0
 	do
 	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} "1.7"
@@ -105,6 +120,11 @@ GeneratePigDependencyTests() {
 
     for pigversion in 0.12.0 0.12.1
     do
+	if [ "${hadoop_2_4_0}" != "y" ]
+	then
+	    echo "Cannot generate Pig dependency tests that depend on Hadoop 2.4.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.4.0
 	do
 	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} "1.6"
@@ -113,6 +133,11 @@ GeneratePigDependencyTests() {
 
     for pigversion in 0.13.0 0.14.0
     do
+	if [ "${hadoop_2_6_0}" != "y" ]
+	then
+	    echo "Cannot generate Pig dependency tests that depend on Hadoop 2.6.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.6.0
 	do
 	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} "1.6"
@@ -121,6 +146,11 @@ GeneratePigDependencyTests() {
 
     for pigversion in 0.15.0
     do
+	if [ "${hadoop_2_7_0}" != "y" ]
+	then
+	    echo "Cannot generate Pig dependency tests that depend on Hadoop 2.7.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.7.0
 	do
 	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} "1.7"

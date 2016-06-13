@@ -75,8 +75,18 @@ GenerateHbaseStandardTests() {
 
     for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
     do
+	if [ "${hadoop_2_6_0}" != "y" ]
+	then
+	    echo "Cannot generate Hbase standard tests that depend on Hadoop 2.6.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.6.0
 	do
+	    if [ "${zookeeper_3_4_6}" != "y" ]
+	    then
+		echo "Cannot generate Hbase standard tests that depend on Zookeeper 3.4.6, it's not enabled"
+		break
+	    fi
 	    for zookeeperversion in 3.4.6
 	    do
 		GenerateHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.6"
@@ -86,8 +96,18 @@ GenerateHbaseStandardTests() {
 
     for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
     do
+	if [ "${hadoop_2_7_0}" != "y" ]
+	then
+	    echo "Cannot generate Hbase standard tests that depend on Hadoop 2.7.0, it's not enabled"
+	    break
+	fi
 	for hadoopversion in 2.7.0
 	do
+	    if [ "${zookeeper_3_4_8}" != "y" ]
+	    then
+		echo "Cannot generate Hbase standard tests that depend on Zookeeper 3.4.8, it's not enabled"
+		break
+	    fi
 	    for zookeeperversion in 3.4.8
 	    do
 		GenerateHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
@@ -196,8 +216,18 @@ GenerateHbaseDependencyTests() {
     do
 	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
 	do
+	    if [ "${hadoop_2_6_0}" != "y" ]
+	    then
+		echo "Cannot generate Hbase dependency tests that depend on Hadoop 2.6.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.6.0
 	    do
+		if [ "${zookeeper_3_4_6}" != "y" ]
+		then
+		    echo "Cannot generate Hbase dependency tests that depend on Zookeeper 3.4.6, it's not enabled"
+		    break
+		fi
 		for zookeeperversion in 3.4.6
 		do
 		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.6"
@@ -207,8 +237,18 @@ GenerateHbaseDependencyTests() {
 
 	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
 	do
+	    if [ "${hadoop_2_7_0}" != "y" ]
+	    then
+		echo "Cannot generate Hbase dependency tests that depend on Hadoop 2.7.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.7.0
 	    do
+		if [ "${zookeeper_3_4_8}" != "y" ]
+		then
+		    echo "Cannot generate Hbase dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
+		break
+		fi
 		for zookeeperversion in 3.4.8
 		do
 		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"

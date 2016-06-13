@@ -45,6 +45,11 @@ GenerateKafkaStandardTests() {
 
     for kafkaversion in 2.11-0.9.0.0
     do
+	if [ "${zookeeper_3_4_8}" != "y" ]
+	then
+	    echo "Cannot generate Kafka standard tests that depend on Zookeeper 3.4.8, it's not enabled"
+	    break
+	fi
 	for zookeeperversion in 3.4.8
 	do
 	    GenerateKafkaStandardTests_KafkaPerformance ${kafkaversion} ${zookeeperversion} "1.7"
@@ -82,6 +87,11 @@ GenerateKafkaDependencyTests() {
 
     for kafkaversion in 2.11-0.9.0.0
     do
+	if [ "${zookeeper_3_4_8}" != "y" ]
+	then
+	    echo "Cannot generate Kafka dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
+	    break
+	fi
 	for zookeeperversion in 3.4.8
 	do
 	    GenerateKafkaDependencyTests_Dependency1 ${kafkaversion} ${zookeeperversion} "1.7"

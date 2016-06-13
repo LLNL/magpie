@@ -42,6 +42,11 @@ GenerateStormStandardTests() {
 
     for stormversion in 0.9.3 0.9.4
     do
+	if [ "${zookeeper_3_4_6}" != "y" ]
+	then
+	    echo "Cannot generate Storm standard tests that depend on Zookeeper 3.4.6, it's not enabled"
+	    break
+	fi
 	for zookeeperversion in 3.4.6
 	do
 	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} "1.6"
@@ -50,6 +55,11 @@ GenerateStormStandardTests() {
 
     for stormversion in 0.9.5 0.9.6 0.10.0
     do
+	if [ "${zookeeper_3_4_8}" != "y" ]
+	then
+	    echo "Cannot generate Storm standard tests that depend on Zookeeper 3.4.8, it's not enabled"
+	    break
+	fi
 	for zookeeperversion in 3.4.8
 	do
 	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} "1.7"
@@ -84,6 +94,11 @@ GenerateStormDependencyTests() {
 
     for stormversion in 0.9.3 0.9.4
     do
+	if [ "${zookeeper_3_4_6}" != "y" ]
+	then
+	    echo "Cannot generate Storm dependency tests that depend on Zookeeper 3.4.6, it's not enabled"
+	    break
+	fi
 	for zookeeperversion in 3.4.6
 	do
 	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} "1.6"
@@ -92,6 +107,11 @@ GenerateStormDependencyTests() {
 
     for stormversion in 0.9.5 0.9.6 0.10.0
     do
+	if [ "${zookeeper_3_4_8}" != "y" ]
+	then
+	    echo "Cannot generate Storm dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
+	    break
+	fi
 	for zookeeperversion in 3.4.8
 	do
 	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} "1.7"

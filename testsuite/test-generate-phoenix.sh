@@ -58,10 +58,25 @@ GeneratePhoenixStandardTests() {
 
     for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
     do
+	if [ "${hbase_1_1_0}" != "y" ]
+	then
+	    echo "Cannot generate Phoenix standard tests that depend on Hbase 1.1.0, it's not enabled"
+	    break
+	fi
 	for hbaseversion in 1.1.0
 	do
+	    if [ "${hadoop_2_7_0}" != "y" ]
+	    then
+		echo "Cannot generate Phoenix standard tests that depend on Hadoop 2.7.0, it's not enabled"
+		break
+	    fi
 	    for hadoopversion in 2.7.0
 	    do
+		if [ "${zookeeper_3_4_8}" != "y" ]
+		then
+		    echo "Cannot generate Phoenix standard tests that depend on Zookeeper 3.4.8, it's not enabled"
+		    break
+		fi
 		for zookeeperversion in 3.4.8
 		do
 		    GeneratePhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
@@ -155,10 +170,25 @@ GeneratePhoenixDependencyTests() {
     do
 	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
 	do
+	    if [ "${hbase_1_1_0}" != "y" ]
+	    then
+		echo "Cannot generate Phoenix dependency tests that depend on Hbase 1.1.0, it's not enabled"
+		break
+	    fi
 	    for hbaseversion in 1.1.0
 	    do
+		if [ "${hadoop_2_7_0}" != "y" ]
+		then
+		    echo "Cannot generate Phoenix dependency tests that depend on Hadoop 2.7.0, it's not enabled"
+		    break
+		fi
 		for hadoopversion in 2.7.0
 		do
+		    if [ "${zookeeper_3_4_8}" != "y" ]
+		    then
+			echo "Cannot generate Phoenix dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
+			break
+		    fi
 		    for zookeeperversion in 3.4.8
 		    do
 			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
