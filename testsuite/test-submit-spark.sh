@@ -129,71 +129,43 @@ SubmitSparkDependencyTests_Dependency4rawnetworkfs() {
 }
 
 SubmitSparkDependencyTests() {
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+    for testfunction in SubmitSparkDependencyTests_Dependency1HDFS SubmitSparkDependencyTests_Dependency2HDFS
     do
-	for hadoopversion in 2.2.0
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
-	    SubmitSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "n"
+	    for hadoopversion in 2.2.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "n"
+	    done
+	done
+
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	do
+	    for hadoopversion in 2.4.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "y"
+	    done
+	done
+
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	do
+	    for hadoopversion in 2.6.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "y"
+	    done
 	done
     done
 
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+    for testfunction in SubmitSparkDependencyTests_Dependency3rawnetworkfs SubmitSparkDependencyTests_Dependency4rawnetworkfs
     do
-	for hadoopversion in 2.4.0
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    SubmitSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "y"
+	    ${testfunction} ${sparkversion}
 	done
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	for hadoopversion in 2.6.0
+	
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
 	do
-	    SubmitSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "y"
+	    ${testfunction} ${sparkversion}
 	done
-    done
-
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-	for hadoopversion in 2.2.0
-	do
-	    SubmitSparkDependencyTests_Dependency2HDFS ${sparkversion} ${hadoopversion} "n"
-	done
-    done
-
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	for hadoopversion in 2.4.0
-	do
-	    SubmitSparkDependencyTests_Dependency2HDFS ${sparkversion} ${hadoopversion} "y"
-	done
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	for hadoopversion in 2.6.0
-	do
-	    SubmitSparkDependencyTests_Dependency2HDFS ${sparkversion} ${hadoopversion} "y"
-	done
-    done
-
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	SubmitSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion}
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	SubmitSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion}
-    done
-
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	SubmitSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion}
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	SubmitSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion}
     done
 }
