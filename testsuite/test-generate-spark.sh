@@ -177,31 +177,6 @@ GenerateSparkDependencyTests_Dependency1HDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency1rawnetworkfs() {
-    sparkversion=$1
-    javaversion=$2
-
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-run-sparkwordcount-copy-in
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-run-sparkwordcount-no-copy
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
-
-    sed -i \
-	-e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
-	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}*
-
-    sed -i \
-	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark1B\/'"${sparkversion}"'\/test-wordcountfile\"/' \
-	-e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
-	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}*run-sparkwordcount-copy-in*
-
-    sed -i \
-	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark1B\/'"${sparkversion}"'\/test-wordcountfile\"/' \
-	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}*run-sparkwordcount-no-copy*
-
-    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}*`
-}
-
 GenerateSparkDependencyTests_Dependency2HDFS() {
     sparkversion=$1
     hadoopversion=$2
@@ -269,29 +244,54 @@ GenerateSparkDependencyTests_Dependency2HDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency2rawnetworkfs() {
+GenerateSparkDependencyTests_Dependency3rawnetworkfs() {
     sparkversion=$1
     javaversion=$2
 
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}-run-sparkwordcount-no-copy
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-run-sparkwordcount-copy-in
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-run-sparkwordcount-no-copy
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
+
+    sed -i \
+	-e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
+	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}*
+
+    sed -i \
+	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark3A\/'"${sparkversion}"'\/test-wordcountfile\"/' \
+	-e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}*run-sparkwordcount-copy-in*
+
+    sed -i \
+	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark3A\/'"${sparkversion}"'\/test-wordcountfile\"/' \
+	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}*run-sparkwordcount-no-copy*
+
+    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}*`
+}
+
+GenerateSparkDependencyTests_Dependency4rawnetworkfs() {
+    sparkversion=$1
+    javaversion=$2
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}-run-sparkwordcount-no-copy
     
     sed -i \
 	-e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
 	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}*
+	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}*
     
     sed -i \
-	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark2B\/'"${sparkversion}"'\/test-wordcountfile\"/' \
+	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark4A\/'"${sparkversion}"'\/test-wordcountfile\"/' \
 	-e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
-	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}*run-sparkwordcount-copy-in*
+	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}*run-sparkwordcount-copy-in*
     
     sed -i \
-	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark2B\/'"${sparkversion}"'\/test-wordcountfile\"/' \
-	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}*run-sparkwordcount-no-copy*
+	-e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${lustredirpathsubst}"'\/rawnetworkfs\/DEPENDENCYPREFIX\/Spark4A\/'"${sparkversion}"'\/test-wordcountfile\"/' \
+	magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}*run-sparkwordcount-no-copy*
     
-    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}*`
+    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}*`
 }
 
 GenerateSparkDependencyTests() {
@@ -327,18 +327,6 @@ GenerateSparkDependencyTests() {
 	done
     done
 
-# Dependency 1 Tests, run after another, rawnetworkfs
-    
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	GenerateSparkDependencyTests_Dependency1rawnetworkfs ${sparkversion} "1.6"
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	GenerateSparkDependencyTests_Dependency1rawnetworkfs ${sparkversion} "1.7"
-    done
-
 # Dependency 2 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs
 
 # No decommissionhdfsnodes for Hadoop 2.2.0
@@ -366,15 +354,28 @@ GenerateSparkDependencyTests() {
  	done
     done
 
-# Dependency 2 Tests, run after another, start with more nodes, rawnetworkfs
+# Dependency 3 Tests, run after another, rawnetworkfs
     
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
     do
-	GenerateSparkDependencyTests_Dependency2rawnetworkfs ${sparkversion} "1.6"
+	GenerateSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion} "1.6"
     done
 
     for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
     do
-	GenerateSparkDependencyTests_Dependency2rawnetworkfs ${sparkversion} "1.7"
+	GenerateSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion} "1.7"
+    done
+
+
+# Dependency 4 Tests, run after another, start with more nodes, rawnetworkfs
+    
+    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+    do
+	GenerateSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion} "1.6"
+    done
+
+    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+    do
+	GenerateSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion} "1.7"
     done
 }

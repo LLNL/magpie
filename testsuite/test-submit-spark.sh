@@ -98,15 +98,6 @@ SubmitSparkDependencyTests_Dependency1HDFS() {
     fi
 }
 
-SubmitSparkDependencyTests_Dependency1rawnetworkfs() {
-    sparkversion=$1
-
-    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-run-sparkwordcount-copy-in
-    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-run-sparkwordcount-no-copy
-    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
-    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark1B-spark-${sparkversion}-run-sparkwordcount-no-copy
-}
-
 SubmitSparkDependencyTests_Dependency2HDFS() {
     sparkversion=$1
     hadoopversion=$2
@@ -131,12 +122,21 @@ SubmitSparkDependencyTests_Dependency2HDFS() {
     fi
 }
 
-SubmitSparkDependencyTests_Dependency2rawnetworkfs() {
+SubmitSparkDependencyTests_Dependency3rawnetworkfs() {
     sparkversion=$1
 
-    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
-    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
-    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark2B-spark-${sparkversion}-run-sparkwordcount-no-copy
+    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-run-sparkwordcount-copy-in
+    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-run-sparkwordcount-no-copy
+    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
+    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark3A-spark-${sparkversion}-run-sparkwordcount-no-copy
+}
+
+SubmitSparkDependencyTests_Dependency4rawnetworkfs() {
+    sparkversion=$1
+
+    BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
+    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
+    DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark4A-spark-${sparkversion}-run-sparkwordcount-no-copy
 }
 
 SubmitSparkDependencyTests() {
@@ -162,16 +162,6 @@ SubmitSparkDependencyTests() {
 	do
 	    SubmitSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "y"
 	done
-    done
-
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	SubmitSparkDependencyTests_Dependency1rawnetworkfs ${sparkversion}
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	SubmitSparkDependencyTests_Dependency1rawnetworkfs ${sparkversion}
     done
 
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
@@ -200,11 +190,21 @@ SubmitSparkDependencyTests() {
 
     for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
     do
-	SubmitSparkDependencyTests_Dependency2rawnetworkfs ${sparkversion}
+	SubmitSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion}
     done
 
     for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
     do
-	SubmitSparkDependencyTests_Dependency2rawnetworkfs ${sparkversion}
+	SubmitSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion}
+    done
+
+    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+    do
+	SubmitSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion}
+    done
+
+    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+    do
+	SubmitSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion}
     done
 }
