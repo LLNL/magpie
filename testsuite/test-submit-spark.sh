@@ -2,8 +2,7 @@
 
 SubmitSparkStandardTests_BasicTests() {
     sparkversion=$1
-    hadoopversion=$2 #unused in this function
-    localdirtests=$3
+    localdirtests=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
@@ -33,7 +32,25 @@ SubmitSparkStandardTests_WordCount() {
 }
 
 SubmitSparkStandardTests() {
-    for testfunction in SubmitSparkStandardTests_BasicTests SubmitSparkStandardTests_WordCount
+    for testfunction in SubmitSparkStandardTests_BasicTests
+    do
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	do
+	    ${testfunction} ${sparkversion} "n"
+	done
+    
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	do
+	    ${testfunction} ${sparkversion} "y"
+	done
+    
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	do
+	    ${testfunction} ${sparkversion} "y"
+	done
+    done
+
+    for testfunction in SubmitSparkStandardTests_WordCount
     do
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do

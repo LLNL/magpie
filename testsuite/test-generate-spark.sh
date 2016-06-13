@@ -4,9 +4,8 @@ source test-generate-common.sh
 
 GenerateSparkStandardTests_BasicTests() {
     sparkversion=$1
-    hadoopversion=$2 #unused in this function
-    javaversion=$3
-    localdirtests=$4
+    javaversion=$2
+    localdirtests=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
@@ -66,7 +65,26 @@ GenerateSparkStandardTests() {
 
     echo "Making Spark Standard Tests"
 
-    for testfunction in GenerateSparkStandardTests_BasicTests GenerateSparkStandardTests_WordCount
+    for testfunction in GenerateSparkStandardTests_BasicTests
+    do
+        # 0.9.X no local dir tests
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	do
+	    ${testfunction} ${sparkversion} "1.6" "n"
+	done
+
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	do
+	    ${testfunction} ${sparkversion} "1.6" "y"
+	done
+
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	do
+	    ${testfunction} ${sparkversion} "1.7" "y"
+	done
+    done
+
+    for testfunction in GenerateSparkStandardTests_WordCount
     do
         # 0.9.X no local dir tests
 	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
