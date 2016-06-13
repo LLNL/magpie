@@ -117,35 +117,19 @@ SubmitHadoopDependencyTests() {
 	SubmitHadoopDependencyTests_Dependency1 ${hadoopversion}
     done
 
-    for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    for testfunction in SubmitHadoopDependencyTests_Dependency2 SubmitHadoopDependencyTests_Dependency3 SubmitHadoopDependencyTests_Dependency4
     do
-	SubmitHadoopDependencyTests_Dependency2 ${hadoopversion}
+	for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+	do
+	    ${testfunction} ${hadoopversion}
+	done
+
+	for hadoopversion in 2.7.0 2.7.1 2.7.2
+	do
+	    ${testfunction} ${hadoopversion}
+	done
     done
 
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-	SubmitHadoopDependencyTests_Dependency2 ${hadoopversion}
-    done
-
-    for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    do
-	SubmitHadoopDependencyTests_Dependency3 ${hadoopversion}
-    done
-
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-	SubmitHadoopDependencyTests_Dependency3 ${hadoopversion}
-    done
-
-    for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    do
-	SubmitHadoopDependencyTests_Dependency4 ${hadoopversion}
-    done
-
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
-    do
-	SubmitHadoopDependencyTests_Dependency4 ${hadoopversion}
-    done
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A-hdfsoverlustre-hdfs-older-version-expected-failure

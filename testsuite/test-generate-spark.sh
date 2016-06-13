@@ -4,8 +4,9 @@ source test-generate-common.sh
 
 GenerateSparkStandardTests_BasicTests() {
     sparkversion=$1
-    javaversion=$2
-    localdirtests=$3
+    hadoopversion=$2 #unused in this function
+    javaversion=$3
+    localdirtests=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
@@ -65,47 +66,31 @@ GenerateSparkStandardTests() {
 
     echo "Making Spark Standard Tests"
 
-# Basic tests
-
-    # 0.9.X no local dir tests
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+    for testfunction in GenerateSparkStandardTests_BasicTests GenerateSparkStandardTests_WordCount
     do
-	GenerateSparkStandardTests_BasicTests ${sparkversion} "1.6" "n"
-    done
-
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	GenerateSparkStandardTests_BasicTests ${sparkversion} "1.6" "y"
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	GenerateSparkStandardTests_BasicTests ${sparkversion} "1.7" "y"
-    done
-
-# Spark w/ HDFS & Rawnetworkfs tests
-
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-	for hadoopversion in 2.2.0
+        # 0.9.X no local dir tests
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
-	    GenerateSparkStandardTests_WordCount ${sparkversion} ${hadoopversion} "1.6" "n"
+	    for hadoopversion in 2.2.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "n"
+	    done
 	done
-    done
 
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	for hadoopversion in 2.4.0
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
-	    GenerateSparkStandardTests_WordCount ${sparkversion} ${hadoopversion} "1.6" "y"
+	    for hadoopversion in 2.4.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
+	    done
 	done
-    done
 
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	for hadoopversion in 2.6.0
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
 	do
-	    GenerateSparkStandardTests_WordCount ${sparkversion} ${hadoopversion} "1.7" "y"
+	    for hadoopversion in 2.6.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"
+	    done
 	done
     done
 }
@@ -301,81 +286,49 @@ GenerateSparkDependencyTests() {
     echo "Making Spark Dependency Tests"
 
 # Dependency 1 Tests, run after another, HDFS over Lustre/Networkfs
-
-# No decommissionhdfsnodes for Hadoop 2.2.0
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-	for hadoopversion in 2.2.0
-	do
-	    GenerateSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "1.6" "n"
-	done
-    done
-
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	for hadoopversion in 2.4.0
-	do
-	    GenerateSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "1.6" "y"
-	done
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	for hadoopversion in 2.6.0
-	do
-	    GenerateSparkDependencyTests_Dependency1HDFS ${sparkversion} ${hadoopversion} "1.7" "y"
-	done
-    done
-
 # Dependency 2 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs
 
+    for testfunction in GenerateSparkDependencyTests_Dependency1HDFS GenerateSparkDependencyTests_Dependency2HDFS
+    do
 # No decommissionhdfsnodes for Hadoop 2.2.0
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
-    do
-	for hadoopversion in 2.2.0
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
 	do
-	    GenerateSparkDependencyTests_Dependency2HDFS ${sparkversion} ${hadoopversion} "1.6" "n"
+	    for hadoopversion in 2.2.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "n"
+	    done
 	done
-    done
 
-    for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	for hadoopversion in 2.4.0
+	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
 	do
- 	    GenerateSparkDependencyTests_Dependency2HDFS ${sparkversion} ${hadoopversion} "1.6" "y"
+	    for hadoopversion in 2.4.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
+	    done
 	done
-    done
 
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	for hadoopversion in 2.6.0
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
 	do
- 	    GenerateSparkDependencyTests_Dependency2HDFS ${sparkversion} ${hadoopversion} "1.7" "y"
- 	done
+	    for hadoopversion in 2.6.0
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"
+	    done
+	done
     done
 
 # Dependency 3 Tests, run after another, rawnetworkfs
-    
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	GenerateSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion} "1.6"
-    done
-
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
-    do
-	GenerateSparkDependencyTests_Dependency3rawnetworkfs ${sparkversion} "1.7"
-    done
-
-
 # Dependency 4 Tests, run after another, start with more nodes, rawnetworkfs
-    
-    for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
-    do
-	GenerateSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion} "1.6"
-    done
 
-    for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+    for testfunction in GenerateSparkDependencyTests_Dependency3rawnetworkfs GenerateSparkDependencyTests_Dependency4rawnetworkfs
     do
-	GenerateSparkDependencyTests_Dependency4rawnetworkfs ${sparkversion} "1.7"
+	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	do
+	    ${testfunction} ${sparkversion} "1.6"
+	done
+	
+	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	do
+	    ${testfunction} ${sparkversion} "1.7"
+	done
     done
 }
