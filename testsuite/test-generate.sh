@@ -82,7 +82,6 @@ zookeepertests=y
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
-# largeperformanceruntests - run performance tests
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
 standardtests=y
 dependencytests=y
@@ -90,7 +89,6 @@ regressiontests=y
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
-largeperformanceruntests=n
 nolocaldirtests=y
 
 # Version specific tests, set to y to test, n to not
@@ -365,11 +363,6 @@ fi
 if [ "${hdfsovernetworkfs_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-*hdfsovernetworkfs*
-fi
-
-if [ "${largeperformanceruntests}" == "n" ]
-then
-    rm -f magpie.${submissiontype}*largeperformancerun*
 fi
 
 if [ "${nolocaldirtests}" == "n" ]
@@ -889,9 +882,6 @@ then
     sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 
-    if ls magpie.${submissiontype}-*largeperformancerun* >& /dev/null ; then
-	sed -i -e "s/<my time in minutes>/300/" magpie.${submissiontype}-*largeperformancerun*
-    fi
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	sed -i -e "s/<my time in minutes>/120/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
@@ -903,9 +893,6 @@ then
     sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 
-    if ls magpie.${submissiontype}-*largeperformancerun* >& /dev/null ; then
-	sed -i -e "s/<my time in seconds or HH:MM:SS>/18000/" magpie.${submissiontype}-*largeperformancerun*
-    fi
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/7200/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
@@ -918,9 +905,6 @@ then
     sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
 
-    if ls magpie.${submissiontype}-*largeperformancerun* >& /dev/null ; then
-	sed -i -e "s/<my time in hours:minutes>/5:00/" magpie.${submissiontype}-*largeperformancerun*
-    fi
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	sed -i -e "s/<my time in hours:minutes>/2:00/" magpie.${submissiontype}-hbase-with-hdfs*
     fi

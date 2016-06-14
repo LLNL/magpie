@@ -20,8 +20,6 @@ SubmitHadoopStandardTests_StandardTerasort() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-localstore-multiple-paths-run-hadoopterasort-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-localstore-single-path-run-hadoopterasort-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-localstore-multiple-paths-run-hadoopterasort-no-local-dir
-
-    BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-largeperformancerun-run-hadoopterasort
 }
 
 SubmitHadoopStandardTests() {
