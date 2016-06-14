@@ -28,7 +28,7 @@
 # Assumes current defaults in Magpie are definitely available, but
 # versions can be configured for which tests will run
 #
-# XXX - haven't handled msub-slurm-srun, or msub-torque-pdsh yet
+# XXX - haven't handled msub-torque-pdsh yet
 
 source test-generate-default.sh
 source test-generate-hadoop.sh
