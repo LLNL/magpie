@@ -1,4 +1,5 @@
-A regression testsuite for Magpie is available in the subdirectory 'testsuite'.  Generally speaking, to run it first
+A testsuite for Magpie is available in the subdirectory 'testsuite'.
+Generally speaking, to run it:
 
 1) Test generation
 
@@ -23,13 +24,6 @@ A regression testsuite for Magpie is available in the subdirectory 'testsuite'. 
    - In test-submit.sh, you may need to configure
 
      - The submissiontype to your scheduler type appropriately.
-
-     - Which project tests to run
-
-     - What type of tests to run
-
-       - standard tests can run in parallel on your cluster
-       - dependency tests run serially b/c they depend on the prior job running
 
    - Run test-submit.sh to submit jobs for testing.  Test submissions are logged in magpie-test.log.
 
