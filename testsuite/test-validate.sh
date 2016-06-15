@@ -434,7 +434,12 @@ then
 	    echo "Job error in $file"
 	fi
 	
-	test_spark_shutdown $file
+	if echo ${file} | grep -q "usingyarn"
+	then
+	    test_yarn_shutdown $file
+	else
+	    test_spark_shutdown $file
+	fi
 
 	if [ "${verboseoutput}" = "y" ]
 	then
@@ -452,7 +457,11 @@ then
 	    echo "Job error in $file"
 	fi
 	
-	test_spark_shutdown $file
+	if ! echo ${file} | grep -q "usingyarn"
+	then
+	    test_spark_shutdown $file
+	fi
+
 	if ! echo ${file} | grep -q "rawnetworkfs"
 	then
 	    test_hdfs_shutdown $file

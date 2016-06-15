@@ -490,7 +490,7 @@ Magpie_calculate_canrunjobscount () {
 	canrunjobscount=$((canrunjobscount+1))
     fi
  
-    if [ "${SPARK_SETUP}" == "yes" ]
+    if [ "${SPARK_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" != "yes" ]
     then
 	canrunjobscount=$((canrunjobscount+1))
     fi

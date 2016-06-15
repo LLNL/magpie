@@ -402,6 +402,7 @@ fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
 then
+    # Create regardless of using yarn or not, needed for other code
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${SPARK_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${SPARK_CONF_DIR}/slaves
 fi

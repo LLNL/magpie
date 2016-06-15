@@ -1,0 +1,15 @@
+spark.yarn.am.memory	 1g
+
+# For yarn-cluster mode
+spark.driver.cores	 1
+
+# For yarn-client mode
+spark.yarn.am.cores	 1
+
+# Set to number of cores, to emulate standalone mode
+spark.executor.cores     SPARKYARNEXECUTORCORES
+
+# Set to number of nodes, use all resources available
+spark.executor.instances SPARKYARNEXECUTORINSTANCES
+
+spark.yarn.executor.memoryOverhead SPARKYARNEXECUTOROVERHEAD

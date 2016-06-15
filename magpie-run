@@ -1261,24 +1261,27 @@ then
 
     if [ ${SPARK_MODE} != "setuponly" ]
     then
-	# Make variables unspecified for launching
-	Magpie_make_all_local_dirs_unspecified
-
-	echo "Starting spark"
-	${sparksetupscriptprefix}/start-all.sh
-
-        # Make variables specific now within Magpie
-	Magpie_make_all_local_dirs_node_specific
-	
-        # My rough estimate for setup time is 30 seconds per 128 nodes
-	sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
-	if [ ${sleepwait} -lt 30 ]
+	if [ "${SPARK_USE_YARN}" != "yes" ]
 	then
-            sleepwait=30
+	    # Make variables unspecified for launching
+	    Magpie_make_all_local_dirs_unspecified
+
+	    echo "Starting spark"
+	    ${sparksetupscriptprefix}/start-all.sh
+	    
+            # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+	
+            # My rough estimate for setup time is 30 seconds per 128 nodes
+	    sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
+	    if [ ${sleepwait} -lt 30 ]
+	    then
+		sleepwait=30
+	    fi
+	    echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
+	    sleep ${sleepwait}
+	    totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
 	fi
-	echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
-	sleep ${sleepwait}
-	totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
     fi
 
     echo "*******************************************************"
@@ -1287,13 +1290,16 @@ then
     echo "*"
     echo "* You can view your Spark status by launching a web browser and pointing to ..."
     echo "*"
-    echo "* Spark Master: http://${SPARK_MASTER_NODE}:${SPARK_MASTER_WEBUI_PORT}"
-    echo "* Spark Worker: http://<WORKERNODE>:${SPARK_WORKER_WEBUI_PORT}"
-    echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${SPARK_APPLICATION_DASHBOARD_PORT}"
-    echo "*" 
-    echo "* The Spark Master for running jobs is"
-    echo "*"
-    echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    if [ "${SPARK_USE_YARN}" != "yes" ]
+    then 
+	echo "* Spark Master: http://${SPARK_MASTER_NODE}:${SPARK_MASTER_WEBUI_PORT}"
+	echo "* Spark Worker: http://<WORKERNODE>:${SPARK_WORKER_WEBUI_PORT}"
+	echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${SPARK_APPLICATION_DASHBOARD_PORT}"
+	echo "*" 
+	echo "* The Spark Master for running jobs is"
+	echo "*"
+	echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+    fi
     echo "*"
     echo "* To access Spark directly, you'll want to:"
     echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
@@ -1374,7 +1380,10 @@ then
 	    echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv SPARK_LOG_DIR \"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv SPARK_MASTER_NODE \"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "setenv SPARK_MASTER_PORT \"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    if [ "${SPARK_USE_YARN}" != "yes" ]
+	    then
+		echo "setenv SPARK_MASTER_PORT \"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
 	    echo "setenv SPARK_SLAVE_COUNT \"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv SPARK_SLAVE_CORE_COUNT \"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "setenv SPARK_VERSION \"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -1383,7 +1392,10 @@ then
 	    echo "export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "export SPARK_MASTER_NODE=\"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    echo "export SPARK_MASTER_PORT=\"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    if [ "${SPARK_USE_YARN}" != "yes" ]
+	    then
+		echo "export SPARK_MASTER_PORT=\"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
 	    echo "export SPARK_SLAVE_COUNT=\"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "export SPARK_SLAVE_CORE_COUNT=\"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
 	    echo "export SPARK_VERSION=\"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -2494,16 +2506,19 @@ if [ "${SPARK_SETUP}" == "yes" ] && [ "${spark_should_be_torndown}" == "1" ]
 then
     if [ ${SPARK_MODE} != "setuponly" ]
     then
-	cd ${SPARK_HOME}
+	if [ "${SPARK_USE_YARN}" != "yes" ]
+	then
+	    cd ${SPARK_HOME}
 	
-	# Make variables unspecified for shutdown
-	Magpie_make_all_local_dirs_unspecified
+	    # Make variables unspecified for shutdown
+	    Magpie_make_all_local_dirs_unspecified
+	    
+	    echo "Stopping spark"
+	    ${sparksetupscriptprefix}/stop-all.sh
 
-	echo "Stopping spark"
-	${sparksetupscriptprefix}/stop-all.sh
-
-        # Make variables specific now within Magpie
-	Magpie_make_all_local_dirs_node_specific
+            # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+	fi
     fi
 fi
 
