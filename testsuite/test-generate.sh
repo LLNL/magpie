@@ -57,6 +57,15 @@ sbatchsrunpartition=pc6220
 lsfqueue=standard
 
 # Test config
+#
+# base node counts for job submission
+#
+# base node count of 8 means most jobs will be job size of 9, the
+# additional 1 will be added later for the master.
+#
+# zookeepernodecount will be added when necessary
+basenodecount=8
+zookeepernodecount=3
 
 # Toggle y/n for different test types
 
@@ -818,6 +827,9 @@ fi
 if ls magpie.${submissiontype}*run-pysparkwordcount* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pysparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pysparkwordcount*
 fi
+if ls magpie.${submissiontype}*spark-with-yarn* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn*
+fi
 
 if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-more-nodes*
@@ -825,6 +837,10 @@ fi
 
 if ls magpie.${submissiontype}*spark-with-rawnetworkfs* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-rawnetworkfs*
+fi
+
+if ls magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs*
 fi
 
 if ls magpie.${submissiontype}*run-kafkaperformance* >& /dev/null ; then
@@ -848,26 +864,32 @@ if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
 fi
 
 # special node sizes first
+
+basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2  + ${zookeepernodecount} + 1`
+basenodesmorenodescount=`expr ${basenodecount} \* 2  + + 1`
+basenodeszookeepernodescount=`expr ${basenodecount} + ${zookeepernodecount} + 1`
+basenodescount=`expr ${basenodecount} + + 1`
+
 if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/20/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
+    sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodes}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
 fi
 if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/17/" magpie.${submissiontype}*hdfs-more-nodes*
+    sed -i -e "s/<my node count>/${basenodesmorenodescount}/" magpie.${submissiontype}*hdfs-more-nodes*
 fi
 if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/12/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
+    sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
 fi
 if ls magpie.${submissiontype}*hdfs-fewer-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/9/" magpie.${submissiontype}*hdfs-fewer-nodes*
+    sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*hdfs-fewer-nodes*
 fi
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-    sed -i -e "s/<my node count>/12/" magpie.${submissiontype}-hbase-with-hdfs* 
+    sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs* 
 fi
 if ls magpie.${submissiontype}-storm* >& /dev/null ; then
-    sed -i -e "s/<my node count>/12/" magpie.${submissiontype}-storm*
+    sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
 fi
 
-sed -i -e "s/<my node count>/9/" magpie.${submissiontype}*
+sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
 
 sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
 
