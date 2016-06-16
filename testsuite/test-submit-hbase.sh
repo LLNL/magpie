@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitHbaseStandardTests_StandardPerformanceEval() {
     hbaseversion=$1

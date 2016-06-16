@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitHadoopStandardTests_StandardTerasort() {
     hadoopversion=$1

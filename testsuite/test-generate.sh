@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Which tests to generate
 #

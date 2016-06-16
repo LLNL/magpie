@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitZookeeperStandardTests_RUOK() {
     zookeeperversion=$1

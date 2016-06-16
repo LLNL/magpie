@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitPigStandardTests_Common() {
     pigversion=$1

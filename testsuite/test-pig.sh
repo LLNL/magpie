@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd $HADOOP_HOME
 bin/hadoop fs -mkdir -p hdfs:///user/achu

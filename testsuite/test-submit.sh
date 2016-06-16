@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 source test-submit-default.sh
 source test-submit-hadoop.sh

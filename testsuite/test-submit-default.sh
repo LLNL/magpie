@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitDefaultStandardTests() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort

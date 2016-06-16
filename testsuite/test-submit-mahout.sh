@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
     mahoutversion=$1

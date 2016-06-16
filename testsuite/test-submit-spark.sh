@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SubmitSparkStandardTests_BasicTests() {
     sparkversion=$1

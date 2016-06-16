@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 source test-generate-common.sh
 
