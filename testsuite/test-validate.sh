@@ -7,6 +7,10 @@
 #submissiontype=msub-torque-pdsh 
 submissiontype=sbatch-srun
 
+# Based on whatever you configured in test-generate.sh
+basenodecount=8
+zookeepernodecount=3
+
 if [ "${submissiontype}" == "lsf-mpirun" ]
 then
     outputprefix="lsf"
@@ -38,9 +42,9 @@ test_yarn_shutdown () {
 	numcompare=11
     elif echo ${file} | grep -q "hdfs-more-nodes"
     then
-	numcompare=16
+	numcompare=`expr ${basenodecount} \* 2`
     else
-	numcompare=8
+	numcompare=${basenodecount}
     fi
     if [ "${num}" != "$numcompare" ]; then
 	echo "Yarn nodemanager shutdown error in $file"
@@ -60,9 +64,9 @@ test_hdfs_shutdown () {
 	numcompare=11
     elif echo ${file} | grep -q "hdfs-more-nodes"
     then
-	numcompare=16
+	numcompare=`expr ${basenodecount} \* 2`
     else
-	numcompare=8
+	numcompare=${basenodecount}
     fi
     if [ "${num}" != "$numcompare" ]; then
 	echo "Datanode shutdown error in $file"
@@ -110,9 +114,9 @@ test_spark_shutdown () {
     num=`grep -e "stopping org.apache.spark.deploy.worker.Worker" $file | wc -l`
     if echo ${file} | grep -q "more-nodes"
     then
-	numcompare=16
+	numcompare=`expr ${basenodecount} \* 2`
     else
-	numcompare=8
+	numcompare=${basenodecount}
     fi
     if [ "${num}" != "$numcompare" ]; then
 	echo "Spark worker shutdown error in $file"
@@ -134,7 +138,7 @@ test_zookeeper_shutdown () {
     local file=$1
     
     num=`grep -e "Stopping zookeeper ... STOPPED" $file | wc -l`
-    if [ "${num}" != "3" ]; then
+    if [ "${num}" != "${zookeepernodecount}" ]; then
         echo "Zookeeper shutdown error in $file"
     fi
 }
@@ -269,7 +273,7 @@ if ls ${outputprefix}*decommissionhdfsnodes* >& /dev/null
 then
     for file in `ls ${outputprefix}*decommissionhdfsnodes*`
     do
-	num=`grep -e "Decommissioned 8 nodes" $file | wc -l`
+	num=`grep -e "Decommissioned ${basenodecount} nodes" $file | wc -l`
 	if [ "${num}" != "1" ]; then
 	    echo "Job error in $file"
 	fi
@@ -531,9 +535,9 @@ then
 
 	if echo ${file} | grep -q "zookeeper-shared"
 	then
-	    numcompare=11
+	    numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
 	else
-	    numcompare=8
+	    numcompare=${basenodecount}
 	fi
 
 	num=`grep -e "Killing Storm supervisor" $file | wc -l`
@@ -560,7 +564,7 @@ then
     for file in `ls ${outputprefix}*run-zookeeperruok*`
     do
 	num=`grep -e "imok" $file | wc -l`
-	if [ "${num}" != "3" ]; then
+	if [ "${num}" != "${zookeepernodecount}" ]; then
 	    echo "Job error in $file"
 	fi
 	
