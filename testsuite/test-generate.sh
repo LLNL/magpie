@@ -891,6 +891,8 @@ fi
 
 sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
 
+sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*zookeeper*
+
 sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
 
 ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="yes"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
