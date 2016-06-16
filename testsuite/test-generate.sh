@@ -904,6 +904,9 @@ dependencyprefix=`date +"%Y%m%d%N"`
 
 sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie.${submissiontype}*
 
+sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
+sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
+
 # Put back original/desired filename names and do some last replaces that are submission type specific
 
 if [ "${submissiontype}" == "sbatch-srun" ]
@@ -954,6 +957,4 @@ make ${submissiontype} &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
-sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
-sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
 
