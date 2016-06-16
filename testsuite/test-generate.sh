@@ -891,7 +891,9 @@ fi
 
 sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
 
-sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*zookeeper*
+if ls magpie.${submissiontype}*zookeeper* >& /dev/null ; then
+    sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*zookeeper*
+fi
 
 sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
 
