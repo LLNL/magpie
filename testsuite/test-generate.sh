@@ -865,13 +865,13 @@ fi
 
 # special node sizes first
 
-basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2  + ${zookeepernodecount} + 1`
-basenodesmorenodescount=`expr ${basenodecount} \* 2  + + 1`
+basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
+basenodesmorenodescount=`expr ${basenodecount} \* 2 + 1`
 basenodeszookeepernodescount=`expr ${basenodecount} + ${zookeepernodecount} + 1`
-basenodescount=`expr ${basenodecount} + + 1`
+basenodescount=`expr ${basenodecount} + 1`
 
 if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodes}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
+    sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
 fi
 if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
     sed -i -e "s/<my node count>/${basenodesmorenodescount}/" magpie.${submissiontype}*hdfs-more-nodes*
