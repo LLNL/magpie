@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateStormStandardTests_StandardWordCount() {
     stormversion=$1
@@ -40,7 +41,7 @@ GenerateStormStandardTests() {
 
     echo "Making Storm Standard Tests"
 
-    for stormversion in 0.9.3 0.9.4
+    for stormversion in ${stormzookeeper346java16versions}
     do
 	if [ "${zookeeper_3_4_6}" != "y" ]
 	then
@@ -53,7 +54,7 @@ GenerateStormStandardTests() {
 	done
     done
 
-    for stormversion in 0.9.5 0.9.6 0.10.0
+    for stormversion in ${stormzookeeper348java17versions}
     do
 	if [ "${zookeeper_3_4_8}" != "y" ]
 	then
@@ -92,7 +93,7 @@ GenerateStormDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for stormversion in 0.9.3 0.9.4
+    for stormversion in ${stormzookeeper346java16versions}
     do
 	if [ "${zookeeper_3_4_6}" != "y" ]
 	then
@@ -105,7 +106,7 @@ GenerateStormDependencyTests() {
 	done
     done
 
-    for stormversion in 0.9.5 0.9.6 0.10.0
+    for stormversion in ${stormzookeeper348java17versions}
     do
 	if [ "${zookeeper_3_4_8}" != "y" ]
 	then

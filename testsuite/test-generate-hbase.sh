@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateHbaseStandardTests_StandardPerformanceEval() {
     hbaseversion=$1
@@ -73,7 +74,7 @@ GenerateHbaseStandardTests() {
 
     echo "Making Hbase Standard Tests"
 
-    for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+    for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
     do
 	if [ "${hadoop_2_6_0}" != "y" ]
 	then
@@ -94,7 +95,7 @@ GenerateHbaseStandardTests() {
 	done
     done
 
-    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
+    for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
     do
 	if [ "${hadoop_2_7_0}" != "y" ]
 	then
@@ -214,7 +215,7 @@ GenerateHbaseDependencyTests() {
 
     for testfunction in GenerateHbaseDependencyTests_Dependency1 GenerateHbaseDependencyTests_Dependency2
     do
-	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
 	do
 	    if [ "${hadoop_2_6_0}" != "y" ]
 	    then
@@ -235,7 +236,7 @@ GenerateHbaseDependencyTests() {
 	    done
 	done
 
-	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
+	for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
 	do
 	    if [ "${hadoop_2_7_0}" != "y" ]
 	    then

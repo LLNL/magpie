@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitPigStandardTests_Common() {
     pigversion=$1
     hadoopversion=$2
@@ -12,7 +14,7 @@ SubmitPigStandardTests_Common() {
 }
 
 SubmitPigStandardTests() {
-    for pigversion in 0.12.0 0.12.1
+    for pigversion in ${pighadoop24java16versions}
     do
 	for hadoopversion in 2.4.0
 	do
@@ -20,7 +22,7 @@ SubmitPigStandardTests() {
 	done
     done
     
-    for pigversion in 0.13.0 0.14.0
+    for pigversion in ${pighadoop26java16versions}
     do
 	for hadoopversion in 2.6.0
 	do
@@ -53,7 +55,7 @@ SubmitPigDependencyTests_Dependency1() {
 }
 
 SubmitPigDependencyTests() {
-    for pigversion in 0.12.0 0.12.1
+    for pigversion in ${pighadoop24java16versions}
     do
 	for hadoopversion in 2.4.0
 	do
@@ -61,7 +63,7 @@ SubmitPigDependencyTests() {
 	done
     done
 
-    for pigversion in 0.13.0 0.14.0
+    for pigversion in ${pighadoop26java16versions}
     do
 	for hadoopversion in 2.6.0
 	do
@@ -69,7 +71,7 @@ SubmitPigDependencyTests() {
 	done
     done
 
-    for pigversion in 0.15.0
+    for pigversion in ${pighadoop27java17versions}
     do
 	for hadoopversion in 2.7.0
 	do

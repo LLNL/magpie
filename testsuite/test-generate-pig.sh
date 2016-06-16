@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GeneratePigStandardTests_Common() {
     pigversion=$1
@@ -29,7 +30,7 @@ GeneratePigStandardTests() {
 
     echo "Making Pig Standard Tests"
 
-    for pigversion in 0.12.0 0.12.1
+    for pigversion in ${pighadoop24java16versions}
     do
 	if [ "${hadoop_2_4_0}" != "y" ]
 	then
@@ -42,7 +43,7 @@ GeneratePigStandardTests() {
 	done
     done
 
-    for pigversion in 0.13.0 0.14.0
+    for pigversion in ${pighadoop26java16versions}
     do
 	if [ "${hadoop_2_6_0}" != "y" ]
 	then
@@ -55,7 +56,7 @@ GeneratePigStandardTests() {
 	done
     done
 
-    for pigversion in 0.15.0
+    for pigversion in ${pighadoop27java17versions}
     do
 	if [ "${hadoop_2_7_0}" != "y" ]
 	then
@@ -118,7 +119,7 @@ GeneratePigDependencyTests() {
 
 # Dependency 1 Tests, run after another, HDFS over Lustre / NetworkFS
 
-    for pigversion in 0.12.0 0.12.1
+    for pigversion in ${pighadoop24java16versions}
     do
 	if [ "${hadoop_2_4_0}" != "y" ]
 	then
@@ -131,7 +132,7 @@ GeneratePigDependencyTests() {
 	done
     done
 
-    for pigversion in 0.13.0 0.14.0
+    for pigversion in ${pighadoop26java16versions}
     do
 	if [ "${hadoop_2_6_0}" != "y" ]
 	then
@@ -144,7 +145,7 @@ GeneratePigDependencyTests() {
 	done
     done
 
-    for pigversion in 0.15.0
+    for pigversion in ${pighadoop27java17versions}
     do
 	if [ "${hadoop_2_7_0}" != "y" ]
 	then

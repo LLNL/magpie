@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
     mahoutversion=$1
     hadoopversion=$2
@@ -10,7 +12,7 @@ SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
 }
 
 SubmitMahoutStandardTests() {
-    for mahoutversion in 0.11.0 0.11.1 0.11.2 0.12.0 0.12.1
+    for mahoutversion in ${mahouthadoop27java17versions}
     do
 	for hadoopversion in 2.7.0
 	do
@@ -31,7 +33,7 @@ SubmitMahoutDependencyTests_Dependency1() {
 }
 
 SubmitMahoutDependencyTests() {
-    for mahoutversion in 0.11.0 0.11.1 0.11.2 0.12.0 0.12.1
+    for mahoutversion in ${mahouthadoop27java17versions}
     do
 	for hadoopversion in 2.7.0
 	do

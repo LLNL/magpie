@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateZookeeperStandardTests_RUOK() {
     zookeeperversion=$1
@@ -35,7 +36,7 @@ GenerateZookeeperStandardTests() {
     
     echo "Making Zookeeper Standard Tests"
 
-    for zookeeperversion in 3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7 3.4.8
+    for zookeeperversion in ${zookeeperjava17versions}
     do
 	GenerateZookeeperStandardTests_RUOK ${zookeeperversion} "1.7"
     done

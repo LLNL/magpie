@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitKafkaStandardTests_KafkaPerformance() {
     kafkaversion=$1
     zookeeperversion=$2
@@ -16,7 +18,7 @@ SubmitKafkaStandardTests_KafkaPerformance() {
 }
 
 SubmitKafkaStandardTests() {
-    for kafkaversion in 2.11-0.9.0.0
+    for kafkaversion in ${kafkazookeeper348java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do
@@ -34,7 +36,7 @@ SubmitKafkaDependencyTests_Dependency1() {
 }
 
 SubmitKafkaDependencyTests() {
-    for kafkaversion in 2.11-0.9.0.0
+    for kafkaversion in ${kafkazookeeper348java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do

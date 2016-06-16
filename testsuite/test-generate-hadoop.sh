@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateHadoopStandardTests_StandardTerasort() {
     hadoopversion=$1
@@ -50,12 +51,12 @@ GenerateHadoopStandardTests() {
 
     echo "Making Hadoop Standard Tests"
 
-    for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    for hadoopversion in ${hadoopjava16versions}
     do
 	GenerateHadoopStandardTests_StandardTerasort ${hadoopversion} "1.6"
     done
 
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
+    for hadoopversion in ${hadoopjava17versions}
     do
 	GenerateHadoopStandardTests_StandardTerasort ${hadoopversion} "1.7"
     done
@@ -264,12 +265,12 @@ GenerateHadoopDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    for hadoopversion in ${hadoopjava16versions}
     do
 	GenerateHadoopDependencyTests_Dependency1 ${hadoopversion} "1.6"
     done
 
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
+    for hadoopversion in ${hadoopjava17versions}
     do
 	GenerateHadoopDependencyTests_Dependency1 ${hadoopversion} "1.7"
     done
@@ -280,13 +281,13 @@ GenerateHadoopDependencyTests() {
 
     for testfunction in GenerateHadoopDependencyTests_Dependency2 GenerateHadoopDependencyTests_Dependency3 GenerateHadoopDependencyTests_Dependency4
     do
-# decommissionhdfsnodes doesn't work reliably in 2.2.0, removing it
-	for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+# decommissionhdfsnodes doesn't work reliably in 2.2.X, removing it
+	for hadoopversion in ${hadoopjava16versionsdecommission}
 	do
 	    ${testfunction} ${hadoopversion} "1.6"
 	done
 	
-	for hadoopversion in 2.7.0 2.7.1 2.7.2
+	for hadoopversion in ${hadoopjava17versions}
 	do
 	    ${testfunction} ${hadoopversion} "1.7"
 	done

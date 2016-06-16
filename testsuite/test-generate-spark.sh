@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateSparkStandardTests_BasicTests() {
     sparkversion=$1
@@ -171,18 +172,18 @@ GenerateSparkStandardTests() {
 
     for testfunction in GenerateSparkStandardTests_BasicTests
     do
-        # 0.9.X no local dir tests
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+        # 0.X no local dir tests
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    ${testfunction} ${sparkversion} "1.6" "n"
 	done
 
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    ${testfunction} ${sparkversion} "1.6" "y"
 	done
 
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    ${testfunction} ${sparkversion} "1.7" "y"
 	done
@@ -191,7 +192,7 @@ GenerateSparkStandardTests() {
     for testfunction in GenerateSparkStandardTests_WordCount
     do
         # 0.9.X no local dir tests
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    if [ "${hadoop_2_2_0}" != "y" ]
 	    then
@@ -204,7 +205,7 @@ GenerateSparkStandardTests() {
 	    done
 	done
 
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    if [ "${hadoop_2_4_0}" != "y" ]
 	    then
@@ -217,7 +218,7 @@ GenerateSparkStandardTests() {
 	    done
 	done
 
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    if [ "${hadoop_2_6_0}" != "y" ]
 	    then
@@ -233,7 +234,7 @@ GenerateSparkStandardTests() {
 
     for testfunction in GenerateSparkStandardTests_YarnTests GenerateSparkStandardTests_YarnWordCount
     do
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    if [ "${hadoop_2_4_0}" != "y" ]
 	    then
@@ -246,7 +247,7 @@ GenerateSparkStandardTests() {
 	    done
 	done
 	
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    if [ "${hadoop_2_6_0}" != "y" ]
 	    then
@@ -631,7 +632,7 @@ GenerateSparkDependencyTests() {
     for testfunction in GenerateSparkDependencyTests_Dependency1HDFS GenerateSparkDependencyTests_Dependency2HDFS
     do
 # No decommissionhdfsnodes for Hadoop 2.2.0
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    if [ "${hadoop_2_2_0}" != "y" ]
 	    then
@@ -644,7 +645,7 @@ GenerateSparkDependencyTests() {
 	    done
 	done
 
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    if [ "${hadoop_2_4_0}" != "y" ]
 	    then
@@ -657,7 +658,7 @@ GenerateSparkDependencyTests() {
 	    done
 	done
 
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    if [ "${hadoop_2_6_0}" != "y" ]
 	    then
@@ -676,7 +677,7 @@ GenerateSparkDependencyTests() {
 
     for testfunction in GenerateSparkDependencyTests_Dependency3YarnHDFS GenerateSparkDependencyTests_Dependency4YarnHDFS
     do
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    if [ "${hadoop_2_4_0}" != "y" ]
 	    then
@@ -689,7 +690,7 @@ GenerateSparkDependencyTests() {
 	    done
 	done
 
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    if [ "${hadoop_2_6_0}" != "y" ]
 	    then
@@ -708,12 +709,12 @@ GenerateSparkDependencyTests() {
 
     for testfunction in GenerateSparkDependencyTests_Dependency5rawnetworkfs GenerateSparkDependencyTests_Dependency6rawnetworkfs
     do
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions}
 	do
 	    ${testfunction} ${sparkversion} "1.6"
 	done
 	
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    ${testfunction} ${sparkversion} "1.7"
 	done
@@ -724,7 +725,7 @@ GenerateSparkDependencyTests() {
 
     for testfunction in GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs
     do
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    if [ "${hadoop_2_4_0}" != "y" ]
 	    then
@@ -737,7 +738,7 @@ GenerateSparkDependencyTests() {
 	    done
 	done
 	
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    if [ "${hadoop_2_6_0}" != "y" ]
 	    then

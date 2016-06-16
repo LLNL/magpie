@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateMahoutStandardTests_ClusterSyntheticcontrol() {
     mahoutversion=$1
@@ -23,7 +24,7 @@ GenerateMahoutStandardTests() {
 
     echo "Making Mahout Standard Tests"
 
-    for mahoutversion in 0.11.0 0.11.1 0.11.2 0.12.0 0.12.1
+    for mahoutversion in ${mahouthadoop27java17versions}
     do
 	if [ "${hadoop_2_7_0}" != "y" ]
 	then
@@ -71,7 +72,7 @@ GenerateMahoutDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for mahoutversion in 0.11.0 0.11.1 0.11.2 0.12.0 0.12.1
+    for mahoutversion in ${mahouthadoop27java17versions}
     do
 	if [ "${hadoop_2_7_0}" != "y" ]
 	then

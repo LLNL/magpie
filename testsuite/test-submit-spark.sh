@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitSparkStandardTests_BasicTests() {
     sparkversion=$1
     localdirtests=$2
@@ -58,17 +60,17 @@ SubmitSparkStandardTests_YarnWordCount() {
 SubmitSparkStandardTests() {
     for testfunction in SubmitSparkStandardTests_BasicTests
     do
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    ${testfunction} ${sparkversion} "n"
 	done
     
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    ${testfunction} ${sparkversion} "y"
 	done
     
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    ${testfunction} ${sparkversion} "y"
 	done
@@ -76,7 +78,7 @@ SubmitSparkStandardTests() {
 
     for testfunction in SubmitSparkStandardTests_WordCount
     do
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    for hadoopversion in 2.2.0
 	    do
@@ -84,7 +86,7 @@ SubmitSparkStandardTests() {
 	    done
 	done
 	
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    for hadoopversion in 2.4.0
 	    do
@@ -92,7 +94,7 @@ SubmitSparkStandardTests() {
 	    done
 	done
 	
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    for hadoopversion in 2.6.0
 	    do
@@ -103,7 +105,7 @@ SubmitSparkStandardTests() {
 
     for testfunction in SubmitSparkStandardTests_YarnTests SubmitSparkStandardTests_YarnWordCount
     do
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    for hadoopversion in 2.4.0
 	    do
@@ -111,7 +113,7 @@ SubmitSparkStandardTests() {
 	    done
 	done
 
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    for hadoopversion in 2.6.0
 	    do
@@ -244,7 +246,7 @@ SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
 SubmitSparkDependencyTests() {
     for testfunction in SubmitSparkDependencyTests_Dependency1HDFS SubmitSparkDependencyTests_Dependency2HDFS SubmitSparkDependencyTests_Dependency3YarnHDFS SubmitSparkDependencyTests_Dependency4YarnHDFS
     do
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    for hadoopversion in 2.2.0
 	    do
@@ -252,7 +254,7 @@ SubmitSparkDependencyTests() {
 	    done
 	done
 
-	for sparkversion in 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    for hadoopversion in 2.4.0
 	    do
@@ -260,7 +262,7 @@ SubmitSparkDependencyTests() {
 	    done
 	done
 
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    for hadoopversion in 2.6.0
 	    do
@@ -271,12 +273,12 @@ SubmitSparkDependencyTests() {
 
     for testfunction in SubmitSparkDependencyTests_Dependency5rawnetworkfs SubmitSparkDependencyTests_Dependency6rawnetworkfs SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs
     do
-	for sparkversion in 0.9.1-bin-hadoop2 0.9.2-bin-hadoop2 1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4
+	for sparkversion in ${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions}
 	do
 	    ${testfunction} ${sparkversion}
 	done
 	
-	for sparkversion in 1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin-hadoop2.6 1.5.1-bin-hadoop2.6 1.5.2-bin-hadoop2.6 1.6.0-bin-hadoop2.6 1.6.1-bin-hadoop2.6
+	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    ${testfunction} ${sparkversion}
 	done

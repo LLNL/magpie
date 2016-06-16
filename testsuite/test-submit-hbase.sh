@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitHbaseStandardTests_StandardPerformanceEval() {
     hbaseversion=$1
     hadoopversion=$2
@@ -43,7 +45,7 @@ SubmitHbaseStandardTests_StandardPerformanceEval() {
 }
 
 SubmitHbaseStandardTests() {
-    for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+    for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
     do
 	for hadoopversion in 2.6.0
 	do
@@ -54,7 +56,7 @@ SubmitHbaseStandardTests() {
 	done
     done
     
-    for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
+    for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
     do
 	for hadoopversion in 2.7.0
 	do
@@ -102,7 +104,7 @@ SubmitHbaseDependencyTests() {
     
     for testfunction in SubmitHbaseDependencyTests_Dependency1 SubmitHbaseDependencyTests_Dependency2
     do
-	for hbaseversion in 0.98.3-hadoop2 0.98.9-hadoop2
+	for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
 	do
 	    for hadoopversion in 2.6.0
 	    do
@@ -113,7 +115,7 @@ SubmitHbaseDependencyTests() {
 	    done
 	done
 
-	for hbaseversion in 0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.2.0 1.2.1
+	for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
 	do
 	    for hadoopversion in 2.7.0
 	    do

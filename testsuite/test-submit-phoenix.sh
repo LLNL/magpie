@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitPhoenixStandardTests_Performanceeval() {
     phoenixversion=$1
     hbaseversion=$2
@@ -28,7 +30,7 @@ SubmitPhoenixStandardTests_Performanceeval() {
 }
 
 SubmitPhoenixStandardTests() {
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
     do
 	for hbaseversion in 1.1.0
 	do
@@ -74,7 +76,7 @@ SubmitPhoenixDependencyTests_Dependency2() {
 }
 
 SubmitPhoenixDependencyTests() {
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
     do
 	for hbaseversion in 1.1.0
 	do
@@ -88,7 +90,7 @@ SubmitPhoenixDependencyTests() {
 	done
     done
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
     do
 	for hbaseversion in 1.1.0
 	do

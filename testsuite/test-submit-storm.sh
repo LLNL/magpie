@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitStormStandardTests_StandardWordCount() {
     stormversion=$1
     zookeeperversion=$2
@@ -16,7 +18,7 @@ SubmitStormStandardTests_StandardWordCount() {
 }
 
 SubmitStormStandardTests() {
-    for stormversion in 0.9.3 0.9.4
+    for stormversion in ${stormzookeeper346java16versions}
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -24,7 +26,7 @@ SubmitStormStandardTests() {
 	done
     done
     
-    for stormversion in 0.9.5 0.9.6 0.10.0
+    for stormversion in ${stormzookeeper348java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do
@@ -42,7 +44,7 @@ SubmitStormDependencyTests_Dependency1() {
 }
 
 SubmitStormDependencyTests() {
-    for stormversion in 0.9.3 0.9.4
+    for stormversion in ${stormzookeeper346java16versions}
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -50,7 +52,7 @@ SubmitStormDependencyTests() {
 	done
     done
 
-    for stormversion in 0.9.5 0.9.6 0.10.0
+    for stormversion in ${stormzookeeper348java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do

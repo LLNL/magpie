@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GeneratePhoenixStandardTests_Performanceeval() {
     phoenixversion=$1
@@ -56,7 +57,7 @@ GeneratePhoenixStandardTests() {
 
     echo "Making Phoenix Standard Tests"
 
-    for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
     do
 	if [ "${hbase_1_1_0}" != "y" ]
 	then
@@ -168,7 +169,7 @@ GeneratePhoenixDependencyTests() {
 
     for testfunction in GeneratePhoenixDependencyTests_Dependency1 GeneratePhoenixDependencyTests_Dependency2
     do
-	for phoenixversion in 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1
+	for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
 	do
 	    if [ "${hbase_1_1_0}" != "y" ]
 	    then

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-common.sh
 
 GenerateKafkaStandardTests_KafkaPerformance() {
     kafkaversion=$1
@@ -43,7 +44,7 @@ GenerateKafkaStandardTests() {
 
     echo "Making Kafka Standard Tests"
 
-    for kafkaversion in 2.11-0.9.0.0
+    for kafkaversion in ${kafkazookeeper348java17versions}
     do
 	if [ "${zookeeper_3_4_8}" != "y" ]
 	then
@@ -85,7 +86,7 @@ GenerateKafkaDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for kafkaversion in 2.11-0.9.0.0
+    for kafkaversion in ${kafkazookeeper348java17versions}
     do
 	if [ "${zookeeper_3_4_8}" != "y" ]
 	then

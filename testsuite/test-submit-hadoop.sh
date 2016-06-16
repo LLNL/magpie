@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-common.sh
+
 SubmitHadoopStandardTests_StandardTerasort() {
     hadoopversion=$1
 
@@ -23,12 +25,12 @@ SubmitHadoopStandardTests_StandardTerasort() {
 }
 
 SubmitHadoopStandardTests() {
-    for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    for hadoopversion in ${hadoopjava16versions}
     do
 	SubmitHadoopStandardTests_StandardTerasort ${hadoopversion}
     done
     
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
+    for hadoopversion in ${hadoopjava17versions}
     do
 	SubmitHadoopStandardTests_StandardTerasort ${hadoopversion}
     done
@@ -105,24 +107,24 @@ SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
 }
 
 SubmitHadoopDependencyTests() {
-    for hadoopversion in 2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    for hadoopversion in ${hadoopjava16versions}
     do
 	SubmitHadoopDependencyTests_Dependency1 ${hadoopversion}
     done
 
-    for hadoopversion in 2.7.0 2.7.1 2.7.2
+    for hadoopversion in ${hadoopjava17versions}
     do
 	SubmitHadoopDependencyTests_Dependency1 ${hadoopversion}
     done
 
     for testfunction in SubmitHadoopDependencyTests_Dependency2 SubmitHadoopDependencyTests_Dependency3 SubmitHadoopDependencyTests_Dependency4
     do
-	for hadoopversion in 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+	for hadoopversion in ${hadoopjava16versionsdecommission}
 	do
 	    ${testfunction} ${hadoopversion}
 	done
 
-	for hadoopversion in 2.7.0 2.7.1 2.7.2
+	for hadoopversion in ${hadoopjava17versions}
 	do
 	    ${testfunction} ${hadoopversion}
 	done
