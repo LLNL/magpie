@@ -80,7 +80,7 @@ GeneratePhoenixStandardTests() {
 		fi
 		for zookeeperversion in 3.4.8
 		do
-		    GeneratePhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
+		    GeneratePhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		done
 	    done
 	done
@@ -192,7 +192,7 @@ GeneratePhoenixDependencyTests() {
 		    fi
 		    for zookeeperversion in 3.4.8
 		    do
-			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} "1.7"
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		    done
 		done
 	    done

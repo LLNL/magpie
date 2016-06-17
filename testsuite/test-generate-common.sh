@@ -1,15 +1,17 @@
 #!/bin/bash
 
+source test-common.sh
+
 JavaCommonSubstitution() {
     javaversion=$1
 
     shift
     files=$@
 
-    if [ "${javaversion}" == "1.6" ]
+    if [ "${javaversion}" == "${java16}" ]
     then
 	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' ${files}
-    elif [ "${javaversion}" == "1.7" ]
+    elif [ "${javaversion}" == "${java17}" ]
     then
 	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ${files}
     else

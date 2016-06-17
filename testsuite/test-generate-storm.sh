@@ -50,7 +50,7 @@ GenerateStormStandardTests() {
 	fi
 	for zookeeperversion in 3.4.6
 	do
-	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} "1.6"
+	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} ${java16}
 	done
     done
 
@@ -63,7 +63,7 @@ GenerateStormStandardTests() {
 	fi
 	for zookeeperversion in 3.4.8
 	do
-	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} "1.7"
+	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} ${java17}
 	done
     done
 }
@@ -102,7 +102,7 @@ GenerateStormDependencyTests() {
 	fi
 	for zookeeperversion in 3.4.6
 	do
-	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} "1.6"
+	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} ${java16}
 	done
     done
 
@@ -115,7 +115,7 @@ GenerateStormDependencyTests() {
 	fi
 	for zookeeperversion in 3.4.8
 	do
-	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} "1.7"
+	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} ${java17}
 	done
     done
 }

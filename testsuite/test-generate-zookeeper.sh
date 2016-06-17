@@ -38,6 +38,6 @@ GenerateZookeeperStandardTests() {
 
     for zookeeperversion in ${zookeeperjava17versions}
     do
-	GenerateZookeeperStandardTests_RUOK ${zookeeperversion} "1.7"
+	GenerateZookeeperStandardTests_RUOK ${zookeeperversion} ${java17}
     done
 }

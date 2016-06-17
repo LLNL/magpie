@@ -39,7 +39,7 @@ GeneratePigStandardTests() {
 	fi
 	for hadoopversion in 2.4.0
 	do
-	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} "1.6"
+	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} ${java16}
 	done
     done
 
@@ -52,7 +52,7 @@ GeneratePigStandardTests() {
 	fi
 	for hadoopversion in 2.6.0
 	do
-	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} "1.6"
+	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} ${java16}
 	done
     done
 
@@ -65,7 +65,7 @@ GeneratePigStandardTests() {
 	fi
 	for hadoopversion in 2.7.0
 	do
-	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} "1.7"
+	    GeneratePigStandardTests_Common ${pigversion} ${hadoopversion} ${java17}
 	done
     done
 }
@@ -128,7 +128,7 @@ GeneratePigDependencyTests() {
 	fi
 	for hadoopversion in 2.4.0
 	do
-	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} "1.6"
+	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} ${java16}
 	done
     done
 
@@ -141,7 +141,7 @@ GeneratePigDependencyTests() {
 	fi
 	for hadoopversion in 2.6.0
 	do
-	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} "1.6"
+	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} ${java16}
 	done
     done
 
@@ -154,7 +154,7 @@ GeneratePigDependencyTests() {
 	fi
 	for hadoopversion in 2.7.0
 	do
-	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} "1.7"
+	    GeneratePigDependencyTests_Dependency1 ${pigversion} ${hadoopversion} ${java17}
 	done
     done
 }

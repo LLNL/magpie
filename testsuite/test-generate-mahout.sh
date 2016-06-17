@@ -33,7 +33,7 @@ GenerateMahoutStandardTests() {
 	fi
 	for hadoopversion in 2.7.0
 	do
-	    GenerateMahoutStandardTests_ClusterSyntheticcontrol ${mahoutversion} ${hadoopversion} "1.7"
+	    GenerateMahoutStandardTests_ClusterSyntheticcontrol ${mahoutversion} ${hadoopversion} ${java17}
 	done
     done
 }
@@ -81,7 +81,7 @@ GenerateMahoutDependencyTests() {
 	fi
 	for hadoopversion in 2.7.0
 	do
-	    GenerateMahoutDependencyTests_Dependency1 ${mahoutversion} ${hadoopversion} "1.7"
+	    GenerateMahoutDependencyTests_Dependency1 ${mahoutversion} ${hadoopversion} ${java17}
 	done
     done
 }

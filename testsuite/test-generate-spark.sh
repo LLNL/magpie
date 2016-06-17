@@ -175,17 +175,17 @@ GenerateSparkStandardTests() {
         # 0.X no local dir tests
 	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
-	    ${testfunction} ${sparkversion} "1.6" "n"
+	    ${testfunction} ${sparkversion} ${java16} "n"
 	done
 
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
-	    ${testfunction} ${sparkversion} "1.6" "y"
+	    ${testfunction} ${sparkversion} ${java16} "y"
 	done
 
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
-	    ${testfunction} ${sparkversion} "1.7" "y"
+	    ${testfunction} ${sparkversion} ${java17} "y"
 	done
     done
 
@@ -201,7 +201,7 @@ GenerateSparkStandardTests() {
 	    fi
 	    for hadoopversion in 2.2.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "n"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16} "n"
 	    done
 	done
 
@@ -214,7 +214,7 @@ GenerateSparkStandardTests() {
 	    fi
 	    for hadoopversion in 2.4.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16} "y"
 	    done
 	done
 
@@ -227,7 +227,7 @@ GenerateSparkStandardTests() {
 	    fi
 	    for hadoopversion in 2.6.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java17} "y"
 	    done
 	done
     done
@@ -243,7 +243,7 @@ GenerateSparkStandardTests() {
 	    fi
 	    for hadoopversion in 2.4.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16}
 	    done
 	done
 	
@@ -256,7 +256,7 @@ GenerateSparkStandardTests() {
 	    fi
 	    for hadoopversion in 2.6.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.7"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java17}
 	    done
 	done
     done
@@ -641,7 +641,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.2.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "n"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16} "n"
 	    done
 	done
 
@@ -654,7 +654,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.4.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16} "y"
 	    done
 	done
 
@@ -667,7 +667,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.6.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java17} "y"
 	    done
 	done
     done
@@ -686,7 +686,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.4.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6" "y"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16} "y"
 	    done
 	done
 
@@ -699,7 +699,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.6.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.7" "y"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java17} "y"
 	    done
 	done
     done
@@ -711,12 +711,12 @@ GenerateSparkDependencyTests() {
     do
 	for sparkversion in ${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions}
 	do
-	    ${testfunction} ${sparkversion} "1.6"
+	    ${testfunction} ${sparkversion} ${java16}
 	done
 	
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
-	    ${testfunction} ${sparkversion} "1.7"
+	    ${testfunction} ${sparkversion} ${java17}
 	done
     done
 
@@ -734,7 +734,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.4.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.6"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java16}
 	    done
 	done
 	
@@ -747,7 +747,7 @@ GenerateSparkDependencyTests() {
 	    fi
 	    for hadoopversion in 2.6.0
 	    do
-		${testfunction} ${sparkversion} ${hadoopversion} "1.7"
+		${testfunction} ${sparkversion} ${hadoopversion} ${java17}
 	    done
 	done
     done

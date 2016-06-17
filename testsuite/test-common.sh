@@ -1,5 +1,8 @@
 #!/bin/bash
 
+java16="1.6"
+java17="1.7"
+
 hadoopjava16versions="2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4"
 # decommissionhdfsnodes doesn't work reliably in 2.2.X, removing it
 hadoopjava16versionsdecommission="2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4"

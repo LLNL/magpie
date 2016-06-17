@@ -53,7 +53,7 @@ GenerateKafkaStandardTests() {
 	fi
 	for zookeeperversion in 3.4.8
 	do
-	    GenerateKafkaStandardTests_KafkaPerformance ${kafkaversion} ${zookeeperversion} "1.7"
+	    GenerateKafkaStandardTests_KafkaPerformance ${kafkaversion} ${zookeeperversion} ${java17}
 	done
     done
 }
@@ -95,7 +95,7 @@ GenerateKafkaDependencyTests() {
 	fi
 	for zookeeperversion in 3.4.8
 	do
-	    GenerateKafkaDependencyTests_Dependency1 ${kafkaversion} ${zookeeperversion} "1.7"
+	    GenerateKafkaDependencyTests_Dependency1 ${kafkaversion} ${zookeeperversion} ${java17}
 	done
     done
 }
