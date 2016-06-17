@@ -26,7 +26,9 @@ CheckForDependency() {
     checkversion=$3
 
     checkversionunderscore=`echo ${checkversion} | sed -e "s/\./_/g"`
-    variabletocheck="${projectcheck}_${checkversionunderscore}"
+    projectchecklowercase=`echo ${projectcheck} | tr '[:upper:]' '[:lower:]'`
+    variabletocheck="${projectchecklowercase}_${checkversionunderscore}"
+
     if [ "${!variabletocheck}" != "y" ]
     then
 	echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
