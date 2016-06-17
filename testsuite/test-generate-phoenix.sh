@@ -59,26 +59,14 @@ GeneratePhoenixStandardTests() {
 
     for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
     do
-	if [ "${hbase_1_1_0}" != "y" ]
-	then
-	    echo "Cannot generate Phoenix standard tests that depend on Hbase 1.1.0, it's not enabled"
-	    break
-	fi
-	for hbaseversion in 1.1.0
+	CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
+	CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
+	CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
+	for hbaseversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
 	do
-	    if [ "${hadoop_2_7_0}" != "y" ]
-	    then
-		echo "Cannot generate Phoenix standard tests that depend on Hadoop 2.7.0, it's not enabled"
-		break
-	    fi
-	    for hadoopversion in 2.7.0
+	    for hadoopversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
 	    do
-		if [ "${zookeeper_3_4_8}" != "y" ]
-		then
-		    echo "Cannot generate Phoenix standard tests that depend on Zookeeper 3.4.8, it's not enabled"
-		    break
-		fi
-		for zookeeperversion in 3.4.8
+		for zookeeperversion in ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
 		do
 		    GeneratePhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		done
@@ -171,26 +159,14 @@ GeneratePhoenixDependencyTests() {
     do
 	for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
 	do
-	    if [ "${hbase_1_1_0}" != "y" ]
-	    then
-		echo "Cannot generate Phoenix dependency tests that depend on Hbase 1.1.0, it's not enabled"
-		break
-	    fi
-	    for hbaseversion in 1.1.0
+	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
+	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
+	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
+	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
 	    do
-		if [ "${hadoop_2_7_0}" != "y" ]
-		then
-		    echo "Cannot generate Phoenix dependency tests that depend on Hadoop 2.7.0, it's not enabled"
-		    break
-		fi
-		for hadoopversion in 2.7.0
+		for hadoopversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
 		do
-		    if [ "${zookeeper_3_4_8}" != "y" ]
-		    then
-			echo "Cannot generate Phoenix dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
-			break
-		    fi
-		    for zookeeperversion in 3.4.8
+		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
 		    do
 			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		    done

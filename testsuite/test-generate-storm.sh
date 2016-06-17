@@ -43,12 +43,8 @@ GenerateStormStandardTests() {
 
     for stormversion in ${stormzookeeper346java16versions}
     do
-	if [ "${zookeeper_3_4_6}" != "y" ]
-	then
-	    echo "Cannot generate Storm standard tests that depend on Zookeeper 3.4.6, it's not enabled"
-	    break
-	fi
-	for zookeeperversion in 3.4.6
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper346java16versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper346java16versions_zookeeperversion}
 	do
 	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} ${java16}
 	done
@@ -56,12 +52,8 @@ GenerateStormStandardTests() {
 
     for stormversion in ${stormzookeeper348java17versions}
     do
-	if [ "${zookeeper_3_4_8}" != "y" ]
-	then
-	    echo "Cannot generate Storm standard tests that depend on Zookeeper 3.4.8, it's not enabled"
-	    break
-	fi
-	for zookeeperversion in 3.4.8
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper348java17versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper348java17versions_zookeeperversion}
 	do
 	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} ${java17}
 	done
@@ -95,12 +87,8 @@ GenerateStormDependencyTests() {
 
     for stormversion in ${stormzookeeper346java16versions}
     do
-	if [ "${zookeeper_3_4_6}" != "y" ]
-	then
-	    echo "Cannot generate Storm dependency tests that depend on Zookeeper 3.4.6, it's not enabled"
-	    break
-	fi
-	for zookeeperversion in 3.4.6
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper346java16versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper346java16versions_zookeeperversion}
 	do
 	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} ${java16}
 	done
@@ -108,12 +96,8 @@ GenerateStormDependencyTests() {
 
     for stormversion in ${stormzookeeper348java17versions}
     do
-	if [ "${zookeeper_3_4_8}" != "y" ]
-	then
-	    echo "Cannot generate Storm dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
-	    break
-	fi
-	for zookeeperversion in 3.4.8
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper348java17versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper348java17versions_zookeeperversion}
 	do
 	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} ${java17}
 	done

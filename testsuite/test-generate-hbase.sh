@@ -76,19 +76,11 @@ GenerateHbaseStandardTests() {
 
     for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
     do
-	if [ "${hadoop_2_6_0}" != "y" ]
-	then
-	    echo "Cannot generate Hbase standard tests that depend on Hadoop 2.6.0, it's not enabled"
-	    break
-	fi
-	for hadoopversion in 2.6.0
+	CheckForDependency "Hbase" "Hadoop" ${hbasehadoop26zookeeper346java16versions_hadoopversion}
+	CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop26zookeeper346java16versions_zookeeperversion} 
+	for hadoopversion in ${hbasehadoop26zookeeper346java16versions_hadoopversion}
 	do
-	    if [ "${zookeeper_3_4_6}" != "y" ]
-	    then
-		echo "Cannot generate Hbase standard tests that depend on Zookeeper 3.4.6, it's not enabled"
-		break
-	    fi
-	    for zookeeperversion in 3.4.6
+	    for zookeeperversion in ${hbasehadoop26zookeeper346java16versions_zookeeperversion}
 	    do
 		GenerateHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java16}
 	    done
@@ -97,19 +89,11 @@ GenerateHbaseStandardTests() {
 
     for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
     do
-	if [ "${hadoop_2_7_0}" != "y" ]
-	then
-	    echo "Cannot generate Hbase standard tests that depend on Hadoop 2.7.0, it's not enabled"
-	    break
-	fi
-	for hadoopversion in 2.7.0
+	CheckForDependency "Hbase" "Hadoop" ${hbasehadoop27zookeeper348java17versions_hadoopversion}
+	CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop27zookeeper348java17versions_zookeeperversion} 
+	for hadoopversion in ${hbasehadoop27zookeeper348java17versions_hadoopversion}
 	do
-	    if [ "${zookeeper_3_4_8}" != "y" ]
-	    then
-		echo "Cannot generate Hbase standard tests that depend on Zookeeper 3.4.8, it's not enabled"
-		break
-	    fi
-	    for zookeeperversion in 3.4.8
+	    for zookeeperversion in ${hbasehadoop27zookeeper348java17versions_zookeeperversion}
 	    do
 		GenerateHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 	    done
@@ -217,19 +201,11 @@ GenerateHbaseDependencyTests() {
     do
 	for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
 	do
-	    if [ "${hadoop_2_6_0}" != "y" ]
-	    then
-		echo "Cannot generate Hbase dependency tests that depend on Hadoop 2.6.0, it's not enabled"
-		break
-	    fi
-	    for hadoopversion in 2.6.0
+	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop26zookeeper346java16versions_hadoopversion}
+	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop26zookeeper346java16versions_zookeeperversion} 
+	    for hadoopversion in ${hbasehadoop26zookeeper346java16versions_hadoopversion}
 	    do
-		if [ "${zookeeper_3_4_6}" != "y" ]
-		then
-		    echo "Cannot generate Hbase dependency tests that depend on Zookeeper 3.4.6, it's not enabled"
-		    break
-		fi
-		for zookeeperversion in 3.4.6
+		for zookeeperversion in ${hbasehadoop26zookeeper346java16versions_zookeeperversion}
 		do
 		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java16}
 		done
@@ -238,19 +214,11 @@ GenerateHbaseDependencyTests() {
 
 	for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
 	do
-	    if [ "${hadoop_2_7_0}" != "y" ]
-	    then
-		echo "Cannot generate Hbase dependency tests that depend on Hadoop 2.7.0, it's not enabled"
-		break
-	    fi
-	    for hadoopversion in 2.7.0
+	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop27zookeeper348java17versions_hadoopversion}
+	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop27zookeeper348java17versions_zookeeperversion} 
+	    for hadoopversion in ${hbasehadoop27zookeeper348java17versions_hadoopversion}
 	    do
-		if [ "${zookeeper_3_4_8}" != "y" ]
-		then
-		    echo "Cannot generate Hbase dependency tests that depend on Zookeeper 3.4.8, it's not enabled"
-		break
-		fi
-		for zookeeperversion in 3.4.8
+		for zookeeperversion in ${hbasehadoop27zookeeper348java17versions_zookeeperversion}
 		do
 		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		done

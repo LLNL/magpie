@@ -19,3 +19,17 @@ JavaCommonSubstitution() {
 	exit 1
     fi
 }
+
+CheckForDependency() {
+    project=$1
+    projectcheck=$2
+    checkversion=$3
+
+    checkversionunderscore=`echo ${checkversion} | sed -e "s/\./_/g"`
+    variabletocheck="${projectcheck}_${checkversionunderscore}"
+    if [ "${!variabletocheck}" != "y" ]
+    then
+	echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
+	break
+    fi
+}
