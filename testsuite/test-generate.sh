@@ -889,60 +889,71 @@ if ls magpie.${submissiontype}-storm* >& /dev/null ; then
     sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
 fi
 
-sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
+if ls magpie.${submissiontype}* >& /dev/null ; then
+    ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="yes"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
+    ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
 
-sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*
+    sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
 
-sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
+    sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*
 
-ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="yes"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
-ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
+    sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
 
-sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\${HOME}\/magpie-my-post-job-script"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*
+    sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\${HOME}\/magpie-my-post-job-script"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*
 
-dependencyprefix=`date +"%Y%m%d%N"`
+    dependencyprefix=`date +"%Y%m%d%N"`
 
-sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie.${submissiontype}*
+    sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie.${submissiontype}*
 
-sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
-sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
+    sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
+    sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
+fi
 
 # Put back original/desired filename names and do some last replaces that are submission type specific
 
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
-    sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
-
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	sed -i -e "s/<my time in minutes>/120/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
-    sed -i -e "s/<my time in minutes>/90/" magpie.${submissiontype}*
 
-    sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
+    if ls magpie.${submissiontype}* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+
+	sed -i -e "s/<my time in minutes>/90/" magpie.${submissiontype}*
+
+	sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
+    fi
 elif [ "${submissiontype}" == "msub-slurm-srun" ]
 then
-    sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
-
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/7200/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
-    sed -i -e "s/<my time in seconds or HH:MM:SS>/5400/" magpie.${submissiontype}*
 
-    sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
-    sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
+    if ls magpie.${submissiontype}* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+	
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/5400/" magpie.${submissiontype}*
+	
+	sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
+	sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
+    fi
 elif [ "${submissiontype}" == "lsf-mpirun" ]
 then
-    sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
-
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	sed -i -e "s/<my time in hours:minutes>/2:00/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
-    sed -i -e "s/<my time in hours:minutes>/1:30/" magpie.${submissiontype}*
 
-    sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
+    if ls magpie.${submissiontype}* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
+
+	sed -i -e "s/<my time in hours:minutes>/1:30/" magpie.${submissiontype}*
+
+	sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
+    fi
 fi
 
 echo "Setting original submission scripts back to prior default"
