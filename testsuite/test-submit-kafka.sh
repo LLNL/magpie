@@ -18,7 +18,7 @@ SubmitKafkaStandardTests_KafkaPerformance() {
 }
 
 SubmitKafkaStandardTests() {
-    for kafkaversion in ${kafkazookeeper348java17versions}
+    for kafkaversion in ${kafkazookeeper34java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do
@@ -36,7 +36,7 @@ SubmitKafkaDependencyTests_Dependency1() {
 }
 
 SubmitKafkaDependencyTests() {
-    for kafkaversion in ${kafkazookeeper348java17versions}
+    for kafkaversion in ${kafkazookeeper34java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do

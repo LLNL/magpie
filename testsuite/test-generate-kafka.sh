@@ -44,10 +44,10 @@ GenerateKafkaStandardTests() {
 
     echo "Making Kafka Standard Tests"
 
-    for kafkaversion in ${kafkazookeeper348java17versions}
+    for kafkaversion in ${kafkazookeeper34java17versions}
     do
-	CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper348java17versions_zookeeperversion}
-	for zookeeperversion in ${kafkazookeeper348java17versions_zookeeperversion}
+	CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
+	for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
 	do
 	    GenerateKafkaStandardTests_KafkaPerformance ${kafkaversion} ${zookeeperversion} ${java17}
 	done
@@ -82,10 +82,10 @@ GenerateKafkaDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for kafkaversion in ${kafkazookeeper348java17versions}
+    for kafkaversion in ${kafkazookeeper34java17versions}
     do
-	CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper348java17versions_zookeeperversion}
-	for zookeeperversion in ${kafkazookeeper348java17versions_zookeeperversion}
+	CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
+	for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
 	do
 	    GenerateKafkaDependencyTests_Dependency1 ${kafkaversion} ${zookeeperversion} ${java17}
 	done

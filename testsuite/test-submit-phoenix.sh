@@ -30,7 +30,7 @@ SubmitPhoenixStandardTests_Performanceeval() {
 }
 
 SubmitPhoenixStandardTests() {
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
     do
 	for hbaseversion in 1.1.0
 	do
@@ -76,7 +76,7 @@ SubmitPhoenixDependencyTests_Dependency2() {
 }
 
 SubmitPhoenixDependencyTests() {
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
     do
 	for hbaseversion in 1.1.0
 	do
@@ -90,7 +90,7 @@ SubmitPhoenixDependencyTests() {
 	done
     done
 
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
     do
 	for hbaseversion in 1.1.0
 	do

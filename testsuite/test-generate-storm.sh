@@ -41,19 +41,19 @@ GenerateStormStandardTests() {
 
     echo "Making Storm Standard Tests"
 
-    for stormversion in ${stormzookeeper346java16versions}
+    for stormversion in ${stormzookeeper34java16versions}
     do
-	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper346java16versions_zookeeperversion}
-	for zookeeperversion in ${stormzookeeper346java16versions_zookeeperversion}
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
 	do
 	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} ${java16}
 	done
     done
 
-    for stormversion in ${stormzookeeper348java17versions}
+    for stormversion in ${stormzookeeper34java17versions}
     do
-	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper348java17versions_zookeeperversion}
-	for zookeeperversion in ${stormzookeeper348java17versions_zookeeperversion}
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
 	do
 	    GenerateStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion} ${java17}
 	done
@@ -85,19 +85,19 @@ GenerateStormDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for stormversion in ${stormzookeeper346java16versions}
+    for stormversion in ${stormzookeeper34java16versions}
     do
-	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper346java16versions_zookeeperversion}
-	for zookeeperversion in ${stormzookeeper346java16versions_zookeeperversion}
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
 	do
 	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} ${java16}
 	done
     done
 
-    for stormversion in ${stormzookeeper348java17versions}
+    for stormversion in ${stormzookeeper34java17versions}
     do
-	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper348java17versions_zookeeperversion}
-	for zookeeperversion in ${stormzookeeper348java17versions_zookeeperversion}
+	CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
+	for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
 	do
 	    GenerateStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion} ${java17}
 	done

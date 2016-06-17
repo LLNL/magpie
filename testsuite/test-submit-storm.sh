@@ -18,7 +18,7 @@ SubmitStormStandardTests_StandardWordCount() {
 }
 
 SubmitStormStandardTests() {
-    for stormversion in ${stormzookeeper346java16versions}
+    for stormversion in ${stormzookeeper34java16versions}
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -26,7 +26,7 @@ SubmitStormStandardTests() {
 	done
     done
     
-    for stormversion in ${stormzookeeper348java17versions}
+    for stormversion in ${stormzookeeper34java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do
@@ -44,7 +44,7 @@ SubmitStormDependencyTests_Dependency1() {
 }
 
 SubmitStormDependencyTests() {
-    for stormversion in ${stormzookeeper346java16versions}
+    for stormversion in ${stormzookeeper34java16versions}
     do
 	for zookeeperversion in 3.4.6
 	do
@@ -52,7 +52,7 @@ SubmitStormDependencyTests() {
 	done
     done
 
-    for stormversion in ${stormzookeeper348java17versions}
+    for stormversion in ${stormzookeeper34java17versions}
     do
 	for zookeeperversion in 3.4.8
 	do

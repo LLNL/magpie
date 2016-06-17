@@ -57,16 +57,16 @@ GeneratePhoenixStandardTests() {
 
     echo "Making Phoenix Standard Tests"
 
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
+    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
     do
-	CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
-	CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
-	CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
-	for hbaseversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
+	CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
+	CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
+	CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+	for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	do
-	    for hadoopversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
+	    for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 	    do
-		for zookeeperversion in ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
+		for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
 		do
 		    GeneratePhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		done
@@ -157,16 +157,16 @@ GeneratePhoenixDependencyTests() {
 
     for testfunction in GeneratePhoenixDependencyTests_Dependency1 GeneratePhoenixDependencyTests_Dependency2
     do
-	for phoenixversion in ${phoenixhbase11hadoop27zookeeper348java17versions}
+	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
 	do
-	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
-	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
-	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
-	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hbaseversion}
+	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
+	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
+	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	    do
-		for hadoopversion in ${phoenixhbase11hadoop27zookeeper348java17versions_hadoopversion}
+		for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 		do
-		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper348java17versions_zookeeperversion}
+		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
 		    do
 			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
 		    done

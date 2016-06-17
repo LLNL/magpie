@@ -45,7 +45,7 @@ SubmitHbaseStandardTests_StandardPerformanceEval() {
 }
 
 SubmitHbaseStandardTests() {
-    for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
+    for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
     do
 	for hadoopversion in 2.6.0
 	do
@@ -56,7 +56,7 @@ SubmitHbaseStandardTests() {
 	done
     done
     
-    for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
+    for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
     do
 	for hadoopversion in 2.7.0
 	do
@@ -104,7 +104,7 @@ SubmitHbaseDependencyTests() {
     
     for testfunction in SubmitHbaseDependencyTests_Dependency1 SubmitHbaseDependencyTests_Dependency2
     do
-	for hbaseversion in ${hbasehadoop26zookeeper346java16versions}
+	for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
 	do
 	    for hadoopversion in 2.6.0
 	    do
@@ -115,7 +115,7 @@ SubmitHbaseDependencyTests() {
 	    done
 	done
 
-	for hbaseversion in ${hbasehadoop27zookeeper348java17versions}
+	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
 	do
 	    for hadoopversion in 2.7.0
 	    do
