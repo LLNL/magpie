@@ -14,27 +14,30 @@ SubmitPigStandardTests_Common() {
 }
 
 SubmitPigStandardTests() {
-    for pigversion in ${pighadoop24java16versions}
+    for testfunction in SubmitPigStandardTests_Common
     do
-	for hadoopversion in 2.4.0
+	for pigversion in ${pighadoop24java16versions}
 	do
-	    SubmitPigStandardTests_Common ${pigversion} ${hadoopversion}
+	    for hadoopversion in 2.4.0
+	    do
+		${testfunction} ${pigversion} ${hadoopversion}
+	    done
 	done
-    done
     
-    for pigversion in ${pighadoop26java16versions}
-    do
-	for hadoopversion in 2.6.0
+	for pigversion in ${pighadoop26java16versions}
 	do
-	    SubmitPigStandardTests_Common ${pigversion} ${hadoopversion}
+	    for hadoopversion in 2.6.0
+	    do
+		${testfunction} ${pigversion} ${hadoopversion}
+	    done
 	done
-    done
     
-    for pigversion in 0.15.0
-    do
-	for hadoopversion in 2.7.0
+	for pigversion in 0.15.0
 	do
-	    SubmitPigStandardTests_Common ${pigversion} ${hadoopversion}
+	    for hadoopversion in 2.7.0
+	    do
+		${testfunction} ${pigversion} ${hadoopversion}
+	    done
 	done
     done
 }
@@ -55,27 +58,30 @@ SubmitPigDependencyTests_Dependency1() {
 }
 
 SubmitPigDependencyTests() {
-    for pigversion in ${pighadoop24java16versions}
+    for testfunction in SubmitPigDependencyTests_Dependency1
     do
-	for hadoopversion in 2.4.0
+	for pigversion in ${pighadoop24java16versions}
 	do
-	    SubmitPigDependencyTests_Dependency1 ${pigversion} ${hadoopversion}
+	    for hadoopversion in 2.4.0
+	    do
+		${testfunction} ${pigversion} ${hadoopversion}
+	    done
 	done
-    done
-
-    for pigversion in ${pighadoop26java16versions}
-    do
-	for hadoopversion in 2.6.0
+	
+	for pigversion in ${pighadoop26java16versions}
 	do
-	    SubmitPigDependencyTests_Dependency1 ${pigversion} ${hadoopversion}
+	    for hadoopversion in 2.6.0
+	    do
+		${testfunction} ${pigversion} ${hadoopversion}
+	    done
 	done
-    done
 
-    for pigversion in ${pighadoop27java17versions}
-    do
-	for hadoopversion in 2.7.0
+	for pigversion in ${pighadoop27java17versions}
 	do
-	    SubmitPigDependencyTests_Dependency1 ${pigversion} ${hadoopversion}
+	    for hadoopversion in 2.7.0
+	    do
+		${testfunction} ${pigversion} ${hadoopversion}
+	    done
 	done
     done
 }

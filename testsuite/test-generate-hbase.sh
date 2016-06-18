@@ -74,28 +74,31 @@ GenerateHbaseStandardTests() {
 
     echo "Making Hbase Standard Tests"
 
-    for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
+    for testfunction in GenerateHbaseStandardTests_StandardPerformanceEval
     do
-	CheckForDependency "Hbase" "Hadoop" ${hbasehadoop26zookeeper34java16versions_hadoopversion}
-	CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop26zookeeper34java16versions_zookeeperversion} 
-	for hadoopversion in ${hbasehadoop26zookeeper34java16versions_hadoopversion}
+	for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
 	do
-	    for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
+	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop26zookeeper34java16versions_hadoopversion}
+	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop26zookeeper34java16versions_zookeeperversion} 
+	    for hadoopversion in ${hbasehadoop26zookeeper34java16versions_hadoopversion}
 	    do
-		GenerateHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java16}
+		for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
+		do
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java16}
+		done
 	    done
 	done
-    done
 
-    for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
-    do
-	CheckForDependency "Hbase" "Hadoop" ${hbasehadoop27zookeeper34java17versions_hadoopversion}
-	CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop27zookeeper34java17versions_zookeeperversion} 
-	for hadoopversion in ${hbasehadoop27zookeeper34java17versions_hadoopversion}
+	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
 	do
-	    for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
+	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop27zookeeper34java17versions_hadoopversion}
+	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop27zookeeper34java17versions_zookeeperversion} 
+	    for hadoopversion in ${hbasehadoop27zookeeper34java17versions_hadoopversion}
 	    do
-		GenerateHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+		for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
+		do
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+		done
 	    done
 	done
     done

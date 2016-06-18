@@ -13,9 +13,12 @@ SubmitZookeeperStandardTests_RUOK() {
 }
 
 SubmitZookeeperStandardTests() {
-    for zookeeperversion in ${zookeeperjava17versions}
+    for testfunction in SubmitZookeeperStandardTests_RUOK
     do
-	SubmitZookeeperStandardTests_RUOK ${zookeeperversion}
+	for zookeeperversion in ${zookeeperjava17versions}
+	do
+	    ${testfunction} ${zookeeperversion}
+	done
     done
 }
 

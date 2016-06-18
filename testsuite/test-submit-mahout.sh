@@ -12,11 +12,14 @@ SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
 }
 
 SubmitMahoutStandardTests() {
-    for mahoutversion in ${mahouthadoop27java17versions}
+    for testfunction in SubmitMahoutStandardTests_ClusterSyntheticcontrol
     do
-	for hadoopversion in 2.7.0
+	for mahoutversion in ${mahouthadoop27java17versions}
 	do
-	    SubmitMahoutStandardTests_ClusterSyntheticcontrol ${mahoutversion} ${hadoopversion}
+	    for hadoopversion in 2.7.0
+	    do
+		${testfunction} ${mahoutversion} ${hadoopversion}
+	    done
 	done
     done
 }
@@ -33,11 +36,14 @@ SubmitMahoutDependencyTests_Dependency1() {
 }
 
 SubmitMahoutDependencyTests() {
-    for mahoutversion in ${mahouthadoop27java17versions}
+    for testfunction in SubmitMahoutDependencyTests_Dependency1
     do
-	for hadoopversion in 2.7.0
+	for mahoutversion in ${mahouthadoop27java17versions}
 	do
-	    SubmitMahoutDependencyTests_Dependency1 ${mahoutversion} ${hadoopversion}
+	    for hadoopversion in 2.7.0
+	    do
+		${testfunction} ${mahoutversion} ${hadoopversion}
+	    done
 	done
     done
 }

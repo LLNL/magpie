@@ -51,14 +51,17 @@ GenerateHadoopStandardTests() {
 
     echo "Making Hadoop Standard Tests"
 
-    for hadoopversion in ${hadoopjava16versions}
+    for testfunction in GenerateHadoopStandardTests_StandardTerasort
     do
-	GenerateHadoopStandardTests_StandardTerasort ${hadoopversion} ${java16}
-    done
-
-    for hadoopversion in ${hadoopjava17versions}
-    do
-	GenerateHadoopStandardTests_StandardTerasort ${hadoopversion} ${java17}
+	for hadoopversion in ${hadoopjava16versions}
+	do
+	    ${testfunction} ${hadoopversion} ${java16}
+	done
+	
+	for hadoopversion in ${hadoopjava17versions}
+	do
+	    ${testfunction} ${hadoopversion} ${java17}
+	done
     done
 }
 
@@ -265,14 +268,17 @@ GenerateHadoopDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for hadoopversion in ${hadoopjava16versions}
+    for testfunction in GenerateHadoopDependencyTests_Dependency1
     do
-	GenerateHadoopDependencyTests_Dependency1 ${hadoopversion} ${java16}
-    done
+	for hadoopversion in ${hadoopjava16versions}
+	do
+	    ${testfunction} ${hadoopversion} ${java16}
+	done
 
-    for hadoopversion in ${hadoopjava17versions}
-    do
-	GenerateHadoopDependencyTests_Dependency1 ${hadoopversion} ${java17}
+	for hadoopversion in ${hadoopjava17versions}
+	do
+	    ${testfunction} ${hadoopversion} ${java17}
+	done
     done
 
 # Dependency 2 test, increase & decrease size

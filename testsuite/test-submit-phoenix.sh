@@ -30,15 +30,18 @@ SubmitPhoenixStandardTests_Performanceeval() {
 }
 
 SubmitPhoenixStandardTests() {
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+    for testfunction in SubmitPhoenixStandardTests_Performanceeval
     do
-	for hbaseversion in 1.1.0
+	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
 	do
-	    for hadoopversion in 2.7.0
+	    for hbaseversion in 1.1.0
 	    do
-		for zookeeperversion in 3.4.8
+		for hadoopversion in 2.7.0
 		do
-		    SubmitPhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		    for zookeeperversion in 3.4.8
+		    do
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		    done
 		done
 	    done
 	done
@@ -76,29 +79,18 @@ SubmitPhoenixDependencyTests_Dependency2() {
 }
 
 SubmitPhoenixDependencyTests() {
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+    for testfunction in SubmitPhoenixDependencyTests_Dependency1 SubmitPhoenixDependencyTests_Dependency2
     do
-	for hbaseversion in 1.1.0
+	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
 	do
-	    for hadoopversion in 2.7.0
+	    for hbaseversion in 1.1.0
 	    do
-		for zookeeperversion in 3.4.8
+		for hadoopversion in 2.7.0
 		do
-		    SubmitPhoenixDependencyTests_Dependency1 ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
-		done
-	    done
-	done
-    done
-
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
-    do
-	for hbaseversion in 1.1.0
-	do
-	    for hadoopversion in 2.7.0
-	    do
-		for zookeeperversion in 3.4.8
-		do
-		    SubmitPhoenixDependencyTests_Dependency2 ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		    for zookeeperversion in 3.4.8
+		    do
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		    done
 		done
 	    done
 	done

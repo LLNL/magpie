@@ -24,12 +24,15 @@ GenerateMahoutStandardTests() {
 
     echo "Making Mahout Standard Tests"
 
-    for mahoutversion in ${mahouthadoop27java17versions}
+    for testfunction in GenerateMahoutStandardTests_ClusterSyntheticcontrol
     do
-	CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
-	for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
+	for mahoutversion in ${mahouthadoop27java17versions}
 	do
-	    GenerateMahoutStandardTests_ClusterSyntheticcontrol ${mahoutversion} ${hadoopversion} ${java17}
+	    CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
+	    for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
+	    do
+		${testfunction} ${mahoutversion} ${hadoopversion} ${java17}
+	    done
 	done
     done
 }
@@ -68,12 +71,15 @@ GenerateMahoutDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for mahoutversion in ${mahouthadoop27java17versions}
+    for testfunction in GenerateMahoutDependencyTests_Dependency1
     do
-	CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
-	for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
+	for mahoutversion in ${mahouthadoop27java17versions}
 	do
-	    GenerateMahoutDependencyTests_Dependency1 ${mahoutversion} ${hadoopversion} ${java17}
+	    CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
+	    for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
+	    do
+		${testfunction} ${mahoutversion} ${hadoopversion} ${java17}
+	    done
 	done
     done
 }

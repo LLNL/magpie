@@ -36,8 +36,11 @@ GenerateZookeeperStandardTests() {
     
     echo "Making Zookeeper Standard Tests"
 
-    for zookeeperversion in ${zookeeperjava17versions}
+    for testfunction in GenerateZookeeperStandardTests_RUOK
     do
-	GenerateZookeeperStandardTests_RUOK ${zookeeperversion} ${java17}
+	for zookeeperversion in ${zookeeperjava17versions}
+	do
+	    ${testfunction} ${zookeeperversion} ${java17}
+	done
     done
 }

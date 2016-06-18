@@ -56,19 +56,22 @@ GeneratePhoenixStandardTests() {
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
     echo "Making Phoenix Standard Tests"
-
-    for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+    
+    for testfunction in GeneratePhoenixStandardTests_Performanceeval
     do
-	CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
-	CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
-	CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-	for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
+	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
 	do
-	    for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
+	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
+	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
+	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	    do
-		for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+		for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 		do
-		    GeneratePhoenixStandardTests_Performanceeval ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+		    do
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+		    done
 		done
 	    done
 	done

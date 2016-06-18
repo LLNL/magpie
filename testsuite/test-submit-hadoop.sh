@@ -25,14 +25,17 @@ SubmitHadoopStandardTests_StandardTerasort() {
 }
 
 SubmitHadoopStandardTests() {
-    for hadoopversion in ${hadoopjava16versions}
+    for testfunction in SubmitHadoopStandardTests_StandardTerasort
     do
-	SubmitHadoopStandardTests_StandardTerasort ${hadoopversion}
-    done
+	for hadoopversion in ${hadoopjava16versions}
+	do
+	    ${testfunction} ${hadoopversion}
+	done
     
-    for hadoopversion in ${hadoopjava17versions}
-    do
-	SubmitHadoopStandardTests_StandardTerasort ${hadoopversion}
+	for hadoopversion in ${hadoopjava17versions}
+	do
+	    ${testfunction} ${hadoopversion}
+	done
     done
 }
 
@@ -107,14 +110,17 @@ SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
 }
 
 SubmitHadoopDependencyTests() {
-    for hadoopversion in ${hadoopjava16versions}
+    for testfunction in SubmitHadoopDependencyTests_Dependency1
     do
-	SubmitHadoopDependencyTests_Dependency1 ${hadoopversion}
-    done
+	for hadoopversion in ${hadoopjava16versions}
+	do
+	    ${testfunction} ${hadoopversion}
+	done
 
-    for hadoopversion in ${hadoopjava17versions}
-    do
-	SubmitHadoopDependencyTests_Dependency1 ${hadoopversion}
+	for hadoopversion in ${hadoopjava17versions}
+	do
+	    ${testfunction} ${hadoopversion}
+	done
     done
 
     for testfunction in SubmitHadoopDependencyTests_Dependency2 SubmitHadoopDependencyTests_Dependency3 SubmitHadoopDependencyTests_Dependency4

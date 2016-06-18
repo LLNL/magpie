@@ -18,19 +18,22 @@ SubmitStormStandardTests_StandardWordCount() {
 }
 
 SubmitStormStandardTests() {
-    for stormversion in ${stormzookeeper34java16versions}
+    for testfunction in SubmitStormStandardTests_StandardWordCount
     do
-	for zookeeperversion in 3.4.6
+	for stormversion in ${stormzookeeper34java16versions}
 	do
-	    SubmitStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion}
+	    for zookeeperversion in 3.4.6
+	    do
+		${testfunction} ${stormversion} ${zookeeperversion}
+	    done
 	done
-    done
-    
-    for stormversion in ${stormzookeeper34java17versions}
-    do
-	for zookeeperversion in 3.4.8
+	
+	for stormversion in ${stormzookeeper34java17versions}
 	do
-	    SubmitStormStandardTests_StandardWordCount ${stormversion} ${zookeeperversion}
+	    for zookeeperversion in 3.4.8
+	    do
+		${testfunction} ${stormversion} ${zookeeperversion}
+	    done
 	done
     done
 }
@@ -44,19 +47,22 @@ SubmitStormDependencyTests_Dependency1() {
 }
 
 SubmitStormDependencyTests() {
-    for stormversion in ${stormzookeeper34java16versions}
+    for testfunction in SubmitStormDependencyTests_Dependency1
     do
-	for zookeeperversion in 3.4.6
+	for stormversion in ${stormzookeeper34java16versions}
 	do
-	    SubmitStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion}
+	    for zookeeperversion in 3.4.6
+	    do
+		${testfunction} ${stormversion} ${zookeeperversion}
+	    done
 	done
-    done
-
-    for stormversion in ${stormzookeeper34java17versions}
-    do
-	for zookeeperversion in 3.4.8
+	
+	for stormversion in ${stormzookeeper34java17versions}
 	do
-	    SubmitStormDependencyTests_Dependency1 ${stormversion} ${zookeeperversion}
+	    for zookeeperversion in 3.4.8
+	    do
+		${testfunction} ${stormversion} ${zookeeperversion}
+	    done
 	done
     done
 }

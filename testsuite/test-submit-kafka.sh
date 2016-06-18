@@ -18,11 +18,14 @@ SubmitKafkaStandardTests_KafkaPerformance() {
 }
 
 SubmitKafkaStandardTests() {
-    for kafkaversion in ${kafkazookeeper34java17versions}
+    for testfunction in SubmitKafkaStandardTests_KafkaPerformance
     do
-	for zookeeperversion in 3.4.8
+	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    SubmitKafkaStandardTests_KafkaPerformance ${kafkaversion} ${zookeeperversion}
+	    for zookeeperversion in 3.4.8
+	    do
+		${testfunction} ${kafkaversion} ${zookeeperversion}
+	    done
 	done
     done
 }
@@ -36,11 +39,14 @@ SubmitKafkaDependencyTests_Dependency1() {
 }
 
 SubmitKafkaDependencyTests() {
-    for kafkaversion in ${kafkazookeeper34java17versions}
+    for testfunction in SubmitKafkaDependencyTests_Dependency1
     do
-	for zookeeperversion in 3.4.8
+	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    SubmitKafkaDependencyTests_Dependency1 ${kafkaversion} ${zookeeperversion}
+	    for zookeeperversion in 3.4.8
+	    do
+		${testfunction} ${kafkaversion} ${zookeeperversion}
+	    done
 	done
     done
 }

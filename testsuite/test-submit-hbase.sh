@@ -45,24 +45,27 @@ SubmitHbaseStandardTests_StandardPerformanceEval() {
 }
 
 SubmitHbaseStandardTests() {
-    for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
+    for testfunction in SubmitHbaseStandardTests_StandardPerformanceEval
     do
-	for hadoopversion in 2.6.0
+	for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
 	do
-	    for zookeeperversion in 3.4.6
+	    for hadoopversion in 2.6.0
 	    do
-		SubmitHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		for zookeeperversion in 3.4.6
+		do
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		done
 	    done
 	done
-    done
     
-    for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
-    do
-	for hadoopversion in 2.7.0
+	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
 	do
-	    for zookeeperversion in 3.4.8
+	    for hadoopversion in 2.7.0
 	    do
-		SubmitHbaseStandardTests_StandardPerformanceEval ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		for zookeeperversion in 3.4.8
+		do
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
+		done
 	    done
 	done
     done

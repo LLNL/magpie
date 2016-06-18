@@ -44,12 +44,15 @@ GenerateKafkaStandardTests() {
 
     echo "Making Kafka Standard Tests"
 
-    for kafkaversion in ${kafkazookeeper34java17versions}
+    for testfunction in GenerateKafkaStandardTests_KafkaPerformance
     do
-	CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
-	for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
+	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    GenerateKafkaStandardTests_KafkaPerformance ${kafkaversion} ${zookeeperversion} ${java17}
+	    CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
+	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
+	    do
+		${testfunction} ${kafkaversion} ${zookeeperversion} ${java17}
+	    done
 	done
     done
 }
@@ -82,12 +85,15 @@ GenerateKafkaDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for kafkaversion in ${kafkazookeeper34java17versions}
+    for testfunction in GenerateKafkaDependencyTests_Dependency1
     do
-	CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
-	for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
+	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    GenerateKafkaDependencyTests_Dependency1 ${kafkaversion} ${zookeeperversion} ${java17}
+	    CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
+	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
+	    do
+		${testfunction} ${kafkaversion} ${zookeeperversion} ${java17}
+	    done
 	done
     done
 }
