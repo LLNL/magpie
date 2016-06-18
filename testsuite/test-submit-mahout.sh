@@ -16,7 +16,7 @@ SubmitMahoutStandardTests() {
     do
 	for mahoutversion in ${mahouthadoop27java17versions}
 	do
-	    for hadoopversion in 2.7.0
+	    for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
 	    do
 		${testfunction} ${mahoutversion} ${hadoopversion}
 	    done
@@ -40,7 +40,7 @@ SubmitMahoutDependencyTests() {
     do
 	for mahoutversion in ${mahouthadoop27java17versions}
 	do
-	    for hadoopversion in 2.7.0
+	    for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
 	    do
 		${testfunction} ${mahoutversion} ${hadoopversion}
 	    done

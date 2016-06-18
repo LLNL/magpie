@@ -80,7 +80,7 @@ SubmitSparkStandardTests() {
     do
 	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
-	    for hadoopversion in 2.2.0
+	    for hadoopversion in ${spark0Xjava16hadoop2versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "n"
 	    done
@@ -88,7 +88,7 @@ SubmitSparkStandardTests() {
 	
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
-	    for hadoopversion in 2.4.0
+	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "y"
 	    done
@@ -96,7 +96,7 @@ SubmitSparkStandardTests() {
 	
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
-	    for hadoopversion in 2.6.0
+	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "y"
 	    done
@@ -107,7 +107,7 @@ SubmitSparkStandardTests() {
     do
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
-	    for hadoopversion in 2.4.0
+	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion}
 	    done
@@ -115,7 +115,7 @@ SubmitSparkStandardTests() {
 
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
-	    for hadoopversion in 2.6.0
+	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion}
 	    done
@@ -248,7 +248,7 @@ SubmitSparkDependencyTests() {
     do
 	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
-	    for hadoopversion in 2.2.0
+	    for hadoopversion in ${spark0Xjava16hadoop2versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "n"
 	    done
@@ -256,7 +256,7 @@ SubmitSparkDependencyTests() {
 
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
-	    for hadoopversion in 2.4.0
+	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "y"
 	    done
@@ -264,7 +264,7 @@ SubmitSparkDependencyTests() {
 
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
-	    for hadoopversion in 2.6.0
+	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
 	    do
 		${testfunction} ${sparkversion} ${hadoopversion} "y"
 	    done

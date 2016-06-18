@@ -18,7 +18,7 @@ SubmitPigStandardTests() {
     do
 	for pigversion in ${pighadoop24java16versions}
 	do
-	    for hadoopversion in 2.4.0
+	    for hadoopversion in ${pighadoop24java16versions_hadoopversion}
 	    do
 		${testfunction} ${pigversion} ${hadoopversion}
 	    done
@@ -26,15 +26,15 @@ SubmitPigStandardTests() {
     
 	for pigversion in ${pighadoop26java16versions}
 	do
-	    for hadoopversion in 2.6.0
+	    for hadoopversion in ${pighadoop26java16versions_hadoopversion}
 	    do
 		${testfunction} ${pigversion} ${hadoopversion}
 	    done
 	done
     
-	for pigversion in 0.15.0
+	for pigversion in ${pighadoop27java17versions}
 	do
-	    for hadoopversion in 2.7.0
+	    for hadoopversion in ${pighadoop27java17versions_hadoopversion}
 	    do
 		${testfunction} ${pigversion} ${hadoopversion}
 	    done
@@ -62,7 +62,7 @@ SubmitPigDependencyTests() {
     do
 	for pigversion in ${pighadoop24java16versions}
 	do
-	    for hadoopversion in 2.4.0
+	    for hadoopversion in ${pighadoop24java16versions_hadoopversion}
 	    do
 		${testfunction} ${pigversion} ${hadoopversion}
 	    done
@@ -70,7 +70,7 @@ SubmitPigDependencyTests() {
 	
 	for pigversion in ${pighadoop26java16versions}
 	do
-	    for hadoopversion in 2.6.0
+	    for hadoopversion in ${pighadoop26java16versions_hadoopversion}
 	    do
 		${testfunction} ${pigversion} ${hadoopversion}
 	    done
@@ -78,7 +78,7 @@ SubmitPigDependencyTests() {
 
 	for pigversion in ${pighadoop27java17versions}
 	do
-	    for hadoopversion in 2.7.0
+	    for hadoopversion in ${pighadoop27java17versions_hadoopversion}
 	    do
 		${testfunction} ${pigversion} ${hadoopversion}
 	    done

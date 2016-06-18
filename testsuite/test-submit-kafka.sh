@@ -22,7 +22,7 @@ SubmitKafkaStandardTests() {
     do
 	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    for zookeeperversion in 3.4.8
+	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
 	    do
 		${testfunction} ${kafkaversion} ${zookeeperversion}
 	    done
@@ -43,7 +43,7 @@ SubmitKafkaDependencyTests() {
     do
 	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    for zookeeperversion in 3.4.8
+	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
 	    do
 		${testfunction} ${kafkaversion} ${zookeeperversion}
 	    done

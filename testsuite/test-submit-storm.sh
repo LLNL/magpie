@@ -22,7 +22,7 @@ SubmitStormStandardTests() {
     do
 	for stormversion in ${stormzookeeper34java16versions}
 	do
-	    for zookeeperversion in 3.4.6
+	    for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
 	    do
 		${testfunction} ${stormversion} ${zookeeperversion}
 	    done
@@ -30,7 +30,7 @@ SubmitStormStandardTests() {
 	
 	for stormversion in ${stormzookeeper34java17versions}
 	do
-	    for zookeeperversion in 3.4.8
+	    for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
 	    do
 		${testfunction} ${stormversion} ${zookeeperversion}
 	    done
@@ -51,7 +51,7 @@ SubmitStormDependencyTests() {
     do
 	for stormversion in ${stormzookeeper34java16versions}
 	do
-	    for zookeeperversion in 3.4.6
+	    for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
 	    do
 		${testfunction} ${stormversion} ${zookeeperversion}
 	    done
@@ -59,7 +59,7 @@ SubmitStormDependencyTests() {
 	
 	for stormversion in ${stormzookeeper34java17versions}
 	do
-	    for zookeeperversion in 3.4.8
+	    for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
 	    do
 		${testfunction} ${stormversion} ${zookeeperversion}
 	    done

@@ -34,11 +34,11 @@ SubmitPhoenixStandardTests() {
     do
 	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
 	do
-	    for hbaseversion in 1.1.0
+	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	    do
-		for hadoopversion in 2.7.0
+		for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 		do
-		    for zookeeperversion in 3.4.8
+		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
 		    do
 			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
 		    done
@@ -83,11 +83,11 @@ SubmitPhoenixDependencyTests() {
     do
 	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
 	do
-	    for hbaseversion in 1.1.0
+	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	    do
-		for hadoopversion in 2.7.0
+		for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 		do
-		    for zookeeperversion in 3.4.8
+		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
 		    do
 			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion}
 		    done
