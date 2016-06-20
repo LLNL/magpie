@@ -79,6 +79,7 @@ test_hdfs_shutdown () {
 }
 
 test_hadoop_shutdown () {
+    local file=$1
 
     test_yarn_shutdown $file
 
