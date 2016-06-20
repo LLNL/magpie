@@ -143,6 +143,15 @@ test_zookeeper_shutdown () {
     fi
 }
 
+test_output_finalize () {
+    local file=$1
+
+    if [ "${verboseoutput}" == "y" ]
+    then
+	echo "File ${file} run through validation"
+    fi
+}
+
 if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
@@ -154,10 +163,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -172,10 +178,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -190,10 +193,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -208,10 +208,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -226,10 +223,7 @@ then
 	
 	test_no_hdfs_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -244,10 +238,7 @@ then
 	
 	test_no_hdfs_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -262,10 +253,7 @@ then
 	
 	test_no_hdfs_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -281,10 +269,7 @@ then
 	# On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
 	test_hdfs_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -307,10 +292,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -328,10 +310,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -346,10 +325,7 @@ then
 	
 	test_hadoop_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -365,10 +341,7 @@ then
 	test_hdfs_shutdown $file
 	test_zookeeper_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -384,10 +357,7 @@ then
 	test_hdfs_shutdown $file
 	test_zookeeper_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -403,10 +373,7 @@ then
 	test_hdfs_shutdown $file
 	test_zookeeper_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -422,10 +389,7 @@ then
 	test_hdfs_shutdown $file
 	test_zookeeper_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -445,10 +409,7 @@ then
 	    test_spark_shutdown $file
 	fi
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -471,10 +432,7 @@ then
 	    test_hdfs_shutdown $file
 	fi
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -489,10 +447,7 @@ then
 	
 	test_spark_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -507,10 +462,7 @@ then
 	
 	test_kafka_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -552,10 +504,7 @@ then
 
 	test_zookeeper_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
 
@@ -570,9 +519,6 @@ then
 	
 	test_zookeeper_shutdown $file
 
-	if [ "${verboseoutput}" = "y" ]
-	then
-	    echo "File ${file} run through validation"
-	fi
+	test_output_finalize $file
     done
 fi
