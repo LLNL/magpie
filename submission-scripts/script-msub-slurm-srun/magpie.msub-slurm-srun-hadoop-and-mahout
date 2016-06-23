@@ -164,11 +164,11 @@ export MAGPIE_JOB_TYPE="mahout"
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
 #
-# A number of convenient scripts are available in the scripts
-# directory.
+# A number of convenient scripts are available in the
+# ${MAGPIE_HOME}/scripts directory.
 #
-# export MAGPIE_PRE_JOB_RUN="${HOME}/magpie-my-pre-job-script"
-# export MAGPIE_POST_JOB_RUN="${HOME}/magpie-my-post-job-script"
+# export MAGPIE_PRE_JOB_RUN="${MAGPIE_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${MAGPIE_HOME}/scripts/post-job-run-scripts/my-post-job-script"
 
 # Environment Variable Script
 #
