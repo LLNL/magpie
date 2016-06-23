@@ -801,7 +801,7 @@ then
     pre_mapredsitexml=${hadoopconffiledir}/mapred-site-1.X.xml
     pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.X.sh
     pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-1.X.xml
-    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
+    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j-1.X.properties
 elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 then
     pre_coresitexml=${hadoopconffiledir}/core-site-2.X.xml
@@ -811,7 +811,7 @@ then
     pre_yarnsitexml=${hadoopconffiledir}/yarn-site-2.X.xml
     pre_yarnenvsh=${hadoopconffiledir}/yarn-env-2.X.sh
     pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.X.xml
-    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j.properties
+    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j-2.X.properties
 
     if [ "${HADOOP_UDA_SETUP}" == "yes" ]
     then
