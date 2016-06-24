@@ -35,3 +35,17 @@ CheckForDependency() {
 	break
     fi
 }
+
+RemoveTestsCheck() {
+    project=$1
+    version=$2
+
+    versionunderscore=`echo ${version} | sed -e "s/\./_/g"`
+    projectlowercase=`echo ${project} | tr '[:upper:]' '[:lower:]'`
+    variabletocheck="${projectlowercase}_${versionunderscore}"
+
+    if [ "${!variabletocheck}" == "n" ]
+    then
+	rm -f magpie.${submissiontype}*${project}-${version}*
+    fi
+}
