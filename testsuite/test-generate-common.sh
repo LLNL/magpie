@@ -40,7 +40,7 @@ RemoveTestsCheck() {
     project=$1
     version=$2
 
-    versionunderscore=`echo ${version} | sed -e "s/\./_/g"`
+    versionunderscore=`echo ${version} | sed -e "s/\./_/g" | sed -e "s/-/_/g"`
     projectlowercase=`echo ${project} | tr '[:upper:]' '[:lower:]'`
     variabletocheck="${projectlowercase}_${versionunderscore}"
 
