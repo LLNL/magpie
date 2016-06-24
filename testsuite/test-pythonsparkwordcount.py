@@ -9,8 +9,6 @@ conf = SparkConf()
 sparkmaster=sys.argv[1]
 wordcountfile=sys.argv[2]
 
-#sparkmaster="spark://" + os.environ['SPARK_MASTER_NODE'] + ":" + os.environ['SPARK_MASTER_PORT']
-
 conf.setMaster(sparkmaster)
 conf.setAppName("test")
 
