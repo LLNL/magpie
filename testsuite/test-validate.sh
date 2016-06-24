@@ -418,7 +418,7 @@ if ls ${outputprefix}*run-sparkwordcount* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-sparkwordcount*`
     do
-	num=`grep -e "d: 4" $file | wc -l`
+	num=`grep -e "davidson: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
 	    echo "Job error in $file"
 	fi
@@ -441,7 +441,7 @@ if ls ${outputprefix}*run-pysparkwordcount* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-pysparkwordcount*`
     do
-	num=`grep -e "d: 4" $file | wc -l`
+	num=`grep -e "davidson: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
 	    echo "Job error in $file"
 	fi
