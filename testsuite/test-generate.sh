@@ -1,33 +1,5 @@
 #!/bin/bash
 
-# Which tests to generate
-#
-# Presently supports
-#
-# Hadoop 2.2.0, 2.3.0, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.5.2, 2.6.0,
-# 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.7.0, 2.7.1, 2.7.2
-# Pig 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0
-# Mahout 0.11.0, 0.11.1, 0.11.2, 0.12.0, 0.12.1
-# Hbase 0.98.3-bin-hadoop2, 0.98.9-bin-hadoop2, 0.99.0, 0.99.1,
-#   0.99.2, 1.0.0, 1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, 1.1.1, 1.1.2,
-#   1.1.3, 1.1.4, 1.2.0, 1.2.1
-# Phoenix 4.5.1-Hbase-1.1, 4.5.2-HBase-1.1, 4.6.0-HBase-1.1
-#   4.7.0-Hbase-1.1
-# Spark 0.9.1-bin-hadoop2, 0.9.2-bin-hadoop2, 1.2.0-bin-hadoop2.4,
-#   1.2.1-bin-hadoop2.4, 1.2.2-bin-hadoop2.4, 1.3.0-bin-hadoop2.4,
-#   1.3.1-bin-hadoop2.4, 1.4.0-bin-hadoop2.6, 1.4.1-bin-hadoop2.6,
-#   1.5.0-bin-hadoop2.6, 1.5.1-bin-hadoop2.6, 1.5.2-bin-hadoop2.6,
-#   1.6.0-bin-hadoop2.6, 1.6.1-bin-hadoop2.6
-# Kafka 2.11-0.9.0.0
-# Storm 0.9.3, 0.9.4, 0.9.5, 0.9.6, 0.10.0
-# Zookeeper 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7
-#   3.4.8
-#
-# Assumes network file system such as lustre is always available
-#
-# Assumes current defaults in Magpie are definitely available, but
-# versions can be configured for which tests will run
-#
 # XXX - haven't handled msub-torque-pdsh yet
 
 source test-generate-default.sh
