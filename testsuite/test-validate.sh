@@ -423,8 +423,10 @@ then
 	    echo "Job error in $file"
 	fi
 	
-	if ! echo ${file} | grep -q "usingyarn"
+	if echo ${file} | grep -q "usingyarn"
 	then
+	    test_yarn_shutdown $file
+	else
 	    test_spark_shutdown $file
 	fi
 
