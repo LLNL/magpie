@@ -414,9 +414,9 @@ then
     done
 fi
 
-if ls ${outputprefix}*run-sparkwordcount* >& /dev/null
+if ls ${outputprefix}*run-sparkwordcount* ${outputprefix}*run-pythonsparkwordcount* >& /dev/null
 then
-    for file in `ls ${outputprefix}*run-sparkwordcount*`
+    for file in `ls ${outputprefix}*run-sparkwordcount* ${outputprefix}*run-pythonsparkwordcount*`
     do
 	num=`grep -e "davidson: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
@@ -434,21 +434,6 @@ then
 	then
 	    test_hdfs_shutdown $file
 	fi
-
-	test_output_finalize $file
-    done
-fi
-
-if ls ${outputprefix}*run-pythonsparkwordcount* >& /dev/null
-then
-    for file in `ls ${outputprefix}*run-pythonsparkwordcount*`
-    do
-	num=`grep -e "davidson: 4" $file | wc -l`
-	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
-	fi
-	
-	test_spark_shutdown $file
 
 	test_output_finalize $file
     done
