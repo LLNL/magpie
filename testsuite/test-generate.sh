@@ -432,8 +432,8 @@ fi
 if ls magpie.${submissiontype}*run-sparkwordcount* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkwordcount*
 fi
-if ls magpie.${submissiontype}*run-pysparkwordcount* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pysparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pysparkwordcount*
+if ls magpie.${submissiontype}*run-pythonsparkwordcount* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pythonsparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pythonsparkwordcount*
 fi
 if ls magpie.${submissiontype}*spark-with-yarn* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn*

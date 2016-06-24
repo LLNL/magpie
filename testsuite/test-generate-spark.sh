@@ -9,20 +9,20 @@ GenerateSparkStandardTests_BasicTests() {
     localdirtests=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-pythonsparkwordcount
 
     if [ "${localdirtests}" == "y" ]
     then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount-no-local-dir
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-pythonsparkwordcount-no-local-dir
     fi
 	
     sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' magpie.${submissiontype}-spark-${sparkversion}*
     
     sed -i \
 	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
-	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pyspark.sh"/' \
-	magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount*
+	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonspark.sh"/' \
+	magpie.${submissiontype}-spark-${sparkversion}-run-pythonsparkwordcount*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-${sparkversion}*`
 }

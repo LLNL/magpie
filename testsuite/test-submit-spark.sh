@@ -7,12 +7,12 @@ SubmitSparkStandardTests_BasicTests() {
     localdirtests=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
-    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount
+    BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pythonsparkwordcount
 
     if [ "${localdirtests}" == "y" ]
     then
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pysparkwordcount-no-local-dir
+	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-pythonsparkwordcount-no-local-dir
     fi
 }
 

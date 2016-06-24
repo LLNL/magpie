@@ -437,9 +437,9 @@ then
     done
 fi
 
-if ls ${outputprefix}*run-pysparkwordcount* >& /dev/null
+if ls ${outputprefix}*run-pythonsparkwordcount* >& /dev/null
 then
-    for file in `ls ${outputprefix}*run-pysparkwordcount*`
+    for file in `ls ${outputprefix}*run-pythonsparkwordcount*`
     do
 	num=`grep -e "davidson: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
