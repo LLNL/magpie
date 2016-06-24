@@ -874,40 +874,36 @@ then
 	exit 1
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-	|| [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    if [ "${HADOOP_SETUP_TYPE}" != "MR1" ]
     then
-	if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-	then
-	    echo "UDA is only supported on HADOOP MRv2 right now."
-	    exit 1
-	fi
+	echo "UDA is only supported with HADOOP_SETUP_TYPE = MR2"
+	exit 1
+    fi
 
-	if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
-	then 
-	    echo "HADOOP UDA only supported in Hadoop 2.2.0 and more recent versions"
-	    exit 1
-	fi
+    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+    then 
+	echo "HADOOP UDA only supported in Hadoop 2.2.0 and more recent versions"
+	exit 1
+    fi
 
-	if [ "${HADOOP_UDA_JAR}X" == "X" ]
-	then
-	    echo "HADOOP_UDA_JAR must be set to run Hadoop w/ UDA"
-	    exit 1
-	fi
+    if [ "${HADOOP_UDA_JAR}X" == "X" ]
+    then
+	echo "HADOOP_UDA_JAR must be set to run Hadoop w/ UDA"
+	exit 1
+    fi
 
-	if [ ! -f "${HADOOP_UDA_JAR}" ]
-	then
-	    echo "Jar HADOOP_UDA_JAR \"$HADOOP_UDA_JAR\" is not a regular file"
-	    exit 1
-	fi
+    if [ ! -f "${HADOOP_UDA_JAR}" ]
+    then
+	echo "Jar HADOOP_UDA_JAR \"$HADOOP_UDA_JAR\" is not a regular file"
+	exit 1
+    fi
 
-	if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
+    if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
+    then
+	if [ ! -d "${HADOOP_UDA_LIBPATH}" ]
 	then
-	    if [ ! -d "${HADOOP_UDA_LIBPATH}" ]
-	    then
-		echo "HADOOP_UDA_LIBPATH does not point to a directory"
-		exit 1
-	    fi
+	    echo "HADOOP_UDA_LIBPATH does not point to a directory"
+	    exit 1
 	fi
     fi
 
