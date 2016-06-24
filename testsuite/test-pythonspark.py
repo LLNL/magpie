@@ -6,13 +6,15 @@ import sys
 
 conf = SparkConf()
 
-sparkmaster="spark://" + os.environ['SPARK_MASTER_NODE'] + ":" + os.environ['SPARK_MASTER_PORT']
+sparkmaster=sys.argv[1]
+wordcountfile=sys.argv[2]
+
+#sparkmaster="spark://" + os.environ['SPARK_MASTER_NODE'] + ":" + os.environ['SPARK_MASTER_PORT']
+
 conf.setMaster(sparkmaster)
 conf.setAppName("test")
 
 sc = SparkContext(conf = conf)
-
-wordcountfile=sys.argv[1]
 
 file = sc.textFile(wordcountfile)
 

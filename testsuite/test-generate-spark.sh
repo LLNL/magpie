@@ -21,7 +21,7 @@ GenerateSparkStandardTests_BasicTests() {
     
     sed -i \
 	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
-	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonspark.sh"/' \
+	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonspark-sparkstandalone.sh"/' \
 	magpie.${submissiontype}-spark-${sparkversion}-run-pythonsparkwordcount*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-${sparkversion}*`
