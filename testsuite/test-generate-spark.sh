@@ -74,7 +74,7 @@ GenerateSparkStandardTests_WordCount() {
 
     sed -i \
 	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
-	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonspark-sparkstandalone.sh"/' \
+	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonsparkwordcount-sparkstandalone.sh"/' \
 	magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*run-pythonsparkwordcount*
 
     JavaCommonSubstitution ${javaversion} `ls \
@@ -151,7 +151,7 @@ GenerateSparkStandardTests_YarnWordCount() {
 
     sed -i \
 	-e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
-	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonspark-yarn.sh"/' \
+	-e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pythonsparkwordcount-yarn.sh"/' \
 	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount* 
 
     sed -i \
