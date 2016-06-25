@@ -542,3 +542,33 @@ Magpie_calculate_memorytouse () {
 
     memorytouse=$(echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f")
 }
+
+Magpie_find_conffile () {
+    local magpieconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+    local project=$1
+    local conffiledir=$2
+    local conffiledesired=$3
+    local __returnvar=$4
+    local conffilefound=""
+    
+    if [ "${conffiledir}X" != "X" ]
+    then
+	if [ -f "${conffiledir}/${conffiledesired}" ]
+	then
+	    conffilefound="${conffiledir}/${conffiledesired}"
+	fi
+    fi
+
+    if [ "${conffilefound}X" == "X" ]
+    then
+	conffilefound="${magpieconffiledir}/${conffiledesired}"
+    fi
+
+    if [ ! -f ${conffilefound} ]
+    then
+	echo "Missing ${project} configuration file ${conffiledesired}"
+	exit 1
+    fi
+
+    eval $__returnvar="${conffilefound}"
+}
