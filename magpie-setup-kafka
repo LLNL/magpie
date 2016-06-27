@@ -84,24 +84,10 @@ fi
 # Get config files for setup
 #
 
-if [ "${KAFKA_CONF_FILES}X" == "X" ]
-then
-    kafkaconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    kafkaconffiledir=${KAFKA_CONF_FILES}
-fi
-
-pre_kafkaenvsh=${kafkaconffiledir}/kafka-env.sh
-pre_kafkaproperties=${kafkaconffiledir}/kafka.server.properties
-pre_log4jproperties=${kafkaconffiledir}/kafka.log4j.properties
-
-if [ ! -f "${pre_kafkaenvsh}" ] \
-    || [ ! -f "${pre_kafkaproperties}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
-then
-    echo "Missing Kafka configuration files in ${kafkaconffiledir}"
-    exit 1
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Kafka" ${KAFKA_CONF_FILES:-""} "kafka-env.sh" "pre_kafkaenvsh"
+Magpie_find_conffile "Kafka" ${KAFKA_CONF_FILES:-""} "kafka.server.properties" "pre_kafkaproperties"
+Magpie_find_conffile "Kafka" ${KAFKA_CONF_FILES:-""} "kafka.log4j.properties" "pre_log4jproperties"
 
 post_kafkaenvsh=${KAFKA_CONF_DIR}/kafka-env.sh
 post_kafkaproperties=${KAFKA_CONF_DIR}/server.properties
