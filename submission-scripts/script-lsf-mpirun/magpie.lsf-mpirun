@@ -1216,6 +1216,17 @@ export PHOENIX_HOME="${HOME}/phoenix-${PHOENIX_VERSION}-bin"
 #
 export PHOENIX_LOCAL_DIR="/tmp/${USER}/phoenix"
 
+# Directory where alternate Phoenix configuration templates are stored
+#
+# If you wish to tweak the configuration files used by Magpie, set
+# PHOENIX_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into PHOENIX_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# PHOENIX_CONF_FILES.
+#
+# export PHOENIX_CONF_FILES="${HOME}/myconf"
+
 # Set how Phoenix should run
 #
 # "performanceeval" - run performance evaluation write and read.
@@ -1667,6 +1678,17 @@ export KAFKA_HOME="${HOME}/kafka_${KAFKA_VERSION}"
 #
 export KAFKA_LOCAL_DIR="/tmp/${USER}/kafka"
 
+# Directory where alternate Kafka configuration templates are stored
+#
+# If you wish to tweak the configuration files used by Magpie, set
+# KAFKA_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into KAFKA_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# KAFKA_CONF_FILES.
+#
+# export KAFKA_CONF_FILES="${HOME}/myconf"
+
 # Set how Kafka should run
 #
 # "performance" - run performance test. Useful for making sure things are
@@ -1742,6 +1764,17 @@ export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-incubating-bin-all"
 # MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
 #
 export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
+
+# Directory where alternate Zeppelin configuration templates are stored
+#
+# If you wish to tweak the configuration files used by Magpie, set
+# ZEPPELIN_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into ZEPPELIN_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# ZEPPELIN_CONF_FILES.
+#
+# export ZEPPELIN_CONF_FILES="${HOME}/myconf"
 
 # Path to the root scala dir
 #
