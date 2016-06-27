@@ -839,7 +839,7 @@ then
 	pre_coresitexml_viewfsmount=${hadoopconffiledir}/core-site-2.X-viewfsmount.xml
     fi
 else
-    echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE} \" specified"
+    echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
     exit 1
 fi
 
