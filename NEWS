@@ -1,3 +1,8 @@
+magpie 1.73
+-----------
+Fix magpie-gather-config-files-and-logs-script.sh to gather Pig,
+  Zeppelin, Phoenix, and Kafka conf/log files.
+
 magpie 1.72
 -----------
 Support SPARK_USE_YARN option for Spark to default to using Yarn.
