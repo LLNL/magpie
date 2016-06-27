@@ -788,77 +788,54 @@ fi
 # Get config files for setup
 #
 
-if [ "${HADOOP_CONF_FILES}X" == "X" ]
-then
-    hadoopconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    hadoopconffiledir=${HADOOP_CONF_FILES}
-fi
+# Magpie_find_conffile will set the 'pre' filenames
 
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
 then
-    pre_coresitexml=${hadoopconffiledir}/core-site-1.X.xml
-    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-1.X.xml
-    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-1.X.sh
-    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-1.X.xml
-    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j-1.X.properties
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-1.X.xml" "pre_coresitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-1.X.xml" "pre_mapredsitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-1.X.sh" "pre_hadoopenvsh"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-1.X.xml" "pre_hdfssitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-1.X.properties" "pre_log4jproperties"
 elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
 then
-    pre_coresitexml=${hadoopconffiledir}/core-site-2.X.xml
-    pre_mapredsitexml=${hadoopconffiledir}/mapred-site-2.X.xml
-    pre_hadoopenvsh=${hadoopconffiledir}/hadoop-env-2.X.sh
-    pre_mapredenvsh=${hadoopconffiledir}/mapred-env-2.X.sh
-    pre_yarnsitexml=${hadoopconffiledir}/yarn-site-2.X.xml
-    pre_yarnenvsh=${hadoopconffiledir}/yarn-env-2.X.sh
-    pre_hdfssitexml=${hadoopconffiledir}/hdfs-site-2.X.xml
-    pre_log4jproperties=${hadoopconffiledir}/hadoop.log4j-2.X.properties
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X.xml" "pre_coresitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X.xml" "pre_mapredsitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-2.X.sh" "pre_hadoopenvsh"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X.xml" "pre_hdfssitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-2.X.properties" "pre_log4jproperties"
+
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-env-2.X.sh" "pre_mapredenvsh"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X.xml" "pre_yarnsitexml"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-env-2.X.sh" "pre_yarnenvsh"
 
     if [ "${HADOOP_UDA_SETUP}" == "yes" ]
     then
-	pre_mapredsitexml_uda=${hadoopconffiledir}/mapred-site-2.X-uda.xml
-	pre_yarnsitexml_uda=${hadoopconffiledir}/yarn-site-2.X-uda.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X-uda.xml" "pre_mapredsitexml_uda"
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X-uda.xml" "pre_yarnsitexml_uda"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-	pre_coresitexml_intellustre=${hadoopconffiledir}/core-site-2.X-intellustre.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-intellustre.xml" "pre_coresitexml_intellustre"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
-	pre_coresitexml_magpienetworkfs=${hadoopconffiledir}/core-site-2.X-magpienetworkfs.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-magpienetworkfs.xml" "pre_coresitexml_magpienetworkfs"
     fi
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-	pre_coresitexml_tachyon=${hadoopconffiledir}/core-site-2.X-tachyon.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-tachyon.xml" "pre_coresitexml_tachyon"
     fi
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	pre_coresitexml_viewfsmount=${hadoopconffiledir}/core-site-2.X-viewfsmount.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-viewfsmount.xml" "pre_coresitexml_viewfsmount"
     fi
 else
     echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
-    exit 1
-fi
-
-if [ ! -f "${pre_coresitexml}" ] \
-    || [ ! -f "${pre_mapredsitexml}" ] \
-    || [ ! -f "${pre_hadoopenvsh}" ] \
-    || [ ! -f "${pre_hdfssitexml}" ] \
-    || [ ! -f "${pre_log4jproperties}" ] \
-    || ( [ "${pre_mapredenvsh}X" != "X" ] && [ ! -f "${pre_mapredenvsh}" ] ) \
-    || ( [ "${pre_yarnsitexml}X" != "X" ] && [ ! -f "${pre_yarnsitexml}" ] ) \
-    || ( [ "${pre_yarnenvsh}X" != "X" ] && [ ! -f "${pre_yarnenvsh}" ] ) \
-    || ( [ "${pre_mapredsitexml_uda}X" != "X" ] && [ ! -f "${pre_mapredsitexml_uda}" ] ) \
-    || ( [ "${pre_yarnsitexml_uda}X" != "X" ] && [ ! -f "${pre_yarnsitexml_uda}" ] ) \
-    || ( [ "${pre_coresitexml_intellustre}X" != "X" ] && [ ! -f "${pre_coresitexml_intellustre}" ] ) \
-    || ( [ "${pre_coresitexml_magpienetworkfs}X" != "X" ] && [ ! -f "${pre_coresitexml_magpienetworkfs}" ] ) \
-    || ( [ "${pre_coresitexml_tachyon}X" != "X" ] && [ ! -f "${pre_coresitexml_tachyon}" ] ) \
-    || ( [ "${pre_coresitexml_viewfsmount}X" != "X" ] && [ ! -f "${pre_coresitexml_viewfsmount}" ] )
-then
-    echo "Missing Hadoop configuration files in ${hadoopconffiledir}"
     exit 1
 fi
 
@@ -1203,9 +1180,9 @@ then
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.X-hdfs-federation.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation.xml" "pre_hdfssitexml_namenode"
     else
-	pre_hdfssitexml_namenode=${hadoopconffiledir}/hdfs-site-2.X-hdfs-namenode.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-namenode.xml" "pre_hdfssitexml_namenode"
     fi
 
     sed -i -e "/@NAMENODE@/{r ${pre_hdfssitexml_namenode}" -e "d}" ${post_hdfssitexml}
@@ -1220,7 +1197,7 @@ then
 
 	sed -i -e "s/NAMESERVICES/${nameservices}/g" ${post_hdfssitexml}
 
-	pre_hdfssitexml_namenodeinfo=${hadoopconffiledir}/hdfs-site-2.X-hdfs-federation-namenode.xml
+	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation-namenode.xml" "pre_hdfssitexml_namenodeinfo"
 
 	# Now fill each additional namenode
 	for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
