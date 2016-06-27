@@ -156,22 +156,9 @@ fi
 # Get config files for setup
 #
 
-if [ "${TACHYON_CONF_FILES}X" == "X" ]
-then
-    tachyonconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    tachyonconffiledir=${TACHYON_CONF_FILES}
-fi
-
-pre_tachyonenvsh=${tachyonconffiledir}/tachyon-env.sh
-pre_log4jproperties=${tachyonconffiledir}/tachyon.log4j.properties
-
-if [ ! -f "${pre_tachyonenvsh}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
-then
-    echo "Missing Tachyon configuration files in ${tachyonconffiledir}"
-    exit 1
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Tachyon" ${TACHYON_CONF_FILES:-""} "tachyon-env.sh" "pre_tachyonenvsh"
+Magpie_find_conffile "Tachyon" ${TACHYON_CONF_FILES:-""} "tachyon.log4j.properties" "pre_log4jproperties"
 
 post_tachyonenvsh=${TACHYON_CONF_DIR}/tachyon-env.sh
 post_log4jproperties=${TACHYON_CONF_DIR}/log4j.properties
