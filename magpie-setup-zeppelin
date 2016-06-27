@@ -131,24 +131,10 @@ ZEPPELIN_SPARK_SUBMIT_OPTS="${ZEPPELIN_SPARK_SUBMIT_OPTIONS} --jars $zeppelin_ja
 
 zeppelinclasspath=${SPARK_HOME}/lib/*:${CLASSPATH}
 
-if [ "${ZEPPELIN_CONF_FILES}X" == "X" ]
-then
-    zeppelinconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    zeppelinconffiledir=${ZEPPELIN_CONF_FILES}
-fi
-
-pre_zeppelinenvsh=${zeppelinconffiledir}/zeppelin-env.sh
-pre_zeppelinsitexml=${zeppelinconffiledir}/zeppelin-site.xml
-pre_log4jproperties=${zeppelinconffiledir}/zeppelin.log4j.properties
-
-if [ ! -f "${pre_zeppelinenvsh}" ] \
-    || [ ! -f "${pre_zeppelinsitexml}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
-then
-    echo "Missing Zeppelin configuration files in ${zeppelinconffiledir}"
-    exit 1
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin-env.sh" "pre_zeppelinenvsh"
+Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin-site.xml" "pre_zeppelinsitexml"
+Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin.log4j.properties" "pre_log4jproperties"
 
 post_zeppelinenvsh=${ZEPPELIN_CONF_DIR}/zeppelin-env.sh
 post_zeppelinsitexml=${ZEPPELIN_CONF_DIR}/zeppelin-site.xml
