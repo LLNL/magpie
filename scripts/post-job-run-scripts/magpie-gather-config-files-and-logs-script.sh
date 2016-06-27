@@ -27,6 +27,14 @@ then
     cp -a ${HADOOP_LOG_DIR}/* ${targetdir}/log
 fi
 
+targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/pig/nodes/${NODENAME}
+
+if [ "${PIG_CONF_DIR}X" != "X" ] && [ -d ${PIG_CONF_DIR}/ ] && [ "$(ls -A ${PIG_CONF_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/conf
+    cp -a ${PIG_CONF_DIR}/* ${targetdir}/conf
+fi
+
 targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/hbase/nodes/${NODENAME}
 
 if [ "${HBASE_CONF_DIR}X" != "X" ] && [ -d ${HBASE_CONF_DIR}/ ] && [ "$(ls -A ${HBASE_CONF_DIR}/)" ]
@@ -39,6 +47,20 @@ if [ "${HBASE_LOG_DIR}X" != "X" ] && [ -d ${HBASE_LOG_DIR}/ ] && [ "$(ls -A ${HB
 then
     mkdir -p ${targetdir}/log
     cp -a ${HBASE_LOG_DIR}/* ${targetdir}/log
+fi
+
+targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/phoenix/nodes/${NODENAME}
+
+if [ "${PHOENIX_CONF_DIR}X" != "X" ] && [ -d ${PHOENIX_CONF_DIR}/ ] && [ "$(ls -A ${PHOENIX_CONF_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/conf
+    cp -a ${PHOENIX_CONF_DIR}/* ${targetdir}/conf
+fi
+
+if [ "${PHOENIX_LOG_DIR}X" != "X" ] && [ -d ${PHOENIX_LOG_DIR}/ ] && [ "$(ls -A ${PHOENIX_LOG_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/log
+    cp -a ${PHOENIX_LOG_DIR}/* ${targetdir}/log
 fi
 
 targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/spark/nodes/${NODENAME}
@@ -68,6 +90,20 @@ else
 	cd ${SPARK_LOCAL_DIR}/work/
 	cp --parents `find . | grep -e 'std'` ${targetdir}/work
     fi
+fi
+
+targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/kafka/nodes/${NODENAME}
+
+if [ "${KAFKA_CONF_DIR}X" != "X" ] && [ -d ${KAFKA_CONF_DIR}/ ] && [ "$(ls -A ${KAFKA_CONF_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/conf
+    cp -a ${KAFKA_CONF_DIR}/* ${targetdir}/conf
+fi
+
+if [ "${KAFKA_LOG_DIR}X" != "X" ] && [ -d ${KAFKA_LOG_DIR}/ ] && [ "$(ls -A ${KAFKA_LOG_DIR}/)" ]
+then
+    mkdir -p ${targetdir}/log
+    cp -a ${KAFKA_LOG_DIR}/* ${targetdir}/log
 fi
 
 targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/storm/nodes/${NODENAME}
@@ -110,6 +146,20 @@ if [ "${ZOOKEEPER_LOG_DIR}X" != "X" ] && [ -d ${ZOOKEEPER_LOG_DIR}/ ] && [ "$(ls
 then
     mkdir -p ${zookeepertargetdir}/log
     cp -a ${ZOOKEEPER_LOG_DIR}/* ${zookeepertargetdir}/log
+fi
+
+zeppelintargetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/zeppelin/nodes/${NODENAME}
+        
+if [ "${ZEPPELIN_CONF_DIR}X" != "X" ] && [ -d ${ZEPPELIN_CONF_DIR}/ ] && [ "$(ls -A ${ZEPPELIN_CONF_DIR}/)" ]
+then
+    mkdir -p ${zeppelintargetdir}/conf
+    cp -a ${ZEPPELIN_CONF_DIR}/* ${zeppelintargetdir}/conf
+fi
+
+if [ "${ZEPPELIN_LOG_DIR}X" != "X" ] && [ -d ${ZEPPELIN_LOG_DIR}/ ] && [ "$(ls -A ${ZEPPELIN_LOG_DIR}/)" ]
+then
+    mkdir -p ${zeppelintargetdir}/log
+    cp -a ${ZEPPELIN_LOG_DIR}/* ${zeppelintargetdir}/log
 fi
 
 exit 0
