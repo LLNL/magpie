@@ -283,9 +283,14 @@ export HADOOP_HOME="${HOME}/hadoop-${HADOOP_VERSION}"
 #
 export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 
-# Directory where Hadoop configuration templates are stored
+# Directory where alternate Hadoop configuration templates are stored
 #
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+# If you wish to tweak the configuration files used by Magpie, set
+# HADOOP_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into HADOOP_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# HADOOP_CONF_FILES.
 #
 # export HADOOP_CONF_FILES="${HOME}/myconf"
 
@@ -619,9 +624,14 @@ export SPARK_HOME="${HOME}/spark-${SPARK_VERSION}"
 #
 export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 
-# Directory where Spark configuration templates are stored
+# Directory where alternate Spark configuration templates are stored
 #
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+# If you wish to tweak the configuration files used by Magpie, set
+# SPARK_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into SPARK_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# SPARK_CONF_FILES.
 #
 # export SPARK_CONF_FILES="${HOME}/myconf"
 
@@ -992,9 +1002,14 @@ export TACHYON_VERSION="0.6.1"
 #
 export TACHYON_HOME="${HOME}/tachyon-${TACHYON_VERSION}"
 
-# Directory where Tachyon configuration templates are stored
+# Directory where alternate Tachyon configuration templates are stored
 #
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+# If you wish to tweak the configuration files used by Magpie, set
+# TACHYON_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into TACHYON_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# TACHYON_CONF_FILES.
 #
 # export TACHYON_CONF_FILES="${HOME}/myconf"
 
