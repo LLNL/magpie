@@ -406,11 +406,11 @@ if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
     pre_sparkenvsh=${sparkconffiledir}/spark-env-1.X.sh
     pre_log4jproperties=${sparkconffiledir}/spark.log4j-1.X.properties
+    pre_sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
 else
     pre_sparkenvsh=${sparkconffiledir}/spark-env-0.X.sh
     pre_log4jproperties=${sparkconffiledir}/spark.log4j-0.X.properties
 fi
-pre_sparkdefaultsconf=${sparkconffiledir}/spark-defaults.conf
 
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
