@@ -25,10 +25,10 @@
 # This script is for sleeping.  For the most part, it shouldn't be
 # editted.  See job submission files for configuration details.
 
-# Why did I bother to write this script?  It's most for refactoring.
-# If I put "sleeping" into a script, then things like 'interactive'
-# mode or 'setuponly' are just "another script" and be managed just
-# like running a script with actual code in it.
+# Why did I bother to write this script?  It's mostly for
+# refactoring/architecture purposes.  If I put "sleeping" into a
+# script, then things like 'interactive' mode or 'setuponly' are just
+# "another script" and be managed just like any other script.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
