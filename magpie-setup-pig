@@ -43,22 +43,9 @@ Magpie_make_all_local_dirs_node_specific
 # Get config files for setup
 #
 
-if [ "${PIG_CONF_FILES}X" == "X" ]
-then
-    pigconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    pigconffiledir=${PIG_CONF_FILES}
-fi
-
-pre_pigproperties=${pigconffiledir}/pig.properties
-pre_log4jproperties=${pigconffiledir}/pig.log4j.properties
-
-if [ ! -f "${pre_pigproperties}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
-then
-    echo "Missing Pig configuration files in ${pigconffiledir}"
-    exit 1
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Pig" ${PIG_CONF_FILES:-""} "pig.properties" "pre_pigproperties"
+Magpie_find_conffile "Pig" ${PIG_CONF_FILES:-""} "pig.log4j.properties" "pre_log4jproperties"
 
 post_pigproperties=${PIG_CONF_DIR}/pig.properties
 post_log4jproperties=${PIG_CONF_DIR}/log4j.properties
