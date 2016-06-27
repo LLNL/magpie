@@ -276,9 +276,14 @@ export HADOOP_HOME="${HOME}/hadoop-${HADOOP_VERSION}"
 #
 export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 
-# Directory where Hadoop configuration templates are stored
+# Directory where alternate Hadoop configuration templates are stored
 #
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+# If you wish to tweak the configuration files used by Magpie, set
+# HADOOP_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into HADOOP_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# HADOOP_CONF_FILES.
 #
 # export HADOOP_CONF_FILES="${HOME}/myconf"
 
@@ -743,9 +748,14 @@ export PIG_VERSION="0.15.0"
 #
 export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 
-# Directory where Pig configuration templates are stored
+# Directory where alternate Pig configuration templates are stored
 #
-# If not specified, assumed to be $MAGPIE_SCRIPTS_HOME/conf
+# If you wish to tweak the configuration files used by Magpie, set
+# PIG_CONF_FILES below, copy configuration templates from
+# $MAGPIE_SCRIPTS_HOME/conf into PIG_CONF_FILES, and modify as you
+# desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
+# PIG_CONF_FILES.
 #
 # export PIG_CONF_FILES="${HOME}/myconf"
 

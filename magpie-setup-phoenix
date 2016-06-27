@@ -74,22 +74,9 @@ fi
 # Get config files for setup
 #
 
-if [ "${PHOENIX_CONF_FILES}X" == "X" ]
-then
-    phoenixconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    phoenixconffiledir=${PHOENIX_CONF_FILES}
-fi
-
-pre_phoenixenvsh=${phoenixconffiledir}/phoenix-env.sh
-pre_log4jproperties=${phoenixconffiledir}/phoenix.log4j.properties
-
-if [ ! -f "${pre_phoenixenvsh}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
-then
-    echo "Phoenix is missing configuration files in ${phoenixconffiledir}"
-    exit 1
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Phoenix" ${PHOENIX_CONF_FILES:-""} "phoenix-env.sh" "pre_phoenixenvsh"
+Magpie_find_conffile "Phoenix" ${PHOENIX_CONF_FILES:-""} "phoenix.log4j.properties" "pre_log4jproperties"
 
 post_phoenixenvsh=${PHOENIX_CONF_DIR}/phoenix-env.sh
 post_log4jproperties=${PHOENIX_CONF_DIR}/log4j.properties

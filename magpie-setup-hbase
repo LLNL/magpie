@@ -205,30 +205,15 @@ fi
 # Get config files for setup
 #
 
-if [ "${HBASE_CONF_FILES}X" == "X" ]
-then
-    hbaseconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    hbaseconffiledir=${HBASE_CONF_FILES}
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site.xml" "pre_hbasesitexml"
+Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-env.sh" "pre_hbaseenvsh"
+Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase.log4j.properties" "pre_log4jproperties"
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
      hbaseclasspath=${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar:${hbaseclasspath}
-     pre_hbasesitexml_phoenix=${hbaseconffiledir}/hbase-site-phoenix.xml
-fi
-
-pre_hbasesitexml=${hbaseconffiledir}/hbase-site.xml
-pre_hbaseenvsh=${hbaseconffiledir}/hbase-env.sh
-pre_log4jproperties=${hbaseconffiledir}/hbase.log4j.properties
-
-if [ ! -f "${pre_hbasesitexml}" ] \
-    || [ ! -f "${pre_hbaseenvsh}" ] \
-    || [ ! -f "${pre_log4jproperties}" ] \
-    || ( [ "${pre_hbasesitexml_phoenix}X" != "X" ] && [ ! -f "${pre_hbasesitexml_phoenix}" ] ) \
-then
-    echo "Missing Hbase configuration files in ${hbaseconffiledir}"
-    exit 1
+     Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix.xml" "pre_hbasesitexml_phoenix"
 fi
 
 post_hbasesitexml=${HBASE_CONF_DIR}/hbase-site.xml

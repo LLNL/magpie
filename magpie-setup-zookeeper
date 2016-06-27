@@ -121,24 +121,10 @@ fi
 # Get config files for setup
 #
 
-if [ "${ZOOKEEPER_CONF_FILES}X" == "X" ]
-then
-    zookeeperconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
-else
-    zookeeperconffiledir=${ZOOKEEPER_CONF_FILES}
-fi
-
-pre_zookeepercfg=${zookeeperconffiledir}/zoo.cfg
-pre_zookeeperenvsh=${zookeeperconffiledir}/zookeeper-env.sh
-pre_log4jproperties=${zookeeperconffiledir}/zookeeper.log4j.properties
-
-if [ ! -f "${pre_zookeepercfg}" ] \
-    || [ ! -f "${pre_zookeeperenvsh}" ] \
-    || [ ! -f "${pre_log4jproperties}" ]
-then
-    echo "Missing Zookeeper configuration files in ${zookeeperconffiledir}"
-    exit 1
-fi
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Zookeeper" ${ZOOKEEPER_CONF_FILES:-""} "zoo.cfg" "pre_zookeepercfg"
+Magpie_find_conffile "Zookeeper" ${ZOOKEEPER_CONF_FILES:-""} "zookeeper-env.sh" "pre_zookeeperenvsh"
+Magpie_find_conffile "Zookeeper" ${ZOOKEEPER_CONF_FILES:-""} "zookeeper.log4j.properties" "pre_log4jproperties"
 
 post_zookeepercfg=${ZOOKEEPER_CONF_DIR}/zoo.cfg
 post_zookeeperenvsh=${ZOOKEEPER_CONF_DIR}/zookeeper-env.sh

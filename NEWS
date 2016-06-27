@@ -1,5 +1,9 @@
 magpie 1.73
 -----------
+When users want to use alternate config files, instead of copying all
+  files from ${MAGPIE_SCRIPTS_HOME}/conf, into a project's alternate
+  CONF_FILES director (e.g. HADOOP_CONF_FILES), users can copy only the
+  files they wish to modify.
 Fix magpie-gather-config-files-and-logs-script.sh to gather Pig,
   Zeppelin, Phoenix, and Kafka conf/log files.
 
