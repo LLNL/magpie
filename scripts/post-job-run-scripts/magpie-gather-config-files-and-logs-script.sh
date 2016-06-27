@@ -11,50 +11,46 @@
 # $HOME/$MAGPIE_JOB_NAME/$MAGPIE_JOB_ID, but you may wish
 # to change that.
 
-export NODENAME=`hostname`
 
-targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/hadoop/nodes/${NODENAME}
+# export out targetdir
+Gather_common () {
+    local project=$1
+    local saveconfdir=$2
+    local savelogdir=$3
 
-if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ -d ${HADOOP_CONF_DIR}/ ] && [ "$(ls -A ${HADOOP_CONF_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/conf
-    cp -a ${HADOOP_CONF_DIR}/* ${targetdir}/conf
-fi
+    local NODENAME=`hostname`
+    local projectuppercase=`echo ${project} | tr '[:lower:]' '[:upper:]'`
+    local projectconfdir="${projectuppercase}_CONF_DIR"
+    local projectlogdir="${projectuppercase}_CONF_DIR"
 
-if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ -d ${HADOOP_LOG_DIR}/ ] && [ "$(ls -A ${HADOOP_LOG_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/log
-    cp -a ${HADOOP_LOG_DIR}/* ${targetdir}/log
-fi
+    targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/${project}/nodes/${NODENAME}
+    
+    if [ "${saveconfdir}" == "y" ]
+    then
+	if [ "${!projectconfdir}X" != "X" ] && [ -d ${!projectconfdir}/ ] && [ "$(ls -A ${!projectconfdir}/)" ]
+	then
+	    mkdir -p ${targetdir}/conf
+	    cp -a ${!projectconfdir}/* ${targetdir}/conf
+	fi
+    fi
 
-targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/hbase/nodes/${NODENAME}
+    if [ "${savelogdir}" == "y" ]
+    then
+	if [ "${!projectlogdir}X" != "X" ] && [ -d ${!projectlogdir}/ ] && [ "$(ls -A ${!projectlogdir}/)" ]
+	then
+	    mkdir -p ${targetdir}/log
+	    cp -a ${!projectlogdir}/* ${targetdir}/log
+	fi
+    fi
+}
 
-if [ "${HBASE_CONF_DIR}X" != "X" ] && [ -d ${HBASE_CONF_DIR}/ ] && [ "$(ls -A ${HBASE_CONF_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/conf
-    cp -a ${HBASE_CONF_DIR}/* ${targetdir}/conf
-fi
+Gather_common "hadoop" "y" "y"
+Gather_common "pig" "y" "n"
+Gather_common "hbase" "y" "y"
+Gather_common "phoenix" "y" "y"
+Gather_common "spark" "y" "y"
 
-if [ "${HBASE_LOG_DIR}X" != "X" ] && [ -d ${HBASE_LOG_DIR}/ ] && [ "$(ls -A ${HBASE_LOG_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/log
-    cp -a ${HBASE_LOG_DIR}/* ${targetdir}/log
-fi
-
-targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/spark/nodes/${NODENAME}
-
-if [ "${SPARK_CONF_DIR}X" != "X" ] && [ -d ${SPARK_CONF_DIR}/ ] && [ "$(ls -A ${SPARK_CONF_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/conf
-    cp -a ${SPARK_CONF_DIR}/* ${targetdir}/conf
-fi
-
-if [ "${SPARK_LOG_DIR}X" != "X" ] && [ -d ${SPARK_LOG_DIR}/ ] && [ "$(ls -A ${SPARK_LOG_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/log
-    cp -a ${SPARK_LOG_DIR}/* ${targetdir}/log
-fi
-
+# Special case
 if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
 then
     mkdir -p ${targetdir}/work
@@ -70,46 +66,10 @@ else
     fi
 fi
 
-targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/storm/nodes/${NODENAME}
-
-if [ "${STORM_CONF_DIR}X" != "X" ] && [ -d ${STORM_CONF_DIR}/ ] && [ "$(ls -A ${STORM_CONF_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/conf
-    cp -a ${STORM_CONF_DIR}/* ${targetdir}/conf
-fi
-
-if [ "${STORM_LOG_DIR}X" != "X" ] && [ -d ${STORM_LOG_DIR}/ ] && [ "$(ls -A ${STORM_LOG_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/log
-    cp -a ${STORM_LOG_DIR}/* ${targetdir}/log
-fi
-
-targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/tachyon/nodes/${NODENAME}
-
-if [ "${TACHYON_CONF_DIR}X" != "X" ] && [ -d ${TACHYON_CONF_DIR}/ ] && [ "$(ls -A ${TACHYON_CONF_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/conf
-    cp -a ${TACHYON_CONF_DIR}/* ${targetdir}/conf
-fi
-
-if [ "${TACHYON_LOG_DIR}X" != "X" ] && [ -d ${TACHYON_LOG_DIR}/ ] && [ "$(ls -A ${TACHYON_LOG_DIR}/)" ]
-then
-    mkdir -p ${targetdir}/log
-    cp -a ${TACHYON_LOG_DIR}/* ${targetdir}/log
-fi
-
-zookeepertargetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/zookeeper/nodes/${NODENAME}
-        
-if [ "${ZOOKEEPER_CONF_DIR}X" != "X" ] && [ -d ${ZOOKEEPER_CONF_DIR}/ ] && [ "$(ls -A ${ZOOKEEPER_CONF_DIR}/)" ]
-then
-    mkdir -p ${zookeepertargetdir}/conf
-    cp -a ${ZOOKEEPER_CONF_DIR}/* ${zookeepertargetdir}/conf
-fi
-
-if [ "${ZOOKEEPER_LOG_DIR}X" != "X" ] && [ -d ${ZOOKEEPER_LOG_DIR}/ ] && [ "$(ls -A ${ZOOKEEPER_LOG_DIR}/)" ]
-then
-    mkdir -p ${zookeepertargetdir}/log
-    cp -a ${ZOOKEEPER_LOG_DIR}/* ${zookeepertargetdir}/log
-fi
+Gather_common "kafka" "y" "y"
+Gather_common "storm" "y" "y"
+Gather_common "tachyon" "y" "y"
+Gather_common "zookeeper" "y" "y"
+Gather_common "zeppelin" "y" "y"
 
 exit 0
