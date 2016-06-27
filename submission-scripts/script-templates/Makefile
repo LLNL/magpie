@@ -303,7 +303,7 @@ endef
 define create-all
 	echo "Creating magpie.$(SCHED)"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-general-configuration-python > $(MAGPIE)
@@ -379,7 +379,7 @@ endef
 define create-hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-hadoop-core magpie-hadoop-job \
@@ -398,7 +398,7 @@ endef
 define create-hadoop-with-uda
 	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-hadoop-core magpie-hadoop-job \
@@ -418,7 +418,7 @@ endef
 define create-hadoop-and-pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-hadoop-core \
@@ -440,7 +440,7 @@ endef
 define create-hadoop-and-mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-hadoop-core \
@@ -462,7 +462,7 @@ endef
 define create-hbase-with-hdfs
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-hadoop-core magpie-hadoop-job \
@@ -486,7 +486,7 @@ endef
 define create-hbase-with-hdfs-with-phoenix 
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-hadoop-core \
@@ -514,7 +514,7 @@ endef
 define create-spark
 	echo "Creating magpie.$(SCHED)-spark"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-general-configuration-python \
@@ -531,7 +531,7 @@ endef
 define create-spark-with-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-general-configuration-python \
@@ -555,7 +555,7 @@ endef
 define create-spark-with-yarn-and-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-yarn-and-hdfs"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-general-configuration-python \
@@ -578,7 +578,7 @@ endef
 define create-spark-with-tachyon-and-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-general-configuration-python \
@@ -604,7 +604,7 @@ endef
 define create-storm
 	echo "Creating magpie.$(SCHED)-storm"
 	cat 	magpie-header \
-		magpie-$(SCHED) \
+		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
 		magpie-storm \
