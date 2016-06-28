@@ -54,6 +54,16 @@ FAQ
   I don't know if those scripts are distributed in newer versions of
   Cloudera and/or Hortonworks.
 
+* Why is the project called Magpie?
+
+  Based on David Buttler's initial reply to my request for name
+  suggestions.
+
+  "Its Hadoop, so it should be an animal. It runs on Lustre, which is
+  shiny. How about Magpie?"
+
+  For those unaware, legend has it magpie birds like shiny objects.
+ 
 * I have a question, can you help?
 
   Please post questions to Github issue tracker.  I'm glad to answer
