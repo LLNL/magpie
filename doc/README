@@ -29,7 +29,7 @@ The basic idea behind these scripts are to:
    Moab+Torque and LSF+mpirun are currently supported.
 
 2) The batch script will create configuration files for all
-   appropriate projects (Hadoop, Hbase, etc.)  The configuration files
+   appropriate projects (Hadoop, Spark, etc.)  The configuration files
    will be setup so the rank 0 node is the "master".  All compute
    nodes will have configuration files created that point to the node
    designated as the master server.
@@ -42,9 +42,8 @@ The basic idea behind these scripts are to:
    adjust these values for individual jobs.
 
 3) Launch daemons on all nodes.  The rank 0 node will run master
-   daemons, such as the Hadoop Namenode or the Hbase Master.  All
-   remaining nodes will run appropriate slave daemons, such as the
-   Hadoop Datanodes or Hbase RegionServers.
+   daemons, such as the Hadoop Namenode.  All remaining nodes will run
+   appropriate slave daemons, such as the Hadoop Datanodes.
 
 4) Now you have a mini big data cluster to do whatever you want.  You
    can log into the master node and interact with your mini big data
@@ -54,8 +53,7 @@ The basic idea behind these scripts are to:
 5) When your job completes or your allocation time has run out, Magpie
    will cleanup your job by tearing down daemons.  When appropriate,
    Magpie may also do some additional cleanup work to hopefully make
-   re-execution on later runs cleaner and faster (e.g. Hbase
-   compaction).
+   re-execution on later runs cleaner and faster.
 
 Requirements
 ------------
@@ -73,10 +71,10 @@ Requirements
    the source may also be necessary.
 
 2) A passwordless remote shell execution mechanism must be available
-   for scripts to launch big data daemons (Hadoop Datanodes, Hbase
-   Regionservers, etc.) on all appropriate nodes.  The most popular
-   (and default mechanism) is passwordless ssh.  However, other
-   mechanisms are more than suitable.
+   for scripts to launch big data daemons (e.g. Hadoop Datanodes) on
+   all appropriate nodes.  The most popular (and default mechanism) is
+   passwordless ssh.  However, other mechanisms are more than
+   suitable.
 
 3) A temporary local scratch space is needed on each node for Magpie
    to store configuration files, log files, and other miscellaneous
