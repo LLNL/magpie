@@ -246,7 +246,7 @@ SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
 }
 
 SubmitSparkDependencyTests() {
-    for testfunction in SubmitSparkDependencyTests_Dependency1HDFS SubmitSparkDependencyTests_Dependency2HDFS SubmitSparkDependencyTests_Dependency3YarnHDFS SubmitSparkDependencyTests_Dependency4YarnHDFS
+    for testfunction in SubmitSparkDependencyTests_Dependency1HDFS SubmitSparkDependencyTests_Dependency2HDFS
     do
 	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
@@ -273,7 +273,26 @@ SubmitSparkDependencyTests() {
 	done
     done
 
-    for testfunction in SubmitSparkDependencyTests_Dependency5rawnetworkfs SubmitSparkDependencyTests_Dependency6rawnetworkfs SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs
+    for testfunction in SubmitSparkDependencyTests_Dependency3YarnHDFS SubmitSparkDependencyTests_Dependency4YarnHDFS
+    do
+	for sparkversion in ${spark1Xjava16hadoop24versions}
+	do
+	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "y"
+	    done
+	done
+
+	for sparkversion in ${spark1Xjava17hadoop26versions}
+	do
+	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion} "y"
+	    done
+	done
+    done
+
+    for testfunction in SubmitSparkDependencyTests_Dependency5rawnetworkfs SubmitSparkDependencyTests_Dependency6rawnetworkfs
     do
 	for sparkversion in ${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions}
 	do
@@ -283,6 +302,25 @@ SubmitSparkDependencyTests() {
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    ${testfunction} ${sparkversion}
+	done
+    done
+    
+    for testfunction in SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs
+    do
+	for sparkversion in ${spark1Xjava16hadoop24versions}
+	do
+	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion}
+	    done
+	done
+	
+	for sparkversion in ${spark1Xjava17hadoop26versions}
+	do
+	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
+	    do
+		${testfunction} ${sparkversion} ${hadoopversion}
+	    done
 	done
     done
 }
