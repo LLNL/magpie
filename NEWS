@@ -6,6 +6,8 @@ When users want to use alternate config files, instead of copying all
   files they wish to modify.
 Fix magpie-gather-config-files-and-logs-script.sh to gather Pig,
   Zeppelin, Phoenix, and Kafka conf/log files.
+Support Spark 1.6.2-bin-hadoop2.6.
+Update default Spark to 1.6.2-bin-hadoop2.6.
 
 magpie 1.72
 -----------

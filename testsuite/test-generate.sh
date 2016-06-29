@@ -138,6 +138,7 @@ spark_1_5_1_bin_hadoop2_6=y
 spark_1_5_2_bin_hadoop2_6=y
 spark_1_6_0_bin_hadoop2_6=y
 spark_1_6_1_bin_hadoop2_6=y
+spark_1_6_2_bin_hadoop2_6=y
 storm_0_9_3=y
 storm_0_9_4=y
 storm_0_9_5=y
