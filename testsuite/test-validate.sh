@@ -414,9 +414,16 @@ then
     done
 fi
 
-if ls ${outputprefix}*run-sparkwordcount* ${outputprefix}*run-pythonsparkwordcount* >& /dev/null
+if ls ${outputprefix}*run-sparkwordcount* >& /dev/null ||
+    ls ${outputprefix}*run-pythonsparkwordcount* >& /dev/null
 then
-    for file in `ls ${outputprefix}*run-sparkwordcount* ${outputprefix}*run-pythonsparkwordcount*`
+    if ls ${outputprefix}*run-sparkwordcount* >& /dev/null; then
+	files1=`ls ${outputprefix}*run-sparkwordcount*`
+    fi
+    if ls ${outputprefix}*run-pythonsparkwordcount* >& /dev/null; then
+	files2=`ls ${outputprefix}*run-pythonsparkwordcount*`
+    fi
+    for file in $files1 $files2
     do
 	num=`grep -e "davidson: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
