@@ -506,8 +506,10 @@ if ls magpie.${submissiontype}-storm* >& /dev/null ; then
 fi
 
 if ls magpie.${submissiontype}* >& /dev/null ; then
-    ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
-    ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
+    if ls magpie.${submissiontype}* | grep -v Dependency >& /dev/null ; then
+	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
+	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
+    fi
 
     sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
 
