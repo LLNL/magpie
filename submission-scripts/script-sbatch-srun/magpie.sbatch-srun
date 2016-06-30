@@ -1563,6 +1563,10 @@ export SPARK_MODE="sparkpi"
 # improve performance of both shuffling and disk based RDD
 # persistence.
 #
+# Note that this field will not work if SPARK_USE_YARN is set to
+# 'yes'.  Please set HADOOP_LOCALSTORE to inform Yarn to set a local
+# SSD for Yarn to use for local scratch.
+#
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
 # SPARK_USE_YARN
@@ -1585,6 +1589,10 @@ export SPARK_MODE="sparkpi"
 #   (e.g. SPARK_MODE="sparkpi" or SPARK_MODE="script") will now use
 #   Yarn instead.
 # 
+# Note that SPARK_LOCAL_SCRATCH_DIR above will not work if
+# SPARK_USE_YARN is set to 'yes'.  Please set HADOOP_LOCALSTORE to
+# inform Yarn to set a local SSD for Yarn to use for local scratch.
+#
 # Make sure that HADOOP_SETUP_TYPE is set to MR2 so Yarn will be
 # launched if you set SPARK_USE_YARN to yes.
 #
