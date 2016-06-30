@@ -8,6 +8,7 @@ Fix magpie-gather-config-files-and-logs-script.sh to gather Pig,
   Zeppelin, Phoenix, and Kafka conf/log files.
 Support Spark 1.6.2-bin-hadoop2.6.
 Update default Spark to 1.6.2-bin-hadoop2.6.
+Various minor bug fixes regarding Spark w/ Yarn use.
 
 magpie 1.72
 -----------
