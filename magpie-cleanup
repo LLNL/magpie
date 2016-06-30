@@ -52,6 +52,22 @@ then
     IFS=${IFSORIG}
 fi
 
+if [ "${HADOOP_LOCALSTORE}X" != "X" ] \
+    && [ "${HADOOP_LOCALSTORE_CLEAR}" == "yes" ]
+then
+    IFSORIG=${IFS}
+    IFS=","
+    for localstorepath in ${HADOOP_LOCALSTORE}
+    do
+	if [ -d "${localstorepath}" ]
+	then
+	    echo "${myhostname}: Clearing directory ${localstorepath}"
+	    rm -rf ${localstorepath}
+	fi
+    done
+    IFS=${IFSORIG}
+fi
+
 if [ "${ZOOKEEPER_DATA_DIR_CLEAR}" == "yes" ]
 then
     echo "${myhostname}: Clearing directory ${ZOOKEEPER_DATA_DIR}"

@@ -9,6 +9,7 @@ Fix magpie-gather-config-files-and-logs-script.sh to gather Pig,
 Support Spark 1.6.2-bin-hadoop2.6.
 Update default Spark to 1.6.2-bin-hadoop2.6.
 Various minor bug fixes regarding Spark w/ Yarn use.
+Support HADOOP_LOCALSTORE_CLEAR option.
 
 magpie 1.72
 -----------

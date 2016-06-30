@@ -730,6 +730,14 @@ then
 	exit 1
     fi
 
+    if [ "${HADOOP_LOCALSTORE}X" != "X" ] \
+	&& [ "${HADOOP_LOCALSTORE_CLEAR}X" != "X" ] \
+ 	&& ( [ "${HADOOP_LOCALSTORE_CLEAR}" != "yes" ] && [ "${HADOOP_LOCALSTORE_CLEAR}" != "no" ] )
+    then
+	echo "HADOOP_LOCALSTORE_CLEAR must be set to yes or no"
+	exit 1
+    fi
+
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
 	&& [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
     then
