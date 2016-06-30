@@ -1,17 +1,17 @@
 magpie 1.73
 -----------
+Support Spark 1.6.2-bin-hadoop2.6.
+Update default Spark to 1.6.2-bin-hadoop2.6.
 When users want to use alternate config files, instead of copying all
   files from ${MAGPIE_SCRIPTS_HOME}/conf, into a project's alternate
   CONF_FILES director (e.g. HADOOP_CONF_FILES), users can copy only the
   files they wish to modify.
 Fix magpie-gather-config-files-and-logs-script.sh to gather Pig,
   Zeppelin, Phoenix, and Kafka conf/log files.
-Support Spark 1.6.2-bin-hadoop2.6.
-Update default Spark to 1.6.2-bin-hadoop2.6.
-Various minor bug fixes regarding Spark w/ Yarn use.
 Support HADOOP_LOCALSTORE_CLEAR option.
 Support SPARK_LOCAL_SCRATCH_DIR_CLEAR option.
 Support multiple paths for SPARK_LOCAL_SCRATCH_DIR.
+Various minor bug fixes regarding Spark w/ Yarn use.
 
 magpie 1.72
 -----------
