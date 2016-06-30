@@ -21,7 +21,7 @@ Gather_common () {
     local NODENAME=`hostname`
     local projectuppercase=`echo ${project} | tr '[:lower:]' '[:upper:]'`
     local projectconfdir="${projectuppercase}_CONF_DIR"
-    local projectlogdir="${projectuppercase}_CONF_DIR"
+    local projectlogdir="${projectuppercase}_LOG_DIR"
 
     targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/${project}/nodes/${NODENAME}
     
