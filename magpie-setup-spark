@@ -570,7 +570,11 @@ fi
 # - spark.local.dir for < 1.0.0 set above
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
+    # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs 
+    if [ "${SPARK_USE_YARN}" != "yes" ]
+    then
+	echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
+    fi
 fi
 
 # Spark requires HADOOP_CONF_DIR and YARN_CONF_DIR to be set for it to
