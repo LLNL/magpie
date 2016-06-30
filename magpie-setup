@@ -31,60 +31,96 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 
 (${MAGPIE_SCRIPTS_HOME}/magpie-setup-core)
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hadoop)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-pig)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-mahout)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hbase)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-phoenix)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-spark)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-kafka)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zeppelin)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-storm)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-tachyon)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zookeeper)
+    if [ $? -ne 0 ] ; then
+	exit 1
+    fi
 fi
 
 exit 0
