@@ -648,6 +648,8 @@ then
 
     extrasparkjavaoptssubst=`echo "${extrasparkjavaopts}" | sed "s/\\//\\\\\\\\\//g"`
 
+    sparklocalscratchdirpathsubst=`echo "${sparklocalscratchdirpath}" | sed "s/\\//\\\\\\\\\//g"`
+
     sed -i \
 	-e "s/SPARKMASTER/${sparkmastersubst}/g" \
 	-e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
@@ -672,6 +674,7 @@ then
 	-e "s/SPARKYARNEXECUTORCORES/${workercores}/g" \
 	-e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_SLAVE_COUNT}/g" \
 	-e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
+	-e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
 	${post_sparkdefaultsconf}
     
     # Remove lingering "-bin-hadoop2.4" and similar text"

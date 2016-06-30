@@ -13,3 +13,7 @@ spark.executor.cores     SPARKYARNEXECUTORCORES
 spark.executor.instances SPARKYARNEXECUTORINSTANCES
 
 spark.yarn.executor.memoryOverhead SPARKYARNEXECUTOROVERHEAD
+
+# Used w/ yarn-client on driver
+spark.local.dir          SPARKLOCALDIR
+
