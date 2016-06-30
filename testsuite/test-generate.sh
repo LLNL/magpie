@@ -342,6 +342,7 @@ if [ "${local_drive_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-hadoop*hdfsondisk*
     rm -f magpie.${submissiontype}-hadoop*localstore*
+    rm -f magpie.${submissiontype}-spark*localscratch*
     rm -f magpie.${submissiontype}-*zookeeper-local*
 fi
 
