@@ -10,6 +10,7 @@ Support Spark 1.6.2-bin-hadoop2.6.
 Update default Spark to 1.6.2-bin-hadoop2.6.
 Various minor bug fixes regarding Spark w/ Yarn use.
 Support HADOOP_LOCALSTORE_CLEAR option.
+Support multiple paths for SPARK_LOCAL_SCRATCH_DIR.
 
 magpie 1.72
 -----------

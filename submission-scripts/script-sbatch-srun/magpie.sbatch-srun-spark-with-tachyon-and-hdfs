@@ -893,7 +893,9 @@ export SPARK_MODE="sparkpi"
 # If you have local SSDs or NVRAM stored on the nodes of your system,
 # it may be in your interest to set this to a local drive.  It can
 # improve performance of both shuffling and disk based RDD
-# persistence.
+# persistence.  If you want to specify multiple paths (such as
+# multiple drives), make them comma separated
+# (e.g. /dir1,/dir2,/dir3).
 #
 # Note that this field will not work if SPARK_USE_YARN is set to
 # 'yes'.  Please set HADOOP_LOCALSTORE to inform Yarn to set a local
