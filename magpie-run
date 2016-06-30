@@ -901,11 +901,16 @@ then
     # created.  If it hasn't yet, lets create it for the user.
     if [ "${hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
     then
-	${hadoopcmdprefix}/hadoop fs -ls "/user/${USER}" >& /dev/null
-	if [ $? -ne 0 ]
+	if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+	    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 	then
-	    echo "User home directory /user/${USER} not found, creating it"
-	    ${hadoopcmdprefix}/hadoop fs -mkdir -p "/user/${USER}"
+	    ${hadoopcmdprefix}/hadoop fs -ls "/user/${USER}" >& /dev/null
+	    if [ $? -ne 0 ]
+	    then
+		echo "User home directory /user/${USER} not found, creating it"
+		${hadoopcmdprefix}/hadoop fs -mkdir -p "/user/${USER}"
+	    fi
 	fi
     fi
 else
