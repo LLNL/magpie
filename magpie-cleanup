@@ -68,6 +68,28 @@ then
     IFS=${IFSORIG}
 fi
 
+if [ "${SPARK_LOCAL_SCRATCH_DIR}X" != "X" ] \
+    && [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}" == "yes" ]
+then
+    # sparknoderank set if succeed
+    if Magpie_am_I_a_spark_node
+    then
+	IFSORIG=${IFS}
+	IFS=","
+	for localscratchpath in ${SPARK_LOCAL_SCRATCH_DIR}
+	do
+	    localscratchpathtmp="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
+
+	    if [ -d "${localscratchpathtmp}" ]
+	    then
+		echo "${myhostname}: Clearing directory ${localscratchpathtmp}"
+		rm -rf ${localscratchpathtmp}
+	    fi
+	done
+	IFS=${IFSORIG}
+    fi
+fi
+
 if [ "${ZOOKEEPER_DATA_DIR_CLEAR}" == "yes" ]
 then
     echo "${myhostname}: Clearing directory ${ZOOKEEPER_DATA_DIR}"

@@ -1424,6 +1424,14 @@ then
 	fi
     fi
 
+    if [ "${SPARK_LOCAL_SCRATCH_DIR}X" != "X" ] \
+	&& [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}X" != "X" ] \
+ 	&& ( [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}" != "yes" ] && [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}" != "no" ] )
+    then
+	echo "SPARK_LOCAL_SCRATCH_DIR_CLEAR must be set to yes or no"
+	exit 1
+    fi
+
     if [ "${SPARK_MODE}" != "sparkpi" ] \
 	&& [ "${SPARK_MODE}" != "sparkwordcount" ] \
 	&& [ "${SPARK_MODE}" != "script" ] \

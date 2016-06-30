@@ -523,6 +523,16 @@ export SPARK_MODE="sparkpi"
 #
 export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
+# SPARK_LOCAL_SCRATCH_DIR_CLEAR 
+#
+# After your job has completed, if SPARK_LOCAL_SCRATCH_DIR_CLEAR is
+# set to yes, Magpie will do a rm -rf on all directories in
+# SPARK_LOCAL_SCRATCH_DIR.  This is particularly useful if the local
+# scratch directory is on local storage and you want to clean up your
+# work before the next user uses the node.
+#
+export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
+
 # SPARK_USE_YARN
 #
 # By default, Magpie uses the Spark standalone scheduler.  As
