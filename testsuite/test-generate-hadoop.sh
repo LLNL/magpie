@@ -42,6 +42,8 @@ GenerateHadoopStandardTests_StandardTerasort() {
     
     sed -i -e 's/# export HADOOP_LOCALSTORE="\(.*\)"/export HADOOP_LOCALSTORE="'"${ssddirpathsubst}"'\/localstore\/a,'"${ssddirpathsubst}"'\/localstore\/b,'"${ssddirpathsubst}"'\/localstore\/c"/' magpie.${submissiontype}-hadoop-${hadoopversion}*localstore-multiple-paths*
     
+    sed -i -e 's/# export HADOOP_LOCALSTORE_CLEAR="\(.*\)"/export HADOOP_LOCALSTORE_CLEAR="yes"/' magpie.${submissiontype}-hadoop-${hadoopversion}*localstore*
+
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}*`
 }
 
