@@ -95,12 +95,18 @@ GenerateSparkStandardTests_WordCount() {
     
     sed -i \
 	-e 's/# export SPARK_LOCAL_SCRATCH_DIR="\(.*\)"/export SPARK_LOCAL_SCRATCH_DIR="'"${ssddirpathsubst}"'\/sparklocalscratch\/"/' \
-	magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*localscratch-single-path* \
+	magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*localscratch-single-path*
+
+    sed -i \
+	-e 's/export SPARK_LOCAL_SCRATCH_DIR="\(.*\)"/export SPARK_LOCAL_SCRATCH_DIR="'"${ssddirpathsubst}"'\/sparklocalscratch\/"/' \
 	magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*localscratch-single-path*
 
     sed -i \
 	-e 's/# export SPARK_LOCAL_SCRATCH_DIR="\(.*\)"/export SPARK_LOCAL_SCRATCH_DIR="'"${ssddirpathsubst}"'\/sparklocalscratch\/a,'"${ssddirpathsubst}"'\/sparklocalscratch\/b,'"${ssddirpathsubst}"'\/sparklocalscratch\/c"/' \
-	magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*localscratch-multiple-paths* \
+	magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*localscratch-multiple-paths*
+
+    sed -i \
+	-e 's/export SPARK_LOCAL_SCRATCH_DIR="\(.*\)"/export SPARK_LOCAL_SCRATCH_DIR="'"${ssddirpathsubst}"'\/sparklocalscratch\/a,'"${ssddirpathsubst}"'\/sparklocalscratch\/b,'"${ssddirpathsubst}"'\/sparklocalscratch\/c"/' \
 	magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*localscratch-multiple-paths*
 
     sed -i \

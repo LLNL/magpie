@@ -144,7 +144,7 @@ else
     for sparklocalpath in ${SPARK_LOCAL_SCRATCH_DIR}
     do
         # Setup node directory per node in case not a local drive
-	sparklocalpathtmp="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
+	sparklocalpathtmp="${sparklocalpath}/node-${sparknoderank}"
 
 	if [ ! -d "${sparklocalpathtmp}" ]
 	then

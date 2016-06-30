@@ -84,7 +84,7 @@ then
 	IFS=","
 	for localscratchpath in ${SPARK_LOCAL_SCRATCH_DIR}
 	do
-	    localscratchpathtmp="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
+	    localscratchpathtmp="${localscratchpath}/node-${sparknoderank}"
 
 	    if [ -d "${localscratchpathtmp}" ]
 	    then
