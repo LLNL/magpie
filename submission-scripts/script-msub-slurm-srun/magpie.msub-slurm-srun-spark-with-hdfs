@@ -590,7 +590,6 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_PER_JOB_HDFS_PATH="yes"
 
-
 ############################################################################
 # Hadoop Script Configurations
 ############################################################################
