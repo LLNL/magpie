@@ -65,6 +65,7 @@ zookeepertests=y
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
+# rawnetworkfs_tests - anything that uses rawnetworkfs
 # zookeepershared_tests - tests in which zookeeper shares nodes w/ compute/data nodes
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
 defaultonly=n
@@ -74,6 +75,7 @@ regressiontests=y
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
+rawnetworkfs_tests=y
 zookeepershared_tests=y
 nolocaldirtests=y
 
@@ -355,6 +357,11 @@ fi
 if [ "${hdfsovernetworkfs_tests}" == "n" ]
 then
     rm -f magpie.${submissiontype}-*hdfsovernetworkfs*
+fi
+
+if [ "${rawnetworkfs_tests}" == "n" ]
+then
+    rm -f magpie.${submissiontype}-*rawnetworkfs*
 fi
 
 if [ "${zookeepershared_tests}" == "n" ]
