@@ -492,6 +492,10 @@ if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
     sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
 fi
 
+if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-interactive-mode
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
@@ -546,8 +550,14 @@ if [ "${submissiontype}" == "sbatch-srun" ]
 then
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	# Guarantee 60 minutes for the job
-	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 60`
+ 	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 60`
 	sed -i -e "s/<my time in minutes>/${minutes}/" magpie.${submissiontype}-hbase-with-hdfs*
+    fi
+
+    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+	# Guarantee atleast 5 mins for the job
+ 	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 5`
+	sed -i -e "s/<my time in minutes>/${minutes}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
@@ -567,6 +577,13 @@ then
 	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 60`
 	seconds=`expr $minutes \* 60` 
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/${seconds}/" magpie.${submissiontype}-hbase-with-hdfs*
+    fi
+
+    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+	# Guarantee 5 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 5`
+	seconds=`expr $minutes \* 60` 
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/${seconds}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
@@ -591,6 +608,16 @@ then
 	minutesleft=`expr $minutes - $hoursminutes`
 	minutesleftformatted=$(printf "%02d" ${minutesleft})
 	sed -i -e "s/<my time in hours:minutes>/${hours}:${minutesleftformatted}/" magpie.${submissiontype}-hbase-with-hdfs*
+    fi
+
+    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+	# Guarantee 5 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 5`
+	hours=`expr $minutes / 60`
+	hoursminutes=`expr $hours \* 60`
+	minutesleft=`expr $minutes - $hoursminutes`
+	minutesleftformatted=$(printf "%02d" ${minutesleft})
+	sed -i -e "s/<my time in hours:minutes>/${hours}:${minutesleftformatted}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then

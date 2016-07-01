@@ -179,6 +179,67 @@ GenerateDefaultRegressionTests_BadJobNames() {
     sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
 }
 
+GenerateDefaultRegressionTests_InteractiveMode() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-interactive-mode
+
+	sed -i \
+	    -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="interactive"/' \
+	    magpie.${submissiontype}-hadoop-regression-interactive-mode
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-interactive-mode
+	sed -i \
+	    -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="interactive"/' \
+	    magpie.${submissiontype}-hadoop-and-pig-regression-interactive-mode
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-interactive-mode
+
+	sed -i \
+	    -e 's/export MAHOUT_MODE="\(.*\)"/export MAHOUT_MODE="interactive"/' \
+	    magpie.${submissiontype}-hadoop-and-mahout-regression-interactive-mode
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-interactive-mode
+
+	sed -i \
+	    -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="interactive"/' \
+	    magpie.${submissiontype}-hbase-with-hdfs-regression-interactive-mode
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-interactive-mode
+
+	sed -i \
+	    -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="interactive"/' \
+	    magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-interactive-mode
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-interactive-mode
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-interactive-mode
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-interactive-mode
+	
+	sed -i \
+	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="interactive"/' \
+	    magpie.${submissiontype}-spark-regression-interactive-mode \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-interactive-mode \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-interactive-mode
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-interactive-mode
+
+	sed -i \
+	    -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="interactive"/' \
+	    magpie.${submissiontype}-storm-regression-interactive-mode
+    fi
+}
+
 GenerateDefaultRegressionTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -186,4 +247,6 @@ GenerateDefaultRegressionTests() {
     echo "Making Default Regression Tests"
 
     GenerateDefaultRegressionTests_BadJobNames
+
+    GenerateDefaultRegressionTests_InteractiveMode
 }

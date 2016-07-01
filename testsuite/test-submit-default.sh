@@ -23,7 +23,7 @@ SubmitDefaultStandardTests() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-run-zookeeperruok-no-local-dir
 }
 
-SubmitDefaultRegressionTests() {
+SubmitDefaultRegressionTests_BadJobNames () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-whitespace
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-dollarsign
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-job-name-whitespace
@@ -42,4 +42,21 @@ SubmitDefaultRegressionTests() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name-dollarsign
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-job-name-whitespace
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-job-name-dollarsign
+}
+
+SubmitDefaultRegressionTests_InteractiveMode () {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-interactive-mode
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-interactive-mode
+}
+
+SubmitDefaultRegressionTests() {
+    SubmitDefaultRegressionTests_BadJobNames
+    SubmitDefaultRegressionTests_InteractiveMode
 }

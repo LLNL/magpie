@@ -153,6 +153,24 @@ test_output_finalize () {
     fi
 }
 
+if ls ${outputprefix}*interactivemode* >& /dev/null
+then
+    for file in `ls ${outputprefix}*interactivemode*`
+    do
+	num=`grep -e "Entering \(.*\) interactive mode" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+
+	num=`grep -e "*** Warning - 1 minute left" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
