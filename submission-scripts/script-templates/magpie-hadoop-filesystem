@@ -34,6 +34,8 @@ export HADOOP_FILESYSTEM_MODE=HADOOPFILESYSTEMMODE
 
 # Path for HDFS when using local disk
 #
+# This is used with HADOOP_FILESYSTEM_MODE="hdfs"
+#
 # If you want to specify multiple paths (such as multiple drives),
 # make them comma separated (e.g. /dir1,/dir2,/dir3).  The multiple
 # paths will be used for local intermediate data and HDFS.  The first
@@ -59,7 +61,7 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 
 # Path for rawnetworkfs
 #
-# This path is used for creating local per-node paths.
+# This is used with HADOOP_FILESYSTEM_MODE="rawnetworkfs"
 #
 export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
 

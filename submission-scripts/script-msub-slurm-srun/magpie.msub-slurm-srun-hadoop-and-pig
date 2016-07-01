@@ -564,6 +564,8 @@ export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 # Path for HDFS when using local disk
 #
+# This is used with HADOOP_FILESYSTEM_MODE="hdfs"
+#
 # If you want to specify multiple paths (such as multiple drives),
 # make them comma separated (e.g. /dir1,/dir2,/dir3).  The multiple
 # paths will be used for local intermediate data and HDFS.  The first
@@ -584,6 +586,8 @@ export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
 # export HADOOP_HDFS_PATH_CLEAR="yes"
 
 # Lustre path to do Hadoop HDFS out of
+#
+# This is used with HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 #
 # Note that different versions of Hadoop may not be compatible with
 # your current HDFS data.  If you're going to switch around to
@@ -613,6 +617,8 @@ export HADOOP_HDFSOVERLUSTRE_PATH="/lustre/${USER}/hdfsoverlustre/"
 
 # Networkfs path to do Hadoop HDFS out of
 #
+# This is used with HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"
+#
 # Note that different versions of Hadoop may not be compatible with
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.
@@ -641,7 +647,7 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 
 # Path for rawnetworkfs
 #
-# This path is used for creating local per-node paths.
+# This is used with HADOOP_FILESYSTEM_MODE="rawnetworkfs"
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 

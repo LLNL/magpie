@@ -1,5 +1,7 @@
 # Lustre path to do Hadoop HDFS out of
 #
+# This is used with HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+#
 # Note that different versions of Hadoop may not be compatible with
 # your current HDFS data.  If you're going to switch around to
 # different versions, perhaps set different paths for different data.

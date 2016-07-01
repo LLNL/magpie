@@ -1,5 +1,7 @@
 # Path for magpienetworkfs 
 #
+# This is used with HADOOP_FILESYSTEM_MODE="magpienetworkfs"
+#
 # This path must be an absolute path.
 #
 export HADOOP_MAGPIENETWORKFS_PATH="LUSTREDIRPREFIX/magpienetworkfs/"

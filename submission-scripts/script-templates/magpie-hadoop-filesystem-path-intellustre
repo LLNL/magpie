@@ -1,4 +1,6 @@
 # Path for intellustre 
 #
+# This is used with HADOOP_FILESYSTEM_MODE="intellustre"
+#
 export HADOOP_INTELLUSTRE_PATH="LUSTREDIRPREFIX/intellustre/"
 
