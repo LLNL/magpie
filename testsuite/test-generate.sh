@@ -545,28 +545,38 @@ fi
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-	sed -i -e "s/<my time in minutes>/120/" magpie.${submissiontype}-hbase-with-hdfs*
+	# Guarantee 60 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 60`
+	sed -i -e "s/<my time in minutes>/${minutes}/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
 	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
 	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 
-	sed -i -e "s/<my time in minutes>/90/" magpie.${submissiontype}*
+	# Guarantee atleast 30 mins for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 30`
+	sed -i -e "s/<my time in minutes>/${minutes}/" magpie.${submissiontype}*
 
 	sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
     fi
 elif [ "${submissiontype}" == "msub-slurm-srun" ]
 then
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-	sed -i -e "s/<my time in seconds or HH:MM:SS>/7200/" magpie.${submissiontype}-hbase-with-hdfs*
+	# Guarantee 60 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 60`
+	seconds=`expr $minutes \* 60` 
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/${seconds}/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
 	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
 	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 	
-	sed -i -e "s/<my time in seconds or HH:MM:SS>/5400/" magpie.${submissiontype}*
+	# Guarantee 30 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 30`
+	seconds=`expr $minutes \* 60` 
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/${seconds}/" magpie.${submissiontype}*
 	
 	sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
 	sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
@@ -574,14 +584,26 @@ then
 elif [ "${submissiontype}" == "lsf-mpirun" ]
 then
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-	sed -i -e "s/<my time in hours:minutes>/2:00/" magpie.${submissiontype}-hbase-with-hdfs*
+	# Guarantee 60 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 60`
+	hours=`expr $minutes / 60`
+	hoursminutes=`expr $hours \* 60`
+	minutesleft=`expr $minutes - $hoursminutes`
+	minutesleftformatted=$(printf "%02d" ${minutesleft})
+	sed -i -e "s/<my time in hours:minutes>/${hours}:${minutesleftformatted}/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
 	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
 	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
 
-	sed -i -e "s/<my time in hours:minutes>/1:30/" magpie.${submissiontype}*
+	# Guarantee 30 minutes for the job
+	minutes=`expr $STARTUP_TIME + $SHUTDOWN_TIME + 30`
+	hours=`expr $minutes / 60`
+	hoursminutes=`expr $hours \* 60`
+	minutesleft=`expr $minutes - $hoursminutes`
+	minutesleftformatted=$(printf "%02d" ${minutesleft})
+	sed -i -e "s/<my time in hours:minutes>/${hours}:${minutesleftformatted}/" magpie.${submissiontype}*
 
 	sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
     fi
