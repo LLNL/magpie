@@ -4,9 +4,9 @@ source test-generate-common.sh
 source test-common.sh
 
 GenerateMahoutStandardTests_ClusterSyntheticcontrol() {
-    mahoutversion=$1
-    hadoopversion=$2
-    javaversion=$3
+    local mahoutversion=$1
+    local hadoopversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol-no-local-dir
@@ -38,9 +38,9 @@ GenerateMahoutStandardTests() {
 }
 
 GenerateMahoutDependencyTests_Dependency1() {
-    mahoutversion=$1
-    hadoopversion=$2
-    javaversion=$3
+    local mahoutversion=$1
+    local hadoopversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1A-hadoop-${hadoopversion}-mahout-${mahoutversion}-hdfsoverlustre-run-clustersyntheticcontrol
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1A-hadoop-${hadoopversion}-mahout-${mahoutversion}-hdfsovernetworkfs-run-clustersyntheticcontrol

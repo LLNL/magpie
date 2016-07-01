@@ -3,10 +3,10 @@
 source test-common.sh
 
 SubmitPhoenixStandardTests_Performanceeval() {
-    phoenixversion=$1
-    hbaseversion=$2
-    hadoopversion=$3
-    zookeeperversion=$4
+    local phoenixversion=$1
+    local hbaseversion=$2
+    local hadoopversion=$3
+    local zookeeperversion=$4
 
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-networkfs-run-phoenixperformanceeval
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-local-run-phoenixperformanceeval
@@ -49,10 +49,10 @@ SubmitPhoenixStandardTests() {
 }
 
 SubmitPhoenixDependencyTests_Dependency1() {
-    phoenixversion=$1
-    hbaseversion=$2
-    hadoopversion=$3
-    zookeeperversion=$4
+    local phoenixversion=$1
+    local hbaseversion=$2
+    local hadoopversion=$3
+    local zookeeperversion=$4
 
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-phoenixperformanceeval
     DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-phoenixperformanceeval
@@ -62,10 +62,10 @@ SubmitPhoenixDependencyTests_Dependency1() {
 }
 
 SubmitPhoenixDependencyTests_Dependency2() {
-    phoenixversion=$1
-    hbaseversion=$2
-    hadoopversion=$3
-    zookeeperversion=$4
+    local phoenixversion=$1
+    local hbaseversion=$2
+    local hadoopversion=$3
+    local zookeeperversion=$4
 
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-phoenixperformanceeval
     DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval

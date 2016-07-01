@@ -4,11 +4,11 @@ source test-generate-common.sh
 source test-common.sh
 
 GeneratePhoenixStandardTests_Performanceeval() {
-    phoenixversion=$1
-    hbaseversion=$2
-    hadoopversion=$3
-    zookeeperversion=$4
-    javaversion=$5
+    local phoenixversion=$1
+    local hbaseversion=$2
+    local hadoopversion=$3
+    local zookeeperversion=$4
+    local javaversion=$5
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-networkfs-run-phoenixperformanceeval
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-performanceeval-zookeeper-not-shared-zookeeper-local-run-phoenixperformanceeval
@@ -79,11 +79,11 @@ GeneratePhoenixStandardTests() {
 }
 
 GeneratePhoenixDependencyTests_Dependency1() {
-    phoenixversion=$1
-    hbaseversion=$2
-    hadoopversion=$3
-    zookeeperversion=$4
-    javaversion=$5
+    local phoenixversion=$1
+    local hbaseversion=$2
+    local hadoopversion=$3
+    local zookeeperversion=$4
+    local javaversion=$5
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-phoenixperformanceeval
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-phoenixperformanceeval
@@ -111,11 +111,11 @@ GeneratePhoenixDependencyTests_Dependency1() {
 }
 
 GeneratePhoenixDependencyTests_Dependency2() {
-    phoenixversion=$1
-    hbaseversion=$2
-    hadoopversion=$3
-    zookeeperversion=$4
-    javaversion=$5
+    local phoenixversion=$1
+    local hbaseversion=$2
+    local hadoopversion=$3
+    local zookeeperversion=$4
+    local javaversion=$5
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-phoenixperformanceeval
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval

@@ -3,7 +3,7 @@
 source test-common.sh
 
 SubmitZookeeperStandardTests_RUOK() {
-    zookeeperversion=$1
+    local zookeeperversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok

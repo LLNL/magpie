@@ -4,9 +4,9 @@ source test-generate-common.sh
 source test-common.sh
 
 GenerateStormStandardTests_StandardWordCount() {
-    stormversion=$1
-    zookeeperversion=$2
-    javaversion=$3
+    local stormversion=$1
+    local zookeeperversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-stormwordcount
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-stormwordcount
@@ -64,9 +64,9 @@ GenerateStormStandardTests() {
 }
 
 GenerateStormDependencyTests_Dependency1() {
-    stormversion=$1
-    zookeeperversion=$2
-    javaversion=$3
+    local stormversion=$1
+    local zookeeperversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
     

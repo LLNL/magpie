@@ -4,9 +4,9 @@ source test-generate-common.sh
 source test-common.sh
 
 GenerateKafkaStandardTests_KafkaPerformance() {
-    kafkaversion=$1
-    zookeeperversion=$2
-    javaversion=$3
+    local kafkaversion=$1
+    local zookeeperversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-kafkaperformance
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-kafkaperformance
@@ -58,9 +58,9 @@ GenerateKafkaStandardTests() {
 }
 
 GenerateKafkaDependencyTests_Dependency1() {
-    kafkaversion=$1
-    zookeeperversion=$2
-    javaversion=$3
+    local kafkaversion=$1
+    local zookeeperversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
 

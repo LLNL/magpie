@@ -3,8 +3,8 @@
 source test-common.sh
 
 SubmitSparkStandardTests_BasicTests() {
-    sparkversion=$1
-    makenolocaldirtests=$2
+    local sparkversion=$1
+    local makenolocaldirtests=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
 
@@ -15,9 +15,9 @@ SubmitSparkStandardTests_BasicTests() {
 }
 
 SubmitSparkStandardTests_WordCount() {
-    sparkversion=$1
-    hadoopversion=$2
-    makenolocaldirtests=$3
+    local sparkversion=$1
+    local hadoopversion=$2
+    local makenolocaldirtests=$3
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -50,8 +50,8 @@ SubmitSparkStandardTests_WordCount() {
 }
 
 SubmitSparkStandardTests_YarnTests() {
-    sparkversion=$1
-    hadoopversion=$2
+    local sparkversion=$1
+    local hadoopversion=$2
     
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkpi
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkpi-no-local-dir
@@ -61,8 +61,8 @@ SubmitSparkStandardTests_YarnTests() {
 }
 
 SubmitSparkStandardTests_YarnWordCount() {
-    sparkversion=$1
-    hadoopversion=$2
+    local sparkversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -158,9 +158,9 @@ SubmitSparkStandardTests() {
 }
 
 SubmitSparkDependencyTests_Dependency1HDFS() {
-    sparkversion=$1
-    hadoopversion=$2
-    decommission=$3
+    local sparkversion=$1
+    local hadoopversion=$2
+    local decommission=$3
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -184,9 +184,9 @@ SubmitSparkDependencyTests_Dependency1HDFS() {
 }
 
 SubmitSparkDependencyTests_Dependency2HDFS() {
-    sparkversion=$1
-    hadoopversion=$2
-    decommission=$3
+    local sparkversion=$1
+    local hadoopversion=$2
+    local decommission=$3
     
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -208,8 +208,8 @@ SubmitSparkDependencyTests_Dependency2HDFS() {
 }
 
 SubmitSparkDependencyTests_Dependency3YarnHDFS() {
-    sparkversion=$1
-    hadoopversion=$2
+    local sparkversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -225,8 +225,8 @@ SubmitSparkDependencyTests_Dependency3YarnHDFS() {
 }
 
 SubmitSparkDependencyTests_Dependency4YarnHDFS() {
-    sparkversion=$1
-    hadoopversion=$2
+    local sparkversion=$1
+    local hadoopversion=$2
     
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -242,7 +242,7 @@ SubmitSparkDependencyTests_Dependency4YarnHDFS() {
 }
 
 SubmitSparkDependencyTests_Dependency5rawnetworkfs() {
-    sparkversion=$1
+    local sparkversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}-run-sparkwordcount-no-copy
@@ -251,7 +251,7 @@ SubmitSparkDependencyTests_Dependency5rawnetworkfs() {
 }
 
 SubmitSparkDependencyTests_Dependency6rawnetworkfs() {
-    sparkversion=$1
+    local sparkversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
@@ -259,8 +259,8 @@ SubmitSparkDependencyTests_Dependency6rawnetworkfs() {
 }
 
 SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
-    sparkversion=$1
-    hadoopversion=$2
+    local sparkversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}-run-sparkwordcount-no-copy
@@ -269,8 +269,8 @@ SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
 }
 
 SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
-    sparkversion=$1
-    hadoopversion=$2
+    local sparkversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy

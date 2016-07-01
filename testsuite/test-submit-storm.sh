@@ -3,8 +3,8 @@
 source test-common.sh
 
 SubmitStormStandardTests_StandardWordCount() {
-    stormversion=$1
-    zookeeperversion=$2
+    local stormversion=$1
+    local zookeeperversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-networkfs-run-stormwordcount
     BasicJobSubmit magpie.${submissiontype}-storm-${stormversion}-zookeeper-${zookeeperversion}-zookeeper-not-shared-zookeeper-local-run-stormwordcount
@@ -39,8 +39,8 @@ SubmitStormStandardTests() {
 }
 
 SubmitStormDependencyTests_Dependency1() {
-    stormversion=$1
-    zookeeperversion=$2
+    local stormversion=$1
+    local zookeeperversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
     DependentJobSubmit magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount

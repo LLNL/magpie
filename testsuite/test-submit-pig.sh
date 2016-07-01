@@ -3,8 +3,8 @@
 source test-common.sh
 
 SubmitPigStandardTests_Common() {
-    pigversion=$1
-    hadoopversion=$2
+    local pigversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript
@@ -43,8 +43,8 @@ SubmitPigStandardTests() {
 }
 
 SubmitPigDependencyTests_Dependency1() {
-    pigversion=$1
-    hadoopversion=$2
+    local pigversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre-run-testpig
     DependentJobSubmit magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre-run-testpig

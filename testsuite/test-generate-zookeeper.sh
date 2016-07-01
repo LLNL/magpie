@@ -4,8 +4,8 @@ source test-generate-common.sh
 source test-common.sh
 
 GenerateZookeeperStandardTests_RUOK() {
-    zookeeperversion=$1
-    javaversion=$2
+    local zookeeperversion=$1
+    local javaversion=$2
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok

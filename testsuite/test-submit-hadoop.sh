@@ -3,7 +3,7 @@
 source test-common.sh
 
 SubmitHadoopStandardTests_StandardTerasort() {
-    hadoopversion=$1
+    local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-single-path-hadoopterasort
@@ -40,7 +40,7 @@ SubmitHadoopStandardTests() {
 }
 
 SubmitHadoopDependencyTests_Dependency1() {
-    hadoopversion=$1
+    local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
@@ -50,7 +50,7 @@ SubmitHadoopDependencyTests_Dependency1() {
 }
 
 SubmitHadoopDependencyTests_Dependency2() {
-    hadoopversion=$1
+    local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A-hdfs-more-nodes-hdfsoverlustre-run-hadoopterasort
@@ -66,7 +66,7 @@ SubmitHadoopDependencyTests_Dependency2() {
 }
 
 SubmitHadoopDependencyTests_Dependency3() {
-    hadoopversion=$1
+    local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-scriptteragen
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-scriptterasort
@@ -84,7 +84,7 @@ SubmitHadoopDependencyTests_Dependency3() {
 }
 
 SubmitHadoopDependencyTests_Dependency4() {
-    hadoopversion=$1
+    local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A-hdfs-more-nodes-hdfsoverlustre-run-scriptterasort
@@ -98,9 +98,9 @@ SubmitHadoopDependencyTests_Dependency4() {
 }
 
 SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
-    hadoopversionold=$1
-    hadoopversionnew=$2
-    dependencynumber=$3
+    local hadoopversionold=$1
+    local hadoopversionnew=$2
+    local dependencynumber=$3
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure

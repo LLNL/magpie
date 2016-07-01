@@ -4,10 +4,10 @@ source test-generate-common.sh
 source test-common.sh
 
 GenerateHbaseStandardTests_StandardPerformanceEval() {
-    hbaseversion=$1
-    hadoopversion=$2
-    zookeeperversion=$3
-    javaversion=$4
+    local hbaseversion=$1
+    local hadoopversion=$2
+    local zookeeperversion=$3
+    local javaversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-networkfs-run-hbaseperformanceeval
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-sequential-thread-zookeeper-not-shared-zookeeper-local-run-hbaseperformanceeval
@@ -105,10 +105,10 @@ GenerateHbaseStandardTests() {
 }
 
 GenerateHbaseDependencyTests_Dependency1() {
-    hbaseversion=$1
-    hadoopversion=$2
-    zookeeperversion=$3
-    javaversion=$4
+    local hbaseversion=$1
+    local hadoopversion=$2
+    local zookeeperversion=$3
+    local javaversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-hbaseperformanceeval
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
@@ -135,10 +135,10 @@ GenerateHbaseDependencyTests_Dependency1() {
 }
 
 GenerateHbaseDependencyTests_Dependency2() {
-    hbaseversion=$1
-    hadoopversion=$2
-    zookeeperversion=$3
-    javaversion=$4
+    local hbaseversion=$1
+    local hadoopversion=$2
+    local zookeeperversion=$3
+    local javaversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasewritedata
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsoverlustre-run-scripthbasereaddata

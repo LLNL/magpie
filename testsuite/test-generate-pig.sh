@@ -4,9 +4,9 @@ source test-generate-common.sh
 source test-common.sh
 
 GeneratePigStandardTests_Common() {
-    pigversion=$1
-    hadoopversion=$2
-    javaversion=$3
+    local pigversion=$1
+    local hadoopversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-testpig
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}-run-pigscript
@@ -62,9 +62,9 @@ GeneratePigStandardTests() {
 }
 
 GeneratePigDependencyTests_Dependency1() {
-    pigversion=$1
-    hadoopversion=$2
-    javaversion=$3
+    local pigversion=$1
+    local hadoopversion=$2
+    local javaversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre-run-testpig
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre-run-pigscript

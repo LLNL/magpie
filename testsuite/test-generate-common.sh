@@ -3,10 +3,10 @@
 source test-common.sh
 
 JavaCommonSubstitution() {
-    javaversion=$1
+    local javaversion=$1
 
     shift
-    files=$@
+    local files=$@
 
     if [ "${javaversion}" == "${java16}" ]
     then
@@ -21,13 +21,13 @@ JavaCommonSubstitution() {
 }
 
 CheckForDependency() {
-    project=$1
-    projectcheck=$2
-    checkversion=$3
+    local project=$1
+    local projectcheck=$2
+    local checkversion=$3
 
-    checkversionunderscore=`echo ${checkversion} | sed -e "s/\./_/g"`
-    projectchecklowercase=`echo ${projectcheck} | tr '[:upper:]' '[:lower:]'`
-    variabletocheck="${projectchecklowercase}_${checkversionunderscore}"
+    local checkversionunderscore=`echo ${checkversion} | sed -e "s/\./_/g"`
+    local projectchecklowercase=`echo ${projectcheck} | tr '[:upper:]' '[:lower:]'`
+    local variabletocheck="${projectchecklowercase}_${checkversionunderscore}"
 
     if [ "${!variabletocheck}" != "y" ]
     then
@@ -37,12 +37,12 @@ CheckForDependency() {
 }
 
 RemoveTestsCheck() {
-    project=$1
-    version=$2
+    local project=$1
+    local version=$2
 
-    versionunderscore=`echo ${version} | sed -e "s/\./_/g" | sed -e "s/-/_/g"`
-    projectlowercase=`echo ${project} | tr '[:upper:]' '[:lower:]'`
-    variabletocheck="${projectlowercase}_${versionunderscore}"
+    local versionunderscore=`echo ${version} | sed -e "s/\./_/g" | sed -e "s/-/_/g"`
+    local projectlowercase=`echo ${project} | tr '[:upper:]' '[:lower:]'`
+    local variabletocheck="${projectlowercase}_${versionunderscore}"
 
     if [ "${!variabletocheck}" == "n" ]
     then

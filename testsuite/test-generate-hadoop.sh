@@ -4,8 +4,8 @@ source test-generate-common.sh
 source test-common.sh
 
 GenerateHadoopStandardTests_StandardTerasort() {
-    hadoopversion=$1
-    javaversion=$2
+    local hadoopversion=$1
+    local javaversion=$2
 
 # Note, b/c of MAPREDUCE-5528, not testing rawnetworkfs w/ terasort
 
@@ -69,8 +69,8 @@ GenerateHadoopStandardTests() {
 }
 
 GenerateHadoopDependencyTests_Dependency1() {
-    hadoopversion=$1
-    javaversion=$2
+    local hadoopversion=$1
+    local javaversion=$2
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
@@ -90,8 +90,8 @@ GenerateHadoopDependencyTests_Dependency1() {
 }
 
 GenerateHadoopDependencyTests_Dependency2() {
-    hadoopversion=$1
-    javaversion=$2
+    local hadoopversion=$1
+    local javaversion=$2
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A-hdfsoverlustre-run-hadoopterasort
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A-hdfs-more-nodes-hdfsoverlustre-run-hadoopterasort
@@ -124,8 +124,8 @@ GenerateHadoopDependencyTests_Dependency2() {
 }
 
 GenerateHadoopDependencyTests_Dependency3() {
-    hadoopversion=$1
-    javaversion=$2
+    local hadoopversion=$1
+    local javaversion=$2
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-scriptteragen
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-scriptterasort
@@ -170,8 +170,8 @@ GenerateHadoopDependencyTests_Dependency3() {
 }
 
 GenerateHadoopDependencyTests_Dependency4() {
-    hadoopversion=$1
-    javaversion=$2
+    local hadoopversion=$1
+    local javaversion=$2
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A-hdfs-more-nodes-hdfsoverlustre-run-scriptterasort
@@ -214,11 +214,11 @@ GenerateHadoopDependencyTests_Dependency4() {
 }
 
 GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
-    hadoopversionold=$1
-    hadoopversionnew=$2
-    javaversionold=$3
-    javaversionnew=$4
-    dependencynumber=$5
+    local hadoopversionold=$1
+    local hadoopversionnew=$2
+    local javaversionold=$3
+    local javaversionnew=$4
+    local dependencynumber=$5
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 

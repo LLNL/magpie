@@ -3,8 +3,8 @@
 source test-common.sh
 
 SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
-    mahoutversion=$1
-    hadoopversion=$2
+    local mahoutversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
 	    
@@ -25,8 +25,8 @@ SubmitMahoutStandardTests() {
 }
 
 SubmitMahoutDependencyTests_Dependency1() {
-    mahoutversion=$1
-    hadoopversion=$2
+    local mahoutversion=$1
+    local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1A-hadoop-${hadoopversion}-mahout-${mahoutversion}-hdfsoverlustre-run-clustersyntheticcontrol
     DependentJobSubmit magpie.${submissiontype}-hadoop-and-mahout-DependencyMahout1A-hadoop-${hadoopversion}-mahout-${mahoutversion}-hdfsoverlustre-run-clustersyntheticcontrol
