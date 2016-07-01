@@ -144,6 +144,7 @@ storm_0_9_4=y
 storm_0_9_5=y
 storm_0_9_6=y
 storm_0_10_0=y
+storm_0_10_1=y
 kafka_2_11_0_9_0_0=y
 zookeeper_3_4_0=y
 zookeeper_3_4_1=y
