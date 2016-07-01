@@ -1654,6 +1654,21 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_USE_YARN=yes
 
+# SPARK_YARN_STAGING_DIR
+#
+# By default, Spark w/ Yarn will use your home directory for staging
+# files for a job.  This home directory must be accessible by all
+# nodes.
+#
+# This may pose a problem if you are not using HDFS and your home
+# directory is not NFS or network mounted.  Set this value to a
+# network location as your staging directory.  Be sure to prefix this
+# path the appropriate scheme, such as file://.
+# 
+# This option is only available beginning in Spark 2.0.
+#
+# export SPARK_YARN_STAGING_DIR="file:///lustre/${USER}/sparkStaging/"
+
 ############################################################################
 # Spark SparkPi Configuration
 ############################################################################
