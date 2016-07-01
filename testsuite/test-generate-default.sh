@@ -109,12 +109,7 @@ GenerateDefaultStandardTests() {
     fi
 }
 
-GenerateDefaultRegressionTests() {
-
-    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-
-    echo "Making Default Regression Tests"
-
+GenerateDefaultRegressionTests_BadJobNames() {
     if [ "${hadooptests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-whitespace
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-job-name-dollarsign
@@ -182,4 +177,13 @@ GenerateDefaultRegressionTests() {
 
     sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
     sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
+}
+
+GenerateDefaultRegressionTests() {
+
+    cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
+
+    echo "Making Default Regression Tests"
+
+    GenerateDefaultRegressionTests_BadJobNames
 }
