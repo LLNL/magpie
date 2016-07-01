@@ -531,7 +531,7 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 # scratch directory is on local storage and you want to clean up your
 # work before the next user uses the node.
 #
-export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
+# export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
 
 # SPARK_USE_YARN
 #
