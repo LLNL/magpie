@@ -4,11 +4,11 @@ source test-common.sh
 
 SubmitSparkStandardTests_BasicTests() {
     sparkversion=$1
-    localdirtests=$2
+    makenolocaldirtests=$2
 
     BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
 
-    if [ "${localdirtests}" == "y" ]
+    if [ "${makenolocaldirtests}" == "y" ]
     then
 	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
     fi
@@ -17,7 +17,7 @@ SubmitSparkStandardTests_BasicTests() {
 SubmitSparkStandardTests_WordCount() {
     sparkversion=$1
     hadoopversion=$2
-    localdirtests=$3
+    makenolocaldirtests=$3
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -32,7 +32,7 @@ SubmitSparkStandardTests_WordCount() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-localscratch-multiple-paths-run-sparkwordcount-copy-in
     BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-localscratch-multiple-paths-run-sparkwordcount
 
-    if [ "${localdirtests}" == "y" ]
+    if [ "${makenolocaldirtests}" == "y" ]
     then
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
 	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
