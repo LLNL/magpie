@@ -96,11 +96,7 @@ export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
 
 @PATH_INTELLUSTRE@
 
-@CONFIG_INTELLUSTRE@
-
 @PATH_MAGPIENETWORKFS@
-
-@CONFIG_MAGPIENETWORKFS@
 
 # If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked
