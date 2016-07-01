@@ -462,6 +462,14 @@ export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
 #
 # export HADOOP_HDFS_PATH_CLEAR="yes"
 
+# HDFS Block Size
+#
+# Commonly 134217728, 268435456, 536870912 (i.e. 128m, 256m, 512m)
+#
+# If not specified, defaults to 134217728
+#
+# export HADOOP_HDFS_BLOCKSIZE=134217728
+
 # Lustre path to do Hadoop HDFS out of
 #
 # This is used with HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
@@ -528,6 +536,14 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
+# RawNetworkFS Block Size
+#
+# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_RAWNETWORKFS_BLOCKSIZE=33554432
+
 # If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked
 # filesystem.  If the below environment variable is specified, local
@@ -566,22 +582,6 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # as Magpie will not clear data from prior jobs.
 #
 # export HADOOP_PER_JOB_HDFS_PATH="yes"
-
-# HDFS Block Size
-#
-# Commonly 134217728, 268435456, 536870912 (i.e. 128m, 256m, 512m)
-#
-# If not specified, defaults to 134217728
-#
-# export HADOOP_HDFS_BLOCKSIZE=134217728
-
-# RawNetworkFS Block Size
-#
-# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
-#
-# If not specified, defaults to 33554432
-#
-# export HADOOP_RAWNETWORKFS_BLOCKSIZE=33554432
 
 
 ############################################################################
