@@ -404,7 +404,7 @@ export HADOOP_MODE="hdfsonly"
 #
 # "hdfs" - Normal straight up HDFS if you have local disk in your
 #          cluster.  This option is primarily for benchmarking and
-#          probably shouldn't be used in the general case.
+#          caching, but probably shouldn't be used in the general case.
 #
 #          Be careful running this in a cluster environment.  The next
 #          time you execute your job, if a different set of nodes are
@@ -460,11 +460,12 @@ export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
 # HDFS cleanup
 #
 # After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
-# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  This may be
-# convenient for cleaning up your job after it has run.  This is
-# particularly useful for HDFS, b/c on your next job run, you may not
-# be able to get the nodes you want on your next run, leading to
-# problems.
+# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  
+#
+# This is particularly useful when doing normal HDFS on local storage.
+# On your next job run, you may not be able to get the nodes you want
+# on your next run.  So you may want to clean up your work before the
+# next user uses the node.
 #
 # export HADOOP_HDFS_PATH_CLEAR="yes"
 
