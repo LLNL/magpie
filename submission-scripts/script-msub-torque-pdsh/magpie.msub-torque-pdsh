@@ -588,6 +588,19 @@ export HADOOP_MODE="terasort"
 #
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
+# HDFS Replication
+#
+# This is used with HADOOP_FILESYSTEM_MODE="hdfs", "hdfsoverlustre",
+# and "hdfsovernetworkfs"
+#
+# HDFS commonly uses 3.  When doing HDFS over Lustre/NetworkFS, higher
+# replication can also help with resilience if nodes fail.  You may
+# wish to set this to < 3 to save space.
+#
+# If not specified, defaults to 3
+#
+# export HADOOP_HDFS_REPLICATION=3
+
 # Path for HDFS when using local disk
 #
 # This is used with HADOOP_FILESYSTEM_MODE="hdfs"
@@ -723,16 +736,6 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # If not specified, defaults to 134217728
 #
 # export HADOOP_HDFS_BLOCKSIZE=134217728
-
-# HDFS Replication
-#
-# HDFS commonly uses 3.  When doing HDFS over Lustre/NetworkFS, higher
-# replication can also help with resilience if nodes fail.  You may
-# wish to set this to < 3 to save space.
-#
-# If not specified, defaults to 3
-#
-# export HADOOP_HDFS_REPLICATION=3
 
 # RawNetworkFS Block Size
 #
