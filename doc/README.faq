@@ -54,6 +54,25 @@ FAQ
   I don't know if those scripts are distributed in newer versions of
   Cloudera and/or Hortonworks.
 
+* How did Magpie come to be?
+
+  Truth be told.  Early on in some Hadoop investigations, we were
+  investigating many ideas about how HPC + Hadoop could be integrated.
+  Included were how to integrate Lustre into Hadoop, Infiniband into
+  Hadoop, and there were other ideas for down the road.  Various
+  experimental patches were created and plugins/modules from others
+  were experimented with.
+
+  When presenting performance numbers and results from various
+  experiments, people at the meetings would ask me "How did you run
+  this experiment on cluster FOO?"  I would respond with, "Well I
+  have these hacked up these bash scripts ...".
+
+  After the 4th or 5th person asked if they could try out my "hacked
+  up bash scripts", I decided that perhaps they should be put together
+  into something far more formal.  Later Pig, Hbase, Spark,
+  etc. support was added.
+
 * Why is the project called Magpie?
 
   Based on David Buttler's initial reply to my request for name

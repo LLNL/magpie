@@ -138,14 +138,26 @@ then
 	fi
     fi
 else
-    # Setup node directory per node 
-    sparklocalscratchdirpath="${SPARK_LOCAL_SCRATCH_DIR}/node-${sparknoderank}"
+    IFSORIG=${IFS}
+    IFS=","
+    sparklocalscratchdirpath=""
+    for sparklocalpath in ${SPARK_LOCAL_SCRATCH_DIR}
+    do
+        # Setup node directory per node in case not a local drive
+	sparklocalpathtmp="${sparklocalpath}/node-${sparknoderank}"
 
-    mkdir -p ${sparklocalscratchdirpath}
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${sparklocalscratchdirpath}"
-	exit 1
-    fi
+	if [ ! -d "${sparklocalpathtmp}" ]
+	then
+	    mkdir -p ${sparklocalpathtmp}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${sparklocalpathtmp}"
+		exit 1
+	    fi
+	fi
+
+	sparklocalscratchdirpath="${sparklocalscratchdirpath}${sparklocalscratchdirpath:+","}${sparklocalpathtmp}"
+    done
+    IFS=${IFSORIG}
 fi
 
 # Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS

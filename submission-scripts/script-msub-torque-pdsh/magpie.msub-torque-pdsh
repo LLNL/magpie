@@ -687,6 +687,16 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_LOCALSTORE="/ssd/${USER}/localstore/"
 
+# HADOOP_LOCALSTORE_CLEAR 
+#
+# After your job has completed, if HADOOP_LOCALSTORE_CLEAR is set to
+# yes, Magpie will do a rm -rf on all directories in
+# HADOOP_LOCALSTORE.  This is particularly useful if the localstore
+# directory is on local storage and you want to clean up your work
+# before the next user uses the node.
+#
+# export HADOOP_LOCALSTORE_CLEAR="yes"
+
 # Option to use unique locations per job to store hdfs data
 #
 # If this is set to yes the nodes will append the job id to the
@@ -1562,13 +1572,25 @@ export SPARK_MODE="sparkpi"
 # If you have local SSDs or NVRAM stored on the nodes of your system,
 # it may be in your interest to set this to a local drive.  It can
 # improve performance of both shuffling and disk based RDD
-# persistence.
+# persistence.  If you want to specify multiple paths (such as
+# multiple drives), make them comma separated
+# (e.g. /dir1,/dir2,/dir3).
 #
 # Note that this field will not work if SPARK_USE_YARN is set to
 # 'yes'.  Please set HADOOP_LOCALSTORE to inform Yarn to set a local
 # SSD for Yarn to use for local scratch.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
+
+# SPARK_LOCAL_SCRATCH_DIR_CLEAR 
+#
+# After your job has completed, if SPARK_LOCAL_SCRATCH_DIR_CLEAR is
+# set to yes, Magpie will do a rm -rf on all directories in
+# SPARK_LOCAL_SCRATCH_DIR.  This is particularly useful if the local
+# scratch directory is on local storage and you want to clean up your
+# work before the next user uses the node.
+#
+# export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
 
 # SPARK_USE_YARN
 #
