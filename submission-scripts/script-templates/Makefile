@@ -217,34 +217,34 @@ define create-templates
 
 	if test "${INSERT_INTELLUSTRE}" = "y"; then \
 		sed -i -e "/@MODE_INTELLUSTRE@/{r magpie-hadoop-filesystem-mode-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_INTELLUSTRE@/{r magpie-hadoop-filesystem-path-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_INTELLUSTRE@/{r magpie-hadoop-filesystem-config-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
 	else \
 		sed -i -e "/@MODE_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
 	if test "${INSERT_MAGPIENETWORKFS}" = "y"; then \
 		sed -i -e "/@MODE_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-mode-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-path-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/{r magpie-hadoop-filesystem-config-magpienetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
 	else \
 		sed -i -e "/@MODE_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_MAGPIENETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
 	if test "${INSERT_HDFSOVERLUSTRE}" = "y"; then \
 		sed -i -e "/@MODE_HDFSOVERLUSTRE@/{r magpie-hadoop-filesystem-mode-hdfsoverlustre" -e "d}" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_HDFSOVERLUSTRE@/{r magpie-hadoop-filesystem-path-hdfsoverlustre" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_HDFSOVERLUSTRE@/{r magpie-hadoop-filesystem-config-hdfsoverlustre" -e "d}" magpie-hadoop-filesystem-substitution; \
 	else \
 		sed -i -e "/@MODE_HDFSOVERLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_HDFSOVERLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_HDFSOVERLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
 	if test "${INSERT_HDFSOVERNETWORKFS}" = "y"; then \
 		sed -i -e "/@MODE_HDFSOVERNETWORKFS@/{r magpie-hadoop-filesystem-mode-hdfsovernetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_HDFSOVERNETWORKFS@/{r magpie-hadoop-filesystem-path-hdfsovernetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_HDFSOVERNETWORKFS@/{r magpie-hadoop-filesystem-config-hdfsovernetworkfs" -e "d}" magpie-hadoop-filesystem-substitution; \
 	else \
 		sed -i -e "/@MODE_HDFSOVERNETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@PATH_HDFSOVERNETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
+		sed -i -e "/@CONFIG_HDFSOVERNETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
 	if test "${INSERT_HDFS_FEDERATION}" = "y"; then \
