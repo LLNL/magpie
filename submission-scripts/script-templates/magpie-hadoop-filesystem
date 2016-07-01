@@ -61,7 +61,7 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 #
 # This path is used for creating local per-node paths.
 #
-export HADOOP_RAWNETWORKFS_PATH="LUSTREDIRPREFIX/rawnetworkfs/"
+export HADOOP_RAWNETWORKFS_PATH="RAWNETWORKFSDIRPREFIX/rawnetworkfs/"
 
 @PATH_INTELLUSTRE@
 
