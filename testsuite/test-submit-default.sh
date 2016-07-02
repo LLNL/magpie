@@ -56,7 +56,18 @@ SubmitDefaultRegressionTests_InteractiveMode () {
     BasicJobSubmit magpie.${submissiontype}-storm-regression-interactive-mode
 }
 
+SubmitDefaultRegressionTests_JobTimeout () {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-jobtimeout
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-jobtimeout
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-jobtimeout
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-jobtimeout
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-jobtimeout
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-jobtimeout
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-jobtimeout
+}
+
 SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadJobNames
     SubmitDefaultRegressionTests_InteractiveMode
+    SubmitDefaultRegressionTests_JobTimeout
 }

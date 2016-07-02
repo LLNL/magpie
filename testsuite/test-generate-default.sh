@@ -240,6 +240,61 @@ GenerateDefaultRegressionTests_InteractiveMode() {
     fi
 }
 
+GenerateDefaultRegressionTests_JobTimeout() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-jobtimeout
+
+	sed -i \
+	    -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+	    -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    magpie.${submissiontype}-hadoop-regression-jobtimeout
+    fi
+
+    # No Pig test, "script" in Pig executes via a pig command
+    
+    # No Mahout test, "script" in Mahout executes via a mahout command
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-jobtimeout
+
+	sed -i \
+	    -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
+	    -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    magpie.${submissiontype}-hbase-with-hdfs-regression-jobtimeout
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-jobtimeout
+
+	sed -i \
+	    -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="script"/' \
+	    -e 's/# export PHOENIX_SCRIPT_PATH="\(.*\)"/export PHOENIX_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-jobtimeout
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-jobtimeout
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-jobtimeout
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-jobtimeout
+	
+	sed -i \
+	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
+	    -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    magpie.${submissiontype}-spark-regression-jobtimeout \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-jobtimeout \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-jobtimeout
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-jobtimeout
+
+	sed -i \
+	    -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' \
+	    -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    magpie.${submissiontype}-storm-regression-jobtimeout
+    fi
+}
+
 GenerateDefaultRegressionTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -249,4 +304,6 @@ GenerateDefaultRegressionTests() {
     GenerateDefaultRegressionTests_BadJobNames
 
     GenerateDefaultRegressionTests_InteractiveMode
+
+    GenerateDefaultRegressionTests_JobTimeout
 }

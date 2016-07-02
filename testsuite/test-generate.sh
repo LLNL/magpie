@@ -496,6 +496,10 @@ if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-interactive-mode
 fi
 
+if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
@@ -580,6 +584,12 @@ then
 	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
+    if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
+	# Guarantee atleast 5 mins for the job
+ 	GetMinutesJob 5
+	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}*regression-jobtimeout
+    fi
+
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	# Guarantee 60 minutes for the job
  	GetMinutesJob 60
@@ -608,6 +618,12 @@ then
 	# Guarantee 5 minutes for the job
 	GetSecondsJob 5
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}*regression-interactive-mode
+    fi
+
+    if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
+	# Guarantee 5 minutes for the job
+	GetSecondsJob 5
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}*regression-jobtimeout
     fi
 
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
@@ -639,6 +655,12 @@ then
 	# Guarantee 5 minutes for the job
 	GetHoursMinutesJob 5
 	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}*regression-interactive-mode
+    fi
+
+    if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
+	# Guarantee 5 minutes for the job
+	GetHoursMinutesJob 5
+	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}*regression-jobtimeout
     fi
 
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then

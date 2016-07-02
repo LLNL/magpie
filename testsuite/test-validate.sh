@@ -176,6 +176,19 @@ then
     done
 fi
 
+if ls ${outputprefix}*jobtimeout* >& /dev/null
+then
+    for file in `ls ${outputprefix}*jobtimeout*`
+    do
+	num=`grep -e "Killing script, did not exit within time limit" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
