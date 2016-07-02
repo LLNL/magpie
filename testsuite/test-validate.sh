@@ -167,6 +167,11 @@ then
 	    echo "Job error in $file"
 	fi
 
+	num=`grep -e "End of 'interactive' mode" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+
 	test_output_finalize $file
     done
 fi
