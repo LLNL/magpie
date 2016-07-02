@@ -2,6 +2,7 @@
 
 source test-generate-common.sh
 source test-common.sh
+source test-config.sh
 
 GenerateSparkStandardTests_BasicTests() {
     local sparkversion=$1

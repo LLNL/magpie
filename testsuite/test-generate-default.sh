@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-generate-common.sh
+source test-config.sh
 
 GenerateDefaultStandardTests() {
 

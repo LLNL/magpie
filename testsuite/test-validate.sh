@@ -1,15 +1,6 @@
 #!/bin/bash
 
-# Which tests to generate
-
-#submissiontype=lsf-mpirun
-#submissiontype=msub-slurm-srun
-#submissiontype=msub-torque-pdsh 
-submissiontype=sbatch-srun
-
-# Based on whatever you configured in test-generate.sh
-basenodecount=8
-zookeepernodecount=3
+source test-config.sh
 
 if [ "${submissiontype}" == "lsf-mpirun" ]
 then

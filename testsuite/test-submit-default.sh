@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source test-config.sh
+
 SubmitDefaultStandardTests() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-no-local-dir

@@ -1,13 +1,20 @@
 A testsuite for Magpie is available in the subdirectory 'testsuite'.
 Generally speaking, to run it:
 
-1) Test generation
+1) Test config
 
-   - In test-generate.sh, you may need to configure
-
+   - In test-config.sh, configure base configuration for the
+     testsuite.
+ 
      - The submissiontype to your scheduler type appropriately. 
 
      - Job submission details such as your batch queue, etc.
+
+     - The number of nodes in each job of the tests
+
+2) Test generation
+
+   - In test-generate.sh, you may need to configure
 
      - What tests to generate/not generate
   
@@ -19,15 +26,11 @@ Generally speaking, to run it:
 
    - After configuration, run test-generate.sh to generate test submission scripts.
 
-2) Test execution
-
-   - In test-submit.sh, you may need to configure
-
-     - The submissiontype to your scheduler type appropriately.
+3) Test execution
 
    - Run test-submit.sh to submit jobs for testing.  Test submissions are logged in magpie-test.log.
 
-3) Validation
+4) Validation
 
    - After all jobs are complete, run test-validate.sh to see if tests were successful.
 

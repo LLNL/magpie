@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-common.sh
+source test-config.sh
 
 SubmitKafkaStandardTests_KafkaPerformance() {
     local kafkaversion=$1

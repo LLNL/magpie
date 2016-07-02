@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-common.sh
+source test-config.sh
 
 SubmitPigStandardTests_Common() {
     local pigversion=$1

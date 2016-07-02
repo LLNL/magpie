@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-common.sh
+source test-config.sh
 
 SubmitStormStandardTests_StandardWordCount() {
     local stormversion=$1

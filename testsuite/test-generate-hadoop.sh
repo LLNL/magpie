@@ -2,6 +2,7 @@
 
 source test-generate-common.sh
 source test-common.sh
+source test-config.sh
 
 GenerateHadoopStandardTests_StandardTerasort() {
     local hadoopversion=$1

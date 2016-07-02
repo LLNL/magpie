@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-common.sh
+source test-config.sh
 
 SubmitPhoenixStandardTests_Performanceeval() {
     local phoenixversion=$1

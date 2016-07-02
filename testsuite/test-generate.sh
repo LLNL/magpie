@@ -14,31 +14,7 @@ source test-generate-storm.sh
 source test-generate-zookeeper.sh
 source test-generate-common.sh
 source test-common.sh
-
-# Job Submission Config
-
-#submissiontype=lsf-mpirun
-#submissiontype=msub-slurm-srun
-#submissiontype=msub-torque-pdsh 
-submissiontype=sbatch-srun
-
-msubslurmsrunpartition=mycluster
-msubslurmsrunbatchqueue=pbatch
-
-sbatchsrunpartition=pc6220
-
-lsfqueue=standard
-
-# Test config
-#
-# base node counts for job submission
-#
-# base node count of 8 means most jobs will be job size of 9, the
-# additional 1 will be added later for the master.
-#
-# zookeepernodecount will be added when necessary
-basenodecount=8
-zookeepernodecount=3
+source test-config.sh
 
 # Toggle y/n for different test types
 

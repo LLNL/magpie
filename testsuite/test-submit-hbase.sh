@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source test-common.sh
+source test-config.sh
 
 SubmitHbaseStandardTests_StandardPerformanceEval() {
     local hbaseversion=$1

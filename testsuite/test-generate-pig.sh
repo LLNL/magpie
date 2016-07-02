@@ -2,6 +2,7 @@
 
 source test-generate-common.sh
 source test-common.sh
+source test-config.sh
 
 GeneratePigStandardTests_Common() {
     local pigversion=$1
