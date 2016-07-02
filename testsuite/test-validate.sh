@@ -10,7 +10,6 @@ do
     case $key in
 	-v|--verbose)
 	    verboseoutput=y
-	    shift
 	    ;;
 	*)
             echo "Usage: test-validate [-v]"
