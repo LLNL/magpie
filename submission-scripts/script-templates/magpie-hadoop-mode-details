@@ -9,6 +9,10 @@
 #
 # export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in HADOOP_SCRIPT_PATH
+#
+# export HADOOP_SCRIPT_ARGS="" 
+
 ############################################################################
 # Hadoop Decommission HDFS Nodes Configurations
 ############################################################################

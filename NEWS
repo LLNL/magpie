@@ -1,5 +1,7 @@
 magpie 1.73
 -----------
+Support "args" options to Magpie, Hadoop, Hbase, Spark, Storm script
+  options.
 Support Spark 1.6.2-bin-hadoop2.6.
 Update default Spark to 1.6.2-bin-hadoop2.6.
 When users want to use alternate config files, instead of copying all

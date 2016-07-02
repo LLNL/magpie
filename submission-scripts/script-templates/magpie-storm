@@ -107,3 +107,7 @@ export STORM_MODE="stormwordcount"
 #
 # export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in STORM_SCRIPT_PATH
+#
+# export STORM_SCRIPT_ARGS="" 
+

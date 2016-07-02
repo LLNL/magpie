@@ -111,6 +111,10 @@ export MAGPIE_JOB_TYPE="spark"
 #
 # export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in MAGPIE_SCRIPT_PATH
+#
+# export MAGPIE_SCRIPT_ARGS="" 
+
 # Specify script startup / shutdown time window
 #
 # Specifies the amount of time to give startup / shutdown activities a
@@ -617,6 +621,10 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 # the script.
 #
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
+
+# Specify arguments for script specified in SPARK_SCRIPT_PATH
+#
+# export SPARK_SCRIPT_ARGS="" 
 
 ############################################################################
 # Run Job

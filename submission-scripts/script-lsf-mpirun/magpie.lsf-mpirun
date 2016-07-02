@@ -137,6 +137,10 @@ export MAGPIE_JOB_TYPE="script"
 #
 # export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in MAGPIE_SCRIPT_PATH
+#
+# export MAGPIE_SCRIPT_ARGS="" 
+
 # Specify script startup / shutdown time window
 #
 # Specifies the amount of time to give startup / shutdown activities a
@@ -838,6 +842,10 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in HADOOP_SCRIPT_PATH
+#
+# export HADOOP_SCRIPT_ARGS="" 
+
 ############################################################################
 # Hadoop Decommission HDFS Nodes Configurations
 ############################################################################
@@ -1200,6 +1208,10 @@ export HBASE_MODE="performanceeval"
 #
 # export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in HBASE_SCRIPT_PATH
+#
+# export HBASE_SCRIPT_ARGS="" 
+ 
 ############################################################################
 # Phoenix Configurations
 ############################################################################
@@ -1682,6 +1694,10 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in SPARK_SCRIPT_PATH
+#
+# export SPARK_SCRIPT_ARGS="" 
+
 ############################################################################
 # Kafka Configurations
 ############################################################################
@@ -1950,6 +1966,10 @@ export STORM_MODE="stormwordcount"
 # the script.
 #
 # export STORM_SCRIPT_PATH="${HOME}/my-job-script"
+
+# Specify arguments for script specified in STORM_SCRIPT_PATH
+#
+# export STORM_SCRIPT_ARGS="" 
 
 ############################################################################
 # Tachyon Configurations

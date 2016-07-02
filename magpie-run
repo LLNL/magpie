@@ -2108,9 +2108,9 @@ then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
 	echo "*******************************************************"
-	echo "* Executing script $MAGPIE_SCRIPT_PATH"
+	echo "* Executing script $MAGPIE_SCRIPT_PATH $MAGPIE_SCRIPT_ARGS"
 	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPT_PATH} &
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${MAGPIE_SCRIPT_PATH} ${MAGPIE_SCRIPT_ARGS} &
 	scriptpid=$!
 	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
@@ -2196,9 +2196,9 @@ then
 	elif [ "${HADOOP_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
-	    echo "* Executing script $HADOOP_SCRIPT_PATH"
+	    echo "* Executing script $HADOOP_SCRIPT_PATH $HADOOP_SCRIPT_ARGS"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${HADOOP_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${HADOOP_SCRIPT_PATH} ${HADOOP_SCRIPT_ARGS} &
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${HADOOP_MODE}" == "interactive" ] || [ "${HADOOP_MODE}" == "launch" ] || [ "${HADOOP_MODE}" == "hdfsonly" ]
@@ -2262,9 +2262,9 @@ then
 	elif [ "${HBASE_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
-	    echo "* Executing script $HBASE_SCRIPT_PATH"
+	    echo "* Executing script $HBASE_SCRIPT_PATH $HBASE_SCRIPT_ARGS"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${HBASE_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${HBASE_SCRIPT_PATH} ${HBASE_SCRIPT_ARGS} &
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${HBASE_MODE}" == "interactive" ]
@@ -2332,9 +2332,9 @@ then
 	elif [ "${SPARK_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
-	    echo "* Executing script $SPARK_SCRIPT_PATH"
+	    echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${SPARK_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${SPARK_MODE}" == "interactive" ]
@@ -2405,9 +2405,9 @@ then
 	elif [ "${STORM_MODE}" == "script" ]
 	then
 	    echo "*******************************************************"
-	    echo "* Executing script $STORM_SCRIPT_PATH"
+	    echo "* Executing script $STORM_SCRIPT_PATH $STORM_SCRIPT_ARGS"
 	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${STORM_SCRIPT_PATH} &
+	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-wait-mode script ${STORM_SCRIPT_PATH} ${STORM_SCRIPT_ARGS} &
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 	elif [ "${STORM_MODE}" == "interactive" ]

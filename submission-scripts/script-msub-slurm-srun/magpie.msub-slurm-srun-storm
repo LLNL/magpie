@@ -118,6 +118,10 @@ export MAGPIE_JOB_TYPE="storm"
 #
 # export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in MAGPIE_SCRIPT_PATH
+#
+# export MAGPIE_SCRIPT_ARGS="" 
+
 # Specify script startup / shutdown time window
 #
 # Specifies the amount of time to give startup / shutdown activities a
@@ -335,6 +339,10 @@ export STORM_MODE="stormwordcount"
 # the script.
 #
 # export STORM_SCRIPT_PATH="${HOME}/my-job-script"
+
+# Specify arguments for script specified in STORM_SCRIPT_PATH
+#
+# export STORM_SCRIPT_ARGS="" 
 
 ############################################################################
 # Zookeeper Configurations

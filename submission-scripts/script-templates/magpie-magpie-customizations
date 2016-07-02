@@ -48,6 +48,10 @@ export MAGPIE_JOB_TYPE="script"
 #
 # export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in MAGPIE_SCRIPT_PATH
+#
+# export MAGPIE_SCRIPT_ARGS="" 
+
 # Specify script startup / shutdown time window
 #
 # Specifies the amount of time to give startup / shutdown activities a

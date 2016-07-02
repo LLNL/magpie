@@ -114,6 +114,10 @@ export MAGPIE_JOB_TYPE="mahout"
 #
 # export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in MAGPIE_SCRIPT_PATH
+#
+# export MAGPIE_SCRIPT_ARGS="" 
+
 # Specify script startup / shutdown time window
 #
 # Specifies the amount of time to give startup / shutdown activities a
@@ -726,6 +730,10 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # the script.
 #
 # export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
+
+# Specify arguments for script specified in HADOOP_SCRIPT_PATH
+#
+# export HADOOP_SCRIPT_ARGS="" 
 
 ############################################################################
 # Hadoop Decommission HDFS Nodes Configurations

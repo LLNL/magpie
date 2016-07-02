@@ -392,3 +392,7 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 
+# Specify arguments for script specified in SPARK_SCRIPT_PATH
+#
+# export SPARK_SCRIPT_ARGS="" 
+
