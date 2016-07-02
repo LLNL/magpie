@@ -603,12 +603,14 @@ then
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
-
 	# Guarantee atleast 30 mins for the job
  	GetMinutesJob 30
 	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}*
+    fi
+
+    if ls magpie.${submissiontype}* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 
 	sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
     fi
@@ -639,12 +641,14 @@ then
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
-	
 	# Guarantee 30 minutes for the job
 	GetSecondsJob 30
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}*
+    fi
+
+    if ls magpie.${submissiontype}* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 	
 	sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
 	sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
@@ -676,12 +680,15 @@ then
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
-
 	# Guarantee 30 minutes for the job
 	GetHoursMinutesJob 30
 	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}*
+    fi
+
+    if ls magpie.${submissiontype}* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
+
 
 	sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
     fi
