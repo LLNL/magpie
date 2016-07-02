@@ -570,10 +570,8 @@ GetHoursMinutesJob () {
     local addminutes=$1
     GetMinutesJob $1
     local hours=`expr $minutesjob / 60`
-    local hoursminutes=`expr $hours \* 60`
-    local minutesleft=`expr $minutesjob - $hoursminutes`
-    local minutesleftformatted=$(printf "%02d" ${minutesleft})
-    hoursminutesjob="${hours}:${minutesleftformatted}"
+    local minutesleft=`expr $minutesjob % 60`
+    hoursminutesjob=$(printf "%d:%02d" ${hours} ${minutesleft})
 }
 
 if [ "${submissiontype}" == "sbatch-srun" ]
