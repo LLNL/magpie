@@ -264,14 +264,7 @@ GenerateDefaultRegressionTests_JobTimeout() {
 	    magpie.${submissiontype}-hbase-with-hdfs-regression-jobtimeout
     fi
 
-    if [ "${phoenixtests}" == "y" ]; then
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-jobtimeout
-
-	sed -i \
-	    -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="script"/' \
-	    -e 's/# export PHOENIX_SCRIPT_PATH="\(.*\)"/export PHOENIX_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
-	    magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-jobtimeout
-    fi
+    # No Phoenix test, "script" in Phoenix executes via a phoenix command
 
     if [ "${sparktests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-jobtimeout
