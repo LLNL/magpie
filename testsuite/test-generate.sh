@@ -524,27 +524,6 @@ if ls magpie.${submissiontype}* >& /dev/null ; then
     sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
 fi
 
-GetMinutesJob () {
-    local addminutes=$1
-    minutesjob=`expr $STARTUP_TIME + $SHUTDOWN_TIME + $addminutes`
-    timeoutputforjob=$minutesjob
-}
-
-GetSecondsJob () {
-    local addminutes=$1
-    GetMinutesJob $addminutes
-    secondsjob=`expr $minutesjob \* 60`
-    timeoutputforjob=$secondsjob
-}
-
-GetHoursMinutesJob () {
-    local addminutes=$1
-    GetMinutesJob $1
-    local hours=`expr $minutesjob / 60`
-    local minutesleft=`expr $minutesjob % 60`
-    timeoutputforjob=$(printf "%d:%02d" ${hours} ${minutesleft})
-}
-
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
     timestringtoreplace="<my time in minutes>"

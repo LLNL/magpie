@@ -242,12 +242,17 @@ GenerateDefaultRegressionTests_InteractiveMode() {
 }
 
 GenerateDefaultRegressionTests_JobTimeout() {
+    
+    # timeoutputforjob returned
+    GetSecondsJob 30
+
     if [ "${hadooptests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-jobtimeout
 
 	sed -i \
 	    -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
 	    -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    -e 's/# export HADOOP_SCRIPT_ARGS="\(.*\)"/export HADOOP_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
 	    magpie.${submissiontype}-hadoop-regression-jobtimeout
     fi
 
@@ -261,6 +266,7 @@ GenerateDefaultRegressionTests_JobTimeout() {
 	sed -i \
 	    -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
 	    -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+	    -e 's/# export HBASE_SCRIPT_ARGS="\(.*\)"/export HBASE_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
 	    magpie.${submissiontype}-hbase-with-hdfs-regression-jobtimeout
     fi
 
@@ -274,6 +280,7 @@ GenerateDefaultRegressionTests_JobTimeout() {
 	sed -i \
 	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
 	    -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+ 	    -e 's/# export SPARK_SCRIPT_ARGS="\(.*\)"/export SPARK_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
 	    magpie.${submissiontype}-spark-regression-jobtimeout \
 	    magpie.${submissiontype}-spark-with-hdfs-regression-jobtimeout \
 	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-jobtimeout
@@ -285,6 +292,7 @@ GenerateDefaultRegressionTests_JobTimeout() {
 	sed -i \
 	    -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' \
 	    -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+ 	    -e 's/# export STORM_SCRIPT_ARGS="\(.*\)"/export STORM_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
 	    magpie.${submissiontype}-storm-regression-jobtimeout
     fi
 }

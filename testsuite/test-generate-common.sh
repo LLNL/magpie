@@ -3,6 +3,27 @@
 source test-common.sh
 source test-config.sh
 
+GetMinutesJob () {
+    local addminutes=$1
+    minutesjob=`expr $STARTUP_TIME + $SHUTDOWN_TIME + $addminutes`
+    timeoutputforjob=$minutesjob
+}
+
+GetSecondsJob () {
+    local addminutes=$1
+    GetMinutesJob $addminutes
+    secondsjob=`expr $minutesjob \* 60`
+    timeoutputforjob=$secondsjob
+}
+
+GetHoursMinutesJob () {
+    local addminutes=$1
+    GetMinutesJob $1
+    local hours=`expr $minutesjob / 60`
+    local minutesleft=`expr $minutesjob % 60`
+    timeoutputforjob=$(printf "%d:%02d" ${hours} ${minutesleft})
+}
+
 JavaCommonSubstitution() {
     local javaversion=$1
 
