@@ -574,6 +574,12 @@ GetHoursMinutesJob () {
 
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
+    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+	# Guarantee atleast 5 mins for the job
+ 	GetMinutesJob 5
+	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}*regression-interactive-mode
+    fi
+
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	# Guarantee 60 minutes for the job
  	GetMinutesJob 60
@@ -584,12 +590,6 @@ then
 	# Guarantee 60 minutes for the job
  	GetMinutesJob 60
 	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}-hadoop-and-mahout*
-    fi
-
-    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
-	# Guarantee atleast 5 mins for the job
- 	GetMinutesJob 5
-	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
@@ -604,6 +604,12 @@ then
     fi
 elif [ "${submissiontype}" == "msub-slurm-srun" ]
 then
+    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+	# Guarantee 5 minutes for the job
+	GetSecondsJob 5
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}*regression-interactive-mode
+    fi
+
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	# Guarantee 60 minutes for the job
 	GetSecondsJob 60
@@ -614,12 +620,6 @@ then
 	# Guarantee 60 minutes for the job
  	GetMinutesJob 60
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}-hadoop-and-mahout*
-    fi
-
-    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
-	# Guarantee 5 minutes for the job
-	GetSecondsJob 5
-	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
@@ -635,6 +635,12 @@ then
     fi
 elif [ "${submissiontype}" == "lsf-mpirun" ]
 then
+    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+	# Guarantee 5 minutes for the job
+	GetHoursMinutesJob 5
+	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}*regression-interactive-mode
+    fi
+
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
 	# Guarantee 60 minutes for the job
 	GetHoursMinutesJob 60
@@ -645,12 +651,6 @@ then
 	# Guarantee 60 minutes for the job
  	GetMinutesJob 60
 	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}-hadoop-and-mahout*
-    fi
-
-    if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
-	# Guarantee 5 minutes for the job
-	GetHoursMinutesJob 5
-	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}*regression-interactive-mode
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
