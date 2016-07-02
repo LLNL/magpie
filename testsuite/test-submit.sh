@@ -17,10 +17,23 @@ source test-config.sh
 # XXX - haven't handled msub-torque-pdsh yet
 
 verboseoutput=n
-
-# Misc config
-
 jobsubmissionfile=magpie-test.log
+
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    case $key in
+	-v|--verbose)
+	    verboseoutput=y
+	    shift
+	    ;;
+	*)
+            echo "Usage: test-validate [-v]"
+	    exit 1
+	    ;;
+    esac
+    shift
+done
 
 # Test Setup
 

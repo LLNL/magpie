@@ -2,6 +2,24 @@
 
 source test-config.sh
 
+verboseoutput=n
+
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    case $key in
+	-v|--verbose)
+	    verboseoutput=y
+	    shift
+	    ;;
+	*)
+            echo "Usage: test-validate [-v]"
+	    exit 1
+	    ;;
+    esac
+    shift
+done
+
 if [ "${submissiontype}" == "lsf-mpirun" ]
 then
     outputprefix="lsf"
@@ -12,8 +30,6 @@ elif [ "${submissiontype}" == "sbatch-srun" ]
 then
     outputprefix="slurm"
 fi
-
-verboseoutput=n
 
 test_yarn_shutdown () {
     local file=$1
