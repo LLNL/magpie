@@ -255,7 +255,7 @@ Magpie_job_time_minutes () {
 	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
 	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmpdsh" ]
     then
-	timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
+	local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
 	if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]
 	then
             walltimetominutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
@@ -264,7 +264,7 @@ Magpie_job_time_minutes () {
 	fi
         jobtimeminutes=`expr ${walltimetominutes} - ${MAGPIE_SHUTDOWN_TIME}`
     else
-	timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+	local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
 	jobtimeminutes=`expr ${timeleftminutes} - ${MAGPIE_SHUTDOWN_TIME}`
     fi
 }
@@ -275,13 +275,13 @@ Magpie_job_time_seconds () {
 }
 
 Magpie_wait_script_signal_on_timeout () {
-    scriptpid=$1
-    timeoutminutes=$2
-    signalnumber=$3
-
+    local scriptpid=$1
+    local timeoutminutes=$2
+    local signalnumber=$3
     # We sleep in 30 second chunks, so times 2
-    scriptsleepiterations=`expr ${timeoutminutes}  \* 2`
-    scriptexitted=0
+    local scriptsleepiterations=`expr ${timeoutminutes}  \* 2`
+    local scriptexitted=0
+
     for ((i = 1; i <= ${scriptsleepiterations}; i++)); do
 	if kill -0 ${scriptpid} 2&> /dev/null
 	then
@@ -303,7 +303,7 @@ Magpie_wait_script_signal_on_timeout () {
 }
 
 Magpie_wait_script_kill_on_job_timeout () {
-    scriptpid=$1
+    local scriptpid=$1
 
     # Will set jobtimeminutes
     Magpie_job_time_minutes
@@ -314,7 +314,7 @@ Magpie_wait_script_kill_on_job_timeout () {
 }
 
 Magpie_wait_script_sigusr2_on_job_timeout () {
-    scriptpid=$1
+    local scriptpid=$1
 
     # Will set jobtimeminutes
     Magpie_job_time_minutes
@@ -404,7 +404,7 @@ Magpie_calculate_stop_timeouts () {
     if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
     then
 	# Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_JOB_RUN
-	magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
+	local magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
 	if [ "${magpiepostrunallocate}" -lt 300 ]
 	then
 	    magpiepostrunallocate=300
@@ -420,12 +420,12 @@ Magpie_calculate_stop_timeouts () {
 	# compaction .  Input checks ensure
 	# magpieshutdowntimeseconds >= 1200 
 
-	hbase_time=`expr ${magpieshutdowntimeseconds} \/ 2`
+	local hbase_time=`expr ${magpieshutdowntimeseconds} \/ 2`
 	hbase_slave_timeout=`expr ${hbase_time} \/ 2`
 	magpieshutdowntimeseconds=${hbase_time}
     fi
 
-    stoptimeoutdivisor=1
+    local stoptimeoutdivisor=1
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
@@ -465,7 +465,7 @@ Magpie_calculate_stop_timeouts () {
 	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
     fi
 
-    stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
+    local stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
 	
     if [ "${stoptimeout}" -lt 5 ]
     then
@@ -530,8 +530,8 @@ Magpie_calculate_threadstouse () {
 }
 
 Magpie_calculate_memorytouse () {
-    memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
-    memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
+    local memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+    local memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
     
     # Sets canrunjobscount
     Magpie_calculate_canrunjobscount

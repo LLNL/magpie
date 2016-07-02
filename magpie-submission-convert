@@ -28,7 +28,7 @@ Magpie_calc_slurm_magpie_timelimit () {
     # Do not excessively call this
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-	timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
+	local timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
 	Magpie_walltime_to_minutes ${timelimitwalltime}
 	export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
     fi
@@ -113,11 +113,10 @@ then
             sleep 1
         done
 
-        jobinfo=$(bjobs -l ${LSB_JOBID})
+        local jobinfo=$(bjobs -l ${LSB_JOBID})
         # Run State
-        walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
+        local walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
     Magpie_handle_job_name_corner_cases
 fi
-
