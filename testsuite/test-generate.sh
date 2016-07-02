@@ -580,6 +580,12 @@ then
 	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
 
+    if ls magpie.${submissiontype}-hadoop-and-mahout* >& /dev/null ; then
+	# Guarantee 60 minutes for the job
+ 	GetMinutesJob 60
+	sed -i -e "s/<my time in minutes>/${minutesjob}/" magpie.${submissiontype}-hadoop-and-mahout*
+    fi
+
     if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
 	# Guarantee atleast 5 mins for the job
  	GetMinutesJob 5
@@ -602,6 +608,12 @@ then
 	# Guarantee 60 minutes for the job
 	GetSecondsJob 60
 	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}-hbase-with-hdfs*
+    fi
+
+    if ls magpie.${submissiontype}-hadoop-and-mahout* >& /dev/null ; then
+	# Guarantee 60 minutes for the job
+ 	GetMinutesJob 60
+	sed -i -e "s/<my time in seconds or HH:MM:SS>/${secondsjob}/" magpie.${submissiontype}-hadoop-and-mahout*
     fi
 
     if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
@@ -627,6 +639,12 @@ then
 	# Guarantee 60 minutes for the job
 	GetHoursMinutesJob 60
 	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}-hbase-with-hdfs*
+    fi
+
+    if ls magpie.${submissiontype}-hadoop-and-mahout* >& /dev/null ; then
+	# Guarantee 60 minutes for the job
+ 	GetMinutesJob 60
+	sed -i -e "s/<my time in hours:minutes>/${hoursminutesjob}/" magpie.${submissiontype}-hadoop-and-mahout*
     fi
 
     if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
