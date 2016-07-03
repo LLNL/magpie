@@ -81,26 +81,14 @@ GenerateHbaseStandardTests() {
 	do
 	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop26zookeeper34java16versions_hadoopversion}
 	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop26zookeeper34java16versions_zookeeperversion} 
-	    for hadoopversion in ${hbasehadoop26zookeeper34java16versions_hadoopversion}
-	    do
-		for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
-		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop26zookeeper34java16versions_javaversion}
-		done
-	    done
+	    ${testfunction} ${hbaseversion} ${hbasehadoop26zookeeper34java16versions_hadoopversion} ${hbasehadoop26zookeeper34java16versions_zookeeperversion} ${hbasehadoop26zookeeper34java16versions_javaversion}
 	done
 
 	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
 	do
 	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop27zookeeper34java17versions_hadoopversion}
 	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop27zookeeper34java17versions_zookeeperversion} 
-	    for hadoopversion in ${hbasehadoop27zookeeper34java17versions_hadoopversion}
-	    do
-		for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
-		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop27zookeeper34java17versions_javaversion}
-		done
-	    done
+	    ${testfunction} ${hbaseversion} ${hbasehadoop27zookeeper34java17versions_hadoopversion} ${hbasehadoop27zookeeper34java17versions_zookeeperversion} ${hbasehadoop27zookeeper34java17versions_javaversion}
 	done
     done
 }
@@ -207,26 +195,14 @@ GenerateHbaseDependencyTests() {
 	do
 	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop26zookeeper34java16versions_hadoopversion}
 	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop26zookeeper34java16versions_zookeeperversion} 
-	    for hadoopversion in ${hbasehadoop26zookeeper34java16versions_hadoopversion}
-	    do
-		for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
-		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop26zookeeper34java16versions_javaversion}
-		done
-	    done
+	    ${testfunction} ${hbaseversion} ${hbasehadoop26zookeeper34java16versions_hadoopversion} ${hbasehadoop26zookeeper34java16versions_zookeeperversion} ${hbasehadoop26zookeeper34java16versions_javaversion}
 	done
 
 	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
 	do
 	    CheckForDependency "Hbase" "Hadoop" ${hbasehadoop27zookeeper34java17versions_hadoopversion}
 	    CheckForDependency "Hbase" "Zookeeper" ${hbasehadoop27zookeeper34java17versions_zookeeperversion} 
-	    for hadoopversion in ${hbasehadoop27zookeeper34java17versions_hadoopversion}
-	    do
-		for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
-		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop27zookeeper34java17versions_javaversion}
-		done
-	    done
+	    ${testfunction} ${hbaseversion} ${hbasehadoop27zookeeper34java17versions_hadoopversion} ${hbasehadoop27zookeeper34java17versions_zookeeperversion} ${hbasehadoop27zookeeper34java17versions_javaversion}
 	done
     done
 }

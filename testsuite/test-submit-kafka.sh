@@ -23,10 +23,7 @@ SubmitKafkaStandardTests() {
     do
 	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
-	    do
-		${testfunction} ${kafkaversion} ${zookeeperversion}
-	    done
+	    ${testfunction} ${kafkaversion} ${kafkazookeeper34java17versions_zookeeperversion} 
 	done
     done
 }
@@ -44,10 +41,7 @@ SubmitKafkaDependencyTests() {
     do
 	for kafkaversion in ${kafkazookeeper34java17versions}
 	do
-	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
-	    do
-		${testfunction} ${kafkaversion} ${zookeeperversion}
-	    done
+	    ${testfunction} ${kafkaversion} ${kafkazookeeper34java17versions_zookeeperversion}
 	done
     done
 }

@@ -65,16 +65,7 @@ GeneratePhoenixStandardTests() {
 	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
-	    do
-		for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
-		do
-		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-		    do
-			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
-		    done
-		done
-	    done
+	    ${testfunction} ${phoenixversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion} ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
 	done
     done
 }
@@ -166,16 +157,7 @@ GeneratePhoenixDependencyTests() {
 	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
 	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
 	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-	    for hbaseversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
-	    do
-		for hadoopversion in ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
-		do
-		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-		    do
-			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
-		    done
-		done
-	    done
+	    ${testfunction} ${phoenixversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion} ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
 	done
     done
 }

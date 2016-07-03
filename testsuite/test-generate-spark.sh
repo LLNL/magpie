@@ -277,28 +277,19 @@ GenerateSparkStandardTests() {
 	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark0Xjava16hadoop2versions_hadoopversion}
-	    for hadoopversion in ${spark0Xjava16hadoop2versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
-	    done
+	    ${testfunction} ${sparkversion} ${spark0Xjava16hadoop2versions_hadoopversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
 	done
 
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
 	done
 
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
 	done
     done
 
@@ -307,19 +298,13 @@ GenerateSparkStandardTests() {
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava16hadoop24versions_javaversion}
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion}
 	done
 	
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava17hadoop26versions_javaversion}
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion}
 	done
     done
 }
@@ -699,28 +684,19 @@ GenerateSparkDependencyTests() {
 	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark0Xjava16hadoop2versions_hadoopversion}
-	    for hadoopversion in ${spark0Xjava16hadoop2versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
-	    done
+	    ${testfunction} ${sparkversion} ${spark0Xjava16hadoop2versions_hadoopversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
 	done
 
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
 	done
 
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
 	done
     done
 
@@ -732,19 +708,13 @@ GenerateSparkDependencyTests() {
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
 	done
 
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
 	done
     done
 
@@ -777,19 +747,13 @@ GenerateSparkDependencyTests() {
 	for sparkversion in ${spark1Xjava16hadoop24versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava16hadoop24versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava16hadoop24versions_javaversion}
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion}
 	done
 	
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    for hadoopversion in ${spark1Xjava17hadoop26versions_hadoopversion}
-	    do
-		${testfunction} ${sparkversion} ${hadoopversion} ${spark1Xjava17hadoop26versions_javaversion}
-	    done
+	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion}
 	done
     done
 }

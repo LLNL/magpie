@@ -36,28 +36,19 @@ GeneratePigStandardTests() {
 	for pigversion in ${pighadoop24java16versions}
 	do
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop24java16versions_hadoopversion}
-	    for hadoopversion in ${pighadoop24java16versions_hadoopversion}
-	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop24java16versions_javaversion}
-	    done
+	    ${testfunction} ${pigversion} ${pighadoop24java16versions_hadoopversion} ${pighadoop24java16versions_javaversion}
 	done
 
 	for pigversion in ${pighadoop26java16versions}
 	do
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop26java16versions_hadoopversion}
-	    for hadoopversion in ${pighadoop26java16versions_hadoopversion}
-	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop26java16versions_javaversion}
-	    done
+	    ${testfunction} ${pigversion} ${pighadoop26java16versions_hadoopversion} ${pighadoop26java16versions_javaversion}
 	done
 
 	for pigversion in ${pighadoop27java17versions}
 	do
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop27java17versions_hadoopversion}
-	    for hadoopversion in ${pighadoop27java17versions_hadoopversion}
-	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop27java17versions_javaversion}
-	    done
+	    ${testfunction} ${pigversion} ${pighadoop27java17versions_hadoopversion} ${pighadoop27java17versions_javaversion}
 	done
     done
 }
@@ -116,28 +107,19 @@ GeneratePigDependencyTests() {
 	for pigversion in ${pighadoop24java16versions}
 	do
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop24java16versions_hadoopversion}
-	    for hadoopversion in ${pighadoop24java16versions_hadoopversion}
-	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop24java16versions_javaversion}
-	    done
+	    ${testfunction} ${pigversion} ${pighadoop24java16versions_hadoopversion} ${pighadoop24java16versions_javaversion}
 	done
 	
 	for pigversion in ${pighadoop26java16versions}
 	do
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop26java16versions_hadoopversion}
-	    for hadoopversion in ${pighadoop26java16versions_hadoopversion}
-	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop26java16versions_javaversion}
-	    done
+	    ${testfunction} ${pigversion} ${pighadoop26java16versions_hadoopversion} ${pighadoop26java16versions_javaversion}
 	done
 
 	for pigversion in ${pighadoop27java17versions}
 	do
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop27java17versions_hadoopversion}
-	    for hadoopversion in ${pighadoop27java17versions_hadoopversion}
-	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop27java17versions_javaversion}
-	    done
+	    ${testfunction} ${pigversion} ${pighadoop27java17versions_hadoopversion} ${pighadoop27java17versions_javaversion}
 	done
     done
 }

@@ -47,19 +47,13 @@ GenerateStormStandardTests() {
 	for stormversion in ${stormzookeeper34java16versions}
 	do
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
-	    for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
-	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java16versions_javaversion}
-	    done
+	    ${testfunction} ${stormversion} ${stormzookeeper34java16versions_zookeeperversion} ${stormzookeeper34java16versions_javaversion}
 	done
 	
 	for stormversion in ${stormzookeeper34java17versions}
 	do
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
-	    for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
-	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java17versions_javaversion}
-	    done
+	    ${testfunction} ${stormversion} ${stormzookeeper34java17versions_zookeeperversion} ${stormzookeeper34java17versions_javaversion}
 	done
     done
 }
@@ -94,19 +88,13 @@ GenerateStormDependencyTests() {
 	for stormversion in ${stormzookeeper34java16versions}
 	do
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
-	    for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
-	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java16versions_javaversion}
-	    done
+	    ${testfunction} ${stormversion} ${stormzookeeper34java16versions_zookeeperversion} ${stormzookeeper34java16versions_javaversion}
 	done
 	
 	for stormversion in ${stormzookeeper34java17versions}
 	do
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
-	    for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
-	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java17versions_javaversion}
-	    done
+	    ${testfunction} ${stormversion} ${stormzookeeper34java17versions_zookeeperversion} ${stormzookeeper34java17versions_javaversion}
 	done
     done
 }
