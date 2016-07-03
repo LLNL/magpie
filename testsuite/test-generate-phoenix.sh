@@ -71,7 +71,7 @@ GeneratePhoenixStandardTests() {
 		do
 		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
 		    do
-			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
 		    done
 		done
 	    done
@@ -172,7 +172,7 @@ GeneratePhoenixDependencyTests() {
 		do
 		    for zookeeperversion in ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
 		    do
-			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+			${testfunction} ${phoenixversion} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
 		    done
 		done
 	    done

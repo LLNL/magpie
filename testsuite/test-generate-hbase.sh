@@ -85,7 +85,7 @@ GenerateHbaseStandardTests() {
 	    do
 		for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
 		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java16}
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop26zookeeper34java16versions_javaversion}
 		done
 	    done
 	done
@@ -98,7 +98,7 @@ GenerateHbaseStandardTests() {
 	    do
 		for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
 		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop27zookeeper34java17versions_javaversion}
 		done
 	    done
 	done
@@ -211,7 +211,7 @@ GenerateHbaseDependencyTests() {
 	    do
 		for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
 		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java16}
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop26zookeeper34java16versions_javaversion}
 		done
 	    done
 	done
@@ -224,7 +224,7 @@ GenerateHbaseDependencyTests() {
 	    do
 		for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
 		do
-		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${java17}
+		    ${testfunction} ${hbaseversion} ${hadoopversion} ${zookeeperversion} ${hbasehadoop27zookeeper34java17versions_javaversion}
 		done
 	    done
 	done

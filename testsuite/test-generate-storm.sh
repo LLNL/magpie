@@ -49,7 +49,7 @@ GenerateStormStandardTests() {
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
 	    for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
 	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${java16}
+		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java16versions_javaversion}
 	    done
 	done
 	
@@ -58,7 +58,7 @@ GenerateStormStandardTests() {
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
 	    for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
 	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${java17}
+		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java17versions_javaversion}
 	    done
 	done
     done
@@ -96,7 +96,7 @@ GenerateStormDependencyTests() {
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
 	    for zookeeperversion in ${stormzookeeper34java16versions_zookeeperversion}
 	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${java16}
+		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java16versions_javaversion}
 	    done
 	done
 	
@@ -105,7 +105,7 @@ GenerateStormDependencyTests() {
 	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
 	    for zookeeperversion in ${stormzookeeper34java17versions_zookeeperversion}
 	    do
-		${testfunction} ${stormversion} ${zookeeperversion} ${java17}
+		${testfunction} ${stormversion} ${zookeeperversion} ${stormzookeeper34java17versions_javaversion}
 	    done
 	done
     done

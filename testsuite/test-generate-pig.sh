@@ -38,7 +38,7 @@ GeneratePigStandardTests() {
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop24java16versions_hadoopversion}
 	    for hadoopversion in ${pighadoop24java16versions_hadoopversion}
 	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${java16}
+		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop24java16versions_javaversion}
 	    done
 	done
 
@@ -47,7 +47,7 @@ GeneratePigStandardTests() {
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop26java16versions_hadoopversion}
 	    for hadoopversion in ${pighadoop26java16versions_hadoopversion}
 	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${java16}
+		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop26java16versions_javaversion}
 	    done
 	done
 
@@ -56,7 +56,7 @@ GeneratePigStandardTests() {
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop27java17versions_hadoopversion}
 	    for hadoopversion in ${pighadoop27java17versions_hadoopversion}
 	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${java17}
+		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop27java17versions_javaversion}
 	    done
 	done
     done
@@ -118,7 +118,7 @@ GeneratePigDependencyTests() {
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop24java16versions_hadoopversion}
 	    for hadoopversion in ${pighadoop24java16versions_hadoopversion}
 	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${java16}
+		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop24java16versions_javaversion}
 	    done
 	done
 	
@@ -127,7 +127,7 @@ GeneratePigDependencyTests() {
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop26java16versions_hadoopversion}
 	    for hadoopversion in ${pighadoop26java16versions_hadoopversion}
 	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${java16}
+		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop26java16versions_javaversion}
 	    done
 	done
 
@@ -136,7 +136,7 @@ GeneratePigDependencyTests() {
 	    CheckForDependency "Pig" "Hadoop" ${pighadoop27java17versions_hadoopversion}
 	    for hadoopversion in ${pighadoop27java17versions_hadoopversion}
 	    do
-		${testfunction} ${pigversion} ${hadoopversion} ${java17}
+		${testfunction} ${pigversion} ${hadoopversion} ${pighadoop27java17versions_javaversion}
 	    done
 	done
     done

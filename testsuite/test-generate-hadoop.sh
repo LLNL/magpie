@@ -59,12 +59,12 @@ GenerateHadoopStandardTests() {
     do
 	for hadoopversion in ${hadoopjava16versions}
 	do
-	    ${testfunction} ${hadoopversion} ${java16}
+	    ${testfunction} ${hadoopversion} ${hadoopjava16versions_javaversion}
 	done
 	
 	for hadoopversion in ${hadoopjava17versions}
 	do
-	    ${testfunction} ${hadoopversion} ${java17}
+	    ${testfunction} ${hadoopversion} ${hadoopjava17versions_javaversion}
 	done
     done
 }
@@ -276,12 +276,12 @@ GenerateHadoopDependencyTests() {
     do
 	for hadoopversion in ${hadoopjava16versions}
 	do
-	    ${testfunction} ${hadoopversion} ${java16}
+	    ${testfunction} ${hadoopversion} ${hadoopjava16versions_javaversion}
 	done
 
 	for hadoopversion in ${hadoopjava17versions}
 	do
-	    ${testfunction} ${hadoopversion} ${java17}
+	    ${testfunction} ${hadoopversion} ${hadoopjava17versions_javaversion}
 	done
     done
 
@@ -294,12 +294,12 @@ GenerateHadoopDependencyTests() {
 # decommissionhdfsnodes doesn't work reliably in 2.2.X, removing it
 	for hadoopversion in ${hadoopjava16versionsdecommission}
 	do
-	    ${testfunction} ${hadoopversion} ${java16}
+	    ${testfunction} ${hadoopversion} ${hadoopjava16versionsdecommission_javaversion}
 	done
 	
 	for hadoopversion in ${hadoopjava17versions}
 	do
-	    ${testfunction} ${hadoopversion} ${java17}
+	    ${testfunction} ${hadoopversion} ${hadoopjava17versions_javaversion}
 	done
     done
 

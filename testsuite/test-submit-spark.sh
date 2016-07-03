@@ -327,11 +327,16 @@ SubmitSparkDependencyTests() {
 
     for testfunction in SubmitSparkDependencyTests_Dependency5rawnetworkfs SubmitSparkDependencyTests_Dependency6rawnetworkfs
     do
-	for sparkversion in ${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions}
+	for sparkversion in ${spark0Xjava16hadoop2versions}
 	do
 	    ${testfunction} ${sparkversion}
 	done
 	
+	for sparkversion in ${spark1Xjava16hadoop24versions}
+	do
+	    ${testfunction} ${sparkversion}
+	done
+
 	for sparkversion in ${spark1Xjava17hadoop26versions}
 	do
 	    ${testfunction} ${sparkversion}

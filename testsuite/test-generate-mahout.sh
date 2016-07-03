@@ -32,7 +32,7 @@ GenerateMahoutStandardTests() {
 	    CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
 	    for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
 	    do
-		${testfunction} ${mahoutversion} ${hadoopversion} ${java17}
+		${testfunction} ${mahoutversion} ${hadoopversion} ${mahouthadoop27java17versions_javaversion}
 	    done
 	done
     done
@@ -79,7 +79,7 @@ GenerateMahoutDependencyTests() {
 	    CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
 	    for hadoopversion in ${mahouthadoop27java17versions_hadoopversion}
 	    do
-		${testfunction} ${mahoutversion} ${hadoopversion} ${java17}
+		${testfunction} ${mahoutversion} ${hadoopversion} ${mahouthadoop27java17versions_javaversion}
 	    done
 	done
     done

@@ -52,7 +52,7 @@ GenerateKafkaStandardTests() {
 	    CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
 	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
 	    do
-		${testfunction} ${kafkaversion} ${zookeeperversion} ${java17}
+		${testfunction} ${kafkaversion} ${zookeeperversion} ${kafkazookeeper34java17versions_javaversion}
 	    done
 	done
     done
@@ -93,7 +93,7 @@ GenerateKafkaDependencyTests() {
 	    CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
 	    for zookeeperversion in ${kafkazookeeper34java17versions_zookeeperversion}
 	    do
-		${testfunction} ${kafkaversion} ${zookeeperversion} ${java17}
+		${testfunction} ${kafkaversion} ${zookeeperversion} ${kafkazookeeper34java17versions_javaversion}
 	    done
 	done
     done

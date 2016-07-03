@@ -41,7 +41,7 @@ GenerateZookeeperStandardTests() {
     do
 	for zookeeperversion in ${zookeeperjava17versions}
 	do
-	    ${testfunction} ${zookeeperversion} ${java17}
+	    ${testfunction} ${zookeeperversion} ${zookeeperjava17versions_javaversion}
 	done
     done
 }
