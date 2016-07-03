@@ -17,19 +17,13 @@ SubmitPigStandardTests_Common() {
 SubmitPigStandardTests() {
     for testfunction in SubmitPigStandardTests_Common
     do
-	for pigversion in ${pighadoop24java16versions}
+	for testgroup in ${pig_test_groups}
 	do
-	    ${testfunction} ${pigversion} ${pighadoop24java16versions_hadoopversion}
-	done
-    
-	for pigversion in ${pighadoop26java16versions}
-	do
-	    ${testfunction} ${pigversion} ${pighadoop26java16versions_hadoopversion}
-	done
-    
-	for pigversion in ${pighadoop27java17versions}
-	do
-	    ${testfunction} ${pigversion} ${pighadoop27java17versions_hadoopversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion}
+	    done
 	done
     done
 }
@@ -52,19 +46,13 @@ SubmitPigDependencyTests_Dependency1() {
 SubmitPigDependencyTests() {
     for testfunction in SubmitPigDependencyTests_Dependency1
     do
-	for pigversion in ${pighadoop24java16versions}
+	for testgroup in ${pig_test_groups}
 	do
-	    ${testfunction} ${pigversion} ${pighadoop24java16versions_hadoopversion}
-	done
-	
-	for pigversion in ${pighadoop26java16versions}
-	do
-	    ${testfunction} ${pigversion} ${pighadoop26java16versions_hadoopversion}
-	done
-
-	for pigversion in ${pighadoop27java17versions}
-	do
-	    ${testfunction} ${pigversion} ${pighadoop27java17versions_hadoopversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion}
+	    done
 	done
     done
 }

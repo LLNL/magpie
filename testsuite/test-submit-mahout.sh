@@ -15,9 +15,13 @@ SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
 SubmitMahoutStandardTests() {
     for testfunction in SubmitMahoutStandardTests_ClusterSyntheticcontrol
     do
-	for mahoutversion in ${mahouthadoop27java17versions}
+	for testgroup in ${mahout_test_groups}
 	do
-	    ${testfunction} ${mahoutversion} ${mahouthadoop27java17versions_hadoopversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion}
+	    done
 	done
     done
 }
@@ -36,9 +40,13 @@ SubmitMahoutDependencyTests_Dependency1() {
 SubmitMahoutDependencyTests() {
     for testfunction in SubmitMahoutDependencyTests_Dependency1
     do
-	for mahoutversion in ${mahouthadoop27java17versions}
+	for testgroup in ${mahout_test_groups}
 	do
-	    ${testfunction} ${mahoutversion} ${mahouthadoop27java17versions_hadoopversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion}
+	    done
 	done
     done
 }

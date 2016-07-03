@@ -21,14 +21,13 @@ SubmitStormStandardTests_StandardWordCount() {
 SubmitStormStandardTests() {
     for testfunction in SubmitStormStandardTests_StandardWordCount
     do
-	for stormversion in ${stormzookeeper34java16versions}
+	for testgroup in ${storm_test_groups}
 	do
-	    ${testfunction} ${stormversion} ${stormzookeeper34java16versions_zookeeperversion}
-	done
-	
-	for stormversion in ${stormzookeeper34java17versions}
-	do
-	    ${testfunction} ${stormversion} ${stormzookeeper34java17versions_zookeeperversion}
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!zookeeperversion}
+	    done
 	done
     done
 }
@@ -44,14 +43,13 @@ SubmitStormDependencyTests_Dependency1() {
 SubmitStormDependencyTests() {
     for testfunction in SubmitStormDependencyTests_Dependency1
     do
-	for stormversion in ${stormzookeeper34java16versions}
+	for testgroup in ${storm_test_groups}
 	do
-	    ${testfunction} ${stormversion} ${stormzookeeper34java16versions_zookeeperversion}
-	done
-	
-	for stormversion in ${stormzookeeper34java17versions}
-	do
-	    ${testfunction} ${stormversion} ${stormzookeeper34java17versions_zookeeperversion}
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!zookeeperversion}
+	    done
 	done
     done
 }

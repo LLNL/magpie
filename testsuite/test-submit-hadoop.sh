@@ -28,14 +28,12 @@ SubmitHadoopStandardTests_StandardTerasort() {
 SubmitHadoopStandardTests() {
     for testfunction in SubmitHadoopStandardTests_StandardTerasort
     do
-	for hadoopversion in ${hadoopjava16versions}
+	for testgroup in ${hadoop_test_groups}
 	do
-	    ${testfunction} ${hadoopversion}
-	done
-    
-	for hadoopversion in ${hadoopjava17versions}
-	do
-	    ${testfunction} ${hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion}
+	    done
 	done
     done
 }
@@ -113,30 +111,25 @@ SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
 SubmitHadoopDependencyTests() {
     for testfunction in SubmitHadoopDependencyTests_Dependency1
     do
-	for hadoopversion in ${hadoopjava16versions}
+	for testgroup in ${hadoop_test_groups}
 	do
-	    ${testfunction} ${hadoopversion}
-	done
-
-	for hadoopversion in ${hadoopjava17versions}
-	do
-	    ${testfunction} ${hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion}
+	    done
 	done
     done
 
     for testfunction in SubmitHadoopDependencyTests_Dependency2 SubmitHadoopDependencyTests_Dependency3 SubmitHadoopDependencyTests_Dependency4
     do
-	for hadoopversion in ${hadoopjava16versionsdecommission}
+	for testgroup in ${hadoop_test_groups_decommission}
 	do
-	    ${testfunction} ${hadoopversion}
-	done
-
-	for hadoopversion in ${hadoopjava17versions}
-	do
-	    ${testfunction} ${hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion}
+	    done
 	done
     done
-
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A-hdfsoverlustre-run-hadoopterasort
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A-hdfsoverlustre-hdfs-older-version-expected-failure

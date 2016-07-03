@@ -254,57 +254,61 @@ GenerateSparkStandardTests() {
 
     for testfunction in GenerateSparkStandardTests_BasicTests
     do
-        # 0.X no local dir tests
-	for sparkversion in ${spark0Xjava16hadoop2versions}
+	for testgroup in ${spark_test_groups_before_1X}
 	do
-	    ${testfunction} ${sparkversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion} "n"
+	    done
 	done
 
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	done
-
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion} "y"
+	    done
 	done
     done
 
     for testfunction in GenerateSparkStandardTests_WordCount
     do
-        # 0.9.X no local dir tests
-	for sparkversion in ${spark0Xjava16hadoop2versions}
+	for testgroup in ${spark_test_groups_before_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark0Xjava16hadoop2versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark0Xjava16hadoop2versions_hadoopversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "n"
+	    done
 	done
 
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	done
-
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "y"
+	    done
 	done
     done
 
     for testfunction in GenerateSparkStandardTests_YarnTests GenerateSparkStandardTests_YarnWordCount
     do
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion}
-	done
-	
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -681,22 +685,26 @@ GenerateSparkDependencyTests() {
     for testfunction in GenerateSparkDependencyTests_Dependency1HDFS GenerateSparkDependencyTests_Dependency2HDFS
     do
 # No decommissionhdfsnodes for Hadoop 2.2.0
-	for sparkversion in ${spark0Xjava16hadoop2versions}
+	for testgroup in ${spark_test_groups_before_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark0Xjava16hadoop2versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark0Xjava16hadoop2versions_hadoopversion} ${spark0Xjava16hadoop2versions_javaversion} "n"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "n"
+	    done
 	done
 
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	done
-
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "y"
+	    done
 	done
     done
 
@@ -705,16 +713,15 @@ GenerateSparkDependencyTests() {
 
     for testfunction in GenerateSparkDependencyTests_Dependency3YarnHDFS GenerateSparkDependencyTests_Dependency4YarnHDFS
     do
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion} "y"
-	done
-
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion} "y"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 
@@ -723,19 +730,22 @@ GenerateSparkDependencyTests() {
 
     for testfunction in GenerateSparkDependencyTests_Dependency5rawnetworkfs GenerateSparkDependencyTests_Dependency6rawnetworkfs
     do
-	for sparkversion in ${spark0Xjava16hadoop2versions}
+	for testgroup in ${spark_test_groups_before_1X}
 	do
-	    ${testfunction} ${sparkversion} ${spark0Xjava16hadoop2versions_javaversion}
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion}
+	    done
 	done
 	
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_javaversion}
-	done
-
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_javaversion}
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion}
+	    done
 	done
     done
 
@@ -744,16 +754,15 @@ GenerateSparkDependencyTests() {
 
     for testfunction in GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs
     do
-	for sparkversion in ${spark1Xjava16hadoop24versions}
+	for testgroup in ${spark_test_groups_after_1X}
 	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava16hadoop24versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava16hadoop24versions_hadoopversion} ${spark1Xjava16hadoop24versions_javaversion}
-	done
-	
-	for sparkversion in ${spark1Xjava17hadoop26versions}
-	do
-	    CheckForDependency "Spark" "Hadoop" ${spark1Xjava17hadoop26versions_hadoopversion}
-	    ${testfunction} ${sparkversion} ${spark1Xjava17hadoop26versions_hadoopversion} ${spark1Xjava17hadoop26versions_javaversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 }

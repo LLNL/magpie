@@ -60,12 +60,19 @@ GeneratePhoenixStandardTests() {
     
     for testfunction in GeneratePhoenixStandardTests_Performanceeval
     do
-	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+	for testgroup in ${phoenix_test_groups}
 	do
-	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
-	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
-	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-	    ${testfunction} ${phoenixversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion} ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
+	    local hbaseversion="${testgroup}_hbaseversion"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Phoenix" "Hbase" ${!hbaseversion}
+	    CheckForDependency "Phoenix" "Hadoop" ${!hadoopversion}
+	    CheckForDependency "Phoenix" "Zookeeper" ${!zookeeperversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -152,12 +159,19 @@ GeneratePhoenixDependencyTests() {
 
     for testfunction in GeneratePhoenixDependencyTests_Dependency1 GeneratePhoenixDependencyTests_Dependency2
     do
-	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+	for testgroup in ${phoenix_test_groups}
 	do
-	    CheckForDependency "Phoenix" "Hbase" ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion}
-	    CheckForDependency "Phoenix" "Hadoop" ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion}
-	    CheckForDependency "Phoenix" "Zookeeper" ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
-	    ${testfunction} ${phoenixversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion} ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion} ${phoenixhbase11hadoop27zookeeper34java17versions_javaversion}
+	    local hbaseversion="${testgroup}_hbaseversion"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Phoenix" "Hbase" ${!hbaseversion}
+	    CheckForDependency "Phoenix" "Hadoop" ${!hadoopversion}
+	    CheckForDependency "Phoenix" "Zookeeper" ${!zookeeperversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
+	    done
 	done
     done
 }

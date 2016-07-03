@@ -33,22 +33,15 @@ GeneratePigStandardTests() {
 
     for testfunction in GeneratePigStandardTests_Common
     do
-	for pigversion in ${pighadoop24java16versions}
+	for testgroup in ${pig_test_groups}
 	do
-	    CheckForDependency "Pig" "Hadoop" ${pighadoop24java16versions_hadoopversion}
-	    ${testfunction} ${pigversion} ${pighadoop24java16versions_hadoopversion} ${pighadoop24java16versions_javaversion}
-	done
-
-	for pigversion in ${pighadoop26java16versions}
-	do
-	    CheckForDependency "Pig" "Hadoop" ${pighadoop26java16versions_hadoopversion}
-	    ${testfunction} ${pigversion} ${pighadoop26java16versions_hadoopversion} ${pighadoop26java16versions_javaversion}
-	done
-
-	for pigversion in ${pighadoop27java17versions}
-	do
-	    CheckForDependency "Pig" "Hadoop" ${pighadoop27java17versions_hadoopversion}
-	    ${testfunction} ${pigversion} ${pighadoop27java17versions_hadoopversion} ${pighadoop27java17versions_javaversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -104,22 +97,15 @@ GeneratePigDependencyTests() {
 
     for testfunction in GeneratePigDependencyTests_Dependency1
     do
-	for pigversion in ${pighadoop24java16versions}
+	for testgroup in ${pig_test_groups}
 	do
-	    CheckForDependency "Pig" "Hadoop" ${pighadoop24java16versions_hadoopversion}
-	    ${testfunction} ${pigversion} ${pighadoop24java16versions_hadoopversion} ${pighadoop24java16versions_javaversion}
-	done
-	
-	for pigversion in ${pighadoop26java16versions}
-	do
-	    CheckForDependency "Pig" "Hadoop" ${pighadoop26java16versions_hadoopversion}
-	    ${testfunction} ${pigversion} ${pighadoop26java16versions_hadoopversion} ${pighadoop26java16versions_javaversion}
-	done
-
-	for pigversion in ${pighadoop27java17versions}
-	do
-	    CheckForDependency "Pig" "Hadoop" ${pighadoop27java17versions_hadoopversion}
-	    ${testfunction} ${pigversion} ${pighadoop27java17versions_hadoopversion} ${pighadoop27java17versions_javaversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 }

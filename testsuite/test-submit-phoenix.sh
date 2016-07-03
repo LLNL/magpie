@@ -33,9 +33,15 @@ SubmitPhoenixStandardTests_Performanceeval() {
 SubmitPhoenixStandardTests() {
     for testfunction in SubmitPhoenixStandardTests_Performanceeval
     do
-	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+	for testgroup in ${phoenix_test_groups}
 	do
-	    ${testfunction} ${phoenixversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion} ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+	    local hbaseversion="${testgroup}_hbaseversion"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion}
+	    done
 	done
     done
 }
@@ -73,9 +79,15 @@ SubmitPhoenixDependencyTests_Dependency2() {
 SubmitPhoenixDependencyTests() {
     for testfunction in SubmitPhoenixDependencyTests_Dependency1 SubmitPhoenixDependencyTests_Dependency2
     do
-	for phoenixversion in ${phoenixhbase11hadoop27zookeeper34java17versions}
+	for testgroup in ${phoenix_test_groups}
 	do
-	    ${testfunction} ${phoenixversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion} ${phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion} ${phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion}
+	    local hbaseversion="${testgroup}_hbaseversion"
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion}
+	    done
 	done
     done
 }

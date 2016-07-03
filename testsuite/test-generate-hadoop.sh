@@ -57,14 +57,13 @@ GenerateHadoopStandardTests() {
 
     for testfunction in GenerateHadoopStandardTests_StandardTerasort
     do
-	for hadoopversion in ${hadoopjava16versions}
+	for testgroup in ${hadoop_test_groups}
 	do
-	    ${testfunction} ${hadoopversion} ${hadoopjava16versions_javaversion}
-	done
-	
-	for hadoopversion in ${hadoopjava17versions}
-	do
-	    ${testfunction} ${hadoopversion} ${hadoopjava17versions_javaversion}
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -274,14 +273,13 @@ GenerateHadoopDependencyTests() {
 
     for testfunction in GenerateHadoopDependencyTests_Dependency1
     do
-	for hadoopversion in ${hadoopjava16versions}
+	for testgroup in ${hadoop_test_groups}
 	do
-	    ${testfunction} ${hadoopversion} ${hadoopjava16versions_javaversion}
-	done
-
-	for hadoopversion in ${hadoopjava17versions}
-	do
-	    ${testfunction} ${hadoopversion} ${hadoopjava17versions_javaversion}
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion}
+	    done
 	done
     done
 
@@ -291,15 +289,13 @@ GenerateHadoopDependencyTests() {
 
     for testfunction in GenerateHadoopDependencyTests_Dependency2 GenerateHadoopDependencyTests_Dependency3 GenerateHadoopDependencyTests_Dependency4
     do
-# decommissionhdfsnodes doesn't work reliably in 2.2.X, removing it
-	for hadoopversion in ${hadoopjava16versionsdecommission}
+	for testgroup in ${hadoop_test_groups_decommission}
 	do
-	    ${testfunction} ${hadoopversion} ${hadoopjava16versionsdecommission_javaversion}
-	done
-	
-	for hadoopversion in ${hadoopjava17versions}
-	do
-	    ${testfunction} ${hadoopversion} ${hadoopjava17versions_javaversion}
+	    local javaversion="${testgroup}_javaversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!javaversion}
+	    done
 	done
     done
 

@@ -47,10 +47,15 @@ GenerateKafkaStandardTests() {
 
     for testfunction in GenerateKafkaStandardTests_KafkaPerformance
     do
-	for kafkaversion in ${kafkazookeeper34java17versions}
+	for testgroup in ${kafka_test_groups}
 	do
-	    CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
-	    ${testfunction} ${kafkaversion} ${kafkazookeeper34java17versions_zookeeperversion} ${kafkazookeeper34java17versions_javaversion}
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -85,10 +90,15 @@ GenerateKafkaDependencyTests() {
 
     for testfunction in GenerateKafkaDependencyTests_Dependency1
     do
-	for kafkaversion in ${kafkazookeeper34java17versions}
+	for testgroup in ${kafka_test_groups}
 	do
-	    CheckForDependency "Kafka" "Zookeeper" ${kafkazookeeper34java17versions_zookeeperversion}
-	    ${testfunction} ${kafkaversion} ${kafkazookeeper34java17versions_zookeeperversion} ${kafkazookeeper34java17versions_javaversion}
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+	    done
 	done
     done
 }

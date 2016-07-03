@@ -44,16 +44,15 @@ GenerateStormStandardTests() {
 
     for testfunction in GenerateStormStandardTests_StandardWordCount
     do
-	for stormversion in ${stormzookeeper34java16versions}
+	for testgroup in ${storm_test_groups}
 	do
-	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
-	    ${testfunction} ${stormversion} ${stormzookeeper34java16versions_zookeeperversion} ${stormzookeeper34java16versions_javaversion}
-	done
-	
-	for stormversion in ${stormzookeeper34java17versions}
-	do
-	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
-	    ${testfunction} ${stormversion} ${stormzookeeper34java17versions_zookeeperversion} ${stormzookeeper34java17versions_javaversion}
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -85,16 +84,15 @@ GenerateStormDependencyTests() {
 
     for testfunction in GenerateStormDependencyTests_Dependency1
     do
-	for stormversion in ${stormzookeeper34java16versions}
+	for testgroup in ${storm_test_groups}
 	do
-	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java16versions_zookeeperversion}
-	    ${testfunction} ${stormversion} ${stormzookeeper34java16versions_zookeeperversion} ${stormzookeeper34java16versions_javaversion}
-	done
-	
-	for stormversion in ${stormzookeeper34java17versions}
-	do
-	    CheckForDependency "Storm" "Zookeeper" ${stormzookeeper34java17versions_zookeeperversion}
-	    ${testfunction} ${stormversion} ${stormzookeeper34java17versions_zookeeperversion} ${stormzookeeper34java17versions_javaversion}
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+	    done
 	done
     done
 }

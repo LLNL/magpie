@@ -27,10 +27,15 @@ GenerateMahoutStandardTests() {
 
     for testfunction in GenerateMahoutStandardTests_ClusterSyntheticcontrol
     do
-	for mahoutversion in ${mahouthadoop27java17versions}
+	for testgroup in ${mahout_test_groups}
 	do
-	    CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
-	    ${testfunction} ${mahoutversion} ${mahouthadoop27java17versions_hadoopversion} ${mahouthadoop27java17versions_javaversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Mahout" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 }
@@ -71,10 +76,15 @@ GenerateMahoutDependencyTests() {
 
     for testfunction in GenerateMahoutDependencyTests_Dependency1
     do
-	for mahoutversion in ${mahouthadoop27java17versions}
+	for testgroup in ${mahout_test_groups}
 	do
-	    CheckForDependency "Mahout" "Hadoop" ${mahouthadoop27java17versions_hadoopversion}
-	    ${testfunction} ${mahoutversion} ${mahouthadoop27java17versions_hadoopversion} ${mahouthadoop27java17versions_javaversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local javaversion="${testgroup}_javaversion"
+	    CheckForDependency "Mahout" "Hadoop" ${!hadoopversion}
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+	    done
 	done
     done
 }

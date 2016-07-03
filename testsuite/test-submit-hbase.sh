@@ -48,14 +48,14 @@ SubmitHbaseStandardTests_StandardPerformanceEval() {
 SubmitHbaseStandardTests() {
     for testfunction in SubmitHbaseStandardTests_StandardPerformanceEval
     do
-	for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
+	for testgroup in ${hbase_test_groups}
 	do
-	    ${testfunction} ${hbaseversion} ${hbasehadoop26zookeeper34java16versions_hadoopversion} ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
-	done
-    
-	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
-	do
-	    ${testfunction} ${hbaseversion} ${hbasehadoop27zookeeper34java17versions_hadoopversion} ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    for testversion in ${!testgroup}
+	    do
+		${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion}
+	    done
 	done
     done
 }
@@ -96,25 +96,13 @@ SubmitHbaseDependencyTests() {
     
     for testfunction in SubmitHbaseDependencyTests_Dependency1 SubmitHbaseDependencyTests_Dependency2
     do
-	for hbaseversion in ${hbasehadoop26zookeeper34java16versions}
+	for testgroup in ${hbase_test_groups}
 	do
-	    for hadoopversion in ${hbasehadoop26zookeeper34java16versions_hadoopversion}
+	    local hadoopversion="${testgroup}_hadoopversion"
+	    local zookeeperversion="${testgroup}_zookeeperversion"
+	    for testversion in ${!testgroup}
 	    do
-		for zookeeperversion in ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
-		do
-		    ${testfunction} ${hbaseversion} ${hbasehadoop26zookeeper34java16versions_hadoopversion} ${hbasehadoop26zookeeper34java16versions_zookeeperversion}
-		done
-	    done
-	done
-
-	for hbaseversion in ${hbasehadoop27zookeeper34java17versions}
-	do
-	    for hadoopversion in ${hbasehadoop27zookeeper34java17versions_hadoopversion}
-	    do
-		for zookeeperversion in ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
-		do
-		    ${testfunction} ${hbaseversion} ${hbasehadoop27zookeeper34java17versions_hadoopversion} ${hbasehadoop27zookeeper34java17versions_zookeeperversion}
-		done
+		${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion}
 	    done
 	done
     done
