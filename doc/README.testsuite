@@ -12,6 +12,13 @@ Generally speaking, to run it:
 
      - The number of nodes in each job of the tests
 
+   - (EXPERT) In test-common.sh, configure versions that individual
+     tests require.  For example, if you want to test Pig against
+     Hadoop 2.6.2 instead of Hadoop 2.6.4, adjust appropriately.
+
+     If you wish you can configure versions of tests to generate too,
+     although that is usually done below in test-generate.sh.
+
 2) Test generation
 
    - In test-generate.sh, you may need to configure
