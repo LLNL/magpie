@@ -50,6 +50,7 @@
 storm.cluster.mode: "distributed"
 
 nimbus.host: "NIMBUSHOST"
+nimbus.seeds: ["NIMBUSHOST"]
 
 nimbus.thrift.port: NIMBUSTHRIFTPORT
 

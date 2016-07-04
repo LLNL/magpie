@@ -35,6 +35,13 @@ Magpie_make_all_local_dirs_node_specific
 
 stormstarterjarpath="${STORM_HOME}/examples/storm-starter/storm-starter-topologies-${STORM_VERSION}.jar"
 
+if echo ${STORM_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    stormwordcountclass="org.apache.storm.starter.WordCountTopology"
+else
+    stormwordcountclass="storm.starter.WordCountTopology"
+fi
+
 cd ${STORM_HOME}
 	    
 command="bin/storm list"
@@ -50,7 +57,12 @@ then
 fi
 
 echo "*** Submitting WordCount to Storm"
-command="bin/storm jar ${stormstarterjarpath} storm.starter.WordCountTopology WordCount -c storm.starter.WordCountTopology WordCount -c nimbus.host=${STORM_NIMBUS_HOST}"
+if echo ${STORM_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    command="bin/storm jar ${stormstarterjarpath} ${stormwordcountclass} WordCount -c ${stormwordcountclass} WordCount -c nimbus.seeds=[\"${STORM_NIMBUS_HOST}\"]"
+else
+    command="bin/storm jar ${stormstarterjarpath} ${stormwordcountclass} WordCount -c ${stormwordcountclass} WordCount -c nimbus.host=${STORM_NIMBUS_HOST}"
+fi
 echo "Running $command" >&2
 $command
 
