@@ -4,6 +4,8 @@ Support "args" options to Magpie, Hadoop, Hbase, Spark, Storm script
   options.
 Support Spark 1.6.2-bin-hadoop2.6.
 Update default Spark to 1.6.2-bin-hadoop2.6.
+Support Storm 0.10.1.
+Update default Storm to 0.10.1.
 When users want to use alternate config files, instead of copying all
   files from ${MAGPIE_SCRIPTS_HOME}/conf, into a project's alternate
   CONF_FILES director (e.g. HADOOP_CONF_FILES), users can copy only the
