@@ -78,7 +78,7 @@ stormzookeeper34java17versions="0.9.5 0.9.6 0.10.0 0.10.1"
 stormzookeeper34java17versions_zookeeperversion="3.4.8"
 stormzookeeper34java17versions_javaversion=${java17}
 
-storm_test_groups="stormzookeeper34java16versions"
+storm_test_groups="stormzookeeper34java16versions stormzookeeper34java17versions"
 storm_all_versions="${stormzookeeper34java16versions} ${stormzookeeper34java17versions}"
 
 kafkazookeeper34java17versions="2.11-0.9.0.0"
