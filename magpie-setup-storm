@@ -213,4 +213,22 @@ then
     echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_stormenvsh}
 fi
 
+# Get only the major and minor version, we don't care about the release
+
+stormmajor=`echo ${STORM_VERSION} | cut -d. -f1`
+stormminor=`echo ${STORM_VERSION} | cut -d. -f2`
+
+stormtestversion="$stormmajor.$stormminor"
+
+# Handle special settings depending on version
+# 0 is =, 1 is >, 2 is <
+Magpie_vercomp ${stormtestversion} 1.0
+vercomp_result=$?
+if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+then
+    sed -i -e "s/nimbus.host/# nimbus.host/" ${post_stormyaml}
+else
+    sed -i -e "s/nimbus.seeds/# nimbus.seeds/" ${post_stormyaml}
+fi
+
 exit 0
