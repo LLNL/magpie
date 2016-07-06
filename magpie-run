@@ -91,11 +91,11 @@ fi
 # Flag for setup check
 prior_setup_successful=true
 
+totalsleepwait=0
+
 #
 # Setup ZooKeeper
 #
-
-totalsleepwait=0
 
 # Zookeeper setup comes first, as other things like Hbase & Storm require it
 
