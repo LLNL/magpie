@@ -120,6 +120,10 @@ export MAGPIE_JOB_TYPE="storm"
 
 # Specify arguments for script specified in MAGPIE_SCRIPT_PATH
 #
+# Note that many Magpie generated environment variables are not
+# generated until the job has launched.  You won't be able to use them
+# here.
+#
 # export MAGPIE_SCRIPT_ARGS="" 
 
 # Specify script startup / shutdown time window
@@ -341,6 +345,10 @@ export STORM_MODE="stormwordcount"
 # export STORM_SCRIPT_PATH="${HOME}/my-job-script"
 
 # Specify arguments for script specified in STORM_SCRIPT_PATH
+#
+# Note that many Magpie generated environment variables, such as
+# STORM_MASTER_NODE, are not generated until the job has launched.
+# You won't be able to use them here.
 #
 # export STORM_SCRIPT_ARGS="" 
 

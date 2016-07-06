@@ -394,5 +394,9 @@ export SPARK_MODE="sparkpi"
 
 # Specify arguments for script specified in SPARK_SCRIPT_PATH
 #
+# Note that many Magpie generated environment variables, such as
+# SPARK_MASTER_NODE, are not generated until the job has launched.
+# You won't be able to use them here.
+#
 # export SPARK_SCRIPT_ARGS="" 
 

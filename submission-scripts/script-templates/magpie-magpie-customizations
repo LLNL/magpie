@@ -50,6 +50,10 @@ export MAGPIE_JOB_TYPE="script"
 
 # Specify arguments for script specified in MAGPIE_SCRIPT_PATH
 #
+# Note that many Magpie generated environment variables are not
+# generated until the job has launched.  You won't be able to use them
+# here.
+#
 # export MAGPIE_SCRIPT_ARGS="" 
 
 # Specify script startup / shutdown time window

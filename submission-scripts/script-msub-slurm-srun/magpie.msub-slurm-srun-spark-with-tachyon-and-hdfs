@@ -120,6 +120,10 @@ export MAGPIE_JOB_TYPE="spark"
 
 # Specify arguments for script specified in MAGPIE_SCRIPT_PATH
 #
+# Note that many Magpie generated environment variables are not
+# generated until the job has launched.  You won't be able to use them
+# here.
+#
 # export MAGPIE_SCRIPT_ARGS="" 
 
 # Specify script startup / shutdown time window
@@ -611,6 +615,10 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 
 # Specify arguments for script specified in HADOOP_SCRIPT_PATH
 #
+# Note that many Magpie generated environment variables, such as
+# HADOOP_MASTER_NODE, are not generated until the job has launched.
+# You won't be able to use them here.
+#
 # export HADOOP_SCRIPT_ARGS="" 
 
 ############################################################################
@@ -1020,6 +1028,10 @@ export SPARK_MODE="sparkpi"
 # export SPARK_SCRIPT_PATH="${HOME}/my-job-script"
 
 # Specify arguments for script specified in SPARK_SCRIPT_PATH
+#
+# Note that many Magpie generated environment variables, such as
+# SPARK_MASTER_NODE, are not generated until the job has launched.
+# You won't be able to use them here.
 #
 # export SPARK_SCRIPT_ARGS="" 
 

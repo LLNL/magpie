@@ -109,5 +109,9 @@ export STORM_MODE="stormwordcount"
 
 # Specify arguments for script specified in STORM_SCRIPT_PATH
 #
+# Note that many Magpie generated environment variables, such as
+# STORM_MASTER_NODE, are not generated until the job has launched.
+# You won't be able to use them here.
+#
 # export STORM_SCRIPT_ARGS="" 
 
