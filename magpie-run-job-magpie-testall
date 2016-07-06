@@ -37,7 +37,7 @@ then
     echo "*******************************************************"
     echo "* Running Hadoop Terasort"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-hadoop-terasort)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-terasort)
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]
@@ -45,7 +45,7 @@ then
     echo "*******************************************************"
     echo "* Running Pig Testpig"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-pig-testpig)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-pig-testpig)
 fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
@@ -53,7 +53,7 @@ then
     echo "*******************************************************"
     echo "* Running Mahout Clustersyntheticcontrol"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-mahout-clustersyntheticcontrol)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-clustersyntheticcontrol)
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ] \
@@ -62,7 +62,7 @@ then
     echo "*******************************************************"
     echo "* Running Hbase Performance Evaluation"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-hbase-performanceeval)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hbase-performanceeval)
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ] \
@@ -71,7 +71,7 @@ then
     echo "*******************************************************"
     echo "* Running Phoenix Performance Evaluation"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-phoenix-performanceeval)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-phoenix-performanceeval)
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ] \
@@ -80,7 +80,7 @@ then
     echo "*******************************************************"
     echo "* Running Spark SparkPi"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-spark-sparkpi)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkpi)
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ] \
@@ -89,7 +89,7 @@ then
     echo "*******************************************************"
     echo "* Running Kafka Performance"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-kafka-performance)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-kafka-performance)
 fi
 
 if [ "${STORM_SETUP}" == "yes" ] \
@@ -98,7 +98,7 @@ then
     echo "*******************************************************"
     echo "* Running Storm Foobar"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-storm-stormwordcount)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-storm-stormwordcount)
 fi
 
 if [ "${TACHYON_SETUP}" == "yes" ] \
@@ -107,7 +107,7 @@ then
     echo "*******************************************************"
     echo "* Running Tachyon Testtachyon"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-tachyon-testtachyon)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-tachyon-testtachyon)
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
@@ -116,7 +116,7 @@ then
     echo "*******************************************************"
     echo "* Running Zookeeper Zookeeperruok"
     echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie-run-zookeeper-zookeeperruok)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-zookeeper-zookeeperruok)
 fi
 
 exit 0

@@ -63,7 +63,7 @@ yarn_job_kill_handler () {
 
 if [ "$1X" == "X" ]
 then
-    echo "Internal error - magpie-run-job-wait-mode, first argument unset"
+    echo "Internal error - magpie-run-execute, first argument unset"
     exit 1
 fi
 
@@ -73,7 +73,7 @@ if [ "$1" != "interactive" ] \
     && [ "$1" != "script" ] \
     && [ "$1" != "scriptnokill" ]
 then
-    echo "Internal error - magpie-run-job-wait-mode, first argument invalid = $1"
+    echo "Internal error - magpie-run-execute, first argument invalid = $1"
     exit 1
 fi
 
@@ -83,7 +83,7 @@ if [ "${jobwaittype}" == "script" ] || [ "${jobwaittype}" == "scriptnokill" ]
 then
     if [ "$2X" == "X" ]
     then
-	echo "Internal error - magpie-run-job-wait-mode, second argument unset"
+	echo "Internal error - magpie-run-execute, second argument unset"
 	exit 1
     fi
     scripttorun=$2
@@ -94,12 +94,12 @@ mypid=$$
 
 if [ "${jobwaittype}" == "interactive" ]
 then
-    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep countdown &
+    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
     childpid=$!
     typemessage="'${jobwaittype}' mode"
 elif [ "${jobwaittype}" == "launch" ] || [ "${jobwaittype}" == "server" ]
 then
-    ${MAGPIE_SCRIPTS_HOME}/magpie-run-sleep normal &
+    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep normal &
     childpid=$!
     typemessage="'${jobwaittype}' mode"
 elif [ "${jobwaittype}" == "script" ] || [ "${jobwaittype}" == "scriptnokill" ]
