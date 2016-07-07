@@ -1,0 +1,221 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core processing script for setting up daemons and
+# running jobs.  For the most part, it shouldn't be editted.  See
+# job submission files for configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
+
+Magpie_run_start_hbase () {
+    if [ "${HBASE_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    then
+	cd ${HBASE_HOME}
+
+	if [ ${HBASE_MODE} != "setuponly" ]
+	then
+            # Make variables unspecified for launching
+	    Magpie_make_all_local_dirs_unspecified
+
+	    echo "Starting hbase"
+	    ${hbasesetupscriptprefix}/start-hbase.sh
+            if [ "${HBASE_START_THRIFT_SERVER}" == "yes" ]
+            then
+		${hbasesetupscriptprefix}/hbase-daemon.sh start thrift -threadpool
+            fi
+
+            # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+
+            # My rough estimate for setup time is 30 seconds per 128 nodes
+	    local sleepwait=`expr ${HBASE_REGIONSERVER_COUNT} \/ 128 \* 30`
+	    if [ ${sleepwait} -lt 30 ]
+	    then
+		sleepwait=30
+	    fi
+	    echo "Waiting ${sleepwait} seconds to allow Hbase daemons to setup"
+	    sleep ${sleepwait}
+	    totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+	fi
+
+	echo "*******************************************************"
+	echo "*"
+	echo "* Hbase Information"
+	echo "*"
+	echo "* You can view your Hbase status by launching a web browser and pointing to ..."
+	echo "*"
+	echo "* Hbase Master: http://${HBASE_MASTER_NODE}:${HBASE_MASTER_INFO_PORT}"
+	echo "* Hbase RegionServer: http://<REGIONSERVER>:${HBASE_REGIONSERVER_INFO_PORT}"
+	echo "*" 
+	echo "* To access Hbase directly, you'll want to:"
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+	else
+	    echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+	fi
+	echo "*   cd $HBASE_HOME"
+	echo "*"
+	echo "* Then you can do as you please.  For example to interact in the Hbase shell :"
+	echo "*" 
+	echo "*   ${hbasecmdprefix}/hbase shell"
+
+	if [ "${HBASE_MODE}" == "setuponly" ]
+	then
+	    echo "*" 
+	    echo "* To setup, you probably want to run:" 
+	    echo "*"
+	    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+	    else
+		echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+	    fi
+	    echo "*   cd $HBASE_HOME"
+	    echo "*   ${hbasesetupscriptprefix}/start-hbase.sh" 
+	fi
+
+	echo "*" 
+	echo "* To end/cleanup your session, kill the daemons via:"
+	echo "*" 
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
+	else
+	    echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
+	fi
+	echo "*   cd $HBASE_HOME"
+	echo "*   ${hbasesetupscriptprefix}/stop-hbase.sh"
+	echo "*" 
+	echo "* Some additional environment variables you may sometimes wish to set"
+	echo "*" 
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	    echo "*   setenv HBASE_HOME \"${HBASE_HOME}\""
+	else
+	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	    echo "*   export HBASE_HOME=\"${HBASE_HOME}\""
+	fi
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    echo "*"
+	    echo "* If running interactively, sourcing"
+	    echo "*"
+	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	    echo "*"
+	    echo "* will set most common environment variables for your job."
+	fi
+	echo "*" 
+	echo "*******************************************************"
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "setenv HBASE_HOME \"${HBASE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HBASE_LOG_DIR \"${HBASE_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HBASE_MASTER_NODE \"${HBASE_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HBASE_REGIONSERVER_COUNT \"${HBASE_REGIONSERVER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv HBASE_VERSION \"${HBASE_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    else
+		echo "export HBASE_HOME=\"${HBASE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HBASE_MASTER_NODE=\"${HBASE_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HBASE_REGIONSERVER_COUNT=\"${HBASE_REGIONSERVER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export HBASE_VERSION=\"${HBASE_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
+	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+
+	if [ ${HBASE_MODE} != "setuponly" ]
+	then
+	    local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+
+	    if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+	    then  
+	        # Could be more dynamic w/ slurm call to determine current
+	        # run time, but probably is sufficient for this trivial
+	        # part.  Minimally, have to leave the totalsleepwait code
+	        # around for non-slurm systems.
+		local hbasemastermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+		
+		if [ "${hbasemastermaxwaitseconds}" -lt 30 ]
+		then
+		    hbasemastermaxwaitseconds=30
+		fi
+		
+		local hbasemastermaxwaittimes=`expr ${hbasemastermaxwaitseconds} \/ 30`
+	    else
+		local hbasemastermaxwaittimes=1
+	    fi
+	    
+	    cd ${HBASE_HOME}
+
+	    hbasemastercameup=0
+	    
+	    for ((i = 1; i <= ${hbasemastermaxwaittimes}; i++)); do
+		
+	        # example output : "9 servers, 0 dead, 4.7778 average load"
+		if echo status | ${hbasecmdprefix}/hbase shell | grep -q "servers"
+		then
+		    hbasemastercameup=1
+		    break
+		fi
+		
+		echo "Waiting 30 more seconds for Hbase master to come up"
+		sleep 30
+		totalsleepwait=`expr ${totalsleepwait} + 30`
+	    done
+	    
+	    if [ "${hbasemastercameup}" == "0" ]
+	    then
+		echo "Hbase Master never came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+		hbase_should_be_torndown=1
+		hbase_setup_successful=0
+		prior_setup_successful=false
+	    else
+		hbase_should_be_torndown=1
+		hbase_setup_successful=1
+	    fi
+	else
+	    hbase_should_be_torndown=1
+	    hbase_setup_successful=1
+	fi
+    else
+	hbase_should_be_torndown=0
+	hbase_setup_successful=1
+    fi
+}
