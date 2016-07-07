@@ -70,6 +70,24 @@ Magpie_am_I_master () {
 	then 
 	    return 0
 	fi
+    elif [ "${KAFKA_SETUP}" == "yes" ] && [ -f "${KAFKA_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
+    elif [ "${ZEPPELIN_SETUP}" == "yes" ] && [ -f "${ZEPPELIN_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
+    elif [ "${TACHYON_SETUP}" == "yes" ] && [ -f "${TACHYON_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
     fi
     return 1
 }
