@@ -121,6 +121,8 @@ Magpie_run_start_zookeeper
 # Will set hadoop_should_be_torndown & hadoop_setup_successful appropriately
 Magpie_run_start_hadoop
 
+# After Zookeeper setup, requires Zookeeper
+
 # Will set hbase_should_be_torndown & hbase_setup_successful appropriately
 Magpie_run_start_hbase
 
@@ -137,6 +139,8 @@ Magpie_run_start_kafka
 
 # Will set zeppelin_should_be_torndown & zeppelin_setup_successful appropriately
 Magpie_run_start_zeppelin
+
+# After Zookeeper setup, requires Zookeeper
 
 # Will set storm_should_be_torndown & storm_setup_successful appropriately
 Magpie_run_start_storm

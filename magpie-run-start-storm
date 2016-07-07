@@ -36,6 +36,14 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 Magpie_run_start_storm () {
     if [ "${STORM_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
+	if [ "${zookeeper_setup_successful}" == "0" ]
+	then
+	    echo "Magpie Internal Error: Attempt to setup Storm without Zookeeper being setup"
+	    storm_should_be_torndown=0
+	    storm_setup_successful=0
+	    return 1
+	fi
+
 	if [ ${STORM_MODE} != "setuponly" ]
 	then
 	    # Make variables unspecified for launching

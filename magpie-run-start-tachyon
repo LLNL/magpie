@@ -36,6 +36,14 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 Magpie_run_start_tachyon () {
     if [ "${TACHYON_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
+	if [ "${hadoop_setup_successful}" == "0" ]
+	then
+	    echo "Magpie Internal Error: Attempt to setup Tachyon without Hadoop being setup"
+	    tachyon_should_be_torndown=0
+	    tachyon_setup_successful=0
+	    return 1
+	fi
+
 	cd ${TACHYON_HOME}
 
 	if [ ${TACHYON_MODE} != "setuponly" ]

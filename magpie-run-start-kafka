@@ -36,6 +36,14 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 Magpie_run_start_kafka () {
     if [ "${KAFKA_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
+	if [ "${zookeeper_setup_successful}" == "0" ]
+	then
+	    echo "Magpie Internal Error: Attempt to setup Kafka without Zookeeper being setup"
+	    kafka_should_be_torndown=0
+	    kafka_setup_successful=0
+	    return 1
+	fi
+
 	cd ${KAFKA_HOME}
 
 	if [ ${KAFKA_MODE} != "setuponly" ]

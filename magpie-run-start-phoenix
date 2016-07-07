@@ -36,6 +36,14 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 Magpie_run_start_phoenix () {
     if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
+	if [ "${hbase_setup_successful}" == "0" ]
+	then
+	    echo "Magpie Internal Error: Attempt to setup Phoenix without Hbase being setup"
+	    phoenix_should_be_torndown=0
+	    phoenix_setup_successful=0
+	    return 1
+	fi
+
 	cd ${PHOENIX_HOME}
 
 	if [ ${PHOENIX_MODE} == "server" ]
