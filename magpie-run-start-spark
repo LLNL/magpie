@@ -1,0 +1,192 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core processing script for setting up daemons and
+# running jobs.  For the most part, it shouldn't be editted.  See
+# job submission files for configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
+
+Magpie_run_start_spark () {
+    if [ "${SPARK_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    then
+	cd ${SPARK_HOME}
+
+	if [ ${SPARK_MODE} != "setuponly" ]
+	then
+	    if [ "${SPARK_USE_YARN}" != "yes" ]
+	    then
+	        # Make variables unspecified for launching
+		Magpie_make_all_local_dirs_unspecified
+
+		echo "Starting spark"
+		${sparksetupscriptprefix}/start-all.sh
+		
+                # Make variables specific now within Magpie
+		Magpie_make_all_local_dirs_node_specific
+		
+                # My rough estimate for setup time is 30 seconds per 128 nodes
+		local sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
+		if [ ${sleepwait} -lt 30 ]
+		then
+		    sleepwait=30
+		fi
+		echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
+		sleep ${sleepwait}
+		totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+	    fi
+	fi
+
+	echo "*******************************************************"
+	echo "*"
+	echo "* Spark Information"
+	echo "*"
+	echo "* You can view your Spark status by launching a web browser and pointing to ..."
+	echo "*"
+	if [ "${SPARK_USE_YARN}" != "yes" ]
+	then 
+	    echo "* Spark Master: http://${SPARK_MASTER_NODE}:${SPARK_MASTER_WEBUI_PORT}"
+	    echo "* Spark Worker: http://<WORKERNODE>:${SPARK_WORKER_WEBUI_PORT}"
+	    echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${SPARK_APPLICATION_DASHBOARD_PORT}"
+	    echo "*" 
+	    echo "* The Spark Master for running jobs is"
+	    echo "*"
+	    echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+	fi
+	echo "*"
+	echo "* To access Spark directly, you'll want to:"
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+	else
+	    echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+	fi
+	echo "*   cd $SPARK_HOME"
+	echo "*"
+	echo "* Then you can do as you please.  For example to run a job:"
+	echo "*" 
+	if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+	then 
+	    echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+	else
+	    echo "*   ${sparkcmdprefix}/spark-submit --class <class> <jar>"
+	fi
+
+	if [ "${SPARK_MODE}" == "setuponly" ]
+	then
+	    echo "*" 
+	    echo "* To setup, you probably want to run:" 
+	    echo "*"
+	    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+	    else
+		echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+	    fi
+	    echo "*   cd $SPARK_HOME"
+	    echo "*   ${sparksetupscriptprefix}/start-all.sh" 
+	fi
+
+	echo "*" 
+	echo "* To end/cleanup your session, kill the daemons via:"
+	echo "*" 
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+	else
+	    echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+	fi
+	echo "*   cd $SPARK_HOME"
+	echo "*   ${sparksetupscriptprefix}/stop-all.sh"
+	echo "*" 
+	echo "* Some additional environment variables you may sometimes wish to set"
+	echo "*" 
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	    echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
+	else
+	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	    echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
+	fi
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    echo "*"
+	    echo "* If running interactively, sourcing"
+	    echo "*"
+	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	    echo "*"
+	    echo "* will set most common environment variables for your job."
+	fi
+	echo "*" 
+	echo "*******************************************************"
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "setenv SPARK_HOME \"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv SPARK_LOG_DIR \"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv SPARK_MASTER_NODE \"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		if [ "${SPARK_USE_YARN}" != "yes" ]
+		then
+		    echo "setenv SPARK_MASTER_PORT \"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+		echo "setenv SPARK_SLAVE_COUNT \"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv SPARK_SLAVE_CORE_COUNT \"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv SPARK_VERSION \"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    else
+		echo "export SPARK_HOME=\"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export SPARK_MASTER_NODE=\"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		if [ "${SPARK_USE_YARN}" != "yes" ]
+		then
+		    echo "export SPARK_MASTER_PORT=\"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+		echo "export SPARK_SLAVE_COUNT=\"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export SPARK_SLAVE_CORE_COUNT=\"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export SPARK_VERSION=\"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
+	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+
+        # Nothing to check for Spark, setup always passes
+	spark_should_be_torndown=1
+	spark_setup_successful=1
+    else
+	spark_should_be_torndown=0
+	spark_setup_successful=1
+    fi
+}
