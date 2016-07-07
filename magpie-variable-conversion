@@ -312,7 +312,7 @@ Magpie_make_zeppelin_local_dirs () {
 
 	export ZEPPELIN_CONF_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/conf
 	export ZEPPELIN_LOG_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/log
-	export ZEPPELIN_LOCAL_SCRATCH_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/scratch
+	export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/scratch
 	export ZEPPELIN_PID_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/pid
 
 	if [ "${which}" == "specific" ]
@@ -320,7 +320,7 @@ Magpie_make_zeppelin_local_dirs () {
 	    myhostname=`hostname`
 	    export ZEPPELIN_CONF_DIR=$(echo $ZEPPELIN_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
 	    export ZEPPELIN_LOG_DIR=$(echo $ZEPPELIN_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export ZEPPELIN_LOCAL_SCRATCH_DIR=$(echo $ZEPPELIN_LOCAL_SCRATCH_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+	    export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=$(echo $ZEPPELIN_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
 	    export ZEPPELIN_PID_DIR=$(echo $ZEPPELIN_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
 	fi
     fi
