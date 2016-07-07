@@ -119,4 +119,5 @@ Magpie_run_stop_hadoop () {
 	    fi
 	fi
     fi
+    hadoop_teardown_complete=1
 }

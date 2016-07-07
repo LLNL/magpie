@@ -44,4 +44,5 @@ Magpie_run_stop_zeppelin () {
             ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh stop
 	fi
     fi
+    zeppelin_teardown_complete=1
 }

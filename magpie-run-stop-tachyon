@@ -34,6 +34,11 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 
 Magpie_run_stop_tachyon () {
+    if [ "${hadoop_teardown_complete}" == "1" ]
+    then
+	echo "Magpie Internal Warning: tearing down Tachyon after Hadoop"
+    fi
+
     if [ "${TACHYON_SETUP}" == "yes" ] && [ "${tachyon_should_be_torndown}" == "1" ]
     then
 	if [ ${TACHYON_MODE} != "setuponly" ]
@@ -53,4 +58,5 @@ Magpie_run_stop_tachyon () {
 	${tachyoncmdprefix}/tachyon-stop.sh all
 	fi
     fi
+    tachyon_teardown_complete=1
 }

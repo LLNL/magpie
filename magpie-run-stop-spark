@@ -53,4 +53,5 @@ Magpie_run_stop_spark () {
 	    fi
 	fi
     fi
+    spark_teardown_complete=1
 }

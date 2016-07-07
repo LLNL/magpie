@@ -34,6 +34,11 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 
 Magpie_run_stop_phoenix () {
+    if [ "${hbase_teardown_complete}" == "1" ]
+    then
+	echo "Magpie Internal Warning: tearing down Phoenix after Hbase"
+    fi
+
     if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${phoenix_should_be_torndown}" == "1" ]
     then
 	if [ ${PHOENIX_MODE} == "server" ]
@@ -50,4 +55,5 @@ Magpie_run_stop_phoenix () {
 	    Magpie_make_all_local_dirs_node_specific
 	fi
     fi
+    phoenix_teardown_complete=1
 }

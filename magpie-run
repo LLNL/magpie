@@ -550,28 +550,37 @@ then
     fi
 fi
 
+# Tachyon before Hadoop shutdown, may need to flush
+
+# Sets tachyon_teardown_complete if teardown done
+Magpie_run_stop_tachyon
+
+# Sets storm_teardown_complete if teardown done
 Magpie_run_stop_storm
 
-Magpie_run_stop_spark
+# Sets zeppelin_teardown_complete if teardown done
+Magpie_run_stop_zeppelin
 
+# Sets kafka_teardown_complete if teardown done
 Magpie_run_stop_kafka
 
-Magpie_run_stop_zeppelin
+# Sets spark_teardown_complete if teardown done
+Magpie_run_stop_spark
 
 # Before Hbase, depends on Hbase
 
+# Sets phoenix_teardown_complete if teardown done
 Magpie_run_stop_phoenix
 
+# Sets hbase_teardown_complete if teardown done
 Magpie_run_stop_hbase
 
-# Tachyon before Hadoop shutdown, may need to flush
-
-Magpie_run_stop_tachyon
-
+# Sets hadoop_teardown_complete if teardown done
 Magpie_run_stop_hadoop
 
 # Zookeeper teardown comes last, as other things like Hbase & Storm require it
 
+# Sets zookeeper_teardown_complete if teardown done
 Magpie_run_stop_zookeeper
 
 exit 0

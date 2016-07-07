@@ -34,6 +34,11 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 
 Magpie_run_stop_kafka () {
+    if [ "${zookeeper_teardown_complete}" == "1" ]
+    then
+	echo "Magpie Internal Warning: tearing down Kafka after Zookeeper"
+    fi
+
     if [ "${KAFKA_SETUP}" == "yes" ] && [ "${kafka_should_be_torndown}" == "1" ]
     then
 	if [ ${KAFKA_MODE} != "setuponly" ]
@@ -50,4 +55,5 @@ Magpie_run_stop_kafka () {
 	    Magpie_make_all_local_dirs_node_specific
 	fi
     fi
+    kafka_teardown_complete=1
 }
