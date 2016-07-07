@@ -282,9 +282,11 @@ then
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
-	    # XXX figure out how to refactor
 	    if [ $? -eq 0 ]
 	    then
+	        # Sets hdfsstoredversionpath
+		Magpie_get_hdfsstoredversionpath
+
 		if [ "${hdfsstoredversionpath}X" != "X" ]
 		then
 		    rm -f ${hdfsstoredversionpath}
@@ -300,9 +302,11 @@ then
 	    scriptpid=$!
 	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
-	    # XXX figure out how to refactor
 	    if [ $? -eq 0 ]
 	    then
+	        # Sets hdfsstorednodecountpath
+		Magpie_get_hdfsstorednodecountpath
+
 		rm -f ${hdfsstorednodecountpath}
 		echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${hdfsstorednodecountpath}
 	    fi

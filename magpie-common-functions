@@ -572,3 +572,30 @@ Magpie_find_conffile () {
 
     eval $__returnvar="${conffilefound}"
 }
+
+Magpie_get_networkedhdfspath () {
+    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
+    then
+	networkedhdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
+    elif [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+    then
+	networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
+    else
+	echo "Magpie Internal Error: Magpie_get_networkedhdfspath called without HDFS networked path set used" 
+    fi
+    
+    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+    then
+	networkedhdfspath="$networkedhdfspath/${MAGPIE_JOB_ID}"
+    fi
+}
+
+Magpie_get_hdfsstoredversionpath () {
+    Magpie_get_networkedhdfspath
+    hdfsstoredversionpath=${networkedhdfspath}/magpie.hadoop-version
+}
+
+Magpie_get_hdfsstorednodecountpath () {
+    Magpie_get_networkedhdfspath
+    hdfsstorednodecountpath=${networkedhdfspath}/magpie.node-count
+}

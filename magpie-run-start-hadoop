@@ -52,21 +52,10 @@ Magpie_run_start_hadoop () {
 		if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
 		    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
 		then
-		    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-		    then
-			local hdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
-		    else
-			local hdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
-		    fi
-
-                    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-                    then
-			hdfspath="$hdfspath/${MAGPIE_JOB_ID}"
-                    fi
-
-		    # XXX figure out how to refactor
-		    hdfsstoredversionpath=${hdfspath}/magpie.hadoop-version
-		    hdfsstorednodecountpath=${hdfspath}/magpie.node-count
+		    # Sets networkedhdfspath & hdfsstoredversionpath
+		    Magpie_get_hdfsstoredversionpath
+		    # Sets networkedhdfspath & hdfsstorednodecountpath
+		    Magpie_get_hdfsstorednodecountpath
 
 		    # Older versions of Magpie didn't store this variable
 		    if [ -f ${hdfsstoredversionpath} ]
@@ -81,7 +70,7 @@ Magpie_run_start_hadoop () {
 			    if [ "${vercomp_result}" == "1" ]
 			    then
 				echo "**** HDFS Issue ****"
-				echo "HDFS version at mount ${hdfspath} is older than ${HADOOP_VERSION}."
+				echo "HDFS version at mount ${networkedhdfspath} is older than ${HADOOP_VERSION}."
 				if [ "${HADOOP_MODE}" != "upgradehdfs" ]
 				then
 				    echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
@@ -90,7 +79,7 @@ Magpie_run_start_hadoop () {
 				echo "**** HDFS Issue ****"
 			    else
 				echo "**** HDFS Issue ****"
-				echo "HDFS version at mount ${hdfspath} is newer than ${HADOOP_VERSION}."
+				echo "HDFS version at mount ${networkedhdfspath} is newer than ${HADOOP_VERSION}."
 				echo "Please use a newer Hadoop version."
 				echo "Or if you wish to use an older Hadoop version, you can setup HDFS on another path"
 				echo "**** HDFS Issue ****"
