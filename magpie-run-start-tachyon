@@ -1,0 +1,202 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core processing script for setting up daemons and
+# running jobs.  For the most part, it shouldn't be editted.  See
+# job submission files for configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
+
+Magpie_run_start_tachyon () {
+    if [ "${TACHYON_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    then
+	cd ${TACHYON_HOME}
+
+	if [ ${TACHYON_MODE} != "setuponly" ]
+	then
+	    # Must be done here instead of in magpie-setup-tachyon, b/c
+	    # if Hadoop is setup, the format needs to contact HDFS
+	    if [ "${TACHYON_JOURNAL_FOLDER}X" == "X" ]
+	    then
+		local tachyonformat=1
+	    else
+		if [ ! -d "${TACHYON_JOURNAL_FOLDER}" ]
+		then
+		    local tachyonformat=1
+
+		    mkdir -p ${TACHYON_JOURNAL_FOLDER}
+		    if [ $? -ne 0 ] ; then
+			echo "mkdir failed making ${TACHYON_JOURNAL_FOLDER}"
+			exit 1
+		    fi
+		else
+		    local tachyonformat=0
+		fi
+	    fi
+
+	    if [ "${tachyonformat}" == "1" ]
+	    then
+		echo "*******************************************************"
+		echo "* Formatting Tachyon"
+		echo "*******************************************************"
+		${tachyoncmdprefix}/tachyon format
+
+                # My rough estimate for setup time is 15 seconds per 128 nodes
+		local sleepwait=`expr ${TACHYON_SLAVE_COUNT} \/ 128 \* 15`
+		if [ ${sleepwait} -lt 15 ]
+		then
+		    sleepwait=15
+		fi
+		echo "Waiting ${sleepwait} seconds to allow Tachyon format to complete"
+		sleep ${sleepwait}
+		totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+	    fi
+
+	    echo "Starting tachyon"
+	    ${tachyoncmdprefix}/tachyon-start.sh -N all NoMount
+	    
+            # My rough estimate for setup time is 30 seconds per 128 nodes
+	    local sleepwait=`expr ${TACHYON_SLAVE_COUNT} \/ 128 \* 30`
+	    if [ ${sleepwait} -lt 30 ]
+	    then
+		sleepwait=30
+	    fi
+	    echo "Waiting ${sleepwait} seconds to allow Tachyon daemons to setup"
+	    sleep ${sleepwait}
+	    totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+	fi
+
+	echo "*******************************************************"
+	echo "*"
+	echo "* Tachyon Information"
+	echo "*"
+	echo "* You can view your Tachyon status by launching a web browser and pointing to ..."
+	echo "*"
+	echo "* Tachyon UI: http://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_WEB_PORT}"
+	echo "*" 
+	echo "* To access Tachyon directly, you'll most likely want to:"
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} <WORKERNODE>"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\""
+	else
+	    echo "*   export TACHYON_CONF_DIR=\"${TACHYON_CONF_DIR}\""
+	fi
+	echo "*   cd $TACHYON_HOME"
+	echo "*"
+	echo "* Then you can do as you please.  For example:"
+	echo "*" 
+	echo "*   ${tachyoncmdprefix}/tachyon tfs ls /"
+	echo "*" 
+
+	if [ "${TACHYON_MODE}" == "setuponly" ]
+	then
+ 	    echo "* To setup, you probably want to run:" 
+	    echo "*"
+	    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${TACHYON_MASTER_NODE}"
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "*   setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\""
+	    else
+		echo "*   export TACHYON_CONF_DIR=\"${TACHYON_CONF_DIR}\""
+	    fi
+	    echo "*   cd $TACHYON_HOME"
+	    echo "*   ${tachyoncmdprefix}/tachyon format"
+	    echo "*   ${tachyoncmdprefix}/tachyon-start.sh -N all NoMount"
+	    echo "*" 
+	fi
+
+	echo "* To end/cleanup your session, kill the daemons via:"
+	echo "*" 
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${TACHYON_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\""
+	else
+	    echo "*   export TACHYON_CONF_DIR=\"${TACHYON_CONF_DIR}\""
+	fi
+	echo "*   cd $TACHYON_HOME"
+	echo "*   ${tachyoncmdprefix}/tachyon-stop.sh all"
+	echo "*" 
+	echo "* Some additional environment variables you may sometimes wish to set"
+	echo "*" 
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	    echo "*   setenv TACHYON_HOME \"${TACHYON_HOME}\""
+	else
+	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	    echo "*   export TACHYON_HOME=\"${TACHYON_HOME}\""
+	fi
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    echo "*"
+	    echo "* If running interactively, sourcing"
+	    echo "*"
+	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	    echo "*"
+	    echo "* will set most common environment variables for your job."
+	fi
+	echo "*" 
+	echo "*******************************************************"
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "setenv TACHYON_HOME \"${TACHYON_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_CONF_DIR \"${TACHYON_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_LOG_DIR \"${TACHYON_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_MASTER_NODE \"${TACHYON_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_MASTER_PORT \"${TACHYON_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_FIRST_WORKER_NODE \"${TACHYON_FIRST_WORKER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_SLAVE_COUNT \"${TACHYON_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv TACHYON_VERSION \"${TACHYON_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    else
+		echo "export TACHYON_HOME=\"${TACHYON_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_CONF_DIR=\"${TACHYON_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_LOG_DIR=\"${TACHYON_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_MASTER_NODE=\"${TACHYON_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_MASTER_PORT=\"${TACHYON_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_FIRST_WORKER_NODE=\"${TACHYON_FIRST_WORKER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_SLAVE_COUNT=\"${TACHYON_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export TACHYON_VERSION=\"${TACHYON_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	    fi
+	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+
+        # Nothing to check for Tachyon, setup always passes
+	tachyon_should_be_torndown=1
+	tachyon_setup_successful=1
+    else
+	tachyon_should_be_torndown=0
+	tachyon_setup_successful=1
+    fi
+}
