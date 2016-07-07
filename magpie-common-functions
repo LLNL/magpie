@@ -88,7 +88,7 @@ Magpie_am_I_a_hadoop_node () {
 	    hadoopnoderank=0
 	elif grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
 	then
-	    subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+	    local subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
 	    hadoopnoderank="0${subrank}"
 	else
 	    hadoopnoderank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
@@ -110,7 +110,7 @@ Magpie_am_I_a_hadoop_namenode () {
 	then
 	    hadoopnoderank=0
 	else
-	    subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+	    local subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
 	    hadoopnoderank="0${subrank}"
 	fi
 	return 0
