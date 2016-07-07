@@ -34,24 +34,15 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-hadoop
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-hadoop
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-hbase
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-hbase
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-kafka
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-kafka
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-phoenix
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-phoenix
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-spark
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-spark
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-storm
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-storm
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-tachyon
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-tachyon
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-zeppelin
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-zeppelin
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-start-zookeeper
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-stop-zookeeper
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hadoop
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hbase
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-kafka
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-phoenix
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-spark
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-storm
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-tachyon
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-zeppelin
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-zookeeper
 
 if ! Magpie_am_I_master
 then
