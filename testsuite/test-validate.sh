@@ -153,6 +153,11 @@ test_zookeeper_shutdown () {
 test_output_finalize () {
     local file=$1
 
+    num=`grep -e "Magpie Internal" $file | wc -l`
+    if [ "${num}" != "0" ]; then
+        echo "Internal Magpie error detected in $file"
+    fi
+
     if [ "${verboseoutput}" == "y" ]
     then
 	echo "File ${file} run through validation"
