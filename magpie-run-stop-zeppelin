@@ -34,16 +34,3 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 
-Magpie_run_stop_zeppelin () {
-    if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${zeppelin_should_be_torndown}" == "1" ]
-    then
-	if [ ${ZEPPELIN_MODE} != "setuponly" ]
-	then
-	    cd ${ZEPPELIN_HOME}
-	    
-	    echo "Stopping Zeppelin"
-            ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh stop
-	fi
-    fi
-    zeppelin_teardown_complete=1
-}

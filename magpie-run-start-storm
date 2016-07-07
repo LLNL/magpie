@@ -239,3 +239,26 @@ Magpie_run_start_storm () {
 	storm_setup_successful=1
     fi
 }
+
+Magpie_run_stop_storm () {
+    if [ "${zookeeper_teardown_complete}" == "1" ]
+    then
+	echo "Magpie Internal Warning: tearing down Storm after Zookeeper"
+    fi
+
+    if [ "${STORM_SETUP}" == "yes" ] && [ "${storm_should_be_torndown}" == "1" ]
+    then
+	if [ ${STORM_MODE} != "setuponly" ]
+	then
+	    # Make variables unspecified for shutdown
+	    Magpie_make_all_local_dirs_unspecified
+	    
+	    echo "Stopping storm"
+	    ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh stop
+	    
+	    # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+	fi
+    fi
+    storm_teardown_complete=1
+}    

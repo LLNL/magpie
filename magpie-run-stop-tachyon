@@ -34,30 +34,3 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 
-Magpie_run_stop_tachyon () {
-    if [ "${hadoop_teardown_complete}" == "1" ]
-    then
-	echo "Magpie Internal Warning: tearing down Tachyon after Hadoop"
-    fi
-
-    if [ "${TACHYON_SETUP}" == "yes" ] && [ "${tachyon_should_be_torndown}" == "1" ]
-    then
-	if [ ${TACHYON_MODE} != "setuponly" ]
-	then
-	    cd ${TACHYON_HOME}
-	    
-	    if [ "${TACHYON_JOURNAL_FOLDER}X" == "X" ]
-	    then
-		echo "Clearing tachyon data"
-		
-		command="${tachyoncmdprefix}/tachyon tfs rmr /"
-		echo "Running $command" >&2
-		$command
-	    fi
-	    
-	    echo "Stopping tachyon"
-	${tachyoncmdprefix}/tachyon-stop.sh all
-	fi
-    fi
-    tachyon_teardown_complete=1
-}

@@ -178,3 +178,17 @@ Magpie_run_start_zeppelin () {
 	zeppelin_setup_successful=1
     fi
 }
+
+Magpie_run_stop_zeppelin () {
+    if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${zeppelin_should_be_torndown}" == "1" ]
+    then
+	if [ ${ZEPPELIN_MODE} != "setuponly" ]
+	then
+	    cd ${ZEPPELIN_HOME}
+	    
+	    echo "Stopping Zeppelin"
+            ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh stop
+	fi
+    fi
+    zeppelin_teardown_complete=1
+}

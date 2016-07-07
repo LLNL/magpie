@@ -200,3 +200,28 @@ Magpie_run_start_kafka () {
 	kafka_setup_successful=1
     fi
 }
+
+Magpie_run_stop_kafka () {
+    if [ "${zookeeper_teardown_complete}" == "1" ]
+    then
+	echo "Magpie Internal Warning: tearing down Kafka after Zookeeper"
+    fi
+
+    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${kafka_should_be_torndown}" == "1" ]
+    then
+	if [ ${KAFKA_MODE} != "setuponly" ]
+	then
+	    cd ${KAFKA_HOME}
+	    
+	    # Make variables unspecified for shutdown
+	    Magpie_make_all_local_dirs_unspecified
+	    
+	    echo "Stopping kafka"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka.sh stop
+	    
+            # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+	fi
+    fi
+    kafka_teardown_complete=1
+}

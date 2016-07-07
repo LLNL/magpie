@@ -666,3 +666,92 @@ Magpie_run_start_hadoop () {
 	hadoop_setup_successful=1
     fi
 }
+
+Magpie_run_stop_hadoop () {
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoop_should_be_torndown}" == "1" ]
+    then
+	if [ ${HADOOP_MODE} != "setuponly" ]
+	then
+	    cd ${HADOOP_HOME}
+	    
+	    echo "Stopping hadoop"
+	    
+  	    # Make variables unspecified for shutdown
+	    Magpie_make_all_local_dirs_unspecified
+
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+	    then
+		${hadoopsetupscriptprefix}/stop-mapred.sh
+		${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh
+	    fi
+	    
+	    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+	    then
+		${hadoopsetupscriptprefix}/stop-yarn.sh
+		${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver
+	    fi
+
+	    # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+
+	    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
+		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
+		|| [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+	    then
+
+		if [ "${hadoop_setup_successful}" == "1" ]
+		then
+		    echo "Saving namespace before shutting down hdfs ..."
+
+		    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+		    then
+			for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+			do
+	                    # First namenode is based on master
+			    if [ "${i}" == "1" ]
+			    then
+				federationnamenodehost="${HADOOP_MASTER_NODE}"
+			    else
+				numline=`expr ${i} - 1`
+				federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+			    fi
+			    
+			    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+			    echo "Running $command" >&2
+			    $command
+			    
+			    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+			    echo "Running $command" >&2
+			    $command
+			    
+			    command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+			    echo "Running $command" >&2
+			    $command
+			done
+		    else
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
+			echo "Running $command" >&2
+			$command
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
+			echo "Running $command" >&2
+			$command
+			
+			command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
+			echo "Running $command" >&2
+			$command
+		    fi
+		fi
+
+  	        # Make variables unspecified for shutdown
+		Magpie_make_all_local_dirs_unspecified
+
+		${hadoopsetupscriptprefix}/stop-dfs.sh 
+
+	        # Make variables specific now within Magpie
+		Magpie_make_all_local_dirs_node_specific
+	    fi
+	fi
+    fi
+    hadoop_teardown_complete=1
+}
