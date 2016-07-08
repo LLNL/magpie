@@ -40,17 +40,19 @@ else
 fi
 
 cd ${SPARK_HOME}
-            
-# For some reason in 1.0, the <master> argument was removed.
+
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    # For some reason need to set MASTER environment variable for run-example, makes no sense
+    # Need to set MASTER environment variable for run-example
     if [ "${SPARK_USE_YARN}" == "yes" ]
     then
         export MASTER="yarn-client"
     else
         export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
     fi
+    command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
+elif echo ${SPARK_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+then
     command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
 else
     command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
