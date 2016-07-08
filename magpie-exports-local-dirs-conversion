@@ -31,7 +31,7 @@ Magpie_make_magpie_local_dirs () {
 
     if [ "${MAGPIE_LOCAL_JOB_DIR}X" == "X" ]
     then
-	echo "Fatal error, Magpie_make_magpie_local_dirs called without MAGPIE_LOCAL_JOB_DIR set"
+	Magpie_output_internal_error "Magpie_make_magpie_local_dirs called without MAGPIE_LOCAL_JOB_DIR set"
 	exit 1
     fi
 
@@ -61,7 +61,7 @@ Magpie_make_hadoop_local_dirs () {
     then
 	if [ "${HADOOP_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_hadoop_local_dirs called without HADOOP_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_hadoop_local_dirs called without HADOOP_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -104,7 +104,7 @@ Magpie_make_pig_local_dirs () {
     then
 	if [ "${PIG_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_pig_local_dirs called without PIG_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_pig_local_dirs called without PIG_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -135,7 +135,7 @@ Magpie_make_mahout_local_dirs () {
     then
 	if [ "${MAHOUT_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_mahout_local_dirs called without MAHOUT_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_mahout_local_dirs called without MAHOUT_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -166,7 +166,7 @@ Magpie_make_hbase_local_dirs () {
     then
 	if [ "${HBASE_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_hbase_local_dirs called without HBASE_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_hbase_local_dirs called without HBASE_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -201,7 +201,7 @@ Magpie_make_phoenix_local_dirs () {
     then
 	if [ "${PHOENIX_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -236,7 +236,7 @@ Magpie_make_spark_local_dirs () {
     then
 	if [ "${SPARK_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_spark_local_dirs called without SPARK_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_spark_local_dirs called without SPARK_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -271,7 +271,7 @@ Magpie_make_kafka_local_dirs () {
     then
 	if [ "${KAFKA_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -306,7 +306,7 @@ Magpie_make_zeppelin_local_dirs () {
     then
 	if [ "${ZEPPELIN_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_zeppelin_local_dirs called without ZEPPELIN_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_zeppelin_local_dirs called without ZEPPELIN_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -341,7 +341,7 @@ Magpie_make_storm_local_dirs () {
     then
 	if [ "${STORM_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_storm_local_dirs called without STORM_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_storm_local_dirs called without STORM_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -374,7 +374,7 @@ Magpie_make_tachyon_local_dirs () {
     then
 	if [ "${TACHYON_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 
@@ -407,7 +407,7 @@ Magpie_make_zookeeper_local_dirs () {
     then
 	if [ "${ZOOKEEPER_LOCAL_JOB_DIR}X" == "X" ]
 	then
-	    echo "Fatal error, Magpie_make_zookeeper_local_dirs called without ZOOKEEPER_LOCAL_JOB_DIR set"
+	    Magpie_output_internal_error "Magpie_make_zookeeper_local_dirs called without ZOOKEEPER_LOCAL_JOB_DIR set"
 	    exit 1
 	fi
 

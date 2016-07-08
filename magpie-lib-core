@@ -26,14 +26,14 @@
 #
 # This is used by scripts, don't edit this
 #
-# Unlike 'magpie-helper-functions', these functions are common but
+# Unlike 'magpie-lib-misc-external', these functions are common but
 # live inside the Magpie system.  They largely require environment
 # variables, functions, etc. to have been setup.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_am_I_master () {
     local myhostname=`hostname`
@@ -266,82 +266,8 @@ Magpie_am_I_a_zookeeper_node () {
     return 1
 }
 
-# XXX deal with viewfs & federation
-Magpie_calculate_hadoop_filesystem_paths () {
-    local noderank=$1
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
-    then
-	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    fsdefault="viewfs:///"
-	else
-	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	fi
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
-    then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
-        else
-            hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
-        fi
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    fsdefault="viewfs:///"
-	else
-	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	fi
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
-    then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
-        else
-	    hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
-        fi
-        
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    fsdefault="viewfs:///"
-	else
-	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	fi
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
-    then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
-        else
-	    hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
-        fi
-	fsdefault="file:///"
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-    then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_ID}/tmp"
-        else
-  	    hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
-        fi
-	fsdefault="lustre:///"
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
-    then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
-        else
-   	    hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
-        fi
-	fsdefault="magpienetworkfs:///"
-    else
-	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
-	exit 1
-    fi
-}
-
 Magpie_calculate_stop_timeouts () {
-    magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+    local magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
 
     if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
     then
@@ -396,6 +322,24 @@ Magpie_calculate_stop_timeouts () {
     fi
 
     if [ "${STORM_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${ZEPPELIN_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${KAFKA_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${PHOENIX_SETUP}" == "yes" ]
     then
 	# +2 for extra misc shutdown time
 	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`

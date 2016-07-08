@@ -31,10 +31,11 @@ then
     exit 0
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 
 # hbasenoderank set if succeed
 if ! Magpie_am_I_a_hbase_node

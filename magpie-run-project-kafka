@@ -26,20 +26,21 @@
 # running jobs.  For the most part, it shouldn't be editted.  See
 # job submission files for configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
-source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_run_start_kafka () {
     if [ "${KAFKA_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
 	if [ "${zookeeper_setup_successful}" == "0" ]
 	then
-	    echo "Magpie Internal Error: Attempt to setup Kafka without Zookeeper being setup"
+	    Magpie_output_internal_error "Attempt to setup Kafka without Zookeeper being setup"
 	    kafka_should_be_torndown=0
 	    kafka_setup_successful=0
 	    return 1
@@ -204,7 +205,7 @@ Magpie_run_start_kafka () {
 Magpie_run_stop_kafka () {
     if [ "${zookeeper_teardown_complete}" == "1" ]
     then
-	echo "Magpie Internal Warning: tearing down Kafka after Zookeeper"
+	Magpie_output_internal_warning "tearing down Kafka after Zookeeper"
     fi
 
     if [ "${KAFKA_SETUP}" == "yes" ] && [ "${kafka_should_be_torndown}" == "1" ]

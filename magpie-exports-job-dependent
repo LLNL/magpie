@@ -25,15 +25,14 @@
 # Export environment variables we promised to export in documentation
 # and various variables needed.
 #
-# Unlke magpie-common-exports, this must only be called before
-# magpie-pre-run, magpie-run, and magpie-post-run, as it is dependent
-# on the magpie setup.
+# Unlke magpie-exports-core, these exports are dependent on the magpie
+# setup.
 #
 # This is used by scripts, don't edit this
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 
 # Initially make variables specific to node
 Magpie_make_all_local_dirs_node_specific

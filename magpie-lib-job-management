@@ -25,13 +25,12 @@
 # Export common functions for running jobs
 #
 # This is used by scripts, don't edit this
-#
-# Similar to magpie-common-functions, but specific to running jobs
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
-source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_job_time_minutes () {
     # slurmsbatch & msubslurm legacy
@@ -109,29 +108,3 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     return $?
 }
 
-Magpie_get_networkedhdfspath () {
-    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-    then
-	networkedhdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
-    elif [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
-    then
-	networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
-    else
-	echo "Magpie Internal Error: Magpie_get_networkedhdfspath called without HDFS networked path set used" 
-    fi
-    
-    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-    then
-	networkedhdfspath="$networkedhdfspath/${MAGPIE_JOB_ID}"
-    fi
-}
-
-Magpie_get_hdfsstoredversionpath () {
-    Magpie_get_networkedhdfspath
-    hdfsstoredversionpath=${networkedhdfspath}/magpie.hadoop-version
-}
-
-Magpie_get_hdfsstorednodecountpath () {
-    Magpie_get_networkedhdfspath
-    hdfsstorednodecountpath=${networkedhdfspath}/magpie.node-count
-}

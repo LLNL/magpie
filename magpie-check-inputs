@@ -126,7 +126,7 @@ then
     exit 1
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
 then
