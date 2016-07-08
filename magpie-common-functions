@@ -31,9 +31,9 @@
 # variables, functions, etc. to have been setup.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_am_I_master () {
     local myhostname=`hostname`

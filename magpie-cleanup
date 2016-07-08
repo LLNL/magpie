@@ -28,9 +28,9 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 
 Magpie_make_all_local_dirs_node_specific
 
