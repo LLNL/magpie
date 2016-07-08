@@ -32,7 +32,7 @@
 # This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 
 # Initially make variables specific to node

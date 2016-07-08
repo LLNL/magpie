@@ -28,7 +28,7 @@
 # This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 
 # Do not ever "use" the LOCAL_JOB_DIR variables.  They should only be
 # referenced when setting SCRATCH_DIR or CONF_DIR or LOG_DIR variables.
