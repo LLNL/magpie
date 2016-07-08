@@ -32,6 +32,7 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
@@ -45,13 +46,13 @@ secondsleft=$jobtimeseconds
 
 if [ "$1X" == "X" ]
 then
-    echo "Internal error - magpie-run-sleep, first argument unset"
+    Magpie_output_internal_error "magpie-run-sleep, first argument unset"
     exit 1
 fi
 
 if [ "$1" != "normal" ] && [ "$1" != "countdown" ]
 then
-    echo "Internal error - magpie-run-sleep, first argument invalid = $1"
+    Magpie_output_internal_error "magpie-run-sleep, first argument invalid = $1"
     exit 1
 fi
 

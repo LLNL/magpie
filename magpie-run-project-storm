@@ -30,6 +30,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
@@ -39,7 +40,7 @@ Magpie_run_start_storm () {
     then
 	if [ "${zookeeper_setup_successful}" == "0" ]
 	then
-	    echo "Magpie Internal Error: Attempt to setup Storm without Zookeeper being setup"
+	    Magpie_output_internal_error "Attempt to setup Storm without Zookeeper being setup"
 	    storm_should_be_torndown=0
 	    storm_setup_successful=0
 	    return 1
@@ -243,7 +244,7 @@ Magpie_run_start_storm () {
 Magpie_run_stop_storm () {
     if [ "${zookeeper_teardown_complete}" == "1" ]
     then
-	echo "Magpie Internal Warning: tearing down Storm after Zookeeper"
+	Magpie_output_internal_warning "tearing down Storm after Zookeeper"
     fi
 
     if [ "${STORM_SETUP}" == "yes" ] && [ "${storm_should_be_torndown}" == "1" ]

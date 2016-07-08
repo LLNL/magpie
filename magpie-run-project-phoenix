@@ -30,6 +30,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
@@ -39,7 +40,7 @@ Magpie_run_start_phoenix () {
     then
 	if [ "${hbase_setup_successful}" == "0" ]
 	then
-	    echo "Magpie Internal Error: Attempt to setup Phoenix without Hbase being setup"
+	    Magpie_output_internal_error "Attempt to setup Phoenix without Hbase being setup"
 	    phoenix_should_be_torndown=0
 	    phoenix_setup_successful=0
 	    return 1
@@ -192,7 +193,7 @@ Magpie_run_start_phoenix () {
 Magpie_run_stop_phoenix () {
     if [ "${hbase_teardown_complete}" == "1" ]
     then
-	echo "Magpie Internal Warning: tearing down Phoenix after Hbase"
+	Magpie_output_internal_warning "tearing down Phoenix after Hbase"
     fi
 
     if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${phoenix_should_be_torndown}" == "1" ]

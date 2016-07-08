@@ -29,6 +29,7 @@
 # Similar to magpie-common-functions, but specific to running jobs
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
@@ -117,7 +118,7 @@ Magpie_get_networkedhdfspath () {
     then
 	networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
     else
-	echo "Magpie Internal Error: Magpie_get_networkedhdfspath called without HDFS networked path set used" 
+	Magpie_output_internal_error "Magpie_get_networkedhdfspath called without HDFS networked path set used" 
     fi
     
     if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]

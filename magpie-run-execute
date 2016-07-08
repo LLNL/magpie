@@ -28,6 +28,7 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
@@ -64,7 +65,7 @@ yarn_job_kill_handler () {
 
 if [ "$1X" == "X" ]
 then
-    echo "Internal error - magpie-run-execute, first argument unset"
+    Magpie_output_internal_error "magpie-run-execute, first argument unset"
     exit 1
 fi
 
@@ -74,7 +75,7 @@ if [ "$1" != "interactive" ] \
     && [ "$1" != "script" ] \
     && [ "$1" != "scriptnokill" ]
 then
-    echo "Internal error - magpie-run-execute, first argument invalid = $1"
+    Magpie_output_internal_error "magpie-run-execute, first argument invalid = $1"
     exit 1
 fi
 
@@ -84,7 +85,7 @@ if [ "${jobtype}" == "script" ] || [ "${jobtype}" == "scriptnokill" ]
 then
     if [ "$2X" == "X" ]
     then
-	echo "Internal error - magpie-run-execute, second argument unset"
+	Magpie_output_internal_error "magpie-run-execute, second argument unset"
 	exit 1
     fi
     scripttorun=$2

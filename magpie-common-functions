@@ -335,7 +335,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         fi
 	fsdefault="magpienetworkfs:///"
     else
-	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+	Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
 	exit 1
     fi
 }

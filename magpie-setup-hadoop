@@ -34,6 +34,7 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # hadoopnoderank set if succeed
@@ -613,7 +614,7 @@ then
 
     pathcount=1
 else
-    echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+    Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
     exit 1
 fi
 
@@ -776,7 +777,7 @@ then
     then
 	blocksize=${magpienetworkfsblocksize}
     else
-	echo "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+	Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
 	exit 1
     fi
     
@@ -835,7 +836,7 @@ then
 	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-viewfsmount.xml" "pre_coresitexml_viewfsmount"
     fi
 else
-    echo "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
+    Magpie_output_internal_error "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
     exit 1
 fi
 
