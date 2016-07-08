@@ -341,7 +341,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
 }
 
 Magpie_calculate_stop_timeouts () {
-    magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+    local magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
 
     if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
     then
@@ -396,6 +396,24 @@ Magpie_calculate_stop_timeouts () {
     fi
 
     if [ "${STORM_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${ZEPPELIN_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${KAFKA_SETUP}" == "yes" ]
+    then
+	# +2 for extra misc shutdown time
+	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${PHOENIX_SETUP}" == "yes" ]
     then
 	# +2 for extra misc shutdown time
 	stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
