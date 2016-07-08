@@ -34,6 +34,7 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 
 # tachyonnoderank set if succeed
 if ! Magpie_am_I_a_tachyon_node
