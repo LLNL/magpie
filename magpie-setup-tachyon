@@ -33,7 +33,7 @@ fi
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 
 # tachyonnoderank set if succeed
 if ! Magpie_am_I_a_tachyon_node

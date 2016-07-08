@@ -26,7 +26,7 @@
 #
 # This is used by scripts, don't edit this
 #
-# Similar to magpie-common-functions, but specific to running jobs
+# Similar to magpie-lib-core, but specific to running jobs
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
