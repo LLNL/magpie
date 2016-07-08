@@ -22,60 +22,45 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core upgradehdfs script.  For the most part, it
-# shouldn't be editted.  See job submission files for configuration
+# This script is the core sparkpi running script.  For the most part,
+# it shouldn't be editted.  See job submission files for configuration
 # details.
-
-# XXX does this work w/ federation?
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-cd ${HADOOP_HOME}
+sparkpiclass="org.apache.spark.examples.SparkPi"
+
+if [ "${SPARK_SPARKPI_SLICES}X" != "X" ]
+then
+    sparkpislices="${SPARK_SPARKPI_SLICES}"
+else
+    sparkpislices="${SPARK_SLAVE_COUNT}"
+fi
+
+cd ${SPARK_HOME}
 	    
-# to get hadoopnoderank
-Magpie_am_I_a_hadoop_node
-
-# to get hadooptmpdir
-Magpie_calculate_hadoop_filesystem_paths ${hadoopnoderank}
-
-currentnamenodepath="${hadooptmpdir}/dfs/name/current"
-previousnamenodepath="${hadooptmpdir}/dfs/name/previous"
-
-# The fact we are in this script means we are out of safe mode.
-#
-# So we need to finalize the upgrade and wait for the previous name node data to be deleted.
-
-# Wait for the previous namenode data path to be created if it hasn't been created yet
-while true
-do
-    if [ -d ${previousnamenodepath} ]
+# For some reason in 1.0, the <master> argument was removed.
+if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+then
+    # For some reason need to set MASTER environment variable for run-example, makes no sense
+    if [ "${SPARK_USE_YARN}" == "yes" ]
     then
-	break;
+	export MASTER="yarn-client"
+    else
+	export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
     fi
-    echo "Previous namenode directory ${previousnamenodepath} not seen, sleeping 60 seconds waiting for it."
-    sleep 60 
-done
+    command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
+else
+    command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
+fi
 
-command="${hadoopcmdprefix}/hdfs dfsadmin -finalizeUpgrade"
 echo "Running $command" >&2
 $command
-
-echo "Sleeping 60 seconds to wait for finalizeUpgrade to complete"
-sleep 60
-
-while true
-do
-    if [ ! -d ${previousnamenodepath} ]
-    then
-	break;
-    fi
-    echo "Previous namenode directory ${previousnamenodepath} still not deleted, sleeping 60 seconds waiting for it."
-    sleep 60 
-done
 
 exit 0

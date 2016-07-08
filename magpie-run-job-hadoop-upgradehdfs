@@ -22,19 +22,61 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is for running the pig testpig sanity test.  For the
-# most part, it shouldn't be editted.  See job submission files for
-# configuration details.
+# This script is the core upgradehdfs script.  For the most part, it
+# shouldn't be editted.  See job submission files for configuration
+# details.
+
+# XXX does this work w/ federation?
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-command="${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} -e ls /"
+cd ${HADOOP_HOME}
+	    
+# to get hadoopnoderank
+Magpie_am_I_a_hadoop_node
+
+# to get hadooptmpdir
+Magpie_calculate_hadoop_filesystem_paths ${hadoopnoderank}
+
+currentnamenodepath="${hadooptmpdir}/dfs/name/current"
+previousnamenodepath="${hadooptmpdir}/dfs/name/previous"
+
+# The fact we are in this script means we are out of safe mode.
+#
+# So we need to finalize the upgrade and wait for the previous name node data to be deleted.
+
+# Wait for the previous namenode data path to be created if it hasn't been created yet
+while true
+do
+    if [ -d ${previousnamenodepath} ]
+    then
+	break;
+    fi
+    echo "Previous namenode directory ${previousnamenodepath} not seen, sleeping 60 seconds waiting for it."
+    sleep 60 
+done
+
+command="${hadoopcmdprefix}/hdfs dfsadmin -finalizeUpgrade"
 echo "Running $command" >&2
 $command
+
+echo "Sleeping 60 seconds to wait for finalizeUpgrade to complete"
+sleep 60
+
+while true
+do
+    if [ ! -d ${previousnamenodepath} ]
+    then
+	break;
+    fi
+    echo "Previous namenode directory ${previousnamenodepath} still not deleted, sleeping 60 seconds waiting for it."
+    sleep 60 
+done
 
 exit 0

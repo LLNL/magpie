@@ -22,43 +22,19 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core sparkpi running script.  For the most part,
-# it shouldn't be editted.  See job submission files for configuration
-# details.
+# This script is for running the pig testpig sanity test.  For the
+# most part, it shouldn't be editted.  See job submission files for
+# configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-sparkpiclass="org.apache.spark.examples.SparkPi"
-
-if [ "${SPARK_SPARKPI_SLICES}X" != "X" ]
-then
-    sparkpislices="${SPARK_SPARKPI_SLICES}"
-else
-    sparkpislices="${SPARK_SLAVE_COUNT}"
-fi
-
-cd ${SPARK_HOME}
-	    
-# For some reason in 1.0, the <master> argument was removed.
-if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
-then
-    # For some reason need to set MASTER environment variable for run-example, makes no sense
-    if [ "${SPARK_USE_YARN}" == "yes" ]
-    then
-	export MASTER="yarn-client"
-    else
-	export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
-    fi
-    command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
-else
-    command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
-fi
-
+command="${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} -e ls /"
 echo "Running $command" >&2
 $command
 

@@ -1,0 +1,264 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core processing script for setting up daemons and
+# running jobs.  For the most part, it shouldn't be editted.  See
+# job submission files for configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-submission-convert
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
+
+Magpie_run_start_storm () {
+    if [ "${STORM_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    then
+	if [ "${zookeeper_setup_successful}" == "0" ]
+	then
+	    echo "Magpie Internal Error: Attempt to setup Storm without Zookeeper being setup"
+	    storm_should_be_torndown=0
+	    storm_setup_successful=0
+	    return 1
+	fi
+
+	if [ ${STORM_MODE} != "setuponly" ]
+	then
+	    # Make variables unspecified for launching
+	    Magpie_make_all_local_dirs_unspecified
+
+	    echo "Starting storm"
+	    ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh start
+	    
+	    # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+
+            # My rough estimate for setup time is 30 seconds per 128 nodes
+	    local sleepwait=`expr ${STORM_WORKERS_COUNT} \/ 128 \* 30`
+	    if [ ${sleepwait} -lt 30 ]
+	    then
+		sleepwait=30
+	    fi
+	    echo "Waiting ${sleepwait} seconds to allow Storm daemons to setup"
+	    sleep ${sleepwait}
+	    totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+	fi
+
+	echo "*******************************************************"
+	echo "*"
+	echo "* Storm Information"
+	echo "*"
+	echo "* You can view your Storm status by launching a web browser and pointing to ..."
+	echo "*"
+	echo "* Storm UI: http://${STORM_MASTER_NODE}:${STORM_UI_PORT}"
+	echo "*" 
+	echo "* To access Storm directly, you'll want to:"
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${STORM_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+	else
+	    echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+	fi
+	echo "*   cd $STORM_HOME"
+	echo "*"
+	echo "* Then you can do as you please.  For example to run a job:"
+	echo "*" 
+	echo "*   ${stormcmdprefix}/storm jar ..."
+	echo "*" 
+
+	if [ "${STORM_MODE}" == "setuponly" ]
+	then
+ 	    echo "* To setup, you probably want to run:" 
+	    echo "*"
+	    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${STORM_MASTER_NODE}"
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+	    else
+		echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+	    fi
+	    echo "*   cd $MAGPIE_SCRIPTS_HOME"
+	    echo "*   bin/magpie-storm.sh start"
+	    echo "*" 
+	fi
+
+	echo "* To end/cleanup your session, kill the daemons via:"
+	echo "*" 
+	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${STORM_MASTER_NODE}"
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+	else
+	    echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+	fi
+	echo "*   cd $MAGPIE_SCRIPTS_HOME"
+	echo "*   bin/magpie-storm.sh stop"
+	echo "*" 
+	echo "* Some additional environment variables you may sometimes wish to set"
+	echo "*" 
+	if echo $MAGPIE_SHELL | grep -q csh
+	then
+	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+	    echo "*   setenv STORM_HOME \"${STORM_HOME}\""
+	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	    then
+		echo "*   setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
+	    fi
+	else
+	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+	    echo "*   export STORM_HOME=\"${STORM_HOME}\""
+	    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+	    then
+		echo "*   export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
+	    fi
+	fi
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    echo "*"
+	    echo "* If running interactively, sourcing"
+	    echo "*"
+	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+	    echo "*"
+	    echo "* will set most common environment variables for your job."
+	fi
+	echo "*" 
+	echo "*******************************************************"
+
+	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+	then
+	    if echo $MAGPIE_SHELL | grep -q csh
+	    then
+		echo "setenv STORM_HOME \"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv STORM_LOG_DIR \"${STORM_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv STORM_MASTER_NODE \"${STORM_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv STORM_NIMBUS_HOST \"${STORM_NIMBUS_HOST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv STORM_WORKERS_COUNT \"${STORM_WORKERS_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "setenv STORM_VERSION \"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+		then
+		    echo "setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+		fi
+	    else
+		echo "export STORM_HOME=\"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_CONF_DIR=\"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_LOG_DIR=\"${STORM_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_MASTER_NODE=\"${STORM_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_NIMBUS_HOST=\"${STORM_NIMBUS_HOST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_WORKERS_COUNT=\"${STORM_WORKERS_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		echo "export STORM_VERSION=\"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+		then
+		    echo "export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+		fi
+	    fi
+	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+	fi
+
+	if [ ${STORM_MODE} != "setuponly" ]
+	then
+	    local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+
+	    if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+	    then  
+	        # Could be more dynamic w/ slurm call to determine current
+	        # run time, but probably is sufficient for this trivial
+	        # part.  Minimally, have to leave the totalsleepwait code
+	        # around for non-slurm systems.
+		local stormmastermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+		
+		if [ "${stormmastermaxwaitseconds}" -lt 30 ]
+		then
+		    stormmastermaxwaitseconds=30
+		fi
+		
+		local stormmastermaxwaittimes=`expr ${stormmastermaxwaitseconds} \/ 30`
+	    else
+		local stormmastermaxwaittimes=1
+	    fi
+	    
+	    cd ${STORM_HOME}
+
+	    local stormmastercameup=0
+	    
+	    for ((i = 1; i <= ${stormmastermaxwaittimes}; i++)); do
+		
+	        # example output : "No topologies running"
+		if ${stormcmdprefix}/storm list | grep -q "No topologies running"
+		then
+		    stormmastercameup=1
+		    break
+		fi
+		
+		echo "Waiting 30 more seconds for Storm nimbus to come up"
+		sleep 30
+		totalsleepwait=`expr ${totalsleepwait} + 30`
+	    done
+	    
+	    if [ "${stormnimbuscameup}" == "0" ]
+	    then
+		echo "Storm Nimbus never came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+		storm_should_be_torndown=1
+		storm_setup_successful=0
+		prior_setup_successful=false
+	    else
+		storm_should_be_torndown=1
+		storm_setup_successful=1
+	    fi
+	else
+	    storm_should_be_torndown=1
+	    storm_setup_successful=1
+	fi
+    else
+	storm_should_be_torndown=0
+	storm_setup_successful=1
+    fi
+}
+
+Magpie_run_stop_storm () {
+    if [ "${zookeeper_teardown_complete}" == "1" ]
+    then
+	echo "Magpie Internal Warning: tearing down Storm after Zookeeper"
+    fi
+
+    if [ "${STORM_SETUP}" == "yes" ] && [ "${storm_should_be_torndown}" == "1" ]
+    then
+	if [ ${STORM_MODE} != "setuponly" ]
+	then
+	    # Make variables unspecified for shutdown
+	    Magpie_make_all_local_dirs_unspecified
+	    
+	    echo "Stopping storm"
+	    ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh stop
+	    
+	    # Make variables specific now within Magpie
+	    Magpie_make_all_local_dirs_node_specific
+	fi
+    fi
+    storm_teardown_complete=1
+}    

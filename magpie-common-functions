@@ -70,6 +70,24 @@ Magpie_am_I_master () {
 	then 
 	    return 0
 	fi
+    elif [ "${KAFKA_SETUP}" == "yes" ] && [ -f "${KAFKA_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
+    elif [ "${ZEPPELIN_SETUP}" == "yes" ] && [ -f "${ZEPPELIN_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
+    elif [ "${TACHYON_SETUP}" == "yes" ] && [ -f "${TACHYON_CONF_DIR}/masters" ]
+    then
+	if grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/masters
+	then 
+	    return 0
+	fi
     fi
     return 1
 }
@@ -88,7 +106,7 @@ Magpie_am_I_a_hadoop_node () {
 	    hadoopnoderank=0
 	elif grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
 	then
-	    subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+	    local subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
 	    hadoopnoderank="0${subrank}"
 	else
 	    hadoopnoderank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
@@ -110,7 +128,7 @@ Magpie_am_I_a_hadoop_namenode () {
 	then
 	    hadoopnoderank=0
 	else
-	    subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+	    local subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
 	    hadoopnoderank="0${subrank}"
 	fi
 	return 0
@@ -246,82 +264,6 @@ Magpie_am_I_a_zookeeper_node () {
 	return 0
     fi
     return 1
-}
-
-Magpie_job_time_minutes () {
-    # slurmsbatch & msubslurm legacy
-    if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
-	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
-	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
-	|| [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmpdsh" ]
-    then
-	local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
-	if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]
-	then
-            walltimetominutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	else
-            Magpie_walltime_to_minutes ${timeleftwalltime}
-	fi
-        jobtimeminutes=`expr ${walltimetominutes} - ${MAGPIE_SHUTDOWN_TIME}`
-    else
-	local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-	jobtimeminutes=`expr ${timeleftminutes} - ${MAGPIE_SHUTDOWN_TIME}`
-    fi
-}
-
-Magpie_job_time_seconds () {
-    Magpie_job_time_minutes
-    jobtimeseconds=`expr ${jobtimeminutes}  \* 60`
-}
-
-Magpie_wait_script_signal_on_timeout () {
-    local scriptpid=$1
-    local timeoutminutes=$2
-    local signalnumber=$3
-    # We sleep in 30 second chunks, so times 2
-    local scriptsleepiterations=`expr ${timeoutminutes}  \* 2`
-    local scriptexitted=0
-
-    for ((i = 1; i <= ${scriptsleepiterations}; i++)); do
-	if kill -0 ${scriptpid} 2&> /dev/null
-	then
-	    sleep 30
-	else
-	    scriptexitted=1
-	    break
-	fi
-    done
-
-    if [ "${scriptexitted}" == "0" ]
-    then
-	echo "Killing script, did not exit within time limit"
-	kill -s ${signalnumber} ${scriptpid}
-	return 1
-    fi
-
-    return 0
-}
-
-Magpie_wait_script_kill_on_job_timeout () {
-    local scriptpid=$1
-
-    # Will set jobtimeminutes
-    Magpie_job_time_minutes
-
-    Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 9
-
-    return $?
-}
-
-Magpie_wait_script_sigusr2_on_job_timeout () {
-    local scriptpid=$1
-
-    # Will set jobtimeminutes
-    Magpie_job_time_minutes
-
-    Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 12
-
-    return $?
 }
 
 # XXX deal with viewfs & federation

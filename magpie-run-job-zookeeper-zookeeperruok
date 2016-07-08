@@ -22,43 +22,31 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is for running the pig testpig sanity test.  For the
-# most part, it shouldn't be editted.  See job submission files for
-# configuration details.
+# This script is for running the zookeeper zookeeperruok sanity test.
+# For the most part, it shouldn't be editted.  See job submission
+# files for configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-if [ "${KAFKA_PERFORMANCE_RECORD_COUNT}X" == "X" ]
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+
+if ! type nc >/dev/null 2>&1
 then
-    kafkarecordcount=50000000
-else
-    kafkarecordcount=$KAFKA_PERFORMANCE_RECORD_COUNT
+    echo "Zookeeper ruok cannot be run b/c netcat ('nc' command) cannot be found"
+    exit 1
 fi
 
-if [ "${KAFKA_PERFORMANCE_RECORD_SIZE}X" == "X" ]
-then
-    kafkarecordsize=100
-else
-    kafkarecordsize=$KAFKA_PERFORMANCE_RECORD_SIZE
-fi
-
-if [ "${KAFKA_PERFORMANCE_THROUGHPUT}X" == "X" ]
-then
-    kafkathroughput=-1
-else
-    kafkathroughput=$KAFKA_PERFORMANCE_THROUGHPUT
-fi
-
-for node in `cat ${KAFKA_CONF_DIR}/masters`
+for zookeepernode in ${zookeepernodes}
 do
-    bootstrap="${bootstrap}${bootstrap:+","}${node}:${KAFKA_PORT}"
+    echo "Sending ruok to ${zookeepernode} ... "
+    echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}
+    echo 
 done
-
-${KAFKA_HOME}/bin/kafka-producer-perf-test.sh --topic performance --num-records ${kafkarecordcount} --record-size ${kafkarecordsize} --throughput ${kafkathroughput} --producer-props bootstrap.servers=${bootstrap}
 
 exit 0

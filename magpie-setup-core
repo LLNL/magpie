@@ -225,9 +225,9 @@ then
 	exit 1
     fi
 
-    mkdir -p $ZEPPELIN_LOCAL_SCRATCH_DIR
+    mkdir -p $ZEPPELIN_LOCAL_SCRATCHSPACE_DIR
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZEPPELIN_LOCAL_SCRATCH_DIR}"
+	echo "mkdir failed making ${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}"
 	exit 1
     fi
 fi
