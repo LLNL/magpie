@@ -110,29 +110,3 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     return $?
 }
 
-Magpie_get_networkedhdfspath () {
-    if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
-    then
-	networkedhdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
-    elif [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
-    then
-	networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
-    else
-	Magpie_output_internal_error "Magpie_get_networkedhdfspath called without HDFS networked path set used" 
-    fi
-    
-    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-    then
-	networkedhdfspath="$networkedhdfspath/${MAGPIE_JOB_ID}"
-    fi
-}
-
-Magpie_get_hdfsstoredversionpath () {
-    Magpie_get_networkedhdfspath
-    hdfsstoredversionpath=${networkedhdfspath}/magpie.hadoop-version
-}
-
-Magpie_get_hdfsstorednodecountpath () {
-    Magpie_get_networkedhdfspath
-    hdfsstorednodecountpath=${networkedhdfspath}/magpie.node-count
-}
