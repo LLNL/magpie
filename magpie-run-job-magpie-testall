@@ -29,7 +29,7 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 
 if [ "${HADOOP_SETUP}" == "yes" ] \
    && [ "${HADOOP_MODE}" != "setuponly" ] \
