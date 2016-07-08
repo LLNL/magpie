@@ -27,7 +27,7 @@
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-variable-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-generated-exports
 

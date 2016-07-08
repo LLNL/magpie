@@ -30,7 +30,7 @@
 # script, then things like 'interactive' mode or 'setuponly' are just
 # "another script" and be managed just like any other script.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-common-exports
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-common-functions
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-common-functions
