@@ -238,35 +238,40 @@ Storm 0.9.5 -> ... - Java 1.7
 Package Attention
 -----------------
 
-Not all software packages have been given the same level of attention
-in Magpie, so we feel it is important to inform you of the level of
-trust you can have in Magpie support for individual projects.
+Not all software packages and features have been given the same level
+of attention in Magpie, so we feel it is important to inform you of
+the level of trust you can have in Magpie support for individual
+projects and/or features.
 
-Core packages are considered amongst the core supported packages in
-Magpie.  Magpie developers are confident in their functionality under
-a wide range of use cases and scenarios.
+Core packages/features are considered amongst the core supported
+packages in Magpie.  Magpie developers are confident in their
+functionality under a wide range of use cases and scenarios.
 
-Well supported packages are not given quite the same attention as core
-packages.  Magpie developers have confidence they will work with
-common use case scenarios, but non-common scenarios have not been
-tested or tried.
+Well supported packages/features are not given quite the same
+attention as core ones.  Magpie developers have confidence they
+will work with common use case scenarios, but non-common scenarios
+may have not been tested or tried.
 
-Experimental supported packages are not maintained with deep
-attention.  They may have been developed against a specific
-project version or with specific use scenario. Their support should
-be considered on the side of experimental.
+Experimental supported packages/features are not maintained with deep
+attention.  They may have been developed against a specific project
+version or with specific use scenario. Their support should be
+considered on the side of experimental.
 
-- Core Packages
+- Core
 
-  Hadoop, Spark, Hbase, Pig, Zookeeper
+  Packages: Hadoop, Spark, Hbase, Pig, Zookeeper
 
-- Well supported Packages
+- Well
 
-  Storm, Mahout, Phoenix
+  Packages: Storm, Mahout, Phoenix
 
-- Experimental support
+  Features: No-local-dir
 
-  UDA/uda-plugin, Kafka, Zeppelin, Tachyon
+- Experimental
+
+  Packages: UDA/uda-plugin, Kafka, Zeppelin, Tachyon
+
+  Features: HDFS Federation, MagpieNetworkFS, IntelLustre
 
 Documentation
 -------------
