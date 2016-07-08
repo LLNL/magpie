@@ -25,9 +25,8 @@
 # Export environment variables we promised to export in documentation
 # and various variables needed.
 #
-# Unlke magpie-exports-core, this must only be called before
-# magpie-pre-run, magpie-run, and magpie-post-run, as it is dependent
-# on the magpie setup.
+# Unlke magpie-exports-core, these exports are dependent on the magpie
+# setup.
 #
 # This is used by scripts, don't edit this
 
