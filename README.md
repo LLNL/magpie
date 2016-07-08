@@ -55,13 +55,11 @@ The basic idea behind these scripts are to:
    Magpie may also do some additional cleanup work to hopefully make
    re-execution on later runs cleaner and faster.
 
-Core Supported Packages & Versions
-----------------------------------
+Supported Packages & Versions
+-----------------------------
 
-The following packages and their versions have been tested for support
-in Magpie and considered amongst the core supported packages in
-Magpie.  Magpie developers are confident in their functionality under
-Magpie in a wide range of scenarios.
+The following packages and their versions have been tested for minimal
+support in Magpie.  Please see full README for additional details.
 
 Versions not listed below should work with Magpie if the
 configuration/setup of those versions is compatible with the versions
@@ -92,26 +90,6 @@ Pig - 0.12.0, 0.12.1, 0.13.0, 0.14.0, 0.15.0 [PigNote]
 Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7,
             3.4.8
 
-[PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
-      is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on
-      your environment.
-
-Well Supported Packages & Versions
-----------------------------------
-
-The following packages have been tested for support in Magpie and
-considered well supported in Magpie.  They are not given quite the
-same attention of the packages listed amongst the core above, so there
-could be some unexpected use cases that could surprise users.  Magpie
-developers would welcome patches/pull requests to fix any issues.
-
-Versions not listed below should work with Magpie if the
-configuration/setup of those versions is compatible with the versions
-listed below.
-
-* + - Requires patch against binary distro's scripts, no re-compilation needed
-* ^ - Requires patch against source, requires re-compilation
-
 Storm - 0.9.2^, 0.9.3, 0.9.4, 0.9.5, 0.9.6, 0.10.0, 0.10.1, 1.0.0,
         1.0.1
 
@@ -120,23 +98,6 @@ Mahout - 0.11.0+, 0.11.1+, 0.11.2+, 0.12.0+, 0.12.1+
 Phoenix - 4.5.1-Hbase-1.1+, 4.5.2-HBase-1.1+, 4.6.0-Hbase-1.1+,
           4.7.0-Hbase-1.1
 
-Experimental Packages & Versions
---------------------------------
-
-The following packages have been tested for minimal support in Magpie.
-They are not developed/maintained with deep attention, so their
-support should be considered on the side of experimental.  While many
-use case scenarios will likely be supported, it would not be too
-surprising if a number of use case scenarios have not been considered
-and would not work.
-
-Magpie developers would welcome patches/pull requests to fix any
-issues.
-
-Versions not listed below should work with Magpie if the
-configuration/setup of those versions is compatible with the versions
-listed below.
-
 UDA/uda-plugin - 3.3.2-0
 
 Kafka - 2.11-0.9.0.0
@@ -144,6 +105,10 @@ Kafka - 2.11-0.9.0.0
 Zeppelin - 0.5.6
 
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
+
+[PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
+      is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on
+      your environment.
 
 [TachyonNote] - Default Tachyon build is against Hadoop 1.0.4 and
       Spark may be built against non-0.6.X builds.  Recompilation of
