@@ -22,7 +22,7 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-helper-functions
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_calc_slurm_magpie_timelimit () {
     # Do not excessively call this
