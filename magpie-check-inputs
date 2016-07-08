@@ -1001,11 +1001,11 @@ then
             exit 1
         fi
 
-        if ! echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
-        then
-            echo "SPARK_USE_YARN only works with SPARK_VERSION >= 1.0.0"
-            exit 1
-        fi
+	if ! echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
+	then
+	    echo "SPARK_USE_YARN only works with SPARK_VERSION >= 1.0.0"
+	    exit 1
+	fi
     fi
 
     if [ "${HADOOP_SETUP}" == "yes" ]
