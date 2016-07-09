@@ -212,6 +212,34 @@ Magpie_run_start_zookeeper () {
     fi
 }
 
+Magpie_run_zookeeper () {
+    if [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Zookeeper ruok"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-zookeeper-zookeeperruok &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${ZOOKEEPER_MODE}" == "launch" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    fi
+}
+
 Magpie_run_stop_zookeeper () {
     if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${zookeeper_should_be_torndown}" == "1" ]
     then

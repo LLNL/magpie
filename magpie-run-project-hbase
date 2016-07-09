@@ -238,6 +238,42 @@ Magpie_run_start_hbase () {
     fi
 }
 
+Magpie_run_hbase () {
+    if [ "${HBASE_MODE}" == "performanceeval" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Performance Evaluation"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hbase-performanceeval &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${HBASE_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $HBASE_SCRIPT_PATH $HBASE_SCRIPT_ARGS"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${HBASE_SCRIPT_PATH} ${HBASE_SCRIPT_ARGS} &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${HBASE_MODE}" == "interactive" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hbase ${HBASE_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${HBASE_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hbase ${HBASE_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    fi
+}
+
 Magpie_run_stop_hbase () {
     if [ "${hadoop_teardown_complete}" == "1" ]
     then

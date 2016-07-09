@@ -241,6 +241,42 @@ Magpie_run_start_storm () {
     fi
 }
 
+Magpie_run_storm () {
+    if [ "${STORM_MODE}" == "stormwordcount" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Storm WordCount"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-storm-stormwordcount &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${STORM_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $STORM_SCRIPT_PATH $STORM_SCRIPT_ARGS"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${STORM_SCRIPT_PATH} ${STORM_SCRIPT_ARGS} &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${STORM_MODE}" == "interactive" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Storm ${STORM_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${STORM_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Storm ${STORM_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    fi
+}
+
 Magpie_run_stop_storm () {
     if [ "${zookeeper_teardown_complete}" == "1" ]
     then

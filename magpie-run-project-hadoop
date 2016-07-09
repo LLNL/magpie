@@ -669,6 +669,79 @@ Magpie_run_start_hadoop () {
     fi
 }
 
+Magpie_run_hadoop () {
+    if [ "${HADOOP_MODE}" == "terasort" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Terasort"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-terasort &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${HADOOP_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $HADOOP_SCRIPT_PATH $HADOOP_SCRIPT_ARGS"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${HADOOP_SCRIPT_PATH} ${HADOOP_SCRIPT_ARGS} &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${HADOOP_MODE}" == "interactive" ] || [ "${HADOOP_MODE}" == "launch" ] || [ "${HADOOP_MODE}" == "hdfsonly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${HADOOP_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-upgradehdfs &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+
+	if [ $? -eq 0 ]
+	then
+	    # Sets hdfsstoredversionpath
+	    Magpie_get_hdfsstoredversionpath
+
+	    if [ "${hdfsstoredversionpath}X" != "X" ]
+	    then
+		rm -f ${hdfsstoredversionpath}
+		echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+	    fi
+	fi
+    elif [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Hadoop ${HADOOP_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-decommissionhdfsnodes &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+
+	if [ $? -eq 0 ]
+	then
+	    # Sets hdfsstorednodecountpath
+	    Magpie_get_hdfsstorednodecountpath
+
+	    rm -f ${hdfsstorednodecountpath}
+	    echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${hdfsstorednodecountpath}
+	fi
+    fi
+}
+ 
 Magpie_run_stop_hadoop () {
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoop_should_be_torndown}" == "1" ]
     then

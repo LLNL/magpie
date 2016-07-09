@@ -180,6 +180,26 @@ Magpie_run_start_zeppelin () {
     fi
 }
 
+Magpie_run_zeppelin () {
+    if [ "${ZEPPELIN_MODE}" == "server" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute server &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${ZEPPELIN_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    fi
+}
+
 Magpie_run_stop_zeppelin () {
     if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${zeppelin_should_be_torndown}" == "1" ]
     then
