@@ -26,6 +26,17 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
+Magpie_check_if_set_is_yes_or_no () {
+    local varname=$1
+
+    if [ "${!varname}X" != "X" ] \
+	&& ( [ "${!varname}" != "yes" ] && [ "${!varname}" != "no" ] )
+    then
+	echo "${varname} must be set to yes or no"
+	exit 1
+    fi
+}
+
 #
 # Check Core Inputs
 #
@@ -238,82 +249,13 @@ nodecount=${MAGPIE_NODE_COUNT}
 # nodecountmaster is a counter to count the master only once
 nodecountmaster=1
 
-if [ "${HADOOP_SETUP}X" != "X" ] \
-    && ( [ "${HADOOP_SETUP}" != "yes" ] && [ "${HADOOP_SETUP}" != "no" ] )
-then
-    echo "HADOOP_SETUP must be set to yes or no"
-    exit 1
-fi
+magpieprojects="HADOOP HADOOP_UDA_SETUP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM TACHYON ZOOKEEPER"
 
-if [ "${HADOOP_UDA_SETUP}X" != "X" ] \
-    && ( [ "${HADOOP_UDA_SETUP}" != "yes" ] && [ "${HADOOP_UDA_SETUP}" != "no" ] )
-then
-    echo "HADOOP_UDA_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${PIG_SETUP}X" != "X" ] \
-    && ( [ "${PIG_SETUP}" != "yes" ] && [ "${PIG_SETUP}" != "no" ] )
-then
-    echo "PIG_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${MAHOUT_SETUP}X" != "X" ] \
-    && ( [ "${MAHOUT_SETUP}" != "yes" ] && [ "${MAHOUT_SETUP}" != "no" ] )
-then
-    echo "MAHOUT_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${HBASE_SETUP}X" != "X" ] \
-    && ( [ "${HBASE_SETUP}" != "yes" ] && [ "${HBASE_SETUP}" != "no" ] )
-then
-    echo "HBASE_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${SPARK_SETUP}X" != "X" ] \
-    && ( [ "${SPARK_SETUP}" != "yes" ] && [ "${SPARK_SETUP}" != "no" ] )
-then
-    echo "SPARK_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${KAFKA_SETUP}X" != "X" ] \
-    && ( [ "${KAFKA_SETUP}" != "yes" ] && [ "${KAFKA_SETUP}" != "no" ] )
-then
-    echo "KAFKA_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${ZEPPELIN_SETUP}X" != "X" ] \
-    && ( [ "${ZEPPELIN_SETUP}" != "yes" ] && [ "${ZEPPELIN_SETUP}" != "no" ] )
-then
-    echo "ZEPPELIN_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${STORM_SETUP}X" != "X" ] \
-    && ( [ "${STORM_SETUP}" != "yes" ] && [ "${STORM_SETUP}" != "no" ] )
-then
-    echo "STORM_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${TACHYON_SETUP}X" != "X" ] \
-    && ( [ "${TACHYON_SETUP}" != "yes" ] && [ "${TACHYON_SETUP}" != "no" ] )
-then
-    echo "TACHYON_SETUP must be set to yes or no"
-    exit 1
-fi
-
-if [ "${ZOOKEEPER_SETUP}X" != "X" ] \
-    && ( [ "${ZOOKEEPER_SETUP}" != "yes" ] && [ "${ZOOKEEPER_SETUP}" != "no" ] )
-then
-    echo "ZOOKEEPER_SETUP must be set to yes or no"
-    exit 1
-fi
+for project in ${magpieprojects}
+do
+    setupvar="${project}_SETUP"
+    Magpie_check_if_set_is_yes_or_no ${setupvar}
+done
 
 # Did user turn on SOMETHING to run
 #
@@ -335,73 +277,20 @@ fi
 
 # Did user turn on something matching job run type
 
-if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
-    && [ "${HADOOP_SETUP}" != "yes" ]
-then
-    echo "Cannot run hadoop job type if HADOOP_SETUP is not enabled"
-    exit 1
-fi
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM TACHYON ZOOKEEPER"
 
-if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
-    && [ "${PIG_SETUP}" != "yes" ]
-then
-    echo "Cannot run pig job type if PIG_SETUP is not enabled"
-    exit 1
-fi
+for project in ${magpieprojects}
+do
+    projectlowercase=`echo ${project} | tr '[:upper:]' '[:lower:]'`
+    setupvar="${project}_SETUP"
 
-if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
-    && [ "${MAHOUT_SETUP}" != "yes" ]
-then
-    echo "Cannot run mahout job type if MAHOUT_SETUP is not enabled"
-    exit 1
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] \
-    && [ "${HBASE_SETUP}" != "yes" ]
-then
-    echo "Cannot run hbase job type if HBASE_SETUP is not enabled"
-    exit 1
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "spark" ] \
-    && [ "${SPARK_SETUP}" != "yes" ]
-then
-    echo "Cannot run spark job type if SPARK_SETUP is not enabled"
-    exit 1
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "kafka" ] \
-    && [ "${KAFKA_SETUP}" != "yes" ]
-then
-    echo "Cannot run kafka job type if KAFKA_SETUP is not enabled"
-    exit 1
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ] \
-    && [ "${ZEPPELIN_SETUP}" != "yes" ]
-then
-    echo "Cannot run zeppelin job type if ZEPPELIN_SETUP is not enabled"
-    exit 1
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "storm" ] \
-    && [ "${STORM_SETUP}" != "yes" ]
-then
-    echo "Cannot run storm job type if STORM_SETUP is not enabled"
-    exit 1
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "tachyon" ] \
-    && [ "${TACHYON_SETUP}" != "yes" ]
-then
-    echo "Cannot run tachyon job type if TACHYON_SETUP is not enabled"
-fi
-
-if [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ] \
-    && [ "${ZOOKEEPER_SETUP}" != "yes" ]
-then
-    echo "Cannot run zookeeper job type if ZOOKEEPER_SETUP is not enabled"
-fi
+    if [ "${MAGPIE_JOB_TYPE}" == "${projectlowercase}" ] \
+	&& [ "${!setupvar}" != "yes" ]
+    then
+	echo "Cannot run ${projectlowercase} job type if ${setupvar} is not enabled"
+	exit 1
+    fi
+done
 
 if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${HADOOP_SETUP}" != "yes" ] \
@@ -608,69 +497,56 @@ then
 	exit 1
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-	&& [ "${HADOOP_HDFS_PATH_CLEAR}X" != "X" ] \
-	&& ( [ "${HADOOP_HDFS_PATH_CLEAR}" != "yes" ] && [ "${HADOOP_HDFS_PATH_CLEAR}" != "no" ] )
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
-	echo "HADOOP_HDFS_PATH_CLEAR must be set to yes or no"
-	exit 1
+	Magpie_check_if_set_is_yes_or_no "HADOOP_HDFS_PATH_CLEAR"
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-	&& [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
-	echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-	exit 1
+	if [ "${HADOOP_HDFSOVERLUSTRE_PATH}X" == "X" ]
+	then
+	    echo "Must specify environment variable HADOOP_HDFSOVERLUSTRE_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+	    exit 1
+	fi
+
+	Magpie_check_if_set_is_yes_or_no "HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS"
     fi
 
-    if [ "${HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS}X" != "X" ] \
-	&& ( [ "${HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS}" != "yes" ] && [ "${HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS}" != "no" ])
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-	echo "HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS must be set to yes or no"
-	exit 1
+	if [ "${HADOOP_HDFSOVERNETWORKFS_PATH}X" == "X" ]
+	then
+	    echo "Must specify environment variable HADOOP_HDFSOVERNETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+	    exit 1
+	fi
+
+	Magpie_check_if_set_is_yes_or_no "HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS"
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
-	&& [ "${HADOOP_HDFSOVERNETWORKFS_PATH}X" == "X" ]
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
-	echo "Must specify environment variable HADOOP_HDFSOVERNETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-	exit 1
+	if [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
+	then
+	    echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+	    exit 1
+	fi
     fi
 
-    if [ "${HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS}X" != "X" ] \
-	&& ( [ "${HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS}" != "yes" ] && [ "${HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS}" != "no" ])
+    if [ "${HADOOP_LOCALSTORE}X" != "X" ]
     then
-	echo "HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS must be set to yes or no"
-	exit 1
+	Magpie_check_if_set_is_yes_or_no "HADOOP_LOCALSTORE_CLEAR"
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
-	&& [ "${HADOOP_RAWNETWORKFS_PATH}X" == "X" ]
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-	echo "Must specify environment variable HADOOP_RAWNETWORKFS_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-	exit 1
-    fi
-
-    if [ "${HADOOP_LOCALSTORE}X" != "X" ] \
-	&& [ "${HADOOP_LOCALSTORE_CLEAR}X" != "X" ] \
- 	&& ( [ "${HADOOP_LOCALSTORE_CLEAR}" != "yes" ] && [ "${HADOOP_LOCALSTORE_CLEAR}" != "no" ] )
-    then
-	echo "HADOOP_LOCALSTORE_CLEAR must be set to yes or no"
-	exit 1
-    fi
-
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-	&& [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
-    then
-	echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-	exit 1
-    fi
-
-    if [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
-	&& ( [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "yes" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" != "no" ])
-    then
-	echo "HADOOP_INTELLUSTRE_SHUFFLE must be set to yes or no"
-	exit 1
+	if [ "${HADOOP_INTELLUSTRE_PATH}X" == "X" ]
+	then
+	    echo "Must specify environment variable HADOOP_INTELLUSTRE_PATH for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+	    exit 1
+	fi
+	
+	Magpie_check_if_set_is_yes_or_no "HADOOP_INTELLUSTRE_SHUFFLE"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
@@ -742,40 +618,21 @@ then
 	    nodecount=$((nodecount-${HDFS_FEDERATION_NAMENODE_COUNT-1}))
 	fi
     fi
-	    
-    if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ] \
-	&& ( [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "yes" ] && [ "${HADOOP_TERASORT_CLEAR_CACHE}" != "no" ])
+
+    if [ "${HADOOP_MODE}" == "terasort" ]
     then
-	echo "HADOOP_TERASORT_CLEAR_CACHE must be set to yes or no"
-	exit 1
+	Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_CLEAR_CACHE"
+	Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERACHECKSUM"
+	Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERAVALIDATE"
     fi
 
-    if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}X" != "X" ] \
-	&& ( [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" != "yes" ] && [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" != "no" ])
+    Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
+    
+    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
+        || [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
+        || [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
     then
-	echo "HADOOP_TERASORT_RUN_TERACHECKSUM must be set to yes or no"
-	exit 1
-    fi
-
-    if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}X" != "X" ] \
-	&& ( [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" != "yes" ] && [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" != "no" ])
-    then
-	echo "HADOOP_TERASORT_RUN_TERAVALIDATE must be set to yes or no"
-	exit 1
-    fi
-
-    if [ "${HADOOP_COMPRESSION}X" != "X" ] \
-	&& ( [ "${HADOOP_COMPRESSION}" != "yes" ] && [ "${HADOOP_COMPRESSION}" != "no" ])
-    then
-	echo "HADOOP_COMPRESSION must be set to yes or no"
-	exit 1
-    fi
-
-    if [ "${HADOOP_PER_JOB_HDFS_PATH}X" != "X" ] \
-       && ( [ "${HADOOP_PER_JOB_HDFS_PATH}" != "yes" ] &&  [ "${HADOOP_PER_JOB_HDFS_PATH}" != "no" ] )
-    then
-        echo "HADOOP_PER_JOB_HDFS_PATH must be set to yes or no"
-        exit 1
+	Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
     fi
 
     if [ ${nodecount} -le "0" ]
@@ -1020,12 +877,7 @@ then
 	exit 1
     fi
 
-    if [ "${HBASE_START_THRIFT_SERVER}X" != "X" ] \
-       && ( [ "${HBASE_START_THRIFT_SERVER}" != "yes" ] &&  [ "${HBASE_START_THRIFT_SERVER}" != "no" ] ) 
-    then
-        echo "HBASE_START_THRIFT_SERVER must be set to run Hbase"
-        exit 1
-    fi
+    Magpie_check_if_set_is_yes_or_no "HBASE_START_THRIFT_SERVER"
 
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
@@ -1127,14 +979,7 @@ then
 	exit 1
     fi
 
-    if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" != "X" ]
-    then
-	if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" != "yes" ] && [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" != "no" ]
-	then
-	    echo "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN must be set to yes or no"
-	    exit 1
-	fi
-    fi
+    Magpie_check_if_set_is_yes_or_no "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN"
 
     if ([ "${HBASE_MODE}" == "performanceeval" ] \
 	|| [ "${HBASE_MODE}" == "script" ]) \
@@ -1302,12 +1147,9 @@ then
 	fi
     fi
 
-    if [ "${SPARK_LOCAL_SCRATCH_DIR}X" != "X" ] \
-	&& [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}X" != "X" ] \
- 	&& ( [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}" != "yes" ] && [ "${SPARK_LOCAL_SCRATCH_DIR_CLEAR}" != "no" ] )
+    if [ "${SPARK_LOCAL_SCRATCH_DIR}X" != "X" ]
     then
-	echo "SPARK_LOCAL_SCRATCH_DIR_CLEAR must be set to yes or no"
-	exit 1
+	Magpie_check_if_set_is_yes_or_no "SPARK_LOCAL_SCRATCH_DIR_CLEAR"
     fi
 
     if [ "${SPARK_MODE}" != "sparkpi" ] \
@@ -1393,12 +1235,7 @@ then
 	fi
     fi
 
-    if [ "${SPARK_USE_YARN}X" != "X" ] \
-	&& ( [ "${SPARK_USE_YARN}" != "yes" ] && [ "${SPARK_USE_YARN}" != "no" ] )
-    then
-	echo "SPARK_USE_YARN must be set to yes or no"
-	exit 1
-    fi
+    Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
 
     if [ "${SPARK_USE_YARN}" == "yes" ]
     then
@@ -1703,23 +1540,9 @@ then
 	exit 1
     fi
 
-    if [ "${TACHYON_WORKER_ON_MASTER}X" != "X" ]
-    then
-	if [ "${TACHYON_WORKER_ON_MASTER}" != "yes" ] && [ "${TACHYON_WORKER_ON_MASTER}" != "no" ]
-	then
-	    echo "TACHYON_WORKER_ON_MASTER must be set to yes or no"
-	    exit 1
-	fi
-    fi
+    Magpie_check_if_set_is_yes_or_no "TACHYON_WORKER_ON_MASTER"
 
-    if [ "${TACHYON_ASYNCHRONOUS_WRITES}X" != "X" ]
-    then
-	if [ "${TACHYON_ASYNCHRONOUS_WRITES}" != "yes" ] && [ "${TACHYON_ASYNCHRONOUS_WRITES}" != "no" ]
-	then
-	    echo "TACHYON_ASYNCHRONOUS_WRITES must be set to yes or no"
-	    exit 1
-	fi
-    fi
+    Magpie_check_if_set_is_yes_or_no "TACHYON_ASYNCHRONOUS_WRITES"
 fi
 
 #
@@ -1810,13 +1633,8 @@ then
 	exit 1
     fi
 
-    if [ "${ZOOKEEPER_DATA_DIR_CLEAR}X" != "X" ] \
-	&& ( [ "${ZOOKEEPER_DATA_DIR_CLEAR}" != "yes" ] && [ "${ZOOKEEPER_DATA_DIR_CLEAR}" != "no" ] )
-    then
-	echo "ZOOKEEPER_DATA_DIR_CLEAR must be set to yes or no"
-	exit 1
-    fi
-    
+    Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_DATA_DIR_CLEAR"
+
     if [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "networkfs" ] \
 	&& [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "local" ]
     then
@@ -1830,12 +1648,7 @@ then
 	exit 1
     fi
 
-    if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}X" != "X" ] \
-       && ( [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" != "yes" ] &&  [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" != "no" ] )
-    then
-        echo "ZOOKEEPER_PER_JOB_DATA_DIR must be set to yes or no"
-        exit 1
-    fi
+    Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_PER_JOB_DATA_DIR"
 
     if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
     then
