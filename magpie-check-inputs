@@ -26,6 +26,19 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
+Magpie_check_is_enabled () {
+    local projectnametocheck=$1
+    local projectnameneededfor=$2
+    local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
+    local varnametocheck="${uppercaseprojectnametocheck}_SETUP"
+
+    if [ "${!varnametocheck}" != "yes" ]
+    then
+	echo "${projectnameneededfor} requires ${projectnametocheck} to be setup, set ${varnametocheck} to yes"
+	exit 1
+    fi
+}
+
 Magpie_check_if_set_is_yes_or_no () {
     local varname=$1
 
@@ -660,11 +673,7 @@ then
 
     Magpie_check_must_be_set "PIG_LOCAL_DIR" "to run Pig"
 
-    if [ "${HADOOP_SETUP}" != "yes" ]
-    then
-	echo "Pig requires Hadoop to be setup, set HADOOP_SETUP to yes"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Hadoop" "Pig"
 
     if [ "${PIG_MODE}" != "testpig" ] \
 	&& [ "${PIG_MODE}" != "script" ] \
@@ -704,11 +713,7 @@ then
 
     Magpie_check_must_be_set "MAHOUT_LOCAL_DIR" "to run Mahout"
 
-    if [ "${HADOOP_SETUP}" != "yes" ]
-    then
-	echo "Mahout requires Hadoop to be setup, set HADOOP_SETUP to yes"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Hadoop" "Mahout"
 
     if [ "${MAHOUT_MODE}" != "classifywikipedia" ] \
 	&& [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
@@ -755,11 +760,9 @@ then
 
     Magpie_check_if_set_is_yes_or_no "HBASE_START_THRIFT_SERVER"
 
-    if [ "${HADOOP_SETUP}" != "yes" ]
-    then
-	echo "Hadoop must be enabled for Hbase"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Hadoop" "Hbase"
+
+    Magpie_check_is_enabled "Zookeeper" "Hbase"
 
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
     	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
@@ -768,12 +771,6 @@ then
     	echo "Magpie presently only supports Hbase over HDFS"
     	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
     	exit 1
-    fi
-
-    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
-    then
-	echo "Zookeeper must be enabled for Hbase"
-	exit 1
     fi
 
     if [ "${magpieshutdowntime}" -lt 20 ]
@@ -876,11 +873,7 @@ then
 
     Magpie_check_must_be_set "PHOENIX_LOCAL_DIR" "to run Phoenix"
 
-    if [ "${HBASE_SETUP}" != "yes" ]
-    then
-	echo "HBase must be enabled for Phoenix"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Hbase" "Phoenix"
 
     if [ "${PHOENIX_MODE}" != "performanceeval" ] \
 	&& [ "${PHOENIX_MODE}" != "script" ] \
@@ -1085,11 +1078,7 @@ then
 
     Magpie_check_must_be_set "KAFKA_LOCAL_DIR" "to run Kafka"
 
-    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
-    then
-	echo "Zookeeper must be enabled for Kafka"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Zookeeper" "Kafka"
 
     if [ "${KAFKA_MODE}" != "performance" ] \
         && [ "${KAFKA_MODE}" != "server" ] \
@@ -1106,12 +1095,6 @@ fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
-    if [ "${SPARK_SETUP}" != "yes" ]
-    then
-	echo "Zeppelin requires Spark to be setup, set SPARK_SETUP to yes"
-	exit 1
-    fi
-
     Magpie_check_must_be_set "JAVA_HOME" "for Zeppelin" 
 
     Magpie_check_must_be_set "ZEPPELIN_VERSION" "to run Zeppelin"
@@ -1119,6 +1102,8 @@ then
     Magpie_check_must_be_set_and_is_directory "ZEPPELIN_HOME" "to run Zeppelin"
 
     Magpie_check_must_be_set "ZEPPELIN_LOCAL_DIR" "to run Zeppelin"
+
+    Magpie_check_is_enabled "Spark" "Zeppelin"
 
     if [ "${ZEPPELIN_MODE}" != "server" ] \
         && [ "${ZEPPELIN_MODE}" != "setuponly" ]
@@ -1146,11 +1131,7 @@ then
 
     Magpie_check_must_be_set "STORM_LOCAL_DIR" "to run Storm"
 
-    if [ "${ZOOKEEPER_SETUP}" != "yes" ]
-    then
-	echo "Zookeeper must be enabled for Storm"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Zookeeper" "Storm"
 
     if [ "${STORM_MODE}" != "stormwordcount" ] \
 	&& [ "${STORM_MODE}" != "script" ] \
@@ -1205,18 +1186,14 @@ then
 
     Magpie_check_must_be_set "TACHYON_LOCAL_DIR" "to run Tachyon"
 
+    Magpie_check_is_enabled "Hadoop" "Tachyon"
+
     if [ "${TACHYON_MODE}" != "testtachyon" ] \
        && [ "${TACHYON_MODE}" != "launch" ] \
        && [ "${TACHYON_MODE}" != "setuponly" ]
     then
        echo "TACHYON_MODE must be set to testtachyon, launch, or setuponly"
        exit 1
-    fi
-
-    if [ "${HADOOP_SETUP}" != "yes" ]
-    then
-	echo "Hadoop must be enabled for Tachyon"
-	exit 1
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
