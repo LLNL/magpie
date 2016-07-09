@@ -79,6 +79,16 @@ Magpie_check_is_a_directory () {
     fi
 }
 
+Magpie_check_is_regular_file () {
+    local varname=$1
+
+    if [ ! -f ${!varname} ]
+    then
+	echo "${varname} does not point to a regular file"
+	exit 1
+    fi
+}
+
 Magpie_check_is_executable () {
     local varname=$1
 
@@ -95,6 +105,14 @@ Magpie_check_must_be_set_and_is_directory () {
     
     Magpie_check_must_be_set ${varname} ${extramsg}
     Magpie_check_is_a_directory ${varname}
+}
+
+Magpie_check_must_be_set_and_is_regular_file () {
+    local varname=$1
+    local extramsg=$2
+    
+    Magpie_check_must_be_set ${varname} ${extramsg}
+    Magpie_check_is_regular_file ${varname}
 }
 
 Magpie_check_must_be_set_and_is_executable () {
@@ -612,17 +630,7 @@ then
 	exit 1
     fi
 
-    if [ "${HADOOP_UDA_JAR}X" == "X" ]
-    then
-	echo "HADOOP_UDA_JAR must be set to run Hadoop w/ UDA"
-	exit 1
-    fi
-
-    if [ ! -f "${HADOOP_UDA_JAR}" ]
-    then
-	echo "Jar HADOOP_UDA_JAR \"$HADOOP_UDA_JAR\" is not a regular file"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_regular_file "HADOOP_UDA_JAR" "to run Hadoop w/ UDA"
 
     if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
     then
@@ -668,7 +676,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "script" ]
     then
-	Magpie_check_must_be_set "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
+	Magpie_check_must_be_set_and_is_regular_file "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
@@ -713,7 +721,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] && [ "${MAHOUT_MODE}" == "script" ]
     then
-	Magpie_check_must_be_set "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
+	Magpie_check_must_be_set_and_is_regular_file "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
@@ -897,7 +905,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "script" ]
     then
-	Magpie_check_must_be_set "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
+	Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
     fi
 
     if ([ "${PHOENIX_MODE}" == "performanceeval" ] \
@@ -1155,10 +1163,9 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "stormwordcount" ]
     then
-	if [ "${STORM_STARTER_EXAMPLE_JAR_PATH}X" != "X" ] && [ ! -f "${STORM_STARTER_EXAMPLE_JAR_PATH}" ]
+	if [ "${STORM_STARTER_EXAMPLE_JAR_PATH}X" != "X" ]
 	then
-	    echo "STORM_STARTER_EXAMPLE_JAR_PATH does not point to a file"
-	    exit 1
+	    Magpie_check_is_regular_file "STORM_STARTER_EXAMPLE_JAR_PATH"
 	fi
     fi
 
