@@ -51,261 +51,48 @@ if [ $? -ne 0 ] ; then
 fi
 
 #
-# Setup Hadoop directories
+# Setup primary conf, log, and local scratchspace directories for projects
 #
 
-if [ "${HADOOP_SETUP}" == "yes" ]
-then  
-    mkdir -p $HADOOP_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HADOOP_CONF_DIR}"
-	exit 1
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM TACHYON ZOOKEEPER"
+
+for project in ${magpieprojects}
+do
+    setupvar="${project}_SETUP"
+    confdirvar="${project}_CONF_DIR"
+    logdirvar="${project}_LOG_DIR"
+    localscratchspacedirvar="${project}_LOCAL_SCRATCHSPACE_DIR"
+
+    if [ "${!setupvar}" == "yes" ]
+    then
+	if [ "${!confdirvar}X" != "X" ]
+	then
+	    mkdir -p ${!confdirvar}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${!confdirvar}"
+		exit 1
+	    fi
+	fi
+
+	if [ "${!logdirvar}X" != "X" ]
+	then
+	    mkdir -p ${!logdirvar}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${!logdirvar}"
+		exit 1
+	    fi
+	fi
+
+	if [ "${!localscratchspacedirvar}X" != "X" ]
+	then
+	    mkdir -p ${!localscratchspacedirvar}
+	    if [ $? -ne 0 ] ; then
+		echo "mkdir failed making ${!localscratchspacedirvar}"
+		exit 1
+	    fi
+	fi
     fi
-
-    mkdir -p $HADOOP_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HADOOP_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $HADOOP_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Pig directories
-#
-
-if [ "${PIG_SETUP}" == "yes" ]
-then
-    mkdir -p $PIG_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${PIG_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $PIG_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${PIG_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Mahout directories
-#
-
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    mkdir -p $MAHOUT_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${MAHOUT_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $MAHOUT_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${MAHOUT_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Hbase directories
-#
-
-if [ "${HBASE_SETUP}" == "yes" ]
-then
-    mkdir -p $HBASE_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HBASE_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $HBASE_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HBASE_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $HBASE_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HBASE_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Phoenix directories
-#
-
-if [ "${PHOENIX_SETUP}" == "yes" ]
-then
-    mkdir -p $PHOENIX_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${PHOENIX_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $PHOENIX_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${PHOENIX_LOG_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Spark directories
-#
-
-if [ "${SPARK_SETUP}" == "yes" ]
-then
-    mkdir -p $SPARK_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${SPARK_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $SPARK_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${SPARK_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $SPARK_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${SPARK_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Kafka directories
-#
-
-if [ "${KAFKA_SETUP}" == "yes" ]
-then
-    mkdir -p $KAFKA_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${KAFKA_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $KAFKA_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${KAFKA_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $KAFKA_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${KAFKA_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Zeppelin directories
-#
-
-if [ "${ZEPPELIN_SETUP}" == "yes" ]
-then
-    mkdir -p $ZEPPELIN_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZEPPELIN_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $ZEPPELIN_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZEPPELIN_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $ZEPPELIN_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Storm directories
-#
-
-if [ "${STORM_SETUP}" == "yes" ]
-then
-    mkdir -p $STORM_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${STORM_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $STORM_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${STORM_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $STORM_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${STORM_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Tachyon directories
-#
-
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    mkdir -p $TACHYON_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${TACHYON_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $TACHYON_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${TACHYON_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $TACHYON_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${TACHYON_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
-
-#
-# Setup Zookeeper directories
-#
-
-if [ "${ZOOKEEPER_SETUP}" == "yes" ]
-then
-    mkdir -p $ZOOKEEPER_CONF_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_CONF_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $ZOOKEEPER_LOG_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_LOG_DIR}"
-	exit 1
-    fi
-
-    mkdir -p $ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR
-    if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR}"
-	exit 1
-    fi
-fi
+done
 
 #
 # Setup/Calculate Core Master/Slave files
