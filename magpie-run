@@ -134,6 +134,7 @@ Magpie_run_start_spark
 # Will set kafka_should_be_torndown & kafka_setup_successful appropriately
 Magpie_run_start_kafka
 
+# After Spark setup, requires Spark
 # Will set zeppelin_should_be_torndown & zeppelin_setup_successful appropriately
 Magpie_run_start_zeppelin
 
@@ -223,6 +224,7 @@ Magpie_run_stop_tachyon
 # Sets storm_teardown_complete if teardown done
 Magpie_run_stop_storm
 
+# Before Spark, depends on Spark
 # Sets zeppelin_teardown_complete if teardown done
 Magpie_run_stop_zeppelin
 

@@ -38,6 +38,14 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 Magpie_run_start_zeppelin () {
     if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
+	if [ "${spark_setup_successful}" == "0" ]
+	then
+	    Magpie_output_internal_error "Attempt to setup Zeppelin without Spark being setup"
+	    zeppelin_should_be_torndown=0
+	    zeppelin_setup_successful=0
+	    return 1
+	fi
+
 	cd ${ZEPPELIN_HOME}
 
 	if [ ${ZEPPELIN_MODE} != "setuponly" ]
@@ -201,6 +209,11 @@ Magpie_run_zeppelin () {
 }
 
 Magpie_run_stop_zeppelin () {
+    if [ "${spark_teardown_complete}" == "1" ]
+    then
+	Magpie_output_internal_warning "tearing down Zeppelin after Spark"
+    fi
+
     if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${zeppelin_should_be_torndown}" == "1" ]
     then
 	if [ ${ZEPPELIN_MODE} != "setuponly" ]
