@@ -297,6 +297,71 @@ GenerateDefaultRegressionTests_JobTimeout() {
     fi
 }
 
+GenerateDefaultRegressionTests_CatchProjectDependencies() {
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hadoop-and-pig-regression-catchprojectdependency-hadoop
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hadoop-and-mahout-regression-catchprojectdependency-hadoop
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-hadoop
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-zookeeper
+
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-zookeeper
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hadoop
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hbase
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-zookeeper
+
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export HBASE_SETUP=\(.*\)/export HBASE_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hbase
+	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-zookeeper
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-catchprojectdependency-zookeeper
+
+	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-storm-regression-catchprojectdependency-zookeeper
+    fi
+}
+
 GenerateDefaultRegressionTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -308,4 +373,6 @@ GenerateDefaultRegressionTests() {
     GenerateDefaultRegressionTests_InteractiveMode
 
     GenerateDefaultRegressionTests_JobTimeout
+
+    GenerateDefaultRegressionTests_CatchProjectDependencies
 }

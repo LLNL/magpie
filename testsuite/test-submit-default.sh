@@ -67,8 +67,22 @@ SubmitDefaultRegressionTests_JobTimeout () {
     BasicJobSubmit magpie.${submissiontype}-storm-regression-jobtimeout
 }
 
+SubmitDefaultRegressionTests_CatchProjectDependencies() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-zookeeper
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hbase
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-zookeeper
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-regression-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-catchprojectdependency-zookeeper
+}
+
 SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadJobNames
     SubmitDefaultRegressionTests_InteractiveMode
     SubmitDefaultRegressionTests_JobTimeout
+    SubmitDefaultRegressionTests_CatchProjectDependencies
 }

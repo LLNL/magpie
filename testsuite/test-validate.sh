@@ -187,6 +187,25 @@ then
     done
 fi
 
+if ls ${outputprefix}*catchprojectdependency* >& /dev/null
+then
+    for file in `ls ${outputprefix}*catchprojectdependency*`
+    do
+	# This is the more common catch
+	num1=`grep -e "\(.*\) requires \(.*\) to be setup, set \(.*\) to yes" $file | wc -l`
+	# Possible nothing has been enabled that can run, also likely catch
+ 	num2=`grep -e "there is nothing to setup" $file | wc -l`
+	# This error is specific to Spark and Hadoop accidentally not enabled
+	num3=`grep -e "must be set if Hadoop is not setup" $file | wc -l`
+	if [ "${num1}" == "0" ] && [ "${num2}" == "0" ] && [ "${num3}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*jobtimeout* >& /dev/null
 then
     for file in `ls ${outputprefix}*jobtimeout*`

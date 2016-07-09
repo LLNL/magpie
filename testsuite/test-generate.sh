@@ -478,6 +478,10 @@ if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
 fi
 
+if ls magpie.${submissiontype}*regression-catchprojectdependency* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-catchprojectdependency*
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
