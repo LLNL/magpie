@@ -68,12 +68,30 @@ Magpie_check_is_a_directory () {
     fi
 }
 
+Magpie_check_is_executable () {
+    local varname=$1
+
+    if [ ! -x ${!varname} ]
+    then
+	echo "${varname}=\"${!varname}\" does not have execute permissions"
+	exit 1
+    fi
+}
+
 Magpie_check_must_be_set_and_is_directory () {
     local varname=$1
     local extramsg=$2
     
     Magpie_check_must_be_set ${varname} ${extramsg}
-    Magpie_check_is_a_directory ${varname} ${extramsg}
+    Magpie_check_is_a_directory ${varname}
+}
+
+Magpie_check_must_be_set_and_is_executable () {
+    local varname=$1
+    local extramsg=$2
+    
+    Magpie_check_must_be_set ${varname} ${extramsg}
+    Magpie_check_is_executable ${varname}
 }
     
 #
@@ -150,17 +168,7 @@ fi
 
 if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
-    if [ "${MAGPIE_SCRIPT_PATH}X" == "X" ]
-    then
-	echo "Script MAGPIE_SCRIPT_PATH must be specified for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
-	exit 1
-    fi
-
-    if [ ! -x ${MAGPIE_SCRIPT_PATH} ]
-    then
-	echo "Script MAGPIE_SCRIPT_PATH \"$MAGPIE_SCRIPT_PATH\" does not have execute permissions"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_executable "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
 fi
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
@@ -185,16 +193,14 @@ then
     exit 1
 fi
 
-if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ] && [ ! -x "${MAGPIE_PRE_JOB_RUN}" ]
+if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then 
-    echo "Script MAGPIE_PRE_JOB_RUN=\"${MAGPIE_PRE_JOB_RUN}\" is not executable"
-    exit 1
+    Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
 fi
 
-if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ! -x "${MAGPIE_POST_JOB_RUN}" ]
+if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then 
-    echo "Script MAGPIE_POST_JOB_RUN=\"${MAGPIE_POST_JOB_RUN}\" is not executable"
-    exit 1
+    Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
 fi
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpiestartuptime} -lt 5 ]
@@ -348,17 +354,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "script" ]
     then
-	if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script HADOOP_SCRIPT_PATH must be specified for HADOOP_MODE = ${HADOOP_MODE}"
-	    exit 1
-	fi
-	
-	if [ ! -x ${HADOOP_SCRIPT_PATH} ]
-	then
-	    echo "Script HADOOP_SCRIPT_PATH \"$HADOOP_SCRIPT_PATH\" does not have execute permissions"
-	    exit 1
-	fi
+	Magpie_check_must_be_set_and_is_executable "HADOOP_SCRIPT_PATH" "for HADOOP_MODE = ${HADOOP_MODE}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
@@ -689,11 +685,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "script" ]
     then
-	if [ "${PIG_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script PIG_SCRIPT_PATH must be specified for PIG_MODE = ${PIG_MODE}"
-	    exit 1
-	fi
+	Magpie_check_must_be_set "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
@@ -738,11 +730,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] && [ "${MAHOUT_MODE}" == "script" ]
     then
-	if [ "${MAHOUT_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script MAHOUT_SCRIPT_PATH must be specified for MAHOUT_MODE = ${MAHOUT_MODE}"
-	    exit 1
-	fi
+	Magpie_check_must_be_set "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
@@ -854,17 +842,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_MODE}" == "script" ]
     then
-	if [ "${HBASE_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script HBASE_SCRIPT_PATH must be specified for HBASE_MODE = ${HBASE_MODE}"
-	    exit 1
-	fi
-	
-	if [ ! -x ${HBASE_SCRIPT_PATH} ]
-	then
-	    echo "Script HBASE_SCRIPT_PATH \"$HBASE_SCRIPT_PATH\" does not have execute permissions"
-	    exit 1
-	fi
+	Magpie_check_must_be_set_and_is_executable "HBASE_SCRIPT_PATH" "for HBASE_MODE = ${HBASE_MODE}"
     fi
 
     if ([ "${HBASE_MODE}" == "performanceeval" ] \
@@ -936,17 +914,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "script" ]
     then
-	if [ "${PHOENIX_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script PHOENIX_SCRIPT_PATH must be specified for PHOENIX_MODE = ${PHOENIX_MODE}"
-	    exit 1
-	fi
-	
-	if [ ! -x ${PHOENIX_SCRIPT_PATH} ]
-	then
-	    echo "Script PHOENIX_SCRIPT_PATH \"$PHOENIX_SCRIPT_PATH\" does not have execute permissions"
-	    exit 1
-	fi
+	Magpie_check_must_be_set "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
     fi
 
     if ([ "${PHOENIX_MODE}" == "performanceeval" ] \
@@ -1083,17 +1051,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "script" ]
     then
-	if [ "${SPARK_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script SPARK_SCRIPT_PATH must be specified for SPARK_MODE = ${SPARK_MODE}"
-	    exit 1
-	fi
-	
-	if [ ! -x ${SPARK_SCRIPT_PATH} ]
-	then
-	    echo "Script SPARK_SCRIPT_PATH \"$SPARK_SCRIPT_PATH\" does not have execute permissions"
-	    exit 1
-	fi
+	Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_MODE = ${SPARK_MODE}"
     fi
 
     Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
@@ -1232,17 +1190,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "script" ]
     then
-	if [ "${STORM_SCRIPT_PATH}X" == "X" ]
-	then
-	    echo "Script STORM_SCRIPT_PATH must be specified for STORM_MODE = ${STORM_MODE}"
-	    exit 1
-	fi
-	
-	if [ ! -x ${STORM_SCRIPT_PATH} ]
-	then
-	    echo "Script STORM_SCRIPT_PATH \"$STORM_SCRIPT_PATH\" does not have execute permissions"
-	    exit 1
-	fi
+	Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_MODE = ${STORM_MODE}"
     fi
 
     if [ "${STORM_MODE}" != "setuponly" ] && [ "${ZOOKEEPER_MODE}" == "setuponly" ]
