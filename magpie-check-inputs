@@ -37,15 +37,50 @@ Magpie_check_if_set_is_yes_or_no () {
     fi
 }
 
+Magpie_check_environment_variable_must_be_set () {
+    local varname=$1
+
+    if [ "${!varname}X" == "X" ]
+    then
+	echo "${varname} environment variable must be set"
+	exit 1
+    fi
+}
+
+Magpie_check_must_be_set () {
+    local varname=$1
+    local extramsg=$2
+
+    if [ "${!varname}X" == "X" ]
+    then
+	echo "${varname} must be set ${extramsg}"
+	exit 1
+    fi
+}
+
+Magpie_check_is_a_directory () {
+    local varname=$1
+
+    if [ ! -d ${!varname} ]
+    then
+	echo "${varname} does not point to a directory"
+	exit 1
+    fi
+}
+
+Magpie_check_must_be_set_and_is_directory () {
+    local varname=$1
+    local extramsg=$2
+    
+    Magpie_check_must_be_set ${varname} ${extramsg}
+    Magpie_check_is_a_directory ${varname} ${extramsg}
+}
+    
 #
 # Check Core Inputs
 #
 
-if [ "${MAGPIE_SUBMISSION_TYPE}X" == "X" ]
-then
-    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set"
-    exit 1
-fi
+Magpie_check_must_be_set "MAGPIE_SUBMISSION_TYPE"
 
 # slurmsbatch, msubslurm, msubtorque legacy
 if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ] \
@@ -67,48 +102,18 @@ if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
     || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
     || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
-    if [ "${SLURM_NODEID}X" == "X" ]
-    then
-	echo "SLURM_NODEID environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_NNODES}X" == "X" ]
-    then
-	echo "SLURM_NNODES environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_JOB_NODELIST}X" == "X" ]
-    then
-	echo "SLURM_JOB_NODELIST environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_JOB_NAME}X" == "X" ]
-    then
-	echo "SLURM_JOB_NAME environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_JOB_ID}X" == "X" ]
-    then
-	echo "SLURM_JOB_ID environment variable must be set"
-	exit 1
-    fi
+    Magpie_check_environment_variable_must_be_set "SLURM_NODEID"
+    Magpie_check_environment_variable_must_be_set "SLURM_NNODES"
+    Magpie_check_environment_variable_must_be_set "SLURM_JOB_NODELIST"
+    Magpie_check_environment_variable_must_be_set "SLURM_JOB_NAME"
+    Magpie_check_environment_variable_must_be_set "SLURM_JOB_ID"
 fi
 
 #
 # Check Magpie Inputs
 #
 
-if [ "${MAGPIE_SCRIPTS_HOME}X" == "X" ]
-then
-    echo "MAGPIE_SCRIPTS_HOME must be set"
-    exit 1
-fi
-
-if [ ! -d ${MAGPIE_SCRIPTS_HOME} ]
-then
-    echo "MAGPIE_SCRIPTS_HOME does not point to a directory"
-    exit 1
-fi
+Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 
@@ -118,23 +123,11 @@ then
     exit 1
 fi
 
-if [ "${MAGPIE_LOCAL_DIR}X" == "X" ]
-then
-    echo "MAGPIE_LOCAL_DIR must be set"
-    exit 1
-fi
+Magpie_check_must_be_set "MAGPIE_LOCAL_DIR"
 
-if [ "${MAGPIE_NO_LOCAL_DIR}" != "yes" ] && [ "${MAGPIE_NO_LOCAL_DIR}" != "no" ]
-then
-    echo "MAGPIE_NO_LOCAL_DIR must be set to yes or no"
-    exit 1
-fi
+Magpie_check_if_set_is_yes_or_no "MAGPIE_NO_LOCAL_DIR"
 
-if [ "${MAGPIE_JOB_TYPE}X" == "X" ]
-then
-    echo "MAGPIE_JOB_TYPE must be set"
-    exit 1
-fi 
+Magpie_check_must_be_set "MAGPIE_JOB_TYPE"
 
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
@@ -228,11 +221,7 @@ fi
 
 if [ "${JAVA_HOME}X" != "X" ]
 then
-    if [ ! -d ${JAVA_HOME} ]
-    then
-	echo "JAVA_HOME does not point to a directory"
-	exit 1
-    fi
+    Magpie_check_is_a_directory "JAVA_HOME"
 fi
 
 if [ "${MAGPIE_PYTHON}X" != "X" ]
@@ -318,11 +307,13 @@ then
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
 
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Hadoop"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Hadoop" 
+
+    Magpie_check_must_be_set "HADOOP_VERSION" "to run Hadoop"
+
+    Magpie_check_must_be_set_and_is_directory "HADOOP_HOME" "to run Hadoop"
+
+    Magpie_check_must_be_set "HADOOP_LOCAL_DIR" "to run Hadoop"
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
 	&& [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
@@ -330,30 +321,6 @@ then
 	&& [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
     then
 	echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2 or HDFS1 or HDFS2"
-	exit 1
-    fi
-
-    if [ "${HADOOP_VERSION}X" == "X" ]
-    then
-	echo "HADOOP_VERSION must be set to run Hadoop"
-	exit 1
-    fi
-
-    if [ "${HADOOP_HOME}X" == "X" ]
-    then
-	echo "HADOOP_HOME must be set to run Hadoop"
-	exit 1
-    fi
-
-    if [ ! -d ${HADOOP_HOME} ]
-    then
-	echo "HADOOP_HOME does not point to a directory"
-	exit 1
-    fi
-
-    if [ "${HADOOP_LOCAL_DIR}X" == "X" ]
-    then
-	echo "HADOOP_LOCAL_DIR must be set to run Hadoop"
 	exit 1
     fi
 
@@ -680,11 +647,7 @@ then
 
     if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
     then
-	if [ ! -d "${HADOOP_UDA_LIBPATH}" ]
-	then
-	    echo "HADOOP_UDA_LIBPATH does not point to a directory"
-	    exit 1
-	fi
+	Magpie_check_is_a_directory "HADOOP_UDA_LIBPATH"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
@@ -702,39 +665,17 @@ fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Pig"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Pig" 
+
+    Magpie_check_must_be_set "PIG_VERSION" "to run Pig"
+
+    Magpie_check_must_be_set_and_is_directory "PIG_HOME" "to run Pig"
+
+    Magpie_check_must_be_set "PIG_LOCAL_DIR" "to run Pig"
 
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
 	echo "Pig requires Hadoop to be setup, set HADOOP_SETUP to yes"
-	exit 1
-    fi
-
-    if [ "${PIG_VERSION}X" == "X" ]
-    then
-	echo "PIG_VERSION must be set to run Pig"
-	exit 1
-    fi
-
-    if [ "${PIG_HOME}X" == "X" ]
-    then
-	echo "PIG_HOME must be set to run Pig"
-	exit 1
-    fi
-    
-    if [ ! -d ${PIG_HOME} ]
-    then
-	echo "PIG_HOME does not point to a directory"
-	exit 1
-    fi
-
-    if [ "${PIG_LOCAL_DIR}X" == "X" ]
-    then
-	echo "PIG_LOCAL_DIR must be set to run Pig"
 	exit 1
     fi
 
@@ -772,39 +713,17 @@ fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
 then
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Mahout"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Mahout" 
+
+    Magpie_check_must_be_set "MAHOUT_VERSION" "to run Mahout"
+
+    Magpie_check_must_be_set_and_is_directory "MAHOUT_HOME" "to run Mahout"
+
+    Magpie_check_must_be_set "MAHOUT_LOCAL_DIR" "to run Mahout"
 
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
 	echo "Mahout requires Hadoop to be setup, set HADOOP_SETUP to yes"
-	exit 1
-    fi
-
-    if [ "${MAHOUT_VERSION}X" == "X" ]
-    then
-	echo "MAHOUT_VERSION must be set to run Mahout"
-	exit 1
-    fi
-
-    if [ "${MAHOUT_HOME}X" == "X" ]
-    then
-	echo "MAHOUT_HOME must be set to run Mahout"
-	exit 1
-    fi
-    
-    if [ ! -d ${MAHOUT_HOME} ]
-    then
-	echo "MAHOUT_HOME does not point to a directory"
-	exit 1
-    fi
-
-    if [ "${MAHOUT_LOCAL_DIR}X" == "X" ]
-    then
-	echo "MAHOUT_LOCAL_DIR must be set to run Mahout"
 	exit 1
     fi
 
@@ -847,35 +766,13 @@ then
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
 
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Hbase"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Hbase" 
 
-    if [ "${HBASE_VERSION}X" == "X" ]
-    then
-	echo "HBASE_VERSION must be set to run Hbase"
-	exit 1
-    fi
+    Magpie_check_must_be_set "HBASE_VERSION" "to run Hbase"
 
-    if [ "${HBASE_HOME}X" == "X" ]
-    then
-	echo "HBASE_HOME must be set to run Hbase"
-	exit 1
-    fi
-    
-    if [ ! -d ${HBASE_HOME} ]
-    then
-	echo "HBASE_HOME does not point to a directory"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_directory "HBASE_HOME" "to run Hbase"
 
-    if [ "${HBASE_LOCAL_DIR}X" == "X" ]
-    then
-	echo "HBASE_LOCAL_DIR must be set to run Hbase"
-	exit 1
-    fi
+    Magpie_check_must_be_set "HBASE_LOCAL_DIR" "to run Hbase"
 
     Magpie_check_if_set_is_yes_or_no "HBASE_START_THRIFT_SERVER"
 
@@ -1002,35 +899,13 @@ fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Phoenix"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Phoenix" 
 
-    if [ "${PHOENIX_VERSION}X" == "X" ]
-    then
-	echo "PHOENIX_VERSION must be set to run Phoenix"
-	exit 1
-    fi
+    Magpie_check_must_be_set "PHOENIX_VERSION" "to run Phoenix"
 
-    if [ "${PHOENIX_HOME}X" == "X" ]
-    then
-	echo "PHOENIX_HOME must be set to run Phoenix"
-	exit 1
-    fi
-    
-    if [ ! -d ${PHOENIX_HOME} ]
-    then
-	echo "PHOENIX_HOME does not point to a directory"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_directory "PHOENIX_HOME" "to run Phoenix"
 
-    if [ "${PHOENIX_LOCAL_DIR}X" == "X" ]
-    then
-	echo "PHOENIX_LOCAL_DIR must be set to run Phoenix"
-	exit 1
-    fi
+    Magpie_check_must_be_set "PHOENIX_LOCAL_DIR" "to run Phoenix"
 
     if [ "${HBASE_SETUP}" != "yes" ]
     then
@@ -1101,50 +976,20 @@ then
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
 
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Spark"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Spark" 
 
     # Do not require, will break legacy scripts
-    # if [ "${MAGPIE_PYTHON}X" == "X" ]
-    # then
-    # 	echo "MAGPIE_PYTHON must be set for Spark"
-    # 	exit 1
-    # fi
+    # Magpie_check_must_be_set "MAGPIE_PYTHON" "for Spark"
 
-    if [ "${SPARK_VERSION}X" == "X" ]
-    then
-	echo "SPARK_VERSION must be set to run Spark"
-	exit 1
-    fi
+    Magpie_check_must_be_set "SPARK_VERSION" "to run Spark"
 
-    if [ "${SPARK_HOME}X" == "X" ]
-    then
-	echo "SPARK_HOME must be set to run Spark"
-	exit 1
-    fi
-    
-    if [ ! -d ${SPARK_HOME} ]
-    then
-	echo "SPARK_HOME does not point to a directory"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_directory "SPARK_HOME" "to run Spark"
 
-    if [ "${SPARK_LOCAL_DIR}X" == "X" ]
-    then
-	echo "SPARK_LOCAL_DIR must be set to run Spark"
-	exit 1
-    fi
+    Magpie_check_must_be_set "SPARK_LOCAL_DIR" "to run Spark"
 
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
-	if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
-	then
-	    echo "SPARK_LOCAL_SCRATCH_DIR must be set if Hadoop is not setup"
-	    exit 1
-	fi
+	Magpie_check_must_be_set "SPARK_LOCAL_SCRATCH_DIR" "if Hadoop is not setup"
     fi
 
     if [ "${SPARK_LOCAL_SCRATCH_DIR}X" != "X" ]
@@ -1276,35 +1121,13 @@ fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Kafka"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Kafka" 
 
-    if [ "${KAFKA_VERSION}X" == "X" ]
-    then
-	echo "KAFKA_VERSION must be set to run Kafka"
-	exit 1
-    fi
+    Magpie_check_must_be_set "KAFKA_VERSION" "to run Kafka"
 
-    if [ "${KAFKA_HOME}X" == "X" ]
-    then
-	echo "KAFKA_HOME must be set to run Kafka"
-	exit 1
-    fi
-    
-    if [ ! -d ${KAFKA_HOME} ]
-    then
-	echo "KAFKA_HOME does not point to a directory"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_directory "KAFKA_HOME" "to run Kafka"
 
-    if [ "${KAFKA_LOCAL_DIR}X" == "X" ]
-    then
-	echo "KAFKA_LOCAL_DIR must be set to run Kafka"
-	exit 1
-    fi
+    Magpie_check_must_be_set "KAFKA_LOCAL_DIR" "to run Kafka"
 
     if [ "${ZOOKEEPER_SETUP}" != "yes" ]
     then
@@ -1333,35 +1156,13 @@ then
 	exit 1
     fi
 
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Zeppelin"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Zeppelin" 
 
-    if [ "${ZEPPELIN_VERSION}X" == "X" ]
-    then
-	echo "ZEPPELIN_VERSION must be set to run Zeppelin"
-	exit 1
-    fi
+    Magpie_check_must_be_set "ZEPPELIN_VERSION" "to run Zeppelin"
 
-    if [ "${ZEPPELIN_HOME}X" == "X" ]
-    then
-	echo "ZEPPELIN_HOME must be set to run Zeppelin"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_directory "ZEPPELIN_HOME" "to run Zeppelin"
 
-    if [ ! -d ${ZEPPELIN_HOME} ]
-    then
-	echo "ZEPPELIN_HOME does not point to a directory"
-	exit 1
-    fi
-
-    if [ "${ZEPPELIN_LOCAL_DIR}X" == "X" ]
-    then
-	echo "ZEPPELIN_LOCAL_DIR must be set to run Zeppelin"
-	exit 1
-    fi
+    Magpie_check_must_be_set "ZEPPELIN_LOCAL_DIR" "to run Zeppelin"
 
     if [ "${ZEPPELIN_MODE}" != "server" ] \
         && [ "${ZEPPELIN_MODE}" != "setuponly" ]
@@ -1381,35 +1182,13 @@ then
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
 
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Storm"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Storm" 
 
-    if [ "${STORM_VERSION}X" == "X" ]
-    then
-	echo "STORM_VERSION must be set to run Storm"
-	exit 1
-    fi
+    Magpie_check_must_be_set "STORM_VERSION" "to run Storm"
 
-    if [ "${STORM_HOME}X" == "X" ]
-    then
-	echo "STORM_HOME must be set to run Storm"
-	exit 1
-    fi
-    
-    if [ ! -d ${STORM_HOME} ]
-    then
-	echo "STORM_HOME does not point to a directory"
-	exit 1
-    fi
+    Magpie_check_must_be_set_and_is_directory "STORM_HOME" "to run Storm"
 
-    if [ "${STORM_LOCAL_DIR}X" == "X" ]
-    then
-	echo "STORM_LOCAL_DIR must be set to run Storm"
-	exit 1
-    fi
+    Magpie_check_must_be_set "STORM_LOCAL_DIR" "to run Storm"
 
     if [ "${ZOOKEEPER_SETUP}" != "yes" ]
     then
@@ -1473,11 +1252,13 @@ then
     nodecount=$((nodecount-${nodecountmaster}))
     nodecountmaster=0
 
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Tachyon"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Tachyon" 
+
+    Magpie_check_must_be_set "TACHYON_VERSION" "to run Tachyon"
+
+    Magpie_check_must_be_set_and_is_directory "TACHYON_HOME" "to run Tachyon"
+
+    Magpie_check_must_be_set "TACHYON_LOCAL_DIR" "to run Tachyon"
 
     if [ "${TACHYON_MODE}" != "testtachyon" ] \
        && [ "${TACHYON_MODE}" != "launch" ] \
@@ -1500,30 +1281,6 @@ then
     	echo "Magpie presently only supports Tachyon over HDFS"
     	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
     	exit 1
-    fi
-
-    if [ "${TACHYON_VERSION}X" == "X" ]
-    then
-	echo "TACHYON_VERSION must be set to run Tachyon"
-	exit 1
-    fi
-
-    if [ "${TACHYON_HOME}X" == "X" ]
-    then
-	echo "TACHYON_HOME must be set to run Tachyon"
-	exit 1
-    fi
-    
-    if [ ! -d ${TACHYON_HOME} ]
-    then
-	echo "TACHYON_HOME does not point to a directory"
-	exit 1
-    fi
-
-    if [ "${TACHYON_LOCAL_DIR}X" == "X" ]
-    then
-	echo "TACHYON_LOCAL_DIR must be set to run Tachyon"
-	exit 1
     fi
 
     if [ "${TACHYON_STORE_TYPE}" != "MEM" ] \
@@ -1551,17 +1308,13 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    if [ "${JAVA_HOME}X" == "X" ]
-    then
-	echo "JAVA_HOME must be set for Zookeeper"
-	exit 1
-    fi
+    Magpie_check_must_be_set "JAVA_HOME" "for Zookeeper" 
 
-    if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
-    then
-	echo "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh is needed to launch Zookeeper"
-	exit 1
-    fi
+    Magpie_check_must_be_set "ZOOKEEPER_VERSION" "to run Zookeeper"
+
+    Magpie_check_must_be_set_and_is_directory "ZOOKEEPER_HOME" "to run Zookeeper"
+
+    Magpie_check_must_be_set "ZOOKEEPER_LOCAL_DIR" "to run Zookeeper"
 
     if [ "${ZOOKEEPER_MODE}" != "zookeeperruok" ] \
        && [ "${ZOOKEEPER_MODE}" != "launch" ] \
@@ -1595,43 +1348,14 @@ then
 	exit 1
     fi
 
-    if [ "${ZOOKEEPER_SHARE_NODES}X" != "X" ]
-    then
-	if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] && [ "${ZOOKEEPER_SHARE_NODES}" != "no" ]
-	then
-	    echo "ZOOKEEPER_SHARE_NODES must be set to yes or no"
-	    exit 1
-	fi
-    fi
+    Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_SHARE_NODES"
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then
 	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
     fi
 
-    if [ "${ZOOKEEPER_VERSION}X" == "X" ]
-    then
-	echo "ZOOKEEPER_VERSION must be set to run Zookeeper"
-	exit 1
-    fi
-
-    if [ "${ZOOKEEPER_HOME}X" == "X" ]
-    then
-	echo "ZOOKEEPER_HOME must be set to run Zookeeper"
-	exit 1
-    fi
-    
-    if [ ! -d ${ZOOKEEPER_HOME} ]
-    then
-	echo "ZOOKEEPER_HOME does not point to a directory"
-	exit 1
-    fi
-
-    if [ "${ZOOKEEPER_DATA_DIR}X" == "X" ]
-    then
-	echo "ZOOKEEPER_DATA_DIR must be set to run Zookeeper"
-	exit 1
-    fi
+    Magpie_check_must_be_set "ZOOKEEPER_DATA_DIR" "to run Zookeeper"
 
     Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_DATA_DIR_CLEAR"
 
@@ -1639,12 +1363,6 @@ then
 	&& [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "local" ]
     then
 	echo "ZOOKEEPER_DATA_DIR_TYPE must be set to networkfs or local"
-	exit 1
-    fi
-
-    if [ "${ZOOKEEPER_LOCAL_DIR}X" == "X" ]
-    then
-	echo "ZOOKEEPER_LOCAL_DIR must be set to run Zookeeper"
 	exit 1
     fi
 
