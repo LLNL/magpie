@@ -66,8 +66,7 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hbase-performanceeval)
 fi
 
-if [ "${PHOENIX_SETUP}" == "yes" ] \
-   && [ "${PHOENIX_MODE}" != "server" ]
+if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     echo "*******************************************************"
     echo "* Running Phoenix Performance Evaluation"
