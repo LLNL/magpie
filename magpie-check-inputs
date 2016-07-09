@@ -50,38 +50,11 @@ then
     exit 1
 fi
 
-# slurmsbatch legacy
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]
-then
-    if [ "${SLURM_NODEID}X" == "X" ]
-    then
-	echo "SLURM_NODEID environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_NNODES}X" == "X" ]
-    then
-	echo "SLURM_NNODES environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_JOB_NODELIST}X" == "X" ]
-    then
-	echo "SLURM_JOB_NODELIST environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_JOB_NAME}X" == "X" ]
-    then
-	echo "SLURM_JOB_NAME environment variable must be set"
-	exit 1
-    fi
-    if [ "${SLURM_JOB_ID}X" == "X" ]
-    then
-	echo "SLURM_JOB_ID environment variable must be set"
-	exit 1
-    fi
-fi
-
-# msubslurm legacy
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
+# slurmsbatch & msubslurm legacy
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
+    || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
+    || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
+    || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     if [ "${SLURM_NODEID}X" == "X" ]
     then
