@@ -36,7 +36,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
-Magpie_run_start_pig () {
+Magpie_run_start_mahout () {
     if [ "${hadoop_setup_successful}" == "0" ]
     then
 	Magpie_output_internal_warning "Attempt to setup Mahout without Hadoop being setup"

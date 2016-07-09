@@ -38,6 +38,8 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hadoop
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hbase
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-kafka
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-mahout
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-pig
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-phoenix
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-spark
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-storm
@@ -112,6 +114,11 @@ Magpie_run_start_zookeeper
 
 # Will set hadoop_should_be_torndown & hadoop_setup_successful appropriately
 Magpie_run_start_hadoop
+
+# After Hadoop setup, requires Hadoop
+Magpie_run_start_pig
+# After Hadoop setup, requires Hadoop
+Magpie_run_start_mahout
 
 # After Zookeeper setup, requires Zookeeper
 # Will set hbase_should_be_torndown & hbase_setup_successful appropriately
