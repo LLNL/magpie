@@ -482,6 +482,34 @@ if ls magpie.${submissiontype}*regression-catchprojectdependency* >& /dev/null ;
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-catchprojectdependency*
 fi
 
+if ls magpie.${submissiontype}*regression-nosetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetjava*
+fi
+
+if ls magpie.${submissiontype}*regression-badsetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetjava*
+fi
+
+if ls magpie.${submissiontype}*regression-nosetversion* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetversion*
+fi
+
+if ls magpie.${submissiontype}*regression-nosethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosethome*
+fi
+
+if ls magpie.${submissiontype}*regression-badsethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsethome*
+fi
+
+if ls magpie.${submissiontype}*regression-nosetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetscript*
+fi
+
+if ls magpie.${submissiontype}*regression-badsetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetscript*
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`

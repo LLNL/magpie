@@ -80,9 +80,114 @@ SubmitDefaultRegressionTests_CatchProjectDependencies() {
     BasicJobSubmit magpie.${submissiontype}-storm-regression-catchprojectdependency-zookeeper
 }
 
+SubmitDefaultRegressionTests_NoSetJava() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-nosetjava
+}
+
+SubmitDefaultRegressionTests_BadSetJava() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badsetjava
+}
+
+SubmitDefaultRegressionTests_NoSetVersion() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-nosetversion
+}
+
+SubmitDefaultRegressionTests_NoSetHome() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosethome
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-nosethome
+}
+
+SubmitDefaultRegressionTests_BadSetHome() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsethome
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badsethome
+}
+
+SubmitDefaultRegressionTests_NoSetScript() {
+    BasicJobSubmit magpie.${submissiontype}-magpie-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-nosetscript
+}
+
+SubmitDefaultRegressionTests_BadSetScript() {
+    BasicJobSubmit magpie.${submissiontype}-magpie-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badsetscript
+}
+
 SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadJobNames
     SubmitDefaultRegressionTests_InteractiveMode
     SubmitDefaultRegressionTests_JobTimeout
     SubmitDefaultRegressionTests_CatchProjectDependencies
+
+    # Special
+    javasave=${JAVA_HOME}
+    if [ "${javasave}X" != "X" ]
+    then
+	unset JAVA_HOME
+    fi
+    SubmitDefaultRegressionTests_NoSetJava
+    if [ "${javasave}X" != "X" ]
+    then
+	export JAVA_HOME="${javasave}"
+    fi
+
+    SubmitDefaultRegressionTests_BadSetJava
+    SubmitDefaultRegressionTests_NoSetVersion
+    SubmitDefaultRegressionTests_NoSetHome
+    SubmitDefaultRegressionTests_BadSetHome
+    SubmitDefaultRegressionTests_NoSetScript
+    SubmitDefaultRegressionTests_BadSetScript
 }

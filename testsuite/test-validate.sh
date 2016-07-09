@@ -187,6 +187,19 @@ then
     done
 fi
 
+if ls ${outputprefix}*jobtimeout* >& /dev/null
+then
+    for file in `ls ${outputprefix}*jobtimeout*`
+    do
+	num=`grep -e "Killing script, did not exit within time limit" $file | wc -l`
+	if [ "${num}" != "1" ]; then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*catchprojectdependency* >& /dev/null
 then
     for file in `ls ${outputprefix}*catchprojectdependency*`
@@ -206,12 +219,98 @@ then
     done
 fi
 
-if ls ${outputprefix}*jobtimeout* >& /dev/null
+if ls ${outputprefix}*nosetjava* >& /dev/null
 then
-    for file in `ls ${outputprefix}*jobtimeout*`
+    for file in `ls ${outputprefix}*nosetjava*`
     do
-	num=`grep -e "Killing script, did not exit within time limit" $file | wc -l`
-	if [ "${num}" != "1" ]; then
+	num=`grep -e "JAVA_HOME must be set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*badsetjava* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badsetjava*`
+    do
+	num=`grep -e "JAVA_HOME does not point to a directory" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*nosetversion* >& /dev/null
+then
+    for file in `ls ${outputprefix}*nosetversion*`
+    do
+	num=`grep -e "\(.*\)_VERSION must be set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*nosethome* >& /dev/null
+then
+    for file in `ls ${outputprefix}*nosethome*`
+    do
+	num=`grep -e "\(.*\)_HOME must be set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*badsethome* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badsethome*`
+    do
+	num=`grep -e "\(.*\)_HOME does not point to a directory" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*nosetscript* >& /dev/null
+then
+    for file in `ls ${outputprefix}*nosetscript*`
+    do
+	num=`grep -e "\(.*\)_SCRIPT_PATH must be set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*badsetscript* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badsetscript*`
+    do
+	num1=`grep -e "\(.*\)_SCRIPT_PATH does not point to a regular file" $file | wc -l`
+	num2=`grep -e "\(.*\)_SCRIPT_PATH=\"\(.*\)\" does not have execute permissions" $file | wc -l`
+	if [ "${num1}" == "0" ] && [ "${num2}" == "0" ]
+	then
 	    echo "Job error in $file"
 	fi
 
