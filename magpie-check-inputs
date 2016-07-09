@@ -1227,11 +1227,6 @@ then
 
     Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_SHARE_NODES"
 
-    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
-    then
-	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
-    fi
-
     Magpie_check_must_be_set "ZOOKEEPER_DATA_DIR" "to run Zookeeper"
 
     Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_DATA_DIR_CLEAR"
@@ -1245,37 +1240,14 @@ then
 
     Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_PER_JOB_DATA_DIR"
 
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then
-	echo "No remaining nodes for Hadoop slave nodes after Zookeeper allocation"
-	echo "Please increase node count or adjust node allocations"
-	exit 1
+	nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
     fi
 
-    if [ "${HBASE_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
+    if [ ${nodecount} -le "0" ]
     then
-	echo "No remaining nodes for Hbase regionservers after Zookeeper allocation"
-	echo "Please increase node count or adjust node allocations"
-	exit 1
-    fi
-
-    if [ "${SPARK_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
-    then
-	echo "No remaining nodes for Spark slaves after Zookeeper allocation"
-	echo "Please increase node count or adjust node allocations"
-	exit 1
-    fi
-
-    if [ "${STORM_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
-    then
-	echo "No remaining nodes for Storm workers after Zookeeper allocation"
-	echo "Please increase node count or adjust node allocations"
-	exit 1
-    fi
-
-    if [ "${TACHYON_SETUP}" == "yes" ] && [ ${nodecount} -le "0" ]
-    then
-	echo "No remaining nodes for Tachyon workers after Zookeeper allocation"
+	echo "No remaining slave nodes after Zookeeper allocation"
 	echo "Please increase node count or adjust node allocations"
 	exit 1
     fi
