@@ -113,8 +113,7 @@ then
     exit 1
 fi
 
-if [ "${MAGPIE_NO_LOCAL_DIR}X" != "X" ] \
-    && ( [ "${MAGPIE_NO_LOCAL_DIR}" != "yes" ] && [ "${MAGPIE_NO_LOCAL_DIR}" != "no" ] )
+if [ "${MAGPIE_NO_LOCAL_DIR}" != "yes" ] && [ "${MAGPIE_NO_LOCAL_DIR}" != "no" ]
 then
     echo "MAGPIE_NO_LOCAL_DIR must be set to yes or no"
     exit 1
@@ -318,8 +317,8 @@ fi
 
 # Did user turn on SOMETHING to run
 #
-# Pig is not "something", b/c it needs hadoop 
-# Mahout is not "something", b/c it needs hadoop 
+# Pig is not "something", b/c it runs on top of hadoop 
+# Mahout is not "something", b/c it runs on top of hadoop 
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
