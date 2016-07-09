@@ -518,15 +518,6 @@ then
 	exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "terasort" ]
-    then
-	if [ "${HADOOP_VERSION}X" == "X" ]
-	then
-	    echo "HADOOP_VERSION must be set for HADOOP_MODE = ${HADOOP_MODE}"
-	    exit 1
-	fi
-    fi
-
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "script" ]
     then
 	if [ "${HADOOP_SCRIPT_PATH}X" == "X" ]
@@ -544,12 +535,6 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
     then
-	if [ "${HADOOP_VERSION}X" == "X" ]
-	then
-	    echo "HADOOP_VERSION must be set for HADOOP_MODE = ${HADOOP_MODE}"
-	    exit 1
-	fi
-
 	if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
 	then 
 	    echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
@@ -559,12 +544,6 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
     then
-	if [ "${HADOOP_VERSION}X" == "X" ]
-	then
-	    echo "HADOOP_VERSION must be set for HADOOP_MODE = ${HADOOP_MODE}"
-	    exit 1
-	fi
-
 	if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[3-9]\.[0-9]"
 	then 
 	    echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.3.0 and more recent versions"
@@ -746,12 +725,6 @@ then
 		&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ])
 	    then
 		echo "HDFS federation can only work with an HDFS based file system, cannot work with HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-		exit 1
-	    fi
-
-	    if [ "${HADOOP_VERSION}X" == "X" ]
-	    then
-		echo "HADOOP_VERSION must be set for HDFS_FEDERATION_NAMENODE_COUNT greater than 1"
 		exit 1
 	    fi
 
@@ -1646,12 +1619,6 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "stormwordcount" ]
     then
-	if [ "${STORM_VERSION}X" == "X" ]
-	then
-	    echo "STORM_VERSION must be set for stormwordcount mode"
-	    exit 1
-	fi
-
 	if [ "${STORM_STARTER_EXAMPLE_JAR_PATH}X" != "X" ] && [ ! -f "${STORM_STARTER_EXAMPLE_JAR_PATH}" ]
 	then
 	    echo "STORM_STARTER_EXAMPLE_JAR_PATH does not point to a file"
