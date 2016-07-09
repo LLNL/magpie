@@ -29,12 +29,17 @@
 Magpie_check_is_enabled () {
     local projectnametocheck=$1
     local projectnameneededfor=$2
+    local extramsg=$3
     local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
     local varnametocheck="${uppercaseprojectnametocheck}_SETUP"
 
     if [ "${!varnametocheck}" != "yes" ]
     then
 	echo "${projectnameneededfor} requires ${projectnametocheck} to be setup, set ${varnametocheck} to yes"
+	if [ "${extramsg}X" != "X" ]
+	then
+	    echo "${extramsg}"
+	fi
 	exit 1
     fi
 }
@@ -953,11 +958,7 @@ then
 
 	    if echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^hdfs:\/\/"
 	    then
-		if [ "${HADOOP_SETUP}" != "yes" ]
-		then
-		    echo "Cannot copy in file to SPARK_SPARKWORDCOUNT_FILE without HADOOP_HOME setup"
-		    exit 1
-		fi
+		Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_FILE to not use hdfs"
 
 		if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
 		    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
@@ -970,11 +971,7 @@ then
 
 	    if echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^hdfs:\/\/"
 	    then
-		if [ "${HADOOP_SETUP}" != "yes" ]
-		then
-		    echo "Cannot copy file from SPARK_SPARKWORDCOUNT_COPY_IN_FILE without HADOOP setup"
-		    exit 1
-		fi
+		Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_COPY_IN_FILE to not use hdfs"
 
 		if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
 		    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
@@ -998,6 +995,8 @@ then
 
     if [ "${SPARK_USE_YARN}" == "yes" ]
     then
+	Magpie_check_is_enabled "Hadoop" "Spark"
+
 	if [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
 	then
 	    echo "SPARK_USE_YARN set to '${SPARK_USE_YARN}' but HADOOP_SETUP_TYPE set to '${HADOOP_SETUP_TYPE}'"
