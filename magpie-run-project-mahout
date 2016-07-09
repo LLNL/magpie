@@ -116,3 +116,39 @@ Magpie_run_start_mahout () {
 	fi
     fi
 }
+
+Magpie_run_mahout () {
+    if [ "${MAHOUT_MODE}" == "classifywikipedia" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Classifywikipedia"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-classifywikipedia &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Clustersyntheticcontrol"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-clustersyntheticcontrol &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${MAHOUT_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing Mahout script $MAHOUT_SCRIPT_PATH"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}" &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${MAHOUT_MODE}" == "interactive" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Mahout ${MAHOUT_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    fi
+}

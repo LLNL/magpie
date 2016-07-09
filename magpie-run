@@ -174,66 +174,10 @@ then
         wait $scriptpid
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
-	if [ "${PIG_MODE}" == "testpig" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Testpig"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-pig-testpig &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${PIG_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing Pig script $PIG_SCRIPT_PATH"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}" &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${PIG_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Pig ${PIG_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	fi
+	Magpie_run_pig
     elif [ "${MAGPIE_JOB_TYPE}" == "mahout" ]
     then
-	if [ "${MAHOUT_MODE}" == "classifywikipedia" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Classifywikipedia"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-classifywikipedia &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Clustersyntheticcontrol"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-clustersyntheticcontrol &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${MAHOUT_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing Mahout script $MAHOUT_SCRIPT_PATH"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}" &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${MAHOUT_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Mahout ${MAHOUT_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	fi
+	Magpie_run_mahout
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
 	Magpie_run_hadoop

@@ -120,3 +120,31 @@ Magpie_run_start_pig () {
 	fi
     fi
 }
+
+Magpie_run_pig () {
+    if [ "${PIG_MODE}" == "testpig" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Testpig"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-pig-testpig &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${PIG_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing Pig script $PIG_SCRIPT_PATH"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}" &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${PIG_MODE}" == "interactive" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Pig ${PIG_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    fi
+}
