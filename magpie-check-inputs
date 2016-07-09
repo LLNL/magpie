@@ -39,6 +39,25 @@ Magpie_check_is_enabled () {
     fi
 }
 
+Magpie_check_dependencies_not_setuponly () {
+    local projectnametocheck=$1
+    local projectnameneededfor=$2
+    local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
+    local modevarnametocheck="${uppercaseprojectnametocheck}_MODE"
+    local lowercaseprojectnameneededfor=`echo ${projectnameneededfor} | tr '[:upper:]' '[:lower:]'`
+    local uppercaseprojectnameneededfor=`echo ${projectnameneededfor} | tr '[:lower:]' '[:upper:]'`
+    local modevarnameneededfor="${uppercaseprojectnameneededfor}_MODE"
+
+    if [ "${MAGPIE_JOB_TYPE}" == "${lowercaseprojectnameneededfor}" ] && [ "${!modevarnameneededfor}" != "setuponly" ]
+    then
+	if [ "${!modevarnametocheck}" == "setuponly" ]
+	then
+	    echo "Cannot run/setup ${projectnameneededfor} if ${projectnametocheck} mode is setuponly"
+	    exit 1
+	fi
+    fi
+}
+
 Magpie_check_if_set_is_yes_or_no () {
     local varname=$1
 
@@ -82,20 +101,20 @@ Magpie_check_must_be_set () {
     fi
 }
 
-Magpie_check_is_a_directory () {
+Magpie_check_if_set_is_a_directory () {
     local varname=$1
 
-    if [ ! -d ${!varname} ]
+    if [ "${!varname}X" != "X" ] && [ ! -d ${!varname} ]
     then
 	echo "${varname} does not point to a directory"
 	exit 1
     fi
 }
 
-Magpie_check_is_regular_file () {
+Magpie_check_if_set_is_regular_file () {
     local varname=$1
 
-    if [ ! -f ${!varname} ]
+    if [ "${!varname}X" != "X" ] && [ ! -f ${!varname} ]
     then
 	echo "${varname} does not point to a regular file"
 	exit 1
@@ -117,7 +136,7 @@ Magpie_check_must_be_set_and_is_directory () {
     local extramsg=$2
     
     Magpie_check_must_be_set ${varname} ${extramsg}
-    Magpie_check_is_a_directory ${varname}
+    Magpie_check_if_set_is_a_directory ${varname}
 }
 
 Magpie_check_must_be_set_and_is_regular_file () {
@@ -125,7 +144,7 @@ Magpie_check_must_be_set_and_is_regular_file () {
     local extramsg=$2
     
     Magpie_check_must_be_set ${varname} ${extramsg}
-    Magpie_check_is_regular_file ${varname}
+    Magpie_check_if_set_is_regular_file ${varname}
 }
 
 Magpie_check_must_be_set_and_is_executable () {
@@ -261,10 +280,7 @@ fi
 # Check General Inputs
 #
 
-if [ "${JAVA_HOME}X" != "X" ]
-then
-    Magpie_check_is_a_directory "JAVA_HOME"
-fi
+Magpie_check_if_set_is_a_directory "JAVA_HOME"
 
 if [ "${MAGPIE_PYTHON}X" != "X" ]
 then
@@ -605,9 +621,9 @@ then
 
     Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
     
-    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
 	Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
     fi
@@ -625,11 +641,7 @@ fi
 
 if [ "${HADOOP_UDA_SETUP}" == "yes" ]
 then
-    if [ "${HADOOP_SETUP}" != "yes" ]
-    then
-	echo "UDA requires Hadoop to be setup, set HADOOP_SETUP to yes"
-	exit 1
-    fi
+    Magpie_check_is_enabled "Hadoop" "UDA"
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR1" ]
     then
@@ -645,10 +657,7 @@ then
 
     Magpie_check_must_be_set_and_is_regular_file "HADOOP_UDA_JAR" "to run Hadoop w/ UDA"
 
-    if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
-    then
-	Magpie_check_is_a_directory "HADOOP_UDA_LIBPATH"
-    fi
+    Magpie_check_if_set_is_a_directory "HADOOP_UDA_LIBPATH"
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
 	&& [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
@@ -688,15 +697,7 @@ then
 	Magpie_check_must_be_set_and_is_regular_file "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
-	&& ([ "${PIG_MODE}" == "testpig" ] || [ "${PIG_MODE}" == "script" ])
-    then
-	if [ "${HADOOP_MODE}" == "setuponly" ]
-	then
-	    echo "Cannot run Pig job if Hadoop mode is setuponly"
-	    exit 1
-	fi
-    fi
+    Magpie_check_dependencies_not_setuponly "Hadoop" "Pig"
 fi
 
 #
@@ -729,15 +730,7 @@ then
 	Magpie_check_must_be_set_and_is_regular_file "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
-	&& ([ "${MAHOUT_MODE}" == "classifywikipedia" ] || [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ] || [ "${MAHOUT_MODE}" == "script" ])
-    then
-	if [ "${HADOOP_MODE}" == "setuponly" ]
-	then
-	    echo "Cannot run Mahout job if Hadoop mode is setuponly"
-	    exit 1
-	fi
-    fi
+    Magpie_check_dependencies_not_setuponly "Hadoop" "Mahout"
 fi
 
 #
@@ -833,24 +826,10 @@ then
 	Magpie_check_must_be_set_and_is_executable "HBASE_SCRIPT_PATH" "for HBASE_MODE = ${HBASE_MODE}"
     fi
 
-    if ([ "${HBASE_MODE}" == "performanceeval" ] \
-	|| [ "${HBASE_MODE}" == "script" ] \
-	|| [ "${HBASE_MODE}" == "interactive" ]) \
-	&& [ "${HADOOP_MODE}" == "setuponly" ]
-    then
-	echo "Cannot run Hbase job if Hadoop mode is setuponly"
-	exit 1
-    fi
-
     Magpie_check_if_set_is_yes_or_no "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN"
 
-    if ([ "${HBASE_MODE}" == "performanceeval" ] \
-	|| [ "${HBASE_MODE}" == "script" ]) \
-	&& [ "${ZOOKEEPER_MODE}" == "setuponly" ]
-    then
-	echo "Cannot run Hbase job if Zookeeper mode is setuponly"
-	exit 1
-    fi
+    Magpie_check_dependencies_not_setuponly "Hadoop" "Hbase"
+    Magpie_check_dependencies_not_setuponly "Zookeeper" "Hbase"
 
     if [ ${nodecount} -le "0" ]
     then
@@ -901,21 +880,7 @@ then
 	Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
     fi
 
-    if ([ "${PHOENIX_MODE}" == "performanceeval" ] \
-	|| [ "${PHOENIX_MODE}" == "script" ]) \
-	&& [ "${HBASE_MODE}" == "setuponly" ]
-    then
-	echo "Cannot run Phoenix job if hbase mode is setuponly"
-	exit 1
-    fi
-
-    if ([ "${PHOENIX_MODE}" == "performanceeval" ] \
-	|| [ "${PHOENIX_MODE}" == "script" ]) \
-	&& [ "${ZOOKEEPER_MODE}" == "setuponly" ]
-    then
-	echo "Cannot run Phoenix job if Zookeeper mode is setuponly"
-	exit 1
-    fi
+    Magpie_check_dependencies_not_setuponly "Hbase" "Phoenix"
 fi
 
 #
@@ -1047,14 +1012,9 @@ then
 	fi
     fi
 
-    if ([ "${SPARK_MODE}" == "sparkpi" ] \
-	|| [ "${SPARK_MODE}" == "sparkwordcount" ] \
-	|| [ "${SPARK_MODE}" == "script" ]) \
-	&& [ "${HADOOP_SETUP}" == "yes" ] \
-	&& [ "${HADOOP_MODE}" == "setuponly" ]
+    if [ "${HADOOP_SETUP}" == "yes" ]
     then
-	echo "Cannot run Spark job if Hadoop mode is setuponly"
-	exit 1
+ 	Magpie_check_dependencies_not_setuponly "Hadoop" "Spark"
     fi
 
     if [ ${nodecount} -le "0" ]
@@ -1087,6 +1047,8 @@ then
         echo "KAFKA_MODE must be set to performance, server or setuponly"
         exit 1
     fi
+
+    Magpie_check_dependencies_not_setuponly "Zookeeper" "Kafka"
 fi
 
 #
@@ -1111,6 +1073,8 @@ then
         echo "ZEPPELIN_MODE must be set to performance, server or setuponly"
         exit 1
     fi
+
+    Magpie_check_dependencies_not_setuponly "Spark" "Zeppelin"
 fi
 
 #
@@ -1144,10 +1108,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "stormwordcount" ]
     then
-	if [ "${STORM_STARTER_EXAMPLE_JAR_PATH}X" != "X" ]
-	then
-	    Magpie_check_is_regular_file "STORM_STARTER_EXAMPLE_JAR_PATH"
-	fi
+	Magpie_check_if_set_is_regular_file "STORM_STARTER_EXAMPLE_JAR_PATH"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "script" ]
@@ -1155,11 +1116,7 @@ then
 	Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_MODE = ${STORM_MODE}"
     fi
 
-    if [ "${STORM_MODE}" != "setuponly" ] && [ "${ZOOKEEPER_MODE}" == "setuponly" ]
-    then
-	echo "Cannot run Storm job if Zookeeper mode is setuponly"
-	exit 1
-    fi
+    Magpie_check_dependencies_not_setuponly "Zookeeper" "Storm"
 
     if [ ${nodecount} -le "0" ]
     then
@@ -1218,6 +1175,8 @@ then
     Magpie_check_if_set_is_yes_or_no "TACHYON_WORKER_ON_MASTER"
 
     Magpie_check_if_set_is_yes_or_no "TACHYON_ASYNCHRONOUS_WRITES"
+
+    Magpie_check_dependencies_not_setuponly "Hadoop" "Tachyon"
 fi
 
 #
