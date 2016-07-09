@@ -196,29 +196,23 @@ fi
 if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then 
     Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
+
+    if [ ${magpiestartuptime} -lt 5 ]
+    then
+	echo "MAGPIE_STARTUP_TIME must be >= 5 minutes if MAGPIE_PRE_JOB_RUN is set"
+	exit 1
+    fi
 fi
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then 
     Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
-fi
-
-if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpiestartuptime} -lt 5 ]
-then
-    echo "MAGPIE_STARTUP_TIME must be >= 5 minutes"
-    exit 1
-fi
-
-if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpieshutdowntime} -lt 5 ]
-then
-    echo "MAGPIE_SHUTDOWN_TIME must be >= 5 minutes"
-    exit 1
-fi
-
-if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ] && [ ${magpieshutdowntime} -lt 10 ]
-then
-    echo "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set"
-    exit 1
+    
+    if [ ${magpieshutdowntime} -lt 10 ]
+    then
+	echo "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set"
+	exit 1
+    fi
 fi
 
 #
