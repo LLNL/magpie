@@ -477,20 +477,12 @@ if ls magpie.${submissiontype}*Dependency* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*Dependency*
 fi
 
-if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
-    sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
-fi
-
 if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-interactive-mode
 fi
 
 if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
-fi
-
-if ls magpie.${submissiontype}*regression-testall* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/testall-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-testall*
 fi
 
 if ls magpie.${submissiontype}*cornercase-catchprojectdependency* >& /dev/null ; then
@@ -553,6 +545,10 @@ if ls magpie.${submissiontype}*cornercase-badcoresettings* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badcoresettings*
 fi
 
+if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
+    sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
@@ -599,6 +595,7 @@ if ls magpie.${submissiontype}* >& /dev/null ; then
 
     sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
     sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
+
 fi
 
 if [ "${submissiontype}" == "sbatch-srun" ]
