@@ -29,7 +29,7 @@
 Magpie_check_is_enabled () {
     local projectnametocheck=$1
     local projectnameneededfor=$2
-    local extramsg=$3
+    local extramsg=$@
     local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
     local varnametocheck="${uppercaseprojectnametocheck}_SETUP"
 
@@ -64,7 +64,7 @@ Magpie_check_dependencies_not_setuponly () {
 }
 
 Magpie_check_if_set_is_yes_or_no () {
-    local varname=$1
+    local varname="$1"
 
     if [ "${!varname}X" != "X" ] \
 	&& ( [ "${!varname}" != "yes" ] && [ "${!varname}" != "no" ] )
@@ -75,7 +75,7 @@ Magpie_check_if_set_is_yes_or_no () {
 }
 
 Magpie_check_if_set_is_true_or_false () {
-    local varname=$1
+    local varname="$1"
 
     if [ "${!varname}X" != "X" ] \
 	&& ( [ "${!varname}" != "true" ] && [ "${!varname}" != "false" ] )
@@ -86,7 +86,7 @@ Magpie_check_if_set_is_true_or_false () {
 }
 
 Magpie_check_environment_variable_must_be_set () {
-    local varname=$1
+    local varname="$1"
 
     if [ "${!varname}X" == "X" ]
     then
@@ -96,9 +96,9 @@ Magpie_check_environment_variable_must_be_set () {
 }
 
 Magpie_check_must_be_set () {
-    local varname=$1
-    local extramsg=$2
-
+    local varname="$1"
+    local extramsg="$2"
+    
     if [ "${!varname}X" == "X" ]
     then
 	echo "${varname} must be set ${extramsg}"
@@ -107,7 +107,7 @@ Magpie_check_must_be_set () {
 }
 
 Magpie_check_if_set_is_a_directory () {
-    local varname=$1
+    local varname="$1"
 
     if [ "${!varname}X" != "X" ] && [ ! -d ${!varname} ]
     then
@@ -117,7 +117,7 @@ Magpie_check_if_set_is_a_directory () {
 }
 
 Magpie_check_if_set_is_regular_file () {
-    local varname=$1
+    local varname="$1"
 
     if [ "${!varname}X" != "X" ] && [ ! -f ${!varname} ]
     then
@@ -127,7 +127,7 @@ Magpie_check_if_set_is_regular_file () {
 }
 
 Magpie_check_is_executable () {
-    local varname=$1
+    local varname="$1"
 
     if [ ! -x ${!varname} ]
     then
@@ -137,27 +137,27 @@ Magpie_check_is_executable () {
 }
 
 Magpie_check_must_be_set_and_is_directory () {
-    local varname=$1
-    local extramsg=$2
+    local varname="$1"
+    local extramsg="$2"
     
-    Magpie_check_must_be_set ${varname} ${extramsg}
-    Magpie_check_if_set_is_a_directory ${varname}
+    Magpie_check_must_be_set "${varname}" "${extramsg}"
+    Magpie_check_if_set_is_a_directory "${varname}"
 }
 
 Magpie_check_must_be_set_and_is_regular_file () {
-    local varname=$1
-    local extramsg=$2
+    local varname="$1"
+    local extramsg="$2"
     
-    Magpie_check_must_be_set ${varname} ${extramsg}
-    Magpie_check_if_set_is_regular_file ${varname}
+    Magpie_check_must_be_set "${varname}" "${extramsg}"
+    Magpie_check_if_set_is_regular_file "${varname}"
 }
 
 Magpie_check_must_be_set_and_is_executable () {
-    local varname=$1
-    local extramsg=$2
-    
-    Magpie_check_must_be_set ${varname} ${extramsg}
-    Magpie_check_is_executable ${varname}
+    local varname="$1"
+    local extramsg="$2"
+
+    Magpie_check_must_be_set "${varname}" "${extramsg}"
+    Magpie_check_is_executable "${varname}"
 }
     
 #
