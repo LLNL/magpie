@@ -193,6 +193,50 @@ Magpie_run_start_spark () {
     fi
 }
 
+Magpie_run_spark () {
+    if [ "${SPARK_MODE}" == "sparkpi" ]
+    then
+	echo "*******************************************************"
+	echo "* Running SparkPi"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkpi &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${SPARK_MODE}" == "sparkwordcount" ]
+    then
+	echo "*******************************************************"
+	echo "* Running SparkWordCount"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkwordcount &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${SPARK_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${SPARK_MODE}" == "interactive" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Spark ${SPARK_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${SPARK_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Spark ${SPARK_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    fi
+}
+
 Magpie_run_stop_spark () {
     if [ "${SPARK_SETUP}" == "yes" ] && [ "${spark_should_be_torndown}" == "1" ]
     then

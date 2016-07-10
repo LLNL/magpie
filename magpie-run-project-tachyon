@@ -211,6 +211,34 @@ Magpie_run_start_tachyon () {
     fi
 }
 
+Magpie_run_tachyon () {
+    if [ "${TACHYON_MODE}" == "testtachyon" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Testtachyon"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-tachyon-testtachyon &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${TACHYON_MODE}" == "launch" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Tachyon ${TACHYON_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
+	local scriptpid=$!
+        wait $scriptpid
+    elif [ "${TACHYON_MODE}" == "setuponly" ]
+    then
+	echo "*******************************************************"
+	echo "* Entering Tachyon ${TACHYON_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+	local scriptpid=$!
+	wait ${scriptpid}
+    fi
+}
+
 Magpie_run_stop_tachyon () {
     if [ "${hadoop_teardown_complete}" == "1" ]
     then

@@ -478,6 +478,70 @@ if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
 fi
 
+if ls magpie.${submissiontype}*regression-catchprojectdependency* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-catchprojectdependency*
+fi
+
+if ls magpie.${submissiontype}*regression-nosetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetjava*
+fi
+
+if ls magpie.${submissiontype}*regression-badsetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetjava*
+fi
+
+if ls magpie.${submissiontype}*regression-nosetversion* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetversion*
+fi
+
+if ls magpie.${submissiontype}*regression-nosethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosethome*
+fi
+
+if ls magpie.${submissiontype}*regression-badsethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsethome*
+fi
+
+if ls magpie.${submissiontype}*regression-nosetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetscript*
+fi
+
+if ls magpie.${submissiontype}*regression-badsetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetscript*
+fi
+
+if ls magpie.${submissiontype}*regression-testall* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/testall-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-testall*
+fi
+
+if ls magpie.${submissiontype}*regression-badjobtime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badjobtime*
+fi
+
+if ls magpie.${submissiontype}*regression-badstartuptime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badstartuptime*
+fi
+
+if ls magpie.${submissiontype}*regression-badshutdowntime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badshutdowntime*
+fi
+
+if ls magpie.${submissiontype}*regression-badnodecount-small* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-small*
+fi
+
+if ls magpie.${submissiontype}*regression-badnodecount-big* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-big*
+fi
+
+if ls magpie.${submissiontype}*regression-nocoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nocoresettings*
+fi
+
+if ls magpie.${submissiontype}*regression-badcoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badcoresettings*
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
@@ -552,6 +616,18 @@ if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
     sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-jobtimeout
+fi
+
+if ls magpie.${submissiontype}*regression-badjobtime >& /dev/null ; then
+    # Add in -5 minutes
+    ${functiontogettimeoutput} -5
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-badjobtime
+fi
+
+if ls magpie.${submissiontype}*regression-testall >& /dev/null ; then
+    # Guarantee 60 minutes for the job that should last awhile
+    ${functiontogettimeoutput} 60
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-testall
 fi
 
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then

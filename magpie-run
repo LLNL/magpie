@@ -38,6 +38,8 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hadoop
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hbase
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-kafka
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-mahout
+source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-pig
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-phoenix
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-spark
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-storm
@@ -100,27 +102,29 @@ then
     fi
 fi
 
-# Globa flag for setup check, will be set to false if any statup fails
+# Global flag for setup check, will be set to false if any startup fails
 prior_setup_successful=true
 
 # Global, will be set/adjusted by various start functions
 totalsleepwait=0
 
 # Zookeeper setup must come first, as other things like Hbase & Storm require it
-
 # Will set zookeeper_should_be_torndown & zookeeper_setup_successful appropriately
 Magpie_run_start_zookeeper
 
 # Will set hadoop_should_be_torndown & hadoop_setup_successful appropriately
 Magpie_run_start_hadoop
 
-# After Zookeeper setup, requires Zookeeper
+# After Hadoop setup, requires Hadoop
+Magpie_run_start_pig
+# After Hadoop setup, requires Hadoop
+Magpie_run_start_mahout
 
+# After Zookeeper setup, requires Zookeeper
 # Will set hbase_should_be_torndown & hbase_setup_successful appropriately
 Magpie_run_start_hbase
 
 # After Hbase setup, requires Hbase
-
 # Will set phoenix_should_be_torndown & phoenix_setup_successful appropriately
 Magpie_run_start_phoenix
 
@@ -130,16 +134,15 @@ Magpie_run_start_spark
 # Will set kafka_should_be_torndown & kafka_setup_successful appropriately
 Magpie_run_start_kafka
 
+# After Spark setup, requires Spark
 # Will set zeppelin_should_be_torndown & zeppelin_setup_successful appropriately
 Magpie_run_start_zeppelin
 
 # After Zookeeper setup, requires Zookeeper
-
 # Will set storm_should_be_torndown & storm_setup_successful appropriately
 Magpie_run_start_storm
 
-# Tachyon after Hadoop b/c requires HDFS for formatting
-
+# After Hadoop setup, requires HDFS for formatting
 # Will set tachyon_should_be_torndown & tachyon_setup_successful appropriately
 Magpie_run_start_tachyon
 
@@ -172,370 +175,37 @@ then
         wait $scriptpid
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
-	if [ "${PIG_MODE}" == "testpig" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Testpig"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-pig-testpig &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${PIG_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing Pig script $PIG_SCRIPT_PATH"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}" &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${PIG_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Pig ${PIG_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	fi
+	Magpie_run_pig
     elif [ "${MAGPIE_JOB_TYPE}" == "mahout" ]
     then
-	if [ "${MAHOUT_MODE}" == "classifywikipedia" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Classifywikipedia"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-classifywikipedia &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Clustersyntheticcontrol"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-clustersyntheticcontrol &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${MAHOUT_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing Mahout script $MAHOUT_SCRIPT_PATH"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}" &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${MAHOUT_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Mahout ${MAHOUT_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	fi
+	Magpie_run_mahout
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
-	if [ "${HADOOP_MODE}" == "terasort" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Terasort"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-terasort &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${HADOOP_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing script $HADOOP_SCRIPT_PATH $HADOOP_SCRIPT_ARGS"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${HADOOP_SCRIPT_PATH} ${HADOOP_SCRIPT_ARGS} &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${HADOOP_MODE}" == "interactive" ] || [ "${HADOOP_MODE}" == "launch" ] || [ "${HADOOP_MODE}" == "hdfsonly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${HADOOP_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-upgradehdfs &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-
-	    if [ $? -eq 0 ]
-	    then
-	        # Sets hdfsstoredversionpath
-		Magpie_get_hdfsstoredversionpath
-
-		if [ "${hdfsstoredversionpath}X" != "X" ]
-		then
-		    rm -f ${hdfsstoredversionpath}
-		    echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
-		fi
-	    fi
-	elif [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hadoop ${HADOOP_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-decommissionhdfsnodes &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-
-	    if [ $? -eq 0 ]
-	    then
-	        # Sets hdfsstorednodecountpath
-		Magpie_get_hdfsstorednodecountpath
-
-		rm -f ${hdfsstorednodecountpath}
-		echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${hdfsstorednodecountpath}
-	    fi
-	fi
+	Magpie_run_hadoop
     elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
     then
-	if [ "${HBASE_MODE}" == "performanceeval" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Performance Evaluation"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hbase-performanceeval &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${HBASE_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing script $HBASE_SCRIPT_PATH $HBASE_SCRIPT_ARGS"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${HBASE_SCRIPT_PATH} ${HBASE_SCRIPT_ARGS} &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${HBASE_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hbase ${HBASE_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${HBASE_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Hbase ${HBASE_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_hbase
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
-	if [ "${PHOENIX_MODE}" == "performanceeval" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Performance Evaluation"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-phoenix-performanceeval &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${PHOENIX_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing script $PHOENIX_SCRIPT_PATH"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${PHOENIX_MODE}" == "interactive" ] 
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Phoenix ${PHOENIX_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	fi
+	Magpie_run_phoenix
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
-	if [ "${SPARK_MODE}" == "sparkpi" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running SparkPi"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkpi &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${SPARK_MODE}" == "sparkwordcount" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running SparkWordCount"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkwordcount &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${SPARK_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${SPARK_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Spark ${SPARK_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${SPARK_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Spark ${SPARK_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_spark
     elif [ "${MAGPIE_JOB_TYPE}" == "kafka" ]
     then
-	if [ "${KAFKA_MODE}" == "performance" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Performance"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-kafka-performance &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${KAFKA_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Kafka ${KAFKA_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_kafka
     elif [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ]
     then
-	if [ "${ZEPPELIN_MODE}" == "server" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute server &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${ZEPPELIN_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_zeppelin
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
-	if [ "${STORM_MODE}" == "stormwordcount" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Storm WordCount"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-storm-stormwordcount &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${STORM_MODE}" == "script" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Executing script $STORM_SCRIPT_PATH $STORM_SCRIPT_ARGS"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${STORM_SCRIPT_PATH} ${STORM_SCRIPT_ARGS} &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${STORM_MODE}" == "interactive" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Storm ${STORM_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${STORM_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Storm ${STORM_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_storm
     elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
-	if [ "${TACHYON_MODE}" == "testtachyon" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Testtachyon"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-tachyon-testtachyon &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${TACHYON_MODE}" == "launch" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${TACHYON_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Tachyon ${TACHYON_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_tachyon
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
-	if [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Running Zookeeper ruok"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-zookeeper-zookeeperruok &
-	    scriptpid=$!
-	    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-	elif [ "${ZOOKEEPER_MODE}" == "launch" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
-	    scriptpid=$!
-            wait $scriptpid
-	elif [ "${ZOOKEEPER_MODE}" == "setuponly" ]
-	then
-	    echo "*******************************************************"
-	    echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-	    echo "*******************************************************"
-	    ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	    scriptpid=$!
-	    wait ${scriptpid}
-	fi
+	Magpie_run_zookeeper
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
 	echo "*******************************************************"
@@ -548,13 +218,13 @@ then
 fi
 
 # Tachyon before Hadoop shutdown, may need to flush
-
 # Sets tachyon_teardown_complete if teardown done
 Magpie_run_stop_tachyon
 
 # Sets storm_teardown_complete if teardown done
 Magpie_run_stop_storm
 
+# Before Spark, depends on Spark
 # Sets zeppelin_teardown_complete if teardown done
 Magpie_run_stop_zeppelin
 
@@ -565,7 +235,6 @@ Magpie_run_stop_kafka
 Magpie_run_stop_spark
 
 # Before Hbase, depends on Hbase
-
 # Sets phoenix_teardown_complete if teardown done
 Magpie_run_stop_phoenix
 
@@ -576,7 +245,6 @@ Magpie_run_stop_hbase
 Magpie_run_stop_hadoop
 
 # Zookeeper teardown comes last, as other things like Hbase & Storm require it
-
 # Sets zookeeper_teardown_complete if teardown done
 Magpie_run_stop_zookeeper
 

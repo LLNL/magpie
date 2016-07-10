@@ -190,6 +190,34 @@ Magpie_run_start_phoenix () {
     fi
 }
 
+Magpie_run_phoenix () {
+    if [ "${PHOENIX_MODE}" == "performanceeval" ]
+    then
+	echo "*******************************************************"
+	echo "* Running Performance Evaluation"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-phoenix-performanceeval &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${PHOENIX_MODE}" == "script" ]
+    then
+	echo "*******************************************************"
+	echo "* Executing script $PHOENIX_SCRIPT_PATH"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
+	local scriptpid=$!
+	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${PHOENIX_MODE}" == "interactive" ] 
+    then
+	echo "*******************************************************"
+	echo "* Entering Phoenix ${PHOENIX_MODE} mode"
+	echo "*******************************************************"
+	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+	local scriptpid=$!
+        wait $scriptpid
+    fi
+}
+
 Magpie_run_stop_phoenix () {
     if [ "${hbase_teardown_complete}" == "1" ]
     then

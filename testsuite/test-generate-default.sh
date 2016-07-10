@@ -148,21 +148,21 @@ GenerateDefaultRegressionTests_BadJobNames() {
 
 	sed -i \
 	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression* \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name* \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
 
 	sed -i \
 	    -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
-	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression* \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name* \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
 
 	sed -i \
 	    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
-	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression* \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name* \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
 	sed -i \
 	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
     fi
 
     if [ "${stormtests}" == "y" ]; then
@@ -178,6 +178,125 @@ GenerateDefaultRegressionTests_BadJobNames() {
 
     sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
     sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
+}
+
+GenerateDefaultRegressionTests_AltConfFilesDir() {
+
+    # Just set to the current CONF_DIR to make sure setting it works
+
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-altconffilesdir
+	sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-altconffilesdir
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-altconffilesdir
+	sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-altconffilesdir
+	sed -i -e 's/# export PIG_CONF_FILES="\(.*\)"/export PIG_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-altconffilesdir
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-regression-altconffilesdir
+	sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-regression-altconffilesdir
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export HBASE_CONF_FILES="\(.*\)"/export HBASE_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export ZOOKEEPER_CONF_FILES="\(.*\)"/export ZOOKEEPER_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-altconffilesdir
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export HBASE_CONF_FILES="\(.*\)"/export HBASE_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export PHOENIX_CONF_FILES="\(.*\)"/export PHOENIX_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-altconffilesdir
+	sed -i -e 's/# export ZOOKEEPER_CONF_FILES="\(.*\)"/export ZOOKEEPER_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-altconffilesdir
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-regression-altconffilesdir
+	
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+
+	sed -i \
+	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+
+	sed -i \
+	    -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+
+	sed -i \
+	    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+	sed -i \
+	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+
+	sed -i \
+	    -e 's/# export SPARK_CONF_FILES="\(.*\)"/export SPARK_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' \
+	    magpie.${submissiontype}-spark-run-sparkpi-regression-altconffilesdir \
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+
+	sed -i \
+	    -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-regression-altconffilesdir
+	sed -i -e 's/# export STORM_CONF_FILES="\(.*\)"/export STORM_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-storm-run-stormwordcount-regression-altconffilesdir
+	sed -i -e 's/# export ZOOKEEPER_CONF_FILES="\(.*\)"/export ZOOKEEPER_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-storm-run-stormwordcount-regression-altconffilesdir
+    fi
+}
+
+GenerateDefaultRegressionTests_TestAll() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-testall
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-hadoopterasort-run-testpig-regression-testall
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-hadoopterasort-run-clustersyntheticcontrol-regression-testall
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-run-zookeeperruok-regression-testall
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-hbaseperformanceeval-run-phoenixperformanceeval-run-zookeeperruok-regression-testall
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-regression-testall
+	
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkpi-regression-testall
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkpi-regression-testall
+
+	sed -i \
+	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkpi-regression-testall
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-regression-testall
+    fi
+
+    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="testall"/' magpie.${submissiontype}*regression-testall
 }
 
 GenerateDefaultRegressionTests_InteractiveMode() {
@@ -297,15 +416,661 @@ GenerateDefaultRegressionTests_JobTimeout() {
     fi
 }
 
+GenerateDefaultRegressionTests_CatchProjectDependencies() {
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hadoop-and-pig-regression-catchprojectdependency-hadoop
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hadoop-and-mahout-regression-catchprojectdependency-hadoop
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-hadoop
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-zookeeper
+
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-regression-catchprojectdependency-zookeeper
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hadoop
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hbase
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-zookeeper
+
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hadoop
+	sed -i -e 's/export HBASE_SETUP=\(.*\)/export HBASE_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-hbase
+	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-catchprojectdependency-zookeeper
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i \
+	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+
+	sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-catchprojectdependency-hadoop \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-catchprojectdependency-hadoop
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-catchprojectdependency-zookeeper
+
+	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-storm-regression-catchprojectdependency-zookeeper
+    fi
+}
+
+GenerateDefaultRegressionTests_NoSetJava() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nosetjava
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-nosetjava
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-nosetjava
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-nosetjava
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetjava
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-nosetjava
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-nosetjava
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetjava
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-nosetjava
+    fi
+
+    sed -i -e 's/export JAVA_HOME/# export JAVA_HOME/' magpie.${submissiontype}*regression-nosetjava*
+}
+
+GenerateDefaultRegressionTests_BadSetJava() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badsetjava
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badsetjava
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badsetjava
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badsetjava
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsetjava
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badsetjava
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badsetjava
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsetjava
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badsetjava
+    fi
+
+    sed -i -e 's/export JAVA_HOME="\(.*\)\"/export JAVA_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}*regression-badsetjava*
+}
+	    
+GenerateDefaultRegressionTests_NoSetVersion() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nosetversion
+	sed -i -e 's/export HADOOP_VERSION/# export HADOOP_VERSION/' magpie.${submissiontype}-hadoop-regression-nosetversion
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-nosetversion
+	sed -i -e 's/export PIG_VERSION/# export PIG_VERSION/' magpie.${submissiontype}-hadoop-and-pig-regression-nosetversion
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-nosetversion
+	sed -i -e 's/export MAHOUT_VERSION/# export MAHOUT_VERSION/' magpie.${submissiontype}-hadoop-and-mahout-regression-nosetversion
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-nosetversion
+	sed -i -e 's/export HBASE_VERSION/# export HBASE_VERSION/' magpie.${submissiontype}-hbase-with-hdfs-regression-nosetversion
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetversion
+	sed -i -e 's/export PHOENIX_VERSION/# export PHOENIX_VERSION/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetversion
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-nosetversion
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-nosetversion
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetversion
+	sed -i -e 's/export SPARK_VERSION/# export SPARK_VERSION/' \
+	    magpie.${submissiontype}-spark-regression-nosetversion \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-nosetversion \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetversion
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-nosetversion
+	sed -i -e 's/export STORM_VERSION/# export STORM_VERSION/' magpie.${submissiontype}-storm-regression-nosetversion
+    fi
+}
+
+GenerateDefaultRegressionTests_NoSetHome() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nosethome
+	sed -i -e 's/export HADOOP_HOME/# export HADOOP_HOME/' magpie.${submissiontype}-hadoop-regression-nosethome
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-nosethome
+	sed -i -e 's/export PIG_HOME/# export PIG_HOME/' magpie.${submissiontype}-hadoop-and-pig-regression-nosethome
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-nosethome
+	sed -i -e 's/export MAHOUT_HOME/# export MAHOUT_HOME/' magpie.${submissiontype}-hadoop-and-mahout-regression-nosethome
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-nosethome
+	sed -i -e 's/export HBASE_HOME/# export HBASE_HOME/' magpie.${submissiontype}-hbase-with-hdfs-regression-nosethome
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosethome
+	sed -i -e 's/export PHOENIX_HOME/# export PHOENIX_HOME/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosethome
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-nosethome
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-nosethome
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosethome
+	sed -i -e 's/export SPARK_HOME/# export SPARK_HOME/' \
+	    magpie.${submissiontype}-spark-regression-nosethome \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-nosethome \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosethome
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-nosethome
+	sed -i -e 's/export STORM_HOME/# export STORM_HOME/' magpie.${submissiontype}-storm-regression-nosethome
+    fi
+}
+
+GenerateDefaultRegressionTests_BadSetHome() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badsethome
+	sed -i -e 's/export HADOOP_HOME="\(.*\)"/export HADOOP_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-regression-badsethome
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badsethome
+	sed -i -e 's/export PIG_HOME="\(.*\)"/export PIG_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-pig-regression-badsethome
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badsethome
+	sed -i -e 's/export MAHOUT_HOME="\(.*\)"/export MAHOUT_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-mahout-regression-badsethome
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badsethome
+	sed -i -e 's/export HBASE_HOME="\(.*\)"/export HBASE_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-regression-badsethome
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsethome
+	sed -i -e 's/export PHOENIX_HOME="\(.*\)"/export PHOENIX_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsethome
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badsethome
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badsethome
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsethome
+	sed -i -e 's/export SPARK_HOME="\(.*\)"/export SPARK_HOME="\/FOO\/BAR\/BAZ"/' \
+	    magpie.${submissiontype}-spark-regression-badsethome \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-badsethome \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsethome
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badsethome
+	sed -i -e 's/export STORM_HOME="\(.*\)"/export STORM_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-storm-regression-badsethome
+    fi
+}
+
+GenerateDefaultRegressionTests_NoSetScript() {
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nosetscript
+    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-regression-nosetscript
+
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nosetscript
+	sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' magpie.${submissiontype}-hadoop-regression-nosetscript
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-nosetscript
+	sed -i -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="script"/' magpie.${submissiontype}-hadoop-and-pig-regression-nosetscript
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-nosetscript
+	sed -i -e 's/export MAHOUT_MODE="\(.*\)"/export MAHOUT_MODE="script"/' magpie.${submissiontype}-hadoop-and-mahout-regression-nosetscript
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-nosetscript
+	sed -i -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' magpie.${submissiontype}-hbase-with-hdfs-regression-nosetscript
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetscript
+	sed -i -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="script"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nosetscript
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-nosetscript
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-nosetscript
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetscript
+	sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
+	    magpie.${submissiontype}-spark-regression-nosetscript \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-nosetscript \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nosetscript
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-nosetscript
+	sed -i -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' magpie.${submissiontype}-storm-regression-nosetscript
+    fi
+}
+
+GenerateDefaultRegressionTests_BadSetScript() {
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badsetscript
+    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-regression-badsetscript
+    sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-regression-badsetscript
+
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badsetscript
+	sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' magpie.${submissiontype}-hadoop-regression-badsetscript
+	sed -i -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-regression-badsetscript
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badsetscript
+	sed -i -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="script"/' magpie.${submissiontype}-hadoop-and-pig-regression-badsetscript
+	sed -i -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-pig-regression-badsetscript
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badsetscript
+	sed -i -e 's/export MAHOUT_MODE="\(.*\)"/export MAHOUT_MODE="script"/' magpie.${submissiontype}-hadoop-and-mahout-regression-badsetscript
+	sed -i -e 's/# export MAHOUT_SCRIPT_PATH="\(.*\)"/export MAHOUT_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-mahout-regression-badsetscript
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badsetscript
+	sed -i -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' magpie.${submissiontype}-hbase-with-hdfs-regression-badsetscript
+	sed -i -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-regression-badsetscript
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsetscript
+	sed -i -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="script"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsetscript
+	sed -i -e 's/# export PHOENIX_SCRIPT_PATH="\(.*\)"/export PHOENIX_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badsetscript
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badsetscript
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badsetscript
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsetscript
+	sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
+	    magpie.${submissiontype}-spark-regression-badsetscript \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-badsetscript \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsetscript
+	sed -i -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' \
+	    magpie.${submissiontype}-spark-regression-badsetscript \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-badsetscript \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badsetscript
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badsetscript
+	sed -i -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' magpie.${submissiontype}-storm-regression-badsetscript
+	sed -i -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-storm-regression-badsetscript
+    fi
+}
+
+GenerateDefaultRegressionTests_BadJobTime() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badjobtime
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badjobtime
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badjobtime
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badjobtime
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badjobtime
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badjobtime
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badjobtime
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badjobtime
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badjobtime
+    fi
+}
+
+GenerateDefaultRegressionTests_BadStartupTime() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badstartuptime
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badstartuptime
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badstartuptime
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badstartuptime
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badstartuptime
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badstartuptime
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badstartuptime
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badstartuptime
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badstartuptime
+    fi
+
+    sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME=1/' magpie.${submissiontype}*regression-badstartuptime
+    sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*regression-badstartuptime
+}
+
+GenerateDefaultRegressionTests_BadShutdownTime() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badshutdowntime
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badshutdowntime
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badshutdowntime
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badshutdowntime
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badshutdowntime
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badshutdowntime
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badshutdowntime
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badshutdowntime
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badshutdowntime
+    fi
+
+    sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME=1/' magpie.${submissiontype}*regression-badshutdowntime
+}
+
+GenerateDefaultRegressionTests_BadNodeCount() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badnodecount-small
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badnodecount-small
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badnodecount-small
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badnodecount-small
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badnodecount-big
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badnodecount-small
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badnodecount-big
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badnodecount-small
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badnodecount-small
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badnodecount-small
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badnodecount-small
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badnodecount-big
+    fi
+
+    sed -i -e "s/<my node count>/1/" magpie.${submissiontype}*regression-badnodecount-small
+    badnodecountpluszookeeper=`expr ${zookeepernodecount} + 1`
+    sed -i -e "s/<my node count>/${badnodecountpluszookeeper}/" magpie.${submissiontype}*regression-badnodecount-big
+}
+
+GenerateDefaultRegressionTests_NoCoreSettings() {
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nocoresettings-1
+    sed -i -e 's/export MAGPIE_SUBMISSION_TYPE/# export MAGPIE_SUBMISSION_TYPE/' magpie.${submissiontype}-magpie-regression-nocoresettings-1
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nocoresettings-2
+    sed -i -e 's/export MAGPIE_JOB_TYPE/# export MAGPIE_JOB_TYPE/' magpie.${submissiontype}-magpie-regression-nocoresettings-2
+
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nocoresettings-1
+	sed -i -e 's/export HADOOP_SETUP_TYPE/# export HADOOP_SETUP_TYPE/' magpie.${submissiontype}-hadoop-regression-nocoresettings-1
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nocoresettings-2
+	sed -i -e 's/export HADOOP_MODE/# export HADOOP_MODE/' magpie.${submissiontype}-hadoop-regression-nocoresettings-2
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nocoresettings-3
+	sed -i -e 's/export HADOOP_FILESYSTEM_MODE/# export HADOOP_FILESYSTEM_MODE/' magpie.${submissiontype}-hadoop-regression-nocoresettings-3
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-nocoresettings
+	sed -i -e 's/export PIG_MODE/# export PIG_MODE/' magpie.${submissiontype}-hadoop-and-pig-regression-nocoresettings
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-nocoresettings
+	sed -i -e 's/export MAHOUT_MODE/# export MAHOUT_MODE/' magpie.${submissiontype}-hadoop-and-mahout-regression-nocoresettings
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-nocoresettings
+	sed -i -e 's/export HBASE_MODE/# export HBASE_MODE/' magpie.${submissiontype}-hbase-with-hdfs-regression-nocoresettings
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nocoresettings
+	sed -i -e 's/export PHOENIX_MODE/# export PHOENIX_MODE/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nocoresettings
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-nocoresettings
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-nocoresettings
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nocoresettings
+	sed -i -e 's/export SPARK_MODE/# export SPARK_MODE/' \
+	    magpie.${submissiontype}-spark-regression-nocoresettings \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-nocoresettings \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nocoresettings
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-nocoresettings-1
+	sed -i -e 's/export STORM_MODE/# export STORM_MODE/' magpie.${submissiontype}-storm-regression-nocoresettings-1
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-nocoresettings-2
+	sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-storm-regression-nocoresettings-2
+    fi
+
+    if [ "${zookeepertests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-regression-nocoresettings
+	sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-zookeeper-regression-nocoresettings
+    fi
+}
+
+GenerateDefaultRegressionTests_BadCoreSettings() {
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badcoresettings-1
+    sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="foobar"/' magpie.${submissiontype}-magpie-regression-badcoresettings-1
+
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badcoresettings-2
+    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="foobar"/' magpie.${submissiontype}-magpie-regression-badcoresettings-2
+
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badcoresettings-1
+	sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="foobar"/' magpie.${submissiontype}-hadoop-regression-badcoresettings-1
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badcoresettings-2
+	sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="foobar"/' magpie.${submissiontype}-hadoop-regression-badcoresettings-2
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badcoresettings-3
+	sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="foobar"/' magpie.${submissiontype}-hadoop-regression-badcoresettings-3
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-regression-badcoresettings
+	sed -i -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="foobar"/' magpie.${submissiontype}-hadoop-and-pig-regression-badcoresettings
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-regression-badcoresettings
+	sed -i -e 's/export MAHOUT_MODE="\(.*\)"/export MAHOUT_MODE="foobar"/' magpie.${submissiontype}-hadoop-and-mahout-regression-badcoresettings
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-regression-badcoresettings
+	sed -i -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="foobar"/' magpie.${submissiontype}-hbase-with-hdfs-regression-badcoresettings
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badcoresettings
+	sed -i -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="foobar"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badcoresettings
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-regression-badcoresettings
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-regression-badcoresettings
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badcoresettings
+	sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="foobar"/' \
+	    magpie.${submissiontype}-spark-regression-badcoresettings \
+	    magpie.${submissiontype}-spark-with-hdfs-regression-badcoresettings \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badcoresettings
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-regression-badcoresettings
+	sed -i -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="foobar"/' magpie.${submissiontype}-storm-regression-badcoresettings
+    fi
+
+    if [ "${zookeepertests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-regression-badcoresettings
+	sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="foobar"/' magpie.${submissiontype}-zookeeper-regression-badcoresettings
+    fi
+}
+
 GenerateDefaultRegressionTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-
+    
     echo "Making Default Regression Tests"
 
     GenerateDefaultRegressionTests_BadJobNames
 
+    GenerateDefaultRegressionTests_AltConfFilesDir
+
+    GenerateDefaultRegressionTests_TestAll
+    
     GenerateDefaultRegressionTests_InteractiveMode
 
     GenerateDefaultRegressionTests_JobTimeout
+
+    GenerateDefaultRegressionTests_CatchProjectDependencies
+
+    GenerateDefaultRegressionTests_NoSetJava
+    GenerateDefaultRegressionTests_BadSetJava
+
+    GenerateDefaultRegressionTests_NoSetVersion
+
+    GenerateDefaultRegressionTests_NoSetHome
+    GenerateDefaultRegressionTests_BadSetHome
+    
+    GenerateDefaultRegressionTests_NoSetScript
+    GenerateDefaultRegressionTests_BadSetScript
+
+    GenerateDefaultRegressionTests_BadJobTime
+    GenerateDefaultRegressionTests_BadStartupTime
+    GenerateDefaultRegressionTests_BadShutdownTime
+
+    GenerateDefaultRegressionTests_BadNodeCount
+
+    GenerateDefaultRegressionTests_NoCoreSettings
+    GenerateDefaultRegressionTests_BadCoreSettings
 }
