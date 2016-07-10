@@ -43,7 +43,6 @@ functionalitytests=y
 
 # Higher level configuration, add or eliminate certain types of tests
 #
-# defaultonly: only default tests, simple sanity checks
 # standardtests: basic tests, terasort, sparkpi, etc.
 # dependencytests: check dependencies
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
@@ -52,7 +51,6 @@ functionalitytests=y
 # rawnetworkfs_tests - anything that uses rawnetworkfs
 # zookeepershared_tests - tests in which zookeeper shares nodes w/ compute/data nodes
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
-defaultonly=n
 standardtests=y
 dependencytests=y
 local_drive_tests=y
@@ -259,75 +257,73 @@ if [ "${cornercasetests}" == "y" ]; then
     GenerateCornerCaseTests
 fi
 
-if [ "${defaultonly}" != "y" ]; then
-    if [ "${hadooptests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateHadoopStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateHadoopDependencyTests
-	fi
+if [ "${hadooptests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateHadoopStandardTests
     fi
-    if [ "${pigtests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GeneratePigStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GeneratePigDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateHadoopDependencyTests
     fi
-    if [ "${mahouttests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateMahoutStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateMahoutDependencyTests
-	fi
+fi
+if [ "${pigtests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GeneratePigStandardTests
     fi
-    if [ "${hbasetests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateHbaseStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateHbaseDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GeneratePigDependencyTests
     fi
-    if [ "${phoenixtests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GeneratePhoenixStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GeneratePhoenixDependencyTests
-	fi
+fi
+if [ "${mahouttests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateMahoutStandardTests
     fi
-    if [ "${sparktests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateSparkStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateSparkDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateMahoutDependencyTests
     fi
-    if [ "${stormtests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateStormStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateStormDependencyTests
-	fi
+fi
+if [ "${hbasetests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateHbaseStandardTests
     fi
-    if [ "${kafkatests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateKafkaStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateKafkaDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateHbaseDependencyTests
     fi
-    if [ "${zookeepertests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateZookeeperStandardTests
-	fi
+fi
+if [ "${phoenixtests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GeneratePhoenixStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GeneratePhoenixDependencyTests
+    fi
+fi
+if [ "${sparktests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateSparkStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateSparkDependencyTests
+    fi
+fi
+if [ "${stormtests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateStormStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateStormDependencyTests
+    fi
+fi
+if [ "${kafkatests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateKafkaStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateKafkaDependencyTests
+    fi
+fi
+if [ "${zookeepertests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateZookeeperStandardTests
     fi
 fi
 
