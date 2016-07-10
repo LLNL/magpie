@@ -676,8 +676,10 @@ GenerateDefaultRegressionTests_BadSetHome() {
 }
 
 GenerateDefaultRegressionTests_NoSetScript() {
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nosetscript
-    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-regression-nosetscript
+    if [ "${magpietests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nosetscript
+	sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-regression-nosetscript
+    fi
 
     if [ "${hadooptests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nosetscript
@@ -721,9 +723,11 @@ GenerateDefaultRegressionTests_NoSetScript() {
 }
 
 GenerateDefaultRegressionTests_BadSetScript() {
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badsetscript
-    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-regression-badsetscript
-    sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-regression-badsetscript
+    if [ "${magpietests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badsetscript
+	sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-regression-badsetscript
+	sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-regression-badsetscript
+    fi
 
     if [ "${hadooptests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badsetscript
@@ -917,11 +921,13 @@ GenerateDefaultRegressionTests_BadNodeCount() {
 }
 
 GenerateDefaultRegressionTests_NoCoreSettings() {
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nocoresettings-1
-    sed -i -e 's/export MAGPIE_SUBMISSION_TYPE/# export MAGPIE_SUBMISSION_TYPE/' magpie.${submissiontype}-magpie-regression-nocoresettings-1
+    if [ "${magpietests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nocoresettings-1
+	sed -i -e 's/export MAGPIE_SUBMISSION_TYPE/# export MAGPIE_SUBMISSION_TYPE/' magpie.${submissiontype}-magpie-regression-nocoresettings-1
 
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nocoresettings-2
-    sed -i -e 's/export MAGPIE_JOB_TYPE/# export MAGPIE_JOB_TYPE/' magpie.${submissiontype}-magpie-regression-nocoresettings-2
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-nocoresettings-2
+	sed -i -e 's/export MAGPIE_JOB_TYPE/# export MAGPIE_JOB_TYPE/' magpie.${submissiontype}-magpie-regression-nocoresettings-2
+    fi
 
     if [ "${hadooptests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-nocoresettings-1
@@ -978,11 +984,13 @@ GenerateDefaultRegressionTests_NoCoreSettings() {
 }
 
 GenerateDefaultRegressionTests_BadCoreSettings() {
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badcoresettings-1
-    sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="foobar"/' magpie.${submissiontype}-magpie-regression-badcoresettings-1
-
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badcoresettings-2
-    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="foobar"/' magpie.${submissiontype}-magpie-regression-badcoresettings-2
+    if [ "${magpietests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badcoresettings-1
+	sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="foobar"/' magpie.${submissiontype}-magpie-regression-badcoresettings-1
+	
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-regression-badcoresettings-2
+	sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="foobar"/' magpie.${submissiontype}-magpie-regression-badcoresettings-2
+    fi
 
     if [ "${hadooptests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-regression-badcoresettings-1

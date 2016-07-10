@@ -19,9 +19,11 @@ source test-config.sh
 # Toggle y/n for different test types
 
 # High Level, what tests to generate
+# - magpietests covers "core" tests, most notably 'testall' and very corner case checks
+# - specific sections can be configured below
 # - specific versions can be configured below
 
-defaulttests=y
+magpietests=y
 hadooptests=y
 pigtests=y
 mahouttests=y
@@ -31,6 +33,9 @@ sparktests=y
 stormtests=y
 kafkatests=y
 zookeepertests=y
+
+# Sections test
+defaulttests=y
 
 # Higher level configuration, add or eliminate certain types of tests
 #
