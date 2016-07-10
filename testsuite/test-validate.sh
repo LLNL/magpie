@@ -219,11 +219,25 @@ then
     done
 fi
 
-if ls ${outputprefix}*nosetjava* >& /dev/null
+if ls ${outputprefix}*nosetjava* >& /dev/null ||
+    ls ${outputprefix}*nosetversion* >& /dev/null ||
+    ls ${outputprefix}*nosethome* >& /dev/null ||
+    ls ${outputprefix}*nosetscript* >& /dev/null ||
+    ls ${outputprefix}*nocoresettings* >& /dev/null ||
+    ls ${outputprefix}*badcoresettings* >& /dev/null
 then
-    for file in `ls ${outputprefix}*nosetjava*`
+    files=""
+    for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings
     do
-	num=`grep -e "JAVA_HOME must be set" $file | wc -l`
+	if ls ${outputprefix}*${str}* >& /dev/null; then
+	    filestmp=`ls ${outputprefix}*${str}*`
+	    files="${files} ${filestmp}"
+	fi
+    done
+
+    for file in $files
+    do
+	num=`grep -e "must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
 	    echo "Error in $file"
@@ -247,53 +261,11 @@ then
     done
 fi
 
-if ls ${outputprefix}*nosetversion* >& /dev/null
-then
-    for file in `ls ${outputprefix}*nosetversion*`
-    do
-	num=`grep -e "\(.*\)_VERSION must be set" $file | wc -l`
-	if [ "${num}" == "0" ]
-	then
-	    echo "Error in $file"
-	fi
-
-	test_output_finalize $file
-    done
-fi
-
-if ls ${outputprefix}*nosethome* >& /dev/null
-then
-    for file in `ls ${outputprefix}*nosethome*`
-    do
-	num=`grep -e "\(.*\)_HOME must be set" $file | wc -l`
-	if [ "${num}" == "0" ]
-	then
-	    echo "Error in $file"
-	fi
-
-	test_output_finalize $file
-    done
-fi
-
 if ls ${outputprefix}*badsethome* >& /dev/null
 then
     for file in `ls ${outputprefix}*badsethome*`
     do
 	num=`grep -e "\(.*\)_HOME does not point to a directory" $file | wc -l`
-	if [ "${num}" == "0" ]
-	then
-	    echo "Error in $file"
-	fi
-
-	test_output_finalize $file
-    done
-fi
-
-if ls ${outputprefix}*nosetscript* >& /dev/null
-then
-    for file in `ls ${outputprefix}*nosetscript*`
-    do
-	num=`grep -e "\(.*\)_SCRIPT_PATH must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
 	    echo "Error in $file"
@@ -370,34 +342,6 @@ then
 	else
 	    num=`grep -e "No remaining slave nodes after Zookeeper allocation" $file | wc -l`
 	fi
-	if [ "${num}" == "0" ]
-	then
-	    echo "Error in $file"
-	fi
-
-	test_output_finalize $file
-    done
-fi
-
-if ls ${outputprefix}*nocoresettings* >& /dev/null
-then
-    for file in `ls ${outputprefix}*nocoresettings*`
-    do
-	num=`grep -e "must be set" $file | wc -l`
-	if [ "${num}" == "0" ]
-	then
-	    echo "Error in $file"
-	fi
-
-	test_output_finalize $file
-    done
-fi
-
-if ls ${outputprefix}*badcoresettings* >& /dev/null
-then
-    for file in `ls ${outputprefix}*badcoresettings*`
-    do
-	num=`grep -e "must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
 	    echo "Error in $file"
