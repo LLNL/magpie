@@ -526,6 +526,22 @@ if ls magpie.${submissiontype}*regression-badshutdowntime* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badshutdowntime*
 fi
 
+if ls magpie.${submissiontype}*regression-badnodecount-small* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-small*
+fi
+
+if ls magpie.${submissiontype}*regression-badnodecount-big* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-big*
+fi
+
+if ls magpie.${submissiontype}*regression-nocoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nocoresettings*
+fi
+
+if ls magpie.${submissiontype}*regression-badcoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badcoresettings*
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`

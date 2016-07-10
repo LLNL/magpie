@@ -46,6 +46,18 @@ SubmitDefaultRegressionTests_BadJobNames () {
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-job-name-dollarsign
 }
 
+SubmitDefaultRegressionTests_AltConfFilesDir () {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-altconffilesdir
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-altconffilesdir
+}
+
 SubmitDefaultRegressionTests_TestAll() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-testall
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-hadoopterasort-run-testpig-regression-testall
@@ -229,8 +241,43 @@ SubmitDefaultRegressionTests_BadNodeCount() {
     BasicJobSubmit magpie.${submissiontype}-storm-regression-badnodecount-big
 }
 
+SubmitDefaultRegressionTests_NoCoreSettings() {
+    BasicJobSubmit magpie.${submissiontype}-magpie-regression-nocoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-magpie-regression-nocoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nocoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nocoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-nocoresettings-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-regression-nocoresettings
+}
+
+SubmitDefaultRegressionTests_BadCoreSettings() {
+    BasicJobSubmit magpie.${submissiontype}-magpie-regression-badcoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-magpie-regression-badcoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badcoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badcoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badcoresettings-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-regression-badcoresettings
+}
+
 SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadJobNames
+    SubmitDefaultRegressionTests_AltConfFilesDir
     SubmitDefaultRegressionTests_TestAll
     SubmitDefaultRegressionTests_InteractiveMode
     SubmitDefaultRegressionTests_JobTimeout
@@ -260,4 +307,7 @@ SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadShutdownTime
 
     SubmitDefaultRegressionTests_BadNodeCount
+
+    SubmitDefaultRegressionTests_NoCoreSettings
+    SubmitDefaultRegressionTests_BadCoreSettings
 }

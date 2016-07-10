@@ -379,6 +379,34 @@ then
     done
 fi
 
+if ls ${outputprefix}*nocoresettings* >& /dev/null
+then
+    for file in `ls ${outputprefix}*nocoresettings*`
+    do
+	num=`grep -e "must be set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*badcoresettings* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badcoresettings*`
+    do
+	num=`grep -e "must be set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
