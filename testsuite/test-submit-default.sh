@@ -46,6 +46,18 @@ SubmitDefaultRegressionTests_BadJobNames () {
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-regression-job-name-dollarsign
 }
 
+SubmitDefaultRegressionTests_TestAll() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-hadoopterasort-run-testpig-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-hadoopterasort-run-clustersyntheticcontrol-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-run-zookeeperruok-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-hbaseperformanceeval-run-phoenixperformanceeval-run-zookeeperruok-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkpi-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkpi-regression-testall
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-regression-testall
+}
+
 SubmitDefaultRegressionTests_InteractiveMode () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-regression-interactive-mode
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-regression-interactive-mode
@@ -168,6 +180,7 @@ SubmitDefaultRegressionTests_BadSetScript() {
 
 SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadJobNames
+    SubmitDefaultRegressionTests_TestAll
     SubmitDefaultRegressionTests_InteractiveMode
     SubmitDefaultRegressionTests_JobTimeout
     SubmitDefaultRegressionTests_CatchProjectDependencies

@@ -510,6 +510,10 @@ if ls magpie.${submissiontype}*regression-badsetscript* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetscript*
 fi
 
+if ls magpie.${submissiontype}*regression-testall* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/testall-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-testall*
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
@@ -584,6 +588,12 @@ if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
     sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-jobtimeout
+fi
+
+if ls magpie.${submissiontype}*regression-testall >& /dev/null ; then
+    # Guarantee 60 minutes for the job that should last awhile
+    ${functiontogettimeoutput} 60
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-testall
 fi
 
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then

@@ -148,21 +148,21 @@ GenerateDefaultRegressionTests_BadJobNames() {
 
 	sed -i \
 	    -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression* \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name* \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
 
 	sed -i \
 	    -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
-	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression* \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name* \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
 
 	sed -i \
 	    -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
-	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression* \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-regression-job-name* \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
 	sed -i \
 	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
-	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression*
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-regression-job-name*
     fi
 
     if [ "${stormtests}" == "y" ]; then
@@ -178,6 +178,46 @@ GenerateDefaultRegressionTests_BadJobNames() {
 
     sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
     sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*regression-job-name-dollarsign
+}
+
+GenerateDefaultRegressionTests_TestAll() {
+    if [ "${hadooptests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-regression-testall
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-hadoopterasort-run-testpig-regression-testall
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-hadoopterasort-run-clustersyntheticcontrol-regression-testall
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-run-zookeeperruok-regression-testall
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-hbaseperformanceeval-run-phoenixperformanceeval-run-zookeeperruok-regression-testall
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-regression-testall
+	
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkpi-regression-testall
+
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkpi-regression-testall
+
+	sed -i \
+	    -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
+	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkpi-regression-testall
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-regression-testall
+    fi
+
+    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="testall"/' magpie.${submissiontype}*regression-testall
 }
 
 GenerateDefaultRegressionTests_InteractiveMode() {
@@ -660,11 +700,13 @@ GenerateDefaultRegressionTests_BadSetScript() {
 GenerateDefaultRegressionTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-
+    
     echo "Making Default Regression Tests"
 
     GenerateDefaultRegressionTests_BadJobNames
 
+    GenerateDefaultRegressionTests_TestAll
+    
     GenerateDefaultRegressionTests_InteractiveMode
 
     GenerateDefaultRegressionTests_JobTimeout

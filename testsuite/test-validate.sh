@@ -323,8 +323,15 @@ then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
     do
 	num=`grep -e "completed successfully" $file | wc -l`
-	if [ "${num}" != "2" ]; then
-	    echo "Job error in $file"
+	if echo ${file} | grep -q "run-clustersyntheticcontrol"
+	then
+	    if [ "${num}" != "14" ]; then
+		echo "Job error in $file"
+	    fi
+	else
+	    if [ "${num}" != "2" ]; then
+		echo "Job error in $file"
+	    fi
 	fi
 	
 	test_hadoop_shutdown $file
