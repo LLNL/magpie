@@ -476,15 +476,16 @@ then
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ])
     then
-	echo "HADOOP_SETUP_TYPE of ${HADOOP_SETUP_TYPE} must be set with HADOOP_FILESYSTEM_MODE of hdfs, hdfsoverlustre, or hdfsovernetworkfs"
+	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_SETUP_TYPE=${HADOOP_SETUP_TYPE}"
 	exit 1
     fi
 
-    if [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
+	&& [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
     then
-	echo "HADOOP_MODE of ${HADOOP_MODE} only supported with HADOOP_FILESYSTEM_MODE of hdfsoverlustre or hdfsovernetworkfs"
+	echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
 	exit 1
     fi
 
@@ -494,7 +495,7 @@ then
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
     then
-	echo "HADOOP_MODE of ${HADOOP_MODE} only supported with HADOOP_FILESYSTEM_MODE of hdfs, hdfsoverlustre, or hdfsovernetworkfs"
+	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
 	exit 1
     fi
 
@@ -766,8 +767,7 @@ then
     	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
     	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
     then
-    	echo "Magpie presently only supports Hbase over HDFS"
-    	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
+    	echo "Magpie supports Hbase over HDFS, HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
     	exit 1
     fi
 
@@ -964,7 +964,7 @@ then
 		    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
 		    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
 		then
-		    echo "Cannot copy in file to SPARK_SPARKWORDCOUNT_FILE, HADOOP_FILESYSTEM_MODE not set to an HDFS filesystem"
+		    echo "Cannot copy in file to SPARK_SPARKWORDCOUNT_FILE=${SPARK_SPARKWORDCOUNT_FILE}, HADOOP_FILESYSTEM_MODE must be set to an HDFS filesystem"
 		    exit 1
 		fi
 	    fi
@@ -977,7 +977,7 @@ then
 		    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
 		    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
 		then
-		    echo "Cannot copy file from SPARK_SPARKWORDCOUNT_COPY_IN_FILE, HADOOP_FILESYSTEM_MODE not set to an HDFS filesystem"
+		    echo "Cannot copy file from SPARK_SPARKWORDCOUNT_COPY_IN_FILE=${SPARK_SPARKWORDCOUNT_FILE}, HADOOP_FILESYSTEM_MODE must be set to an HDFS filesystem"
 		    exit 1
 		fi
 	    fi
@@ -1156,8 +1156,7 @@ then
     	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
     	&& [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
     then
-    	echo "Magpie presently only supports Tachyon over HDFS"
-    	echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
+    	echo "Magpie supports Tachyon over HDFS, HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
     	exit 1
     fi
 
