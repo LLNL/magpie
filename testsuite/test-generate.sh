@@ -561,6 +561,10 @@ if ls magpie.${submissiontype}*cornercase-requirehdfs* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/requirehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-requirehdfs*
 fi
 
+if ls magpie.${submissiontype}*cornercase-requireyarn* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/requireyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-requireyarn*
+fi
+
 if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
     sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
 fi

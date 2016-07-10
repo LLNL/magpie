@@ -225,10 +225,11 @@ if ls ${outputprefix}*nosetjava* >& /dev/null ||
     ls ${outputprefix}*nosetscript* >& /dev/null ||
     ls ${outputprefix}*nocoresettings* >& /dev/null ||
     ls ${outputprefix}*badcoresettings* >& /dev/null ||
-    ls ${outputprefix}*requirehdfs* >& /dev/null
+    ls ${outputprefix}*requirehdfs* >& /dev/null ||
+    ls ${outputprefix}*requireyarn* >& /dev/null
 then
     files=""
-    for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings requirehdfs
+    for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings requirehdfs requireyarn
     do
 	if ls ${outputprefix}*${str}* >& /dev/null; then
 	    filestmp=`ls ${outputprefix}*${str}*`

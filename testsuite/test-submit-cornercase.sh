@@ -195,6 +195,14 @@ SubmitCornerCaseTests_RequireHDFS() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 }
 
+SubmitCornerCaseTests_RequireYarn() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requireyarn
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-requireyarn
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requireyarn
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
+}
+
 SubmitCornerCaseTests() {
     SubmitCornerCaseTests_CatchProjectDependencies
 
@@ -227,4 +235,5 @@ SubmitCornerCaseTests() {
     SubmitCornerCaseTests_BadCoreSettings
 
     SubmitCornerCaseTests_RequireHDFS
+    SubmitCornerCaseTests_RequireYarn
 }
