@@ -360,6 +360,25 @@ then
     done
 fi
 
+if ls ${outputprefix}*badnodecount* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badnodecount*`
+    do
+	if echo ${file} | grep -q "small"
+	then
+	    num=`grep -e "No remaining nodes for \(.*\), increase node count or adjust node allocations" $file | wc -l`
+	else
+	    num=`grep -e "No remaining slave nodes after Zookeeper allocation" $file | wc -l`
+	fi
+	if [ "${num}" == "0" ]
+	then
+	    echo "Error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
