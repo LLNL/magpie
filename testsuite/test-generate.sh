@@ -514,6 +514,18 @@ if ls magpie.${submissiontype}*regression-testall* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/testall-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-testall*
 fi
 
+if ls magpie.${submissiontype}*regression-badjobtime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badjobtime*
+fi
+
+if ls magpie.${submissiontype}*regression-badstartuptime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badstartuptime*
+fi
+
+if ls magpie.${submissiontype}*regression-badshutdowntime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badshutdowntime*
+fi
+
 # special node sizes first
 
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
@@ -588,6 +600,12 @@ if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
     sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-jobtimeout
+fi
+
+if ls magpie.${submissiontype}*regression-badjobtime >& /dev/null ; then
+    # Add in -5 minutes
+    ${functiontogettimeoutput} -5
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-badjobtime
 fi
 
 if ls magpie.${submissiontype}*regression-testall >& /dev/null ; then

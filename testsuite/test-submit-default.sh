@@ -178,6 +178,42 @@ SubmitDefaultRegressionTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-storm-regression-badsetscript
 }
 
+SubmitDefaultRegressionTests_BadJobTime() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badjobtime
+}
+
+SubmitDefaultRegressionTests_BadStartupTime() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badstartuptime
+}
+
+SubmitDefaultRegressionTests_BadShutdownTime() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-spark-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-regression-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-storm-regression-badshutdowntime
+}
+
 SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadJobNames
     SubmitDefaultRegressionTests_TestAll
@@ -203,4 +239,8 @@ SubmitDefaultRegressionTests() {
     SubmitDefaultRegressionTests_BadSetHome
     SubmitDefaultRegressionTests_NoSetScript
     SubmitDefaultRegressionTests_BadSetScript
+
+    SubmitDefaultRegressionTests_BadJobTime
+    SubmitDefaultRegressionTests_BadStartupTime
+    SubmitDefaultRegressionTests_BadShutdownTime
 }

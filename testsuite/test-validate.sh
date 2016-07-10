@@ -318,6 +318,48 @@ then
     done
 fi
 
+if ls ${outputprefix}*badjobtime* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badjobtime*`
+    do
+	num=`grep -e "timelimit must be atleast the sum of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*badstartuptime* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badstartuptime*`
+    do
+	num=`grep -e "MAGPIE_STARTUP_TIME must be >= 5 minutes if MAGPIE_PRE_JOB_RUN is set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
+if ls ${outputprefix}*badshutdowntime* >& /dev/null
+then
+    for file in `ls ${outputprefix}*badshutdowntime*`
+    do
+	num=`grep -e "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set" $file | wc -l`
+	if [ "${num}" == "0" ]
+	then
+	    echo "Job error in $file"
+	fi
+
+	test_output_finalize $file
+    done
+fi
+
 if ls ${outputprefix}*run-hadoopterasort* >& /dev/null
 then
     for file in `ls ${outputprefix}*run-hadoopterasort*`
