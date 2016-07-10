@@ -558,10 +558,8 @@ GenerateDefaultCornerCaseTests_NoCoreSettings() {
     fi
 
     if [ "${stormtests}" == "y" ]; then
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nocoresettings-1
-	sed -i -e 's/export STORM_MODE/# export STORM_MODE/' magpie.${submissiontype}-storm-cornercase-nocoresettings-1
-	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nocoresettings-2
-	sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-storm-cornercase-nocoresettings-2
+	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nocoresettings
+	sed -i -e 's/export STORM_MODE/# export STORM_MODE/' magpie.${submissiontype}-storm-cornercase-nocoresettings
     fi
 
     if [ "${zookeepertests}" == "y" ]; then

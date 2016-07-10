@@ -11,7 +11,7 @@ SubmitCornerCaseTests_CatchProjectDependencies() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-hbase
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-zookeeper
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-catchprojectdependency-zookeeper
 }
 

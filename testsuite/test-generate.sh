@@ -638,16 +638,16 @@ if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
     sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout
 fi
 
-if ls magpie.${submissiontype}*functionality-badjobtime >& /dev/null ; then
-    # Add in -5 minutes
-    ${functiontogettimeoutput} -5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-badjobtime
-fi
-
 if ls magpie.${submissiontype}*functionality-testall >& /dev/null ; then
     # Guarantee 60 minutes for the job that should last awhile
     ${functiontogettimeoutput} 60
     sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-testall
+fi
+
+if ls magpie.${submissiontype}*cornercase-badjobtime >& /dev/null ; then
+    # Add in -5 minutes
+    ${functiontogettimeoutput} -5
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*cornercase-badjobtime
 fi
 
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
