@@ -21,11 +21,17 @@ source test-config.sh
 # Toggle y/n for different test types
 
 # High Level, what tests to generate
+# - these control if tests are created in sub-sections, like in
+#   default, functionailty, and/or cornercase
 # - magpietests covers "core" tests, most notably 'testall' and very corner case checks
+# - standardtests: basic tests, terasort, sparkpi, etc.
+# - dependencytests: check dependencies (e.g. store in hdfs, another job can read it)
 # - specific sections can be configured below
 # - specific versions can be configured below
 
 magpietests=y
+standardtests=y
+dependencytests=y
 hadooptests=y
 pigtests=y
 mahouttests=y
@@ -36,23 +42,30 @@ stormtests=y
 kafkatests=y
 zookeepertests=y
 
-# Sections test
+# Sections to test
+# - version tests, test permutation of versions 
+# These determine if specific sections will generate tests
 defaulttests=y
 cornercasetests=y
 functionalitytests=y
+hadoopversiontests=y
+pigversiontests=y
+mahoutversiontests=y
+hbaseversiontests=y
+phoenixversiontests=y
+sparkversiontests=y
+stormversiontests=y
+kafkaversiontests=y
+zookeeperversiontests=y
 
-# Higher level configuration, add or eliminate certain types of tests
+# Add or eliminate certain types of tests
 #
-# standardtests: basic tests, terasort, sparkpi, etc.
-# dependencytests: check dependencies
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
 # rawnetworkfs_tests - anything that uses rawnetworkfs
 # zookeepershared_tests - tests in which zookeeper shares nodes w/ compute/data nodes
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
-standardtests=y
-dependencytests=y
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
@@ -250,14 +263,16 @@ if [ "${defaulttests}" == "y" ]; then
 fi
 
 if [ "${functionalitytests}" == "y" ]; then
-    GenerateFunctionalityTests
+    if [ "${standardtests}" == "y" ]; then
+	GenerateFunctionalityTests
+    fi
 fi
 
 if [ "${cornercasetests}" == "y" ]; then
     GenerateCornerCaseTests
 fi
 
-if [ "${hadooptests}" == "y" ]; then
+if [ "${hadooptests}" == "y" ] && [ "${hadoopversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateHadoopStandardTests
     fi
@@ -265,7 +280,7 @@ if [ "${hadooptests}" == "y" ]; then
 	GenerateHadoopDependencyTests
     fi
 fi
-if [ "${pigtests}" == "y" ]; then
+if [ "${pigtests}" == "y" ] && [ "${pigversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GeneratePigStandardTests
     fi
@@ -273,7 +288,7 @@ if [ "${pigtests}" == "y" ]; then
 	GeneratePigDependencyTests
     fi
 fi
-if [ "${mahouttests}" == "y" ]; then
+if [ "${mahouttests}" == "y" ] && [ "${mahoutversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateMahoutStandardTests
     fi
@@ -281,7 +296,7 @@ if [ "${mahouttests}" == "y" ]; then
 	GenerateMahoutDependencyTests
     fi
 fi
-if [ "${hbasetests}" == "y" ]; then
+if [ "${hbasetests}" == "y" ] && [ "${hbaseversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateHbaseStandardTests
     fi
@@ -289,7 +304,7 @@ if [ "${hbasetests}" == "y" ]; then
 	GenerateHbaseDependencyTests
     fi
 fi
-if [ "${phoenixtests}" == "y" ]; then
+if [ "${phoenixtests}" == "y" ] && [ "${phoenixversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GeneratePhoenixStandardTests
     fi
@@ -297,7 +312,7 @@ if [ "${phoenixtests}" == "y" ]; then
 	GeneratePhoenixDependencyTests
     fi
 fi
-if [ "${sparktests}" == "y" ]; then
+if [ "${sparktests}" == "y" ] && [ "${sparkversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateSparkStandardTests
     fi
@@ -305,7 +320,7 @@ if [ "${sparktests}" == "y" ]; then
 	GenerateSparkDependencyTests
     fi
 fi
-if [ "${stormtests}" == "y" ]; then
+if [ "${stormtests}" == "y" ] && [ "${stormversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateStormStandardTests
     fi
@@ -313,7 +328,7 @@ if [ "${stormtests}" == "y" ]; then
 	GenerateStormDependencyTests
     fi
 fi
-if [ "${kafkatests}" == "y" ]; then
+if [ "${kafkatests}" == "y" ] && [ "${kafkaversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateKafkaStandardTests
     fi
@@ -321,7 +336,7 @@ if [ "${kafkatests}" == "y" ]; then
 	GenerateKafkaDependencyTests
     fi
 fi
-if [ "${zookeepertests}" == "y" ]; then
+if [ "${zookeepertests}" == "y" ] && [ "${zookeeperversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateZookeeperStandardTests
     fi
