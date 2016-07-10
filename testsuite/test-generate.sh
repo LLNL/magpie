@@ -4,6 +4,7 @@
 
 source test-generate-cornercase.sh
 source test-generate-default.sh
+source test-generate-functionality.sh
 source test-generate-hadoop.sh
 source test-generate-hbase.sh
 source test-generate-kafka.sh
@@ -38,13 +39,13 @@ zookeepertests=y
 # Sections test
 defaulttests=y
 cornercasetests=y
+functionalitytests=y
 
 # Higher level configuration, add or eliminate certain types of tests
 #
 # defaultonly: only default tests, simple sanity checks
 # standardtests: basic tests, terasort, sparkpi, etc.
 # dependencytests: check dependencies
-# regressiontests: regression tests
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
@@ -54,7 +55,6 @@ cornercasetests=y
 defaultonly=n
 standardtests=y
 dependencytests=y
-regressiontests=y
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
@@ -249,9 +249,10 @@ if [ "${defaulttests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateDefaultStandardTests
     fi
-    if [ "${regressiontests}" == "y" ]; then
-	GenerateDefaultRegressionTests
-    fi
+fi
+
+if [ "${functionalitytests}" == "y" ]; then
+    GenerateFunctionalityTests
 fi
 
 if [ "${cornercasetests}" == "y" ]; then
@@ -477,12 +478,12 @@ if ls magpie.${submissiontype}*Dependency* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*Dependency*
 fi
 
-if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-interactive-mode
+if ls magpie.${submissiontype}*functionality-interactive-mode >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-interactive-mode
 fi
 
-if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
+if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-jobtimeout
 fi
 
 if ls magpie.${submissiontype}*cornercase-catchprojectdependency* >& /dev/null ; then
@@ -612,30 +613,30 @@ then
     functiontogettimeoutput="GetHoursMinutesJob"
 fi
 
-# Do regressions first, as they also contain strings for other timings
+# Do functionalitys first, as they also contain strings for other timings
 
-if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-interactive-mode >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-interactive-mode
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-interactive-mode
 fi
 
-if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-jobtimeout
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout
 fi
 
-if ls magpie.${submissiontype}*regression-badjobtime >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-badjobtime >& /dev/null ; then
     # Add in -5 minutes
     ${functiontogettimeoutput} -5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-badjobtime
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-badjobtime
 fi
 
-if ls magpie.${submissiontype}*regression-testall >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-testall >& /dev/null ; then
     # Guarantee 60 minutes for the job that should last awhile
     ${functiontogettimeoutput} 60
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-testall
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-testall
 fi
 
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
