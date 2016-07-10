@@ -2,6 +2,7 @@
 
 # XXX - haven't handled msub-torque-pdsh yet
 
+source test-generate-cornercase.sh
 source test-generate-default.sh
 source test-generate-hadoop.sh
 source test-generate-hbase.sh
@@ -36,6 +37,7 @@ zookeepertests=y
 
 # Sections test
 defaulttests=y
+cornercasetests=y
 
 # Higher level configuration, add or eliminate certain types of tests
 #
@@ -250,6 +252,10 @@ if [ "${defaulttests}" == "y" ]; then
     if [ "${regressiontests}" == "y" ]; then
 	GenerateDefaultRegressionTests
     fi
+fi
+
+if [ "${cornercasetests}" == "y" ]; then
+    GenerateCornerCaseTests
 fi
 
 if [ "${defaultonly}" != "y" ]; then
@@ -483,68 +489,68 @@ if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
 fi
 
-if ls magpie.${submissiontype}*regression-catchprojectdependency* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-catchprojectdependency*
-fi
-
-if ls magpie.${submissiontype}*regression-nosetjava* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetjava*
-fi
-
-if ls magpie.${submissiontype}*regression-badsetjava* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetjava*
-fi
-
-if ls magpie.${submissiontype}*regression-nosetversion* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetversion*
-fi
-
-if ls magpie.${submissiontype}*regression-nosethome* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosethome*
-fi
-
-if ls magpie.${submissiontype}*regression-badsethome* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsethome*
-fi
-
-if ls magpie.${submissiontype}*regression-nosetscript* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetscript*
-fi
-
-if ls magpie.${submissiontype}*regression-badsetscript* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetscript*
-fi
-
 if ls magpie.${submissiontype}*regression-testall* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/testall-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-testall*
 fi
 
-if ls magpie.${submissiontype}*regression-badjobtime* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badjobtime*
+if ls magpie.${submissiontype}*cornercase-catchprojectdependency* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-catchprojectdependency*
 fi
 
-if ls magpie.${submissiontype}*regression-badstartuptime* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badstartuptime*
+if ls magpie.${submissiontype}*cornercase-nosetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetjava*
 fi
 
-if ls magpie.${submissiontype}*regression-badshutdowntime* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badshutdowntime*
+if ls magpie.${submissiontype}*cornercase-badsetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsetjava*
 fi
 
-if ls magpie.${submissiontype}*regression-badnodecount-small* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-small*
+if ls magpie.${submissiontype}*cornercase-nosetversion* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetversion*
 fi
 
-if ls magpie.${submissiontype}*regression-badnodecount-big* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-big*
+if ls magpie.${submissiontype}*cornercase-nosethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosethome*
 fi
 
-if ls magpie.${submissiontype}*regression-nocoresettings* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nocoresettings*
+if ls magpie.${submissiontype}*cornercase-badsethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsethome*
 fi
 
-if ls magpie.${submissiontype}*regression-badcoresettings* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badcoresettings*
+if ls magpie.${submissiontype}*cornercase-nosetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetscript*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badsetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsetscript*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badjobtime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badjobtime*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badstartuptime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badstartuptime*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badshutdowntime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badshutdowntime*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badnodecount-small* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badnodecount-small*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badnodecount-big* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badnodecount-big*
+fi
+
+if ls magpie.${submissiontype}*cornercase-nocoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nocoresettings*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badcoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badcoresettings*
 fi
 
 # special node sizes first

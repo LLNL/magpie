@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source test-submit-cornercase.sh
 source test-submit-default.sh
 source test-submit-hadoop.sh
 source test-submit-hbase.sh
@@ -130,6 +131,8 @@ DependentJobSubmit () {
 SubmitDefaultStandardTests
 # SubmitDefaultDependencyTests
 SubmitDefaultRegressionTests
+
+SubmitCornerCaseTests
 
 SubmitHadoopStandardTests
 SubmitHadoopDependencyTests
