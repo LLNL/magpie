@@ -170,17 +170,17 @@ then
     do
 	num=`grep -e "Entering \(.*\) interactive mode" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	num=`grep -e "*** Warning - 1 minute left" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	num=`grep -e "End of 'interactive' mode" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -193,7 +193,7 @@ then
     do
 	num=`grep -e "Killing script, did not exit within time limit" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -212,7 +212,7 @@ then
 	num3=`grep -e "must be set if Hadoop is not setup" $file | wc -l`
 	if [ "${num1}" == "0" ] && [ "${num2}" == "0" ] && [ "${num3}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -226,7 +226,7 @@ then
 	num=`grep -e "JAVA_HOME must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -240,7 +240,7 @@ then
 	num=`grep -e "JAVA_HOME does not point to a directory" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -254,7 +254,7 @@ then
 	num=`grep -e "\(.*\)_VERSION must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -268,7 +268,7 @@ then
 	num=`grep -e "\(.*\)_HOME must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -282,7 +282,7 @@ then
 	num=`grep -e "\(.*\)_HOME does not point to a directory" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -296,7 +296,7 @@ then
 	num=`grep -e "\(.*\)_SCRIPT_PATH must be set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -311,7 +311,7 @@ then
 	num2=`grep -e "\(.*\)_SCRIPT_PATH=\"\(.*\)\" does not have execute permissions" $file | wc -l`
 	if [ "${num1}" == "0" ] && [ "${num2}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -325,7 +325,7 @@ then
 	num=`grep -e "timelimit must be atleast the sum of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -339,7 +339,7 @@ then
 	num=`grep -e "MAGPIE_STARTUP_TIME must be >= 5 minutes if MAGPIE_PRE_JOB_RUN is set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -353,7 +353,7 @@ then
 	num=`grep -e "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set" $file | wc -l`
 	if [ "${num}" == "0" ]
 	then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	test_output_finalize $file
@@ -368,11 +368,11 @@ then
 	if echo ${file} | grep -q "run-clustersyntheticcontrol"
 	then
 	    if [ "${num}" != "14" ]; then
-		echo "Job error in $file"
+		echo "Error in $file"
 	    fi
 	else
 	    if [ "${num}" != "2" ]; then
-		echo "Job error in $file"
+		echo "Error in $file"
 	    fi
 	fi
 	
@@ -388,7 +388,7 @@ then
     do
 	num=`grep -e "completed successfully" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hadoop_shutdown $file
@@ -403,7 +403,7 @@ then
     do
 	num=`grep -e "completed successfully" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hadoop_shutdown $file
@@ -418,7 +418,7 @@ then
     do
 	num=`grep -e "Finalize upgrade successful" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hadoop_shutdown $file
@@ -433,7 +433,7 @@ then
     do
 	num=`grep -e "HDFS version at mount" $file | grep -e "is older than" | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_no_hdfs_shutdown $file
@@ -448,7 +448,7 @@ then
     do
 	num=`grep -e "HDFS version at mount" $file | grep -e "is newer than" | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_no_hdfs_shutdown $file
@@ -463,7 +463,7 @@ then
     do
 	num=`grep -e "HDFS was last built using a larger slave node count" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_no_hdfs_shutdown $file
@@ -478,7 +478,7 @@ then
     do
 	num=`grep -e "Decommissioned ${basenodecount} nodes" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	# On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
@@ -502,7 +502,7 @@ then
 	    num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
 	fi
 	if [ ! "${num}" -gt "0" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hadoop_shutdown $file
@@ -520,7 +520,7 @@ then
 	
 	num=`grep -e "1,2,3" $file | wc -l`
 	if [ "${num}" != "2" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hadoop_shutdown $file
@@ -535,7 +535,7 @@ then
     do
 	num=`grep -e "Dumping out clusters from clusters" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hadoop_shutdown $file
@@ -550,7 +550,7 @@ then
     do
 	num=`grep -e "Summary of timings" $file | wc -l`
 	if [ "${num}" != "2" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hdfs_shutdown $file
@@ -566,7 +566,7 @@ then
     do
 	num=`grep -e "Summary of timings" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hdfs_shutdown $file
@@ -582,7 +582,7 @@ then
     do
 	num=`grep -e "Summary of timings" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hdfs_shutdown $file
@@ -598,7 +598,7 @@ then
     do
 	num=`grep -e "Time" $file | grep "sec(s)" | wc -l`
 	if [ "${num}" != "7" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_hdfs_shutdown $file
@@ -614,7 +614,7 @@ then
     do
 	num=`grep -e "Pi is roughly" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	if echo ${file} | grep -q "usingyarn"
@@ -641,7 +641,7 @@ then
     do
 	num=`grep -e "davidson: 4" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	if echo ${file} | grep -q "usingyarn"
@@ -666,7 +666,7 @@ then
     do
 	num=`grep -e "50000000 records sent" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_kafka_shutdown $file
@@ -681,7 +681,7 @@ then
     do
 	num=`grep -e "WordCount no longer active, appears to have been killed correctly" $file | wc -l`
 	if [ "${num}" != "1" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 
 	num=`grep -e "Killing Storm nimbus" $file | wc -l`
@@ -723,7 +723,7 @@ then
     do
 	num=`grep -e "imok" $file | wc -l`
 	if [ "${num}" != "${zookeepernodecount}" ]; then
-	    echo "Job error in $file"
+	    echo "Error in $file"
 	fi
 	
 	test_zookeeper_shutdown $file
