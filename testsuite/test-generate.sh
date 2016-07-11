@@ -2,7 +2,9 @@
 
 # XXX - haven't handled msub-torque-pdsh yet
 
+source test-generate-cornercase.sh
 source test-generate-default.sh
+source test-generate-functionality.sh
 source test-generate-hadoop.sh
 source test-generate-hbase.sh
 source test-generate-kafka.sh
@@ -19,9 +21,17 @@ source test-config.sh
 # Toggle y/n for different test types
 
 # High Level, what tests to generate
+# - these control if tests are created in sub-sections, like in
+#   default, functionailty, and/or cornercase
+# - magpietests covers "core" tests, most notably 'testall' and very corner case checks
+# - standardtests: basic tests, terasort, sparkpi, etc.
+# - dependencytests: check dependencies (e.g. store in hdfs, another job can read it)
+# - specific sections can be configured below
 # - specific versions can be configured below
 
-defaulttests=y
+magpietests=y
+standardtests=y
+dependencytests=y
 hadooptests=y
 pigtests=y
 mahouttests=y
@@ -32,22 +42,30 @@ stormtests=y
 kafkatests=y
 zookeepertests=y
 
-# Higher level configuration, add or eliminate certain types of tests
+# Sections to test
+# - version tests, test permutation of versions 
+# These determine if specific sections will generate tests
+defaulttests=y
+cornercasetests=y
+functionalitytests=y
+hadoopversiontests=y
+pigversiontests=y
+mahoutversiontests=y
+hbaseversiontests=y
+phoenixversiontests=y
+sparkversiontests=y
+stormversiontests=y
+kafkaversiontests=y
+zookeeperversiontests=y
+
+# Add or eliminate certain types of tests
 #
-# defaultonly: only default tests, simple sanity checks
-# standardtests: basic tests, terasort, sparkpi, etc.
-# dependencytests: check dependencies
-# regressiontests: regression tests
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
 # hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
 # rawnetworkfs_tests - anything that uses rawnetworkfs
 # zookeepershared_tests - tests in which zookeeper shares nodes w/ compute/data nodes
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR
-defaultonly=n
-standardtests=y
-dependencytests=y
-regressiontests=y
 local_drive_tests=y
 hdfsoverlustre_tests=y
 hdfsovernetworkfs_tests=y
@@ -242,80 +260,85 @@ if [ "${defaulttests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
 	GenerateDefaultStandardTests
     fi
-    if [ "${regressiontests}" == "y" ]; then
-	GenerateDefaultRegressionTests
+fi
+
+if [ "${functionalitytests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateFunctionalityTests
     fi
 fi
 
-if [ "${defaultonly}" != "y" ]; then
-    if [ "${hadooptests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateHadoopStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateHadoopDependencyTests
-	fi
+if [ "${cornercasetests}" == "y" ]; then
+    GenerateCornerCaseTests
+fi
+
+if [ "${hadooptests}" == "y" ] && [ "${hadoopversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateHadoopStandardTests
     fi
-    if [ "${pigtests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GeneratePigStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GeneratePigDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateHadoopDependencyTests
     fi
-    if [ "${mahouttests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateMahoutStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateMahoutDependencyTests
-	fi
+fi
+if [ "${pigtests}" == "y" ] && [ "${pigversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GeneratePigStandardTests
     fi
-    if [ "${hbasetests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateHbaseStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateHbaseDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GeneratePigDependencyTests
     fi
-    if [ "${phoenixtests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GeneratePhoenixStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GeneratePhoenixDependencyTests
-	fi
+fi
+if [ "${mahouttests}" == "y" ] && [ "${mahoutversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateMahoutStandardTests
     fi
-    if [ "${sparktests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateSparkStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateSparkDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateMahoutDependencyTests
     fi
-    if [ "${stormtests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateStormStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateStormDependencyTests
-	fi
+fi
+if [ "${hbasetests}" == "y" ] && [ "${hbaseversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateHbaseStandardTests
     fi
-    if [ "${kafkatests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateKafkaStandardTests
-	fi
-	if [ "${dependencytests}" == "y" ]; then
-	    GenerateKafkaDependencyTests
-	fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateHbaseDependencyTests
     fi
-    if [ "${zookeepertests}" == "y" ]; then
-	if [ "${standardtests}" == "y" ]; then
-	    GenerateZookeeperStandardTests
-	fi
+fi
+if [ "${phoenixtests}" == "y" ] && [ "${phoenixversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GeneratePhoenixStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GeneratePhoenixDependencyTests
+    fi
+fi
+if [ "${sparktests}" == "y" ] && [ "${sparkversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateSparkStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateSparkDependencyTests
+    fi
+fi
+if [ "${stormtests}" == "y" ] && [ "${stormversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateStormStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateStormDependencyTests
+    fi
+fi
+if [ "${kafkatests}" == "y" ] && [ "${kafkaversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateKafkaStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+	GenerateKafkaDependencyTests
+    fi
+fi
+if [ "${zookeepertests}" == "y" ] && [ "${zookeeperversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+	GenerateZookeeperStandardTests
     fi
 fi
 
@@ -466,80 +489,84 @@ if ls magpie.${submissiontype}*Dependency* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*Dependency*
 fi
 
+if ls magpie.${submissiontype}*functionality-interactive-mode >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-interactive-mode
+fi
+
+if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-jobtimeout
+fi
+
+if ls magpie.${submissiontype}*cornercase-catchprojectdependency* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-catchprojectdependency*
+fi
+
+if ls magpie.${submissiontype}*cornercase-nosetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetjava*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badsetjava* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsetjava*
+fi
+
+if ls magpie.${submissiontype}*cornercase-nosetversion* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetversion*
+fi
+
+if ls magpie.${submissiontype}*cornercase-nosethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosethome*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badsethome* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsethome*
+fi
+
+if ls magpie.${submissiontype}*cornercase-nosetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetscript*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badsetscript* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsetscript*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badjobtime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badjobtime*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badstartuptime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badstartuptime*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badshutdowntime* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badshutdowntime*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badnodecount-small* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badnodecount-small*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badnodecount-big* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badnodecount-big*
+fi
+
+if ls magpie.${submissiontype}*cornercase-nocoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nocoresettings*
+fi
+
+if ls magpie.${submissiontype}*cornercase-badcoresettings* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badcoresettings*
+fi
+
+if ls magpie.${submissiontype}*cornercase-requirehdfs* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/requirehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-requirehdfs*
+fi
+
+if ls magpie.${submissiontype}*cornercase-requireyarn* >& /dev/null ; then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/requireyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-requireyarn*
+fi
+
 if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
     sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
-fi
-
-if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-interactive-mode
-fi
-
-if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-jobtimeout
-fi
-
-if ls magpie.${submissiontype}*regression-catchprojectdependency* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-catchprojectdependency*
-fi
-
-if ls magpie.${submissiontype}*regression-nosetjava* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetjava*
-fi
-
-if ls magpie.${submissiontype}*regression-badsetjava* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetjava*
-fi
-
-if ls magpie.${submissiontype}*regression-nosetversion* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetversion*
-fi
-
-if ls magpie.${submissiontype}*regression-nosethome* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosethome*
-fi
-
-if ls magpie.${submissiontype}*regression-badsethome* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsethome*
-fi
-
-if ls magpie.${submissiontype}*regression-nosetscript* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nosetscript*
-fi
-
-if ls magpie.${submissiontype}*regression-badsetscript* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badsetscript*
-fi
-
-if ls magpie.${submissiontype}*regression-testall* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/testall-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-testall*
-fi
-
-if ls magpie.${submissiontype}*regression-badjobtime* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badjobtime*
-fi
-
-if ls magpie.${submissiontype}*regression-badstartuptime* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badstartuptime*
-fi
-
-if ls magpie.${submissiontype}*regression-badshutdowntime* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badshutdowntime*
-fi
-
-if ls magpie.${submissiontype}*regression-badnodecount-small* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-small*
-fi
-
-if ls magpie.${submissiontype}*regression-badnodecount-big* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badnodecount-big*
-fi
-
-if ls magpie.${submissiontype}*regression-nocoresettings* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-nocoresettings*
-fi
-
-if ls magpie.${submissiontype}*regression-badcoresettings* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*regression-badcoresettings*
 fi
 
 # special node sizes first
@@ -588,6 +615,7 @@ if ls magpie.${submissiontype}* >& /dev/null ; then
 
     sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
     sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
+
 fi
 
 if [ "${submissiontype}" == "sbatch-srun" ]
@@ -604,30 +632,30 @@ then
     functiontogettimeoutput="GetHoursMinutesJob"
 fi
 
-# Do regressions first, as they also contain strings for other timings
+# Do functionalitys first, as they also contain strings for other timings
 
-if ls magpie.${submissiontype}*regression-interactive-mode >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-interactive-mode >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-interactive-mode
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-interactive-mode
 fi
 
-if ls magpie.${submissiontype}*regression-jobtimeout >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
     # Guarantee atleast 5 mins for the job that should end quickly
     ${functiontogettimeoutput} 5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-jobtimeout
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout
 fi
 
-if ls magpie.${submissiontype}*regression-badjobtime >& /dev/null ; then
-    # Add in -5 minutes
-    ${functiontogettimeoutput} -5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-badjobtime
-fi
-
-if ls magpie.${submissiontype}*regression-testall >& /dev/null ; then
+if ls magpie.${submissiontype}*functionality-testall >& /dev/null ; then
     # Guarantee 60 minutes for the job that should last awhile
     ${functiontogettimeoutput} 60
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*regression-testall
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-testall
+fi
+
+if ls magpie.${submissiontype}*cornercase-badjobtime >& /dev/null ; then
+    # Add in -5 minutes
+    ${functiontogettimeoutput} -5
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*cornercase-badjobtime
 fi
 
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
