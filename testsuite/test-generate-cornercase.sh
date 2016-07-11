@@ -66,6 +66,10 @@ GenerateCornerCaseTests_CatchProjectDependencies() {
 
 	sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-storm-cornercase-catchprojectdependency-zookeeper
     fi
+
+    if ls magpie.${submissiontype}*cornercase-catchprojectdependency* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/catchprojectdependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-catchprojectdependency*
+    fi
 }
 
 GenerateCornerCaseTests_NoSetJava() {
@@ -99,7 +103,11 @@ GenerateCornerCaseTests_NoSetJava() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nosetjava
     fi
 
-    sed -i -e 's/export JAVA_HOME/# export JAVA_HOME/' magpie.${submissiontype}*cornercase-nosetjava*
+
+    if ls magpie.${submissiontype}*cornercase-nosetjava* >& /dev/null ; then
+	sed -i -e 's/export JAVA_HOME/# export JAVA_HOME/' magpie.${submissiontype}*cornercase-nosetjava*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetjava*
+    fi
 }
 
 GenerateCornerCaseTests_BadSetJava() {
@@ -133,7 +141,10 @@ GenerateCornerCaseTests_BadSetJava() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badsetjava
     fi
 
-    sed -i -e 's/export JAVA_HOME="\(.*\)\"/export JAVA_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}*cornercase-badsetjava*
+    if ls magpie.${submissiontype}*cornercase-badsetjava* >& /dev/null ; then
+	sed -i -e 's/export JAVA_HOME="\(.*\)\"/export JAVA_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}*cornercase-badsetjava*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsetjava*
+    fi
 }
 	    
 GenerateCornerCaseTests_NoSetVersion() {
@@ -175,6 +186,10 @@ GenerateCornerCaseTests_NoSetVersion() {
     if [ "${stormtests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nosetversion
 	sed -i -e 's/export STORM_VERSION/# export STORM_VERSION/' magpie.${submissiontype}-storm-cornercase-nosetversion
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-nosetversion* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetversion-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetversion*
     fi
 }
 
@@ -218,6 +233,10 @@ GenerateCornerCaseTests_NoSetHome() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nosethome
 	sed -i -e 's/export STORM_HOME/# export STORM_HOME/' magpie.${submissiontype}-storm-cornercase-nosethome
     fi
+
+    if ls magpie.${submissiontype}*cornercase-nosethome* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosethome*
+    fi
 }
 
 GenerateCornerCaseTests_BadSetHome() {
@@ -259,6 +278,10 @@ GenerateCornerCaseTests_BadSetHome() {
     if [ "${stormtests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badsethome
 	sed -i -e 's/export STORM_HOME="\(.*\)"/export STORM_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-storm-cornercase-badsethome
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-badsethome* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsethome-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsethome*
     fi
 }
 
@@ -306,6 +329,10 @@ GenerateCornerCaseTests_NoSetScript() {
     if [ "${stormtests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nosetscript
 	sed -i -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' magpie.${submissiontype}-storm-cornercase-nosetscript
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-nosetscript* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nosetscript*
     fi
 }
 
@@ -365,6 +392,10 @@ GenerateCornerCaseTests_BadSetScript() {
 	sed -i -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' magpie.${submissiontype}-storm-cornercase-badsetscript
 	sed -i -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-storm-cornercase-badsetscript
     fi
+
+    if ls magpie.${submissiontype}*cornercase-badsetscript* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badsetscript*
+    fi
 }
 
 GenerateCornerCaseTests_BadJobTime() {
@@ -396,6 +427,10 @@ GenerateCornerCaseTests_BadJobTime() {
 
     if [ "${stormtests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badjobtime
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-badjobtime* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badjobtime*
     fi
 }
 
@@ -430,8 +465,11 @@ GenerateCornerCaseTests_BadStartupTime() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badstartuptime
     fi
 
-    sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME=1/' magpie.${submissiontype}*cornercase-badstartuptime
-    sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*cornercase-badstartuptime
+    if ls magpie.${submissiontype}*cornercase-badstartuptime* >& /dev/null ; then
+	sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME=1/' magpie.${submissiontype}*cornercase-badstartuptime*
+	sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*cornercase-badstartuptime*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badstartuptime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badstartuptime*
+    fi
 }
 
 GenerateCornerCaseTests_BadShutdownTime() {
@@ -465,7 +503,10 @@ GenerateCornerCaseTests_BadShutdownTime() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badshutdowntime
     fi
 
-    sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME=1/' magpie.${submissiontype}*cornercase-badshutdowntime
+    if ls magpie.${submissiontype}*cornercase-badshutdowntime* >& /dev/null ; then
+	sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME=1/' magpie.${submissiontype}*cornercase-badshutdowntime*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badshutdowntime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badshutdowntime*
+    fi
 }
 
 GenerateCornerCaseTests_BadNodeCount() {
@@ -502,9 +543,16 @@ GenerateCornerCaseTests_BadNodeCount() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badnodecount-big
     fi
 
-    sed -i -e "s/<my node count>/1/" magpie.${submissiontype}*cornercase-badnodecount-small
-    badnodecountpluszookeeper=`expr ${zookeepernodecount} + 1`
-    sed -i -e "s/<my node count>/${badnodecountpluszookeeper}/" magpie.${submissiontype}*cornercase-badnodecount-big
+    if ls magpie.${submissiontype}*cornercase-badnodecount-small* >& /dev/null ; then
+	sed -i -e "s/<my node count>/1/" magpie.${submissiontype}*cornercase-badnodecount-small*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badnodecount-small*
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-badnodecount-big* >& /dev/null ; then
+	local badnodecountpluszookeeper=`expr ${zookeepernodecount} + 1`
+	sed -i -e "s/<my node count>/${badnodecountpluszookeeper}/" magpie.${submissiontype}*cornercase-badnodecount-big*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badnodecount-big*
+    fi
 }
 
 GenerateCornerCaseTests_NoCoreSettings() {
@@ -565,6 +613,10 @@ GenerateCornerCaseTests_NoCoreSettings() {
     if [ "${zookeepertests}" == "y" ]; then
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
 	sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-nocoresettings* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/nocoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-nocoresettings*
     fi
 }
 
@@ -627,6 +679,10 @@ GenerateCornerCaseTests_BadCoreSettings() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
 	sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
     fi
+
+    if ls magpie.${submissiontype}*cornercase-badcoresettings* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcoresettings-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badcoresettings*
+    fi
 }
 
 GenerateCornerCaseTests_RequireHDFS() {
@@ -678,6 +734,10 @@ GenerateCornerCaseTests_RequireHDFS() {
 	    magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
 	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
     fi
+
+    if ls magpie.${submissiontype}*cornercase-requirehdfs* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/requirehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-requirehdfs*
+    fi
 }
 
 GenerateCornerCaseTests_RequireYarn() {
@@ -712,6 +772,10 @@ GenerateCornerCaseTests_RequireYarn() {
 	sed -i \
 	    -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="HDFS2"/' \
 	    magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
+    fi
+
+    if ls magpie.${submissiontype}*cornercase-requireyarn* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/requireyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-requireyarn*
     fi
 }
 
