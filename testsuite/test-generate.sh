@@ -402,154 +402,34 @@ do
     done
 done    
 
+# No if checks, may process files created outside of these files
+# e.g. like functionality tests of default tests
+GenerateHadoopPostProcessing
+GeneratePigPostProcessing
+GenerateMahoutPostProcessing
+GenerateHbasePostProcessing
+GeneratePhoenixPostProcessing
+GenerateSparkPostProcessing
+GenerateStormPostProcessing
+GenerateKafkaPostProcessing
+GenerateZookeeperPostProcessing
+
 # Seds for all tests
 
 echo "Finishing up test creation"
 
 # Names important, will be used in validation
 
-if ls magpie.${submissiontype}*run-hadoopterasort* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hadoopterasort*
-fi
-if ls magpie.${submissiontype}-hadoop*run-scriptteragen* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptteragen-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptteragen*
-fi
-if ls magpie.${submissiontype}-hadoop*run-scriptterasort* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptterasort*
-fi
-if ls magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopupgradehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs*
-fi
-if ls magpie.${submissiontype}*decommissionhdfsnodes* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/decommissionhdfsnodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*decommissionhdfsnodes*
-fi
-
-if ls magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-fewer-nodes-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure*
-fi
-if ls magpie.${submissiontype}*hdfs-older-version*expected-failure* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-older-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-older-version*expected-failure*
-fi
-if ls magpie.${submissiontype}*hdfs-newer-version*expected-failure* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-newer-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-newer-version*expected-failure*
-fi
-
-if ls magpie.${submissiontype}*run-testpig* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-testpig*
-fi
-if ls magpie.${submissiontype}*run-pigscript* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pigscript*
-fi
-
-if ls magpie.${submissiontype}*run-clustersyntheticcontrol* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-clustersyntheticcontrol-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-clustersyntheticcontrol*
-fi
-
-if ls magpie.${submissiontype}*run-hbaseperformanceeval* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hbaseperformanceeval*
-fi
-if ls magpie.${submissiontype}*run-scripthbasewritedata* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasewritedata*
-fi
-if ls magpie.${submissiontype}*run-scripthbasereaddata* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasereaddata*
-fi
-
-if ls magpie.${submissiontype}*run-phoenixperformanceeval* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-phoenixperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-phoenixperformanceeval*
-fi
-if ls magpie.${submissiontype}*run-stormwordcount* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-stormwordcount*
-fi
-
-if ls magpie.${submissiontype}*run-sparkpi* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkpi-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkpi*
-fi
-if ls magpie.${submissiontype}*run-sparkwordcount* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkwordcount*
-fi
-if ls magpie.${submissiontype}*run-pythonsparkwordcount* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pythonsparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pythonsparkwordcount*
-fi
-if ls magpie.${submissiontype}*spark-with-yarn* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn*
-fi
-
-if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-more-nodes*
-fi
-
-if ls magpie.${submissiontype}*spark-with-rawnetworkfs* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-rawnetworkfs*
-fi
-
-if ls magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs*
-fi
-
-if ls magpie.${submissiontype}*run-kafkaperformance* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-kafkaperformance-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-kafkaperformance*
-fi
-
-if ls magpie.${submissiontype}*run-zookeeperruok* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-zookeeperruok-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-zookeeperruok*
-fi
-
-if ls magpie.${submissiontype}*zookeeper-shared* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*zookeeper-shared*
-fi
-
 if ls magpie.${submissiontype}*Dependency* >& /dev/null ; then
     sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*Dependency*
-fi
-
-if ls magpie.${submissiontype}*functionality-interactive-mode >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-interactive-mode
-fi
-
-if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-jobtimeout
 fi
 
 if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
     sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
 fi
 
-# special node sizes first
-
-basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
-basenodesmorenodescount=`expr ${basenodecount} \* 2 + 1`
-basenodeszookeepernodescount=`expr ${basenodecount} + ${zookeepernodecount} + 1`
-basenodescount=`expr ${basenodecount} + 1`
-
-if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
-fi
-if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodesmorenodescount}/" magpie.${submissiontype}*hdfs-more-nodes*
-fi
-if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
-fi
-if ls magpie.${submissiontype}*hdfs-fewer-nodes* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*hdfs-fewer-nodes*
-fi
-if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs* 
-fi
-if ls magpie.${submissiontype}-storm* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
-fi
-
 if ls magpie.${submissiontype}* >& /dev/null ; then
-    if ls magpie.${submissiontype}* | grep -v Dependency >& /dev/null ; then
-	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
-	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
-    fi
-
     sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
-
-    sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*
 
     sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
 
@@ -562,23 +442,6 @@ if ls magpie.${submissiontype}* >& /dev/null ; then
     sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
     sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
 
-fi
-
-# Do functionalitys first, as they also contain strings for other timings
-
-if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-    # Guarantee 60 minutes for the job that should last awhile
-    ${functiontogettimeoutput} 60
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hbase-with-hdfs*
-fi
-
-if ls magpie.${submissiontype}-hadoop-and-mahout* >& /dev/null ; then
-    # Guarantee 60 minutes for the job that should last awhile
-    ${functiontogettimeoutput} 60
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hadoop-and-mahout*
-fi
-
-if ls magpie.${submissiontype}* >& /dev/null ; then
     # Guarantee atleast 30 mins for all remaining jobs
     ${functiontogettimeoutput} 30
     sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*
@@ -624,5 +487,3 @@ cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 make ${submissiontype} &> /dev/null
 
 cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-
-

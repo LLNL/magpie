@@ -109,3 +109,12 @@ GeneratePigDependencyTests() {
 	done
     done
 }
+
+GeneratePigPostProcessing () {
+    if ls magpie.${submissiontype}*run-testpig* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-testpig*
+    fi
+    if ls magpie.${submissiontype}*run-pigscript* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pigscript*
+    fi
+}

@@ -175,3 +175,10 @@ GeneratePhoenixDependencyTests() {
 	done
     done
 }
+
+GeneratePhoenixPostProcessing () {
+    if ls magpie.${submissiontype}*run-phoenixperformanceeval* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-phoenixperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-phoenixperformanceeval*
+    fi
+}
+

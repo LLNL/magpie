@@ -262,6 +262,7 @@ GenerateFunctionalityTests_InteractiveMode() {
         # Guarantee atleast 5 mins for the job that should end quickly
 	${functiontogettimeoutput} 5
 	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-interactive-mode*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-interactive-mode*
     fi
 }
 
@@ -324,6 +325,7 @@ GenerateFunctionalityTests_JobTimeout() {
         # Guarantee atleast 5 mins for the job that should end quickly
 	${functiontogettimeoutput} 5
 	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout*
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-jobtimeout*
     fi
 }
 

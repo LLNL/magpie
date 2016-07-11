@@ -406,3 +406,52 @@ GenerateHadoopDependencyTests() {
 
     GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "10A"
 }
+
+GenerateHadoopPostProcessing() {
+    if ls magpie.${submissiontype}*run-hadoopterasort* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hadoopterasort*
+    fi
+    if ls magpie.${submissiontype}-hadoop*run-scriptteragen* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptteragen-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptteragen*
+    fi
+    if ls magpie.${submissiontype}-hadoop*run-scriptterasort* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptterasort*
+    fi
+    if ls magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopupgradehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs*
+    fi
+    if ls magpie.${submissiontype}*decommissionhdfsnodes* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/decommissionhdfsnodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*decommissionhdfsnodes*
+    fi
+    if ls magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-fewer-nodes-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure*
+    fi
+    if ls magpie.${submissiontype}*hdfs-older-version*expected-failure* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-older-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-older-version*expected-failure*
+    fi
+    if ls magpie.${submissiontype}*hdfs-newer-version*expected-failure* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-newer-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-newer-version*expected-failure*
+    fi
+    if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-more-nodes*
+    fi
+
+    if ls magpie.${submissiontype}* | grep -v Dependency >& /dev/null ; then
+	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
+    fi
+
+    if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
+	files=`ls magpie.${submissiontype}*hdfs-more-nodes* | grep -v "hbase-with-hdfs"`
+	if [ "${files}X" != "X" ]
+	then 
+	    sed -i -e "s/<my node count>/${basenodesmorenodescount}/" ${files}
+	fi
+    fi
+    if ls magpie.${submissiontype}*hdfs-fewer-nodes* >& /dev/null ; then
+	files=`ls magpie.${submissiontype}*hdfs-fewer-nodes* | grep -v "hbase-with-hdfs"`
+	if [ "${files}X" != "X" ]
+	then 
+	    sed -i -e "s/<my node count>/${basenodescount}/" ${files}
+	fi
+    fi
+}

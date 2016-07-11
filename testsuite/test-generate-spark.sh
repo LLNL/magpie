@@ -766,3 +766,24 @@ GenerateSparkDependencyTests() {
 	done
     done
 }
+
+GenerateSparkPostProcessing () {
+    if ls magpie.${submissiontype}*run-sparkpi* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkpi-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkpi*
+    fi
+    if ls magpie.${submissiontype}*run-sparkwordcount* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkwordcount*
+    fi
+    if ls magpie.${submissiontype}*run-pythonsparkwordcount* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pythonsparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pythonsparkwordcount*
+    fi
+    if ls magpie.${submissiontype}*spark-with-yarn* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn*
+    fi
+    if ls magpie.${submissiontype}*spark-with-rawnetworkfs* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-rawnetworkfs*
+    fi
+    if ls magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs*
+    fi
+}

@@ -96,3 +96,14 @@ GenerateStormDependencyTests() {
 	done
     done
 }
+
+GenerateStormPostProcessing () {
+    if ls magpie.${submissiontype}*run-stormwordcount* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-stormwordcount*
+    fi
+
+    if ls magpie.${submissiontype}-storm* >& /dev/null ; then
+	sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
+    fi
+}
+

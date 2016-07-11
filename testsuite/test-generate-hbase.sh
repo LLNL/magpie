@@ -204,3 +204,30 @@ GenerateHbaseDependencyTests() {
 	done
     done
 }
+
+GenerateHbasePostProcessing () {
+    if ls magpie.${submissiontype}*run-hbaseperformanceeval* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hbaseperformanceeval*
+    fi
+    if ls magpie.${submissiontype}*run-scripthbasewritedata* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasewritedata*
+    fi
+    if ls magpie.${submissiontype}*run-scripthbasereaddata* >& /dev/null ; then
+	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasereaddata*
+    fi
+    if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
+        # Guarantee 60 minutes for the job that should last awhile
+	${functiontogettimeoutput} 60
+	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hbase-with-hdfs*
+    fi
+    # special node sizes first
+    if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes* >& /dev/null ; then
+	sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
+    fi
+    if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes* >& /dev/null ; then
+	sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
+    fi
+    if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
+	sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs* 
+    fi
+}
