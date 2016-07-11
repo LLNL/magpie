@@ -36,14 +36,6 @@ export ZEPPELIN_NOTEBOOK_DIR="ZEPPELINNOTEBOOK"  		# Where notebook saved
 # export ZEPPELIN_NICENESS       		# The scheduling priority for daemons. Defaults to 0.
 
 
-#### Hadoop configuration #####
-export HADOOP_HOME="ZEPPELIN_HADOOP_HOME"
-export HADOOP_CONF_DIR="ZEPPELIN_HADOOP_CONF" 
-
-#### HBase configureation ####
-export HBASE_HOME="ZEPPELIN_HBASE_HOME"
-export HBASE_CONF_DIR="ZEPPELIN_HBASE_CONF"
-
 #### Spark interpreter configuration ####
 
 ## Use provided spark installation ##
