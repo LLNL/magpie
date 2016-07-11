@@ -431,6 +431,10 @@ GenerateCornerCaseTests_BadJobTime() {
 
     if ls magpie.${submissiontype}*cornercase-badjobtime* >& /dev/null ; then
 	sed -i -e "s/FILENAMESEARCHREPLACEKEY/badjobtime-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*cornercase-badjobtime*
+
+        # Add in -5 minutes
+	${functiontogettimeoutput} -5
+	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*cornercase-badjobtime*
     fi
 }
 

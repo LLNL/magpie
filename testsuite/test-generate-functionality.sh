@@ -189,7 +189,13 @@ GenerateFunctionalityTests_TestAll() {
 	cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-functionality-testall
     fi
 
-    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="testall"/' magpie.${submissiontype}*functionality-testall
+    if ls magpie.${submissiontype}*functionality-testall* >& /dev/null ; then
+	sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="testall"/' magpie.${submissiontype}*functionality-testall*
+
+        # Guarantee 60 minutes for the job that should last awhile
+	${functiontogettimeoutput} 60
+	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-testall*
+    fi
 }
 
 GenerateFunctionalityTests_InteractiveMode() {
@@ -251,6 +257,12 @@ GenerateFunctionalityTests_InteractiveMode() {
 	    -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="interactive"/' \
 	    magpie.${submissiontype}-storm-functionality-interactive-mode
     fi
+
+    if ls magpie.${submissiontype}*functionality-interactive-mode* >& /dev/null ; then
+        # Guarantee atleast 5 mins for the job that should end quickly
+	${functiontogettimeoutput} 5
+	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-interactive-mode*
+    fi
 }
 
 GenerateFunctionalityTests_JobTimeout() {
@@ -306,6 +318,12 @@ GenerateFunctionalityTests_JobTimeout() {
 	    -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
  	    -e 's/# export STORM_SCRIPT_ARGS="\(.*\)"/export STORM_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
 	    magpie.${submissiontype}-storm-functionality-jobtimeout
+    fi
+
+    if ls magpie.${submissiontype}*functionality-jobtimeout* >& /dev/null ; then
+        # Guarantee atleast 5 mins for the job that should end quickly
+	${functiontogettimeoutput} 5
+	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout*
     fi
 }
 

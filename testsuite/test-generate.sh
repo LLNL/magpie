@@ -248,6 +248,20 @@ sed -i -e "s/LSF_MPIRUN_DEFAULT_JOB_FILE=\(.*\)/LSF_MPIRUN_DEFAULT_JOB_FILE=${de
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
 
+if [ "${submissiontype}" == "sbatch-srun" ]
+then
+    timestringtoreplace="<my time in minutes>"
+    functiontogettimeoutput="GetMinutesJob"
+elif [ "${submissiontype}" == "msub-slurm-srun" ]
+then
+    timestringtoreplace="<my time in seconds or HH:MM:SS>"
+    functiontogettimeoutput="GetSecondsJob"
+elif [ "${submissiontype}" == "lsf-mpirun" ]
+then
+    timestringtoreplace="<my time in hours:minutes>"
+    functiontogettimeoutput="GetHoursMinutesJob"
+fi
+
 cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 
 echo "Making launching scripts"
@@ -550,45 +564,7 @@ if ls magpie.${submissiontype}* >& /dev/null ; then
 
 fi
 
-if [ "${submissiontype}" == "sbatch-srun" ]
-then
-    timestringtoreplace="<my time in minutes>"
-    functiontogettimeoutput="GetMinutesJob"
-elif [ "${submissiontype}" == "msub-slurm-srun" ]
-then
-    timestringtoreplace="<my time in seconds or HH:MM:SS>"
-    functiontogettimeoutput="GetSecondsJob"
-elif [ "${submissiontype}" == "lsf-mpirun" ]
-then
-    timestringtoreplace="<my time in hours:minutes>"
-    functiontogettimeoutput="GetHoursMinutesJob"
-fi
-
 # Do functionalitys first, as they also contain strings for other timings
-
-if ls magpie.${submissiontype}*functionality-interactive-mode >& /dev/null ; then
-    # Guarantee atleast 5 mins for the job that should end quickly
-    ${functiontogettimeoutput} 5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-interactive-mode
-fi
-
-if ls magpie.${submissiontype}*functionality-jobtimeout >& /dev/null ; then
-    # Guarantee atleast 5 mins for the job that should end quickly
-    ${functiontogettimeoutput} 5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout
-fi
-
-if ls magpie.${submissiontype}*functionality-testall >& /dev/null ; then
-    # Guarantee 60 minutes for the job that should last awhile
-    ${functiontogettimeoutput} 60
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-testall
-fi
-
-if ls magpie.${submissiontype}*cornercase-badjobtime >& /dev/null ; then
-    # Add in -5 minutes
-    ${functiontogettimeoutput} -5
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*cornercase-badjobtime
-fi
 
 if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
     # Guarantee 60 minutes for the job that should last awhile
