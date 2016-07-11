@@ -41,3 +41,7 @@ Generally speaking, to run it:
 
    - After all jobs are complete, run test-validate.sh to see if tests were successful.
 
+Assumptions:
+
+Many tests assume that your Magpie repo is in a networked location that all nodes
+have access to, for example to read test scripts & testfiles.
