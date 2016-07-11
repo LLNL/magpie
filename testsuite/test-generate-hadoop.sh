@@ -27,7 +27,7 @@ GenerateHadoopStandardTests_StandardTerasort() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-localstore-multiple-paths-run-hadoopterasort-no-local-dir
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-localstore-single-path-run-hadoopterasort-no-local-dir
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsovernetworkfs-localstore-multiple-paths-run-hadoopterasort-no-local-dir
-	
+        
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}*
     
     sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfs"/' magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk*
@@ -57,14 +57,14 @@ GenerateHadoopStandardTests() {
 
     for testfunction in GenerateHadoopStandardTests_StandardTerasort
     do
-	for testgroup in ${hadoop_test_groups}
-	do
-	    local javaversion="${testgroup}_javaversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${hadoop_test_groups}
+        do
+            local javaversion="${testgroup}_javaversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!javaversion}
+            done
+        done
     done
 }
 
@@ -76,15 +76,15 @@ GenerateHadoopDependencyTests_Dependency1() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
 
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*
-	
+        
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop1A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop1A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
 
     sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop1A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop1A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*`
 }
@@ -106,19 +106,19 @@ GenerateHadoopDependencyTests_Dependency2() {
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*
     
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop2A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop2A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*hdfsoverlustre*
     
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop2A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop2A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*hdfsovernetworkfs*
     
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
-	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*decommissionhdfsnodes*
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+        -e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*decommissionhdfsnodes*
     
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*`
 }
@@ -142,29 +142,29 @@ GenerateHadoopDependencyTests_Dependency3() {
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop3A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop3A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsoverlustre*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop3A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop3A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsovernetworkfs*
     
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptteragen*
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+        -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptteragen*
 
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptterasort*
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+        -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptterasort*
 
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
-	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*decommissionhdfsnodes*
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+        -e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*decommissionhdfsnodes*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*`
 }
@@ -186,30 +186,30 @@ GenerateHadoopDependencyTests_Dependency4() {
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop4A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop4A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsoverlustre*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop4A\/'"${hadoopversion}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop4A\/'"${hadoopversion}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsovernetworkfs*
     
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptteragen*
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+        -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopteragen.sh"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptteragen*
 
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-	-e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptterasort*
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
+        -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hadoopterasort.sh"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptterasort*
 
     sed -i \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
-	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
-	magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*decommissionhdfsnodes*
-	
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+        -e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*decommissionhdfsnodes*
+        
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*`
 }
 
@@ -223,40 +223,40 @@ GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionnew}"'"/' \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionnew}"'"/' \
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
     JavaCommonSubstitution ${javaversionnew} magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionold}"'"/' \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionold}"'"/' \
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
 
     JavaCommonSubstitution ${javaversionold} magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionnew}"'"/' \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionnew}"'"/' \
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
 
     JavaCommonSubstitution ${javaversionnew} magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionold}"'"/' \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
-	magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionold}"'"/' \
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop'"${dependencynumber}"'\/"/' \
+        magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     JavaCommonSubstitution ${javaversionold} magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 }
@@ -273,14 +273,14 @@ GenerateHadoopDependencyTests() {
 
     for testfunction in GenerateHadoopDependencyTests_Dependency1
     do
-	for testgroup in ${hadoop_test_groups}
-	do
-	    local javaversion="${testgroup}_javaversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${hadoop_test_groups}
+        do
+            local javaversion="${testgroup}_javaversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!javaversion}
+            done
+        done
     done
 
 # Dependency 2 test, increase & decrease size
@@ -289,14 +289,14 @@ GenerateHadoopDependencyTests() {
 
     for testfunction in GenerateHadoopDependencyTests_Dependency2 GenerateHadoopDependencyTests_Dependency3 GenerateHadoopDependencyTests_Dependency4
     do
-	for testgroup in ${hadoop_test_groups_decommission}
-	do
-	    local javaversion="${testgroup}_javaversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${hadoop_test_groups_decommission}
+        do
+            local javaversion="${testgroup}_javaversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!javaversion}
+            done
+        done
     done
 
 # Dependency 5 tests, upgrade hdfs, 2.4.0 -> 2.5.0 -> 2.6.0 -> 2.7.0, HDFS over Lustre / NetworkFS
@@ -324,67 +324,67 @@ GenerateHadoopDependencyTests() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A-hdfsovernetworkfs-run-hadoopterasort
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop5A\/"/' \
-	magpie.${submissiontype}-hadoop*DependencyHadoop5A*hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hadoop5A\/"/' \
+        magpie.${submissiontype}-hadoop*DependencyHadoop5A*hdfsoverlustre*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop5A\/"/' \
-	magpie.${submissiontype}-hadoop*DependencyHadoop5A*hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hadoop5A\/"/' \
+        magpie.${submissiontype}-hadoop*DependencyHadoop5A*hdfsovernetworkfs*
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A*run-hadoopterasort
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.4.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A*run-hadoopterasort
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.5.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A*hdfs-older-version-expected-failure
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.5.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A*hdfs-older-version-expected-failure
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.5.0"/' \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A*run-hadoopupgradehdfs
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.5.0"/' \
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A*run-hadoopupgradehdfs
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.5.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A*run-hadoopterasort
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.5.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.5.0-DependencyHadoop5A*run-hadoopterasort
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A*hdfs-older-version-expected-failure
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A*hdfs-older-version-expected-failure
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A*run-hadoopupgradehdfs
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A*run-hadoopupgradehdfs
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A*run-hadoopterasort
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.6.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.6.0-DependencyHadoop5A*run-hadoopterasort
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*hdfs-older-version-expected-failure
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*hdfs-older-version-expected-failure
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*run-hadoopupgradehdfs
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*run-hadoopupgradehdfs
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
-	-e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
-	magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*run-hadoopterasort
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.7.0"/' \
+        -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
+        magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*run-hadoopterasort
 
 # Dependency 6 test, detect newer hdfs version 2.3.0 from 2.2.0, HDFS over Lustre / NetworkFS
 
@@ -409,49 +409,49 @@ GenerateHadoopDependencyTests() {
 
 GenerateHadoopPostProcessing() {
     if ls magpie.${submissiontype}*run-hadoopterasort* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hadoopterasort*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hadoopterasort*
     fi
     if ls magpie.${submissiontype}-hadoop*run-scriptteragen* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptteragen-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptteragen*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptteragen-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptteragen*
     fi
     if ls magpie.${submissiontype}-hadoop*run-scriptterasort* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptterasort*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scriptterasort-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-scriptterasort*
     fi
     if ls magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopupgradehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopupgradehdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs*
     fi
     if ls magpie.${submissiontype}*decommissionhdfsnodes* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/decommissionhdfsnodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*decommissionhdfsnodes*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/decommissionhdfsnodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*decommissionhdfsnodes*
     fi
     if ls magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-fewer-nodes-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-fewer-nodes-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-fewer-nodes*expected-failure*
     fi
     if ls magpie.${submissiontype}*hdfs-older-version*expected-failure* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-older-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-older-version*expected-failure*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-older-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-older-version*expected-failure*
     fi
     if ls magpie.${submissiontype}*hdfs-newer-version*expected-failure* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-newer-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-newer-version*expected-failure*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-newer-version-expected-failure-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-newer-version*expected-failure*
     fi
     if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-more-nodes*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*hdfs-more-nodes*
     fi
 
     if ls magpie.${submissiontype}* | grep -v Dependency >& /dev/null ; then
-	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
+        ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/'
     fi
 
     if ls magpie.${submissiontype}*hdfs-more-nodes* >& /dev/null ; then
-	files=`ls magpie.${submissiontype}*hdfs-more-nodes* | grep -v "hbase-with-hdfs"`
-	if [ "${files}X" != "X" ]
-	then 
-	    sed -i -e "s/<my node count>/${basenodesmorenodescount}/" ${files}
-	fi
+        files=`ls magpie.${submissiontype}*hdfs-more-nodes* | grep -v "hbase-with-hdfs"`
+        if [ "${files}X" != "X" ]
+        then 
+            sed -i -e "s/<my node count>/${basenodesmorenodescount}/" ${files}
+        fi
     fi
     if ls magpie.${submissiontype}*hdfs-fewer-nodes* >& /dev/null ; then
-	files=`ls magpie.${submissiontype}*hdfs-fewer-nodes* | grep -v "hbase-with-hdfs"`
-	if [ "${files}X" != "X" ]
-	then 
-	    sed -i -e "s/<my node count>/${basenodescount}/" ${files}
-	fi
+        files=`ls magpie.${submissiontype}*hdfs-fewer-nodes* | grep -v "hbase-with-hdfs"`
+        if [ "${files}X" != "X" ]
+        then 
+            sed -i -e "s/<my node count>/${basenodescount}/" ${files}
+        fi
     fi
 }

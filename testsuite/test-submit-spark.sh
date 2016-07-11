@@ -11,7 +11,7 @@ SubmitSparkStandardTests_BasicTests() {
 
     if [ "${makenolocaldirtests}" == "y" ]
     then
-	BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
     fi
 }
 
@@ -35,18 +35,18 @@ SubmitSparkStandardTests_WordCount() {
 
     if [ "${makenolocaldirtests}" == "y" ]
     then
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-pythonsparkwordcount-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-sparkwordcount-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-run-pythonsparkwordcount-no-local-dir
 
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-localscratch-single-path-run-sparkwordcount-copy-in-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-localscratch-single-path-run-sparkwordcount-copy-in-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-localscratch-single-path-run-sparkwordcount-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-localscratch-single-path-run-sparkwordcount-copy-in-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-localscratch-single-path-run-sparkwordcount-copy-in-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-localscratch-single-path-run-sparkwordcount-no-local-dir
 
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-localscratch-multiple-paths-run-sparkwordcount-copy-in-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-localscratch-multiple-paths-run-sparkwordcount-copy-in-no-local-dir
-	BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-localscratch-multiple-paths-run-sparkwordcount-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-localscratch-multiple-paths-run-sparkwordcount-copy-in-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-localscratch-multiple-paths-run-sparkwordcount-copy-in-no-local-dir
+        BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-localscratch-multiple-paths-run-sparkwordcount-no-local-dir
     fi
 }
 
@@ -95,54 +95,54 @@ SubmitSparkStandardTests_YarnWordCount() {
 SubmitSparkStandardTests() {
     for testfunction in SubmitSparkStandardTests_BasicTests
     do
-	for testgroup in ${spark_test_groups_before_1X}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} "n"
-	    done
-	done
+        for testgroup in ${spark_test_groups_before_1X}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} "n"
+            done
+        done
 
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} "y"
-	    done
-	done
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} "y"
+            done
+        done
     done
 
     for testfunction in SubmitSparkStandardTests_WordCount
     do
-	for testgroup in ${spark_test_groups_before_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} "n"
-	    done
-	done
+        for testgroup in ${spark_test_groups_before_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} "n"
+            done
+        done
 
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} "y"
-	    done
-	done
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} "y"
+            done
+        done
     done
 
     for testfunction in SubmitSparkStandardTests_YarnTests SubmitSparkStandardTests_YarnWordCount
     do
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 }
 
@@ -157,8 +157,8 @@ SubmitSparkDependencyTests_Dependency1HDFS() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
     if [ "${decommission}" == "y" ]
     then
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
     fi
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -167,8 +167,8 @@ SubmitSparkDependencyTests_Dependency1HDFS() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
     if [ "${decommission}" == "y" ]
     then
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
     fi
 }
 
@@ -182,8 +182,8 @@ SubmitSparkDependencyTests_Dependency2HDFS() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
     if [ "${decommission}" == "y" ]
     then
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
     fi
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -191,8 +191,8 @@ SubmitSparkDependencyTests_Dependency2HDFS() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
     if [ "${decommission}" == "y" ]
     then
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
-	DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
+        DependentJobSubmit magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
     fi
 }
 
@@ -269,65 +269,65 @@ SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
 SubmitSparkDependencyTests() {
     for testfunction in SubmitSparkDependencyTests_Dependency1HDFS SubmitSparkDependencyTests_Dependency2HDFS
     do
-	for testgroup in ${spark_test_groups_before_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} "n"
-	    done
-	done
+        for testgroup in ${spark_test_groups_before_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} "n"
+            done
+        done
 
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} "y"
-	    done
-	done
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} "y"
+            done
+        done
     done
 
     for testfunction in SubmitSparkDependencyTests_Dependency3YarnHDFS SubmitSparkDependencyTests_Dependency4YarnHDFS
     do
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 
     for testfunction in SubmitSparkDependencyTests_Dependency5rawnetworkfs SubmitSparkDependencyTests_Dependency6rawnetworkfs
     do
-	for testgroup in ${spark_test_groups_before_1X}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion}
-	    done
-	done
-	
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion}
-	    done
-	done
+        for testgroup in ${spark_test_groups_before_1X}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion}
+            done
+        done
+        
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion}
+            done
+        done
     done
 
     for testfunction in SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs
     do
-	for testgroup in ${spark_test_groups_after_1X}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${spark_test_groups_after_1X}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 }

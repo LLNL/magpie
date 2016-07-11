@@ -43,14 +43,14 @@ then
     terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
     rmoption="-rm -r"
 fi
-	    
+            
 if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
 then
     terasortsize=50000000
 else
     terasortsize=$HADOOP_TERASORT_SIZE
 fi
-	    
+            
 if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
@@ -63,9 +63,9 @@ if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
 then
     if [ "${HADOOP_TERASORT_CLEAR_CACHE}" == "yes" ]
     then
-	clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
+        clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
     else
-	clearcache=""
+        clearcache=""
     fi
 else
     clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
@@ -75,25 +75,25 @@ if [ "${HADOOP_UDA_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 then
     if [ "${extralibjars}X" == "X" ]
     then
-	extralibjars="-libjars ${HADOOP_UDA_JAR}"
+        extralibjars="-libjars ${HADOOP_UDA_JAR}"
     else
-	extralibjars="${extralibjars},${HADOOP_UDA_JAR}"
+        extralibjars="${extralibjars},${HADOOP_UDA_JAR}"
     fi
 fi
-	    
+            
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
     tachyonjar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
     if [ "${extralibjars}X" == "X" ]
     then
-	extralibjars="-libjars ${tachyonjar}"
+        extralibjars="-libjars ${tachyonjar}"
     else
-	extralibjars="${extralibjars},${tachyonjar}"
+        extralibjars="${extralibjars},${tachyonjar}"
     fi
 fi
 
 cd ${HADOOP_HOME}
-	    
+            
 #
 # Remove previous runs if they are lingering
 #
@@ -150,7 +150,7 @@ echo "*******************************************************"
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} -Dmapred.map.tasks=$mtasks ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
-	    
+            
 if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
 then
     sleep 30
@@ -170,10 +170,10 @@ then
     ${hadoopcmdprefix}/hadoop jar ${terasortexamples} terachecksum 2>&1 | grep -q "Unknown program"
     if [ $? -eq 0 ]
     then
-	whichchecksumcommand="teravalidate"
-	echo "TeraChecksum not available, using TeraValidate instead"
+        whichchecksumcommand="teravalidate"
+        echo "TeraChecksum not available, using TeraValidate instead"
     else
-	whichchecksumcommand="terachecksum"
+        whichchecksumcommand="terachecksum"
     fi
 
     command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} ${whichchecksumcommand} ${extralibjars} -Dmapred.reduce.tasks=$sumreducetasks ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
@@ -183,15 +183,15 @@ then
 
     if [ "${whichchecksumcommand}" == "teravalidate" ]
     then
-	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
+        inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
     else
-	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+        inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
     fi
     echo "TeraChecksum Checksum: ${inputchecksum}"
 fi
 
 sleep 30
-	    
+            
 if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
 then
     sortreducetasks=$HADOOP_TERASORT_REDUCER_COUNT
@@ -233,9 +233,9 @@ then
 
     if [ "${validateerrors}" != "0" ]
     then
-	echo "TeraValidate Result: Errors in terasort output"
+        echo "TeraValidate Result: Errors in terasort output"
     else
-	echo "TeraValidate Result: No errors in terasort output"
+        echo "TeraValidate Result: No errors in terasort output"
     fi
 
     outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
@@ -250,17 +250,17 @@ then
 
     if [ "${whichchecksumcommand}" == "teravalidate" ]
     then
-	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
+        inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000 | head -n 1 | awk '{print $2}'`
     else
-	inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
+        inputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-checksum/part-r-00000`
     fi
     outputchecksum=`${hadoopcmdprefix}/hadoop fs -cat ${pathprefix}terasort-validate/part-r-00000 | head -n 1 | awk '{print $2}'`
 
     if [ "${inputchecksum}" == "${outputchecksum}" ]
     then
-	echo "TeraSort Checksum Comparison: Input and output checksums match - ${inputchecksum}"
+        echo "TeraSort Checksum Comparison: Input and output checksums match - ${inputchecksum}"
     else
-	echo "TeraSort Checksum Comparison: Input checksum ${inputchecksum} != output checksum ${outputchecksum}"
+        echo "TeraSort Checksum Comparison: Input checksum ${inputchecksum} != output checksum ${outputchecksum}"
     fi
 fi
 

@@ -47,7 +47,7 @@ then
     zookeepernodeslist=""
     for zookeepernode in ${zookeepernodes}
     do
-	zookeepernodeslist="${zookeepernodeslist}${zookeepernodeslist:+","}${zookeepernode}"
+        zookeepernodeslist="${zookeepernodeslist}${zookeepernodeslist:+","}${zookeepernode}"
     done
 
     export ZOOKEEPER_NODES="${zookeepernodeslist}"

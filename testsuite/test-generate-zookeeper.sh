@@ -39,31 +39,31 @@ GenerateZookeeperStandardTests() {
 
     for testfunction in GenerateZookeeperStandardTests_RUOK
     do
-	for testgroup in ${zookeeper_test_groups}
-	do
-	    local javaversion="${testgroup}_javaversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${zookeeper_test_groups}
+        do
+            local javaversion="${testgroup}_javaversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!javaversion}
+            done
+        done
     done
 }
 
 GenerateZookeeperPostProcessing () {
     if ls magpie.${submissiontype}*run-zookeeperruok* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-zookeeperruok-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-zookeeperruok*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-zookeeperruok-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-zookeeperruok*
     fi
     
     if ls magpie.${submissiontype}*zookeeper-shared* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*zookeeper-shared*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*zookeeper-shared*
     fi
 
     if ls magpie.${submissiontype}* | grep -v Dependency >& /dev/null ; then
-	ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
+        ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
     fi
 
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*
+        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*
     fi
 }

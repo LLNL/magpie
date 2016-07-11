@@ -111,22 +111,22 @@ if [ "$6" == "start" ]
 then
     if [ -f "$4/storm-$5.pid" ]
     then
-	echo "Storm $5 pid file found, it should already be running"
+        echo "Storm $5 pid file found, it should already be running"
     else
-	echo "Starting Storm $5 on $myhostname - output stored in $2/storm-$5.out" 
-	nohup $3/bin/storm $5 > $2/storm-$5.out 2>&1 < /dev/null &
-	scriptpid=$!
-	echo $scriptpid > $4/storm-$5.pid
+        echo "Starting Storm $5 on $myhostname - output stored in $2/storm-$5.out" 
+        nohup $3/bin/storm $5 > $2/storm-$5.out 2>&1 < /dev/null &
+        scriptpid=$!
+        echo $scriptpid > $4/storm-$5.pid
     fi
 else
     if [ -f "$4/storm-$5.pid" ]
     then
-	scriptpid=`cat $4/storm-$5.pid`
-	echo "Killing Storm $5 on $myhostname"
-	kill -9 $scriptpid
-	rm -f $4/storm-$5.pid
+        scriptpid=`cat $4/storm-$5.pid`
+        echo "Killing Storm $5 on $myhostname"
+        kill -9 $scriptpid
+        rm -f $4/storm-$5.pid
     else
-	echo "Cannot find pid file $4/storm-$5.pid"
+        echo "Cannot find pid file $4/storm-$5.pid"
     fi
 fi
 

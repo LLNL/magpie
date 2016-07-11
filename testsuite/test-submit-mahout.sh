@@ -8,21 +8,21 @@ SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
     local hadoopversion=$2
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol
-	    
+            
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-hadoop-${hadoopversion}-mahout-${mahoutversion}-run-clustersyntheticcontrol-no-local-dir
 }
 
 SubmitMahoutStandardTests() {
     for testfunction in SubmitMahoutStandardTests_ClusterSyntheticcontrol
     do
-	for testgroup in ${mahout_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${mahout_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 }
 
@@ -40,13 +40,13 @@ SubmitMahoutDependencyTests_Dependency1() {
 SubmitMahoutDependencyTests() {
     for testfunction in SubmitMahoutDependencyTests_Dependency1
     do
-	for testgroup in ${mahout_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${mahout_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 }

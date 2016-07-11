@@ -31,8 +31,8 @@ Magpie_make_magpie_local_dirs () {
 
     if [ "${MAGPIE_LOCAL_JOB_DIR}X" == "X" ]
     then
-	Magpie_output_internal_error "Magpie_make_magpie_local_dirs called without MAGPIE_LOCAL_JOB_DIR set"
-	exit 1
+        Magpie_output_internal_error "Magpie_make_magpie_local_dirs called without MAGPIE_LOCAL_JOB_DIR set"
+        exit 1
     fi
 
     export MAGPIE_LOCAL_CONF_DIR=${MAGPIE_LOCAL_JOB_DIR}/conf
@@ -40,9 +40,9 @@ Magpie_make_magpie_local_dirs () {
 
     if [ "${which}" == "specific" ]
     then
-	myhostname=`hostname`
-	export MAGPIE_LOCAL_CONF_DIR=$(echo $MAGPIE_LOCAL_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	export MAGPIE_LOCAL_SCRATCHSPACE_DIR=$(echo $MAGPIE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        myhostname=`hostname`
+        export MAGPIE_LOCAL_CONF_DIR=$(echo $MAGPIE_LOCAL_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        export MAGPIE_LOCAL_SCRATCHSPACE_DIR=$(echo $MAGPIE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
     fi
 }
 
@@ -59,33 +59,33 @@ Magpie_make_hadoop_local_dirs () {
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
-	if [ "${HADOOP_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_hadoop_local_dirs called without HADOOP_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${HADOOP_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_hadoop_local_dirs called without HADOOP_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
-	export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
-	export HADOOP_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_JOB_DIR}/scratch
-	export HADOOP_PID_DIR=${HADOOP_LOCAL_JOB_DIR}/pid
+        export HADOOP_CONF_DIR=${HADOOP_LOCAL_JOB_DIR}/conf
+        export HADOOP_LOG_DIR=${HADOOP_LOCAL_JOB_DIR}/log
+        export HADOOP_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_JOB_DIR}/scratch
+        export HADOOP_PID_DIR=${HADOOP_LOCAL_JOB_DIR}/pid
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export HADOOP_CONF_DIR=$(echo $HADOOP_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export HADOOP_LOG_DIR=$(echo $HADOOP_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export HADOOP_LOCAL_SCRATCHSPACE_DIR=$(echo $HADOOP_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export HADOOP_PID_DIR=$(echo $HADOOP_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export HADOOP_CONF_DIR=$(echo $HADOOP_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export HADOOP_LOG_DIR=$(echo $HADOOP_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export HADOOP_LOCAL_SCRATCHSPACE_DIR=$(echo $HADOOP_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export HADOOP_PID_DIR=$(echo $HADOOP_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
 
-	export YARN_CONF_DIR=${HADOOP_CONF_DIR}
-	export YARN_LOG_DIR=${HADOOP_LOG_DIR}
-	export YARN_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_SCRATCHSPACE_DIR}
-	export YARN_PID_DIR=${HADOOP_PID_DIR}
+        export YARN_CONF_DIR=${HADOOP_CONF_DIR}
+        export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+        export YARN_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_SCRATCHSPACE_DIR}
+        export YARN_PID_DIR=${HADOOP_PID_DIR}
 
-	# Hadoop has this completely random other one
-	export HADOOP_MAPRED_PID_DIR=${HADOOP_PID_DIR}
+        # Hadoop has this completely random other one
+        export HADOOP_MAPRED_PID_DIR=${HADOOP_PID_DIR}
     fi
 }
 
@@ -102,21 +102,21 @@ Magpie_make_pig_local_dirs () {
 
     if [ "${PIG_SETUP}" == "yes" ]
     then
-	if [ "${PIG_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_pig_local_dirs called without PIG_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${PIG_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_pig_local_dirs called without PIG_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
-	export PIG_LOCAL_SCRATCHSPACE_DIR=${PIG_LOCAL_JOB_DIR}/scratch
+        export PIG_CONF_DIR=${PIG_LOCAL_JOB_DIR}/conf
+        export PIG_LOCAL_SCRATCHSPACE_DIR=${PIG_LOCAL_JOB_DIR}/scratch
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export PIG_CONF_DIR=$(echo $PIG_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export PIG_LOCAL_SCRATCHSPACE_DIR=$(echo $PIG_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export PIG_CONF_DIR=$(echo $PIG_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export PIG_LOCAL_SCRATCHSPACE_DIR=$(echo $PIG_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -133,21 +133,21 @@ Magpie_make_mahout_local_dirs () {
 
     if [ "${MAHOUT_SETUP}" == "yes" ]
     then
-	if [ "${MAHOUT_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_mahout_local_dirs called without MAHOUT_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${MAHOUT_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_mahout_local_dirs called without MAHOUT_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export MAHOUT_CONF_DIR=${MAHOUT_LOCAL_JOB_DIR}/conf
-	export MAHOUT_LOCAL_SCRATCHSPACE_DIR=${MAHOUT_LOCAL_JOB_DIR}/scratch
+        export MAHOUT_CONF_DIR=${MAHOUT_LOCAL_JOB_DIR}/conf
+        export MAHOUT_LOCAL_SCRATCHSPACE_DIR=${MAHOUT_LOCAL_JOB_DIR}/scratch
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export MAHOUT_CONF_DIR=$(echo $MAHOUT_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export MAHOUT_LOCAL_SCRATCHSPACE_DIR=$(echo $MAHOUT_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export MAHOUT_CONF_DIR=$(echo $MAHOUT_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export MAHOUT_LOCAL_SCRATCHSPACE_DIR=$(echo $MAHOUT_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -164,25 +164,25 @@ Magpie_make_hbase_local_dirs () {
 
     if [ "${HBASE_SETUP}" == "yes" ]
     then
-	if [ "${HBASE_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_hbase_local_dirs called without HBASE_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${HBASE_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_hbase_local_dirs called without HBASE_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
-	export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
-	export HBASE_LOCAL_SCRATCHSPACE_DIR=${HBASE_LOCAL_JOB_DIR}/scratch
-	export HBASE_PID_DIR=${HBASE_LOCAL_JOB_DIR}/pid
+        export HBASE_CONF_DIR=${HBASE_LOCAL_JOB_DIR}/conf
+        export HBASE_LOG_DIR=${HBASE_LOCAL_JOB_DIR}/log
+        export HBASE_LOCAL_SCRATCHSPACE_DIR=${HBASE_LOCAL_JOB_DIR}/scratch
+        export HBASE_PID_DIR=${HBASE_LOCAL_JOB_DIR}/pid
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export HBASE_CONF_DIR=$(echo $HBASE_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export HBASE_LOG_DIR=$(echo $HBASE_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")	
-	    export HBASE_LOCAL_SCRATCHSPACE_DIR=$(echo $HBASE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export HBASE_PID_DIR=$(echo $HBASE_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export HBASE_CONF_DIR=$(echo $HBASE_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export HBASE_LOG_DIR=$(echo $HBASE_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")    
+            export HBASE_LOCAL_SCRATCHSPACE_DIR=$(echo $HBASE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export HBASE_PID_DIR=$(echo $HBASE_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -199,25 +199,25 @@ Magpie_make_phoenix_local_dirs () {
 
     if [ "${PHOENIX_SETUP}" == "yes" ]
     then
-	if [ "${PHOENIX_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${PHOENIX_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export PHOENIX_CONF_DIR=${PHOENIX_LOCAL_JOB_DIR}/conf
-	export PHOENIX_LOG_DIR=${PHOENIX_LOCAL_JOB_DIR}/log
-	export PHOENIX_LOCAL_SCRATCHSPACE_DIR=${PHOENIX_LOCAL_JOB_DIR}/scratch
-	export PHOENIX_PID_DIR=${PHOENIX_LOCAL_JOB_DIR}/pid
+        export PHOENIX_CONF_DIR=${PHOENIX_LOCAL_JOB_DIR}/conf
+        export PHOENIX_LOG_DIR=${PHOENIX_LOCAL_JOB_DIR}/log
+        export PHOENIX_LOCAL_SCRATCHSPACE_DIR=${PHOENIX_LOCAL_JOB_DIR}/scratch
+        export PHOENIX_PID_DIR=${PHOENIX_LOCAL_JOB_DIR}/pid
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export PHOENIX_CONF_DIR=$(echo $PHOENIX_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export PHOENIX_LOG_DIR=$(echo $PHOENIX_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")	
-	    export PHOENIX_LOCAL_SCRATCHSPACE_DIR=$(echo $PHOENIX_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export PHOENIX_PID_DIR=$(echo $PHOENIX_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export PHOENIX_CONF_DIR=$(echo $PHOENIX_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export PHOENIX_LOG_DIR=$(echo $PHOENIX_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")        
+            export PHOENIX_LOCAL_SCRATCHSPACE_DIR=$(echo $PHOENIX_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export PHOENIX_PID_DIR=$(echo $PHOENIX_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -234,25 +234,25 @@ Magpie_make_spark_local_dirs () {
 
     if [ "${SPARK_SETUP}" == "yes" ]
     then
-	if [ "${SPARK_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_spark_local_dirs called without SPARK_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${SPARK_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_spark_local_dirs called without SPARK_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export SPARK_CONF_DIR=${SPARK_LOCAL_JOB_DIR}/conf
-	export SPARK_LOG_DIR=${SPARK_LOCAL_JOB_DIR}/log
-	export SPARK_LOCAL_SCRATCHSPACE_DIR=${SPARK_LOCAL_JOB_DIR}/scratch
-	export SPARK_PID_DIR=${SPARK_LOCAL_JOB_DIR}/pid
+        export SPARK_CONF_DIR=${SPARK_LOCAL_JOB_DIR}/conf
+        export SPARK_LOG_DIR=${SPARK_LOCAL_JOB_DIR}/log
+        export SPARK_LOCAL_SCRATCHSPACE_DIR=${SPARK_LOCAL_JOB_DIR}/scratch
+        export SPARK_PID_DIR=${SPARK_LOCAL_JOB_DIR}/pid
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export SPARK_CONF_DIR=$(echo $SPARK_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export SPARK_LOG_DIR=$(echo $SPARK_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export SPARK_LOCAL_SCRATCHSPACE_DIR=$(echo $SPARK_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export SPARK_PID_DIR=$(echo $SPARK_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export SPARK_CONF_DIR=$(echo $SPARK_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export SPARK_LOG_DIR=$(echo $SPARK_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export SPARK_LOCAL_SCRATCHSPACE_DIR=$(echo $SPARK_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export SPARK_PID_DIR=$(echo $SPARK_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -269,25 +269,25 @@ Magpie_make_kafka_local_dirs () {
 
     if [ "${KAFKA_SETUP}" == "yes" ]
     then
-	if [ "${KAFKA_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${KAFKA_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export KAFKA_CONF_DIR=${KAFKA_LOCAL_JOB_DIR}/conf
-	export KAFKA_LOG_DIR=${KAFKA_LOCAL_JOB_DIR}/log
-	export KAFKA_LOCAL_SCRATCHSPACE_DIR=${KAFKA_LOCAL_JOB_DIR}/scratch
-	export KAFKA_PID_DIR=${KAFKA_LOCAL_JOB_DIR}/pid
+        export KAFKA_CONF_DIR=${KAFKA_LOCAL_JOB_DIR}/conf
+        export KAFKA_LOG_DIR=${KAFKA_LOCAL_JOB_DIR}/log
+        export KAFKA_LOCAL_SCRATCHSPACE_DIR=${KAFKA_LOCAL_JOB_DIR}/scratch
+        export KAFKA_PID_DIR=${KAFKA_LOCAL_JOB_DIR}/pid
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export KAFKA_CONF_DIR=$(echo $KAFKA_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export KAFKA_LOG_DIR=$(echo $KAFKA_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export KAFKA_LOCAL_SCRATCHSPACE_DIR=$(echo $KAFKA_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export KAFKA_PID_DIR=$(echo $KAFKA_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export KAFKA_CONF_DIR=$(echo $KAFKA_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export KAFKA_LOG_DIR=$(echo $KAFKA_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export KAFKA_LOCAL_SCRATCHSPACE_DIR=$(echo $KAFKA_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export KAFKA_PID_DIR=$(echo $KAFKA_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -304,25 +304,25 @@ Magpie_make_zeppelin_local_dirs () {
 
     if [ "${ZEPPELIN_SETUP}" == "yes" ]
     then
-	if [ "${ZEPPELIN_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_zeppelin_local_dirs called without ZEPPELIN_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${ZEPPELIN_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_zeppelin_local_dirs called without ZEPPELIN_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export ZEPPELIN_CONF_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/conf
-	export ZEPPELIN_LOG_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/log
-	export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/scratch
-	export ZEPPELIN_PID_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/pid
+        export ZEPPELIN_CONF_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/conf
+        export ZEPPELIN_LOG_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/log
+        export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/scratch
+        export ZEPPELIN_PID_DIR=${ZEPPELIN_LOCAL_JOB_DIR}/pid
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export ZEPPELIN_CONF_DIR=$(echo $ZEPPELIN_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export ZEPPELIN_LOG_DIR=$(echo $ZEPPELIN_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=$(echo $ZEPPELIN_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export ZEPPELIN_PID_DIR=$(echo $ZEPPELIN_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export ZEPPELIN_CONF_DIR=$(echo $ZEPPELIN_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export ZEPPELIN_LOG_DIR=$(echo $ZEPPELIN_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=$(echo $ZEPPELIN_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export ZEPPELIN_PID_DIR=$(echo $ZEPPELIN_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -339,23 +339,23 @@ Magpie_make_storm_local_dirs () {
 
     if [ "${STORM_SETUP}" == "yes" ]
     then
-	if [ "${STORM_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_storm_local_dirs called without STORM_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${STORM_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_storm_local_dirs called without STORM_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export STORM_CONF_DIR=${STORM_LOCAL_JOB_DIR}/conf
-	export STORM_LOG_DIR=${STORM_LOCAL_JOB_DIR}/log
-	export STORM_LOCAL_SCRATCHSPACE_DIR=${STORM_LOCAL_JOB_DIR}/scratch
+        export STORM_CONF_DIR=${STORM_LOCAL_JOB_DIR}/conf
+        export STORM_LOG_DIR=${STORM_LOCAL_JOB_DIR}/log
+        export STORM_LOCAL_SCRATCHSPACE_DIR=${STORM_LOCAL_JOB_DIR}/scratch
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export STORM_CONF_DIR=$(echo $STORM_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export STORM_LOG_DIR=$(echo $STORM_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export STORM_LOCAL_SCRATCHSPACE_DIR=$(echo $STORM_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export STORM_CONF_DIR=$(echo $STORM_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export STORM_LOG_DIR=$(echo $STORM_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export STORM_LOCAL_SCRATCHSPACE_DIR=$(echo $STORM_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -372,23 +372,23 @@ Magpie_make_tachyon_local_dirs () {
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-	if [ "${TACHYON_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${TACHYON_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export TACHYON_CONF_DIR=${TACHYON_LOCAL_JOB_DIR}/conf
-	export TACHYON_LOG_DIR=${TACHYON_LOCAL_JOB_DIR}/log
-	export TACHYON_LOCAL_SCRATCHSPACE_DIR=${TACHYON_LOCAL_JOB_DIR}/scratch
+        export TACHYON_CONF_DIR=${TACHYON_LOCAL_JOB_DIR}/conf
+        export TACHYON_LOG_DIR=${TACHYON_LOCAL_JOB_DIR}/log
+        export TACHYON_LOCAL_SCRATCHSPACE_DIR=${TACHYON_LOCAL_JOB_DIR}/scratch
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export TACHYON_CONF_DIR=$(echo $TACHYON_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export TACHYON_LOG_DIR=$(echo $TACHYON_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export TACHYON_LOCAL_SCRATCHSPACE_DIR=$(echo $TACHYON_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export TACHYON_CONF_DIR=$(echo $TACHYON_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export TACHYON_LOG_DIR=$(echo $TACHYON_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export TACHYON_LOCAL_SCRATCHSPACE_DIR=$(echo $TACHYON_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 
@@ -405,23 +405,23 @@ Magpie_make_zookeeper_local_dirs () {
 
     if [ "${ZOOKEEPER_SETUP}" == "yes" ]
     then
-	if [ "${ZOOKEEPER_LOCAL_JOB_DIR}X" == "X" ]
-	then
-	    Magpie_output_internal_error "Magpie_make_zookeeper_local_dirs called without ZOOKEEPER_LOCAL_JOB_DIR set"
-	    exit 1
-	fi
+        if [ "${ZOOKEEPER_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "Magpie_make_zookeeper_local_dirs called without ZOOKEEPER_LOCAL_JOB_DIR set"
+            exit 1
+        fi
 
-	export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
-	export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
-	export ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/scratch
+        export ZOOKEEPER_CONF_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/conf
+        export ZOOKEEPER_LOG_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/log
+        export ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR=${ZOOKEEPER_LOCAL_JOB_DIR}/scratch
 
-	if [ "${which}" == "specific" ]
-	then
-	    myhostname=`hostname`
-	    export ZOOKEEPER_CONF_DIR=$(echo $ZOOKEEPER_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export ZOOKEEPER_LOG_DIR=$(echo $ZOOKEEPER_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	    export ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR=$(echo $ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
-	fi
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export ZOOKEEPER_CONF_DIR=$(echo $ZOOKEEPER_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export ZOOKEEPER_LOG_DIR=$(echo $ZOOKEEPER_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+            export ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR=$(echo $ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g")
+        fi
     fi
 }
 

@@ -28,9 +28,9 @@ Magpie_calc_slurm_magpie_timelimit () {
     # Do not excessively call this
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-	local timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
-	Magpie_walltime_to_minutes ${timelimitwalltime}
-	export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
+        local timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
+        Magpie_walltime_to_minutes ${timelimitwalltime}
+        export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
     fi
 }
 
@@ -38,12 +38,12 @@ Magpie_handle_job_name_corner_cases () {
     # Handle special corner cases where user's job name may not
     # play nice, as we use it in file paths and what not
     if [[ $MAGPIE_JOB_NAME =~ "\$" ]]; then
-	echo "Job name contains dollar sign, internally replacing with underscore" 
-	export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//\$/_}
+        echo "Job name contains dollar sign, internally replacing with underscore" 
+        export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//\$/_}
     fi
     if [[ $MAGPIE_JOB_NAME =~ [[:space:]] ]]; then
-	echo "Job name contains whitespace, internally replacing with underscore" 
-	export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//[[:space:]]/_}
+        echo "Job name contains whitespace, internally replacing with underscore" 
+        export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//[[:space:]]/_}
     fi
 }
 
@@ -58,9 +58,9 @@ then
     # Legacy: Use if user set SBATCH_TIMELIMIT
     if [ "${SBATCH_TIMELIMIT}X" != "X" ]
     then
-	export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
+        export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
     else
-	Magpie_calc_slurm_magpie_timelimit
+        Magpie_calc_slurm_magpie_timelimit
     fi
     Magpie_handle_job_name_corner_cases
 fi
@@ -76,7 +76,7 @@ then
     # Legacy: Use if user set MAGPIE_TIMELIMIT_MINUTES
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-	Magpie_calc_slurm_magpie_timelimit
+        Magpie_calc_slurm_magpie_timelimit
     fi
     Magpie_handle_job_name_corner_cases
 fi
@@ -91,7 +91,7 @@ then
     export MAGPIE_JOB_ID="${PBS_JOBID}"
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-	export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
+        export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
     fi
     Magpie_handle_job_name_corner_cases
 fi

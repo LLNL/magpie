@@ -80,7 +80,7 @@ else
     parallelcopies=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
     if [ "${parallelcopies}" -lt "10" ]
     then
-	parallelcopies=10
+        parallelcopies=10
     fi
 fi
 
@@ -173,7 +173,7 @@ else
     allchildheapsize=$(echo "${tmp2} * 512" | bc -l | xargs printf "%1.0f")
     if [ "${allchildheapsize}" -lt "512" ]
     then
-	allchildheapsize=512
+        allchildheapsize=512
     fi
 fi
 
@@ -190,9 +190,9 @@ then
 else
     if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
     then
-	reducechildheapsize=`expr ${mapchildheapsize} \* 2`
+        reducechildheapsize=`expr ${mapchildheapsize} \* 2`
     else
-	reducechildheapsize=${allchildheapsize}
+        reducechildheapsize=${allchildheapsize}
     fi
 fi
 
@@ -204,7 +204,7 @@ else
     numgig=`expr ${mapchildheapsize} / 1024`
     if [ "${numgig}" == "0" ]
     then
-	numgig=1
+        numgig=1
     fi
     mapcontainerbuffer=`expr ${numgig} \* 256`
 fi
@@ -217,7 +217,7 @@ else
     numgig=`expr ${reducechildheapsize} / 1024`
     if [ "${numgig}" == "0" ]
     then
-	numgig=1
+        numgig=1
     fi
     reducecontainerbuffer=`expr ${numgig} \* 256`
 fi
@@ -233,7 +233,7 @@ else
     numgig=`expr ${mapchildheapsize} / 1024`
     if [ "${numgig}" == "0" ]
     then
-	numgig=1
+        numgig=1
     fi
     iosortmb=`expr ${numgig} \* 128`
 fi
@@ -350,11 +350,11 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] && [ "${HADOOP_INTELLUSTRE_S
 then
     if [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
     then
-	mapoutputcollectorclass="org.apache.hadoop.mapred.SharedFsPlugins\$MapOutputBuffer"
-	reduceshuffleconsumerplugin="org.apache.hadoop.mapred.SharedFsPlugins\$Shuffle"
+        mapoutputcollectorclass="org.apache.hadoop.mapred.SharedFsPlugins\$MapOutputBuffer"
+        reduceshuffleconsumerplugin="org.apache.hadoop.mapred.SharedFsPlugins\$Shuffle"
     else
-	mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
-	reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
+        mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
+        reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
     fi
 else
     mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
@@ -388,9 +388,9 @@ if [ "${HADOOP_COMPRESSION}X" != "X" ]
 then
     if [ "${HADOOP_COMPRESSION}" == "yes" ]
     then
-	compression=true
+        compression=true
     else
-	compression=false
+        compression=false
     fi
 else
     compression=false
@@ -408,11 +408,11 @@ then
     openfilescount=`expr ${openfilesslavecount} \* 4096`
     if [ "${openfilescount}" -lt "8192" ]
     then
-	openfilescount=8192
+        openfilescount=8192
     fi
     if [ "${openfilescount}" -gt "65536" ]
     then
-	openfilescount=65536
+        openfilescount=65536
     fi
     
     if [ "${openfileshardlimit}" != "unlimited" ]
@@ -436,11 +436,11 @@ then
     userprocessescount=`expr ${userprocessesslavecount} \* 2048`
     if [ "${userprocessescount}" -lt "4096" ]
     then
-	userprocessescount=4096
+        userprocessescount=4096
     fi
     if [ "${userprocessescount}" -gt "32768" ]
     then
-	userprocessescount=32768
+        userprocessescount=32768
     fi
     
     if [ "${userprocesseshardlimit}" != "unlimited" ]
@@ -471,9 +471,9 @@ then
     # Assume if path doesn't exist must hdfsformat
     if [ -d "${hadooptmpdir}" ]
     then
-	hdfsformat=0
+        hdfsformat=0
     else
-	hdfsformat=1
+        hdfsformat=1
     fi
 
     IFSORIG=${IFS}
@@ -481,23 +481,23 @@ then
     datanodedirtmp=""
     for hdfspath in ${HADOOP_HDFS_PATH}
     do
-	if [ ! -d "${hdfspath}" ]
-	then
-	    mkdir -p ${hdfspath}
-	    if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${hdfspath}"
-		exit 1
-	    fi
-	fi
+        if [ ! -d "${hdfspath}" ]
+        then
+            mkdir -p ${hdfspath}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${hdfspath}"
+                exit 1
+            fi
+        fi
 
-	if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
-	then
-	    datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}${hdfspath}/dfs/data"
-	elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-	then
-	    datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}file://${hdfspath}/dfs/data"
-	fi
-	pathcount=$((pathcount+1))
+        if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
+        then
+            datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}${hdfspath}/dfs/data"
+        elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
+        then
+            datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}file://${hdfspath}/dfs/data"
+        fi
+        pathcount=$((pathcount+1))
     done
     IFS=${IFSORIG}
     datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
@@ -509,45 +509,45 @@ then
     # Assume if path doesn't exist must hdfsformat
     if [ -d "${hadooptmpdir}" ]
     then
-	hdfsformat=0
+        hdfsformat=0
     else
-	hdfsformat=1
-	mkdir -p ${hadooptmpdir}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${hadooptmpdir}"
-	    exit 1
-	fi
+        hdfsformat=1
+        mkdir -p ${hadooptmpdir}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${hadooptmpdir}"
+            exit 1
+        fi
 
-	if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
-	then
-	    /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${hadooptmpdir}
-	fi
+        if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
+        then
+            /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${hadooptmpdir}
+        fi
     fi
     
     if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
     then
-	datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
+        datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
     elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
     then
-	datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
+        datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
     fi
     
     pathcount=1
 
     # Cleanup locks if requested
     if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] && [ "${HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS}" == "yes" ]) \
-	|| ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] && [ "${HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS}" == "yes" ])
+        || ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] && [ "${HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS}" == "yes" ])
     then
-	for num in `seq 0 ${HADOOP_SLAVE_COUNT}`
-	do
+        for num in `seq 0 ${HADOOP_SLAVE_COUNT}`
+        do
             if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
             then
- 	        lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${num}/dfs/data/in_use.lock"
+                lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${num}/dfs/data/in_use.lock"
             else
- 	        lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${num}/dfs/data/in_use.lock"
+                lockfile="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${num}/dfs/data/in_use.lock"
             fi
-	    rm -f ${lockfile}
-	done
+            rm -f ${lockfile}
+        done
     fi
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
@@ -558,17 +558,17 @@ then
     then
         mkdir -p ${HADOOP_RAWNETWORKFS_PATH}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${HADOOP_RAWNETWORKFS_PATH}"
-	    exit 1
+            echo "mkdir failed making ${HADOOP_RAWNETWORKFS_PATH}"
+            exit 1
         fi
     fi
-	
+        
     if [ ! -d "${hadooptmpdir}" ]
     then
         mkdir -p ${hadooptmpdir}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${hadooptmpdir}"
-	    exit 1
+            echo "mkdir failed making ${hadooptmpdir}"
+            exit 1
         fi
     fi
     
@@ -599,8 +599,8 @@ then
     then
         mkdir -p ${HADOOP_MAGPIENETWORKFS_PATH}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${HADOOP_MAGPIENETWORKFS_PATH}"
-	    exit 1
+            echo "mkdir failed making ${HADOOP_MAGPIENETWORKFS_PATH}"
+            exit 1
         fi
     fi
     
@@ -608,8 +608,8 @@ then
     then
         mkdir -p ${hadooptmpdir}
         if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${hadooptmpdir}"
-	    exit 1
+            echo "mkdir failed making ${hadooptmpdir}"
+            exit 1
         fi
     fi
 
@@ -632,21 +632,21 @@ then
     yarnlocalstoredir=""
     for localstorefile in ${HADOOP_LOCALSTORE}
     do
-	localstoredirtmp=${localstorefile}
-	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
-	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
-	
-	if [ ! -d "${localstoredirtmp}" ]
-	then
-	    mkdir -p ${localstoredirtmp}
-	    if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${localstoredirtmp}"
-		exit 1
-	    fi
-	fi
+        localstoredirtmp=${localstorefile}
+        mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+        yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+        
+        if [ ! -d "${localstoredirtmp}" ]
+        then
+            mkdir -p ${localstoredirtmp}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${localstoredirtmp}"
+                exit 1
+            fi
+        fi
 
-	mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
-	yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
+        mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
+        yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
     done
     IFS=${IFSORIG}
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
@@ -658,12 +658,12 @@ then
     yarnlocalstoredir=""
     for localstorefile in ${HADOOP_HDFS_PATH}
     do
-	localstoredirtmp=${localstorefile}
-	mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
-	yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
-	
-	mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
-	yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
+        localstoredirtmp=${localstorefile}
+        mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
+        yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
+        
+        mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
+        yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
     done
     IFS=${IFSORIG}
 else
@@ -693,8 +693,8 @@ if [ ! -d "${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
     mkdir -p ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp"
-	exit 1
+        echo "mkdir failed making ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/tmp"
+        exit 1
     fi
 fi
 
@@ -702,8 +702,8 @@ if [ ! -d "${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
     mkdir -p ${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp"
-	exit 1
+        echo "mkdir failed making ${YARN_LOCAL_SCRATCHSPACE_DIR}/tmp"
+        exit 1
     fi
 fi
 
@@ -726,9 +726,9 @@ then
 
     if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
     then
-	extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.library.path=${HADOOP_UDA_LIBPATH}"
+        extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.library.path=${HADOOP_UDA_LIBPATH}"
 
-	extrayarnlibrarypath="${extrayarnlibrarypath}${extrayarnlibrarypath:+":"}${HADOOP_UDA_LIBPATH}"
+        extrayarnlibrarypath="${extrayarnlibrarypath}${extrayarnlibrarypath:+":"}${HADOOP_UDA_LIBPATH}"
     fi
 fi
 
@@ -751,7 +751,7 @@ then
 
     if [ "${TACHYON_ASYNCHRONOUS_WRITES}" == "yes" ]
     then
-	extrahadooptaskopts="${extrahadooptaskopts}${extrahadooptaskopts:+" "}-Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
+        extrahadooptaskopts="${extrahadooptaskopts}${extrahadooptaskopts:+" "}-Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
     fi
 fi
 
@@ -764,22 +764,22 @@ then
     rm -rf ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-	|| [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-	||[ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+        ||[ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-	blocksize=${hdfsblocksize}
+        blocksize=${hdfsblocksize}
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
-	blocksize=${rawnetworkfsblocksize}
+        blocksize=${rawnetworkfsblocksize}
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-	blocksize=${intellustreblocksize}
+        blocksize=${intellustreblocksize}
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
-	blocksize=${magpienetworkfsblocksize}
+        blocksize=${magpienetworkfsblocksize}
     else
-	Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
-	exit 1
+        Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+        exit 1
     fi
     
     echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_BLOCKSIZE=\"${blocksize}\"" >> ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
@@ -813,28 +813,28 @@ then
 
     if [ "${HADOOP_UDA_SETUP}" == "yes" ]
     then
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X-uda.xml" "pre_mapredsitexml_uda"
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X-uda.xml" "pre_yarnsitexml_uda"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X-uda.xml" "pre_mapredsitexml_uda"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X-uda.xml" "pre_yarnsitexml_uda"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-intellustre.xml" "pre_coresitexml_intellustre"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-intellustre.xml" "pre_coresitexml_intellustre"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-magpienetworkfs.xml" "pre_coresitexml_magpienetworkfs"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-magpienetworkfs.xml" "pre_coresitexml_magpienetworkfs"
     fi
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-tachyon.xml" "pre_coresitexml_tachyon"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-tachyon.xml" "pre_coresitexml_tachyon"
     fi
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-viewfsmount.xml" "pre_coresitexml_viewfsmount"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-viewfsmount.xml" "pre_coresitexml_viewfsmount"
     fi
 else
     Magpie_output_internal_error "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
@@ -865,29 +865,29 @@ then
 
     if [ "${pre_coresitexml_intellustre}X" != "X" ]
     then
-	sed -i -e "/@INTELLUSTRE@/{r ${pre_coresitexml_intellustre}" -e "d}" ${post_coresitexml}
+        sed -i -e "/@INTELLUSTRE@/{r ${pre_coresitexml_intellustre}" -e "d}" ${post_coresitexml}
     else
-	sed -i -e "/@INTELLUSTRE@/,+1d" ${post_coresitexml}
+        sed -i -e "/@INTELLUSTRE@/,+1d" ${post_coresitexml}
     fi
 
     if [ "${pre_coresitexml_magpienetworkfs}X" != "X" ]
     then
-	sed -i -e "/@MAGPIENETWORKFS@/{r ${pre_coresitexml_magpienetworkfs}" -e "d}" ${post_coresitexml}
+        sed -i -e "/@MAGPIENETWORKFS@/{r ${pre_coresitexml_magpienetworkfs}" -e "d}" ${post_coresitexml}
     else
-	sed -i -e "/@MAGPIENETWORKFS@/,+1d" ${post_coresitexml}
+        sed -i -e "/@MAGPIENETWORKFS@/,+1d" ${post_coresitexml}
     fi
 
     if [ "${pre_coresitexml_tachyon}X" != "X" ]
     then
-	sed -i -e "/@TACHYON@/{r ${pre_coresitexml_tachyon}" -e "d}" ${post_coresitexml}
+        sed -i -e "/@TACHYON@/{r ${pre_coresitexml_tachyon}" -e "d}" ${post_coresitexml}
     else
-	sed -i -e "/@TACHYON@/,+1d" ${post_coresitexml}
+        sed -i -e "/@TACHYON@/,+1d" ${post_coresitexml}
     fi
 
     if [ "${pre_coresitexml_viewfsmount}X" != "X" ]
     then
-	for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-	do
+        for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+        do
             j=1
             while true;
             do
@@ -898,48 +898,48 @@ then
                 then
                     break;
                 fi
-		
-		sed -i -e "/@VIEWFSMOUNT@/{r ${pre_coresitexml_viewfsmount}" -e "d}" ${post_coresitexml}
+                
+                sed -i -e "/@VIEWFSMOUNT@/{r ${pre_coresitexml_viewfsmount}" -e "d}" ${post_coresitexml}
 
-	        # First namenode is based on master
-		if [ "${i}" == "1" ]
-		then
-		    federationnamenodehost="${HADOOP_MASTER_NODE}"
-		else
-		    numline=`expr ${i} - 1`
-		    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-		fi
+                # First namenode is based on master
+                if [ "${i}" == "1" ]
+                then
+                    federationnamenodehost="${HADOOP_MASTER_NODE}"
+                else
+                    numline=`expr ${i} - 1`
+                    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+                fi
 
-		mountvaluesubst=`echo "${mountvalue}" | sed "s/\\//\\\\\\\\\//g"`
-		
-		sed -i -e "s/VIEWFSPATH/${mountvaluesubst}/g" ${post_coresitexml}
-		sed -i -e "s/VIEWFSNAMENODE/${federationnamenodehost}/g" ${post_coresitexml}
-		sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_coresitexml}
-		sed -i -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" ${post_coresitexml}
+                mountvaluesubst=`echo "${mountvalue}" | sed "s/\\//\\\\\\\\\//g"`
+                
+                sed -i -e "s/VIEWFSPATH/${mountvaluesubst}/g" ${post_coresitexml}
+                sed -i -e "s/VIEWFSNAMENODE/${federationnamenodehost}/g" ${post_coresitexml}
+                sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_coresitexml}
+                sed -i -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" ${post_coresitexml}
 
                 j=$((j+1))
             done
-	done
+        done
 
-	sed -i -e "/@VIEWFSMOUNT@/,+1d" ${post_coresitexml}
-	
+        sed -i -e "/@VIEWFSMOUNT@/,+1d" ${post_coresitexml}
+        
     else
-	sed -i -e "/@VIEWFSMOUNT@/,+1d" ${post_coresitexml}
+        sed -i -e "/@VIEWFSMOUNT@/,+1d" ${post_coresitexml}
     fi
 
     sed -i \
-	-e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \
+        -e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \
         -e "s/FSDEFAULT/${fsdefaultsubst}/g" \
-	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
-	-e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
-	-e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
-	-e "s/INTELLUSTREBLOCKSIZE/${intellustreblocksize}/g" \
-	-e "s/INTELLUSTRESTRIPESIZE/${intellustrestripesize}/g" \
-	-e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
-	-e "s/MAGPIENETWORKFSBASEDIR/${magpienetworkfsbase}/g" \
-	-e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
-	-e "s/HADOOPDEFAULTUSER/${USER}/g" \
-	${post_coresitexml}
+        -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+        -e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
+        -e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
+        -e "s/INTELLUSTREBLOCKSIZE/${intellustreblocksize}/g" \
+        -e "s/INTELLUSTRESTRIPESIZE/${intellustrestripesize}/g" \
+        -e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
+        -e "s/MAGPIENETWORKFSBASEDIR/${magpienetworkfsbase}/g" \
+        -e "s/MAGPIENETWORKFSBLOCKSIZE/${magpienetworkfsblocksize}/g" \
+        -e "s/HADOOPDEFAULTUSER/${USER}/g" \
+        ${post_coresitexml}
 
     hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     hadooplogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -955,37 +955,37 @@ then
     cp ${pre_hadoopenvsh} ${post_hadoopenvsh}
 
     sed -i \
-	-e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
-	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-	-e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
-	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
-	-e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
-	-e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
-	-e "s/HADOOPPIDDIR/${hadooppiddirsubst}/g" \
-	-e "s/HADOOPMAPREDPIDDIR/${hadoopmapredpiddirsubst}/g" \
-	-e "s/HADOOPHOME/${hadoophomesubst}/g" \
-	-e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
-	-e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
-	-e "s/HADOOPHDFSHOME/${hadoophdfshomesubst}/g" \
-	-e "s/EXTRAHADOOPCLASSES/${extrahadoopclassessubst}/g" \
-	-e "s/EXTRAHADOOPOPTS/${extrahadoopoptssubst}/g" \
-	${post_hadoopenvsh}
+        -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+        -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+        -e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
+        -e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+        -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+        -e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
+        -e "s/HADOOPPIDDIR/${hadooppiddirsubst}/g" \
+        -e "s/HADOOPMAPREDPIDDIR/${hadoopmapredpiddirsubst}/g" \
+        -e "s/HADOOPHOME/${hadoophomesubst}/g" \
+        -e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
+        -e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
+        -e "s/HADOOPHDFSHOME/${hadoophdfshomesubst}/g" \
+        -e "s/EXTRAHADOOPCLASSES/${extrahadoopclassessubst}/g" \
+        -e "s/EXTRAHADOOPOPTS/${extrahadoopoptssubst}/g" \
+        ${post_hadoopenvsh}
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
-	echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hadoopenvsh}
+        echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hadoopenvsh}
     fi
     if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
     then
-	echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
+        echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
     fi
 
     if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
     then
-	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
+        cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
     else
-	echo "ulimit -n ${openfilescount}" >> ${post_hadoopenvsh}
-	echo "ulimit -u ${userprocessescount}" >> ${post_hadoopenvsh}
+        echo "ulimit -n ${openfilescount}" >> ${post_hadoopenvsh}
+        echo "ulimit -u ${userprocessescount}" >> ${post_hadoopenvsh}
     fi
 
     cp ${pre_log4jproperties} ${post_log4jproperties}
@@ -999,13 +999,13 @@ then
         #
         # A few settings depend on version
         #
-	if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
-	then 
-	    shuffleproviderservices="uda.shuffle"
-	else
-	    shuffleproviderservices="uda_shuffle"
-	fi
-	reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
+        if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+        then 
+            shuffleproviderservices="uda.shuffle"
+        else
+            shuffleproviderservices="uda_shuffle"
+        fi
+        reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
     fi
 
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
@@ -1015,45 +1015,45 @@ then
 
     if [ "${pre_mapredsitexml_uda}X" != "X" ]
     then
-	sed -i -e "/@UDA@/{r ${pre_mapredsitexml_uda}" -e "d}" ${post_mapredsitexml}
+        sed -i -e "/@UDA@/{r ${pre_mapredsitexml_uda}" -e "d}" ${post_mapredsitexml}
     else
-	sed -i -e "/@UDA@/,+1d" ${post_mapredsitexml}
+        sed -i -e "/@UDA@/,+1d" ${post_mapredsitexml}
     fi
 
     # Space w/ HADOOPEXTRATASKJAVAOPTS & EXTRAHADOOPOPTS substitution is intentional
     sed -i \
-	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
-	-e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
-	-e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
-	-e "s/MRSLOWSTART/${mapredslowstart}/g" \
-	-e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \
-	-e "s/MAPCHILDHEAPSIZE/${mapchildheapsize}/g" \
-	-e "s/MAPCONTAINERMB/${mapcontainermb}/g" \
-	-e "s/REDUCECHILDHEAPSIZE/${reducechildheapsize}/g" \
-	-e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
-	-e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
-	-e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
-	-e "s/MAXMAPTASKS/${maxmaptasks}/g" \
-	-e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
-	-e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
-	-e "s/IOSORTFACTOR/${iosortfactor}/g" \
-	-e "s/IOSORTMB/${iosortmb}/g" \
-	-e "s/HADOOPCOMPRESSION/${compression}/g" \
-	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
-	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
-	-e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
-    	-e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
-    	-e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
-	-e "s/SHUFFLEPROVIDERSERVICES/${shuffleproviderservices}/g" \
-	-e "s/RDMABUFSIZE/${rdmabufsize}/g" \
-	-e "s/HADOOPJOBHISTORYADDRESS/${HADOOP_JOBHISTORYSERVER_ADDRESS}/g" \
-	-e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}/g" \
-	-e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
-	-e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
-	-e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
-	-e "s/HADOOPEXTRATASKJAVAOPTS/ ${extrahadooptaskoptssubst}/g" \
-	-e "s/EXTRAHADOOPOPTS/ ${extrahadoopoptssubst}/g" \
-	${post_mapredsitexml}
+        -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+        -e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
+        -e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
+        -e "s/MRSLOWSTART/${mapredslowstart}/g" \
+        -e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \
+        -e "s/MAPCHILDHEAPSIZE/${mapchildheapsize}/g" \
+        -e "s/MAPCONTAINERMB/${mapcontainermb}/g" \
+        -e "s/REDUCECHILDHEAPSIZE/${reducechildheapsize}/g" \
+        -e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
+        -e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
+        -e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
+        -e "s/MAXMAPTASKS/${maxmaptasks}/g" \
+        -e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
+        -e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
+        -e "s/IOSORTFACTOR/${iosortfactor}/g" \
+        -e "s/IOSORTMB/${iosortmb}/g" \
+        -e "s/HADOOPCOMPRESSION/${compression}/g" \
+        -e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
+        -e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
+        -e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
+        -e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
+        -e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
+        -e "s/SHUFFLEPROVIDERSERVICES/${shuffleproviderservices}/g" \
+        -e "s/RDMABUFSIZE/${rdmabufsize}/g" \
+        -e "s/HADOOPJOBHISTORYADDRESS/${HADOOP_JOBHISTORYSERVER_ADDRESS}/g" \
+        -e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}/g" \
+        -e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
+        -e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
+        -e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
+        -e "s/HADOOPEXTRATASKJAVAOPTS/ ${extrahadooptaskoptssubst}/g" \
+        -e "s/EXTRAHADOOPOPTS/ ${extrahadoopoptssubst}/g" \
+        ${post_mapredsitexml}
 fi
 
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
@@ -1063,54 +1063,54 @@ then
     #
     if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
     then 
-	if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-	then
-	    yarnauxservices="mapreduce.shuffle,uda.shuffle"
-	    yarnauxudashuffle="yarn.nodemanager.aux-services.uda.shuffle.class"
-	else
-	    yarnauxservices="mapreduce.shuffle"
-	fi
-	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
+        if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+        then
+            yarnauxservices="mapreduce.shuffle,uda.shuffle"
+            yarnauxudashuffle="yarn.nodemanager.aux-services.uda.shuffle.class"
+        else
+            yarnauxservices="mapreduce.shuffle"
+        fi
+        yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
     else
-	if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-	then
-	    yarnauxservices="mapreduce_shuffle,uda_shuffle"
-	    yarnauxudashuffle="yarn.nodemanager.aux-services.uda_shuffle.class"
-	else
-	    yarnauxservices="mapreduce_shuffle"
-	fi
-	yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
+        if [ "${HADOOP_UDA_SETUP}" == "yes" ]
+        then
+            yarnauxservices="mapreduce_shuffle,uda_shuffle"
+            yarnauxudashuffle="yarn.nodemanager.aux-services.uda_shuffle.class"
+        else
+            yarnauxservices="mapreduce_shuffle"
+        fi
+        yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
     fi
 
     cp ${pre_yarnsitexml} ${post_yarnsitexml}
 
     if [ "${pre_yarnsitexml_uda}X" != "X" ]
     then
-	sed -i -e "/@UDA@/{r ${pre_yarnsitexml_uda}" -e "d}" ${post_yarnsitexml}
+        sed -i -e "/@UDA@/{r ${pre_yarnsitexml_uda}" -e "d}" ${post_yarnsitexml}
     else
-	sed -i -e "/@UDA@/,+1d" ${post_yarnsitexml}
+        sed -i -e "/@UDA@/,+1d" ${post_yarnsitexml}
     fi
 
     sed -i \
-	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
-	-e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
-	-e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
-	-e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
-	-e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
-	-e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
-	-e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
-	-e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
-	-e "s/YARNRESOURCEMANAGERADDRESS/${YARN_RESOURCEMANAGER_ADDRESS}/g" \
-	-e "s/YARNRESOURCEMANAGERSCHEDULERADDRESS/${YARN_RESOURCEMANAGER_SCHEDULER_ADDRESS}/g" \
-	-e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}/g" \
-	-e "s/YARNRESOURCEMANAGERWEBAPPHTTPSADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_HTTPS_ADDRESS}/g" \
-	-e "s/YARNRESOURCEMANAGERRESOURCETRACKERADDRESS/${YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS}/g" \
-	-e "s/YARNRESOURCEMANAGERADMINADDRESS/${YARN_RESOURCEMANAGER_ADMIN_ADDRESS}/g" \
-	-e "s/YARNLOCALIZERADDRESS/${YARN_NODEMANAGER_LOCALIZER_ADDRESS}/g" \
-	-e "s/YARNNODEMANAGERWEBAPPADDRESS/${YARN_NODEMANAGER_WEBAPP_ADDRESS}/g" \
-	-e "s/YARNDEFAULTUSER/${USER}/g" \
-	-e "s/YARNRESROUCECPUVCORES/${proccount}/g" \
-	${post_yarnsitexml}
+        -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+        -e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
+        -e "s/YARNMAXCONTAINER/${yarnmaxcontainer}/g" \
+        -e "s/YARNRESOURCEMEMORY/${yarnresourcememory}/g" \
+        -e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
+        -e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
+        -e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
+        -e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
+        -e "s/YARNRESOURCEMANAGERADDRESS/${YARN_RESOURCEMANAGER_ADDRESS}/g" \
+        -e "s/YARNRESOURCEMANAGERSCHEDULERADDRESS/${YARN_RESOURCEMANAGER_SCHEDULER_ADDRESS}/g" \
+        -e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}/g" \
+        -e "s/YARNRESOURCEMANAGERWEBAPPHTTPSADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_HTTPS_ADDRESS}/g" \
+        -e "s/YARNRESOURCEMANAGERRESOURCETRACKERADDRESS/${YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS}/g" \
+        -e "s/YARNRESOURCEMANAGERADMINADDRESS/${YARN_RESOURCEMANAGER_ADMIN_ADDRESS}/g" \
+        -e "s/YARNLOCALIZERADDRESS/${YARN_NODEMANAGER_LOCALIZER_ADDRESS}/g" \
+        -e "s/YARNNODEMANAGERWEBAPPADDRESS/${YARN_NODEMANAGER_WEBAPP_ADDRESS}/g" \
+        -e "s/YARNDEFAULTUSER/${USER}/g" \
+        -e "s/YARNRESROUCECPUVCORES/${proccount}/g" \
+        ${post_yarnsitexml}
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -1121,15 +1121,15 @@ then
     cp ${pre_mapredenvsh} ${post_mapredenvsh}
 
     sed -i \
-	-e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
-	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
-	-e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
-	-e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
-	-e "s/HADOOPHOME/${hadoophomesubst}/g" \
-	-e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
-	-e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
-	${post_mapredenvsh}
+        -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+        -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+        -e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+        -e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
+        -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+        -e "s/HADOOPHOME/${hadoophomesubst}/g" \
+        -e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
+        -e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
+        ${post_mapredenvsh}
 
     yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
     yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -1143,34 +1143,34 @@ then
     cp ${pre_yarnenvsh} ${post_yarnenvsh}
 
     sed -i \
-	-e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
-	-e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-	-e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
-	-e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
-	-e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
-	-e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \
-	-e "s/YARNPIDDIR/${yarnpiddirsubst}/g" \
-	-e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
-	-e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
-	-e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
-	-e "s/EXTRAYARNOPTS/${extrayarnoptssubst}/g" \
-	${post_yarnenvsh}
+        -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+        -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+        -e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+        -e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
+        -e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
+        -e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \
+        -e "s/YARNPIDDIR/${yarnpiddirsubst}/g" \
+        -e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
+        -e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
+        -e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
+        -e "s/EXTRAYARNOPTS/${extrayarnoptssubst}/g" \
+        ${post_yarnenvsh}
 
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
-	echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${post_yarnenvsh}
+        echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${post_yarnenvsh}
     fi
     if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
     then
-	echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_yarnenvsh}
+        echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_yarnenvsh}
     fi
 
     if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
     then
-	cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
+        cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
     else
-	echo "ulimit -n ${openfilescount}" >> ${post_yarnenvsh}
-	echo "ulimit -u ${userprocessescount}" >> ${post_yarnenvsh}
+        echo "ulimit -n ${openfilescount}" >> ${post_yarnenvsh}
+        echo "ulimit -u ${userprocessescount}" >> ${post_yarnenvsh}
     fi
 fi
 
@@ -1182,71 +1182,71 @@ then
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation.xml" "pre_hdfssitexml_namenode"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation.xml" "pre_hdfssitexml_namenode"
     else
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-namenode.xml" "pre_hdfssitexml_namenode"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-namenode.xml" "pre_hdfssitexml_namenode"
     fi
 
     sed -i -e "/@NAMENODE@/{r ${pre_hdfssitexml_namenode}" -e "d}" ${post_hdfssitexml}
 
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
-	nameservices="ns1"
-	for i in `seq 2 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+        nameservices="ns1"
+        for i in `seq 2 ${HDFS_FEDERATION_NAMENODE_COUNT}`
         do
-	    nameservices="${nameservices},ns${i}"
-	done
+            nameservices="${nameservices},ns${i}"
+        done
 
-	sed -i -e "s/NAMESERVICES/${nameservices}/g" ${post_hdfssitexml}
+        sed -i -e "s/NAMESERVICES/${nameservices}/g" ${post_hdfssitexml}
 
-	Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation-namenode.xml" "pre_hdfssitexml_namenodeinfo"
+        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation-namenode.xml" "pre_hdfssitexml_namenodeinfo"
 
-	# Now fill each additional namenode
-	for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-	do
-	    sed -i -e "/@NAMENODEINFO@/{r ${pre_hdfssitexml_namenodeinfo}" -e "d}" ${post_hdfssitexml}
+        # Now fill each additional namenode
+        for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+        do
+            sed -i -e "/@NAMENODEINFO@/{r ${pre_hdfssitexml_namenodeinfo}" -e "d}" ${post_hdfssitexml}
 
-	    sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_hdfssitexml}
+            sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_hdfssitexml}
 
-	    # First namenode is based on master
-	    if [ "${i}" == "1" ]
-	    then
-		federationnamenodehost="${HADOOP_MASTER_NODE}"
-	    else
-		numline=`expr ${i} - 1`
-		federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-	    fi
-	    
-	    sed -i -e "s/FEDERATIONNAMENODEHOST/${federationnamenodehost}/g" ${post_hdfssitexml}
-	done
+            # First namenode is based on master
+            if [ "${i}" == "1" ]
+            then
+                federationnamenodehost="${HADOOP_MASTER_NODE}"
+            else
+                numline=`expr ${i} - 1`
+                federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+            fi
+            
+            sed -i -e "s/FEDERATIONNAMENODEHOST/${federationnamenodehost}/g" ${post_hdfssitexml}
+        done
 
-	sed -i -e "/@NAMENODEINFO@/,+1d" ${post_hdfssitexml}
+        sed -i -e "/@NAMENODEINFO@/,+1d" ${post_hdfssitexml}
     fi
 
     HADOOP_THIS_HOST=`hostname`
 
     sed -i \
-	-e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
-	-e "s/HADOOP_HOST/${HADOOP_THIS_HOST}/g" \
-	-e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
-	-e "s/HDFSREPLICATION/${hdfsreplication}/g" \
-	-e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
-	-e "s/HDFSDATANODEHANDLERCLOUNT/${datanodehandlercount}/g" \
-	-e "s/IOBUFFERSIZE/${iobuffersize}/g" \
-	-e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
-	-e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
-	-e "s/DFSDATANODEDIR/${datanodedir}/g" \
-	-e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" \
-	-e "s/DFSNAMENODESECONDARYHTTPADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_HTTP_ADDRESS}/g" \
-	-e "s/DFSNAMENODESECONDARYHTTPSADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_HTTPS_ADDRESS}/g" \
-	-e "s/DFSNAMENODEHTTPADDRESS/${HADOOP_HDFS_NAMENODE_HTTPADDRESS}/g" \
-	-e "s/DFSDATANODEADDRESS/${HADOOP_HDFS_DATANODE_ADDRESS}/g" \
-	-e "s/DFSDATANODEHTTPADDRESS/${HADOOP_HDFS_DATANODE_HTTPADDRESS}/g" \
-	-e "s/DFSDATANODEIPCADDRESS/${HADOOP_HDFS_DATANODE_IPCADDRESS}/g" \
-	-e "s/DFSBACKUPADDRESS/${HADOOP_HDFS_NAMENODE_BACKUP_ADDRESS}/g" \
-	-e "s/DFSBACKUPHTTPADDRESS/${HADOOP_HDFS_NAMENODE_BACKUP_HTTP_ADDRESS}/g" \
-	-e "s/DFSPERMISSIONSSUPERUSERGROUP/${USER}/g" \
-	${post_hdfssitexml}
+        -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
+        -e "s/HADOOP_HOST/${HADOOP_THIS_HOST}/g" \
+        -e "s/HDFSBLOCKSIZE/${hdfsblocksize}/g" \
+        -e "s/HDFSREPLICATION/${hdfsreplication}/g" \
+        -e "s/HDFSNAMENODEHANDLERCLOUNT/${namenodehandlercount}/g" \
+        -e "s/HDFSDATANODEHANDLERCLOUNT/${datanodehandlercount}/g" \
+        -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+        -e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
+        -e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
+        -e "s/DFSDATANODEDIR/${datanodedir}/g" \
+        -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" \
+        -e "s/DFSNAMENODESECONDARYHTTPADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_HTTP_ADDRESS}/g" \
+        -e "s/DFSNAMENODESECONDARYHTTPSADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_HTTPS_ADDRESS}/g" \
+        -e "s/DFSNAMENODEHTTPADDRESS/${HADOOP_HDFS_NAMENODE_HTTPADDRESS}/g" \
+        -e "s/DFSDATANODEADDRESS/${HADOOP_HDFS_DATANODE_ADDRESS}/g" \
+        -e "s/DFSDATANODEHTTPADDRESS/${HADOOP_HDFS_DATANODE_HTTPADDRESS}/g" \
+        -e "s/DFSDATANODEIPCADDRESS/${HADOOP_HDFS_DATANODE_IPCADDRESS}/g" \
+        -e "s/DFSBACKUPADDRESS/${HADOOP_HDFS_NAMENODE_BACKUP_ADDRESS}/g" \
+        -e "s/DFSBACKUPHTTPADDRESS/${HADOOP_HDFS_NAMENODE_BACKUP_HTTP_ADDRESS}/g" \
+        -e "s/DFSPERMISSIONSSUPERUSERGROUP/${USER}/g" \
+        ${post_hdfssitexml}
 fi
 
 #
@@ -1259,35 +1259,35 @@ if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
 then
     if [ "${hdfsformat}" -eq "1" ]
     then
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    if Magpie_am_I_a_hadoop_namenode
-	    then
-		echo "*******************************************************"
-		echo "* Formatting HDFS Namenode on Namenode ${MAGPIE_CLUSTER_NODERANK}"
-		echo "*******************************************************"
-		cd $HADOOP_HOME
-		echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format -clusterId "Magpie${HADOOP_FILESYSTEM_MODE}"
-	    else
-	        # If this is the first time running, make everyone else wait
-	        # until the format is complete
-		sleep 30
-	    fi
-	else
+        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        then
+            if Magpie_am_I_a_hadoop_namenode
+            then
+                echo "*******************************************************"
+                echo "* Formatting HDFS Namenode on Namenode ${MAGPIE_CLUSTER_NODERANK}"
+                echo "*******************************************************"
+                cd $HADOOP_HOME
+                echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format -clusterId "Magpie${HADOOP_FILESYSTEM_MODE}"
+            else
+                # If this is the first time running, make everyone else wait
+                # until the format is complete
+                sleep 30
+            fi
+        else
             # Only master will format the node
-	    if Magpie_am_I_master
-	    then
-		echo "*******************************************************"
-		echo "* Formatting HDFS Namenode"
-		echo "*******************************************************"
-		cd $HADOOP_HOME
-		echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
-	    else
-	        # If this is the first time running, make everyone else wait
-	        # until the format is complete
-		sleep 30
-	    fi
-	fi
+            if Magpie_am_I_master
+            then
+                echo "*******************************************************"
+                echo "* Formatting HDFS Namenode"
+                echo "*******************************************************"
+                cd $HADOOP_HOME
+                echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+            else
+                # If this is the first time running, make everyone else wait
+                # until the format is complete
+                sleep 30
+            fi
+        fi
     fi
 fi
 

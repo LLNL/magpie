@@ -39,221 +39,221 @@ Magpie_run_start_zookeeper () {
 
     if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
-	if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
-	then
-	    # Make variables unspecified for launching
-	    Magpie_make_all_local_dirs_unspecified
+        if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+        then
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_unspecified
 
-	    echo "Starting Zookeeper"
-	    ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh start
+            echo "Starting Zookeeper"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh start
 
-	    # Make variables specific now within Magpie
-	    Magpie_make_all_local_dirs_node_specific
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
 
             # My rough estimate for setup time is 30 seconds per 128 nodes
-	    local sleepwait=`expr ${ZOOKEEPER_REPLICATION_COUNT} \/ 128 \* 30`
-	    if [ ${sleepwait} -lt 30 ]
-	    then
-		sleepwait=30
-	    fi
-	    echo "Waiting ${sleepwait} seconds to allow Zookeeper daemons to setup"
-	    sleep ${sleepwait}
-	    totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
-	fi
+            local sleepwait=`expr ${ZOOKEEPER_REPLICATION_COUNT} \/ 128 \* 30`
+            if [ ${sleepwait} -lt 30 ]
+            then
+                sleepwait=30
+            fi
+            echo "Waiting ${sleepwait} seconds to allow Zookeeper daemons to setup"
+            sleep ${sleepwait}
+            totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+        fi
 
-	echo "*******************************************************"
-	echo "*"
-	echo "* Zookeeper Information"
-	echo "*"
-	if [ "${ZOOKEEPER_MODE}" == "setuponly" ]
-	then
- 	    echo "* To setup, you probably want to run:" 
-	    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
-	    if echo $MAGPIE_SHELL | grep -q csh
-	    then
-		echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
-	    else
-		echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
-	    fi
-	    echo "*   cd $MAGPIE_SCRIPTS_HOME"
-	    echo "*   bin/magpie-zookeeper.sh start"
-	    echo "*" 
-	fi
-	echo "* To end/cleanup your session, kill the daemons via:"
-	echo "*" 
-	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
-	else
-	    echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
-	fi
-	echo "*   cd $MAGPIE_SCRIPTS_HOME"
-	echo "*   bin/magpie-zookeeper.sh stop"
-	echo "*" 
-	echo "* Some additional environment variables you may sometimes wish to set"
-	echo "*" 
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-	    echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
-	else
-	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
-	    echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
-	fi
-	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
-	then
-	    echo "*"
-	    echo "* If running interactively, sourcing"
-	    echo "*"
-	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
-	    echo "*"
-	    echo "* will set most common environment variables for your job."
-	fi
-	echo "*" 
-	echo "*******************************************************"
+        echo "*******************************************************"
+        echo "*"
+        echo "* Zookeeper Information"
+        echo "*"
+        if [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+        then
+            echo "* To setup, you probably want to run:" 
+            echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
+            else
+                echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
+            fi
+            echo "*   cd $MAGPIE_SCRIPTS_HOME"
+            echo "*   bin/magpie-zookeeper.sh start"
+            echo "*" 
+        fi
+        echo "* To end/cleanup your session, kill the daemons via:"
+        echo "*" 
+        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
+        else
+            echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
+        fi
+        echo "*   cd $MAGPIE_SCRIPTS_HOME"
+        echo "*   bin/magpie-zookeeper.sh stop"
+        echo "*" 
+        echo "* Some additional environment variables you may sometimes wish to set"
+        echo "*" 
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+            echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
+        else
+            echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+            echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
+        fi
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            echo "*"
+            echo "* If running interactively, sourcing"
+            echo "*"
+            echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+            echo "*"
+            echo "* will set most common environment variables for your job."
+        fi
+        echo "*" 
+        echo "*******************************************************"
 
-	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
-	then
-	    if echo $MAGPIE_SHELL | grep -q csh
-	    then
-		echo "setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv ZOOKEEPER_CONF_DIR \"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv ZOOKEEPER_LOG_DIR \"${ZOOKEEPER_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv ZOOKEEPER_NODES \"${ZOOKEEPER_NODES}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv ZOOKEEPER_NODES_FIRST \"${ZOOKEEPER_NODES_FIRST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    else
-		echo "export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export ZOOKEEPER_CONF_DIR=\"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export ZOOKEEPER_LOG_DIR=\"${ZOOKEEPER_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export ZOOKEEPER_NODES=\"${ZOOKEEPER_NODES}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export ZOOKEEPER_NODES_FIRST=\"${ZOOKEEPER_NODES_FIRST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    fi
-	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	fi
-	
-	if [ ${ZOOKEEPER_MODE} != "setuponly" ]
-	then
-	    local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZOOKEEPER_CONF_DIR \"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZOOKEEPER_LOG_DIR \"${ZOOKEEPER_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZOOKEEPER_NODES \"${ZOOKEEPER_NODES}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZOOKEEPER_NODES_FIRST \"${ZOOKEEPER_NODES_FIRST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            else
+                echo "export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZOOKEEPER_CONF_DIR=\"${ZOOKEEPER_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZOOKEEPER_LOG_DIR=\"${ZOOKEEPER_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZOOKEEPER_NODES=\"${ZOOKEEPER_NODES}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZOOKEEPER_NODES_FIRST=\"${ZOOKEEPER_NODES_FIRST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            fi
+            echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        fi
+        
+        if [ ${ZOOKEEPER_MODE} != "setuponly" ]
+        then
+            local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
 
-	    if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
-	    then  
-	        # Could be more dynamic w/ slurm call to determine current
-	        # run time, but probably is sufficient for this trivial
-	        # part.  Minimally, have to leave the totalsleepwait code
-	        # around for non-slurm systems.
-		local zookeepermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
-		
-		if [ "${zookeepermaxwaitseconds}" -lt 30 ]
-		then
-		    zookeepermaxwaitseconds=30
-		fi
-		
-		local zookeepermaxwaittimes=`expr ${zookeepermaxwaitseconds} \/ 30`
-	    else
-		local zookeepermaxwaittimes=1
-	    fi
-	    
-	    cd ${ZOOKEEPER_HOME}
+            if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+            then  
+                # Could be more dynamic w/ slurm call to determine current
+                # run time, but probably is sufficient for this trivial
+                # part.  Minimally, have to leave the totalsleepwait code
+                # around for non-slurm systems.
+                local zookeepermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+                
+                if [ "${zookeepermaxwaitseconds}" -lt 30 ]
+                then
+                    zookeepermaxwaitseconds=30
+                fi
+                
+                local zookeepermaxwaittimes=`expr ${zookeepermaxwaitseconds} \/ 30`
+            else
+                local zookeepermaxwaittimes=1
+            fi
+            
+            cd ${ZOOKEEPER_HOME}
 
-	    local zookeepercameup=0
-	    
-	    local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+            local zookeepercameup=0
+            
+            local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
             if ! type nc >/dev/null 2>&1
             then
-		echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
-		zookeepercameup=1
+                echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
+                zookeepercameup=1
             else 
-		for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
-            	    
+                for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
+                    
                     local zookeeperbadresponse=0
-		    
+                    
                     for zookeepernode in ${zookeepernodes}
                     do
-            		local zookeeperresponse=`echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}`
-            		if [ "${zookeeperresponse}" != "imok" ]
-            		then
-            		    zookeeperbadresponse=1
-            		    break
-            		fi
+                        local zookeeperresponse=`echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}`
+                        if [ "${zookeeperresponse}" != "imok" ]
+                        then
+                            zookeeperbadresponse=1
+                            break
+                        fi
                     done
-		    
+                    
                     if [ "${zookeeperbadresponse}" == "0" ]
                     then
-            		zookeepercameup=1
-            		break
+                        zookeepercameup=1
+                        break
                     fi
                     
                     echo "Waiting 30 more seconds for Zookeeper daemons to come up"
                     sleep 30
                     totalsleepwait=`expr ${totalsleepwait} + 30`
-		done
+                done
             fi  
-	    
-	    if [ "${zookeepercameup}" == "0" ]
-	    then
-		echo "Atleast 1 Zookeeper daemon never came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-		zookeeper_should_be_torndown=1
-		zookeeper_setup_successful=0
-		prior_setup_successful=false
-	    else
-		zookeeper_should_be_torndown=1
-		zookeeper_setup_successful=1
-	    fi
-	else
-	    zookeeper_should_be_torndown=1
-	    zookeeper_setup_successful=1
-	fi
+            
+            if [ "${zookeepercameup}" == "0" ]
+            then
+                echo "Atleast 1 Zookeeper daemon never came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+                zookeeper_should_be_torndown=1
+                zookeeper_setup_successful=0
+                prior_setup_successful=false
+            else
+                zookeeper_should_be_torndown=1
+                zookeeper_setup_successful=1
+            fi
+        else
+            zookeeper_should_be_torndown=1
+            zookeeper_setup_successful=1
+        fi
     else
-	zookeeper_should_be_torndown=0
-	zookeeper_setup_successful=1
+        zookeeper_should_be_torndown=0
+        zookeeper_setup_successful=1
     fi
 }
 
 Magpie_run_zookeeper () {
     if [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
     then
-	echo "*******************************************************"
-	echo "* Running Zookeeper ruok"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-zookeeper-zookeeperruok &
-	local scriptpid=$!
-	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+        echo "*******************************************************"
+        echo "* Running Zookeeper ruok"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-zookeeper-zookeeperruok &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${ZOOKEEPER_MODE}" == "launch" ]
     then
-	echo "*******************************************************"
-	echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
-	local scriptpid=$!
+        echo "*******************************************************"
+        echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
+        local scriptpid=$!
         wait $scriptpid
     elif [ "${ZOOKEEPER_MODE}" == "setuponly" ]
     then
-	echo "*******************************************************"
-	echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	local scriptpid=$!
-	wait ${scriptpid}
+        echo "*******************************************************"
+        echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        local scriptpid=$!
+        wait ${scriptpid}
     fi
 }
 
 Magpie_run_stop_zookeeper () {
     if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${zookeeper_should_be_torndown}" == "1" ]
     then
-	if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
-	then
-	    # Make variables unspecified for shutdown
-	    Magpie_make_all_local_dirs_unspecified
-	    
-	    echo "Stopping Zookeeper"
-	    ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop
-	    
-	    # Make variables specific now within Magpie
-	    Magpie_make_all_local_dirs_node_specific
-	fi
+        if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+        then
+            # Make variables unspecified for shutdown
+            Magpie_make_all_local_dirs_unspecified
+            
+            echo "Stopping Zookeeper"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop
+            
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
+        fi
     fi
     zookeeper_teardown_complete=1
 }

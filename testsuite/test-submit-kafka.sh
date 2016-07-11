@@ -21,14 +21,14 @@ SubmitKafkaStandardTests_KafkaPerformance() {
 SubmitKafkaStandardTests() {
     for testfunction in SubmitKafkaStandardTests_KafkaPerformance
     do
-	for testgroup in ${kafka_test_groups}
-	do
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!zookeeperversion}
-	    done
-	done
+        for testgroup in ${kafka_test_groups}
+        do
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!zookeeperversion}
+            done
+        done
     done
 }
 
@@ -43,13 +43,13 @@ SubmitKafkaDependencyTests_Dependency1() {
 SubmitKafkaDependencyTests() {
     for testfunction in SubmitKafkaDependencyTests_Dependency1
     do
-	for testgroup in ${kafka_test_groups}
-	do
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!zookeeperversion}
-	    done
-	done
+        for testgroup in ${kafka_test_groups}
+        do
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!zookeeperversion}
+            done
+        done
     done
 }

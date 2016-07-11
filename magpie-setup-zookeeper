@@ -58,44 +58,44 @@ then
         zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
     fi
     zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
-	
+        
     mkdir -p ${zookeeperdatadirpath}
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${zookeeperdatadirpath}"
-	exit 1
+        echo "mkdir failed making ${zookeeperdatadirpath}"
+        exit 1
     fi
     
     echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid
     
     if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
     then
-	zookeeperticktime=${ZOOKEEPER_TICKTIME}
+        zookeeperticktime=${ZOOKEEPER_TICKTIME}
     else
-	zookeeperticktime=2000
+        zookeeperticktime=2000
     fi
     
     if [ "${ZOOKEEPER_INITLIMIT}X" != "X" ]
     then
-	zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
+        zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
     else
-	if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
-	then
-	    zookeeperinitlimit=10
-	else
-	    zookeeperinitlimit=20
-	fi
+        if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+        then
+            zookeeperinitlimit=10
+        else
+            zookeeperinitlimit=20
+        fi
     fi
     
     if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
     then
-	zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
+        zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
     else
-	if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
-	then
-	    zookeepersynclimit=5
-	else
-	    zookeepersynclimit=10
-	fi
+        if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+        then
+            zookeepersynclimit=5
+        else
+            zookeepersynclimit=10
+        fi
     fi
 fi
 

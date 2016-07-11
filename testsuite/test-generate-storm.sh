@@ -44,16 +44,16 @@ GenerateStormStandardTests() {
 
     for testfunction in GenerateStormStandardTests_StandardWordCount
     do
-	for testgroup in ${storm_test_groups}
-	do
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${storm_test_groups}
+        do
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+            done
+        done
     done
 }
 
@@ -65,11 +65,11 @@ GenerateStormDependencyTests_Dependency1() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
     
     sed -i \
-	-e 's/export STORM_VERSION="\(.*\)"/export STORM_VERSION="'"${stormversion}"'"/' \
-	-e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Storm1A\/'"${stormversion}"'\/"/' \
-	magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
+        -e 's/export STORM_VERSION="\(.*\)"/export STORM_VERSION="'"${stormversion}"'"/' \
+        -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Storm1A\/'"${stormversion}"'\/"/' \
+        magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-storm-DependencyStorm1A-storm-${stormversion}-zookeeper-${zookeeperversion}-run-stormwordcount`
 }
@@ -84,26 +84,26 @@ GenerateStormDependencyTests() {
 
     for testfunction in GenerateStormDependencyTests_Dependency1
     do
-	for testgroup in ${storm_test_groups}
-	do
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${storm_test_groups}
+        do
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+            done
+        done
     done
 }
 
 GenerateStormPostProcessing () {
     if ls magpie.${submissiontype}*run-stormwordcount* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-stormwordcount*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-stormwordcount*
     fi
 
     if ls magpie.${submissiontype}-storm* >& /dev/null ; then
-	sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
+        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
     fi
 }
 

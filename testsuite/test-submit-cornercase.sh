@@ -210,12 +210,12 @@ SubmitCornerCaseTests() {
     javasave=${JAVA_HOME}
     if [ "${javasave}X" != "X" ]
     then
-	unset JAVA_HOME
+        unset JAVA_HOME
     fi
     SubmitCornerCaseTests_NoSetJava
     if [ "${javasave}X" != "X" ]
     then
-	export JAVA_HOME="${javasave}"
+        export JAVA_HOME="${javasave}"
     fi
 
     SubmitCornerCaseTests_BadSetJava

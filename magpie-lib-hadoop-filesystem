@@ -34,13 +34,13 @@ Magpie_calculate_hadoop_filesystem_paths () {
     local noderank=$1
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
-	hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    fsdefault="viewfs:///"
-	else
-	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	fi
+        hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
+        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        then
+            fsdefault="viewfs:///"
+        else
+            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+        fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
@@ -49,74 +49,74 @@ Magpie_calculate_hadoop_filesystem_paths () {
         else
             hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
         fi
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    fsdefault="viewfs:///"
-	else
-	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	fi
+        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        then
+            fsdefault="viewfs:///"
+        else
+            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+        fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
             hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-	    hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
+            hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
         fi
         
-	if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-	then
-	    fsdefault="viewfs:///"
-	else
-	    fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
-	fi
+        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        then
+            fsdefault="viewfs:///"
+        else
+            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+        fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
             hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-	    hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
+            hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
         fi
-	fsdefault="file:///"
+        fsdefault="file:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
             hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_ID}/tmp"
         else
-  	    hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
+            hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
         fi
-	fsdefault="lustre:///"
+        fsdefault="lustre:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
             hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-   	    hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
+            hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
         fi
-	fsdefault="magpienetworkfs:///"
+        fsdefault="magpienetworkfs:///"
     else
-	Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
-	exit 1
+        Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+        exit 1
     fi
 }
 
 Magpie_get_networkedhdfspath () {
     if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
     then
-	networkedhdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
+        networkedhdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
     elif [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
     then
-	networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
+        networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
     else
-	Magpie_output_internal_error "Magpie_get_networkedhdfspath called without HDFS networked path set used" 
+        Magpie_output_internal_error "Magpie_get_networkedhdfspath called without HDFS networked path set used" 
     fi
     
     if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
     then
-	networkedhdfspath="$networkedhdfspath/${MAGPIE_JOB_ID}"
+        networkedhdfspath="$networkedhdfspath/${MAGPIE_JOB_ID}"
     fi
 }
 

@@ -77,18 +77,18 @@ GenerateHbaseStandardTests() {
 
     for testfunction in GenerateHbaseStandardTests_StandardPerformanceEval
     do
-	for testgroup in ${hbase_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
-	    CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${hbase_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
+            CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
+            done
+        done
     done
 }
 
@@ -102,22 +102,22 @@ GenerateHbaseDependencyTests_Dependency1() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
-	-e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
-	-e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Hbase1A\/'"${hbaseversion}"'"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+        -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
+        -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Hbase1A\/'"${hbaseversion}"'"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hbase1A\/'"${hbaseversion}"'"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hbase1A\/'"${hbaseversion}"'"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsoverlustre*
     
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hbase1A\/'"${hbaseversion}"'"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hbase1A\/'"${hbaseversion}"'"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsovernetworkfs*
     
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
 }
@@ -141,40 +141,40 @@ GenerateHbaseDependencyTests_Dependency2() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-hdfs-more-nodes-decommissionhdfsnodes-hdfsovernetworkfs
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
-	-e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
-	-e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Hbase2A\/'"${hbaseversion}"'"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+        -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="'"${hbaseversion}"'"/' \
+        -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Hbase2A\/'"${hbaseversion}"'"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hbase2A\/'"${hbaseversion}"'"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Hbase2A\/'"${hbaseversion}"'"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsoverlustre*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hbase2A\/'"${hbaseversion}"'"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Hbase2A\/'"${hbaseversion}"'"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsovernetworkfs*
 
     sed -i \
-	-e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
-	-e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hbasewritedata.sh"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-scripthbasewritedata*
+        -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
+        -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hbasewritedata.sh"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-scripthbasewritedata*
 
     sed -i \
-	-e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
-	-e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hbasereaddata.sh"/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-scripthbasereaddata*
+        -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
+        -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hbasereaddata.sh"/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-scripthbasereaddata*
 
     # XXX why not start w/ hadoop submission script? Still need zookeeper to take up 3 nodes.
     sed -i \
-	-e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="hadoop"/' \
-	-e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
-	-e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
-	-e 's/export HBASE_SETUP=yes/export HBASE_SETUP=no/' \
-	magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*decommissionhdfsnodes*
+        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="hadoop"/' \
+        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+        -e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
+        -e 's/export HBASE_SETUP=yes/export HBASE_SETUP=no/' \
+        magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*decommissionhdfsnodes*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
 }
@@ -190,44 +190,44 @@ GenerateHbaseDependencyTests() {
 
     for testfunction in GenerateHbaseDependencyTests_Dependency1 GenerateHbaseDependencyTests_Dependency2
     do
-	for testgroup in ${hbase_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
-	    CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${hbase_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
+            CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
+            done
+        done
     done
 }
 
 GenerateHbasePostProcessing () {
     if ls magpie.${submissiontype}*run-hbaseperformanceeval* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hbaseperformanceeval*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hbaseperformanceeval*
     fi
     if ls magpie.${submissiontype}*run-scripthbasewritedata* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasewritedata*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasewritedata*
     fi
     if ls magpie.${submissiontype}*run-scripthbasereaddata* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasereaddata*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasereaddata*
     fi
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
         # Guarantee 60 minutes for the job that should last awhile
-	${functiontogettimeoutput} 60
-	sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hbase-with-hdfs*
+        ${functiontogettimeoutput} 60
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hbase-with-hdfs*
     fi
     # special node sizes first
     if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes* >& /dev/null ; then
-	sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
+        sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
     fi
     if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes* >& /dev/null ; then
-	sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
+        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
     fi
     if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-	sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs* 
+        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs* 
     fi
 }

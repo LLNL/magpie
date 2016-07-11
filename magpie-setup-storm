@@ -53,8 +53,8 @@ if [ ! -d "${stormlocaldir}" ]
 then
     mkdir -p ${stormlocaldir}
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${stormlocaldir}"
-	exit 1
+        echo "mkdir failed making ${stormlocaldir}"
+        exit 1
     fi
 fi
 
@@ -69,7 +69,7 @@ else
 
     if [ "${stormslotcount}" == "0" ]
     then
-	stormslotcount="1"
+        stormslotcount="1"
     fi
 fi
 

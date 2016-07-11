@@ -28,13 +28,13 @@ SubmitHadoopStandardTests_StandardTerasort() {
 SubmitHadoopStandardTests() {
     for testfunction in SubmitHadoopStandardTests_StandardTerasort
     do
-	for testgroup in ${hadoop_test_groups}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion}
-	    done
-	done
+        for testgroup in ${hadoop_test_groups}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion}
+            done
+        done
     done
 }
 
@@ -111,24 +111,24 @@ SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
 SubmitHadoopDependencyTests() {
     for testfunction in SubmitHadoopDependencyTests_Dependency1
     do
-	for testgroup in ${hadoop_test_groups}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion}
-	    done
-	done
+        for testgroup in ${hadoop_test_groups}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion}
+            done
+        done
     done
 
     for testfunction in SubmitHadoopDependencyTests_Dependency2 SubmitHadoopDependencyTests_Dependency3 SubmitHadoopDependencyTests_Dependency4
     do
-	for testgroup in ${hadoop_test_groups_decommission}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion}
-	    done
-	done
+        for testgroup in ${hadoop_test_groups_decommission}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion}
+            done
+        done
     done
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-2.4.0-DependencyHadoop5A-hdfsoverlustre-run-hadoopterasort

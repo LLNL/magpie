@@ -47,16 +47,16 @@ GenerateKafkaStandardTests() {
 
     for testfunction in GenerateKafkaStandardTests_KafkaPerformance
     do
-	for testgroup in ${kafka_test_groups}
-	do
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${kafka_test_groups}
+        do
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+            done
+        done
     done
 }
 
@@ -68,14 +68,14 @@ GenerateKafkaDependencyTests_Dependency1() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
 
     sed -i \
-	-e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="kafka"/' \
-	-e 's/export KAFKA_SETUP=no/export KAFKA_SETUP=yes/' \
-	-e 's/export KAFKA_VERSION="\(.*\)"/export KAFKA_VERSION="'"${kafkaversion}"'"/' \
-	-e 's/export ZOOKEEPER_SETUP=no/export ZOOKEEPER_SETUP=yes/' \
-	-e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
-	-e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Kafka1A\/'"${kafkaversion}"'\/"/' \
-	magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
+        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="kafka"/' \
+        -e 's/export KAFKA_SETUP=no/export KAFKA_SETUP=yes/' \
+        -e 's/export KAFKA_VERSION="\(.*\)"/export KAFKA_VERSION="'"${kafkaversion}"'"/' \
+        -e 's/export ZOOKEEPER_SETUP=no/export ZOOKEEPER_SETUP=yes/' \
+        -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/Kafka1A\/'"${kafkaversion}"'\/"/' \
+        magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
 
     JavaCommonSubstitution ${javaversion} magpie.${submissiontype}-kafka-DependencyKafka1A-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-run-kafkaperformance
 }
@@ -90,22 +90,22 @@ GenerateKafkaDependencyTests() {
 
     for testfunction in GenerateKafkaDependencyTests_Dependency1
     do
-	for testgroup in ${kafka_test_groups}
-	do
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${kafka_test_groups}
+        do
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
+            done
+        done
     done
 }
 
 GenerateKafkaPostProcessing () {
     if ls magpie.${submissiontype}*run-kafkaperformance* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-kafkaperformance-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-kafkaperformance*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-kafkaperformance-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-kafkaperformance*
     fi
 }
 

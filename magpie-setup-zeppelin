@@ -66,7 +66,7 @@ if [ "${ZEPPELIN_JAVA_OPTS}X" != "X" ]
 then
     if ! echo ${ZEPPELIN_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
     then
-	export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} -Djava.io.tmpdir=${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp"
+        export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} -Djava.io.tmpdir=${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp"
     fi
 fi
 extrazeppelinjavaopts="${extrazeppelinjavaopts}${extrazeppelinjavaopts:+" "}-Djava.io.tmpdir=${ZEPPELIN_LOCAL_SCRATCHSPACE_DIR}/tmp"

@@ -65,41 +65,41 @@ else
 # 3600 = 60 mins
     if [ "${secondsleft}" -gt 3600 ]
     then
-	sleepseconds=`expr ${secondsleft} - 3600`
-	sleep ${sleepseconds}
+        sleepseconds=`expr ${secondsleft} - 3600`
+        sleep ${sleepseconds}
 
-	echo "*** Warning - 60 minutes left"
-	secondsleft=3600
+        echo "*** Warning - 60 minutes left"
+        secondsleft=3600
     fi
 
 # 1800 = 30 mins 
     if [ "${secondsleft}" -gt 1800 ]
     then
-	sleepseconds=`expr ${secondsleft} - 1800`
-	sleep ${sleepseconds}
+        sleepseconds=`expr ${secondsleft} - 1800`
+        sleep ${sleepseconds}
 
-	echo "*** Warning - 30 minutes left"
-	secondsleft=1800
+        echo "*** Warning - 30 minutes left"
+        secondsleft=1800
     fi
 
 # 300 = 5 mins 
     if [ "${secondsleft}" -gt 300 ]
     then
-	sleepseconds=`expr ${secondsleft} - 300`
-	sleep ${sleepseconds}
+        sleepseconds=`expr ${secondsleft} - 300`
+        sleep ${sleepseconds}
 
-	echo "*** Warning - 5 minutes left"
-	secondsleft=300
+        echo "*** Warning - 5 minutes left"
+        secondsleft=300
     fi
 
 # 60 = 1 min 
     if [ "${secondsleft}" -gt 60 ]
     then
-	sleepseconds=`expr ${secondsleft} - 60`
-	sleep ${sleepseconds}
+        sleepseconds=`expr ${secondsleft} - 60`
+        sleep ${sleepseconds}
 
-	echo "*** Warning - 1 minute left"
-	secondsleft=60
+        echo "*** Warning - 1 minute left"
+        secondsleft=60
     fi
 
     sleep ${secondsleft}

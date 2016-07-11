@@ -33,16 +33,16 @@ SubmitPhoenixStandardTests_Performanceeval() {
 SubmitPhoenixStandardTests() {
     for testfunction in SubmitPhoenixStandardTests_Performanceeval
     do
-	for testgroup in ${phoenix_test_groups}
-	do
-	    local hbaseversion="${testgroup}_hbaseversion"
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion}
-	    done
-	done
+        for testgroup in ${phoenix_test_groups}
+        do
+            local hbaseversion="${testgroup}_hbaseversion"
+            local hadoopversion="${testgroup}_hadoopversion"
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion}
+            done
+        done
     done
 }
 
@@ -79,15 +79,15 @@ SubmitPhoenixDependencyTests_Dependency2() {
 SubmitPhoenixDependencyTests() {
     for testfunction in SubmitPhoenixDependencyTests_Dependency1 SubmitPhoenixDependencyTests_Dependency2
     do
-	for testgroup in ${phoenix_test_groups}
-	do
-	    local hbaseversion="${testgroup}_hbaseversion"
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion}
-	    done
-	done
+        for testgroup in ${phoenix_test_groups}
+        do
+            local hbaseversion="${testgroup}_hbaseversion"
+            local hadoopversion="${testgroup}_hadoopversion"
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion}
+            done
+        done
     done
 }

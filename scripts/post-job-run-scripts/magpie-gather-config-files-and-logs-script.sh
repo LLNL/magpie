@@ -27,20 +27,20 @@ Gather_common () {
     
     if [ "${saveconfdir}" == "y" ]
     then
-	if [ "${!projectconfdir}X" != "X" ] && [ -d ${!projectconfdir}/ ] && [ "$(ls -A ${!projectconfdir}/)" ]
-	then
-	    mkdir -p ${targetdir}/conf
-	    cp -a ${!projectconfdir}/* ${targetdir}/conf
-	fi
+        if [ "${!projectconfdir}X" != "X" ] && [ -d ${!projectconfdir}/ ] && [ "$(ls -A ${!projectconfdir}/)" ]
+        then
+            mkdir -p ${targetdir}/conf
+            cp -a ${!projectconfdir}/* ${targetdir}/conf
+        fi
     fi
 
     if [ "${savelogdir}" == "y" ]
     then
-	if [ "${!projectlogdir}X" != "X" ] && [ -d ${!projectlogdir}/ ] && [ "$(ls -A ${!projectlogdir}/)" ]
-	then
-	    mkdir -p ${targetdir}/log
-	    cp -a ${!projectlogdir}/* ${targetdir}/log
-	fi
+        if [ "${!projectlogdir}X" != "X" ] && [ -d ${!projectlogdir}/ ] && [ "$(ls -A ${!projectlogdir}/)" ]
+        then
+            mkdir -p ${targetdir}/log
+            cp -a ${!projectlogdir}/* ${targetdir}/log
+        fi
     fi
 }
 
@@ -58,11 +58,11 @@ then
     cp --parents `find . | grep -e 'std'` ${targetdir}/work
 else
     if [ "${SPARK_LOCAL_DIR}X" != "X" ] && [ -d ${SPARK_LOCAL_DIR}/ ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/)" ] \
-	&& [ -d ${SPARK_LOCAL_DIR}/work ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/work)" ]
+        && [ -d ${SPARK_LOCAL_DIR}/work ] && [ "$(ls -A ${SPARK_LOCAL_DIR}/work)" ]
     then
-	mkdir -p ${targetdir}/work
-	cd ${SPARK_LOCAL_DIR}/work/
-	cp --parents `find . | grep -e 'std'` ${targetdir}/work
+        mkdir -p ${targetdir}/work
+        cd ${SPARK_LOCAL_DIR}/work/
+        cp --parents `find . | grep -e 'std'` ${targetdir}/work
     fi
 fi
 

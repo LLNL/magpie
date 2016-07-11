@@ -6,14 +6,14 @@ while [[ $# -gt 0 ]]
 do
     key="$1"
     case $key in
-	-s)
-	    seconds=$2
-	    shift
-	    ;;
-	*)
+        -s)
+            seconds=$2
+            shift
+            ;;
+        *)
             echo "Usage: test-sleep [-s seconds]"
-	    exit 1
-	    ;;
+            exit 1
+            ;;
     esac
     shift
 done

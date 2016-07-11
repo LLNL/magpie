@@ -33,16 +33,16 @@ GeneratePigStandardTests() {
 
     for testfunction in GeneratePigStandardTests_Common
     do
-	for testgroup in ${pig_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${pig_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+            done
+        done
     done
 }
 
@@ -60,29 +60,29 @@ GeneratePigDependencyTests_Dependency1() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsovernetworkfs-no-copy-run-pigscript
 
     sed -i \
-	-e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
-	-e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' \
-	magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*
+        -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
+        -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' \
+        magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*
 
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
-	-e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1A\/'"${pigversion}"'"/' \
-	magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+        -e 's/export HADOOP_HDFSOVERLUSTRE_PATH="\(.*\)"/export HADOOP_HDFSOVERLUSTRE_PATH="'"${lustredirpathsubst}"'\/hdfsoverlustre\/DEPENDENCYPREFIX\/Pig1A\/'"${pigversion}"'"/' \
+        magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre*
     
     sed -i \
-	-e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
-	-e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Pig1A\/'"${pigversion}"'"/' \
-	magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsovernetworkfs*
+        -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+        -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Pig1A\/'"${pigversion}"'"/' \
+        magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsovernetworkfs*
 
     sed -i \
-	-e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-	-e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pig.sh"/' \
-	magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*run-pigscript*
+        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
+        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pig.sh"/' \
+        magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*run-pigscript*
 
     sed -i \
-	-e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="script"/' \
-	-e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pig.pig"/' \
-	magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*no-copy-run-pigscript*
+        -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="script"/' \
+        -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-pig.pig"/' \
+        magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*no-copy-run-pigscript*
     
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*`
 }
@@ -97,24 +97,24 @@ GeneratePigDependencyTests() {
 
     for testfunction in GeneratePigDependencyTests_Dependency1
     do
-	for testgroup in ${pig_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local javaversion="${testgroup}_javaversion"
-	    CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
-	    done
-	done
+        for testgroup in ${pig_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            local javaversion="${testgroup}_javaversion"
+            CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+            done
+        done
     done
 }
 
 GeneratePigPostProcessing () {
     if ls magpie.${submissiontype}*run-testpig* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-testpig*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-testpig*
     fi
     if ls magpie.${submissiontype}*run-pigscript* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pigscript*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pigscript*
     fi
 }

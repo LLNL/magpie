@@ -32,13 +32,13 @@ JavaCommonSubstitution() {
 
     if [ "${javaversion}" == "${java16}" ]
     then
-	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' ${files}
+        sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java16pathsubst}"'"/' ${files}
     elif [ "${javaversion}" == "${java17}" ]
     then
-	sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ${files}
+        sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ${files}
     else
-	echo "Invalid Java Version Specified - ${javaversion}"
-	exit 1
+        echo "Invalid Java Version Specified - ${javaversion}"
+        exit 1
     fi
 }
 
@@ -53,8 +53,8 @@ CheckForDependency() {
 
     if [ "${!variabletocheck}" != "y" ]
     then
-	echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
-	break
+        echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
+        break
     fi
 }
 
@@ -68,6 +68,6 @@ RemoveTestsCheck() {
 
     if [ "${!variabletocheck}" == "n" ]
     then
-	rm -f magpie.${submissiontype}*${project}-${version}*
+        rm -f magpie.${submissiontype}*${project}-${version}*
     fi
 }

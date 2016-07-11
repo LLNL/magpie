@@ -69,7 +69,7 @@ else
 
     if [ "${hbaseresourcememory}" -lt "${hbaseregionserverdaemonheapmax}" ]
     then
-	hbaseregionserverdaemonheapmax=${hbaseresourcememory}
+        hbaseregionserverdaemonheapmax=${hbaseresourcememory}
     fi
 fi
 
@@ -110,8 +110,8 @@ if [ ! -d "${hbasetmpdir}" ]
 then
     mkdir -p ${hbasetmpdir}
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${hbasetmpdir}"
-	exit 1
+        echo "mkdir failed making ${hbasetmpdir}"
+        exit 1
     fi
 fi
 
@@ -138,11 +138,11 @@ then
     openfilescount=`expr ${openfilesslavecount} \* 16384`
     if [ "${openfilescount}" -lt "32768" ]
     then
-	openfilescount=32768
+        openfilescount=32768
     fi
     if [ "${openfilescount}" -gt "131072" ]
     then
-	openfilescount=131072
+        openfilescount=131072
     fi
     
     if [ "${openfileshardlimit}" != "unlimited" ]
@@ -166,11 +166,11 @@ then
     userprocessescount=`expr ${userprocessesslavecount} \* 2048`
     if [ "${userprocessescount}" -lt "4096" ]
     then
-	userprocessescount=4096
+        userprocessescount=4096
     fi
     if [ "${userprocessescount}" -gt "32768" ]
     then
-	userprocessescount=32768
+        userprocessescount=32768
     fi
     
     if [ "${userprocesseshardlimit}" != "unlimited" ]
@@ -191,8 +191,8 @@ if [ ! -d "${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
 then
     mkdir -p ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp
     if [ $? -ne 0 ] ; then
-	echo "mkdir failed making ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
-	exit 1
+        echo "mkdir failed making ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
+        exit 1
     fi
 fi
 

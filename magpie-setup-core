@@ -65,32 +65,32 @@ do
 
     if [ "${!setupvar}" == "yes" ]
     then
-	if [ "${!confdirvar}X" != "X" ]
-	then
-	    mkdir -p ${!confdirvar}
-	    if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${!confdirvar}"
-		exit 1
-	    fi
-	fi
+        if [ "${!confdirvar}X" != "X" ]
+        then
+            mkdir -p ${!confdirvar}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${!confdirvar}"
+                exit 1
+            fi
+        fi
 
-	if [ "${!logdirvar}X" != "X" ]
-	then
-	    mkdir -p ${!logdirvar}
-	    if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${!logdirvar}"
-		exit 1
-	    fi
-	fi
+        if [ "${!logdirvar}X" != "X" ]
+        then
+            mkdir -p ${!logdirvar}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${!logdirvar}"
+                exit 1
+            fi
+        fi
 
-	if [ "${!localscratchspacedirvar}X" != "X" ]
-	then
-	    mkdir -p ${!localscratchspacedirvar}
-	    if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${!localscratchspacedirvar}"
-		exit 1
-	    fi
-	fi
+        if [ "${!localscratchspacedirvar}X" != "X" ]
+        then
+            mkdir -p ${!localscratchspacedirvar}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${!localscratchspacedirvar}"
+                exit 1
+            fi
+        fi
     fi
 done
 
@@ -106,11 +106,11 @@ then
 else
     if [ -x ${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ]
     then
-	hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
-	hostrangescriptoptions=""
+        hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
+        hostrangescriptoptions=""
     else
-	echo "Cannot find tool to expand host ranges"
-	exit 1
+        echo "Cannot find tool to expand host ranges"
+        exit 1
     fi
 fi
 
@@ -142,9 +142,9 @@ then
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] 
     then
-	head -${jobslavecount} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
+        head -${jobslavecount} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
     else
-	cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
+        cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
     fi
 
     tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
@@ -162,7 +162,7 @@ then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HADOOP_CONF_DIR}/slaves
     if [ -f "${MAGPIE_LOCAL_CONF_DIR}/namenode_hdfs_federation" ]
     then
-	cp ${MAGPIE_LOCAL_CONF_DIR}/namenode_hdfs_federation ${HADOOP_CONF_DIR}/namenode_hdfs_federation
+        cp ${MAGPIE_LOCAL_CONF_DIR}/namenode_hdfs_federation ${HADOOP_CONF_DIR}/namenode_hdfs_federation
     fi
 
     slavenodes=`cat ${HADOOP_CONF_DIR}/slaves`
@@ -172,7 +172,7 @@ then
     # We assume FQDN across all nodes is the same
     for node in ${slavenodes}
     do
-	echo "${node}.${dnsdomainname}" >> ${HADOOP_CONF_DIR}/slaves_fqdn
+        echo "${node}.${dnsdomainname}" >> ${HADOOP_CONF_DIR}/slaves_fqdn
     done
 fi
 
@@ -219,10 +219,10 @@ then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${TACHYON_CONF_DIR}/masters
     if [ "${TACHYON_WORKER_ON_MASTER}" == "yes" ]
     then
-	cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${TACHYON_CONF_DIR}/workers
-	cat ${MAGPIE_LOCAL_CONF_DIR}/job_slaves >> ${TACHYON_CONF_DIR}/workers
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${TACHYON_CONF_DIR}/workers
+        cat ${MAGPIE_LOCAL_CONF_DIR}/job_slaves >> ${TACHYON_CONF_DIR}/workers
     else
-	cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${TACHYON_CONF_DIR}/workers
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${TACHYON_CONF_DIR}/workers
     fi
 fi
 

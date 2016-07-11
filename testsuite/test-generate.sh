@@ -272,13 +272,13 @@ cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
 
 if [ "${defaulttests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateDefaultStandardTests
+        GenerateDefaultStandardTests
     fi
 fi
 
 if [ "${functionalitytests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateFunctionalityTests
+        GenerateFunctionalityTests
     fi
 fi
 
@@ -288,71 +288,71 @@ fi
 
 if [ "${hadooptests}" == "y" ] && [ "${hadoopversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateHadoopStandardTests
+        GenerateHadoopStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GenerateHadoopDependencyTests
+        GenerateHadoopDependencyTests
     fi
 fi
 if [ "${pigtests}" == "y" ] && [ "${pigversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GeneratePigStandardTests
+        GeneratePigStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GeneratePigDependencyTests
+        GeneratePigDependencyTests
     fi
 fi
 if [ "${mahouttests}" == "y" ] && [ "${mahoutversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateMahoutStandardTests
+        GenerateMahoutStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GenerateMahoutDependencyTests
+        GenerateMahoutDependencyTests
     fi
 fi
 if [ "${hbasetests}" == "y" ] && [ "${hbaseversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateHbaseStandardTests
+        GenerateHbaseStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GenerateHbaseDependencyTests
+        GenerateHbaseDependencyTests
     fi
 fi
 if [ "${phoenixtests}" == "y" ] && [ "${phoenixversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GeneratePhoenixStandardTests
+        GeneratePhoenixStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GeneratePhoenixDependencyTests
+        GeneratePhoenixDependencyTests
     fi
 fi
 if [ "${sparktests}" == "y" ] && [ "${sparkversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateSparkStandardTests
+        GenerateSparkStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GenerateSparkDependencyTests
+        GenerateSparkDependencyTests
     fi
 fi
 if [ "${stormtests}" == "y" ] && [ "${stormversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateStormStandardTests
+        GenerateStormStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GenerateStormDependencyTests
+        GenerateStormDependencyTests
     fi
 fi
 if [ "${kafkatests}" == "y" ] && [ "${kafkaversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateKafkaStandardTests
+        GenerateKafkaStandardTests
     fi
     if [ "${dependencytests}" == "y" ]; then
-	GenerateKafkaDependencyTests
+        GenerateKafkaDependencyTests
     fi
 fi
 if [ "${zookeepertests}" == "y" ] && [ "${zookeeperversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
-	GenerateZookeeperStandardTests
+        GenerateZookeeperStandardTests
     fi
 fi
 
@@ -398,7 +398,7 @@ do
     versionsvariable="${project}_all_versions"
     for version in ${!versionsvariable}
     do
-	RemoveTestsCheck ${project} ${version}
+        RemoveTestsCheck ${project} ${version}
     done
 done    
 
@@ -452,27 +452,27 @@ fi
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
 
-	sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
+        sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
     fi
 elif [ "${submissiontype}" == "msub-slurm-srun" ]
 then
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
-	
-	sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
-	sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+        
+        sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
+        sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
     fi
 elif [ "${submissiontype}" == "lsf-mpirun" ]
 then
     if ls magpie.${submissiontype}* >& /dev/null ; then
-	sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
-	sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
 
-	sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
+        sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
     fi
 fi
 

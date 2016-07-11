@@ -17,14 +17,14 @@ SubmitPigStandardTests_Common() {
 SubmitPigStandardTests() {
     for testfunction in SubmitPigStandardTests_Common
     do
-	for testgroup in ${pig_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${pig_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 }
 
@@ -46,13 +46,13 @@ SubmitPigDependencyTests_Dependency1() {
 SubmitPigDependencyTests() {
     for testfunction in SubmitPigDependencyTests_Dependency1
     do
-	for testgroup in ${pig_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion}
-	    done
-	done
+        for testgroup in ${pig_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion}
+            done
+        done
     done
 }

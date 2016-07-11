@@ -48,15 +48,15 @@ SubmitHbaseStandardTests_StandardPerformanceEval() {
 SubmitHbaseStandardTests() {
     for testfunction in SubmitHbaseStandardTests_StandardPerformanceEval
     do
-	for testgroup in ${hbase_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion}
-	    done
-	done
+        for testgroup in ${hbase_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion}
+            done
+        done
     done
 }
 
@@ -96,14 +96,14 @@ SubmitHbaseDependencyTests() {
     
     for testfunction in SubmitHbaseDependencyTests_Dependency1 SubmitHbaseDependencyTests_Dependency2
     do
-	for testgroup in ${hbase_test_groups}
-	do
-	    local hadoopversion="${testgroup}_hadoopversion"
-	    local zookeeperversion="${testgroup}_zookeeperversion"
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion}
-	    done
-	done
+        for testgroup in ${hbase_test_groups}
+        do
+            local hadoopversion="${testgroup}_hadoopversion"
+            local zookeeperversion="${testgroup}_zookeeperversion"
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion}
+            done
+        done
     done
 }

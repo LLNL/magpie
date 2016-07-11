@@ -40,18 +40,18 @@ if [ "${HBASE_PERFORMANCEEVAL_MODE}X" != "X" ]
 then
     if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-thread" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-thread" ]
     then
-	nomapredoption="--nomapred"
+        nomapredoption="--nomapred"
     else
-	nomapredoption=""
+        nomapredoption=""
     fi
 
     if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-thread" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ]
     then
-	writecmd="sequentialWrite"
-	readcmd="sequentialRead"
+        writecmd="sequentialWrite"
+        readcmd="sequentialRead"
     else
-	writecmd="randomWrite"
-	readcmd="randomRead"
+        writecmd="randomWrite"
+        readcmd="randomRead"
     fi
 else
     nomapredoption="--nomapred"
@@ -72,9 +72,9 @@ then
 else
     hbaseclientcount=$HBASE_PERFORMANCEEVAL_CLIENT_COUNT
 fi
-	    
+            
 cd ${HBASE_HOME}
-	    
+            
 #
 # Remove previous runs if they are lingering
 #

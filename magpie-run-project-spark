@@ -38,224 +38,224 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 Magpie_run_start_spark () {
     if [ "${SPARK_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
     then
-	cd ${SPARK_HOME}
+        cd ${SPARK_HOME}
 
-	if [ ${SPARK_MODE} != "setuponly" ]
-	then
-	    if [ "${SPARK_USE_YARN}" != "yes" ]
-	    then
-	        # Make variables unspecified for launching
-		Magpie_make_all_local_dirs_unspecified
+        if [ ${SPARK_MODE} != "setuponly" ]
+        then
+            if [ "${SPARK_USE_YARN}" != "yes" ]
+            then
+                # Make variables unspecified for launching
+                Magpie_make_all_local_dirs_unspecified
 
-		echo "Starting spark"
-		${sparksetupscriptprefix}/start-all.sh
-		
+                echo "Starting spark"
+                ${sparksetupscriptprefix}/start-all.sh
+                
                 # Make variables specific now within Magpie
-		Magpie_make_all_local_dirs_node_specific
-		
+                Magpie_make_all_local_dirs_node_specific
+                
                 # My rough estimate for setup time is 30 seconds per 128 nodes
-		local sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
-		if [ ${sleepwait} -lt 30 ]
-		then
-		    sleepwait=30
-		fi
-		echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
-		sleep ${sleepwait}
-		totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
-	    fi
-	fi
+                local sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
+                if [ ${sleepwait} -lt 30 ]
+                then
+                    sleepwait=30
+                fi
+                echo "Waiting ${sleepwait} seconds to allow Spark daemons to setup"
+                sleep ${sleepwait}
+                totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+            fi
+        fi
 
-	echo "*******************************************************"
-	echo "*"
-	echo "* Spark Information"
-	echo "*"
-	echo "* You can view your Spark status by launching a web browser and pointing to ..."
-	echo "*"
-	if [ "${SPARK_USE_YARN}" != "yes" ]
-	then 
-	    echo "* Spark Master: http://${SPARK_MASTER_NODE}:${SPARK_MASTER_WEBUI_PORT}"
-	    echo "* Spark Worker: http://<WORKERNODE>:${SPARK_WORKER_WEBUI_PORT}"
-	    echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${SPARK_APPLICATION_DASHBOARD_PORT}"
-	    echo "*" 
-	    echo "* The Spark Master for running jobs is"
-	    echo "*"
-	    echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
-	fi
-	echo "*"
-	echo "* To access Spark directly, you'll want to:"
-	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
-	else
-	    echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
-	fi
-	echo "*   cd $SPARK_HOME"
-	echo "*"
-	echo "* Then you can do as you please.  For example to run a job:"
-	echo "*" 
-	if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-	then 
-	    echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
-	else
-	    echo "*   ${sparkcmdprefix}/spark-submit --class <class> <jar>"
-	fi
+        echo "*******************************************************"
+        echo "*"
+        echo "* Spark Information"
+        echo "*"
+        echo "* You can view your Spark status by launching a web browser and pointing to ..."
+        echo "*"
+        if [ "${SPARK_USE_YARN}" != "yes" ]
+        then 
+            echo "* Spark Master: http://${SPARK_MASTER_NODE}:${SPARK_MASTER_WEBUI_PORT}"
+            echo "* Spark Worker: http://<WORKERNODE>:${SPARK_WORKER_WEBUI_PORT}"
+            echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${SPARK_APPLICATION_DASHBOARD_PORT}"
+            echo "*" 
+            echo "* The Spark Master for running jobs is"
+            echo "*"
+            echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+        fi
+        echo "*"
+        echo "* To access Spark directly, you'll want to:"
+        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+        else
+            echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+        fi
+        echo "*   cd $SPARK_HOME"
+        echo "*"
+        echo "* Then you can do as you please.  For example to run a job:"
+        echo "*" 
+        if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
+        then 
+            echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+        else
+            echo "*   ${sparkcmdprefix}/spark-submit --class <class> <jar>"
+        fi
 
-	if [ "${SPARK_MODE}" == "setuponly" ]
-	then
-	    echo "*" 
-	    echo "* To setup, you probably want to run:" 
-	    echo "*"
-	    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
-	    if echo $MAGPIE_SHELL | grep -q csh
-	    then
-		echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
-	    else
-		echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
-	    fi
-	    echo "*   cd $SPARK_HOME"
-	    echo "*   ${sparksetupscriptprefix}/start-all.sh" 
-	fi
+        if [ "${SPARK_MODE}" == "setuponly" ]
+        then
+            echo "*" 
+            echo "* To setup, you probably want to run:" 
+            echo "*"
+            echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+            else
+                echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+            fi
+            echo "*   cd $SPARK_HOME"
+            echo "*   ${sparksetupscriptprefix}/start-all.sh" 
+        fi
 
-	echo "*" 
-	echo "* To end/cleanup your session, kill the daemons via:"
-	echo "*" 
-	echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
-	else
-	    echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
-	fi
-	echo "*   cd $SPARK_HOME"
-	echo "*   ${sparksetupscriptprefix}/stop-all.sh"
-	echo "*" 
-	echo "* Some additional environment variables you may sometimes wish to set"
-	echo "*" 
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-	    echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
-	else
-	    echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
-	    echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
-	fi
+        echo "*" 
+        echo "* To end/cleanup your session, kill the daemons via:"
+        echo "*" 
+        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
+        else
+            echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
+        fi
+        echo "*   cd $SPARK_HOME"
+        echo "*   ${sparksetupscriptprefix}/stop-all.sh"
+        echo "*" 
+        echo "* Some additional environment variables you may sometimes wish to set"
+        echo "*" 
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+            echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
+        else
+            echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+            echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
+        fi
 
-	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
-	then
-	    echo "*"
-	    echo "* If running interactively, sourcing"
-	    echo "*"
-	    echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
-	    echo "*"
-	    echo "* will set most common environment variables for your job."
-	fi
-	echo "*" 
-	echo "*******************************************************"
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            echo "*"
+            echo "* If running interactively, sourcing"
+            echo "*"
+            echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+            echo "*"
+            echo "* will set most common environment variables for your job."
+        fi
+        echo "*" 
+        echo "*******************************************************"
 
-	if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
-	then
-	    if echo $MAGPIE_SHELL | grep -q csh
-	    then
-		echo "setenv SPARK_HOME \"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv SPARK_LOG_DIR \"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv SPARK_MASTER_NODE \"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		if [ "${SPARK_USE_YARN}" != "yes" ]
-		then
-		    echo "setenv SPARK_MASTER_PORT \"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		fi
-		echo "setenv SPARK_SLAVE_COUNT \"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv SPARK_SLAVE_CORE_COUNT \"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "setenv SPARK_VERSION \"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    else
-		echo "export SPARK_HOME=\"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export SPARK_MASTER_NODE=\"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		if [ "${SPARK_USE_YARN}" != "yes" ]
-		then
-		    echo "export SPARK_MASTER_PORT=\"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		fi
-		echo "export SPARK_SLAVE_COUNT=\"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export SPARK_SLAVE_CORE_COUNT=\"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-		echo "export SPARK_VERSION=\"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	    fi
-	    echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	fi
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "setenv SPARK_HOME \"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_LOG_DIR \"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_MASTER_NODE \"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                if [ "${SPARK_USE_YARN}" != "yes" ]
+                then
+                    echo "setenv SPARK_MASTER_PORT \"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                fi
+                echo "setenv SPARK_SLAVE_COUNT \"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_SLAVE_CORE_COUNT \"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_VERSION \"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            else
+                echo "export SPARK_HOME=\"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_MASTER_NODE=\"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                if [ "${SPARK_USE_YARN}" != "yes" ]
+                then
+                    echo "export SPARK_MASTER_PORT=\"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                fi
+                echo "export SPARK_SLAVE_COUNT=\"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_SLAVE_CORE_COUNT=\"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_VERSION=\"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            fi
+            echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        fi
 
         # Nothing to check for Spark, setup always passes
-	spark_should_be_torndown=1
-	spark_setup_successful=1
+        spark_should_be_torndown=1
+        spark_setup_successful=1
     else
-	spark_should_be_torndown=0
-	spark_setup_successful=1
+        spark_should_be_torndown=0
+        spark_setup_successful=1
     fi
 }
 
 Magpie_run_spark () {
     if [ "${SPARK_MODE}" == "sparkpi" ]
     then
-	echo "*******************************************************"
-	echo "* Running SparkPi"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkpi &
-	local scriptpid=$!
-	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+        echo "*******************************************************"
+        echo "* Running SparkPi"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkpi &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "sparkwordcount" ]
     then
-	echo "*******************************************************"
-	echo "* Running SparkWordCount"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkwordcount &
-	local scriptpid=$!
-	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+        echo "*******************************************************"
+        echo "* Running SparkWordCount"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkwordcount &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "script" ]
     then
-	echo "*******************************************************"
-	echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
-	local scriptpid=$!
-	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+        echo "*******************************************************"
+        echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "interactive" ]
     then
-	echo "*******************************************************"
-	echo "* Entering Spark ${SPARK_MODE} mode"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	local scriptpid=$!
+        echo "*******************************************************"
+        echo "* Entering Spark ${SPARK_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        local scriptpid=$!
         wait $scriptpid
     elif [ "${SPARK_MODE}" == "setuponly" ]
     then
-	echo "*******************************************************"
-	echo "* Entering Spark ${SPARK_MODE} mode"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
-	local scriptpid=$!
-	wait ${scriptpid}
+        echo "*******************************************************"
+        echo "* Entering Spark ${SPARK_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        local scriptpid=$!
+        wait ${scriptpid}
     fi
 }
 
 Magpie_run_stop_spark () {
     if [ "${SPARK_SETUP}" == "yes" ] && [ "${spark_should_be_torndown}" == "1" ]
     then
-	if [ ${SPARK_MODE} != "setuponly" ]
-	then
-	    if [ "${SPARK_USE_YARN}" != "yes" ]
-	    then
-		cd ${SPARK_HOME}
-		
-	        # Make variables unspecified for shutdown
-		Magpie_make_all_local_dirs_unspecified
-		
-		echo "Stopping spark"
-		${sparksetupscriptprefix}/stop-all.sh
+        if [ ${SPARK_MODE} != "setuponly" ]
+        then
+            if [ "${SPARK_USE_YARN}" != "yes" ]
+            then
+                cd ${SPARK_HOME}
+                
+                # Make variables unspecified for shutdown
+                Magpie_make_all_local_dirs_unspecified
+                
+                echo "Stopping spark"
+                ${sparksetupscriptprefix}/stop-all.sh
 
                 # Make variables specific now within Magpie
-		Magpie_make_all_local_dirs_node_specific
-	    fi
-	fi
+                Magpie_make_all_local_dirs_node_specific
+            fi
+        fi
     fi
     spark_teardown_complete=1
 }

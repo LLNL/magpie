@@ -78,7 +78,7 @@ if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
 then
     if [ -f "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}" ]
     then
-	rm -f ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        rm -f ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
     
     touch ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -92,13 +92,13 @@ then
     echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     if [ "${JAVA_HOME}X" != "X" ]
     then
-	if echo $MAGPIE_SHELL | grep -q csh
-	then
-	    echo "setenv JAVA_HOME \"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	else
-	    echo "export JAVA_HOME=\"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-	fi
-	echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "setenv JAVA_HOME \"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        else
+            echo "export JAVA_HOME=\"${JAVA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        fi
+        echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
     fi
 fi
 
@@ -159,61 +159,61 @@ if [ "${zookeeper_setup_successful}" == "1" ] \
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
-	echo "*******************************************************"
-	echo "* Executing script $MAGPIE_SCRIPT_PATH $MAGPIE_SCRIPT_ARGS"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPT_PATH} ${MAGPIE_SCRIPT_ARGS} &
-	scriptpid=$!
-	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+        echo "*******************************************************"
+        echo "* Executing script $MAGPIE_SCRIPT_PATH $MAGPIE_SCRIPT_ARGS"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPT_PATH} ${MAGPIE_SCRIPT_ARGS} &
+        scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
     then
-	echo "*******************************************************"
-	echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
-	scriptpid=$!
+        echo "*******************************************************"
+        echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        scriptpid=$!
         wait $scriptpid
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
-	Magpie_run_pig
+        Magpie_run_pig
     elif [ "${MAGPIE_JOB_TYPE}" == "mahout" ]
     then
-	Magpie_run_mahout
+        Magpie_run_mahout
     elif [ "${MAGPIE_JOB_TYPE}" == "hadoop" ]
     then
-	Magpie_run_hadoop
+        Magpie_run_hadoop
     elif [ "${MAGPIE_JOB_TYPE}" == "hbase" ]
     then
-	Magpie_run_hbase
+        Magpie_run_hbase
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
-	Magpie_run_phoenix
+        Magpie_run_phoenix
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
-	Magpie_run_spark
+        Magpie_run_spark
     elif [ "${MAGPIE_JOB_TYPE}" == "kafka" ]
     then
-	Magpie_run_kafka
+        Magpie_run_kafka
     elif [ "${MAGPIE_JOB_TYPE}" == "zeppelin" ]
     then
-	Magpie_run_zeppelin
+        Magpie_run_zeppelin
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
-	Magpie_run_storm
+        Magpie_run_storm
     elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
     then
-	Magpie_run_tachyon
+        Magpie_run_tachyon
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
-	Magpie_run_zookeeper
+        Magpie_run_zookeeper
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
-	echo "*******************************************************"
-	echo "* Running Magpie TestAll"
-	echo "*******************************************************"
-	${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-magpie-testall &
-	scriptpid=$!
-	Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+        echo "*******************************************************"
+        echo "* Running Magpie TestAll"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-magpie-testall &
+        scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     fi
 fi
 

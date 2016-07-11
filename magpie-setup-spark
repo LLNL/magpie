@@ -132,11 +132,11 @@ then
     
     if [ ! -d "${sparklocalscratchdirpath}" ]
     then
-	mkdir -p ${sparklocalscratchdirpath}
-	if [ $? -ne 0 ] ; then
-	    echo "mkdir failed making ${sparklocalscratchdirpath}"
-	    exit 1
-	fi
+        mkdir -p ${sparklocalscratchdirpath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${sparklocalscratchdirpath}"
+            exit 1
+        fi
     fi
 else
     IFSORIG=${IFS}
@@ -145,18 +145,18 @@ else
     for sparklocalpath in ${SPARK_LOCAL_SCRATCH_DIR}
     do
         # Setup node directory per node in case not a local drive
-	sparklocalpathtmp="${sparklocalpath}/node-${sparknoderank}"
+        sparklocalpathtmp="${sparklocalpath}/node-${sparknoderank}"
 
-	if [ ! -d "${sparklocalpathtmp}" ]
-	then
-	    mkdir -p ${sparklocalpathtmp}
-	    if [ $? -ne 0 ] ; then
-		echo "mkdir failed making ${sparklocalpathtmp}"
-		exit 1
-	    fi
-	fi
+        if [ ! -d "${sparklocalpathtmp}" ]
+        then
+            mkdir -p ${sparklocalpathtmp}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${sparklocalpathtmp}"
+                exit 1
+            fi
+        fi
 
-	sparklocalscratchdirpath="${sparklocalscratchdirpath}${sparklocalscratchdirpath:+","}${sparklocalpathtmp}"
+        sparklocalscratchdirpath="${sparklocalscratchdirpath}${sparklocalscratchdirpath:+","}${sparklocalpathtmp}"
     done
     IFS=${IFSORIG}
 fi
@@ -173,31 +173,31 @@ if [ "${HADOOP_SETUP}" == "yes" ]
 then
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
-	sparkshufflebufferkb=100
-	sparkshufflebuffer=100k
-	sparkshuffleconsolidatefiles="false"
+        sparkshufflebufferkb=100
+        sparkshufflebuffer=100k
+        sparkshuffleconsolidatefiles="false"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-	|| [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
         # Default block size is 1M in Lustre
         # XXX: If not default, can get from lctl or similar?
         # If other networkFS, just assume like Lustre
-	sparkshufflebufferkb=1024
-	sparkshufflebuffer=1024k
-	sparkshuffleconsolidatefiles="true"
+        sparkshufflebufferkb=1024
+        sparkshufflebuffer=1024k
+        sparkshuffleconsolidatefiles="true"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
-	|| [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
         # Assuming Lustre, so copy above 1M
-	sparkshufflebufferkb=1024
-	sparkshufflebuffer=1024k
-	sparkshuffleconsolidatefiles="true"
+        sparkshufflebufferkb=1024
+        sparkshufflebuffer=1024k
+        sparkshuffleconsolidatefiles="true"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
         # Assuming Lustre, so copy above 1M
-	sparkshufflebufferkb=1024
-	sparkshufflebuffer=1024k
-	sparkshuffleconsolidatefiles="true"
+        sparkshufflebufferkb=1024
+        sparkshufflebuffer=1024k
+        sparkshuffleconsolidatefiles="true"
     fi 
 else
     # Accessing filesystem directly, assume Lustre
@@ -312,11 +312,11 @@ then
     openfilescount=`expr ${openfilesslavecount} \* 8192`
     if [ "${openfilescount}" -lt "16384" ]
     then
-	openfilescount=16384
+        openfilescount=16384
     fi
     if [ "${openfilescount}" -gt "65536" ]
     then
-	openfilescount=65536
+        openfilescount=65536
     fi
     
     if [ "${openfileshardlimit}" != "unlimited" ]
@@ -340,11 +340,11 @@ then
     userprocessescount=`expr ${userprocessesslavecount} \* 2048`
     if [ "${userprocessescount}" -lt "4096" ]
     then
-	userprocessescount=4096
+        userprocessescount=4096
     fi
     if [ "${userprocessescount}" -gt "32768" ]
     then
-	userprocessescount=32768
+        userprocessescount=32768
     fi
     
     if [ "${userprocesseshardlimit}" != "unlimited" ]
@@ -362,9 +362,9 @@ if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
 then
     if [ "${SPARK_JAVA_OPTS}X" != "X" ]
     then
-	SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
+        SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
     else
-	SPARK_JAVA_OPTS="${SPARK_JOB_JAVA_OPTS}"
+        SPARK_JAVA_OPTS="${SPARK_JOB_JAVA_OPTS}"
     fi
 fi
 
@@ -379,7 +379,7 @@ if [ "${SPARK_JAVA_OPTS}X" != "X" ]
 then
     if ! echo ${SPARK_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
     then
-	export SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
+        export SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
     fi
 fi
 
@@ -475,10 +475,10 @@ sed -i \
 if [ "${SPARK_USE_YARN}" == "yes" ]
 then
     sed -i \
-	-e "s/export SPARK_MASTER_PORT/# export SPARK_MASTER_PORT/g" \
-	-e "s/export SPARK_MASTER_WEBUI_PORT/# export SPARK_MASTER_WEBUI_PORT/g" \
-	-e "s/export SPARK_WORKER_WEBUI_PORT/# export SPARK_WORKER_WEBUI_PORT/g" \
-	${post_sparkenvsh}
+        -e "s/export SPARK_MASTER_PORT/# export SPARK_MASTER_PORT/g" \
+        -e "s/export SPARK_MASTER_WEBUI_PORT/# export SPARK_MASTER_WEBUI_PORT/g" \
+        -e "s/export SPARK_WORKER_WEBUI_PORT/# export SPARK_WORKER_WEBUI_PORT/g" \
+        ${post_sparkenvsh}
 fi
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
@@ -495,9 +495,9 @@ then
     
     if [ "${sparkclasspath}X" != "X" ]
     then
-	sparkclasspath="${tachyon_jar}:${sparkclasspath}"
+        sparkclasspath="${tachyon_jar}:${sparkclasspath}"
     else
-	sparkclasspath="${tachyon_jar}"
+        sparkclasspath="${tachyon_jar}"
     fi
 fi
 
@@ -555,12 +555,12 @@ if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
 then 
     if [ "${sparkclasspath}X" != "X" ]
     then
-	echo "export SPARK_CLASSPATH=\"${sparkclasspath}\"" >> ${post_sparkenvsh}
+        echo "export SPARK_CLASSPATH=\"${sparkclasspath}\"" >> ${post_sparkenvsh}
     fi
 
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
     then
-	echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${post_sparkenvsh}
+        echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${post_sparkenvsh}
     fi
 fi
 
@@ -586,7 +586,7 @@ then
     # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs 
     if [ "${SPARK_USE_YARN}" != "yes" ]
     then
-	echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
+        echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
     fi
 fi
 
@@ -614,9 +614,9 @@ if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
     if [ "${SPARK_USE_YARN}" == "yes" ]
     then
-	sparkmaster="yarn-client"
+        sparkmaster="yarn-client"
     else
-	sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+        sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
     fi
     sparkmastersubst=`echo "${sparkmaster}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -628,30 +628,30 @@ then
 
     if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
     then
-	sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
+        sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
         sparkdriverlibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-	sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}"
-	sparktachyonstoreurlsubst=`echo "${sparktachyonstoreurl}" | sed "s/\\//\\\\\\\\\//g"`
+        sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}"
+        sparktachyonstoreurlsubst=`echo "${sparktachyonstoreurl}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
     cp ${pre_sparkdefaultsconf} ${post_sparkdefaultsconf}
 
     if [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ]
     then
-	sed -i -e "/@TACHYON@/{r ${pre_sparkdefaultsconf_tachyon}" -e "d}" ${post_sparkdefaultsconf}
+        sed -i -e "/@TACHYON@/{r ${pre_sparkdefaultsconf_tachyon}" -e "d}" ${post_sparkdefaultsconf}
     else
-	sed -i -e "/@TACHYON@/,+1d" ${post_sparkdefaultsconf}
+        sed -i -e "/@TACHYON@/,+1d" ${post_sparkdefaultsconf}
     fi
 
     if [ "${pre_sparkdefaultsconf_yarn}X" != "X" ]
     then
-	sed -i -e "/@YARN@/{r ${pre_sparkdefaultsconf_yarn}" -e "d}" ${post_sparkdefaultsconf}
+        sed -i -e "/@YARN@/{r ${pre_sparkdefaultsconf_yarn}" -e "d}" ${post_sparkdefaultsconf}
     else
-	sed -i -e "/@YARN@/,+1d" ${post_sparkdefaultsconf}
+        sed -i -e "/@YARN@/,+1d" ${post_sparkdefaultsconf}
     fi
 
     # This is not for legitimate security as it can easily be
@@ -664,31 +664,31 @@ then
     sparklocalscratchdirpathsubst=`echo "${sparklocalscratchdirpath}" | sed "s/\\//\\\\\\\\\//g"`
 
     sed -i \
-	-e "s/SPARKMASTER/${sparkmastersubst}/g" \
-	-e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
-	-e "s/SPARKSHUFFLEFILEBUFFER/${sparkshufflebuffer}/g" \
-	-e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
-	-e "s/SPARKDEFAULTPARALLELISM/${sparkdefaultparallelism}/g" \
-	-e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
-	-e "s/SPARKUIPORT/${SPARK_APPLICATION_DASHBOARD_PORT}/g" \
-	-e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
-	-e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
-	-e "s/SPARKDRIVEREXTRACLASSPATH/${sparkdriverclasspathsubst}/g" \
-	-e "s/SPARKDRIVEREXTRALIBRARYPATH/${sparkdriverlibrarypathsubst}/g" \
-	-e "s/SPARKAKKATHREADS/${akkathreads}/g" \
-	-e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
-	-e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
-	-e "s/SPARKMEMORYFRACTION/${sparkmemoryfraction}/g" \
-	-e "s/SPARKMEMORYSTORAGEFRACTION/${sparkmemorystoragefraction}/g" \
-	-e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
-	-e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
-	-e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
-	-e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
-	-e "s/SPARKYARNEXECUTORCORES/${workercores}/g" \
-	-e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_SLAVE_COUNT}/g" \
-	-e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
-	-e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
-	${post_sparkdefaultsconf}
+        -e "s/SPARKMASTER/${sparkmastersubst}/g" \
+        -e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
+        -e "s/SPARKSHUFFLEFILEBUFFER/${sparkshufflebuffer}/g" \
+        -e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
+        -e "s/SPARKDEFAULTPARALLELISM/${sparkdefaultparallelism}/g" \
+        -e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
+        -e "s/SPARKUIPORT/${SPARK_APPLICATION_DASHBOARD_PORT}/g" \
+        -e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
+        -e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
+        -e "s/SPARKDRIVEREXTRACLASSPATH/${sparkdriverclasspathsubst}/g" \
+        -e "s/SPARKDRIVEREXTRALIBRARYPATH/${sparkdriverlibrarypathsubst}/g" \
+        -e "s/SPARKAKKATHREADS/${akkathreads}/g" \
+        -e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
+        -e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
+        -e "s/SPARKMEMORYFRACTION/${sparkmemoryfraction}/g" \
+        -e "s/SPARKMEMORYSTORAGEFRACTION/${sparkmemorystoragefraction}/g" \
+        -e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
+        -e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
+        -e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
+        -e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
+        -e "s/SPARKYARNEXECUTORCORES/${workercores}/g" \
+        -e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_SLAVE_COUNT}/g" \
+        -e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
+        -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
+        ${post_sparkdefaultsconf}
     
     # Remove lingering "-bin-hadoop2.4" and similar text"
 
@@ -707,9 +707,9 @@ then
     vercomp_result=$?
     if [ "${vercomp_result}" == "1" ]
     then
-	sed -i -e "s/spark.shuffle.file.buffer.kb/# spark.shuffle.file.buffer.kb/" ${post_sparkdefaultsconf}
+        sed -i -e "s/spark.shuffle.file.buffer.kb/# spark.shuffle.file.buffer.kb/" ${post_sparkdefaultsconf}
     else
-	sed -i -e "s/spark.shuffle.file.buffer\s/# spark.shuffle.file.buffer/" ${post_sparkdefaultsconf}
+        sed -i -e "s/spark.shuffle.file.buffer\s/# spark.shuffle.file.buffer/" ${post_sparkdefaultsconf}
     fi
 
     # Handle special settings depending on version
@@ -718,11 +718,11 @@ then
     vercomp_result=$?
     if [ "${vercomp_result}" == "1" ]
     then
-	sed -i -e "s/spark.storage.memoryFraction/# spark.storage.memoryFraction/" ${post_sparkdefaultsconf}
-	sed -i -e "s/spark.shuffle.memoryFraction/# spark.shuffle.memoryFraction/" ${post_sparkdefaultsconf}
+        sed -i -e "s/spark.storage.memoryFraction/# spark.storage.memoryFraction/" ${post_sparkdefaultsconf}
+        sed -i -e "s/spark.shuffle.memoryFraction/# spark.shuffle.memoryFraction/" ${post_sparkdefaultsconf}
     else
-	sed -i -e "s/spark.memory.fraction/# spark.memory.fraction/" ${post_sparkdefaultsconf}
-	sed -i -e "s/spark.memory.storageFraction/# spark.memory.storageFraction/" ${post_sparkdefaultsconf}
+        sed -i -e "s/spark.memory.fraction/# spark.memory.fraction/" ${post_sparkdefaultsconf}
+        sed -i -e "s/spark.memory.storageFraction/# spark.memory.storageFraction/" ${post_sparkdefaultsconf}
     fi
     
     # spark authenticate doesn't work with yarn in Spark 1.2 -> 1.5.
@@ -737,9 +737,9 @@ then
     # Comment out a few lines we don't need if using Yarn
     if [ "${SPARK_USE_YARN}" == "yes" ] && [ "${vercomp_result}" != "1" ]
     then
-	sed -i \
-	    -e "s/spark.authenticate/# spark.authenticate/g" \
-	    ${post_sparkdefaultsconf}
+        sed -i \
+            -e "s/spark.authenticate/# spark.authenticate/g" \
+            ${post_sparkdefaultsconf}
     fi
 fi
 

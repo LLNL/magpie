@@ -8,7 +8,7 @@ SubmitZookeeperStandardTests_RUOK() {
 
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok
-	
+        
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-local-run-zookeeperruok-no-local-dir
 }
@@ -16,13 +16,13 @@ SubmitZookeeperStandardTests_RUOK() {
 SubmitZookeeperStandardTests() {
     for testfunction in SubmitZookeeperStandardTests_RUOK
     do
-	for testgroup in ${zookeeper_test_groups}
-	do
-	    for testversion in ${!testgroup}
-	    do
-		${testfunction} ${testversion}
-	    done
-	done
+        for testgroup in ${zookeeper_test_groups}
+        do
+            for testversion in ${!testgroup}
+            do
+                ${testfunction} ${testversion}
+            done
+        done
     done
 }
 
