@@ -136,7 +136,7 @@ test_kafka_shutdown () {
     numcompare=`grep 'Kafka Servers are up.' $file | tail -1 | awk -F "/" '{ print $1 }'`
 
     num=`grep -e "Stopping Kafka" $file | wc -l`
-    if [ "${num}" != ${numcompare} ]; then
+    if [ "${num}" != "${numcompare}" ]; then
         echo "Kafka worker server shutdown error in $file" ${num}
     fi
 }
