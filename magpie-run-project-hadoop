@@ -460,15 +460,15 @@ Magpie_run_start_hadoop () {
                     then
                         local exittedsafemodeflag=1
 
-                        for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+                        for j in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                         do
                             
                             # First namenode is based on master
-                            if [ "${i}" == "1" ]
+                            if [ "${j}" == "1" ]
                             then
                                 local federationnamenodehost="${HADOOP_MASTER_NODE}"
                             else
-                                local numline=`expr ${i} - 1`
+                                local numline=`expr ${j} - 1`
                                 local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                             fi
 
