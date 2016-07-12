@@ -45,7 +45,7 @@ test_yarn_shutdown () {
     num=`grep -e "stopping nodemanager" $file | wc -l`
     if echo ${file} | grep -q "zookeeper-shared"
     then
-        numcompare=11
+        numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
     elif echo ${file} | grep -q "hdfs-more-nodes"
     then
         numcompare=`expr ${basenodecount} \* 2`
@@ -67,7 +67,7 @@ test_hdfs_shutdown () {
     num=`grep -e "stopping datanode" $file | wc -l`
     if echo ${file} | grep -q "zookeeper-shared"
     then
-        numcompare=11
+        numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
     elif echo ${file} | grep -q "hdfs-more-nodes"
     then
         numcompare=`expr ${basenodecount} \* 2`
