@@ -145,8 +145,8 @@ Magpie_run_start_phoenix () {
 
             local phoenixcameup=0
             
-            for ((i = 1; i <= ${phoenixmaxwaittimes}; i++)); do
-
+            for i in `seq 1 ${phoenixmaxwaittimes}`
+            do
                 local serverschk=0
                 local serversup=0
                 for server in `cat ${PHOENIX_CONF_DIR}/regionservers`;

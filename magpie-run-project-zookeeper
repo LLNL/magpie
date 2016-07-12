@@ -166,8 +166,8 @@ Magpie_run_start_zookeeper () {
                 echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
                 zookeepercameup=1
             else 
-                for ((i = 1; i <= ${zookeepermaxwaittimes}; i++)); do
-                    
+                for i in `seq 1 ${zookeepermaxwaittimes}`
+                do
                     local zookeeperbadresponse=0
                     
                     for zookeepernode in ${zookeepernodes}

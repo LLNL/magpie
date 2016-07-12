@@ -454,8 +454,8 @@ Magpie_run_start_hadoop () {
 
                 local exittedsafemode=0
                 
-                for ((i = 1; i <= ${namenodemaxwaittimes}; i++)); do
-                    
+                for i in `seq 1 ${namenodemaxwaittimes}`
+                do
                     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
                     then
                         local exittedsafemodeflag=1

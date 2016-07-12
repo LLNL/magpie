@@ -87,7 +87,7 @@ then
     $command
 
     # Waiting for 2.5 minutes max
-    for i in {1..5}
+    for i in `seq 1 5`
     do
         echo "*** Sleeping a bit to let WordCount be killed"
         sleep 30

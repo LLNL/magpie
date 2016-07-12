@@ -204,8 +204,8 @@ Magpie_run_start_hbase () {
 
             hbasemastercameup=0
             
-            for ((i = 1; i <= ${hbasemastermaxwaittimes}; i++)); do
-                
+            for i in `seq 1 ${hbasemastermaxwaittimes}`
+            do                
                 # example output : "9 servers, 0 dead, 4.7778 average load"
                 if echo status | ${hbasecmdprefix}/hbase shell | grep -q "servers"
                 then

@@ -143,8 +143,8 @@ Magpie_run_start_zeppelin () {
 
             local zeppelincameup=0
 
-            for ((i = 1; i <= ${zeppelinmaxwaittimes}; i++)); do
-
+            for i in `seq 1 ${zeppelinmaxwaittimes}`
+            do
                 local serverschk=0
                 local serversup=0
                 for server in `cat ${ZEPPELIN_CONF_DIR}/masters`;
