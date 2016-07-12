@@ -155,7 +155,8 @@ Magpie_run_start_kafka () {
                 for server in `cat ${KAFKA_CONF_DIR}/masters`;
                 do
                     serverschk=`expr ${serverschk} + 1`
-                    if [ $(${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka) -gt "0" ] ;
+                    local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
+                    if [ "${serverisup}" -gt "0" ] ;
                     then 
                         serversup=`expr ${serversup} + 1`
                     fi
@@ -164,7 +165,8 @@ Magpie_run_start_kafka () {
                 for server in `cat ${KAFKA_CONF_DIR}/slaves`;
                 do
                     serverschk=`expr ${serverschk} + 1`
-                    if [ $(${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka) -gt "0" ] ;
+                    local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
+                    if [ "${serverisup}" -gt "0" ] ;
                     then 
                         serversup=`expr ${serversup} + 1`
                     fi

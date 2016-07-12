@@ -77,7 +77,7 @@ if [ "${HADOOP_PARALLEL_COPIES}X" != "X" ]
 then
     parallelcopies=${HADOOP_PARALLEL_COPIES}
 else 
-    parallelcopies=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
+    parallelcopies=`echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f"`
     if [ "${parallelcopies}" -lt "10" ]
     then
         parallelcopies=10
@@ -86,7 +86,7 @@ fi
 
 # Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200
 # My experience this is low b/c of high core counts, so bump higher to 50% 
-namenodehandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .5" | bc -l | xargs printf "%1.0f")
+namenodehandlercount=`echo "${HADOOP_SLAVE_COUNT} * .5" | bc -l | xargs printf "%1.0f"`
 if [ "${namenodehandlercount}" -lt "10" ]
 then
     namenodehandlercount=10
@@ -98,7 +98,7 @@ then
 fi
 
 # General rule of thumb is half namenode handler count, so * .25 instead of * .5
-datanodehandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .25" | bc -l | xargs printf "%1.0f")
+datanodehandlercount=`echo "${HADOOP_SLAVE_COUNT} * .25" | bc -l | xargs printf "%1.0f"`
 if [ "${datanodehandlercount}" -lt "10" ]
 then
     datanodehandlercount=10
@@ -110,14 +110,14 @@ then
 fi
 
 # Per description, about 4% of nodes but w/ floor of 10
-jobtrackerhandlercount=$(echo "${HADOOP_SLAVE_COUNT} * .04" | bc -l | xargs printf "%1.0f")
+jobtrackerhandlercount=`echo "${HADOOP_SLAVE_COUNT} * .04" | bc -l | xargs printf "%1.0f"`
 if [ "${jobtrackerhandlercount}" -lt "10" ]
 then
     jobtrackerhandlercount=10
 fi
 
 # Per descrption, about square root number of nodes
-submitfilereplication=$(echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f")
+submitfilereplication=`echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f"`
 
 # Optimal depends on file system
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
@@ -168,9 +168,9 @@ then
     allchildheapsize=${HADOOP_CHILD_HEAPSIZE}
 else
 # achu: We round down to nearest 512M
-    tmp1=$(echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f")
-    tmp2=$(echo "${tmp1} / 512" | bc -l | xargs printf "%1.0f")
-    allchildheapsize=$(echo "${tmp2} * 512" | bc -l | xargs printf "%1.0f")
+    tmp1=`echo "${yarnresourcememory} / ${maxtaskspernode}" | bc -l | xargs printf "%1.2f"`
+    tmp2=`echo "${tmp1} / 512" | bc -l | xargs printf "%1.0f"`
+    allchildheapsize=`echo "${tmp2} * 512" | bc -l | xargs printf "%1.0f"`
     if [ "${allchildheapsize}" -lt "512" ]
     then
         allchildheapsize=512

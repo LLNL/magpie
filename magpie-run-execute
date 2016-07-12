@@ -115,10 +115,11 @@ if [ "${jobtype}" != "scriptnokill" ]
 then
 # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
 
+    myhostname=`hostname`
     echo "*******************************************************"
     echo "* Run"
     echo "*"
-    echo "* ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 10 ${mypid}"
+    echo "* ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${myhostname} kill -s 10 ${mypid}"
     echo "*"
     echo "* to exit ${typemessage} early."
     if [ "${jobtype}" == "script" ]
@@ -137,7 +138,7 @@ then
             echo "* kill all currently submitted Yarn jobs in the PREP or" 
             echo "* RUNNING state to be killed before killing the job, run:"
             echo "*"
-            echo "* ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} $(hostname) kill -s 28 ${mypid}"
+            echo "* ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${myhostname} kill -s 28 ${mypid}"
 
             trap "yarn_job_kill_handler ${childpid}" 28
         fi

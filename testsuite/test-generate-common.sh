@@ -21,7 +21,7 @@ GetHoursMinutesJob () {
     GetMinutesJob $1
     local hours=`expr $minutesjob / 60`
     local minutesleft=`expr $minutesjob % 60`
-    timeoutputforjob=$(printf "%d:%02d" ${hours} ${minutesleft})
+    timeoutputforjob=`printf "%d:%02d" ${hours} ${minutesleft}`
 }
 
 JavaCommonSubstitution() {

@@ -152,7 +152,8 @@ Magpie_run_start_phoenix () {
                 for server in `cat ${PHOENIX_CONF_DIR}/regionservers`;
                 do
                     serverschk=`expr ${serverschk} + 1`
-                    if [ $(${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c queryserver.py) -gt "0" ] ;
+                    local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c queryserver.py`
+                    if [ "${serverisup}" -gt "0" ] ;
                     then 
                         serversup=`expr ${serversup} + 1`
                     fi

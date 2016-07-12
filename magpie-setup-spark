@@ -523,7 +523,7 @@ then
 
     # Phoenix contains its own version of Jackson and can conflicts with the
     # version of spark running, so we can put sparks jars in front
-    for j in $(ls $SPARK_HOME/lib)
+    for j in `ls $SPARK_HOME/lib`
     do 
         spark_jars="$SPARK_HOME/lib/$j:$spark_jars"
     done

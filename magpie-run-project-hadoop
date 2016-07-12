@@ -103,7 +103,7 @@ Magpie_run_start_hadoop () {
 
                         if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsstorednodecount}" ]
                         then
-                            local ninteypercentnodes=$(echo "${hdfsstorednodecount} * .9" | bc -l | xargs printf "%1.0f")
+                            local ninteypercentnodes=`echo "${hdfsstorednodecount} * .9" | bc -l | xargs printf "%1.0f"`
                             echo "**** HDFS Issue ****"
                             echo "HDFS was last built using a larger slave node count of ${hdfsstorednodecount}, compared to this job's ${HADOOP_SLAVE_COUNT}"
                             echo "Because of this, it is very likely the HDFS Namenode will not be able to find all HDFS blocks."

@@ -63,9 +63,9 @@ else
     hbaseregionserverdaemonheapmax="16000"
 
     memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
-    memtotalmeg=$(echo "(${memtotal} / 1024)" | bc -l | xargs printf "%1.0f")
+    memtotalmeg=`echo "(${memtotal} / 1024)" | bc -l | xargs printf "%1.0f"`
     # if memtotalmeg * 50% is less than hbaseregionserverdaemonheapmax, drop it down
-    hbaseresourcememory=$(echo "${memtotalmeg} * .5" | bc -l | xargs printf "%1.0f")
+    hbaseresourcememory=`echo "${memtotalmeg} * .5" | bc -l | xargs printf "%1.0f"`
 
     if [ "${hbaseresourcememory}" -lt "${hbaseregionserverdaemonheapmax}" ]
     then
@@ -74,7 +74,7 @@ else
 fi
 
 # My experience default 30 is low.  We'll say 50% of nodes, floor 60, ceiling 200
-hbaseregionserverhandlercount=$(echo "${HBASE_REGIONSERVER_COUNT} * .5" | bc -l | xargs printf "%1.0f")
+hbaseregionserverhandlercount=`echo "${HBASE_REGIONSERVER_COUNT} * .5" | bc -l | xargs printf "%1.0f"`
 if [ "${hbaseregionserverhandlercount}" -lt "60" ]
 then
     hbaseregionserverhandlercount=60

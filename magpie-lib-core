@@ -156,7 +156,8 @@ Magpie_am_I_a_hbase_node () {
 }
 
 Magpie_am_I_a_phoenix_node () {
-    return $(Magpie_am_I_a_hbase_node)
+    Magpie_am_I_a_hbase_node
+    return $?
 }
 
 Magpie_am_I_a_spark_node () {
@@ -417,16 +418,16 @@ Magpie_calculate_threadstouse () {
 
 Magpie_calculate_memorytouse () {
     local memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
-    local memtotalgig=$(echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f")
+    local memtotalgig=`echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f"`
     
     # Sets canrunjobscount
     Magpie_calculate_canrunjobscount
 
     # We start w/ 80% of system memory 
-    memorytouse=$(echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f")
+    memorytouse=`echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f"`
     memorytouse=`expr $memorytouse \/ ${canrunjobscount}`
 
-    memorytouse=$(echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f")
+    memorytouse=`echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f"`
 }
 
 Magpie_find_conffile () {

@@ -86,7 +86,7 @@ fi
 
 # Get Jars for Interpreter
 # Put the spark jars first to avoid dependency issues
-for j in $(ls $SPARK_HOME/lib)
+for j in `ls $SPARK_HOME/lib`
 do
     zeppelin_jars="$SPARK_HOME/lib/$j,$zeppelin_jars"
 done

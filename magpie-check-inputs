@@ -553,7 +553,7 @@ then
     then
         Magpie_check_must_be_set "HADOOP_MAGPIENETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 
-        firstchar="$(echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1)"
+        firstchar=`echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1`
 
         if [ "${firstchar}" != "/" ]
         then
