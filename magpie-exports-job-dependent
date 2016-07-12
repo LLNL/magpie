@@ -39,7 +39,7 @@ Magpie_make_all_local_dirs_node_specific
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+    zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
     zookeepernodesfirst=`echo "${zookeepernodes}" | head -1`
 
     export ZOOKEEPER_NODES_FIRST="${zookeepernodesfirst}"

@@ -160,7 +160,7 @@ Magpie_run_start_zookeeper () {
 
             local zookeepercameup=0
             
-            local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+            local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
             if ! type nc >/dev/null 2>&1
             then
                 echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."

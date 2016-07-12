@@ -147,7 +147,7 @@ sed -i \
     -e "s/ZOOKEEPERHOST/${ZOOKEEPER_THIS_HOST}/g" \
     ${post_zookeepercfg}
     
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
 
 servercount=1
 for zookeepernode in ${zookeepernodes}

@@ -147,10 +147,12 @@ then
         cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
     fi
 
-    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves 
+    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/slaves 
 
-    # The Zookeeper master is not a real Zookeeper node
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${ZOOKEEPER_CONF_DIR}/zookeeper_master
+    # The Zookeeper master is not an actual Zookeeper node, this is
+    # predominantly to indicate to magpie that Zookeeper should be
+    # launched via the "master" node
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${ZOOKEEPER_CONF_DIR}/masters
 else
     cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters ${MAGPIE_LOCAL_CONF_DIR}/job_masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves ${MAGPIE_LOCAL_CONF_DIR}/job_slaves

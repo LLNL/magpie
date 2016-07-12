@@ -34,7 +34,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/zookeeper_slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
 
 if ! type nc >/dev/null 2>&1
 then
