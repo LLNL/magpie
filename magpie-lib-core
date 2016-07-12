@@ -40,55 +40,27 @@ Magpie_am_I_master () {
 
     Magpie_make_all_local_dirs_node_specific
 
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ -f "${HADOOP_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/masters
-        then 
-            return 0
+    for project in HADOOP HBASE SPARK STORM KAFKA ZEPPELIN TACHYON
+    do
+        local setupvar="${project}_SETUP"
+        local confdirvar="${project}_CONF_DIR"
+        if [ "${!setupvar}" == "yes" ] && [ -f "${!confdirvar}/masters" ]
+        then
+            if grep -q -E "^${myhostname}$" ${!confdirvar}/masters
+            then 
+                return 0
+            fi
         fi
-    elif [ "${HBASE_SETUP}" == "yes" ] && [ -f "${HBASE_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/masters
-        then 
-            return 0
-        fi
-    elif [ "${SPARK_SETUP}" == "yes" ] && [ -f "${SPARK_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
-        then 
-            return 0
-        fi
-    elif [ "${STORM_SETUP}" == "yes" ] && [ -f "${STORM_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
-        then 
-            return 0
-        fi
-    elif [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
+    done
+
+    if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
     then
         if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/zookeeper_master
         then 
             return 0
         fi
-    elif [ "${KAFKA_SETUP}" == "yes" ] && [ -f "${KAFKA_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
-        then 
-            return 0
-        fi
-    elif [ "${ZEPPELIN_SETUP}" == "yes" ] && [ -f "${ZEPPELIN_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters
-        then 
-            return 0
-        fi
-    elif [ "${TACHYON_SETUP}" == "yes" ] && [ -f "${TACHYON_CONF_DIR}/masters" ]
-    then
-        if grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/masters
-        then 
-            return 0
-        fi
     fi
+
     return 1
 }
 
@@ -136,23 +108,34 @@ Magpie_am_I_a_hadoop_namenode () {
     return 1
 }
 
-Magpie_am_I_a_hbase_node () {
+# For the common pattern
+Magpie_am_I_a_project_node () {
     local myhostname=`hostname`
+    local confdir=$1
+    local noderankvar=$2
+    local slavesfile=$3
+    local mastersfile=$4
+     
+    Magpie_make_spark_local_dirs_node_specific
 
-    Magpie_make_hbase_local_dirs_node_specific
-
-    if grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/regionservers \
-        || grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/masters
+    if grep -q -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} \
+        || grep -q -E "^${myhostname}$" ${confdir}/${mastersfile:-"masters"}
     then 
-        if grep -q -E "^${myhostname}$" ${HBASE_CONF_DIR}/masters
+        if grep -q -E "^${myhostname}$" ${confdir}/${mastersfile:-"masters"}
         then
-            hbasenoderank=0
+            local noderank=0
         else
-            hbasenoderank=`grep -n -E "^${myhostname}$" ${HBASE_CONF_DIR}/regionservers | awk --field-separator=':' '{print $1}'`
+            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} | awk --field-separator=':' '{print $1}'`
         fi
+        eval ${noderankvar}="${noderank}"
         return 0
     fi
     return 1
+}
+
+Magpie_am_I_a_hbase_node () {
+    Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "regionservers"
+    return $?
 }
 
 Magpie_am_I_a_phoenix_node () {
@@ -161,41 +144,23 @@ Magpie_am_I_a_phoenix_node () {
 }
 
 Magpie_am_I_a_spark_node () {
-    local myhostname=`hostname`
-
-    Magpie_make_spark_local_dirs_node_specific
-
-    if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/slaves \
-        || grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
-    then 
-        if grep -q -E "^${myhostname}$" ${SPARK_CONF_DIR}/masters
-        then
-            sparknoderank=0
-        else
-            sparknoderank=`grep -n -E "^${myhostname}$" ${SPARK_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
-        fi
-        return 0
-    fi
-    return 1
+    Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank"
+    return $?
 }
 
 Magpie_am_I_a_kafka_node () {
-    local myhostname=`hostname`
+    Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank"
+    return $?
+}
 
-    Magpie_make_kafka_local_dirs_node_specific
+Magpie_am_I_a_storm_node () {
+    Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "workers"
+    return $?
+}
 
-    if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/slaves \
-        || grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
-    then 
-        if grep -q -E "^${myhostname}$" ${KAFKA_CONF_DIR}/masters
-        then
-            kafkanoderank=0
-        else
-            kafkanoderank=`grep -n -E "^${myhostname}$" ${KAFKA_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
-        fi
-        return 0
-    fi
-    return 1
+Magpie_am_I_a_tachyon_node () {
+    Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank"
+    return $?
 }
 
 Magpie_am_I_a_zeppelin_node() {
@@ -206,44 +171,6 @@ Magpie_am_I_a_zeppelin_node() {
     if grep -q -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters
     then
         zeppelinnoderank=`grep -n -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters | awk --field-separator=':' '{print $1}'`
-        return 0
-    fi
-    return 1
-}
-
-Magpie_am_I_a_storm_node () {
-    local myhostname=`hostname`
-
-    Magpie_make_storm_local_dirs_node_specific
-
-    if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/workers \
-        || grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
-    then 
-        if grep -q -E "^${myhostname}$" ${STORM_CONF_DIR}/masters
-        then
-            stormnoderank=0
-        else
-            stormnoderank=`grep -n -E "^${myhostname}$" ${STORM_CONF_DIR}/workers | awk --field-separator=':' '{print $1}'`
-        fi
-        return 0
-    fi
-    return 1
-}
-
-Magpie_am_I_a_tachyon_node () {
-    local myhostname=`hostname`
-
-    Magpie_make_tachyon_local_dirs_node_specific
-
-    if grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/workers \
-        || grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/masters
-    then 
-        if grep -q -E "^${myhostname}$" ${TACHYON_CONF_DIR}/masters
-        then
-            tachyonnoderank=0
-        else
-            tachyonnoderank=`grep -n -E "^${myhostname}$" ${TACHYON_CONF_DIR}/workers | awk --field-separator=':' '{print $1}'`
-        fi
         return 0
     fi
     return 1
