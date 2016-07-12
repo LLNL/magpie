@@ -98,12 +98,16 @@ GenerateStormDependencyTests() {
 }
 
 GenerateStormPostProcessing () {
-    if ls magpie.${submissiontype}*run-stormwordcount* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-stormwordcount*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-stormwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-stormwordcount-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    if ls magpie.${submissiontype}-storm* >& /dev/null ; then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-storm*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-storm*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" ${files}
     fi
 }
 

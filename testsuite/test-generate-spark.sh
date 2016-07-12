@@ -768,22 +768,39 @@ GenerateSparkDependencyTests() {
 }
 
 GenerateSparkPostProcessing () {
-    if ls magpie.${submissiontype}*run-sparkpi* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkpi-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkpi*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-sparkpi*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkpi-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*run-sparkwordcount* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-sparkwordcount*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-sparkwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-sparkwordcount-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*run-pythonsparkwordcount* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pythonsparkwordcount-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pythonsparkwordcount*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-pythonsparkwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pythonsparkwordcount-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*spark-with-yarn* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-yarn*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*spark-with-rawnetworkfs* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-rawnetworkfs*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-rawnetworkfs*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }

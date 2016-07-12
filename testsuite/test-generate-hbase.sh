@@ -206,28 +206,49 @@ GenerateHbaseDependencyTests() {
 }
 
 GenerateHbasePostProcessing () {
-    if ls magpie.${submissiontype}*run-hbaseperformanceeval* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-hbaseperformanceeval*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-hbaseperformanceeval*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*run-scripthbasewritedata* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasewritedata*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-scripthbasewritedata*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasewritedata-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*run-scripthbasereaddata* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-scripthbasereaddata*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-scripthbasereaddata*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*"`
+    if [ -n "${files}" ]
+    then
         # Guarantee 60 minutes for the job that should last awhile
         ${functiontogettimeoutput} 60
-        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hbase-with-hdfs*
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
     fi
+
     # special node sizes first
-    if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes* >& /dev/null ; then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" ${files}
     fi
-    if ls magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes* >& /dev/null ; then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" ${files}
     fi
-    if ls magpie.${submissiontype}-hbase-with-hdfs* >& /dev/null ; then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" magpie.${submissiontype}-hbase-with-hdfs* 
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" ${files}
     fi
 }

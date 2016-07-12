@@ -104,8 +104,10 @@ GenerateKafkaDependencyTests() {
 }
 
 GenerateKafkaPostProcessing () {
-    if ls magpie.${submissiontype}*run-kafkaperformance* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-kafkaperformance-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-kafkaperformance*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-kafkaperformance*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-kafkaperformance-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
 

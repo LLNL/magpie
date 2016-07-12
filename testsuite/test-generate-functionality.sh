@@ -189,12 +189,14 @@ GenerateFunctionalityTests_TestAll() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-functionality-testall
     fi
 
-    if ls magpie.${submissiontype}*functionality-testall* >& /dev/null ; then
-        sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="testall"/' magpie.${submissiontype}*functionality-testall*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-testall*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="testall"/' ${files}
 
         # Guarantee 60 minutes for the job that should last awhile
         ${functiontogettimeoutput} 60
-        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-testall*
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
     fi
 }
 
@@ -258,11 +260,13 @@ GenerateFunctionalityTests_InteractiveMode() {
             magpie.${submissiontype}-storm-functionality-interactive-mode
     fi
 
-    if ls magpie.${submissiontype}*functionality-interactive-mode* >& /dev/null ; then
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-interactive-mode*"`
+    if [ -n "${files}" ]
+    then
         # Guarantee atleast 5 mins for the job that should end quickly
         ${functiontogettimeoutput} 5
-        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-interactive-mode*
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-interactive-mode*
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/interactivemode-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
 
@@ -321,11 +325,13 @@ GenerateFunctionalityTests_JobTimeout() {
             magpie.${submissiontype}-storm-functionality-jobtimeout
     fi
 
-    if ls magpie.${submissiontype}*functionality-jobtimeout* >& /dev/null ; then
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-jobtimeout*"`
+    if [ -n "${files}" ]
+    then
         # Guarantee atleast 5 mins for the job that should end quickly
         ${functiontogettimeoutput} 5
-        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*functionality-jobtimeout*
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-jobtimeout*
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/jobtimeout-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
 

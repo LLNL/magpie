@@ -90,12 +90,17 @@ GenerateMahoutDependencyTests() {
 }
 
 GenerateMahoutPostProcessing () {
-    if ls magpie.${submissiontype}*run-clustersyntheticcontrol* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-clustersyntheticcontrol-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-clustersyntheticcontrol*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-clustersyntheticcontrol*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-clustersyntheticcontrol-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}-hadoop-and-mahout* >& /dev/null ; then
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop-and-mahout*"`
+    if [ -n "${files}" ]
+    then
         # Guarantee 60 minutes for the job that should last awhile
         ${functiontogettimeoutput} 60
-        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}-hadoop-and-mahout*
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
     fi
 }

@@ -420,59 +420,57 @@ echo "Finishing up test creation"
 
 # Names important, will be used in validation
 
-if ls magpie.${submissiontype}*Dependency* >& /dev/null ; then
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*Dependency*
+files=`find . -maxdepth 1 -name "magpie.${submissiontype}*Dependency*"`
+if [ -n "${files}" ]
+then
+    sed -i -e "s/FILENAMESEARCHREPLACEKEY/Dependency-FILENAMESEARCHREPLACEKEY/" ${files}
 fi
 
-if ls magpie.${submissiontype}*no-local-dir >& /dev/null ; then
-    sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' magpie.${submissiontype}*no-local-dir
+files=`find . -maxdepth 1 -name "magpie.${submissiontype}*no-local-dir*"`
+if [ -n "${files}" ]
+then
+    sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' ${files}
 fi
 
-if ls magpie.${submissiontype}* >& /dev/null ; then
-    sed -i -e "s/<my node count>/${basenodescount}/" magpie.${submissiontype}*
+files=`find . -maxdepth 1 -name "magpie.${submissiontype}*"`
+if [ -n "${files}" ]
+then
+    sed -i -e "s/<my node count>/${basenodescount}/" ${files}
 
-    sed -i -e "s/<my job name>/test/" magpie.${submissiontype}*
+    sed -i -e "s/<my job name>/test/" ${files}
 
-    sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' magpie.${submissiontype}*
+    sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' ${files}
 
     dependencyprefix=`date +"%Y%m%d%N"`
 
-    sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" magpie.${submissiontype}*
+    sed -i -e "s/DEPENDENCYPREFIX/${dependencyprefix}/" ${files}
 
-    sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' magpie.${submissiontype}*
-    sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' magpie.${submissiontype}*
+    sed -i -e 's/# export MAGPIE_STARTUP_TIME=.*/export MAGPIE_STARTUP_TIME='"${STARTUP_TIME}"'/' ${files}
+    sed -i -e 's/# export MAGPIE_SHUTDOWN_TIME=.*/export MAGPIE_SHUTDOWN_TIME='"${SHUTDOWN_TIME}"'/' ${files}
 
     # Guarantee atleast 30 mins for all remaining jobs
     ${functiontogettimeoutput} 30
-    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" magpie.${submissiontype}*
-fi
+    sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
 
-# Put back original/desired filename names and do some last replaces that are submission type specific
-
-if [ "${submissiontype}" == "sbatch-srun" ]
-then
-    if ls magpie.${submissiontype}* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" magpie.${submissiontype}*
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
-
-        sed -i -e "s/<my partition>/${sbatchsrunpartition}/" magpie.${submissiontype}*
-    fi
-elif [ "${submissiontype}" == "msub-slurm-srun" ]
-then
-    if ls magpie.${submissiontype}* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" magpie.${submissiontype}*
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" magpie.${submissiontype}*
+    if [ "${submissiontype}" == "sbatch-srun" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
         
-        sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" magpie.${submissiontype}*
-        sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" magpie.${submissiontype}*
-    fi
-elif [ "${submissiontype}" == "lsf-mpirun" ]
-then
-    if ls magpie.${submissiontype}* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" magpie.${submissiontype}*
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" magpie.${submissiontype}*
-
-        sed -i -e "s/<my queue>/${lsfqueue}/" magpie.${submissiontype}*
+        sed -i -e "s/<my partition>/${sbatchsrunpartition}/" ${files}
+    elif [ "${submissiontype}" == "msub-slurm-srun" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
+        
+        sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" ${files}
+        sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" ${files}
+    elif [ "${submissiontype}" == "lsf-mpirun" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" ${files}
+        
+        sed -i -e "s/<my queue>/${lsfqueue}/" ${files}
     fi
 fi
 

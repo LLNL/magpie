@@ -111,10 +111,15 @@ GeneratePigDependencyTests() {
 }
 
 GeneratePigPostProcessing () {
-    if ls magpie.${submissiontype}*run-testpig* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-testpig*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-testpig*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-testpig-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-    if ls magpie.${submissiontype}*run-pigscript* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-pigscript*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-pigscript*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pigscript-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }

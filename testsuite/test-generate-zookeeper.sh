@@ -51,19 +51,28 @@ GenerateZookeeperStandardTests() {
 }
 
 GenerateZookeeperPostProcessing () {
-    if ls magpie.${submissiontype}*run-zookeeperruok* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-zookeeperruok-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*run-zookeeperruok*
-    fi
-    
-    if ls magpie.${submissiontype}*zookeeper-shared* >& /dev/null ; then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*zookeeper-shared*
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-zookeeperruok*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-zookeeperruok-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    if ls magpie.${submissiontype}* | grep -v Dependency >& /dev/null ; then
-        ls magpie.${submissiontype}* | grep -v Dependency | xargs sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/'
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*zookeeper-shared*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    if ls magpie.${submissiontype}* >& /dev/null ; then
-        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' magpie.${submissiontype}*
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*" | grep -v Dependency`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/' ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' ${files}
     fi
 }
