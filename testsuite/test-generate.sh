@@ -183,7 +183,7 @@ DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 STARTUP_TIME=30
 SHUTDOWN_TIME=30
 
-MAGPIE_SCRIPTS_HOME=`cd "`dirname "$0"`"/..; pwd`
+MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
 if [ ! -d "${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates" ]
 then
