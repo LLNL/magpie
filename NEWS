@@ -1,3 +1,8 @@
+magpie 1.74
+-----------
+Remove scripts/job-scripts/zookeeper-ruok-script.sh script, which was
+  duplicated within Magpie w/ 'zookeeperruok' option in Zookeeper.
+
 magpie 1.73
 -----------
 Support "args" options to Magpie, Hadoop, Hbase, Spark, Storm script
