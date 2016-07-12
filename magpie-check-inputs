@@ -367,7 +367,7 @@ fi
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
 # Subtract 1 for Hadoop Master
-    nodecount=$((nodecount-${nodecountmaster}))
+    nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
     Magpie_check_must_be_set "JAVA_HOME" "for Hadoop" 
@@ -609,11 +609,11 @@ then
                         echo "HDFS federation mount must be an absolute path beginning with a /"
                         exit 1
                     fi
-                    j=$((j+1))
+                    j=`expr ${j} + 1`
                 done
            done 
 
-            nodecount=$((nodecount-${HDFS_FEDERATION_NAMENODE_COUNT-1}))
+            nodecount=`expr ${nodecount} - ${HDFS_FEDERATION_NAMENODE_COUNT-1}`
         fi
     fi
 
@@ -764,7 +764,7 @@ fi
 if [ "${HBASE_SETUP}" == "yes" ]
 then
 # Subtract 1 for Hbase Master
-    nodecount=$((nodecount-${nodecountmaster}))
+    nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
     Magpie_check_must_be_set "JAVA_HOME" "for Hbase" 
@@ -913,7 +913,7 @@ fi
 if [ "${SPARK_SETUP}" == "yes" ]
 then
 # Subtract 1 for Spark Master
-    nodecount=$((nodecount-${nodecountmaster}))
+    nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
     Magpie_check_must_be_set "JAVA_HOME" "for Spark" 
@@ -1101,7 +1101,7 @@ fi
 if [ "${STORM_SETUP}" == "yes" ]
 then
 # Subtract 1 for Storm Master
-    nodecount=$((nodecount-${nodecountmaster}))
+    nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
     Magpie_check_must_be_set "JAVA_HOME" "for Storm" 
@@ -1149,7 +1149,7 @@ fi
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
 # Subtract 1 for Tachyon Master
-    nodecount=$((nodecount-${nodecountmaster}))
+    nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
     Magpie_check_must_be_set "JAVA_HOME" "for Tachyon" 
@@ -1258,7 +1258,7 @@ then
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then
-        nodecount=$((nodecount-${ZOOKEEPER_REPLICATION_COUNT}))
+        nodecount=`expr ${nodecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
     fi
 
     if [ ${nodecount} -le "0" ]

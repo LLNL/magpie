@@ -497,7 +497,7 @@ then
         then
             datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}file://${hdfspath}/dfs/data"
         fi
-        pathcount=$((pathcount+1))
+        pathcount=`expr ${pathcount} + 1`
     done
     IFS=${IFSORIG}
     datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
@@ -917,7 +917,7 @@ then
                 sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_coresitexml}
                 sed -i -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" ${post_coresitexml}
 
-                j=$((j+1))
+                j=`expr ${j} + 1`
             done
         done
 

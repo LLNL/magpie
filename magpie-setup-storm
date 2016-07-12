@@ -165,7 +165,7 @@ servercount=1
 for zookeepernode in ${zookeepernodes}
 do
     echo "     - \"${zookeepernode}\"" >> ${post_stormyaml}
-    servercount=$((servercount+1))
+    servercount=`expr ${servercount} + 1`
 done
 
 echo "" >> ${post_stormyaml}
@@ -178,7 +178,7 @@ slotport=${STORM_SUPERVISOR_SLOTS_STARTING_PORT}
 for i in `seq 1 ${stormslotcount}`
 do
     echo "     - ${slotport}" >> ${post_stormyaml}
-    slotport=$((slotport+1))
+    slotport=`expr ${slotport} + 1`
 done
 
 stormjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
