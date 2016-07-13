@@ -143,7 +143,7 @@ fi
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-# Sets threadstouse
+# Sets proccount & threadstouse
 Magpie_calculate_threadstouse
 
 # Sets memorytouse
