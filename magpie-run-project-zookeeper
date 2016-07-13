@@ -45,7 +45,7 @@ Magpie_run_start_zookeeper () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting Zookeeper"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-daemons.sh start
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-start-all.sh
 
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
@@ -71,12 +71,14 @@ Magpie_run_start_zookeeper () {
             echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
             if echo $MAGPIE_SHELL | grep -q csh
             then
+                echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
                 echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
             else
+                echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
                 echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
             fi
             echo "*   cd $MAGPIE_SCRIPTS_HOME"
-            echo "*   bin/magpie-zookeeper-daemons.sh start"
+            echo "*   bin/magpie-zookeeper-start-all.sh"
             echo "*" 
         fi
         echo "* To end/cleanup your session, kill the daemons via:"
@@ -84,12 +86,14 @@ Magpie_run_start_zookeeper () {
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
         if echo $MAGPIE_SHELL | grep -q csh
         then
+            echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
             echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
         else
+            echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
             echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
         fi
         echo "*   cd $MAGPIE_SCRIPTS_HOME"
-        echo "*   bin/magpie-zookeeper-daemons.sh stop"
+        echo "*   bin/magpie-zookeeper-stop-all.sh"
         echo "*" 
         echo "* Some additional environment variables you may sometimes wish to set"
         echo "*" 
@@ -249,7 +253,7 @@ Magpie_run_stop_zookeeper () {
             Magpie_make_all_local_dirs_unspecified
             
             echo "Stopping Zookeeper"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-daemons.sh stop
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-stop-all.sh
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
