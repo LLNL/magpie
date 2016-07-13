@@ -119,7 +119,7 @@ ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MA
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
 
 if [ "${HADOOP_SETUP}" == "yes" ] \
-    && Magpie_hadoop_filesystem_mode_is_hdfs_type
+    && Magpie_hadoop_filesystem_mode_is_hdfs_type \
     && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
 then
     extranamenodecount=`expr ${HDFS_FEDERATION_NAMENODE_COUNT} - 1`
