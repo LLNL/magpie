@@ -47,7 +47,7 @@ then
 fi
 
 myhostname=`hostname`
-phoenixconfdir=$(echo ${PHOENIX_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+phoenixconfdir=`echo ${PHOENIX_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 orig_phoenixconfdir=${PHOENIX_CONF_DIR}
 
 if [ ! -f ${phoenixconfdir}/phoenix-env.sh ]
@@ -86,7 +86,7 @@ RSH_CMD=${PHOENIX_SSH_CMD:-ssh}
 
 for node in `cat ${phoenixconfdir}/regionservers`
 do
-    phoenixconfdir=$(echo ${orig_phoenixconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g")
-    hbaseconfdir=$(echo ${HBASE_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g")
+    phoenixconfdir=`echo ${orig_phoenixconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
+    hbaseconfdir=`echo ${HBASE_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
     ${RSH_CMD} ${PHOENIX_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-phoenix.sh ${phoenixconfdir} ${hbaseconfdir} ${PHOENIX_HOME} $1
 done

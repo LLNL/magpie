@@ -47,7 +47,7 @@ then
 fi
 
 myhostname=`hostname`
-kafkaconfdir=$(echo ${KAFKA_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+kafkaconfdir=`echo ${KAFKA_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 orig_kafkaconfdir=${KAFKA_CONF_DIR}
 
 if [ ! -f ${kafkaconfdir}/kafka-env.sh ]
@@ -87,13 +87,13 @@ RSH_CMD=${KAFKA_SSH_CMD:-ssh}
 # Masters
 for node in `cat ${kafkaconfdir}/masters`
 do
-    kafkaconfdir=$(echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g")
+    kafkaconfdir=`echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
     ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh ${kafkaconfdir} ${KAFKA_HOME} $1
 done
 
 # Slaves
 for node in `cat ${kafkaconfdir}/slaves`
 do
-    kafkaconfdir=$(echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g")
+    kafkaconfdir=`echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
     ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh ${kafkaconfdir} ${KAFKA_HOME} $1
 done

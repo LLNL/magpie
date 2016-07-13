@@ -61,13 +61,13 @@ fi
 myhostname=`hostname`
 
 orig_stormconfdir=${STORM_CONF_DIR}
-stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+stormconfdir=`echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 orig_stormlogdir=${STORM_LOG_DIR}
-stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+stormlogdir=`echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 orig_stormlocalscratchdir=${STORM_LOCAL_SCRATCHSPACE_DIR}
-stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+stormlocalscratchdir=`echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 if [ ! -f ${stormconfdir}/workers ]
 then
@@ -123,9 +123,9 @@ stormnodes=`cat ${STORM_CONF_DIR}/workers`
 
 for stormnode in ${stormnodes}
 do
-    stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
-    stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
-    stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
+    stormconfdir=`echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g"`
+    stormlogdir=`echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g"`
+    stormlocalscratchdir=`echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g"`
 
     ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} supervisor $1
     ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} logviewer $1
