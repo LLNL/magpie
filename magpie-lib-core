@@ -30,10 +30,8 @@
 # live inside the Magpie system.  They largely require environment
 # variables, functions, etc. to have been setup.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_am_I_master () {
     local myhostname=`hostname`

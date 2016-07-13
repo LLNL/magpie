@@ -26,6 +26,8 @@
 #
 # This is used by scripts, don't edit this
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+
 __Magpie_make_magpie_local_dirs () {
     which=$1
 
