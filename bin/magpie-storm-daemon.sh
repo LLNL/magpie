@@ -104,7 +104,7 @@ then
     exit 1
 fi
 
-source $1/magpie-launch-storm-env.sh
+source $1/storm-daemon-env.sh
 
 myhostname=`hostname`
 if [ "$6" == "start" ]

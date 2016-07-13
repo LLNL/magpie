@@ -803,4 +803,22 @@ GenerateSparkPostProcessing () {
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-spark*hdfs-more-nodes*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-spark*hdfs-more-nodes*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/${basenodesmorenodescount}/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-spark*hdfs-fewer-nodes*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/${basenodescount}/" ${files}
+    fi
 }

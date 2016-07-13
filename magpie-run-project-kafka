@@ -54,7 +54,7 @@ Magpie_run_start_kafka () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting Kafka"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka.sh start 
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-start-all.sh 
             
             Magpie_make_all_local_dirs_node_specific
 
@@ -240,7 +240,7 @@ Magpie_run_stop_kafka () {
             Magpie_make_all_local_dirs_unspecified
             
             echo "Stopping kafka"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka.sh stop
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-stop-all.sh
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific

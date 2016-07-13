@@ -54,7 +54,7 @@ Magpie_run_start_phoenix () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting Phoenix Queryserver"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix.sh start 
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-start-all.sh 
             
             Magpie_make_all_local_dirs_node_specific
 
@@ -235,7 +235,7 @@ Magpie_run_stop_phoenix () {
             Magpie_make_all_local_dirs_unspecified
             
             echo "Stopping Phoenix"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix.sh stop
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-stop-all.sh
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific

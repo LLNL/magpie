@@ -1,0 +1,8 @@
+# This environment file be sourced by the magpie-zookeeper-daemons.sh
+# script.
+
+export JAVA_HOME=MAGPIEJAVAHOME
+export ZOOKEEPER_HOME=ZOOKEEPERHOME
+export ZOO_LOG_DIR=ZOOKEEPERLOGDIR
+export ZOOCFGDIR=ZOOKEEPERCONFDIR
+export MAGPIE_SCRIPTS_HOME=MAGPIESCRIPTSHOME

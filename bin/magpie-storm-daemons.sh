@@ -61,13 +61,13 @@ fi
 myhostname=`hostname`
 
 orig_stormconfdir=${STORM_CONF_DIR}
-stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+stormconfdir=`echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 orig_stormlogdir=${STORM_LOG_DIR}
-stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+stormlogdir=`echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 orig_stormlocalscratchdir=${STORM_LOCAL_SCRATCHSPACE_DIR}
-stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+stormlocalscratchdir=`echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 if [ ! -f ${stormconfdir}/workers ]
 then
@@ -75,13 +75,13 @@ then
     exit 1
 fi
 
-if [ ! -f ${stormconfdir}/magpie-launch-storm-env.sh ]
+if [ ! -f ${stormconfdir}/storm-daemon-env.sh ]
 then
-    echo "Cannot find file ${stormconfdir}/magpie-launch-storm-env.sh"
+    echo "Cannot find file ${stormconfdir}/storm-daemon-env.sh"
     exit 1
 fi
 
-source ${stormconfdir}/magpie-launch-storm-env.sh
+source ${stormconfdir}/storm-daemon-env.sh
 
 if [ "${STORM_HOME}X" == "X" ]
 then
@@ -107,15 +107,15 @@ then
     exit 1
 fi
 
-if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh" ]
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh" ]
 then
-    echo "Cannot find magpie-launch-storm.sh"
+    echo "Cannot find magpie-storm-daemon.sh"
     exit 1
 fi
 
-# At this point, the environment variables are node-specific, it was read out of magpie-launch-storm-env.sh
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} nimbus $1
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} ui $1
+# At this point, the environment variables are node-specific, it was read out of storm-daemon-env.sh
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} nimbus $1
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} ui $1
 
 RSH_CMD=${STORM_SSH_CMD:-ssh}
 
@@ -123,10 +123,10 @@ stormnodes=`cat ${STORM_CONF_DIR}/workers`
 
 for stormnode in ${stormnodes}
 do
-    stormconfdir=$(echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
-    stormlogdir=$(echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
-    stormlocalscratchdir=$(echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g")
+    stormconfdir=`echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g"`
+    stormlogdir=`echo ${orig_stormlogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g"`
+    stormlocalscratchdir=`echo ${orig_stormlocalscratchdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$stormnode/g"`
 
-    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} supervisor $1
-    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-storm.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} logviewer $1
+    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} supervisor $1
+    ${RSH_CMD} ${STORM_SSH_OPTS} ${stormnode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh ${stormconfdir} ${stormlogdir} ${STORM_HOME} ${stormlocalscratchdir} logviewer $1
 done

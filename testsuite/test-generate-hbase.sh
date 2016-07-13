@@ -224,6 +224,12 @@ GenerateHbasePostProcessing () {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-scripthbasereaddata-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-more-nodes-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*"`
     if [ -n "${files}" ]
     then

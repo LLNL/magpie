@@ -22,31 +22,11 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is for running the zookeeper zookeeperruok sanity test.
-# For the most part, it shouldn't be editted.  See job submission
-# files for configuration details.
+# This script stops Phoenix across all nodes for the user
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
-
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
-
-if ! type nc >/dev/null 2>&1
+if [ "${MAGPIE_SCRIPTS_HOME}X" != "X" ]
 then
-    echo "Zookeeper ruok cannot be run b/c netcat ('nc' command) cannot be found"
-    exit 1
+    export MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 fi
 
-for zookeepernode in ${zookeepernodes}
-do
-    echo "Sending ruok to ${zookeepernode} ... "
-    echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}
-    echo 
-done
-
-exit 0
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-daemons.sh stop

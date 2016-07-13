@@ -415,8 +415,8 @@ then
     export ZOOKEEPER_LEADER_PORT="3888"
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${ZOOKEEPER_CONF_DIR}/zookeeper_master" ]
+    if [ -f "${ZOOKEEPER_CONF_DIR}/masters" ]
     then 
-        export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/zookeeper_master`
+        export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/masters`
     fi
 fi

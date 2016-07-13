@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script launches Kafka across all nodes for the user
+# This script launches Phoenix across all nodes for the user
 
-# Make sure the environment variable KAFKA_CONF_DIR is set.
+# Make sure the environment variable PHOENIX_CONF_DIR is set.
 
 # First argument is start or stop
 
@@ -40,33 +40,33 @@ then
     exit 1
 fi
 
-if [ "${KAFKA_CONF_DIR}X" == "X" ]
+if [ "${PHOENIX_CONF_DIR}X" == "X" ]
 then
-    echo "User must specify KAFKA_CONF_DIR"
+    echo "User must specify PHOENIX_CONF_DIR"
     exit 1
 fi
 
 myhostname=`hostname`
-kafkaconfdir=$(echo ${KAFKA_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
-orig_kafkaconfdir=${KAFKA_CONF_DIR}
+phoenixconfdir=`echo ${PHOENIX_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
+orig_phoenixconfdir=${PHOENIX_CONF_DIR}
 
-if [ ! -f ${kafkaconfdir}/kafka-env.sh ]
+if [ ! -f ${phoenixconfdir}/phoenix-env.sh ]
 then
-    echo "Cannot find file ${KAFKA_CONF_DIR}/kafka-env.sh"
+    echo "Cannot find file ${phoenixconfdir}/phoenix-env.sh"
     exit 1
 fi
 
-source ${kafkaconfdir}/kafka-env.sh
+source ${phoenixconfdir}/phoenix-env.sh
 
-if [ ! -f ${kafkaconfdir}/slaves ]
+if [ ! -f ${phoenixconfdir}/regionservers ]
 then
-    echo "Cannot find file ${kafkaconfdir}/slaves"
+    echo "Cannot find file ${phoenixconfdir}/regionservers"
     exit 1
 fi
 
-if [ "${KAFKA_HOME}X" == "X" ]
+if [ "${PHOENIX_HOME}X" == "X" ]
 then
-    echo "KAFKA_HOME not specified"
+    echo "PHOENIX_HOME not specified"
     exit 1
 fi
 
@@ -76,24 +76,17 @@ then
     exit 1
 fi
 
-if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh" ]
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-daemon.sh" ]
 then
-    echo "Cannot find magpie-launch-kafka.sh"
+    echo "Cannot find magpie-launch-phoeinx.sh"
     exit 1
 fi
 
-RSH_CMD=${KAFKA_SSH_CMD:-ssh}
+RSH_CMD=${PHOENIX_SSH_CMD:-ssh}
 
-# Masters
-for node in `cat ${kafkaconfdir}/masters`
+for node in `cat ${phoenixconfdir}/regionservers`
 do
-    kafkaconfdir=$(echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g")
-    ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh ${kafkaconfdir} ${KAFKA_HOME} $1
-done
-
-# Slaves
-for node in `cat ${kafkaconfdir}/slaves`
-do
-    kafkaconfdir=$(echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g")
-    ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh ${kafkaconfdir} ${KAFKA_HOME} $1
+    phoenixconfdir=`echo ${orig_phoenixconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
+    hbaseconfdir=`echo ${HBASE_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
+    ${RSH_CMD} ${PHOENIX_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-daemon.sh ${phoenixconfdir} ${hbaseconfdir} ${PHOENIX_HOME} $1
 done

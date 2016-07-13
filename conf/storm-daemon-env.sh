@@ -1,4 +1,4 @@
-# This environment file be sourced by the magpie-launch-storm.sh
+# This environment file be sourced by the magpie-storm-daemon.sh
 # script.
 
 export JAVA_HOME=MAGPIEJAVAHOME

@@ -52,7 +52,7 @@ Magpie_run_start_storm () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting storm"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh start
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-start-all.sh
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
@@ -98,12 +98,16 @@ Magpie_run_start_storm () {
             echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${STORM_MASTER_NODE}"
             if echo $MAGPIE_SHELL | grep -q csh
             then
+                echo "*   setenv STORM_HOME \"${STORM_HOME}\""
                 echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+                echo "*   setenv STORM_LOCAL_SCRATCHSPACE_DIR \"${STORM_LOCAL_SCRATCHSPACE_DIR}\""
             else
+                echo "*   export STORM_HOME=\"${STORM_HOME}\""
                 echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+                echo "*   export STORM_LOCAL_SCRATCHSPACE_DIR=\"${STORM_LOCAL_SCRATCHSPACE_DIR}\""
             fi
             echo "*   cd $MAGPIE_SCRIPTS_HOME"
-            echo "*   bin/magpie-storm.sh start"
+            echo "*   bin/magpie-storm-start-all.sh"
             echo "*" 
         fi
 
@@ -112,12 +116,16 @@ Magpie_run_start_storm () {
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${STORM_MASTER_NODE}"
         if echo $MAGPIE_SHELL | grep -q csh
         then
+            echo "*   setenv STORM_HOME \"${STORM_HOME}\""
             echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
+            echo "*   setenv STORM_LOCAL_SCRATCHSPACE_DIR \"${STORM_LOCAL_SCRATCHSPACE_DIR}\""
         else
+            echo "*   export STORM_HOME=\"${STORM_HOME}\""
             echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
+            echo "*   export STORM_LOCAL_SCRATCHSPACE_DIR=\"${STORM_LOCAL_SCRATCHSPACE_DIR}\""
         fi
         echo "*   cd $MAGPIE_SCRIPTS_HOME"
-        echo "*   bin/magpie-storm.sh stop"
+        echo "*   bin/magpie-storm-stop-all.sh"
         echo "*" 
         echo "* Some additional environment variables you may sometimes wish to set"
         echo "*" 
@@ -156,6 +164,7 @@ Magpie_run_start_storm () {
             then
                 echo "setenv STORM_HOME \"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv STORM_LOCAL_SCRATCHSPACE_DIR \"${STORM_LOCAL_SCRATCHSPACE_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_LOG_DIR \"${STORM_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_MASTER_NODE \"${STORM_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_NIMBUS_HOST \"${STORM_NIMBUS_HOST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -168,6 +177,7 @@ Magpie_run_start_storm () {
             else
                 echo "export STORM_HOME=\"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_CONF_DIR=\"${STORM_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export STORM_LOCAL_SCRATCHSPACE_DIR=\"${STORM_LOCAL_SCRATCHSPACE_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_LOG_DIR=\"${STORM_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_MASTER_NODE=\"${STORM_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_NIMBUS_HOST=\"${STORM_NIMBUS_HOST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -291,7 +301,7 @@ Magpie_run_stop_storm () {
             Magpie_make_all_local_dirs_unspecified
             
             echo "Stopping storm"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh stop
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-stop-all.sh
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific

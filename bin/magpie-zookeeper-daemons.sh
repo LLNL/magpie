@@ -56,21 +56,21 @@ fi
 orig_zookeeperconfdir=${zookeeperconfdir}
 
 myhostname=`hostname`
-zookeeperconfdir=$(echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
+zookeeperconfdir=`echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
-if [ ! -f ${zookeeperconfdir}/zookeeper_slaves ]
+if [ ! -f ${zookeeperconfdir}/slaves ]
 then
-    echo "Cannot find file ${zookeeperconfdir}/zookeeper_slaves"
+    echo "Cannot find file ${zookeeperconfdir}/slaves"
     exit 1
 fi
 
-if [ ! -f ${zookeeperconfdir}/zookeeper-env.sh ]
+if [ ! -f ${zookeeperconfdir}/zookeeper-master-env.sh ]
 then
-    echo "Cannot find file ${zookeeperconfdir}/zookeeper-env.sh"
+    echo "Cannot find file ${zookeeperconfdir}/zookeeper-master-env.sh"
     exit 1
 fi
 
-source ${zookeeperconfdir}/zookeeper-env.sh
+source ${zookeeperconfdir}/zookeeper-master-env.sh
 
 if [ "${ZOOKEEPER_HOME}X" == "X" ]
 then
@@ -84,18 +84,18 @@ then
     exit 1
 fi
 
-if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-daemon.sh" ]
 then
-    echo "Cannot find magpie-launch-zookeeper.sh"
+    echo "Cannot find magpie-zookeeper-daemon.sh"
     exit 1
 fi
 
-zookeepernodes=`cat ${zookeeperconfdir}/zookeeper_slaves`
+zookeepernodes=`cat ${zookeeperconfdir}/slaves`
 
 RSH_CMD=${ZOOKEEPER_SSH_CMD:-ssh}
 
 for zookeepernode in ${zookeepernodes}
 do
-    zookeeperconfdir=$(echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$zookeepernode/g")
-    ${RSH_CMD} ${ZOOKEEPER_SSH_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${zookeeperconfdir} ${ZOOKEEPER_HOME} $1
+    zookeeperconfdir=`echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$zookeepernode/g"`
+    ${RSH_CMD} ${ZOOKEEPER_SSH_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-daemon.sh ${zookeeperconfdir} ${ZOOKEEPER_HOME} $1
 done
