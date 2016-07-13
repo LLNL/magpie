@@ -357,6 +357,270 @@ then
     done
 fi
 
+check_exports_magpie () {
+    local file=$1
+
+    num=`grep -E "MAGPIE_CLUSTER_NODERANK=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export MAGPIE_CLUSTER_NODERANK"
+    fi
+
+    num=`grep -E "MAGPIE_NODE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export MAGPIE_NODE_COUNT"
+    fi
+
+    num=`grep -E "MAGPIE_NODELIST=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export MAGPIE_NODELIST"
+    fi
+
+    num=`grep -E "MAGPIE_JOB_NAME=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export MAGPIE_JOB_NAME"
+    fi
+
+    num=`grep -E "MAGPIE_JOB_ID=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export MAGPIE_JOB_ID"
+    fi
+
+    num=`grep -E "MAGPIE_TIMELIMIT_MINUTES=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export MAGPIE_TIMELIMIT_MINUTES"
+    fi
+}
+
+check_exports_project_confdir () {
+    local file=$1
+    local project=$2
+
+    num=`grep -E "${project}_CONF_DIR=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ${project}_CONF_DIR"
+    fi
+}
+
+check_exports_project_logdir () {
+    local file=$1
+    local project=$2
+
+    num=`grep -E "${project}_LOG_DIR=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ${project}_LOG_DIR"
+    fi
+}
+
+check_exports_project_base () {
+    local file=$1
+    local project=$2
+
+    check_exports_project_confdir ${file} ${project}
+    check_exports_project_logdir ${file} ${project}
+}
+
+check_exports_hadoop () {
+    local file=$1
+
+    check_exports_project_base ${file} "HADOOP"
+    
+    num=`grep -E "HADOOP_MASTER_NODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_MASTER_NODE"
+    fi
+
+    num=`grep -E "HADOOP_SLAVE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_SLAVE_COUNT"
+    fi
+
+    num=`grep -E "HADOOP_SLAVE_CORE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_SLAVE_CORE_COUNT"
+    fi
+
+    num=`grep -E "HADOOP_NAMENODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_NAMENODE"
+    fi
+
+    num=`grep -E "HADOOP_NAMENODE_PORT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_NAMENODE_PORT"
+    fi
+}
+
+check_exports_pig () {
+    local file=$1
+
+    # Pig is only conf dir, no log dir
+    check_exports_project_confdir ${file} "PIG"
+}
+
+check_exports_hbase () {
+    local file=$1
+
+    check_exports_project_base ${file} "HBASE"
+    
+    num=`grep -E "HBASE_MASTER_NODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HBASE_MASTER_NODE"
+    fi
+
+    num=`grep -E "HBASE_REGIONSERVER_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HBASE_REGIONSERVER_COUNT"
+    fi
+}
+
+check_exports_phoenix () {
+    local file=$1
+
+    check_exports_project_base ${file} "PHOENIX"
+}
+
+check_exports_spark () {
+    local file=$1
+
+    check_exports_project_base ${file} "SPARK"
+
+    num=`grep -E "SPARK_MASTER_NODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export SPARK_MASTER_NODE"
+    fi
+
+    if ! echo "${file}" | grep -q "usingyarn"
+    then
+        num=`grep -E "SPARK_MASTER_PORT=[0-9]+" ${file} | wc -l`
+        if [ "${num}" == 0 ]
+        then
+            echo "Error in $file - can't find export SPARK_MASTER_PORT"
+        fi
+    fi
+
+    num=`grep -E "SPARK_SLAVE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export SPARK_SLAVE_COUNT"
+    fi
+
+    num=`grep -E "SPARK_SLAVE_CORE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export SPARK_SLAVE_CORE_COUNT"
+    fi
+}
+
+check_exports_storm () {
+    local file=$1
+
+    check_exports_project_base ${file} "STORM"
+
+    num=`grep -E "STORM_MASTER_NODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export STORM_MASTER_NODE"
+    fi
+
+    num=`grep -E "STORM_NIMBUS_HOST=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export STORM_NIMBUS_HOST"
+    fi
+
+    num=`grep -E "STORM_WORKERS_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export STORM_WORKERS_COUNT"
+    fi
+}
+
+check_exports_zookeeper () {
+    local file=$1
+
+    check_exports_project_base ${file} "ZOOKEEPER"
+
+    num=`grep -E "ZOOKEEPER_NODES=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ZOOKEEPER_NODES"
+    fi
+
+    num=`grep -E "ZOOKEEPER_NODES_FIRST=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ZOOKEEPER_NODES_FIRST"
+    fi
+}
+
+files=`find . -maxdepth 1 -name "${outputprefix}*checkexports*"`
+if [ -n "${files}" ]
+then
+    for file in ${files}
+    do
+        check_exports_magpie ${file}
+
+        if echo ${file} | grep -q "hadoop"
+        then
+            check_exports_hadoop ${file}
+        fi
+
+        if echo ${file} | grep -q "pig"
+        then
+            check_exports_pig ${file}
+        fi
+        
+        if echo ${file} | grep -q "mahout"
+        then
+            # None guaranted to user at moment 
+            :
+        fi
+
+        if echo ${file} | grep -q "hbase"
+        then
+            check_exports_hbase ${file}
+        fi
+
+        if echo ${file} | grep -q "phoenix"
+        then
+            check_exports_phoenix ${file}
+        fi
+
+        if echo ${file} | grep -q "spark"
+        then
+            check_exports_spark ${file}
+        fi
+
+        if echo ${file} | grep -q "storm"
+        then
+            check_exports_storm ${file}
+        fi
+
+        if echo ${file} | grep -q "zookeeper"
+        then
+            check_exports_zookeeper ${file}
+        fi
+
+        test_output_finalize $file
+    done
+fi
+
 files=`find . -maxdepth 1 -name "${outputprefix}*run-hadoopterasort*"`
 if [ -n "${files}" ]
 then
