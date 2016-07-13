@@ -2,6 +2,9 @@ magpie 1.74
 -----------
 Remove scripts/job-scripts/zookeeper-ruok-script.sh script, which was
   duplicated within Magpie w/ 'zookeeperruok' option in Zookeeper.
+Rename start/stop scripts in bin/ for consistency to many big data
+  projects.  If you manually started/stopped services in the past, some 
+  script names may have changed.
 
 magpie 1.73
 -----------
