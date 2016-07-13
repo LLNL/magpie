@@ -177,8 +177,7 @@ then
         sparkshufflebufferkb=100
         sparkshufflebuffer=100k
         sparkshuffleconsolidatefiles="false"
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    elif Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
     then
         # Default block size is 1M in Lustre
         # XXX: If not default, can get from lctl or similar?

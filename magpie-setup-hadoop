@@ -123,8 +123,7 @@ submitfilereplication=`echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs pri
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then
     iobuffersize=65536
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+elif Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
 then
     # Default block size is 1M in Lustre
     # XXX: If not default, can get from lctl or similar?
@@ -501,7 +500,7 @@ then
     done
     IFS=${IFSORIG}
     datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+elif Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
 then
     hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
@@ -671,9 +670,7 @@ else
     yarnlocalstoredir="\$\{hadoop.tmp.dir\}\/yarn-nm"
 fi
 
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
     # If HDFS would be stored in HDFS, so pick a better path
     yardappmapreduceamstagingdir="${HADOOP_LOCAL_SCRATCHSPACE_DIR}/yarn/"
@@ -763,9 +760,7 @@ if [ "${HADOOP_MODE}" == "terasort" ]
 then
     rm -rf ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-        ||[ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         blocksize=${hdfsblocksize}
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
@@ -1174,9 +1169,7 @@ then
     fi
 fi
 
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
     cp ${pre_hdfssitexml} ${post_hdfssitexml}
 
@@ -1253,9 +1246,7 @@ fi
 # Perform HDFS format if necessary
 #
 
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
     if [ "${hdfsformat}" -eq "1" ]
     then
