@@ -450,16 +450,19 @@ check_exports_hadoop () {
         echo "Error in $file - can't find export HADOOP_SLAVE_CORE_COUNT"
     fi
 
-    num=`grep -E "HADOOP_NAMENODE=.+" ${file} | wc -l`
-    if [ "${num}" == 0 ]
+    if echo "${file}" | grep -q "hdfs"
     then
-        echo "Error in $file - can't find export HADOOP_NAMENODE"
-    fi
+        num=`grep -E "HADOOP_NAMENODE=.+" ${file} | wc -l`
+        if [ "${num}" == 0 ]
+        then
+            echo "Error in $file - can't find export HADOOP_NAMENODE"
+        fi
 
-    num=`grep -E "HADOOP_NAMENODE_PORT=[0-9]+" ${file} | wc -l`
-    if [ "${num}" == 0 ]
-    then
-        echo "Error in $file - can't find export HADOOP_NAMENODE_PORT"
+        num=`grep -E "HADOOP_NAMENODE_PORT=[0-9]+" ${file} | wc -l`
+        if [ "${num}" == 0 ]
+        then
+            echo "Error in $file - can't find export HADOOP_NAMENODE_PORT"
+        fi
     fi
 }
 

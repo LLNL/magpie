@@ -69,7 +69,8 @@ SubmitFunctionalityTests_JobTimeout () {
 }
 
 SubmitFunctionalityTests_MagpieExports() {
-    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hadoop-hdfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hadoop-rawnetworkfs-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-checkexports
@@ -77,6 +78,7 @@ SubmitFunctionalityTests_MagpieExports() {
     BasicJobSubmit magpie.${submissiontype}-spark-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-storm-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-zookeeper-functionality-checkexports
 }
