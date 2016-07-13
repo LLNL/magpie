@@ -64,13 +64,13 @@ then
     exit 1
 fi
 
-if [ ! -f ${zookeeperconfdir}/zookeeper-env.sh ]
+if [ ! -f ${zookeeperconfdir}/zookeeper-master-env.sh ]
 then
-    echo "Cannot find file ${zookeeperconfdir}/zookeeper-env.sh"
+    echo "Cannot find file ${zookeeperconfdir}/zookeeper-master-env.sh"
     exit 1
 fi
 
-source ${zookeeperconfdir}/zookeeper-env.sh
+source ${zookeeperconfdir}/zookeeper-master-env.sh
 
 if [ "${ZOOKEEPER_HOME}X" == "X" ]
 then

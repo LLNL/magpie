@@ -36,8 +36,41 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 
-# zookeepernoderank set if succeed and it's a Zookeeper slave
+zookeeperjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+zookeeperlogdirsubst=`echo "${ZOOKEEPER_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+zookeeperconfdirsubst=`echo "${ZOOKEEPER_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+zookeeperhomesubst=`echo "${ZOOKEEPER_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+magpiescriptshomesubst=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
 # Zookeeper master is only for setup/teardown management, not for actual Zookeeper
+# We need this environment file just for the setup/teardown scripts 
+if Magpie_am_I_master
+then
+    Magpie_find_conffile "Zookeeper" ${ZOOKEEPER_CONF_FILES:-""} "zookeeper-master-env.sh" "pre_zookeepermasterenvsh"
+
+    post_zookeepermasterenvsh=${ZOOKEEPER_CONF_DIR}/zookeeper-master-env.sh
+
+    cp ${pre_zookeepermasterenvsh} ${post_zookeepermasterenvsh}
+
+    sed -i \
+        -e "s/MAGPIEJAVAHOME/${zookeeperjavahomesubst}/g" \
+        -e "s/ZOOKEEPERLOGDIR/${zookeeperlogdirsubst}/g" \
+        -e "s/ZOOKEEPERCONFDIR/${zookeeperconfdirsubst}/g" \
+        -e "s/ZOOKEEPERHOME/${zookeeperhomesubst}/g" \
+        -e "s/MAGPIESCRIPTSHOME/${magpiescriptshomesubst}/g" \
+        ${post_zookeepermasterenvsh}
+    
+    if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+    then
+        echo "export ZOOKEEPER_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_zookeepermasterenvsh}
+    fi
+    if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+    then
+        echo "export ZOOKEEPER_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_zookeepermasterenvsh}
+    fi
+fi
+
+# zookeepernoderank set if succeed and it's a Zookeeper slave
 if ! Magpie_am_I_a_zookeeper_node
 then
     exit 0
@@ -48,54 +81,51 @@ Magpie_make_all_local_dirs_node_specific
 
 extrajvmflags=""
 
-if [ "${zookeepernoderank}X" != "X" ]
-then 
-    # Setup node directory per node 
-    if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" == "yes" ]
+# Setup node directory per node 
+if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" == "yes" ]
+then
+    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
+else
+    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+fi
+zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
+
+mkdir -p ${zookeeperdatadirpath}
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${zookeeperdatadirpath}"
+    exit 1
+fi
+
+echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid
+
+if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
+then
+    zookeeperticktime=${ZOOKEEPER_TICKTIME}
+else
+    zookeeperticktime=2000
+fi
+
+if [ "${ZOOKEEPER_INITLIMIT}X" != "X" ]
+then
+    zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
+else
+    if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
     then
-        zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
+        zookeeperinitlimit=10
     else
-        zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
+        zookeeperinitlimit=20
     fi
-    zookeeperdatadirpathsubst=`echo "${zookeeperdatadirpath}" | sed "s/\\//\\\\\\\\\//g"`
-        
-    mkdir -p ${zookeeperdatadirpath}
-    if [ $? -ne 0 ] ; then
-        echo "mkdir failed making ${zookeeperdatadirpath}"
-        exit 1
-    fi
-    
-    echo "${zookeepernoderank}" > ${zookeeperdatadirpath}/myid
-    
-    if [ "${ZOOKEEPER_TICKTIME}X" != "X" ]
+fi
+
+if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
+then
+    zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
+else
+    if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
     then
-        zookeeperticktime=${ZOOKEEPER_TICKTIME}
+        zookeepersynclimit=5
     else
-        zookeeperticktime=2000
-    fi
-    
-    if [ "${ZOOKEEPER_INITLIMIT}X" != "X" ]
-    then
-        zookeeperinitlimit=${ZOOKEEPER_INITLIMIT}
-    else
-        if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
-        then
-            zookeeperinitlimit=10
-        else
-            zookeeperinitlimit=20
-        fi
-    fi
-    
-    if [ "${ZOOKEEPER_SYNCLIMIT}X" != "X" ]
-    then
-        zookeepersynclimit=${ZOOKEEPER_SYNCLIMIT}
-    else
-        if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
-        then
-            zookeepersynclimit=5
-        else
-            zookeepersynclimit=10
-        fi
+        zookeepersynclimit=10
     fi
 fi
 
@@ -156,12 +186,6 @@ do
     servercount=`expr ${servercount} + 1`
 done
 
-zookeeperjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-zookeeperlogdirsubst=`echo "${ZOOKEEPER_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-zookeeperconfdirsubst=`echo "${ZOOKEEPER_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-zookeeperhomesubst=`echo "${ZOOKEEPER_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-magpiescriptshome=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-
 extrajvmflagssubst=`echo "${extrajvmflags}" | sed "s/\\//\\\\\\\\\//g"`
 
 cp ${pre_zookeeperenvsh} ${post_zookeeperenvsh}
@@ -171,18 +195,8 @@ sed -i \
     -e "s/ZOOKEEPERLOGDIR/${zookeeperlogdirsubst}/g" \
     -e "s/ZOOKEEPERCONFDIR/${zookeeperconfdirsubst}/g" \
     -e "s/ZOOKEEPERHOME/${zookeeperhomesubst}/g" \
-    -e "s/MAGPIESCRIPTSHOME/${magpiescriptshome}/g" \
     -e "s/ZOOKEEPERJVMFLAGS/${extrajvmflagssubst}/g" \
     ${post_zookeeperenvsh}
-
-if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
-then
-    echo "export ZOOKEEPER_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_zookeeperenvsh}
-fi
-if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
-then
-    echo "export ZOOKEEPER_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_zookeeperenvsh}
-fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}
 
