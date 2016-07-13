@@ -163,34 +163,16 @@ Magpie_am_I_a_tachyon_node () {
 }
 
 Magpie_am_I_a_zeppelin_node() {
-    local myhostname=`hostname`
-
-    Magpie_make_zeppelin_local_dirs_node_specific
-
-    if grep -q -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters
-    then
-        zeppelinnoderank=`grep -n -E "^${myhostname}$" ${ZEPPELIN_CONF_DIR}/masters | awk --field-separator=':' '{print $1}'`
-        return 0
-    fi
-    return 1
+    # Zeppelin only runs on the master
+    Magpie_am_I_a_project_node ${ZEPPELIN_CONF_DIR} "zeppelinnoderank" "masters" ""
+    return $?
 }
 
 Magpie_am_I_a_zookeeper_node () {
-    local myhostname=`hostname`
-
-    Magpie_make_zookeeper_local_dirs_node_specific
-
     # Do not consider the 'master' node, it is only for launching
-    # Zookeeper, not an actual Zookeeper node
-    if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/slaves
-    then 
-        if grep -q -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/slaves
-        then
-            zookeepernoderank=`grep -n -E "^${myhostname}$" ${ZOOKEEPER_CONF_DIR}/slaves | awk --field-separator=':' '{print $1}'`
-        fi
-        return 0
-    fi
-    return 1
+    # Zookeeper, it is not an actual Zookeeper node
+    Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "slaves"
+    return $?
 }
 
 Magpie_calculate_stop_timeouts () {
