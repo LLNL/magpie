@@ -26,7 +26,6 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 # XXX deal with viewfs & federation
