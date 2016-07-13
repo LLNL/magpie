@@ -121,11 +121,11 @@ fi
 # Magpie_find_conffile will set the 'pre' filenames
 Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "storm.yaml" "pre_stormyaml"
 Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "storm_env.ini" "pre_stormenvini"
-Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "magpie-launch-storm-env.sh" "pre_stormenvsh"
+Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "magpie-storm-daemon-env.sh" "pre_stormenvsh"
 
 post_stormyaml=${STORM_CONF_DIR}/storm.yaml
 post_stormenvini=${STORM_CONF_DIR}/storm_env.ini
-post_stormenvsh=${STORM_CONF_DIR}/magpie-launch-storm-env.sh
+post_stormenvsh=${STORM_CONF_DIR}/magpie-storm-daemon-env.sh
 
 #
 # Setup Storm configuration files and environment files

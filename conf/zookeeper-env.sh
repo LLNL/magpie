@@ -1,4 +1,4 @@
-# This environment file be sourced by the magpie-launch-zookeeper.sh
+# This environment file be sourced by the magpie-zookeeper-daemon.sh
 # script.
 #
 # It is also read/loaded by zkEnv.sh, which is called by zkServer.sh

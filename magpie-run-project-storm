@@ -52,7 +52,7 @@ Magpie_run_start_storm () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting storm"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh start
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemons.sh start
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
@@ -103,7 +103,7 @@ Magpie_run_start_storm () {
                 echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
             fi
             echo "*   cd $MAGPIE_SCRIPTS_HOME"
-            echo "*   bin/magpie-storm.sh start"
+            echo "*   bin/magpie-storm-daemons.sh start"
             echo "*" 
         fi
 
@@ -117,7 +117,7 @@ Magpie_run_start_storm () {
             echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
         fi
         echo "*   cd $MAGPIE_SCRIPTS_HOME"
-        echo "*   bin/magpie-storm.sh stop"
+        echo "*   bin/magpie-storm-daemons.sh stop"
         echo "*" 
         echo "* Some additional environment variables you may sometimes wish to set"
         echo "*" 
@@ -291,7 +291,7 @@ Magpie_run_stop_storm () {
             Magpie_make_all_local_dirs_unspecified
             
             echo "Stopping storm"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm.sh stop
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemons.sh stop
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific

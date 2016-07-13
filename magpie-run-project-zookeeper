@@ -45,7 +45,7 @@ Magpie_run_start_zookeeper () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting Zookeeper"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh start
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-daemons.sh start
 
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
@@ -76,7 +76,7 @@ Magpie_run_start_zookeeper () {
                 echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
             fi
             echo "*   cd $MAGPIE_SCRIPTS_HOME"
-            echo "*   bin/magpie-zookeeper.sh start"
+            echo "*   bin/magpie-zookeeper-daemons.sh start"
             echo "*" 
         fi
         echo "* To end/cleanup your session, kill the daemons via:"
@@ -89,7 +89,7 @@ Magpie_run_start_zookeeper () {
             echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
         fi
         echo "*   cd $MAGPIE_SCRIPTS_HOME"
-        echo "*   bin/magpie-zookeeper.sh stop"
+        echo "*   bin/magpie-zookeeper-daemons.sh stop"
         echo "*" 
         echo "* Some additional environment variables you may sometimes wish to set"
         echo "*" 
@@ -249,7 +249,7 @@ Magpie_run_stop_zookeeper () {
             Magpie_make_all_local_dirs_unspecified
             
             echo "Stopping Zookeeper"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper.sh stop
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-daemons.sh stop
             
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific

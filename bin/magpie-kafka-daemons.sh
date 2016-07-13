@@ -76,9 +76,9 @@ then
     exit 1
 fi
 
-if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh" ]
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-daemon.sh" ]
 then
-    echo "Cannot find magpie-launch-kafka.sh"
+    echo "Cannot find magpie-kafka-daemon.sh"
     exit 1
 fi
 
@@ -88,12 +88,12 @@ RSH_CMD=${KAFKA_SSH_CMD:-ssh}
 for node in `cat ${kafkaconfdir}/masters`
 do
     kafkaconfdir=`echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
-    ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh ${kafkaconfdir} ${KAFKA_HOME} $1
+    ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-daemon.sh ${kafkaconfdir} ${KAFKA_HOME} $1
 done
 
 # Slaves
 for node in `cat ${kafkaconfdir}/slaves`
 do
     kafkaconfdir=`echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
-    ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-kafka.sh ${kafkaconfdir} ${KAFKA_HOME} $1
+    ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-daemon.sh ${kafkaconfdir} ${KAFKA_HOME} $1
 done

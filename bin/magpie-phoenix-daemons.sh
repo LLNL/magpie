@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script launches Zookeeper across all nodes for the user
+# This script launches Phoenix across all nodes for the user
 
-# Make sure the environment variable ZOOKEEPER_CONF_DIR is set.
+# Make sure the environment variable PHOENIX_CONF_DIR is set.
 
 # First argument is start or stop
 
@@ -40,41 +40,33 @@ then
     exit 1
 fi
 
-if [ "${ZOOKEEPER_CONF_DIR}X" == "X" ] && [ "${ZOOCFGDIR}X" == "X" ]
+if [ "${PHOENIX_CONF_DIR}X" == "X" ]
 then
-    echo "User must specify ZOOKEEPER_CONF_DIR or ZOOCFGDIR"
+    echo "User must specify PHOENIX_CONF_DIR"
     exit 1
 fi
-
-if [ "${ZOOKEEPER_CONF_DIR}X" != "X" ]
-then
-    zookeeperconfdir=${ZOOKEEPER_CONF_DIR}
-else
-    zookeeperconfdir=${ZOOCFGDIR}
-fi
-
-orig_zookeeperconfdir=${zookeeperconfdir}
 
 myhostname=`hostname`
-zookeeperconfdir=`echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
+phoenixconfdir=`echo ${PHOENIX_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
+orig_phoenixconfdir=${PHOENIX_CONF_DIR}
 
-if [ ! -f ${zookeeperconfdir}/slaves ]
+if [ ! -f ${phoenixconfdir}/phoenix-env.sh ]
 then
-    echo "Cannot find file ${zookeeperconfdir}/slaves"
+    echo "Cannot find file ${phoenixconfdir}/phoenix-env.sh"
     exit 1
 fi
 
-if [ ! -f ${zookeeperconfdir}/zookeeper-env.sh ]
+source ${phoenixconfdir}/phoenix-env.sh
+
+if [ ! -f ${phoenixconfdir}/regionservers ]
 then
-    echo "Cannot find file ${zookeeperconfdir}/zookeeper-env.sh"
+    echo "Cannot find file ${phoenixconfdir}/regionservers"
     exit 1
 fi
 
-source ${zookeeperconfdir}/zookeeper-env.sh
-
-if [ "${ZOOKEEPER_HOME}X" == "X" ]
+if [ "${PHOENIX_HOME}X" == "X" ]
 then
-    echo "ZOOKEEPER_HOME not specified"
+    echo "PHOENIX_HOME not specified"
     exit 1
 fi
 
@@ -84,18 +76,17 @@ then
     exit 1
 fi
 
-if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh" ]
+if [ ! -f "${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-daemon.sh" ]
 then
-    echo "Cannot find magpie-launch-zookeeper.sh"
+    echo "Cannot find magpie-launch-phoeinx.sh"
     exit 1
 fi
 
-zookeepernodes=`cat ${zookeeperconfdir}/slaves`
+RSH_CMD=${PHOENIX_SSH_CMD:-ssh}
 
-RSH_CMD=${ZOOKEEPER_SSH_CMD:-ssh}
-
-for zookeepernode in ${zookeepernodes}
+for node in `cat ${phoenixconfdir}/regionservers`
 do
-    zookeeperconfdir=`echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$zookeepernode/g"`
-    ${RSH_CMD} ${ZOOKEEPER_SSH_OPTS} ${zookeepernode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-launch-zookeeper.sh ${zookeeperconfdir} ${ZOOKEEPER_HOME} $1
+    phoenixconfdir=`echo ${orig_phoenixconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
+    hbaseconfdir=`echo ${HBASE_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
+    ${RSH_CMD} ${PHOENIX_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-phoenix-daemon.sh ${phoenixconfdir} ${hbaseconfdir} ${PHOENIX_HOME} $1
 done
