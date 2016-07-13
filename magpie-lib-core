@@ -298,8 +298,13 @@ Magpie_calculate_canrunjobscount () {
     fi
 }
 
-Magpie_calculate_threadstouse () {
+Magpie_calculate_proccount () {
     proccount=`cat /proc/cpuinfo | grep processor | wc -l`
+}
+
+Magpie_calculate_threadstouse () {
+    # Sets proccount
+    Magpie_calculate_proccount
 
     # Sets canrunjobscount
     Magpie_calculate_canrunjobscount
