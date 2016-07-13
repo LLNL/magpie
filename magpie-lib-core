@@ -105,28 +105,35 @@ Magpie_am_I_a_project_node () {
     local myhostname=`hostname`
     local confdir=$1
     local noderankvar=$2
-    local slavesfile=$3
-    local mastersfile=$4
+    local mastersfile=$3
+    local slavesfile=$4
      
     Magpie_make_spark_local_dirs_node_specific
 
-    if grep -q -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} \
-        || grep -q -E "^${myhostname}$" ${confdir}/${mastersfile:-"masters"}
-    then 
-        if grep -q -E "^${myhostname}$" ${confdir}/${mastersfile:-"masters"}
-        then
-            local noderank=0
-        else
-            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} | awk --field-separator=':' '{print $1}'`
+    if [ "${mastersfile}X" != "X" ]
+    then
+        if grep -q -E "^${myhostname}$" ${confdir}/${mastersfile}
+        then 
+            eval ${noderankvar}=0
+            return 0
         fi
-        eval ${noderankvar}="${noderank}"
-        return 0
     fi
+    
+    if [ "${slavesfile}X" != "X" ]
+    then
+        if grep -q -E "^${myhostname}$" ${confdir}/${slavesfile}
+        then 
+            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} | awk --field-separator=':' '{print $1}'`
+            eval ${noderankvar}="${noderank}"
+            return 0
+        fi
+    fi
+    
     return 1
 }
 
 Magpie_am_I_a_hbase_node () {
-    Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "regionservers"
+    Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "masters" "regionservers"
     return $?
 }
 
@@ -136,22 +143,22 @@ Magpie_am_I_a_phoenix_node () {
 }
 
 Magpie_am_I_a_spark_node () {
-    Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank"
+    Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "slaves"
     return $?
 }
 
 Magpie_am_I_a_kafka_node () {
-    Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank"
+    Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank" "masters" "slaves"
     return $?
 }
 
 Magpie_am_I_a_storm_node () {
-    Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "workers"
+    Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "masters" "workers"
     return $?
 }
 
 Magpie_am_I_a_tachyon_node () {
-    Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank"
+    Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank" "masters" "slaves"
     return $?
 }
 
