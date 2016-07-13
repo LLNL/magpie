@@ -26,7 +26,7 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
-Magpie_check_is_enabled () {
+__Magpie_check_is_enabled () {
     local projectnametocheck=$1
     local projectnameneededfor=$2
     local extramsg=$@
@@ -44,7 +44,7 @@ Magpie_check_is_enabled () {
     fi
 }
 
-Magpie_check_dependencies_not_setuponly () {
+__Magpie_check_dependencies_not_setuponly () {
     local projectnametocheck=$1
     local projectnameneededfor=$2
     local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
@@ -63,7 +63,7 @@ Magpie_check_dependencies_not_setuponly () {
     fi
 }
 
-Magpie_check_if_set_is_yes_or_no () {
+__Magpie_check_if_set_is_yes_or_no () {
     local varname="$1"
 
     if [ "${!varname}X" != "X" ] \
@@ -74,7 +74,7 @@ Magpie_check_if_set_is_yes_or_no () {
     fi
 }
 
-Magpie_check_if_set_is_true_or_false () {
+__Magpie_check_if_set_is_true_or_false () {
     local varname="$1"
 
     if [ "${!varname}X" != "X" ] \
@@ -85,7 +85,7 @@ Magpie_check_if_set_is_true_or_false () {
     fi
 }
 
-Magpie_check_environment_variable_must_be_set () {
+__Magpie_check_environment_variable_must_be_set () {
     local varname="$1"
 
     if [ "${!varname}X" == "X" ]
@@ -95,7 +95,7 @@ Magpie_check_environment_variable_must_be_set () {
     fi
 }
 
-Magpie_check_must_be_set () {
+__Magpie_check_must_be_set () {
     local varname="$1"
     local extramsg="$2"
     
@@ -106,7 +106,7 @@ Magpie_check_must_be_set () {
     fi
 }
 
-Magpie_check_if_set_is_a_directory () {
+__Magpie_check_if_set_is_a_directory () {
     local varname="$1"
 
     if [ "${!varname}X" != "X" ] && [ ! -d ${!varname} ]
@@ -116,7 +116,7 @@ Magpie_check_if_set_is_a_directory () {
     fi
 }
 
-Magpie_check_if_set_is_regular_file () {
+__Magpie_check_if_set_is_regular_file () {
     local varname="$1"
 
     if [ "${!varname}X" != "X" ] && [ ! -f ${!varname} ]
@@ -126,7 +126,7 @@ Magpie_check_if_set_is_regular_file () {
     fi
 }
 
-Magpie_check_is_executable () {
+__Magpie_check_is_executable () {
     local varname="$1"
 
     if [ ! -x ${!varname} ]
@@ -136,35 +136,35 @@ Magpie_check_is_executable () {
     fi
 }
 
-Magpie_check_must_be_set_and_is_directory () {
+__Magpie_check_must_be_set_and_is_directory () {
     local varname="$1"
     local extramsg="$2"
     
-    Magpie_check_must_be_set "${varname}" "${extramsg}"
-    Magpie_check_if_set_is_a_directory "${varname}"
+    __Magpie_check_must_be_set "${varname}" "${extramsg}"
+    __Magpie_check_if_set_is_a_directory "${varname}"
 }
 
-Magpie_check_must_be_set_and_is_regular_file () {
+__Magpie_check_must_be_set_and_is_regular_file () {
     local varname="$1"
     local extramsg="$2"
     
-    Magpie_check_must_be_set "${varname}" "${extramsg}"
-    Magpie_check_if_set_is_regular_file "${varname}"
+    __Magpie_check_must_be_set "${varname}" "${extramsg}"
+    __Magpie_check_if_set_is_regular_file "${varname}"
 }
 
-Magpie_check_must_be_set_and_is_executable () {
+__Magpie_check_must_be_set_and_is_executable () {
     local varname="$1"
     local extramsg="$2"
 
-    Magpie_check_must_be_set "${varname}" "${extramsg}"
-    Magpie_check_is_executable "${varname}"
+    __Magpie_check_must_be_set "${varname}" "${extramsg}"
+    __Magpie_check_is_executable "${varname}"
 }
     
 #
 # Check Core Inputs
 #
 
-Magpie_check_must_be_set "MAGPIE_SUBMISSION_TYPE"
+__Magpie_check_must_be_set "MAGPIE_SUBMISSION_TYPE"
 
 # slurmsbatch, msubslurm, msubtorque legacy
 if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ] \
@@ -186,18 +186,18 @@ if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
     || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
     || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
-    Magpie_check_environment_variable_must_be_set "SLURM_NODEID"
-    Magpie_check_environment_variable_must_be_set "SLURM_NNODES"
-    Magpie_check_environment_variable_must_be_set "SLURM_JOB_NODELIST"
-    Magpie_check_environment_variable_must_be_set "SLURM_JOB_NAME"
-    Magpie_check_environment_variable_must_be_set "SLURM_JOB_ID"
+    __Magpie_check_environment_variable_must_be_set "SLURM_NODEID"
+    __Magpie_check_environment_variable_must_be_set "SLURM_NNODES"
+    __Magpie_check_environment_variable_must_be_set "SLURM_JOB_NODELIST"
+    __Magpie_check_environment_variable_must_be_set "SLURM_JOB_NAME"
+    __Magpie_check_environment_variable_must_be_set "SLURM_JOB_ID"
 fi
 
 #
 # Check Magpie Inputs
 #
 
-Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
+__Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 
@@ -207,11 +207,11 @@ then
     exit 1
 fi
 
-Magpie_check_must_be_set "MAGPIE_LOCAL_DIR"
+__Magpie_check_must_be_set "MAGPIE_LOCAL_DIR"
 
-Magpie_check_if_set_is_yes_or_no "MAGPIE_NO_LOCAL_DIR"
+__Magpie_check_if_set_is_yes_or_no "MAGPIE_NO_LOCAL_DIR"
 
-Magpie_check_must_be_set "MAGPIE_JOB_TYPE"
+__Magpie_check_must_be_set "MAGPIE_JOB_TYPE"
 
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
@@ -234,7 +234,7 @@ fi
 
 if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
-    Magpie_check_must_be_set_and_is_executable "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
+    __Magpie_check_must_be_set_and_is_executable "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
 fi
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
@@ -261,7 +261,7 @@ fi
 
 if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then 
-    Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
+    __Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
 
     if [ ${magpiestartuptime} -lt 5 ]
     then
@@ -272,7 +272,7 @@ fi
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then 
-    Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
+    __Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
     
     if [ ${magpieshutdowntime} -lt 10 ]
     then
@@ -285,7 +285,7 @@ fi
 # Check General Inputs
 #
 
-Magpie_check_if_set_is_a_directory "JAVA_HOME"
+__Magpie_check_if_set_is_a_directory "JAVA_HOME"
 
 if [ "${MAGPIE_PYTHON}X" != "X" ]
 then
@@ -306,7 +306,7 @@ magpieprojects="HADOOP HADOOP_UDA_SETUP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEP
 for project in ${magpieprojects}
 do
     setupvar="${project}_SETUP"
-    Magpie_check_if_set_is_yes_or_no ${setupvar}
+    __Magpie_check_if_set_is_yes_or_no ${setupvar}
 done
 
 # Did user turn on SOMETHING to run
@@ -370,13 +370,13 @@ then
     nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
-    Magpie_check_must_be_set "JAVA_HOME" "for Hadoop" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Hadoop" 
 
-    Magpie_check_must_be_set "HADOOP_VERSION" "to run Hadoop"
+    __Magpie_check_must_be_set "HADOOP_VERSION" "to run Hadoop"
 
-    Magpie_check_must_be_set_and_is_directory "HADOOP_HOME" "to run Hadoop"
+    __Magpie_check_must_be_set_and_is_directory "HADOOP_HOME" "to run Hadoop"
 
-    Magpie_check_must_be_set "HADOOP_LOCAL_DIR" "to run Hadoop"
+    __Magpie_check_must_be_set "HADOOP_LOCAL_DIR" "to run Hadoop"
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR1" ] \
         && [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
@@ -410,7 +410,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_executable "HADOOP_SCRIPT_PATH" "for HADOOP_MODE = ${HADOOP_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "HADOOP_SCRIPT_PATH" "for HADOOP_MODE = ${HADOOP_MODE}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
@@ -430,7 +430,7 @@ then
             exit 1
         fi
 
-        Magpie_check_must_be_set "HADOOP_DECOMMISSION_HDFS_NODE_SIZE" "for HADOOP_MODE = ${HADOOP_MODE}"
+        __Magpie_check_must_be_set "HADOOP_DECOMMISSION_HDFS_NODE_SIZE" "for HADOOP_MODE = ${HADOOP_MODE}"
 
         if [ ! "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -gt "0" ]
         then
@@ -508,50 +508,50 @@ then
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
-        Magpie_check_must_be_set "HADOOP_HDFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+        __Magpie_check_must_be_set "HADOOP_HDFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
         exit 1
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
-        Magpie_check_if_set_is_yes_or_no "HADOOP_HDFS_PATH_CLEAR"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_HDFS_PATH_CLEAR"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
-        Magpie_check_must_be_set "HADOOP_HDFSOVERLUSTRE_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+        __Magpie_check_must_be_set "HADOOP_HDFSOVERLUSTRE_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 
-        Magpie_check_if_set_is_yes_or_no "HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-        Magpie_check_must_be_set "HADOOP_HDFSOVERNETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+        __Magpie_check_must_be_set "HADOOP_HDFSOVERNETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 
-        Magpie_check_if_set_is_yes_or_no "HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
-        Magpie_check_must_be_set "HADOOP_RAWNETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+        __Magpie_check_must_be_set "HADOOP_RAWNETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
     fi
 
     if [ "${HADOOP_LOCALSTORE}X" != "X" ]
     then
-        Magpie_check_if_set_is_yes_or_no "HADOOP_LOCALSTORE_CLEAR"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_LOCALSTORE_CLEAR"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
-        Magpie_check_must_be_set "HADOOP_INTELLUSTRE_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+        __Magpie_check_must_be_set "HADOOP_INTELLUSTRE_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
         
-        Magpie_check_if_set_is_yes_or_no "HADOOP_INTELLUSTRE_SHUFFLE"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_INTELLUSTRE_SHUFFLE"
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
         && [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
     then
-        Magpie_check_must_be_set "HADOOP_MAGPIENETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
+        __Magpie_check_must_be_set "HADOOP_MAGPIENETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
 
         firstchar=`echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1`
 
@@ -619,18 +619,18 @@ then
 
     if [ "${HADOOP_MODE}" == "terasort" ]
     then
-        Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_CLEAR_CACHE"
-        Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERACHECKSUM"
-        Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERAVALIDATE"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_CLEAR_CACHE"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERACHECKSUM"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERAVALIDATE"
     fi
 
-    Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
+    __Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
     
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
         || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
         || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-        Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
+        __Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
     fi
 
     if [ ${nodecount} -le "0" ]
@@ -646,7 +646,7 @@ fi
 
 if [ "${HADOOP_UDA_SETUP}" == "yes" ]
 then
-    Magpie_check_is_enabled "Hadoop" "UDA"
+    __Magpie_check_is_enabled "Hadoop" "UDA"
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR1" ]
     then
@@ -660,9 +660,9 @@ then
         exit 1
     fi
 
-    Magpie_check_must_be_set_and_is_regular_file "HADOOP_UDA_JAR" "to run Hadoop w/ UDA"
+    __Magpie_check_must_be_set_and_is_regular_file "HADOOP_UDA_JAR" "to run Hadoop w/ UDA"
 
-    Magpie_check_if_set_is_a_directory "HADOOP_UDA_LIBPATH"
+    __Magpie_check_if_set_is_a_directory "HADOOP_UDA_LIBPATH"
 
     if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
         && [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
@@ -679,15 +679,15 @@ fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
-    Magpie_check_must_be_set "JAVA_HOME" "for Pig" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Pig" 
 
-    Magpie_check_must_be_set "PIG_VERSION" "to run Pig"
+    __Magpie_check_must_be_set "PIG_VERSION" "to run Pig"
 
-    Magpie_check_must_be_set_and_is_directory "PIG_HOME" "to run Pig"
+    __Magpie_check_must_be_set_and_is_directory "PIG_HOME" "to run Pig"
 
-    Magpie_check_must_be_set "PIG_LOCAL_DIR" "to run Pig"
+    __Magpie_check_must_be_set "PIG_LOCAL_DIR" "to run Pig"
 
-    Magpie_check_is_enabled "Hadoop" "Pig"
+    __Magpie_check_is_enabled "Hadoop" "Pig"
 
     if [ "${PIG_MODE}" != "testpig" ] \
         && [ "${PIG_MODE}" != "script" ] \
@@ -699,7 +699,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "pig" ] && [ "${PIG_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_regular_file "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
+        __Magpie_check_must_be_set_and_is_regular_file "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
     fi
 
     if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
@@ -711,7 +711,7 @@ then
         exit 1
     fi
 
-    Magpie_check_dependencies_not_setuponly "Hadoop" "Pig"
+    __Magpie_check_dependencies_not_setuponly "Hadoop" "Pig"
 fi
 
 #
@@ -720,15 +720,15 @@ fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
 then
-    Magpie_check_must_be_set "JAVA_HOME" "for Mahout" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Mahout" 
 
-    Magpie_check_must_be_set "MAHOUT_VERSION" "to run Mahout"
+    __Magpie_check_must_be_set "MAHOUT_VERSION" "to run Mahout"
 
-    Magpie_check_must_be_set_and_is_directory "MAHOUT_HOME" "to run Mahout"
+    __Magpie_check_must_be_set_and_is_directory "MAHOUT_HOME" "to run Mahout"
 
-    Magpie_check_must_be_set "MAHOUT_LOCAL_DIR" "to run Mahout"
+    __Magpie_check_must_be_set "MAHOUT_LOCAL_DIR" "to run Mahout"
 
-    Magpie_check_is_enabled "Hadoop" "Mahout"
+    __Magpie_check_is_enabled "Hadoop" "Mahout"
 
     if [ "${MAHOUT_MODE}" != "classifywikipedia" ] \
         && [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
@@ -741,7 +741,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] && [ "${MAHOUT_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_regular_file "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
+        __Magpie_check_must_be_set_and_is_regular_file "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
     fi
 
     if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
@@ -754,7 +754,7 @@ then
         exit 1
     fi
 
-    Magpie_check_dependencies_not_setuponly "Hadoop" "Mahout"
+    __Magpie_check_dependencies_not_setuponly "Hadoop" "Mahout"
 fi
 
 #
@@ -767,19 +767,19 @@ then
     nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
-    Magpie_check_must_be_set "JAVA_HOME" "for Hbase" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Hbase" 
 
-    Magpie_check_must_be_set "HBASE_VERSION" "to run Hbase"
+    __Magpie_check_must_be_set "HBASE_VERSION" "to run Hbase"
 
-    Magpie_check_must_be_set_and_is_directory "HBASE_HOME" "to run Hbase"
+    __Magpie_check_must_be_set_and_is_directory "HBASE_HOME" "to run Hbase"
 
-    Magpie_check_must_be_set "HBASE_LOCAL_DIR" "to run Hbase"
+    __Magpie_check_must_be_set "HBASE_LOCAL_DIR" "to run Hbase"
 
-    Magpie_check_if_set_is_yes_or_no "HBASE_START_THRIFT_SERVER"
+    __Magpie_check_if_set_is_yes_or_no "HBASE_START_THRIFT_SERVER"
 
-    Magpie_check_is_enabled "Hadoop" "Hbase"
+    __Magpie_check_is_enabled "Hadoop" "Hbase"
 
-    Magpie_check_is_enabled "Zookeeper" "Hbase"
+    __Magpie_check_is_enabled "Zookeeper" "Hbase"
 
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
@@ -846,13 +846,13 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_executable "HBASE_SCRIPT_PATH" "for HBASE_MODE = ${HBASE_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "HBASE_SCRIPT_PATH" "for HBASE_MODE = ${HBASE_MODE}"
     fi
 
-    Magpie_check_if_set_is_yes_or_no "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN"
+    __Magpie_check_if_set_is_yes_or_no "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN"
 
-    Magpie_check_dependencies_not_setuponly "Hadoop" "Hbase"
-    Magpie_check_dependencies_not_setuponly "Zookeeper" "Hbase"
+    __Magpie_check_dependencies_not_setuponly "Hadoop" "Hbase"
+    __Magpie_check_dependencies_not_setuponly "Zookeeper" "Hbase"
 
     if [ ${nodecount} -le "0" ]
     then
@@ -867,15 +867,15 @@ fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
-    Magpie_check_must_be_set "JAVA_HOME" "for Phoenix" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Phoenix" 
 
-    Magpie_check_must_be_set "PHOENIX_VERSION" "to run Phoenix"
+    __Magpie_check_must_be_set "PHOENIX_VERSION" "to run Phoenix"
 
-    Magpie_check_must_be_set_and_is_directory "PHOENIX_HOME" "to run Phoenix"
+    __Magpie_check_must_be_set_and_is_directory "PHOENIX_HOME" "to run Phoenix"
 
-    Magpie_check_must_be_set "PHOENIX_LOCAL_DIR" "to run Phoenix"
+    __Magpie_check_must_be_set "PHOENIX_LOCAL_DIR" "to run Phoenix"
 
-    Magpie_check_is_enabled "Hbase" "Phoenix"
+    __Magpie_check_is_enabled "Hbase" "Phoenix"
 
     if [ "${PHOENIX_MODE}" != "performanceeval" ] \
         && [ "${PHOENIX_MODE}" != "script" ] \
@@ -900,10 +900,10 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
+        __Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
     fi
 
-    Magpie_check_dependencies_not_setuponly "Hbase" "Phoenix"
+    __Magpie_check_dependencies_not_setuponly "Hbase" "Phoenix"
 fi
 
 #
@@ -916,25 +916,25 @@ then
     nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
-    Magpie_check_must_be_set "JAVA_HOME" "for Spark" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Spark" 
 
     # Do not require, will break legacy scripts
-    # Magpie_check_must_be_set "MAGPIE_PYTHON" "for Spark"
+    # __Magpie_check_must_be_set "MAGPIE_PYTHON" "for Spark"
 
-    Magpie_check_must_be_set "SPARK_VERSION" "to run Spark"
+    __Magpie_check_must_be_set "SPARK_VERSION" "to run Spark"
 
-    Magpie_check_must_be_set_and_is_directory "SPARK_HOME" "to run Spark"
+    __Magpie_check_must_be_set_and_is_directory "SPARK_HOME" "to run Spark"
 
-    Magpie_check_must_be_set "SPARK_LOCAL_DIR" "to run Spark"
+    __Magpie_check_must_be_set "SPARK_LOCAL_DIR" "to run Spark"
 
     if [ "${HADOOP_SETUP}" != "yes" ]
     then
-        Magpie_check_must_be_set "SPARK_LOCAL_SCRATCH_DIR" "if Hadoop is not setup"
+        __Magpie_check_must_be_set "SPARK_LOCAL_SCRATCH_DIR" "if Hadoop is not setup"
     fi
 
     if [ "${SPARK_LOCAL_SCRATCH_DIR}X" != "X" ]
     then
-        Magpie_check_if_set_is_yes_or_no "SPARK_LOCAL_SCRATCH_DIR_CLEAR"
+        __Magpie_check_if_set_is_yes_or_no "SPARK_LOCAL_SCRATCH_DIR_CLEAR"
     fi
 
     if [ "${SPARK_MODE}" != "sparkpi" ] \
@@ -949,7 +949,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "sparkwordcount" ]
     then
-        Magpie_check_must_be_set "SPARK_SPARKWORDCOUNT_FILE" "for SPARK_MODE = ${SPARK_MODE}"
+        __Magpie_check_must_be_set "SPARK_SPARKWORDCOUNT_FILE" "for SPARK_MODE = ${SPARK_MODE}"
 
         if ! echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^[a-zA-Z0-9_]+:\/\/"
         then
@@ -976,7 +976,7 @@ then
 
             if echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^hdfs:\/\/"
             then
-                Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_FILE to not use hdfs"
+                __Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_FILE to not use hdfs"
 
                 if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
                     && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
@@ -989,7 +989,7 @@ then
 
             if echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^hdfs:\/\/"
             then
-                Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_COPY_IN_FILE to not use hdfs"
+                __Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_COPY_IN_FILE to not use hdfs"
 
                 if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
                     && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
@@ -1002,18 +1002,18 @@ then
         fi
     fi
 
-    Magpie_check_if_set_is_true_or_false "SPARK_DEPLOY_SPREADOUT"
+    __Magpie_check_if_set_is_true_or_false "SPARK_DEPLOY_SPREADOUT"
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_MODE = ${SPARK_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_MODE = ${SPARK_MODE}"
     fi
 
-    Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
+    __Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
 
     if [ "${SPARK_USE_YARN}" == "yes" ]
     then
-        Magpie_check_is_enabled "Hadoop" "Spark"
+        __Magpie_check_is_enabled "Hadoop" "Spark"
 
         if [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
         then
@@ -1031,7 +1031,7 @@ then
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
-        Magpie_check_dependencies_not_setuponly "Hadoop" "Spark"
+        __Magpie_check_dependencies_not_setuponly "Hadoop" "Spark"
     fi
 
     if [ ${nodecount} -le "0" ]
@@ -1047,15 +1047,15 @@ fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
-    Magpie_check_must_be_set "JAVA_HOME" "for Kafka" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Kafka" 
 
-    Magpie_check_must_be_set "KAFKA_VERSION" "to run Kafka"
+    __Magpie_check_must_be_set "KAFKA_VERSION" "to run Kafka"
 
-    Magpie_check_must_be_set_and_is_directory "KAFKA_HOME" "to run Kafka"
+    __Magpie_check_must_be_set_and_is_directory "KAFKA_HOME" "to run Kafka"
 
-    Magpie_check_must_be_set "KAFKA_LOCAL_DIR" "to run Kafka"
+    __Magpie_check_must_be_set "KAFKA_LOCAL_DIR" "to run Kafka"
 
-    Magpie_check_is_enabled "Zookeeper" "Kafka"
+    __Magpie_check_is_enabled "Zookeeper" "Kafka"
 
     if [ "${KAFKA_MODE}" != "performance" ] \
         && [ "${KAFKA_MODE}" != "server" ] \
@@ -1065,7 +1065,7 @@ then
         exit 1
     fi
 
-    Magpie_check_dependencies_not_setuponly "Zookeeper" "Kafka"
+    __Magpie_check_dependencies_not_setuponly "Zookeeper" "Kafka"
 fi
 
 #
@@ -1074,15 +1074,15 @@ fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
-    Magpie_check_must_be_set "JAVA_HOME" "for Zeppelin" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Zeppelin" 
 
-    Magpie_check_must_be_set "ZEPPELIN_VERSION" "to run Zeppelin"
+    __Magpie_check_must_be_set "ZEPPELIN_VERSION" "to run Zeppelin"
 
-    Magpie_check_must_be_set_and_is_directory "ZEPPELIN_HOME" "to run Zeppelin"
+    __Magpie_check_must_be_set_and_is_directory "ZEPPELIN_HOME" "to run Zeppelin"
 
-    Magpie_check_must_be_set "ZEPPELIN_LOCAL_DIR" "to run Zeppelin"
+    __Magpie_check_must_be_set "ZEPPELIN_LOCAL_DIR" "to run Zeppelin"
 
-    Magpie_check_is_enabled "Spark" "Zeppelin"
+    __Magpie_check_is_enabled "Spark" "Zeppelin"
 
     if [ "${ZEPPELIN_MODE}" != "server" ] \
         && [ "${ZEPPELIN_MODE}" != "setuponly" ]
@@ -1091,7 +1091,7 @@ then
         exit 1
     fi
 
-    Magpie_check_dependencies_not_setuponly "Spark" "Zeppelin"
+    __Magpie_check_dependencies_not_setuponly "Spark" "Zeppelin"
 fi
 
 #
@@ -1104,15 +1104,15 @@ then
     nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
-    Magpie_check_must_be_set "JAVA_HOME" "for Storm" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Storm" 
 
-    Magpie_check_must_be_set "STORM_VERSION" "to run Storm"
+    __Magpie_check_must_be_set "STORM_VERSION" "to run Storm"
 
-    Magpie_check_must_be_set_and_is_directory "STORM_HOME" "to run Storm"
+    __Magpie_check_must_be_set_and_is_directory "STORM_HOME" "to run Storm"
 
-    Magpie_check_must_be_set "STORM_LOCAL_DIR" "to run Storm"
+    __Magpie_check_must_be_set "STORM_LOCAL_DIR" "to run Storm"
 
-    Magpie_check_is_enabled "Zookeeper" "Storm"
+    __Magpie_check_is_enabled "Zookeeper" "Storm"
 
     if [ "${STORM_MODE}" != "stormwordcount" ] \
         && [ "${STORM_MODE}" != "script" ] \
@@ -1125,15 +1125,15 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "stormwordcount" ]
     then
-        Magpie_check_if_set_is_regular_file "STORM_STARTER_EXAMPLE_JAR_PATH"
+        __Magpie_check_if_set_is_regular_file "STORM_STARTER_EXAMPLE_JAR_PATH"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "script" ]
     then
-        Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_MODE = ${STORM_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_MODE = ${STORM_MODE}"
     fi
 
-    Magpie_check_dependencies_not_setuponly "Zookeeper" "Storm"
+    __Magpie_check_dependencies_not_setuponly "Zookeeper" "Storm"
 
     if [ ${nodecount} -le "0" ]
     then
@@ -1152,15 +1152,15 @@ then
     nodecount=`expr ${nodecount} - ${nodecountmaster}`
     nodecountmaster=0
 
-    Magpie_check_must_be_set "JAVA_HOME" "for Tachyon" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Tachyon" 
 
-    Magpie_check_must_be_set "TACHYON_VERSION" "to run Tachyon"
+    __Magpie_check_must_be_set "TACHYON_VERSION" "to run Tachyon"
 
-    Magpie_check_must_be_set_and_is_directory "TACHYON_HOME" "to run Tachyon"
+    __Magpie_check_must_be_set_and_is_directory "TACHYON_HOME" "to run Tachyon"
 
-    Magpie_check_must_be_set "TACHYON_LOCAL_DIR" "to run Tachyon"
+    __Magpie_check_must_be_set "TACHYON_LOCAL_DIR" "to run Tachyon"
 
-    Magpie_check_is_enabled "Hadoop" "Tachyon"
+    __Magpie_check_is_enabled "Hadoop" "Tachyon"
 
     if [ "${TACHYON_MODE}" != "testtachyon" ] \
        && [ "${TACHYON_MODE}" != "launch" ] \
@@ -1186,13 +1186,13 @@ then
        exit 1
     fi
 
-    Magpie_check_must_be_set "TACHYON_STORE_PATHS" "to run Tachyon"
+    __Magpie_check_must_be_set "TACHYON_STORE_PATHS" "to run Tachyon"
 
-    Magpie_check_if_set_is_yes_or_no "TACHYON_WORKER_ON_MASTER"
+    __Magpie_check_if_set_is_yes_or_no "TACHYON_WORKER_ON_MASTER"
 
-    Magpie_check_if_set_is_yes_or_no "TACHYON_ASYNCHRONOUS_WRITES"
+    __Magpie_check_if_set_is_yes_or_no "TACHYON_ASYNCHRONOUS_WRITES"
 
-    Magpie_check_dependencies_not_setuponly "Hadoop" "Tachyon"
+    __Magpie_check_dependencies_not_setuponly "Hadoop" "Tachyon"
 fi
 
 #
@@ -1201,13 +1201,13 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    Magpie_check_must_be_set "JAVA_HOME" "for Zookeeper" 
+    __Magpie_check_must_be_set "JAVA_HOME" "for Zookeeper" 
 
-    Magpie_check_must_be_set "ZOOKEEPER_VERSION" "to run Zookeeper"
+    __Magpie_check_must_be_set "ZOOKEEPER_VERSION" "to run Zookeeper"
 
-    Magpie_check_must_be_set_and_is_directory "ZOOKEEPER_HOME" "to run Zookeeper"
+    __Magpie_check_must_be_set_and_is_directory "ZOOKEEPER_HOME" "to run Zookeeper"
 
-    Magpie_check_must_be_set "ZOOKEEPER_LOCAL_DIR" "to run Zookeeper"
+    __Magpie_check_must_be_set "ZOOKEEPER_LOCAL_DIR" "to run Zookeeper"
 
     if [ "${ZOOKEEPER_MODE}" != "zookeeperruok" ] \
        && [ "${ZOOKEEPER_MODE}" != "launch" ] \
@@ -1241,11 +1241,11 @@ then
         exit 1
     fi
 
-    Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_SHARE_NODES"
+    __Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_SHARE_NODES"
 
-    Magpie_check_must_be_set "ZOOKEEPER_DATA_DIR" "to run Zookeeper"
+    __Magpie_check_must_be_set "ZOOKEEPER_DATA_DIR" "to run Zookeeper"
 
-    Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_DATA_DIR_CLEAR"
+    __Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_DATA_DIR_CLEAR"
 
     if [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "networkfs" ] \
         && [ "${ZOOKEEPER_DATA_DIR_TYPE}" != "local" ]
@@ -1254,7 +1254,7 @@ then
         exit 1
     fi
 
-    Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_PER_JOB_DATA_DIR"
+    __Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_PER_JOB_DATA_DIR"
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then
@@ -1270,3 +1270,4 @@ then
 fi
 
 exit 0
+<

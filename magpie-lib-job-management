@@ -32,7 +32,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
-Magpie_job_time_minutes () {
+__Magpie_job_time_minutes () {
     # slurmsbatch & msubslurm legacy
     if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
         || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
@@ -54,11 +54,11 @@ Magpie_job_time_minutes () {
 }
 
 Magpie_job_time_seconds () {
-    Magpie_job_time_minutes
+    __Magpie_job_time_minutes
     jobtimeseconds=`expr ${jobtimeminutes}  \* 60`
 }
 
-Magpie_wait_script_signal_on_timeout () {
+__Magpie_wait_script_signal_on_timeout () {
     local scriptpid=$1
     local timeoutminutes=$2
     local signalnumber=$3
@@ -91,9 +91,9 @@ Magpie_wait_script_kill_on_job_timeout () {
     local scriptpid=$1
 
     # Will set jobtimeminutes
-    Magpie_job_time_minutes
+    __Magpie_job_time_minutes
 
-    Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 9
+    __Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 9
 
     return $?
 }
@@ -102,9 +102,9 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     local scriptpid=$1
 
     # Will set jobtimeminutes
-    Magpie_job_time_minutes
+    __Magpie_job_time_minutes
 
-    Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 12
+    __Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 12
 
     return $?
 }

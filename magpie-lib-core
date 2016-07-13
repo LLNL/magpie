@@ -57,7 +57,7 @@ Magpie_am_I_master () {
 }
 
 # For the common pattern
-Magpie_am_I_a_project_node () {
+__Magpie_am_I_a_project_node () {
     local myhostname=`hostname`
     local confdir=$1
     local noderankvar=$2
@@ -88,7 +88,7 @@ Magpie_am_I_a_project_node () {
     return 1
 }
 
-Magpie_am_I_a_hadoop_namenode_in_hdfs_federation () {
+__Magpie_am_I_a_hadoop_namenode_in_hdfs_federation () {
     local myhostname=`hostname`
     
     Magpie_make_hadoop_local_dirs_node_specific
@@ -104,11 +104,11 @@ Magpie_am_I_a_hadoop_namenode_in_hdfs_federation () {
 }
 
 Magpie_am_I_a_hadoop_node () {
-    Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "slaves"
+    __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "slaves"
     local exitval=$?
     if [ "${exitval}" == "1" ]
     then
-        Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
+        __Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
         return $?
     fi
     
@@ -117,11 +117,11 @@ Magpie_am_I_a_hadoop_node () {
 
 Magpie_am_I_a_hadoop_namenode () {
     # Only check masters for namenode
-    Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" ""
+    __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" ""
     local exitval=$?
     if [ "${exitval}" == "1" ]
     then
-        Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
+        __Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
         return $?
     fi
 
@@ -129,7 +129,7 @@ Magpie_am_I_a_hadoop_namenode () {
 }
 
 Magpie_am_I_a_hbase_node () {
-    Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "masters" "regionservers"
+    __Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "masters" "regionservers"
     return $?
 }
 
@@ -139,35 +139,35 @@ Magpie_am_I_a_phoenix_node () {
 }
 
 Magpie_am_I_a_spark_node () {
-    Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "slaves"
+    __Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "slaves"
     return $?
 }
 
 Magpie_am_I_a_kafka_node () {
-    Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank" "masters" "slaves"
+    __Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank" "masters" "slaves"
     return $?
 }
 
 Magpie_am_I_a_storm_node () {
-    Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "masters" "workers"
+    __Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "masters" "workers"
     return $?
 }
 
 Magpie_am_I_a_tachyon_node () {
-    Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank" "masters" "slaves"
+    __Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank" "masters" "slaves"
     return $?
 }
 
 Magpie_am_I_a_zeppelin_node() {
     # Zeppelin only runs on the master
-    Magpie_am_I_a_project_node ${ZEPPELIN_CONF_DIR} "zeppelinnoderank" "masters" ""
+    __Magpie_am_I_a_project_node ${ZEPPELIN_CONF_DIR} "zeppelinnoderank" "masters" ""
     return $?
 }
 
 Magpie_am_I_a_zookeeper_node () {
     # Do not consider the 'master' node, it is only for launching
     # Zookeeper, it is not an actual Zookeeper node
-    Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "slaves"
+    __Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "slaves"
     return $?
 }
 
@@ -268,33 +268,33 @@ Magpie_calculate_stop_timeouts () {
 
 # Count how many big data systems we're using that can run jobs
 # Pig as a wrapper around Hadoop, so it doesn't count
-Magpie_calculate_canrunjobscount () {
-    canrunjobscount=0
+__Magpie_calculate_canrunjobscount () {
+    __canrunjobscount=0
 
     if [ "${HADOOP_SETUP}" == "yes" ] && ( [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ] )
     then
-        canrunjobscount=`expr ${canrunjobscount} + 1`
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi
 
     if [ "${HBASE_SETUP}" == "yes" ]
     then
-        canrunjobscount=`expr ${canrunjobscount} + 1`
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi
  
     if [ "${SPARK_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" != "yes" ]
     then
-        canrunjobscount=`expr ${canrunjobscount} + 1`
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi
 
     if [ "${STORM_SETUP}" == "yes" ]
     then
-        canrunjobscount=`expr ${canrunjobscount} + 1`
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi
 
     # Could be zero in weird test scenarios
-    if [ "${canrunjobscount}" == "0" ]
+    if [ "${__canrunjobscount}" == "0" ]
     then
-        canrunjobscount=1
+        __canrunjobscount=1
     fi
 }
 
@@ -306,17 +306,17 @@ Magpie_calculate_threadstouse () {
     # Sets proccount
     Magpie_calculate_proccount
 
-    # Sets canrunjobscount
-    Magpie_calculate_canrunjobscount
+    # Sets __canrunjobscount
+    __Magpie_calculate_canrunjobscount
  
     # If only one system to run jobs, estimate 1.5X cores
     # If > 1, split cores evenly amongst job running stuff
 
-    if [ "${canrunjobscount}" == "1" ]
+    if [ "${__canrunjobscount}" == "1" ]
     then
         threadstouse=`expr ${proccount} + ${proccount} \/ 2`
     else
-        threadstouse=`expr ${proccount} \/ ${canrunjobscount}`
+        threadstouse=`expr ${proccount} \/ ${__canrunjobscount}`
 
         if [ "${threadstouse}" == "0" ]
         then
@@ -330,11 +330,11 @@ Magpie_calculate_memorytouse () {
     local memtotalgig=`echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f"`
     
     # Sets canrunjobscount
-    Magpie_calculate_canrunjobscount
+    __Magpie_calculate_canrunjobscount
 
     # We start w/ 80% of system memory 
     memorytouse=`echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f"`
-    memorytouse=`expr $memorytouse \/ ${canrunjobscount}`
+    memorytouse=`expr $memorytouse \/ ${__canrunjobscount}`
 
     memorytouse=`echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f"`
 }
