@@ -121,11 +121,11 @@ fi
 # Magpie_find_conffile will set the 'pre' filenames
 Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "storm.yaml" "pre_stormyaml"
 Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "storm_env.ini" "pre_stormenvini"
-Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "magpie-storm-daemon-env.sh" "pre_stormenvsh"
+Magpie_find_conffile "Storm" ${STORM_CONF_FILES:-""} "storm-daemon-env.sh" "pre_stormdaemonenvsh"
 
 post_stormyaml=${STORM_CONF_DIR}/storm.yaml
 post_stormenvini=${STORM_CONF_DIR}/storm_env.ini
-post_stormenvsh=${STORM_CONF_DIR}/magpie-storm-daemon-env.sh
+post_stormdaemonenvsh=${STORM_CONF_DIR}/storm-daemon-env.sh
 
 #
 # Setup Storm configuration files and environment files
@@ -193,7 +193,7 @@ sed -i \
     -e "s/STORMJARJVMOPTS/${extrajvmoptssubst}/g" \
     ${post_stormenvini}
 
-cp ${pre_stormenvsh} ${post_stormenvsh}
+cp ${pre_stormdaemonenvsh} ${post_stormdaemonenvsh}
 
 sed -i \
     -e "s/MAGPIEJAVAHOME/${stormjavahomesubst}/g" \
@@ -202,15 +202,15 @@ sed -i \
     -e "s/STORMHOME/${stormhomesubst}/g" \
     -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
     -e "s/MAGPIESCRIPTSHOME/${magpiescriptshome}/g" \
-    ${post_stormenvsh}
+    ${post_stormdaemonenvsh}
 
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
-    echo "export STORM_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_stormenvsh}
+    echo "export STORM_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_stormdaemonenvsh}
 fi
 if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
 then
-    echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_stormenvsh}
+    echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_stormdaemonenvsh}
 fi
 
 # Get only the major and minor version, we don't care about the release

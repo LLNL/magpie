@@ -5,6 +5,8 @@ Remove scripts/job-scripts/zookeeper-ruok-script.sh script, which was
 Rename start/stop scripts in bin/ for consistency to many big data
   projects.  If you manually started/stopped services in the past, some 
   script names may have changed.
+Rename some conf files in conf/.  If you manually copied files into
+  new locations in the past, some conf file names could have changed.
 
 magpie 1.73
 -----------

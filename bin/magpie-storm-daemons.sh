@@ -75,13 +75,13 @@ then
     exit 1
 fi
 
-if [ ! -f ${stormconfdir}/magpie-storm-daemon-env.sh ]
+if [ ! -f ${stormconfdir}/storm-daemon-env.sh ]
 then
-    echo "Cannot find file ${stormconfdir}/magpie-storm-daemon-env.sh"
+    echo "Cannot find file ${stormconfdir}/storm-daemon-env.sh"
     exit 1
 fi
 
-source ${stormconfdir}/magpie-storm-daemon-env.sh
+source ${stormconfdir}/storm-daemon-env.sh
 
 if [ "${STORM_HOME}X" == "X" ]
 then
@@ -113,7 +113,7 @@ then
     exit 1
 fi
 
-# At this point, the environment variables are node-specific, it was read out of magpie-storm-daemon-env.sh
+# At this point, the environment variables are node-specific, it was read out of storm-daemon-env.sh
 ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} nimbus $1
 ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-daemon.sh ${STORM_CONF_DIR} ${STORM_LOG_DIR} ${STORM_HOME} ${STORM_LOCAL_SCRATCHSPACE_DIR} ui $1
 
