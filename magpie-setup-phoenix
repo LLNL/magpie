@@ -40,6 +40,7 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
 # phoenixnoderank set if succeed 
 if ! Magpie_am_I_a_phoenix_node

@@ -39,6 +39,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # hadoopnoderank set if succeed

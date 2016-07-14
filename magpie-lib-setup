@@ -1,0 +1,230 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# Export common setup functions.  This should only be sourced by
+# magpie-setup-X files
+#
+# This is used by scripts, don't edit this
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+
+Magpie_calculate_stop_timeouts () {
+    local magpieshutdowntimeseconds=`expr ${magpie_shutdown_time_value} \* 60`
+
+    if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
+    then
+        # Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_JOB_RUN
+        local magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
+        if [ "${magpiepostrunallocate}" -lt 300 ]
+        then
+            magpiepostrunallocate=300
+        fi
+
+        magpieshutdowntimeseconds=`expr ${magpieshutdowntimeseconds} - ${magpiepostrunallocate}` 
+    fi
+
+    if [ "${HBASE_SETUP}" == "yes" ]
+    then
+        # Need to give Hbase more time b/c of compaction.  We'll say
+        # Hbase always gets 50% of the time, Half for slave timeout and half for
+        # compaction .  Input checks ensure
+        # magpieshutdowntimeseconds >= 1200 
+
+        local hbase_time=`expr ${magpieshutdowntimeseconds} \/ 2`
+        hbase_slave_timeout=`expr ${hbase_time} \/ 2`
+        magpieshutdowntimeseconds=${hbase_time}
+    fi
+
+    local stoptimeoutdivisor=1
+
+    if [ "${HADOOP_SETUP}" == "yes" ]
+    then
+        if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
+            || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+        then
+            # Need to split timeout time between namenode, datanodes,
+            # secondary namenode, jobtracker/resource manager,
+            # tasktracker/nodemanagers, jobhistory server, & saveNameSpace
+            # time
+            stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 7`
+        else
+            # Need to split timeout time between namenode, datanodes,
+            # secondary namenode, jobhistory server, & saveNameSpace time
+            stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 5`
+        fi    
+    
+        # + 2 for scratch extra time in scripts and what not
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${SPARK_SETUP}" == "yes" ]
+    then
+        # +2 for extra misc shutdown time
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${STORM_SETUP}" == "yes" ]
+    then
+        # +2 for extra misc shutdown time
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${ZEPPELIN_SETUP}" == "yes" ]
+    then
+        # +2 for extra misc shutdown time
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${KAFKA_SETUP}" == "yes" ]
+    then
+        # +2 for extra misc shutdown time
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${PHOENIX_SETUP}" == "yes" ]
+    then
+        # +2 for extra misc shutdown time
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+    then
+        # +2 for extra misc shutdown time
+        stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
+    fi
+
+    local stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
+        
+    if [ "${stoptimeout}" -lt 5 ]
+    then
+        stoptimeout=5
+    fi
+
+    hadoopstoptimeout=${stoptimeout}
+}
+
+# Count how many big data systems we're using that can run jobs
+# Pig as a wrapper around Hadoop, so it doesn't count
+__Magpie_calculate_canrunjobscount () {
+    __canrunjobscount=0
+
+    if [ "${HADOOP_SETUP}" == "yes" ] && ( [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ] )
+    then
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
+    fi
+
+    if [ "${HBASE_SETUP}" == "yes" ]
+    then
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
+    fi
+ 
+    if [ "${SPARK_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" != "yes" ]
+    then
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
+    fi
+
+    if [ "${STORM_SETUP}" == "yes" ]
+    then
+        __canrunjobscount=`expr ${__canrunjobscount} + 1`
+    fi
+
+    # Could be zero in weird test scenarios
+    if [ "${__canrunjobscount}" == "0" ]
+    then
+        __canrunjobscount=1
+    fi
+}
+
+Magpie_calculate_proccount () {
+    proccount=`cat /proc/cpuinfo | grep processor | wc -l`
+}
+
+Magpie_calculate_threadstouse () {
+    # Sets proccount
+    Magpie_calculate_proccount
+
+    # Sets __canrunjobscount
+    __Magpie_calculate_canrunjobscount
+ 
+    # If only one system to run jobs, estimate 1.5X cores
+    # If > 1, split cores evenly amongst job running stuff
+
+    if [ "${__canrunjobscount}" == "1" ]
+    then
+        threadstouse=`expr ${proccount} + ${proccount} \/ 2`
+    else
+        threadstouse=`expr ${proccount} \/ ${__canrunjobscount}`
+
+        if [ "${threadstouse}" == "0" ]
+        then
+            threadstouse="1"
+        fi
+    fi
+}
+
+Magpie_calculate_memorytouse () {
+    local memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+    local memtotalgig=`echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f"`
+    
+    # Sets canrunjobscount
+    __Magpie_calculate_canrunjobscount
+
+    # We start w/ 80% of system memory 
+    memorytouse=`echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f"`
+    memorytouse=`expr $memorytouse \/ ${__canrunjobscount}`
+
+    memorytouse=`echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f"`
+}
+
+Magpie_find_conffile () {
+    local magpieconffiledir=${MAGPIE_SCRIPTS_HOME}/conf
+    local project=$1
+    local conffiledir=$2
+    local conffiledesired=$3
+    local __returnvar=$4
+    local conffilefound=""
+    
+    if [ "${conffiledir}X" != "X" ]
+    then
+        if [ -f "${conffiledir}/${conffiledesired}" ]
+        then
+            conffilefound="${conffiledir}/${conffiledesired}"
+        fi
+    fi
+
+    if [ "${conffilefound}X" == "X" ]
+    then
+        conffilefound="${magpieconffiledir}/${conffiledesired}"
+    fi
+
+    if [ ! -f ${conffilefound} ]
+    then
+        echo "Missing ${project} configuration file ${conffiledesired}"
+        exit 1
+    fi
+
+    eval $__returnvar="${conffilefound}"
+}

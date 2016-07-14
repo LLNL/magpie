@@ -39,6 +39,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
 # sparknoderank set if succeed
 if ! Magpie_am_I_a_spark_node
