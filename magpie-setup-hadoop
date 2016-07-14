@@ -911,7 +911,7 @@ then
                 sed -i -e "s/VIEWFSPATH/${mountvaluesubst}/g" ${post_coresitexml}
                 sed -i -e "s/VIEWFSNAMENODE/${federationnamenodehost}/g" ${post_coresitexml}
                 sed -i -e "s/NAMESERVICEID/ns${i}/g" ${post_coresitexml}
-                sed -i -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" ${post_coresitexml}
+                sed -i -e "s/DFSNAMENODERPCADDRESS/${default_hadoop_hdfs_namenode_address}/g" ${post_coresitexml}
 
                 j=`expr ${j} + 1`
             done
@@ -1042,10 +1042,10 @@ then
         -e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
         -e "s/SHUFFLEPROVIDERSERVICES/${shuffleproviderservices}/g" \
         -e "s/RDMABUFSIZE/${rdmabufsize}/g" \
-        -e "s/HADOOPJOBHISTORYADDRESS/${HADOOP_JOBHISTORYSERVER_ADDRESS}/g" \
-        -e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}/g" \
-        -e "s/MAPREDJOBTRACKERADDRESS/${MAPRED_JOB_TRACKER_ADDRESS}/g" \
-        -e "s/MAPREDJOBTRACKERHTTPADDRESS/${MAPRED_JOB_TRACKER_HTTPADDRESS}/g" \
+        -e "s/HADOOPJOBHISTORYADDRESS/${default_hadoop_jobhistoryserver_address}/g" \
+        -e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${default_hadoop_jobhistoryserver_webapp_address}/g" \
+        -e "s/MAPREDJOBTRACKERADDRESS/${default_mapred_job_tracker_address}/g" \
+        -e "s/MAPREDJOBTRACKERHTTPADDRESS/${default_mapred_job_tracker_httpaddress}/g" \
         -e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
         -e "s/HADOOPEXTRATASKJAVAOPTS/ ${extrahadooptaskoptssubst}/g" \
         -e "s/EXTRAHADOOPOPTS/ ${extrahadoopoptssubst}/g" \
@@ -1096,14 +1096,14 @@ then
         -e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
         -e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
         -e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
-        -e "s/YARNRESOURCEMANAGERADDRESS/${YARN_RESOURCEMANAGER_ADDRESS}/g" \
-        -e "s/YARNRESOURCEMANAGERSCHEDULERADDRESS/${YARN_RESOURCEMANAGER_SCHEDULER_ADDRESS}/g" \
-        -e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}/g" \
-        -e "s/YARNRESOURCEMANAGERWEBAPPHTTPSADDRESS/${YARN_RESOURCEMANAGER_WEBAPP_HTTPS_ADDRESS}/g" \
-        -e "s/YARNRESOURCEMANAGERRESOURCETRACKERADDRESS/${YARN_RESOURCEMANAGER_RESOURCETRACKER_ADDRESS}/g" \
-        -e "s/YARNRESOURCEMANAGERADMINADDRESS/${YARN_RESOURCEMANAGER_ADMIN_ADDRESS}/g" \
-        -e "s/YARNLOCALIZERADDRESS/${YARN_NODEMANAGER_LOCALIZER_ADDRESS}/g" \
-        -e "s/YARNNODEMANAGERWEBAPPADDRESS/${YARN_NODEMANAGER_WEBAPP_ADDRESS}/g" \
+        -e "s/YARNRESOURCEMANAGERADDRESS/${default_yarn_resourcemanager_address}/g" \
+        -e "s/YARNRESOURCEMANAGERSCHEDULERADDRESS/${default_yarn_resourcemanager_scheduler_address}/g" \
+        -e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${default_yarn_resourcemanager_webapp_address}/g" \
+        -e "s/YARNRESOURCEMANAGERWEBAPPHTTPSADDRESS/${default_yarn_resourcemanager_webapp_https_address}/g" \
+        -e "s/YARNRESOURCEMANAGERRESOURCETRACKERADDRESS/${default_yarn_resourcemanager_resourcetracker_address}/g" \
+        -e "s/YARNRESOURCEMANAGERADMINADDRESS/${default_yarn_resourcemanager_admin_address}/g" \
+        -e "s/YARNLOCALIZERADDRESS/${default_yarn_nodemanager_localizer_address}/g" \
+        -e "s/YARNNODEMANAGERWEBAPPADDRESS/${default_yarn_nodemanager_webapp_address}/g" \
         -e "s/YARNDEFAULTUSER/${USER}/g" \
         -e "s/YARNRESROUCECPUVCORES/${proccount}/g" \
         ${post_yarnsitexml}
@@ -1230,15 +1230,15 @@ then
         -e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
         -e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
         -e "s/DFSDATANODEDIR/${datanodedir}/g" \
-        -e "s/DFSNAMENODERPCADDRESS/${HADOOP_HDFS_NAMENODE_ADDRESS}/g" \
-        -e "s/DFSNAMENODESECONDARYHTTPADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_HTTP_ADDRESS}/g" \
-        -e "s/DFSNAMENODESECONDARYHTTPSADDRESS/${HADOOP_HDFS_NAMENODE_SECONDARY_HTTPS_ADDRESS}/g" \
-        -e "s/DFSNAMENODEHTTPADDRESS/${HADOOP_HDFS_NAMENODE_HTTPADDRESS}/g" \
-        -e "s/DFSDATANODEADDRESS/${HADOOP_HDFS_DATANODE_ADDRESS}/g" \
-        -e "s/DFSDATANODEHTTPADDRESS/${HADOOP_HDFS_DATANODE_HTTPADDRESS}/g" \
-        -e "s/DFSDATANODEIPCADDRESS/${HADOOP_HDFS_DATANODE_IPCADDRESS}/g" \
-        -e "s/DFSBACKUPADDRESS/${HADOOP_HDFS_NAMENODE_BACKUP_ADDRESS}/g" \
-        -e "s/DFSBACKUPHTTPADDRESS/${HADOOP_HDFS_NAMENODE_BACKUP_HTTP_ADDRESS}/g" \
+        -e "s/DFSNAMENODERPCADDRESS/${default_hadoop_hdfs_namenode_address}/g" \
+        -e "s/DFSNAMENODESECONDARYHTTPADDRESS/${default_hadoop_hdfs_namenode_secondary_http_address}/g" \
+        -e "s/DFSNAMENODESECONDARYHTTPSADDRESS/${default_hadoop_hdfs_namenode_secondary_https_address}/g" \
+        -e "s/DFSNAMENODEHTTPADDRESS/${default_hadoop_hdfs_namenode_httpaddress}/g" \
+        -e "s/DFSDATANODEADDRESS/${default_hadoop_hdfs_datanode_address}/g" \
+        -e "s/DFSDATANODEHTTPADDRESS/${default_hadoop_hdfs_datanode_httpaddress}/g" \
+        -e "s/DFSDATANODEIPCADDRESS/${default_hadoop_hdfs_datanode_ipcaddress}/g" \
+        -e "s/DFSBACKUPADDRESS/${default_hadoop_hdfs_namenode_backup_address}/g" \
+        -e "s/DFSBACKUPHTTPADDRESS/${default_hadoop_hdfs_namenode_backup_http_address}/g" \
         -e "s/DFSPERMISSIONSSUPERUSERGROUP/${USER}/g" \
         ${post_hdfssitexml}
 fi

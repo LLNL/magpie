@@ -24,6 +24,7 @@
 
 # This is used by scripts, don't edit this
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
@@ -38,7 +39,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         then
             fsdefault="viewfs:///"
         else
-            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
         fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
@@ -52,7 +53,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         then
             fsdefault="viewfs:///"
         else
-            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
         fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
@@ -67,7 +68,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         then
             fsdefault="viewfs:///"
         else
-            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
         fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then

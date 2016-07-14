@@ -26,6 +26,7 @@
 # running jobs.  For the most part, it shouldn't be editted.  See
 # job submission files for configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
@@ -199,13 +200,13 @@ Magpie_run_start_hadoop () {
             echo "*"
             if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
             then
-                echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${MAPRED_JOB_TRACKER_HTTPADDRESS}"
+                echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${default_mapred_job_tracker_httpaddress}"
                 echo "*"
             elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
             then
-                echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}"
+                echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${default_yarn_resourcemanager_webapp_address}"
                 echo "*"
-                echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}"
+                echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${default_hadoop_jobhistoryserver_webapp_address}"
                 echo "*"
             fi
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
@@ -222,12 +223,12 @@ Magpie_run_start_hadoop () {
                             local numline=`expr ${i} - 1`
                             local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                         fi
-                        echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+                        echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${default_hadoop_hdfs_namenode_httpaddress}"
                     done
                 else
-                    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+                    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_httpaddress}"
                 fi
-                echo "* HDFS DataNode: http://<DATANODE>:${HADOOP_HDFS_DATANODE_HTTPADDRESS}"
+                echo "* HDFS DataNode: http://<DATANODE>:${default_hadoop_hdfs_datanode_httpaddress}"
                 echo "*"
                 echo "* HDFS can be accessed directly at:"
                 echo "*"
@@ -243,10 +244,10 @@ Magpie_run_start_hadoop () {
                             local numline=`expr ${i} - 1`
                             local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                         fi
-                        echo "* hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+                        echo "* hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address}"
                     done
                 else
-                    echo "*   hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}" 
+                    echo "*   hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}" 
                 fi
                 echo "*" 
             fi
@@ -465,7 +466,7 @@ Magpie_run_start_hadoop () {
                                 local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                             fi
 
-                            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode get 2>&1 | grep -q -i "off"
+                            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode get 2>&1 | grep -q -i "off"
                             if [ $? -ne 0 ]
                             then
                                 exittedsafemodeflag=0
@@ -665,15 +666,15 @@ Magpie_run_stop_hadoop () {
                                 federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                             fi
                             
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode enter"
                             echo "Running $command" >&2
                             $command
                             
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -saveNamespace"
                             echo "Running $command" >&2
                             $command
                             
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode leave"
                             echo "Running $command" >&2
                             $command
                         done

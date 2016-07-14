@@ -31,6 +31,46 @@ default_shutdown_time=30
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
+    default_yarn_resourcemanager_address="8032"
+    default_yarn_resourcemanager_scheduler_address="8030"
+    default_yarn_resourcemanager_webapp_address="8088"
+    default_yarn_resourcemanager_webapp_https_address="8090"
+    default_yarn_resourcemanager_resourcetracker_address="8031"
+    default_yarn_resourcemanager_admin_address="8033"
+    default_yarn_nodemanager_localizer_address="8040"
+    default_yarn_nodemanager_webapp_address="8042"
+    # In Hadoop code, default is 8020, but 54310 is the common legacy
+    # one used throughout the web.  I'll keep the 54310 one for now.
+    default_hadoop_hdfs_namenode_address="54310"
+    default_hadoop_hdfs_namenode_httpaddress="50070"
+    default_hadoop_hdfs_namenode_secondary_http_address="50090"
+    default_hadoop_hdfs_namenode_secondary_https_address="50091"
+    default_hadoop_hdfs_namenode_backup_address="50100"
+    default_hadoop_hdfs_namenode_backup_http_address="50100"
+    default_hadoop_hdfs_datanode_address="50010"
+    default_hadoop_hdfs_datanode_httpaddress="50075"
+    default_hadoop_hdfs_datanode_ipcaddress="50020"
+    default_hadoop_jobhistoryserver_address="10020"
+    default_hadoop_jobhistoryserver_webapp_address="19888"
+    default_mapred_job_tracker_address="54311"
+    default_mapred_job_tracker_httpaddress="50030"
+    # achu: Why not set dfs.namenode.rpc-address and
+    # dfs.namenode.servicerpc-address?  Unclear of why one might set
+    # this, internal to Hadoop 2.6.0 code, defaults to fs.defaultFS
+    # setting.  Perhaps legacy and I'm unaware of why.
+
+    # achu: Why not set dfs.journalnode.rpc-address,
+    # dfs.journalnode.http-address, dfs.journalnode.https-address?
+    # dfs.namenode.shared.edits.dir we do not set.
+
+    # achu: Why not set yarn.nodemanager.address?  Specific for node
+    # manager restart, we don't care about this.
+
+    # achu: Why not set yarn.timeline-service.address,
+    # yarn.timeline-service.webapp.address,
+    # yarn.timeline-service.webapp.https.address?  We do not set this,
+    # it is disabled by default in Hadoop.
+
     default_hdfs_replication=3
 fi
 
