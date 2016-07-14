@@ -22,7 +22,8 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export common functions for running jobs
+# Export common functions for running jobs, should only be sourced
+# from magpie-run* files.
 #
 # This is used by scripts, don't edit this
 
