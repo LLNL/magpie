@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
@@ -126,7 +127,7 @@ cp ${pre_kafkaproperties} ${post_kafkaproperties}
 
 sed -i \
     -e "s/KAFKABROKERID/${kafkanoderank}/g" \
-    -e "s/KAFKAPORT/${KAFKA_PORT}/g" \
+    -e "s/KAFKAPORT/${default_kafka_port}/g" \
     -e "s/KAFKALOGDIRS/${kafkadatadirsubst}/g" \
     -e "s/KAFKAZOOKEEPERCNT/${kafkazookeeperconnect}/g" \
     -e "s/KAFKAZOOKEEPERTIMEOUT/${kafkazookeepertimeout}/g" \

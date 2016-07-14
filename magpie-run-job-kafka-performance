@@ -26,6 +26,7 @@
 # most part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
@@ -55,7 +56,7 @@ fi
 
 for node in `cat ${KAFKA_CONF_DIR}/masters`
 do
-    bootstrap="${bootstrap}${bootstrap:+","}${node}:${KAFKA_PORT}"
+    bootstrap="${bootstrap}${bootstrap:+","}${node}:${default_kafka_port}"
 done
 
 ${KAFKA_HOME}/bin/kafka-producer-perf-test.sh --topic performance --num-records ${kafkarecordcount} --record-size ${kafkarecordsize} --throughput ${kafkathroughput} --producer-props bootstrap.servers=${bootstrap}

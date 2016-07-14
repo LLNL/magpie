@@ -92,3 +92,8 @@ if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     default_phoenix_queryserver_port="8765"
 fi
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    default_kafka_port="6667"
+fi
