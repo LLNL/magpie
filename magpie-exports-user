@@ -129,6 +129,7 @@ then
     export KAFKA_MASTER_NODE=`head -1 ${KAFKA_CONF_DIR}/masters`
     export KAFKA_SLAVE_COUNT=`cat ${KAFKA_CONF_DIR}/slaves|wc -l`
     export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${KAFKA_SLAVE_COUNT}`
+    export KAFKA_PORT=${default_kafka_port}
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]

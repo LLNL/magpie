@@ -107,6 +107,8 @@ KAFKA_CONF_DIR : the directory that Kafka configuration files local
 
 KAFKA_LOG_DIR : the directory Kafka log files are stored
 
+KAFKA_PORT : kafka port for client connections
+
 See "Zookeeper Exported Environment Variables" in README.zookeeper,
 for Zookeeper environment variables that may be useful.
 
