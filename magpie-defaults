@@ -74,3 +74,16 @@ then
     default_hdfs_replication=3
 fi
 
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    default_hbase_master_port="60000"
+    default_hbase_master_info_port="60010"
+    default_hbase_regionserver_port="60020"
+    default_hbase_regionserver_info_port="60030"
+
+    # achu: Why not hbase.rest.port?  We don't enable the rest
+    # interface by default.
+
+    # achu: Why not hbase.status.multicast.address.port?  We don't
+    # enable hbase.status.published, it's off by default.
+fi

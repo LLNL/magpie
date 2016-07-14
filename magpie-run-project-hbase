@@ -26,6 +26,7 @@
 # running jobs.  For the most part, it shouldn't be editted.  See
 # job submission files for configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
@@ -87,8 +88,8 @@ Magpie_run_start_hbase () {
         echo "*"
         echo "* You can view your Hbase status by launching a web browser and pointing to ..."
         echo "*"
-        echo "* Hbase Master: http://${HBASE_MASTER_NODE}:${HBASE_MASTER_INFO_PORT}"
-        echo "* Hbase RegionServer: http://<REGIONSERVER>:${HBASE_REGIONSERVER_INFO_PORT}"
+        echo "* Hbase Master: http://${HBASE_MASTER_NODE}:${default_hbase_master_info_port}"
+        echo "* Hbase RegionServer: http://<REGIONSERVER>:${default_hbase_regionserver_info_port}"
         echo "*" 
         echo "* To access Hbase directly, you'll want to:"
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"

@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
@@ -241,10 +242,10 @@ sed -i \
     -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
     -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
     -e "s/HBASEREGIONSERVERHANDLERCOUNT/${hbaseregionserverhandlercount}/g" \
-    -e "s/HBASEMASTERPORT/${HBASE_MASTER_PORT}/g" \
-    -e "s/HBASEMASTERINFOPORT/${HBASE_MASTER_INFO_PORT}/g" \
-    -e "s/HBASEREGIONSERVERPORT/${HBASE_REGIONSERVER_PORT}/g" \
-    -e "s/HBASEREGIONSERVERINFOPORT/${HBASE_REGIONSERVER_INFO_PORT}/g" \
+    -e "s/HBASEMASTERPORT/${default_hbase_master_port}/g" \
+    -e "s/HBASEMASTERINFOPORT/${default_hbase_master_info_port}/g" \
+    -e "s/HBASEREGIONSERVERPORT/${default_hbase_regionserver_port}/g" \
+    -e "s/HBASEREGIONSERVERINFOPORT/${default_hbase_regionserver_info_port}/g" \
     -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
     -e "s/HBASEMASTERHOST/${HBASE_MASTER_NODE}/g" \
     -e "s/HBASE_HOST/${HBASE_THIS_HOST}/g" \
