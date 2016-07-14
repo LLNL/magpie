@@ -183,7 +183,7 @@ then
     else
         export PHOENIX_LOCAL_JOB_DIR=${PHOENIX_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
     fi
-    # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
+    # PHOENIX_LOCAL_SCRATCHSPACE_DIR & PHOENIX_CONF_DIR & PHOENIX_LOG_DIR set
     Magpie_make_phoenix_local_dirs_node_specific
 
     phoenixcmdprefix="bin"
