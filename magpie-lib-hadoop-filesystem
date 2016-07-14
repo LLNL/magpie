@@ -29,6 +29,7 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # XXX deal with viewfs & federation
@@ -37,7 +38,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
         hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        if Magpie_hdfs_federation_enabled
         then
             fsdefault="viewfs:///"
         else
@@ -51,7 +52,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         else
             hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
         fi
-        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        if Magpie_hdfs_federation_enabled
         then
             fsdefault="viewfs:///"
         else
@@ -66,7 +67,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
             hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
         fi
         
-        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] &&[ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        if Magpie_hdfs_federation_enabled
         then
             fsdefault="viewfs:///"
         else
