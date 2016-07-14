@@ -58,6 +58,8 @@ then
     # YARN_LOCAL_SCRATCHSPACE_DIR & YARN_CONF_DIR & YARN_LOG_DIR set
     Magpie_make_hadoop_local_dirs_node_specific
 
+    # There are few duplicated exports we do b/c they are needed
+
     # For jobhistoryserver
     export HADOOP_MAPRED_HOME=${HADOOP_HOME}
 
