@@ -192,20 +192,6 @@ then
     fi
     # KAFKA_LOCAL_SCRATCHSPACE_DIR & KAFKA_CONF_DIR & KAFKA_LOG_DIR set
     Magpie_make_kafka_local_dirs_node_specific
-
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${KAFKA_CONF_DIR}/masters" ]
-    then 
-        export KAFKA_MASTER_NODE=`head -1 ${KAFKA_CONF_DIR}/masters`
-    fi
-    
-    if [ -f "${KAFKA_CONF_DIR}/slaves" ]
-    then
-        export KAFKA_SLAVE_COUNT=`cat ${KAFKA_CONF_DIR}/slaves|wc -l`
-
-        # Assume cores same on each node
-        export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${KAFKA_SLAVE_COUNT}`
-    fi
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
