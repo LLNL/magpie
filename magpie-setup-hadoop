@@ -691,35 +691,6 @@ then
 fi
 
 #
-# Extra configs for terasort optimization
-#
-
-if [ "${HADOOP_MODE}" == "terasort" ]
-then
-    rm -rf ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
-
-    if Magpie_hadoop_filesystem_mode_is_hdfs_type
-    then
-        blocksize=${hdfsblocksize}
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
-    then
-        blocksize=${rawnetworkfsblocksize}
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-    then
-        blocksize=${intellustreblocksize}
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
-    then
-        blocksize=${magpienetworkfsblocksize}
-    else
-        Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
-        exit 1
-    fi
-    
-    echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_BLOCKSIZE=\"${blocksize}\"" >> ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
-    echo "export MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS=\"${defaultmaptasks}\"" >> ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
-fi
-
-#
 # Get config files for setup
 #
 

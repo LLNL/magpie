@@ -29,6 +29,8 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -42,14 +44,14 @@ then
     terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
     rmoption="-rm -r"
 fi
-            
+
 if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
 then
     terasortsize=50000000
 else
     terasortsize=$HADOOP_TERASORT_SIZE
 fi
-            
+
 if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
@@ -79,7 +81,7 @@ then
         extralibjars="${extralibjars},${HADOOP_UDA_JAR}"
     fi
 fi
-            
+
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
     tachyonjar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
@@ -92,7 +94,7 @@ then
 fi
 
 cd ${HADOOP_HOME}
-            
+
 #
 # Remove previous runs if they are lingering
 #
@@ -125,20 +127,45 @@ if [ "${HADOOP_TERAGEN_MAP_COUNT:-0}" -ne "0" ]
 then
     mtasks=$HADOOP_TERAGEN_MAP_COUNT
 else
-    source ${HADOOP_LOCAL_SCRATCHSPACE_DIR}/magpie.terasort-defaults
-
-    # Calculate the sensible maximum number of map tasks there should be
-    # Want to add +1 mtasks, make each block just below blocksize
-    # instead of make each task make blocksize + scratch data.
-    terasortfullsize=`expr $terasortsize \* 100`
-    mtasks=`expr $terasortfullsize \/ $MAGPIE_HADOOP_TERASORT_DEFAULT_BLOCKSIZE`
-    mtasks=`expr $mtasks + 1`
-
-    # But use the default map task count if it is smaller than this max.
-
-    if [ "${MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS}" -lt "${mtasks}" ]
+    # achu, as far as I can tell, Hadoop 1.0 does not have a mechanism
+    # to get the currently configured settings, so Hadoop 1.0 uses defaults.
+    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
     then
-       mtasks=${MAGPIE_HADOOP_TERASORT_DEFAULT_MAPTASKS}
+        # Calculate the sensible maximum number of map tasks there should be
+        # Want to add +1 mtasks, make each block just below blocksize
+        # instead of make each task make blocksize + scratch data.
+        terasortfullsize=`expr $terasortsize \* 100`
+        
+        if Magpie_hadoop_filesystem_mode_is_hdfs_type
+        then
+            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey dfs.blocksize 2> /dev/null`
+        elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+        then
+            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.local.block.size 2> /dev/null`
+        elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
+        then
+            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.block.size 2> /dev/null`
+        elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+        then
+            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.magpienetworkfs.block.size 2> /dev/null`
+        else
+            Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+            exit 1
+        fi
+
+        mtasks=`expr $terasortfullsize \/ ${defaultblocksize}`
+        mtasks=`expr $mtasks + 1`
+        
+        # But use the default map task count if it is smaller than this max.
+
+        defaultmaptasks=`${hadoopcmdprefix}/hdfs getconf -confKey mapreduce.job.maps 2> /dev/null`
+        
+        if [ "${defaultmaptasks}" -lt "${mtasks}" ]
+        then
+            mtasks=${defaultmaptasks}
+        fi
+        
+        mapreducetasks="-Dmapred.map.tasks=${mtasks}"
     fi
 fi
 
@@ -146,7 +173,7 @@ echo "*******************************************************"
 echo "* Executing TeraGen"
 echo "*******************************************************"
 
-command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} -Dmapred.map.tasks=$mtasks ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${mapreducetasks} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
             
