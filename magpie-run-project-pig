@@ -22,9 +22,7 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core processing script for setting up daemons and
-# running jobs.  For the most part, it shouldn't be editted.  See
-# job submission files for configuration details.
+# These are functions to be called by magpie-run
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
