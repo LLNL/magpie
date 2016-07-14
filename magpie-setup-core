@@ -29,7 +29,6 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
 #
 # Setup a whole bunch of environment variables and directories
