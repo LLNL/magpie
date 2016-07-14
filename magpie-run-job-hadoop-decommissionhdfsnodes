@@ -44,17 +44,15 @@ fi
 
 if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
 then
-    if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt "${HADOOP_HDFS_REPLICATION}" ]
-    then
-        echo "Cannot have fewer nodes than HDFS replication"
-        exit 1
-    fi
+    hdfsreplication=${HADOOP_HDFS_REPLICATION}
 else
-    if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt ${default_hdfs_replication} ]
-    then
-        echo "Cannot have fewer nodes than HDFS replication"
-        exit 1
-    fi
+    hdfsreplication=${default_hdfs_replication}
+fi
+
+if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt ${hdfsreplication} ]
+then
+    echo "Cannot have fewer nodes than HDFS replication"
+    exit 1
 fi
 
 nodecounttodecommission=`expr ${HADOOP_SLAVE_COUNT} - ${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}`
