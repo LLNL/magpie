@@ -43,11 +43,12 @@ __Magpie_job_time_minutes () {
         local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
         if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]
         then
-            walltimetominutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
+            local walltimeminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
         else
             Magpie_walltime_to_minutes ${timeleftwalltime}
+            local walltimeminutes=${magpie_walltimetominutes}
         fi
-        jobtimeminutes=`expr ${walltimetominutes} - ${magpie_shutdown_time_value}`
+        jobtimeminutes=`expr ${walltimeminutes} - ${magpie_shutdown_time_value}`
     else
         local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
         jobtimeminutes=`expr ${timeleftminutes} - ${magpie_shutdown_time_value}`

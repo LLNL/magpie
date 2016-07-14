@@ -34,7 +34,7 @@ __Magpie_calc_slurm_magpie_timelimit () {
     then
         local timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
         Magpie_walltime_to_minutes ${timelimitwalltime}
-        export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
+        export MAGPIE_TIMELIMIT_MINUTES=${magpie_walltimetominutes}
     fi
 }
 
