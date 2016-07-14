@@ -197,4 +197,6 @@ then
     done
 
     export ZOOKEEPER_NODES="${zookeepernodeslist}"
+
+    export ZOOKEEPER_CLIENT_PORT=${default_zookeeper_client_port}
 fi

@@ -87,6 +87,8 @@ ZOOKEEPER_NODES : comma separated list of Zookeeper nodes, may be
 ZOOKEEPER_NODES_FIRST : first node in the ZOOKEEPER_NODES environment
                         variable, for convenience
 
+ZOOKEEPER_CLIENT_PORT : port to communicate to Zookeeper
+
 ZOOKEEPER_CONF_DIR : the directory that Zookeeper configuration files
           	     local to the node are stored.
 

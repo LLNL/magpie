@@ -44,7 +44,7 @@ fi
 for zookeepernode in ${zookeepernodes}
 do
     echo "Sending ruok to ${zookeepernode} ... "
-    echo ruok | nc ${zookeepernode} ${default_zookeeper_client_port}
+    echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}
     echo 
 done
 

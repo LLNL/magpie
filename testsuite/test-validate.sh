@@ -570,6 +570,12 @@ check_exports_zookeeper () {
     then
         echo "Error in $file - can't find export ZOOKEEPER_NODES_FIRST"
     fi
+
+    num=`grep -E "ZOOKEEPER_CLIENT_PORT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ZOOKEEPER_CLIENT_PORT"
+    fi
 }
 
 files=`find . -maxdepth 1 -name "${outputprefix}*checkexports*"`
