@@ -45,12 +45,12 @@ Magpie_make_magpie_local_dirs_node_specific
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
-    export MAGPIE_STARTUP_TIME=30
+    export MAGPIE_STARTUP_TIME=${default_startup_time}
 fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    export MAGPIE_SHUTDOWN_TIME=30
+    export MAGPIE_SHUTDOWN_TIME=${default_shutdown_time}
 fi
 
 magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`

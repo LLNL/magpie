@@ -26,6 +26,9 @@
 #
 # This is used by scripts, don't edit this
 
+default_startup_time=30
+default_shutdown_time=30
+
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
     default_hdfs_replication=3

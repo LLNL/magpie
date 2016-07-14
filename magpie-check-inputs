@@ -199,6 +199,7 @@ fi
 
 __Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
@@ -239,14 +240,14 @@ fi
 
 if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
 then
-    magpiestartuptime=30
+    magpiestartuptime=${default_startup_time}
 else
     magpiestartuptime=${MAGPIE_STARTUP_TIME}
 fi
 
 if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
 then
-    magpieshutdowntime=30
+    magpieshutdowntime=${default_shutdown_time}
 else
     magpieshutdowntime=${MAGPIE_SHUTDOWN_TIME}
 fi
