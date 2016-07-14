@@ -26,16 +26,35 @@
 # and various variables needed.
 #
 # Unlke magpie-exports-core, these exports are dependent on the magpie
-# setup.  This should never be sourced from within magpie-setup* files.
+# setup.  This should be sourced only after magpie-setup-core has run.
 #
 # This is used by scripts, don't edit this
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # Initially make variables specific to node
 Magpie_make_all_local_dirs_node_specific
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    if [ ! -f "${TACHYON_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${TACHYON_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${TACHYON_CONF_DIR}/slaves" ]
+    then 
+        Magpie_output_internal_error "${TACHYON_CONF_DIR}/slaves does not exist"
+    fi
+
+    export TACHYON_MASTER_NODE=`head -1 ${TACHYON_CONF_DIR}/masters`
+    export TACHYON_MASTER_PORT=${default_tachyon_master_port}
+    export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
+    export TACHYON_FIRST_WORKER_NODE=`head -1 ${TACHYON_CONF_DIR}/workers`
+fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then

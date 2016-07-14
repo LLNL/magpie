@@ -34,6 +34,7 @@ fi
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 
