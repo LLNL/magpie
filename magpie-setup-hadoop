@@ -398,63 +398,10 @@ else
     compression=false
 fi
 
-openfiles=`ulimit -n`
-if [ "${openfiles}" != "unlimited" ]
-then
-    openfileshardlimit=`ulimit -H -n`
-
-    # we estimate 4096 per 100 nodes, minimum 8192, max 65536.
-    # Obviously depends on many factors such as core count, but it's a
-    # reasonble and safe over-estimate calculated based on experience.
-    openfilesslavecount=`expr ${HADOOP_SLAVE_COUNT} \/ 100`
-    openfilescount=`expr ${openfilesslavecount} \* 4096`
-    if [ "${openfilescount}" -lt "8192" ]
-    then
-        openfilescount=8192
-    fi
-    if [ "${openfilescount}" -gt "65536" ]
-    then
-        openfilescount=65536
-    fi
-    
-    if [ "${openfileshardlimit}" != "unlimited" ]
-    then
-        if [ ${openfilescount} -gt ${openfileshardlimit} ]
-        then
-            openfilescount=${openfileshardlimit}
-        fi
-    fi
-else
-    openfilescount="unlimited"
-fi
-
-userprocesses=`ulimit -u`
-if [ "${userprocesses}" != "unlimited" ]
-then
-    userprocesseshardlimit=`ulimit -H -u`
-
-    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
-    userprocessesslavecount=`expr ${HADOOP_SLAVE_COUNT} \/ 100`
-    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
-    if [ "${userprocessescount}" -lt "4096" ]
-    then
-        userprocessescount=4096
-    fi
-    if [ "${userprocessescount}" -gt "32768" ]
-    then
-        userprocessescount=32768
-    fi
-    
-    if [ "${userprocesseshardlimit}" != "unlimited" ]
-    then
-        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
-        then
-            userprocessescount=${userprocesseshardlimit}
-        fi
-    fi
-else
-    userprocessescount="unlimited"
-fi
+# Sets magpie_openfilescount
+Magpie_calculate_openfiles ${HADOOP_SLAVE_COUNT}
+# Sets magpie_userprocessescount
+Magpie_calculate_userprocesses ${HADOOP_SLAVE_COUNT}
 
 #
 # Setup Hadoop file system
@@ -982,8 +929,8 @@ then
     then
         cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
     else
-        echo "ulimit -n ${openfilescount}" >> ${post_hadoopenvsh}
-        echo "ulimit -u ${userprocessescount}" >> ${post_hadoopenvsh}
+        echo "ulimit -n ${magpie_openfilescount}" >> ${post_hadoopenvsh}
+        echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hadoopenvsh}
     fi
 
     cp ${pre_log4jproperties} ${post_log4jproperties}
@@ -1167,8 +1114,8 @@ then
     then
         cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
     else
-        echo "ulimit -n ${openfilescount}" >> ${post_yarnenvsh}
-        echo "ulimit -u ${userprocessescount}" >> ${post_yarnenvsh}
+        echo "ulimit -n ${magpie_openfilescount}" >> ${post_yarnenvsh}
+        echo "ulimit -u ${magpie_userprocessescount}" >> ${post_yarnenvsh}
     fi
 fi
 

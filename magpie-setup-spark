@@ -303,63 +303,10 @@ then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
 fi
 
-openfiles=`ulimit -n`
-if [ "${openfiles}" != "unlimited" ]
-then
-    openfileshardlimit=`ulimit -H -n`
-
-    # we estimate 8192 per 100 nodes, minimum 16384, max 65536.
-    # Obviously depends on many factors such as core count, but it's a
-    # reasonble and safe over-estimate calculated based on experience.
-    openfilesslavecount=`expr ${SPARK_SLAVE_COUNT} \/ 100`
-    openfilescount=`expr ${openfilesslavecount} \* 8192`
-    if [ "${openfilescount}" -lt "16384" ]
-    then
-        openfilescount=16384
-    fi
-    if [ "${openfilescount}" -gt "65536" ]
-    then
-        openfilescount=65536
-    fi
-    
-    if [ "${openfileshardlimit}" != "unlimited" ]
-    then
-        if [ ${openfilescount} -gt ${openfileshardlimit} ]
-        then
-            openfilescount=${openfileshardlimit}
-        fi
-    fi
-else
-    openfilescount="unlimited"
-fi
-
-userprocesses=`ulimit -u`
-if [ "${userprocesses}" != "unlimited" ]
-then
-    userprocesseshardlimit=`ulimit -H -u`
-
-    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
-    userprocessesslavecount=`expr ${SPARK_SLAVE_COUNT} \/ 100`
-    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
-    if [ "${userprocessescount}" -lt "4096" ]
-    then
-        userprocessescount=4096
-    fi
-    if [ "${userprocessescount}" -gt "32768" ]
-    then
-        userprocessescount=32768
-    fi
-    
-    if [ "${userprocesseshardlimit}" != "unlimited" ]
-    then
-        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
-        then
-            userprocessescount=${userprocesseshardlimit}
-        fi
-    fi
-else
-    userprocessescount="unlimited"
-fi
+# Sets magpie_openfilescount
+Magpie_calculate_openfiles ${SPARK_SLAVE_COUNT}
+# Sets magpie_userprocessescount
+Magpie_calculate_userprocesses ${SPARK_SLAVE_COUNT}
 
 if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
 then
@@ -609,8 +556,8 @@ if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXT
 then
     cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${post_sparkenvsh}
 else
-    echo "ulimit -n ${openfilescount}" >> ${post_sparkenvsh}
-    echo "ulimit -u ${userprocessescount}" >> ${post_sparkenvsh}
+    echo "ulimit -n ${magpie_openfilescount}" >> ${post_sparkenvsh}
+    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_sparkenvsh}
 fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"

@@ -127,63 +127,10 @@ done
 # Sets magpie_hbase_slave_timeout
 Magpie_calculate_stop_timeouts
 
-openfiles=`ulimit -n`
-if [ "${openfiles}" != "unlimited" ]
-then
-    openfileshardlimit=`ulimit -H -n`
-
-    # we estimate 16384 per 64 nodes, minimum 32768, max 131072.
-    # Obviously depends on many factors, but it's a reasonble and safe
-    # over-estimate calculated based on experience.
-    openfilesslavecount=`expr ${HBASE_REGIONSERVER_COUNT} \/ 64`
-    openfilescount=`expr ${openfilesslavecount} \* 16384`
-    if [ "${openfilescount}" -lt "32768" ]
-    then
-        openfilescount=32768
-    fi
-    if [ "${openfilescount}" -gt "131072" ]
-    then
-        openfilescount=131072
-    fi
-    
-    if [ "${openfileshardlimit}" != "unlimited" ]
-    then
-        if [ ${openfilescount} -gt ${openfileshardlimit} ]
-        then
-            openfilescount=${openfileshardlimit}
-        fi
-    fi
-else
-    openfilescount="unlimited"
-fi
-
-userprocesses=`ulimit -u`
-if [ "${userprocesses}" != "unlimited" ]
-then
-    userprocesseshardlimit=`ulimit -H -u`
-
-    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
-    userprocessesslavecount=`expr ${HBASE_REGIONSERVER_COUNT} \/ 100`
-    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
-    if [ "${userprocessescount}" -lt "4096" ]
-    then
-        userprocessescount=4096
-    fi
-    if [ "${userprocessescount}" -gt "32768" ]
-    then
-        userprocessescount=32768
-    fi
-    
-    if [ "${userprocesseshardlimit}" != "unlimited" ]
-    then
-        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
-        then
-            userprocessescount=${userprocesseshardlimit}
-        fi
-    fi
-else
-    userprocessescount="unlimited"
-fi
+# Sets magpie_openfilescount
+Magpie_calculate_openfiles ${HBASE_REGIONSERVER_COUNT}
+# Sets magpie_userprocessescount
+Magpie_calculate_userprocesses ${HBASE_REGIONSERVER_COUNT}
 
 # set java.io.tmpdir
 extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
@@ -288,8 +235,8 @@ if [ "${HBASE_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HBASE_ENVIRONMENT_EXT
 then
     cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${post_hbaseenvsh}
 else
-    echo "ulimit -n ${openfilescount}" >> ${post_hbaseenvsh}
-    echo "ulimit -u ${userprocessescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -n ${magpie_openfilescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hbaseenvsh}
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}

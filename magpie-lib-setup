@@ -227,3 +227,69 @@ Magpie_find_conffile () {
 
     eval $__returnvar="${conffilefound}"
 }
+
+Magpie_calculate_openfiles () {
+    local slavecount=$1
+
+    local openfiles=`ulimit -n`
+    if [ "${openfiles}" != "unlimited" ]
+    then
+        local openfileshardlimit=`ulimit -H -n`
+
+        # we estimate 4096 per 100 nodes, minimum 8192, max 65536.
+        # Obviously depends on many factors such as core count, but it's a
+        # reasonble and safe over-estimate calculated based on experience.
+        local openfilesslavecount=`expr ${slavecount} \/ 100`
+        magpie_openfilescount=`expr ${openfilesslavecount} \* 4096`
+        if [ "${magpie_openfilescount}" -lt "8192" ]
+        then
+            magpie_openfilescount=8192
+        fi
+        if [ "${magpie_openfilescount}" -gt "65536" ]
+        then
+            magpie_openfilescount=65536
+        fi
+        
+        if [ "${openfileshardlimit}" != "unlimited" ]
+        then
+            if [ ${magpie_openfilescount} -gt ${openfileshardlimit} ]
+            then
+                magpie_openfilescount=${openfileshardlimit}
+            fi
+        fi
+    else
+        magpie_openfilescount="unlimited"
+    fi
+}
+
+Magpie_calculate_userprocesses () {
+    local slavecount=$1
+
+    local userprocesses=`ulimit -u`
+    if [ "${userprocesses}" != "unlimited" ]
+    then
+        local userprocesseshardlimit=`ulimit -H -u`
+
+        # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
+        local userprocessesslavecount=`expr ${slavecount} \/ 100`
+        magpie_userprocessescount=`expr ${userprocessesslavecount} \* 2048`
+        if [ "${magpie_userprocessescount}" -lt "4096" ]
+        then
+            magpie_userprocessescount=4096
+        fi
+        if [ "${magpie_userprocessescount}" -gt "32768" ]
+        then
+            magpie_userprocessescount=32768
+        fi
+        
+        if [ "${userprocesseshardlimit}" != "unlimited" ]
+        then
+            if [ ${magpie_userprocessescount} -gt ${userprocesseshardlimit} ]
+            then
+                magpie_userprocessescount=${userprocesseshardlimit}
+            fi
+        fi
+    else
+        magpie_userprocessescount="unlimited"
+    fi
+}
