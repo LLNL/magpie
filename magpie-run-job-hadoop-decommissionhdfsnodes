@@ -41,12 +41,9 @@ then
     exit 1
 fi
 
-if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
-then
-    hdfsreplication=${HADOOP_HDFS_REPLICATION}
-else
-    hdfsreplication=${default_hdfs_replication}
-fi
+cd ${HADOOP_HOME}
+
+hdfsreplication=`${hadoopcmdprefix}/hdfs getconf -confKey dfs.replication 2> /dev/null`
 
 if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt ${hdfsreplication} ]
 then
@@ -58,8 +55,6 @@ nodecounttodecommission=`expr ${HADOOP_SLAVE_COUNT} - ${HADOOP_DECOMMISSION_HDFS
 
 echo "Creating ${HADOOP_CONF_DIR}/hosts-exclude"
 tail -n ${nodecounttodecommission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
-
-cd ${HADOOP_HOME}
 
 echo "Refreshing nodes in namenode"
 ${hadoopcmdprefix}/hdfs dfsadmin -refreshNodes
