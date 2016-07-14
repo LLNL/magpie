@@ -35,14 +35,17 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
 then
     terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
     rmoption="-rmr"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
+elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
 then
     terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
     rmoption="-rm -r"
+else
+    Magpie_output_internal_error "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
+    exit 1
 fi
 
 if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
