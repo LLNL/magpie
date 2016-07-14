@@ -31,6 +31,7 @@
 # This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # Initially make variables specific to node
@@ -63,10 +64,7 @@ then
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
     
-    # XXX need to deal w/ fact can't use Magpie_hadoop_filesystem_mode_is_hdfs_type
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
         export HADOOP_NAMENODE_PORT="${default_hadoop_hdfs_namenode_address}"
