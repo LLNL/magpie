@@ -28,6 +28,7 @@
 
 # XXX does this work w/ federation?
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
