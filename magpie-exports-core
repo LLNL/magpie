@@ -164,22 +164,6 @@ then
     fi
     # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
     Magpie_make_spark_local_dirs_node_specific
-
-    # XXX need to set SPARK_MASTER_PORT
-    
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${SPARK_CONF_DIR}/masters" ]
-    then 
-        export SPARK_MASTER_NODE=`head -1 ${SPARK_CONF_DIR}/masters`
-    fi
-
-    if [ -f "${SPARK_CONF_DIR}/slaves" ]
-    then
-        export SPARK_SLAVE_COUNT=`cat ${SPARK_CONF_DIR}/slaves|wc -l`
-        
-        # Assume cores same on each node
-        export SPARK_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${SPARK_SLAVE_COUNT}`
-    fi
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
