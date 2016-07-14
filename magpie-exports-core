@@ -90,6 +90,7 @@ then
         export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
 
         # Assume cores same on each node
+        magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
         export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
     fi
 fi
@@ -217,12 +218,6 @@ then
     fi
     # ZEPPELIN_LOCAL_SCRATCHSPACE_DIR & ZEPPELIN_CONF_DIR & ZEPPELIN_LOG_DIR set
     Magpie_make_zeppelin_local_dirs_node_specific
-
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${ZEPPELIN_CONF_DIR}/masters" ]
-    then
-        export ZEPPELIN_MASTER_NODE=`head -1 ${ZEPPELIN_CONF_DIR}/masters`
-    fi
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]
