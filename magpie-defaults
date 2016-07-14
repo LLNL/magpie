@@ -103,3 +103,18 @@ then
     default_zeppelin_port="18080"
 fi
 
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    # Default is 8080, but that is same as Spark.  So up by 100
+    default_storm_ui_port="8180"
+
+    # Default is 8000, for consistency to above, up by 100
+    default_storm_logviewer_port="8100"
+
+    default_storm_drpc_port="3772"
+    default_storm_invocations_port="3773"
+    default_storm_drpc_http_port="3774"
+    default_storm_thrift_port="6627"
+
+    default_storm_supervisor_slots_starting_port="6700"
+fi

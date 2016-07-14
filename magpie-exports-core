@@ -288,19 +288,6 @@ then
     # STORM_LOCAL_SCRATCHSPACE_DIR & STORM_CONF_DIR & STORM_LOG_DIR set
     Magpie_make_storm_local_dirs_node_specific
 
-    # Default is 8080, but that is same as Spark.  So up by 100
-    export STORM_UI_PORT="8180"
-
-    # Default is 8000, for consistency to above, up by 100
-    export STORM_LOGVIEWER_PORT="8100"
-
-    export STORM_DRPC_PORT="3772"
-    export STORM_DRPC_INVOCATIONS_PORT="3773"
-    export STORM_DRPC_HTTP_PORT="3774"
-    export STORM_THRIFT_PORT="6627"
-
-    export STORM_SUPERVISOR_SLOTS_STARTING_PORT="6700"
-
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${STORM_CONF_DIR}/masters" ]
     then 

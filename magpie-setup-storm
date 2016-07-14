@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
@@ -143,12 +144,12 @@ sed -i \
     -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
     -e "s/STORMLOGDIR/${stormlogdirsubst}/g" \
     -e "s/STORMZOOKEEPERPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
-    -e "s/STORMUIPORT/${STORM_UI_PORT}/g" \
-    -e "s/STORMLOGVIEWERPORT/${STORM_LOGVIEWER_PORT}/g" \
-    -e "s/STORMDRPCPORT/${STORM_DRPC_PORT}/g" \
-    -e "s/STORMDRPCINVOCATIONSPORT/${STORM_DRPC_INVOCATIONS_PORT}/g" \
-    -e "s/STORMDRPCHTTPPORT/${STORM_DRPC_HTTP_PORT}/g" \
-    -e "s/NIMBUSTHRIFTPORT/${STORM_THRIFT_PORT}/g" \
+    -e "s/STORMUIPORT/${default_storm_ui_port}/g" \
+    -e "s/STORMLOGVIEWERPORT/${default_storm_logviewer_port}/g" \
+    -e "s/STORMDRPCPORT/${default_storm_drpc_port}/g" \
+    -e "s/STORMDRPCINVOCATIONSPORT/${default_storm_invocations_port}/g" \
+    -e "s/STORMDRPCHTTPPORT/${default_storm_drpc_http_port}/g" \
+    -e "s/NIMBUSTHRIFTPORT/${default_storm_thrift_port}/g" \
     -e "s/STORM_DAEMON_HEAP_MAX/${stormdaemonheapmax}/g" \
     -e "s/STORM_WORKER_HEAP_MAX/${stormworkerheapmax}/g" \
     -e "s/EXTRAJVMOPTS/${extrajvmoptssubst}/g" \
@@ -174,7 +175,7 @@ echo "" >> ${post_stormyaml}
 
 echo "supervisor.slots.ports:" >> ${post_stormyaml}
 
-slotport=${STORM_SUPERVISOR_SLOTS_STARTING_PORT}
+slotport=${default_storm_supervisor_slots_starting_port}
 for i in `seq 1 ${stormslotcount}`
 do
     echo "     - ${slotport}" >> ${post_stormyaml}
