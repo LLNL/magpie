@@ -38,6 +38,23 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 # Initially make variables specific to node
 Magpie_make_all_local_dirs_node_specific
 
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    if [ ! -f "${STORM_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${STORM_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${STORM_CONF_DIR}/workers" ]
+    then 
+        Magpie_output_internal_error "${STORM_CONF_DIR}/workers does not exist"
+    fi
+
+    export STORM_MASTER_NODE=`head -1 ${STORM_CONF_DIR}/masters`
+    export STORM_NIMBUS_HOST=${STORM_MASTER_NODE}
+    export STORM_WORKERS_COUNT=`cat ${STORM_CONF_DIR}/workers|wc -l`
+fi
+
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
     if [ ! -f "${TACHYON_CONF_DIR}/masters" ]
