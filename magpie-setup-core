@@ -29,7 +29,6 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
 #
@@ -118,8 +117,12 @@ fi
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
 
+# XXX not work, Magpie_hadoop_filesystem_mode_is_hdfs_type
+
 if [ "${HADOOP_SETUP}" == "yes" ] \
-    && Magpie_hadoop_filesystem_mode_is_hdfs_type \
+    && ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]) \
     && [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] \
     && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
 then
