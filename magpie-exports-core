@@ -64,8 +64,7 @@ then
     export HADOOP_MAPRED_HOME=${HADOOP_HOME}
 
     export HADOOP_YARN_HOME=${HADOOP_HOME}
-    myusername=`whoami`
-    export HADOOP_YARN_USER="${myusername}"
+    export HADOOP_YARN_USER="${USER}"
 
     # Unsure if needed, read about these online
     export HADOOP_HDFS_HOME=${HADOOP_HOME}
