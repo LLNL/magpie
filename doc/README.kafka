@@ -107,10 +107,6 @@ KAFKA_CONF_DIR : the directory that Kafka configuration files local
 
 KAFKA_LOG_DIR : the directory Kafka log files are stored
 
-KAFKA_LOG4J_OPTS : options variable for logging
-
-LOG_DIR : the directory to store GC logging
-
 See "Zookeeper Exported Environment Variables" in README.zookeeper,
 for Zookeeper environment variables that may be useful.
 
