@@ -69,7 +69,7 @@ echo "*** Sleeping a bit to let WordCount run a bit"
 sleep 30
 
 echo "*** Checking that Storm WordCount is running"
-command="bin/storm list"
+command="${stormcmdprefix}/storm list"
 echo "Running $command" >&2
 stormlistrunning=`$command`
 echo ${stormlistrunning}
@@ -80,7 +80,7 @@ then
     echo "*** Storm appears to be executing WordCount properly"
 
     echo "*** Killing Storm Wordcount "
-    command="bin/storm kill WordCount"
+    command="${stormcmdprefix}/storm kill WordCount"
     echo "Running $command" >&2
     $command
 
@@ -91,7 +91,7 @@ then
         sleep 30
         
         echo "*** Checking that Storm WordCount is no longer running"
-        command="bin/storm list"
+        command="${stormcmdprefix}/storm list"
         echo "Running $command" >&2
         stormlistkilled=`$command`
         

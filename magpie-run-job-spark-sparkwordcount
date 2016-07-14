@@ -26,6 +26,7 @@
 # part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion

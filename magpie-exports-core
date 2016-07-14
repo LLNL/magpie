@@ -102,18 +102,6 @@ then
         export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-    then
-        hadoopsetupscriptprefix="bin"
-        hadoopcmdprefix="bin"
-        dfsadminscript="hadoop"
-    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-    then
-        hadoopsetupscriptprefix="sbin"
-        hadoopcmdprefix="bin"
-        dfsadminscript="hdfs"
-    fi
-
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" == "X" ]
     then
         export HDFS_FEDERATION_NAMENODE_COUNT=1
@@ -130,8 +118,6 @@ then
     fi
     # PIG_LOCAL_SCRATCHSPACE_DIR & PIG_CONF_DIR set
     Magpie_make_pig_local_dirs_node_specific
-
-    pigcmdprefix="bin"
 fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
@@ -144,9 +130,6 @@ then
     fi
     # MAHOUT_LOCAL_SCRATCHSPACE_DIR & MAHOUT_CONF_DIR set
     Magpie_make_mahout_local_dirs_node_specific
-
-    mahoutexamplesprefix="examples"
-    mahoutcmdprefix="bin"
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
@@ -170,9 +153,6 @@ then
     then
         export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
     fi
-    
-    hbasesetupscriptprefix="bin"
-    hbasecmdprefix="bin"
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
@@ -185,8 +165,6 @@ then
     fi
     # PHOENIX_LOCAL_SCRATCHSPACE_DIR & PHOENIX_CONF_DIR & PHOENIX_LOG_DIR set
     Magpie_make_phoenix_local_dirs_node_specific
-
-    phoenixcmdprefix="bin"
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
@@ -215,9 +193,6 @@ then
         # Assume cores same on each node
         export SPARK_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${SPARK_SLAVE_COUNT}`
     fi
-
-    sparksetupscriptprefix="sbin"
-    sparkcmdprefix="bin"
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
@@ -244,9 +219,6 @@ then
         # Assume cores same on each node
         export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${KAFKA_SLAVE_COUNT}`
     fi
-    
-    kafkasetupscriptprefix="bin"
-    kafkacmdprefix="bin"
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
@@ -265,9 +237,6 @@ then
     then
         export ZEPPELIN_MASTER_NODE=`head -1 ${ZEPPELIN_CONF_DIR}/masters`
     fi
-
-    zeppelinsetupscriptprefix="bin"
-    zeppelincmdprefix="bin"
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]
@@ -292,8 +261,6 @@ then
     then
         export STORM_WORKERS_COUNT=`cat ${STORM_CONF_DIR}/workers|wc -l`
     fi
-    
-    stormcmdprefix="bin"
 fi
 
 if [ "${TACHYON_SETUP}" == "yes" ]
@@ -320,8 +287,6 @@ then
         export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
         export TACHYON_FIRST_WORKER_NODE=`head -1 ${TACHYON_CONF_DIR}/workers`
     fi
-    
-    tachyoncmdprefix="bin"
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
