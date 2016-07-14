@@ -26,6 +26,7 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
@@ -51,11 +52,13 @@ then
     then
         export MASTER="yarn-client"
     else
-        export MASTER="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+        # XXX SPARK_MASTER_PORT?
+        export MASTER="spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
     fi
     command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
 else
-    command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
+    # XXX SPARK_MASTER_PORT?
+    command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$default_spark_master_port ${sparkpislices}"
 fi
 
 echo "Running $command" >&2

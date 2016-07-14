@@ -120,7 +120,7 @@ fi
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
 then 
-    SPARK_JAVA_OPTS="-Dspark.ui.port=${SPARK_APPLICATION_DASHBOARD_PORT}"
+    SPARK_JAVA_OPTS="-Dspark.ui.port=${default_spark_application_dashboard_port}"
 else
     SPARK_JAVA_OPTS=""
 fi
@@ -465,9 +465,9 @@ sed -i \
     -e "s/SPARKWORKERDIR/${workerdirectorysubst}/g" \
     -e "s/SPARKMEM/${sparkmem}/g" \
     -e "s/SPARKDRIVERMEMORY/${sparkdrivermemory}/g" \
-    -e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
-    -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
-    -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
+    -e "s/SPARKMASTERPORT/${default_spark_master_port}/g" \
+    -e "s/SPARKMASTERWEBUIPORT/${default_spark_master_webui_port}/g" \
+    -e "s/SPARKWORKERWEBUIPORT/${default_spark_worker_webui_port}/g" \
     -e "s/SPARKDAEMONJAVAOPTS/${extrasparkdaemonjavaoptssubst}/g" \
     -e "s/SPARKPYSPARKPYTHON/${pysparkpythonsubst}/g" \
     ${post_sparkenvsh}
@@ -617,7 +617,7 @@ then
     then
         sparkmaster="yarn-client"
     else
-        sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+        sparkmaster="spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
     fi
     sparkmastersubst=`echo "${sparkmaster}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -671,7 +671,7 @@ then
         -e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
         -e "s/SPARKDEFAULTPARALLELISM/${sparkdefaultparallelism}/g" \
         -e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
-        -e "s/SPARKUIPORT/${SPARK_APPLICATION_DASHBOARD_PORT}/g" \
+        -e "s/SPARKUIPORT/${default_spark_application_dashboard_port}/g" \
         -e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
         -e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
         -e "s/SPARKDRIVEREXTRACLASSPATH/${sparkdriverclasspathsubst}/g" \

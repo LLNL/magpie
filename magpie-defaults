@@ -98,6 +98,14 @@ then
     default_kafka_port="6667"
 fi
 
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    default_spark_master_port="7077"
+    default_spark_master_webui_port="8080"
+    default_spark_worker_webui_port="8081"
+    default_spark_application_dashboard_port="4040"
+fi
+
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
     default_zeppelin_port="18080"

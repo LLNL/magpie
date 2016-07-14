@@ -200,14 +200,7 @@ then
     # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
     Magpie_make_spark_local_dirs_node_specific
 
-    if [ "${SPARK_USE_YARN}" != "yes" ]
-    then
-        export SPARK_MASTER_PORT="7077"
-        export SPARK_MASTER_WEBUI_PORT="8080"
-        export SPARK_WORKER_WEBUI_PORT="8081"
-    fi
-
-    export SPARK_APPLICATION_DASHBOARD_PORT="4040"
+    # XXX need to set SPARK_MASTER_PORT
     
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${SPARK_CONF_DIR}/masters" ]

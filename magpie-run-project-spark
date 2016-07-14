@@ -26,6 +26,7 @@
 # running jobs.  For the most part, it shouldn't be editted.  See
 # job submission files for configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
@@ -71,13 +72,13 @@ Magpie_run_start_spark () {
         echo "*"
         if [ "${SPARK_USE_YARN}" != "yes" ]
         then 
-            echo "* Spark Master: http://${SPARK_MASTER_NODE}:${SPARK_MASTER_WEBUI_PORT}"
-            echo "* Spark Worker: http://<WORKERNODE>:${SPARK_WORKER_WEBUI_PORT}"
-            echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${SPARK_APPLICATION_DASHBOARD_PORT}"
+            echo "* Spark Master: http://${SPARK_MASTER_NODE}:${default_spark_master_webui_port}"
+            echo "* Spark Worker: http://<WORKERNODE>:${default_spark_worker_webui_port}"
+            echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${default_spark_application_dashboard_port}"
             echo "*" 
             echo "* The Spark Master for running jobs is"
             echo "*"
-            echo "* spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+            echo "* spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
         fi
         echo "*"
         echo "* To access Spark directly, you'll want to:"
@@ -94,7 +95,7 @@ Magpie_run_start_spark () {
         echo "*" 
         if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
         then 
-            echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+            echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
         else
             echo "*   ${sparkcmdprefix}/spark-submit --class <class> <jar>"
         fi
@@ -161,7 +162,7 @@ Magpie_run_start_spark () {
                 echo "setenv SPARK_MASTER_NODE \"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 if [ "${SPARK_USE_YARN}" != "yes" ]
                 then
-                    echo "setenv SPARK_MASTER_PORT \"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "setenv SPARK_MASTER_PORT \"${default_spark_master_port}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
                 echo "setenv SPARK_SLAVE_COUNT \"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv SPARK_SLAVE_CORE_COUNT \"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -173,7 +174,7 @@ Magpie_run_start_spark () {
                 echo "export SPARK_MASTER_NODE=\"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 if [ "${SPARK_USE_YARN}" != "yes" ]
                 then
-                    echo "export SPARK_MASTER_PORT=\"${SPARK_MASTER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "export SPARK_MASTER_PORT=\"${default_spark_master_port}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
                 echo "export SPARK_SLAVE_COUNT=\"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export SPARK_SLAVE_CORE_COUNT=\"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
