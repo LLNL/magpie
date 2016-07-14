@@ -106,8 +106,7 @@ else
         echo "export SPARK_CLASSPATH=\"${sparkexamplesjar}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
     fi
 
-    # XXX SPARK_MASTER_PORT?
-    command="${sparkcmdprefix}/spark-class ${sparkwordcountclass} spark://$SPARK_MASTER_NODE:$default_spark_master_port ${SPARK_SPARKWORDCOUNT_FILE}"
+    command="${sparkcmdprefix}/spark-class ${sparkwordcountclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${SPARK_SPARKWORDCOUNT_FILE}"
 fi
 
 echo "Running $command" >&2
