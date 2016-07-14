@@ -26,6 +26,7 @@
 #
 # This is used by scripts, don't edit this
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
@@ -41,14 +42,14 @@ __Magpie_job_time_minutes () {
         local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
         if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]
         then
-            walltimetominutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
+            walltimetominutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
         else
             Magpie_walltime_to_minutes ${timeleftwalltime}
         fi
-        jobtimeminutes=`expr ${walltimetominutes} - ${MAGPIE_SHUTDOWN_TIME}`
+        jobtimeminutes=`expr ${walltimetominutes} - ${magpie_shutdown_time_value}`
     else
-        local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${MAGPIE_STARTUP_TIME}`
-        jobtimeminutes=`expr ${timeleftminutes} - ${MAGPIE_SHUTDOWN_TIME}`
+        local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
+        jobtimeminutes=`expr ${timeleftminutes} - ${magpie_shutdown_time_value}`
     fi
 }
 

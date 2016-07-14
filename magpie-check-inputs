@@ -199,6 +199,7 @@ fi
 
 __Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 
@@ -238,21 +239,7 @@ then
     __Magpie_check_must_be_set_and_is_executable "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
 fi
 
-if [ "${MAGPIE_STARTUP_TIME}X" == "X" ]
-then
-    magpiestartuptime=${default_startup_time}
-else
-    magpiestartuptime=${MAGPIE_STARTUP_TIME}
-fi
-
-if [ "${MAGPIE_SHUTDOWN_TIME}X" == "X" ]
-then
-    magpieshutdowntime=${default_shutdown_time}
-else
-    magpieshutdowntime=${MAGPIE_SHUTDOWN_TIME}
-fi
-
-magpiestartupshutdowntime=`expr ${magpiestartuptime} + ${magpieshutdowntime}`
+magpiestartupshutdowntime=`expr ${magpie_startup_time_value} + ${magpie_shutdown_time_value}`
 
 if [ ${MAGPIE_TIMELIMIT_MINUTES} -le ${magpiestartupshutdowntime} ]
 then
@@ -264,7 +251,7 @@ if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then 
     __Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
 
-    if [ ${magpiestartuptime} -lt 5 ]
+    if [ ${magpie_startup_time_value} -lt 5 ]
     then
         echo "MAGPIE_STARTUP_TIME must be >= 5 minutes if MAGPIE_PRE_JOB_RUN is set"
         exit 1
@@ -275,7 +262,7 @@ if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then 
     __Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
     
-    if [ ${magpieshutdowntime} -lt 10 ]
+    if [ ${magpie_shutdown_time_value} -lt 10 ]
     then
         echo "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set"
         exit 1
@@ -789,7 +776,7 @@ then
         exit 1
     fi
 
-    if [ "${magpieshutdowntime}" -lt 20 ]
+    if [ "${magpie_shutdown_time_value}" -lt 20 ]
     then
         echo "Magpie Shutdown Time must be atleast 20 minutes with Hbase"
         exit 1

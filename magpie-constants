@@ -26,6 +26,22 @@
 #
 # This is used by scripts, don't edit this
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
+
+if [ "${MAGPIE_STARTUP_TIME}X" != "X" ]
+then
+    magpie_startup_time_value=${MAGPIE_STARTUP_TIME}
+else
+    magpie_startup_time_value=${default_startup_time}
+fi
+
+if [ "${MAGPIE_SHUTDOWN_TIME}X" != "X" ]
+then
+    magpie_shutdown_time_value=${MAGPIE_SHUTDOWN_TIME}
+else
+    magpie_shutdown_time_value=${default_shutdown_time}
+fi
+
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
     if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]

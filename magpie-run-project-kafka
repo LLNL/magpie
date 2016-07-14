@@ -122,7 +122,7 @@ Magpie_run_start_kafka () {
 
         if [ ${KAFKA_MODE} != "setuponly" ]
         then
-            local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
             if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
             then  

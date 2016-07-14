@@ -30,6 +30,7 @@
 # live inside the Magpie system.  They largely require environment
 # variables, functions, etc. to have been setup.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
@@ -170,7 +171,7 @@ Magpie_am_I_a_zookeeper_node () {
 }
 
 Magpie_calculate_stop_timeouts () {
-    local magpieshutdowntimeseconds=`expr ${MAGPIE_SHUTDOWN_TIME} \* 60`
+    local magpieshutdowntimeseconds=`expr ${magpie_shutdown_time_value} \* 60`
 
     if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
     then
