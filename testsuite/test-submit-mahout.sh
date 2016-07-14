@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
+__SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
     local mahoutversion=$1
     local hadoopversion=$2
 
@@ -13,7 +13,7 @@ SubmitMahoutStandardTests_ClusterSyntheticcontrol() {
 }
 
 SubmitMahoutStandardTests() {
-    for testfunction in SubmitMahoutStandardTests_ClusterSyntheticcontrol
+    for testfunction in __SubmitMahoutStandardTests_ClusterSyntheticcontrol
     do
         for testgroup in ${mahout_test_groups}
         do
@@ -26,7 +26,7 @@ SubmitMahoutStandardTests() {
     done
 }
 
-SubmitMahoutDependencyTests_Dependency1() {
+__SubmitMahoutDependencyTests_Dependency1() {
     local mahoutversion=$1
     local hadoopversion=$2
 
@@ -38,7 +38,7 @@ SubmitMahoutDependencyTests_Dependency1() {
 }
 
 SubmitMahoutDependencyTests() {
-    for testfunction in SubmitMahoutDependencyTests_Dependency1
+    for testfunction in __SubmitMahoutDependencyTests_Dependency1
     do
         for testgroup in ${mahout_test_groups}
         do

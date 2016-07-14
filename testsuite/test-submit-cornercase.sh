@@ -2,7 +2,7 @@
 
 source test-config.sh
 
-SubmitCornerCaseTests_CatchProjectDependencies() {
+__SubmitCornerCaseTests_CatchProjectDependencies() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-catchprojectdependency-hadoop
@@ -15,7 +15,7 @@ SubmitCornerCaseTests_CatchProjectDependencies() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-catchprojectdependency-zookeeper
 }
 
-SubmitCornerCaseTests_NoSetJava() {
+__SubmitCornerCaseTests_NoSetJava() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetjava
@@ -27,7 +27,7 @@ SubmitCornerCaseTests_NoSetJava() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetjava
 }
 
-SubmitCornerCaseTests_BadSetJava() {
+__SubmitCornerCaseTests_BadSetJava() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badsetjava
@@ -39,7 +39,7 @@ SubmitCornerCaseTests_BadSetJava() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsetjava
 }
 
-SubmitCornerCaseTests_NoSetVersion() {
+__SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetversion
@@ -51,7 +51,7 @@ SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetversion
 }
 
-SubmitCornerCaseTests_NoSetHome() {
+__SubmitCornerCaseTests_NoSetHome() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosethome
@@ -63,7 +63,7 @@ SubmitCornerCaseTests_NoSetHome() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosethome
 }
 
-SubmitCornerCaseTests_BadSetHome() {
+__SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badsethome
@@ -75,7 +75,7 @@ SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsethome
 }
 
-SubmitCornerCaseTests_NoSetScript() {
+__SubmitCornerCaseTests_NoSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetscript
@@ -88,7 +88,7 @@ SubmitCornerCaseTests_NoSetScript() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetscript
 }
 
-SubmitCornerCaseTests_BadSetScript() {
+__SubmitCornerCaseTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
@@ -101,7 +101,7 @@ SubmitCornerCaseTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsetscript
 }
 
-SubmitCornerCaseTests_BadJobTime() {
+__SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime
@@ -113,7 +113,7 @@ SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badjobtime
 }
 
-SubmitCornerCaseTests_BadStartupTime() {
+__SubmitCornerCaseTests_BadStartupTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badstartuptime
@@ -125,7 +125,7 @@ SubmitCornerCaseTests_BadStartupTime() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badstartuptime
 }
 
-SubmitCornerCaseTests_BadShutdownTime() {
+__SubmitCornerCaseTests_BadShutdownTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badshutdowntime
@@ -137,7 +137,7 @@ SubmitCornerCaseTests_BadShutdownTime() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badshutdowntime
 }
 
-SubmitCornerCaseTests_BadNodeCount() {
+__SubmitCornerCaseTests_BadNodeCount() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badnodecount-small
@@ -152,7 +152,7 @@ SubmitCornerCaseTests_BadNodeCount() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badnodecount-big
 }
 
-SubmitCornerCaseTests_NoCoreSettings() {
+__SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-nocoresettings-1
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-nocoresettings-2
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nocoresettings-1
@@ -169,7 +169,7 @@ SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
 }
 
-SubmitCornerCaseTests_BadCoreSettings() {
+__SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badcoresettings-1
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badcoresettings-2
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcoresettings-1
@@ -186,7 +186,7 @@ SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
 }
 
-SubmitCornerCaseTests_RequireHDFS() {
+__SubmitCornerCaseTests_RequireHDFS() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-1
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-2
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requirehdfs
@@ -195,7 +195,7 @@ SubmitCornerCaseTests_RequireHDFS() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 }
 
-SubmitCornerCaseTests_RequireYarn() {
+__SubmitCornerCaseTests_RequireYarn() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requireyarn
@@ -204,7 +204,7 @@ SubmitCornerCaseTests_RequireYarn() {
 }
 
 SubmitCornerCaseTests() {
-    SubmitCornerCaseTests_CatchProjectDependencies
+    __SubmitCornerCaseTests_CatchProjectDependencies
 
     # Special
     javasave=${JAVA_HOME}
@@ -212,28 +212,28 @@ SubmitCornerCaseTests() {
     then
         unset JAVA_HOME
     fi
-    SubmitCornerCaseTests_NoSetJava
+    __SubmitCornerCaseTests_NoSetJava
     if [ "${javasave}X" != "X" ]
     then
         export JAVA_HOME="${javasave}"
     fi
 
-    SubmitCornerCaseTests_BadSetJava
-    SubmitCornerCaseTests_NoSetVersion
-    SubmitCornerCaseTests_NoSetHome
-    SubmitCornerCaseTests_BadSetHome
-    SubmitCornerCaseTests_NoSetScript
-    SubmitCornerCaseTests_BadSetScript
+    __SubmitCornerCaseTests_BadSetJava
+    __SubmitCornerCaseTests_NoSetVersion
+    __SubmitCornerCaseTests_NoSetHome
+    __SubmitCornerCaseTests_BadSetHome
+    __SubmitCornerCaseTests_NoSetScript
+    __SubmitCornerCaseTests_BadSetScript
 
-    SubmitCornerCaseTests_BadJobTime
-    SubmitCornerCaseTests_BadStartupTime
-    SubmitCornerCaseTests_BadShutdownTime
+    __SubmitCornerCaseTests_BadJobTime
+    __SubmitCornerCaseTests_BadStartupTime
+    __SubmitCornerCaseTests_BadShutdownTime
 
-    SubmitCornerCaseTests_BadNodeCount
+    __SubmitCornerCaseTests_BadNodeCount
 
-    SubmitCornerCaseTests_NoCoreSettings
-    SubmitCornerCaseTests_BadCoreSettings
+    __SubmitCornerCaseTests_NoCoreSettings
+    __SubmitCornerCaseTests_BadCoreSettings
 
-    SubmitCornerCaseTests_RequireHDFS
-    SubmitCornerCaseTests_RequireYarn
+    __SubmitCornerCaseTests_RequireHDFS
+    __SubmitCornerCaseTests_RequireYarn
 }

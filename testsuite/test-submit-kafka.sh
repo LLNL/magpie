@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitKafkaStandardTests_KafkaPerformance() {
+__SubmitKafkaStandardTests_KafkaPerformance() {
     local kafkaversion=$1
     local zookeeperversion=$2
 
@@ -19,7 +19,7 @@ SubmitKafkaStandardTests_KafkaPerformance() {
 }
 
 SubmitKafkaStandardTests() {
-    for testfunction in SubmitKafkaStandardTests_KafkaPerformance
+    for testfunction in __SubmitKafkaStandardTests_KafkaPerformance
     do
         for testgroup in ${kafka_test_groups}
         do
@@ -32,7 +32,7 @@ SubmitKafkaStandardTests() {
     done
 }
 
-SubmitKafkaDependencyTests_Dependency1() {
+__SubmitKafkaDependencyTests_Dependency1() {
     local kafkaversion=$1
     local zookeeperversion=$2
 
@@ -41,7 +41,7 @@ SubmitKafkaDependencyTests_Dependency1() {
 }
 
 SubmitKafkaDependencyTests() {
-    for testfunction in SubmitKafkaDependencyTests_Dependency1
+    for testfunction in __SubmitKafkaDependencyTests_Dependency1
     do
         for testgroup in ${kafka_test_groups}
         do

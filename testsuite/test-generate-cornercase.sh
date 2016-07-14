@@ -3,7 +3,7 @@
 source test-generate-common.sh
 source test-config.sh
 
-GenerateCornerCaseTests_CatchProjectDependencies() {
+__GenerateCornerCaseTests_CatchProjectDependencies() {
     if [ "${pigtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-cornercase-catchprojectdependency-hadoop
         sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hadoop-and-pig-cornercase-catchprojectdependency-hadoop
@@ -74,7 +74,7 @@ GenerateCornerCaseTests_CatchProjectDependencies() {
     fi
 }
 
-GenerateCornerCaseTests_NoSetJava() {
+__GenerateCornerCaseTests_NoSetJava() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nosetjava
     fi
@@ -113,7 +113,7 @@ GenerateCornerCaseTests_NoSetJava() {
     fi
 }
 
-GenerateCornerCaseTests_BadSetJava() {
+__GenerateCornerCaseTests_BadSetJava() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badsetjava
     fi
@@ -152,7 +152,7 @@ GenerateCornerCaseTests_BadSetJava() {
     fi
 }
             
-GenerateCornerCaseTests_NoSetVersion() {
+__GenerateCornerCaseTests_NoSetVersion() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nosetversion
         sed -i -e 's/export HADOOP_VERSION/# export HADOOP_VERSION/' magpie.${submissiontype}-hadoop-cornercase-nosetversion
@@ -200,7 +200,7 @@ GenerateCornerCaseTests_NoSetVersion() {
     fi
 }
 
-GenerateCornerCaseTests_NoSetHome() {
+__GenerateCornerCaseTests_NoSetHome() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nosethome
         sed -i -e 's/export HADOOP_HOME/# export HADOOP_HOME/' magpie.${submissiontype}-hadoop-cornercase-nosethome
@@ -248,7 +248,7 @@ GenerateCornerCaseTests_NoSetHome() {
     fi
 }
 
-GenerateCornerCaseTests_BadSetHome() {
+__GenerateCornerCaseTests_BadSetHome() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badsethome
         sed -i -e 's/export HADOOP_HOME="\(.*\)"/export HADOOP_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-cornercase-badsethome
@@ -296,7 +296,7 @@ GenerateCornerCaseTests_BadSetHome() {
     fi
 }
 
-GenerateCornerCaseTests_NoSetScript() {
+__GenerateCornerCaseTests_NoSetScript() {
     if [ "${magpietests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nosetscript
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-cornercase-nosetscript
@@ -349,7 +349,7 @@ GenerateCornerCaseTests_NoSetScript() {
     fi
 }
 
-GenerateCornerCaseTests_BadSetScript() {
+__GenerateCornerCaseTests_BadSetScript() {
     if [ "${magpietests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-cornercase-badsetscript
@@ -413,7 +413,7 @@ GenerateCornerCaseTests_BadSetScript() {
     fi
 }
 
-GenerateCornerCaseTests_BadJobTime() {
+__GenerateCornerCaseTests_BadJobTime() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badjobtime
     fi
@@ -455,7 +455,7 @@ GenerateCornerCaseTests_BadJobTime() {
     fi
 }
 
-GenerateCornerCaseTests_BadStartupTime() {
+__GenerateCornerCaseTests_BadStartupTime() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badstartuptime
     fi
@@ -495,7 +495,7 @@ GenerateCornerCaseTests_BadStartupTime() {
     fi
 }
 
-GenerateCornerCaseTests_BadShutdownTime() {
+__GenerateCornerCaseTests_BadShutdownTime() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badshutdowntime
     fi
@@ -534,7 +534,7 @@ GenerateCornerCaseTests_BadShutdownTime() {
     fi
 }
 
-GenerateCornerCaseTests_BadNodeCount() {
+__GenerateCornerCaseTests_BadNodeCount() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badnodecount-small
     fi
@@ -584,7 +584,7 @@ GenerateCornerCaseTests_BadNodeCount() {
     fi
 }
 
-GenerateCornerCaseTests_NoCoreSettings() {
+__GenerateCornerCaseTests_NoCoreSettings() {
     if [ "${magpietests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nocoresettings-1
         sed -i -e 's/export MAGPIE_SUBMISSION_TYPE/# export MAGPIE_SUBMISSION_TYPE/' magpie.${submissiontype}-magpie-cornercase-nocoresettings-1
@@ -651,7 +651,7 @@ GenerateCornerCaseTests_NoCoreSettings() {
     fi
 }
 
-GenerateCornerCaseTests_BadCoreSettings() {
+__GenerateCornerCaseTests_BadCoreSettings() {
     if [ "${magpietests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badcoresettings-1
         sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="foobar"/' magpie.${submissiontype}-magpie-cornercase-badcoresettings-1
@@ -718,7 +718,7 @@ GenerateCornerCaseTests_BadCoreSettings() {
     fi
 }
 
-GenerateCornerCaseTests_RequireHDFS() {
+__GenerateCornerCaseTests_RequireHDFS() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-requirehdfs-1
         sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' magpie.${submissiontype}-hadoop-cornercase-requirehdfs-1
@@ -775,7 +775,7 @@ GenerateCornerCaseTests_RequireHDFS() {
     fi
 }
 
-GenerateCornerCaseTests_RequireYarn() {
+__GenerateCornerCaseTests_RequireYarn() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-requireyarn
         sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="HDFS2"/' magpie.${submissiontype}-hadoop-cornercase-requireyarn
@@ -822,28 +822,28 @@ GenerateCornerCaseTests() {
     
     echo "Making Corner Case Tests"
 
-    GenerateCornerCaseTests_CatchProjectDependencies
+    __GenerateCornerCaseTests_CatchProjectDependencies
 
-    GenerateCornerCaseTests_NoSetJava
-    GenerateCornerCaseTests_BadSetJava
+    __GenerateCornerCaseTests_NoSetJava
+    __GenerateCornerCaseTests_BadSetJava
 
-    GenerateCornerCaseTests_NoSetVersion
+    __GenerateCornerCaseTests_NoSetVersion
 
-    GenerateCornerCaseTests_NoSetHome
-    GenerateCornerCaseTests_BadSetHome
+    __GenerateCornerCaseTests_NoSetHome
+    __GenerateCornerCaseTests_BadSetHome
     
-    GenerateCornerCaseTests_NoSetScript
-    GenerateCornerCaseTests_BadSetScript
+    __GenerateCornerCaseTests_NoSetScript
+    __GenerateCornerCaseTests_BadSetScript
 
-    GenerateCornerCaseTests_BadJobTime
-    GenerateCornerCaseTests_BadStartupTime
-    GenerateCornerCaseTests_BadShutdownTime
+    __GenerateCornerCaseTests_BadJobTime
+    __GenerateCornerCaseTests_BadStartupTime
+    __GenerateCornerCaseTests_BadShutdownTime
 
-    GenerateCornerCaseTests_BadNodeCount
+    __GenerateCornerCaseTests_BadNodeCount
 
-    GenerateCornerCaseTests_NoCoreSettings
-    GenerateCornerCaseTests_BadCoreSettings
+    __GenerateCornerCaseTests_NoCoreSettings
+    __GenerateCornerCaseTests_BadCoreSettings
 
-    GenerateCornerCaseTests_RequireHDFS
-    GenerateCornerCaseTests_RequireYarn
+    __GenerateCornerCaseTests_RequireHDFS
+    __GenerateCornerCaseTests_RequireYarn
 }

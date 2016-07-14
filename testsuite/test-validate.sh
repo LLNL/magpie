@@ -30,7 +30,7 @@ then
     outputprefix="slurm"
 fi
 
-test_yarn_shutdown () {
+__test_yarn_shutdown () {
     local file=$1
     num=`grep -e "stopping yarn daemons" $file | wc -l`
     if [ "${num}" != "1" ]; then
@@ -57,7 +57,7 @@ test_yarn_shutdown () {
     fi
 }
 
-test_hdfs_shutdown () {
+__test_hdfs_shutdown () {
     local file=$1
     num=`grep -e "stopping namenode" $file | wc -l`
     if [ "${num}" != "1" ]; then
@@ -84,15 +84,15 @@ test_hdfs_shutdown () {
     fi
 }
 
-test_hadoop_shutdown () {
+__test_hadoop_shutdown () {
     local file=$1
 
-    test_yarn_shutdown $file
+    __test_yarn_shutdown $file
 
-    test_hdfs_shutdown $file
+    __test_hdfs_shutdown $file
 }
 
-test_no_hdfs_shutdown () {
+__test_no_hdfs_shutdown () {
     local file=$1
     num=`grep -e "stopping namenode" $file | wc -l`
     if [ "${num}" != "0" ]; then
@@ -110,7 +110,7 @@ test_no_hdfs_shutdown () {
     fi
 }
 
-test_spark_shutdown () {
+__test_spark_shutdown () {
     local file=$1
 
     num=`grep -e "stopping org.apache.spark.deploy.master.Master" $file | wc -l`
@@ -130,7 +130,7 @@ test_spark_shutdown () {
     fi
 }
 
-test_kafka_shutdown () {
+__test_kafka_shutdown () {
     local file=$1
 
     numcompare=`grep 'Kafka Servers are up.' $file | tail -1 | awk -F "/" '{ print $1 }'`
@@ -141,7 +141,7 @@ test_kafka_shutdown () {
     fi
 }
 
-test_zookeeper_shutdown () {
+__test_zookeeper_shutdown () {
     local file=$1
     
     num=`grep -e "Stopping zookeeper ... STOPPED" $file | wc -l`
@@ -150,7 +150,7 @@ test_zookeeper_shutdown () {
     fi
 }
 
-test_output_finalize () {
+__test_output_finalize () {
     local file=$1
 
     num=`grep -e "Magpie Internal" $file | wc -l`
@@ -184,7 +184,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -198,7 +198,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -218,7 +218,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -242,7 +242,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -257,7 +257,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -272,7 +272,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -288,7 +288,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -303,7 +303,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -318,7 +318,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -333,7 +333,7 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -353,11 +353,11 @@ then
             echo "Error in $file"
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
-check_exports_magpie () {
+__check_exports_magpie () {
     local file=$1
 
     num=`grep -E "MAGPIE_CLUSTER_NODERANK=[0-9]+" ${file} | wc -l`
@@ -397,7 +397,7 @@ check_exports_magpie () {
     fi
 }
 
-check_exports_project_confdir () {
+__check_exports_project_confdir () {
     local file=$1
     local project=$2
 
@@ -408,7 +408,7 @@ check_exports_project_confdir () {
     fi
 }
 
-check_exports_project_logdir () {
+__check_exports_project_logdir () {
     local file=$1
     local project=$2
 
@@ -419,18 +419,18 @@ check_exports_project_logdir () {
     fi
 }
 
-check_exports_project_base () {
+__check_exports_project_base () {
     local file=$1
     local project=$2
 
-    check_exports_project_confdir ${file} ${project}
-    check_exports_project_logdir ${file} ${project}
+    __check_exports_project_confdir ${file} ${project}
+    __check_exports_project_logdir ${file} ${project}
 }
 
-check_exports_hadoop () {
+__check_exports_hadoop () {
     local file=$1
 
-    check_exports_project_base ${file} "HADOOP"
+    __check_exports_project_base ${file} "HADOOP"
     
     num=`grep -E "HADOOP_MASTER_NODE=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
@@ -466,17 +466,17 @@ check_exports_hadoop () {
     fi
 }
 
-check_exports_pig () {
+__check_exports_pig () {
     local file=$1
 
     # Pig is only conf dir, no log dir
-    check_exports_project_confdir ${file} "PIG"
+    __check_exports_project_confdir ${file} "PIG"
 }
 
-check_exports_hbase () {
+__check_exports_hbase () {
     local file=$1
 
-    check_exports_project_base ${file} "HBASE"
+    __check_exports_project_base ${file} "HBASE"
     
     num=`grep -E "HBASE_MASTER_NODE=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
@@ -491,16 +491,16 @@ check_exports_hbase () {
     fi
 }
 
-check_exports_phoenix () {
+__check_exports_phoenix () {
     local file=$1
 
-    check_exports_project_base ${file} "PHOENIX"
+    __check_exports_project_base ${file} "PHOENIX"
 }
 
-check_exports_spark () {
+__check_exports_spark () {
     local file=$1
 
-    check_exports_project_base ${file} "SPARK"
+    __check_exports_project_base ${file} "SPARK"
 
     num=`grep -E "SPARK_MASTER_NODE=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
@@ -530,10 +530,10 @@ check_exports_spark () {
     fi
 }
 
-check_exports_storm () {
+__check_exports_storm () {
     local file=$1
 
-    check_exports_project_base ${file} "STORM"
+    __check_exports_project_base ${file} "STORM"
 
     num=`grep -E "STORM_MASTER_NODE=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
@@ -554,10 +554,10 @@ check_exports_storm () {
     fi
 }
 
-check_exports_zookeeper () {
+__check_exports_zookeeper () {
     local file=$1
 
-    check_exports_project_base ${file} "ZOOKEEPER"
+    __check_exports_project_base ${file} "ZOOKEEPER"
 
     num=`grep -E "ZOOKEEPER_NODES=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
@@ -583,16 +583,16 @@ if [ -n "${files}" ]
 then
     for file in ${files}
     do
-        check_exports_magpie ${file}
+        __check_exports_magpie ${file}
 
         if echo ${file} | grep -q "hadoop"
         then
-            check_exports_hadoop ${file}
+            __check_exports_hadoop ${file}
         fi
 
         if echo ${file} | grep -q "pig"
         then
-            check_exports_pig ${file}
+            __check_exports_pig ${file}
         fi
         
         if echo ${file} | grep -q "mahout"
@@ -603,30 +603,30 @@ then
 
         if echo ${file} | grep -q "hbase"
         then
-            check_exports_hbase ${file}
+            __check_exports_hbase ${file}
         fi
 
         if echo ${file} | grep -q "phoenix"
         then
-            check_exports_phoenix ${file}
+            __check_exports_phoenix ${file}
         fi
 
         if echo ${file} | grep -q "spark"
         then
-            check_exports_spark ${file}
+            __check_exports_spark ${file}
         fi
 
         if echo ${file} | grep -q "storm"
         then
-            check_exports_storm ${file}
+            __check_exports_storm ${file}
         fi
 
         if echo ${file} | grep -q "zookeeper"
         then
-            check_exports_zookeeper ${file}
+            __check_exports_zookeeper ${file}
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -647,9 +647,9 @@ then
             fi
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -663,9 +663,9 @@ then
             echo "Error in $file"
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -679,9 +679,9 @@ then
             echo "Error in $file"
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -695,9 +695,9 @@ then
             echo "Error in $file"
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -711,9 +711,9 @@ then
             echo "Error in $file"
         fi
         
-        test_no_hdfs_shutdown $file
+        __test_no_hdfs_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -727,9 +727,9 @@ then
             echo "Error in $file"
         fi
         
-        test_no_hdfs_shutdown $file
+        __test_no_hdfs_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -743,9 +743,9 @@ then
             echo "Error in $file"
         fi
         
-        test_no_hdfs_shutdown $file
+        __test_no_hdfs_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -760,9 +760,9 @@ then
         fi
         
         # On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
-        test_hdfs_shutdown $file
+        __test_hdfs_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -784,9 +784,9 @@ then
             echo "Error in $file"
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -803,9 +803,9 @@ then
             echo "Error in $file"
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -819,9 +819,9 @@ then
             echo "Error in $file"
         fi
         
-        test_hadoop_shutdown $file
+        __test_hadoop_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -835,10 +835,10 @@ then
             echo "Error in $file"
         fi
         
-        test_hdfs_shutdown $file
-        test_zookeeper_shutdown $file
+        __test_hdfs_shutdown $file
+        __test_zookeeper_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -852,10 +852,10 @@ then
             echo "Error in $file"
         fi
         
-        test_hdfs_shutdown $file
-        test_zookeeper_shutdown $file
+        __test_hdfs_shutdown $file
+        __test_zookeeper_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -869,10 +869,10 @@ then
             echo "Error in $file"
         fi
         
-        test_hdfs_shutdown $file
-        test_zookeeper_shutdown $file
+        __test_hdfs_shutdown $file
+        __test_zookeeper_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -886,10 +886,10 @@ then
             echo "Error in $file"
         fi
         
-        test_hdfs_shutdown $file
-        test_zookeeper_shutdown $file
+        __test_hdfs_shutdown $file
+        __test_zookeeper_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -905,12 +905,12 @@ then
         
         if echo ${file} | grep -q "usingyarn"
         then
-            test_yarn_shutdown $file
+            __test_yarn_shutdown $file
         else
-            test_spark_shutdown $file
+            __test_spark_shutdown $file
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -935,17 +935,17 @@ then
         
         if echo ${file} | grep -q "usingyarn"
         then
-            test_yarn_shutdown $file
+            __test_yarn_shutdown $file
         else
-            test_spark_shutdown $file
+            __test_spark_shutdown $file
         fi
 
         if ! echo ${file} | grep -q "rawnetworkfs"
         then
-            test_hdfs_shutdown $file
+            __test_hdfs_shutdown $file
         fi
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -959,9 +959,9 @@ then
             echo "Error in $file"
         fi
         
-        test_kafka_shutdown $file
+        __test_kafka_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -1002,9 +1002,9 @@ then
             echo "Storm logviewer shutdown error in $file"
         fi
 
-        test_zookeeper_shutdown $file
+        __test_zookeeper_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi
 
@@ -1018,8 +1018,8 @@ then
             echo "Error in $file"
         fi
         
-        test_zookeeper_shutdown $file
+        __test_zookeeper_shutdown $file
 
-        test_output_finalize $file
+        __test_output_finalize $file
     done
 fi

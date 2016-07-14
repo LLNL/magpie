@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitPigStandardTests_Common() {
+__SubmitPigStandardTests_Common() {
     local pigversion=$1
     local hadoopversion=$2
 
@@ -15,7 +15,7 @@ SubmitPigStandardTests_Common() {
 }
 
 SubmitPigStandardTests() {
-    for testfunction in SubmitPigStandardTests_Common
+    for testfunction in __SubmitPigStandardTests_Common
     do
         for testgroup in ${pig_test_groups}
         do
@@ -28,7 +28,7 @@ SubmitPigStandardTests() {
     done
 }
 
-SubmitPigDependencyTests_Dependency1() {
+__SubmitPigDependencyTests_Dependency1() {
     local pigversion=$1
     local hadoopversion=$2
 
@@ -44,7 +44,7 @@ SubmitPigDependencyTests_Dependency1() {
 }
 
 SubmitPigDependencyTests() {
-    for testfunction in SubmitPigDependencyTests_Dependency1
+    for testfunction in __SubmitPigDependencyTests_Dependency1
     do
         for testgroup in ${pig_test_groups}
         do

@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateSparkStandardTests_BasicTests() {
+__GenerateSparkStandardTests_BasicTests() {
     local sparkversion=$1
     local javaversion=$2
     local makenolocaldirtests=$3
@@ -21,7 +21,7 @@ GenerateSparkStandardTests_BasicTests() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-${sparkversion}*`
 }
 
-GenerateSparkStandardTests_WordCount() {
+__GenerateSparkStandardTests_WordCount() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -120,7 +120,7 @@ GenerateSparkStandardTests_WordCount() {
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*`
 }
 
-GenerateSparkStandardTests_YarnTests() {
+__GenerateSparkStandardTests_YarnTests() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -143,7 +143,7 @@ GenerateSparkStandardTests_YarnTests() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkpi*`
 }
 
-GenerateSparkStandardTests_YarnWordCount() {
+__GenerateSparkStandardTests_YarnWordCount() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -252,7 +252,7 @@ GenerateSparkStandardTests() {
 
     echo "Making Spark Standard Tests"
 
-    for testfunction in GenerateSparkStandardTests_BasicTests
+    for testfunction in __GenerateSparkStandardTests_BasicTests
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -273,7 +273,7 @@ GenerateSparkStandardTests() {
         done
     done
 
-    for testfunction in GenerateSparkStandardTests_WordCount
+    for testfunction in __GenerateSparkStandardTests_WordCount
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -298,7 +298,7 @@ GenerateSparkStandardTests() {
         done
     done
 
-    for testfunction in GenerateSparkStandardTests_YarnTests GenerateSparkStandardTests_YarnWordCount
+    for testfunction in __GenerateSparkStandardTests_YarnTests __GenerateSparkStandardTests_YarnWordCount
     do
         for testgroup in ${spark_test_groups_after_1X}
         do
@@ -313,7 +313,7 @@ GenerateSparkStandardTests() {
     done
 }
 
-GenerateSparkDependencyTests_Dependency1HDFS() {
+__GenerateSparkDependencyTests_Dependency1HDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -380,7 +380,7 @@ GenerateSparkDependencyTests_Dependency1HDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency2HDFS() {
+__GenerateSparkDependencyTests_Dependency2HDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -447,7 +447,7 @@ GenerateSparkDependencyTests_Dependency2HDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency3YarnHDFS() {
+__GenerateSparkDependencyTests_Dependency3YarnHDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -505,7 +505,7 @@ GenerateSparkDependencyTests_Dependency3YarnHDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency4YarnHDFS() {
+__GenerateSparkDependencyTests_Dependency4YarnHDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -563,7 +563,7 @@ GenerateSparkDependencyTests_Dependency4YarnHDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency5rawnetworkfs() {
+__GenerateSparkDependencyTests_Dependency5rawnetworkfs() {
     local sparkversion=$1
     local javaversion=$2
 
@@ -588,7 +588,7 @@ GenerateSparkDependencyTests_Dependency5rawnetworkfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
+__GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
     local sparkversion=$1
     local javaversion=$2
 
@@ -613,7 +613,7 @@ GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
+__GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -643,7 +643,7 @@ GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 }
 
-GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
+__GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -682,7 +682,7 @@ GenerateSparkDependencyTests() {
 # Dependency 1 Tests, run after another, HDFS over Lustre/Networkfs
 # Dependency 2 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs
 
-    for testfunction in GenerateSparkDependencyTests_Dependency1HDFS GenerateSparkDependencyTests_Dependency2HDFS
+    for testfunction in __GenerateSparkDependencyTests_Dependency1HDFS __GenerateSparkDependencyTests_Dependency2HDFS
     do
 # No decommissionhdfsnodes for Hadoop 2.2.0
         for testgroup in ${spark_test_groups_before_1X}
@@ -711,7 +711,7 @@ GenerateSparkDependencyTests() {
 # Dependency 3 Tests, run after another, HDFS over Lustre/Networkfs w/ Yarn 
 # Dependency 4 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs w/ Yarn
 
-    for testfunction in GenerateSparkDependencyTests_Dependency3YarnHDFS GenerateSparkDependencyTests_Dependency4YarnHDFS
+    for testfunction in __GenerateSparkDependencyTests_Dependency3YarnHDFS __GenerateSparkDependencyTests_Dependency4YarnHDFS
     do
         for testgroup in ${spark_test_groups_after_1X}
         do
@@ -728,7 +728,7 @@ GenerateSparkDependencyTests() {
 # Dependency 5 Tests, run after another, rawnetworkfs
 # Dependency 6 Tests, run after another, start with more nodes, rawnetworkfs
 
-    for testfunction in GenerateSparkDependencyTests_Dependency5rawnetworkfs GenerateSparkDependencyTests_Dependency6rawnetworkfs
+    for testfunction in __GenerateSparkDependencyTests_Dependency5rawnetworkfs __GenerateSparkDependencyTests_Dependency6rawnetworkfs
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -752,7 +752,7 @@ GenerateSparkDependencyTests() {
 # Dependency 7 Tests, run after another, rawnetworkfs w/ Yarn
 # Dependency 8 Tests, run after another, start with more nodes, rawnetworkfs w/ Yarn
 
-    for testfunction in GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs
+    for testfunction in __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs
     do
         for testgroup in ${spark_test_groups_after_1X}
         do

@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitStormStandardTests_StandardWordCount() {
+__SubmitStormStandardTests_StandardWordCount() {
     local stormversion=$1
     local zookeeperversion=$2
 
@@ -19,7 +19,7 @@ SubmitStormStandardTests_StandardWordCount() {
 }
 
 SubmitStormStandardTests() {
-    for testfunction in SubmitStormStandardTests_StandardWordCount
+    for testfunction in __SubmitStormStandardTests_StandardWordCount
     do
         for testgroup in ${storm_test_groups}
         do
@@ -32,7 +32,7 @@ SubmitStormStandardTests() {
     done
 }
 
-SubmitStormDependencyTests_Dependency1() {
+__SubmitStormDependencyTests_Dependency1() {
     local stormversion=$1
     local zookeeperversion=$2
 
@@ -41,7 +41,7 @@ SubmitStormDependencyTests_Dependency1() {
 }
 
 SubmitStormDependencyTests() {
-    for testfunction in SubmitStormDependencyTests_Dependency1
+    for testfunction in __SubmitStormDependencyTests_Dependency1
     do
         for testgroup in ${storm_test_groups}
         do

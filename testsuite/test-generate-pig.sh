@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GeneratePigStandardTests_Common() {
+__GeneratePigStandardTests_Common() {
     local pigversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -31,7 +31,7 @@ GeneratePigStandardTests() {
 
     echo "Making Pig Standard Tests"
 
-    for testfunction in GeneratePigStandardTests_Common
+    for testfunction in __GeneratePigStandardTests_Common
     do
         for testgroup in ${pig_test_groups}
         do
@@ -46,7 +46,7 @@ GeneratePigStandardTests() {
     done
 }
 
-GeneratePigDependencyTests_Dependency1() {
+__GeneratePigDependencyTests_Dependency1() {
     local pigversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -95,7 +95,7 @@ GeneratePigDependencyTests() {
 
 # Dependency 1 Tests, run after another, HDFS over Lustre / NetworkFS
 
-    for testfunction in GeneratePigDependencyTests_Dependency1
+    for testfunction in __GeneratePigDependencyTests_Dependency1
     do
         for testgroup in ${pig_test_groups}
         do

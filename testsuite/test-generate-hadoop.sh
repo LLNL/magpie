@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateHadoopStandardTests_StandardTerasort() {
+__GenerateHadoopStandardTests_StandardTerasort() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -55,7 +55,7 @@ GenerateHadoopStandardTests() {
 
     echo "Making Hadoop Standard Tests"
 
-    for testfunction in GenerateHadoopStandardTests_StandardTerasort
+    for testfunction in __GenerateHadoopStandardTests_StandardTerasort
     do
         for testgroup in ${hadoop_test_groups}
         do
@@ -68,7 +68,7 @@ GenerateHadoopStandardTests() {
     done
 }
 
-GenerateHadoopDependencyTests_Dependency1() {
+__GenerateHadoopDependencyTests_Dependency1() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -89,7 +89,7 @@ GenerateHadoopDependencyTests_Dependency1() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*`
 }
 
-GenerateHadoopDependencyTests_Dependency2() {
+__GenerateHadoopDependencyTests_Dependency2() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -123,7 +123,7 @@ GenerateHadoopDependencyTests_Dependency2() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*`
 }
 
-GenerateHadoopDependencyTests_Dependency3() {
+__GenerateHadoopDependencyTests_Dependency3() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -169,7 +169,7 @@ GenerateHadoopDependencyTests_Dependency3() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*`
 }
 
-GenerateHadoopDependencyTests_Dependency4() {
+__GenerateHadoopDependencyTests_Dependency4() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -213,7 +213,7 @@ GenerateHadoopDependencyTests_Dependency4() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*`
 }
 
-GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
+__GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
     local hadoopversionold=$1
     local hadoopversionnew=$2
     local javaversionold=$3
@@ -271,7 +271,7 @@ GenerateHadoopDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for testfunction in GenerateHadoopDependencyTests_Dependency1
+    for testfunction in __GenerateHadoopDependencyTests_Dependency1
     do
         for testgroup in ${hadoop_test_groups}
         do
@@ -287,7 +287,7 @@ GenerateHadoopDependencyTests() {
 # Dependency 3 test, ensure data exists between runs, including increase node size and decrease node size
 # Dependency 4 test, ensure data exists between runs, decommission data filled blocks
 
-    for testfunction in GenerateHadoopDependencyTests_Dependency2 GenerateHadoopDependencyTests_Dependency3 GenerateHadoopDependencyTests_Dependency4
+    for testfunction in __GenerateHadoopDependencyTests_Dependency2 __GenerateHadoopDependencyTests_Dependency3 __GenerateHadoopDependencyTests_Dependency4
     do
         for testgroup in ${hadoop_test_groups_decommission}
         do
@@ -388,23 +388,23 @@ GenerateHadoopDependencyTests() {
 
 # Dependency 6 test, detect newer hdfs version 2.3.0 from 2.2.0, HDFS over Lustre / NetworkFS
 
-    GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" ${java16} ${java16} "6A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" ${java16} ${java16} "6A"
 
 # Dependency 7 test, detect newer hdfs version 2.4.0 from 2.3.0, HDFS over Lustre / NetworkFS
 
-    GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" ${java16} ${java16} "7A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" ${java16} ${java16} "7A"
 
 # Dependency 8 test, detect newer hdfs version 2.5.0 from 2.4.0, HDFS over Lustre / NetworkFS
 
-    GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "8A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "8A"
 
 # Dependency 9 test, detect newer hdfs version 2.6.0 from 2.5.0, HDFS over Lustre / NetworkFS
 
-    GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java16} "9A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java16} "9A"
 
 # Dependency 10 test, detect newer hdfs version 2.7.0 from 2.6.0 HDFS over Lustre / NetworkFS
 
-    GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "10A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "10A"
 }
 
 GenerateHadoopPostProcessing() {

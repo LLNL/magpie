@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateZookeeperStandardTests_RUOK() {
+__GenerateZookeeperStandardTests_RUOK() {
     local zookeeperversion=$1
     local javaversion=$2
 
@@ -37,7 +37,7 @@ GenerateZookeeperStandardTests() {
     
     echo "Making Zookeeper Standard Tests"
 
-    for testfunction in GenerateZookeeperStandardTests_RUOK
+    for testfunction in __GenerateZookeeperStandardTests_RUOK
     do
         for testgroup in ${zookeeper_test_groups}
         do

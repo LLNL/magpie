@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateStormStandardTests_StandardWordCount() {
+__GenerateStormStandardTests_StandardWordCount() {
     local stormversion=$1
     local zookeeperversion=$2
     local javaversion=$3
@@ -42,7 +42,7 @@ GenerateStormStandardTests() {
 
     echo "Making Storm Standard Tests"
 
-    for testfunction in GenerateStormStandardTests_StandardWordCount
+    for testfunction in __GenerateStormStandardTests_StandardWordCount
     do
         for testgroup in ${storm_test_groups}
         do
@@ -57,7 +57,7 @@ GenerateStormStandardTests() {
     done
 }
 
-GenerateStormDependencyTests_Dependency1() {
+__GenerateStormDependencyTests_Dependency1() {
     local stormversion=$1
     local zookeeperversion=$2
     local javaversion=$3
@@ -82,7 +82,7 @@ GenerateStormDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for testfunction in GenerateStormDependencyTests_Dependency1
+    for testfunction in __GenerateStormDependencyTests_Dependency1
     do
         for testgroup in ${storm_test_groups}
         do

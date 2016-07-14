@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitHbaseStandardTests_StandardPerformanceEval() {
+__SubmitHbaseStandardTests_StandardPerformanceEval() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -46,7 +46,7 @@ SubmitHbaseStandardTests_StandardPerformanceEval() {
 }
 
 SubmitHbaseStandardTests() {
-    for testfunction in SubmitHbaseStandardTests_StandardPerformanceEval
+    for testfunction in __SubmitHbaseStandardTests_StandardPerformanceEval
     do
         for testgroup in ${hbase_test_groups}
         do
@@ -60,7 +60,7 @@ SubmitHbaseStandardTests() {
     done
 }
 
-SubmitHbaseDependencyTests_Dependency1() {
+__SubmitHbaseDependencyTests_Dependency1() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -72,7 +72,7 @@ SubmitHbaseDependencyTests_Dependency1() {
     DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-hbaseperformanceeval
 }
 
-SubmitHbaseDependencyTests_Dependency2() {
+__SubmitHbaseDependencyTests_Dependency2() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -94,7 +94,7 @@ SubmitHbaseDependencyTests_Dependency2() {
 
 SubmitHbaseDependencyTests() {
     
-    for testfunction in SubmitHbaseDependencyTests_Dependency1 SubmitHbaseDependencyTests_Dependency2
+    for testfunction in __SubmitHbaseDependencyTests_Dependency1 __SubmitHbaseDependencyTests_Dependency2
     do
         for testgroup in ${hbase_test_groups}
         do

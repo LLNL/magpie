@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitZookeeperStandardTests_RUOK() {
+__SubmitZookeeperStandardTests_RUOK() {
     local zookeeperversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-zookeeper-${zookeeperversion}-zookeeper-networkfs-run-zookeeperruok
@@ -14,7 +14,7 @@ SubmitZookeeperStandardTests_RUOK() {
 }
 
 SubmitZookeeperStandardTests() {
-    for testfunction in SubmitZookeeperStandardTests_RUOK
+    for testfunction in __SubmitZookeeperStandardTests_RUOK
     do
         for testgroup in ${zookeeper_test_groups}
         do
