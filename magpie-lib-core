@@ -31,7 +31,7 @@
 # variables, functions, etc. to have been setup.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
 Magpie_am_I_master () {

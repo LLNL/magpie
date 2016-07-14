@@ -25,13 +25,13 @@
 # Export environment variables we promised to export in documentation
 # and various variables needed.
 #
-# Unlke magpie-exports-core, these exports are dependent on the magpie
+# Unlke magpie-exports-dirs, these exports are dependent on the magpie
 # setup.  This should be sourced only after magpie-setup-core has run.
 #
 # This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 

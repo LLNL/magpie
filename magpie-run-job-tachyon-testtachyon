@@ -27,7 +27,7 @@
 # for configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 
 command="${TACHYON_HOME}/${tachyoncmdprefix}/tachyon tfs ls /"
 echo "Running $command" >&2
