@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
@@ -634,7 +635,7 @@ then
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-        sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}"
+        sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${default_tachyon_master_port}"
         sparktachyonstoreurlsubst=`echo "${sparktachyonstoreurl}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 

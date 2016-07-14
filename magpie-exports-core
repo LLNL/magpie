@@ -314,10 +314,7 @@ then
     # TACHYON_LOCAL_SCRATCHSPACE_DIR & TACHYON_CONF_DIR & TACHYON_LOG_DIR set
     Magpie_make_tachyon_local_dirs_node_specific
 
-    export TACHYON_MASTER_PORT="19998"
-    export TACHYON_MASTER_WEB_PORT="19999"
-    export TACHYON_WORKER_PORT="29998"
-    export TACHYON_WORKER_DATA_PORT="29999"
+    # XXX need to set TACHYON_MASTER_PORT
 
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${TACHYON_CONF_DIR}/masters" ]

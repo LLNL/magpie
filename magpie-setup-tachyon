@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
@@ -191,10 +192,10 @@ sed -i \
     -e "s/TACHYONCONFDIR/${tachyonconfdirsubst}/g" \
     -e "s/TACHYONLOGDIR/${tachyonlogdirsubst}/g" \
     -e "s/TACHYONMASTERADDRESS/${TACHYON_MASTER_NODE}/g" \
-    -e "s/TACHYONMASTERPORT/${TACHYON_MASTER_PORT}/g" \
-    -e "s/TACHYONMASTERWEBPORT/${TACHYON_MASTER_WEB_PORT}/g" \
-    -e "s/TACHYONWORKERPORT/${TACHYON_WORKER_PORT}/g" \
-    -e "s/TACHYONWORKERDATAPORT/${TACHYON_WORKER_DATA_PORT}/g" \
+    -e "s/TACHYONMASTERPORT/${default_tachyon_master_port}/g" \
+    -e "s/TACHYONMASTERWEBPORT/${default_tachyon_master_web_port}/g" \
+    -e "s/TACHYONWORKERPORT/${default_tachyon_worker_port}/g" \
+    -e "s/TACHYONWORKERDATAPORT/${default_tachyon_worker_data_port}/g" \
     -e "s/TACHYONHIERARCHYSTORETYPE/${TACHYON_STORE_TYPE}/g" \
     -e "s/TACHYONHIERARCHYSTOREPATHS/${tachyonstorepaths}/g" \
     -e "s/TACHYONHIERARCHYSTOREQUOTA/${tachyonstorequota}/g" \

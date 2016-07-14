@@ -118,3 +118,11 @@ then
 
     default_storm_supervisor_slots_starting_port="6700"
 fi
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    default_tachyon_master_port="19998"
+    default_tachyon_master_web_port="19999"
+    default_tachyon_worker_port="29998"
+    default_tachyon_worker_data_port="29999"
+fi
