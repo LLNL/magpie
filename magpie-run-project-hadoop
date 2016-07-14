@@ -31,7 +31,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
 Magpie_run_start_hadoop () {
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]

@@ -26,7 +26,7 @@
 #
 # Export common magpie exports promised by user documentation.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
 __Magpie_calc_slurm_magpie_timelimit () {
     # Do not excessively call this
