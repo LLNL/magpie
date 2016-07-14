@@ -49,15 +49,15 @@ Magpie_run_start_hadoop () {
             then
                 if Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
-                    # Sets networkedhdfspath & hdfsstoredversionpath
-                    Magpie_get_hdfsstoredversionpath
-                    # Sets networkedhdfspath & hdfsstorednodecountpath
-                    Magpie_get_hdfsstorednodecountpath
+                    # Sets networkedhdfspath & magpie_hdfs_stored_version_path
+                    Magpie_get_hdfs_stored_version_path
+                    # Sets networkedhdfspath & magpie_hdfs_stored_nodecount_path
+                    Magpie_get_hdfs_stored_nodecount_path
 
                     # Older versions of Magpie didn't store this variable
-                    if [ -f ${hdfsstoredversionpath} ]
+                    if [ -f ${magpie_hdfs_stored_version_path} ]
                     then
-                        hdfsstoredversion=`cat ${hdfsstoredversionpath}`
+                        hdfsstoredversion=`cat ${magpie_hdfs_stored_version_path}`
 
                         # 0 is =, 1 is >, 2 is <
                         Magpie_vercomp ${HADOOP_VERSION} ${hdfsstoredversion}
@@ -91,9 +91,9 @@ Magpie_run_start_hadoop () {
                     fi
 
                     # Older nodecounts of Magpie didn't store this variable
-                    if [ -f ${hdfsstorednodecountpath} ]
+                    if [ -f ${magpie_hdfs_stored_nodecount_path} ]
                     then
-                        local hdfsstorednodecount=`cat ${hdfsstorednodecountpath}`
+                        local hdfsstorednodecount=`cat ${magpie_hdfs_stored_nodecount_path}`
 
                         if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsstorednodecount}" ]
                         then
@@ -138,13 +138,13 @@ Magpie_run_start_hadoop () {
                 then
                     if [ "${HADOOP_MODE}" != "upgradehdfs" ]
                     then
-                        rm -f ${hdfsstoredversionpath}
-                        echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+                        rm -f ${magpie_hdfs_stored_version_path}
+                        echo "${HADOOP_VERSION}" > ${magpie_hdfs_stored_version_path}
                     fi
 
-                    if [ -f ${hdfsstorednodecountpath} ]
+                    if [ -f ${magpie_hdfs_stored_nodecount_path} ]
                     then
-                        local nodecount=`cat ${hdfsstorednodecountpath}`
+                        local nodecount=`cat ${magpie_hdfs_stored_nodecount_path}`
                         if [ "${nodecount}" -lt "${HADOOP_SLAVE_COUNT}" ]
                         then
                             nodecount=${HADOOP_SLAVE_COUNT}
@@ -152,8 +152,8 @@ Magpie_run_start_hadoop () {
                     else
                         local nodecount=${HADOOP_SLAVE_COUNT}
                     fi
-                    rm -f ${hdfsstorednodecountpath}
-                    echo "${nodecount}" > ${hdfsstorednodecountpath}
+                    rm -f ${magpie_hdfs_stored_nodecount_path}
+                    echo "${nodecount}" > ${magpie_hdfs_stored_nodecount_path}
                 fi
             fi
             
@@ -588,13 +588,13 @@ Magpie_run_hadoop () {
 
         if [ $? -eq 0 ]
         then
-            # Sets hdfsstoredversionpath
-            Magpie_get_hdfsstoredversionpath
+            # Sets magpie_hdfs_stored_version_path
+            Magpie_get_hdfs_stored_version_path
 
-            if [ "${hdfsstoredversionpath}X" != "X" ]
+            if [ "${magpie_hdfs_stored_version_path}X" != "X" ]
             then
-                rm -f ${hdfsstoredversionpath}
-                echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+                rm -f ${magpie_hdfs_stored_version_path}
+                echo "${HADOOP_VERSION}" > ${magpie_hdfs_stored_version_path}
             fi
         fi
     elif [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
@@ -608,11 +608,11 @@ Magpie_run_hadoop () {
 
         if [ $? -eq 0 ]
         then
-            # Sets hdfsstorednodecountpath
-            Magpie_get_hdfsstorednodecountpath
+            # Sets magpie_hdfs_stored_nodecount_path
+            Magpie_get_hdfs_stored_nodecount_path
 
-            rm -f ${hdfsstorednodecountpath}
-            echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${hdfsstorednodecountpath}
+            rm -f ${magpie_hdfs_stored_nodecount_path}
+            echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${magpie_hdfs_stored_nodecount_path}
         fi
     fi
 }

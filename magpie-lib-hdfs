@@ -73,12 +73,12 @@ __Magpie_get_networkedhdfspath () {
     fi
 }
 
-Magpie_get_hdfsstoredversionpath () {
+Magpie_get_hdfs_stored_version_path () {
     __Magpie_get_networkedhdfspath
-    hdfsstoredversionpath=${__networkedhdfspath}/magpie.hadoop-version
+    magpie_hdfs_stored_version_path=${__networkedhdfspath}/magpie.hadoop-version
 }
 
-Magpie_get_hdfsstorednodecountpath () {
+Magpie_get_hdfs_stored_nodecount_path () {
     __Magpie_get_networkedhdfspath
-    hdfsstorednodecountpath=${__networkedhdfspath}/magpie.node-count
+    magpie_hdfs_stored_nodecount_path=${__networkedhdfspath}/magpie.node-count
 }
