@@ -79,12 +79,12 @@ fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
-    if [ -f "${HBASE_CONF_DIR}/masters" ]
+    if [ ! -f "${HBASE_CONF_DIR}/masters" ]
     then 
         Magpie_output_internal_error "${SPARK_CONF_DIR}/masters does not exist"
     fi
     
-    if [ -f "${HBASE_CONF_DIR}/regionservers" ]
+    if [ ! -f "${HBASE_CONF_DIR}/regionservers" ]
     then
         Magpie_output_internal_error "${SPARK_CONF_DIR}/regionservers does not exist"
     fi
