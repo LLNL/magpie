@@ -87,3 +87,8 @@ then
     # achu: Why not hbase.status.multicast.address.port?  We don't
     # enable hbase.status.published, it's off by default.
 fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    default_phoenix_queryserver_port="8765"
+fi

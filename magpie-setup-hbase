@@ -230,7 +230,7 @@ cp ${pre_hbasesitexml} ${post_hbasesitexml}
 if [ "${pre_hbasesitexml_phoenix}X" != "X" ]
 then
     sed -i -e "/@PHOENIX@/{r ${pre_hbasesitexml_phoenix}" -e "d}" ${post_hbasesitexml}
-    sed -i -e "s/PHOENIXQUERYSERVERPORT/$PHOENIX_QUERYSERVER_PORT/g" ${post_hbasesitexml}
+    sed -i -e "s/PHOENIXQUERYSERVERPORT/${default_phoenix_queryserver_port}/g" ${post_hbasesitexml}
 else
     sed -i -e "/@PHOENIX@/,+1d" ${post_hbasesitexml}
 fi

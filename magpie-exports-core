@@ -186,8 +186,6 @@ then
     # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
     Magpie_make_phoenix_local_dirs_node_specific
 
-    export PHOENIX_QUERYSERVER_PORT="8765"
-
     phoenixcmdprefix="bin"
 fi
 
