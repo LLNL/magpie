@@ -97,3 +97,9 @@ if [ "${KAFKA_SETUP}" == "yes" ]
 then
     default_kafka_port="6667"
 fi
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    default_zeppelin_port="18080"
+fi
+

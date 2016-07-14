@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
@@ -193,7 +194,7 @@ fi
 cp ${pre_zeppelinsitexml} ${post_zeppelinsitexml}
 
 sed -i \
-    -e "s/ZEPPELIN_PORT/${ZEPPELIN_PORT}/g" \
+    -e "s/ZEPPELINPORT/${default_zeppelin_port}/g" \
     -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
     -e "s/ZEPPELININTERPRETERDIR/${zeppelininterpreterdir}/g" \
     ${post_zeppelinsitexml}
