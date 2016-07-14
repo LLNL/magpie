@@ -26,10 +26,70 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 
-if ! Magpie_am_I_master
+if Magpie_am_I_master
 then
-    exit 0
+    echo "*******************************************************"
+    echo "* Performing Pre-Run Setup"
+    echo "*******************************************************"
+fi
+
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    #
+    # Perform HDFS format if necessary
+    #
+    
+    # will set hadoopnoderank
+    if Magpie_am_I_a_hadoop_node \
+        && Magpie_hadoop_filesystem_mode_is_hdfs_type
+    then
+        # will set magpie_hdfs_format_file
+        Magpie_calculate_hadoop_filesystem_format_file_path ${hadoopnoderank}
+        
+        if [ ! -f ${magpie_hdfs_format_file} ]
+        then
+            if Magpie_hdfs_federation_enabled
+            then
+                if Magpie_am_I_a_hadoop_namenode
+                then
+                    echo "*******************************************************"
+                    echo "* Formatting HDFS Namenode on Namenode ${MAGPIE_CLUSTER_NODERANK}"
+                    echo "*******************************************************"
+                    cd $HADOOP_HOME
+                    echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format -clusterId "Magpie${HADOOP_FILESYSTEM_MODE}"
+                    touch ${magpie_hdfs_format_file}
+                else
+                    # If this is the first time running, make everyone else wait
+                    # until the format is complete
+                    sleep 30
+                fi
+            else
+                # Only master will format the node
+                if Magpie_am_I_master
+                then
+                    echo "*******************************************************"
+                    echo "* Formatting HDFS Namenode"
+                    echo "*******************************************************"
+                    cd $HADOOP_HOME
+                    echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+                    touch ${magpie_hdfs_format_file}
+                else
+                    # If this is the first time running, make everyone else wait
+                    # until the format is complete
+                    sleep 30
+                fi
+            fi
+        fi
+    fi
+fi
+
+if Magpie_am_I_master
+then
+    echo "*******************************************************"
+    echo "* Pre-Run Setup Complete"
+    echo "*******************************************************"
 fi
 
 exit 0

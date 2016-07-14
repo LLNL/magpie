@@ -417,14 +417,6 @@ then
     magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
 
-    # Assume if path doesn't exist must hdfsformat
-    if [ -d "${magpie_hadooptmpdir}" ]
-    then
-        hdfsformat=0
-    else
-        hdfsformat=1
-    fi
-
     IFSORIG=${IFS}
     IFS=","
     datanodedirtmp=""
@@ -455,12 +447,8 @@ then
     magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
-    # Assume if path doesn't exist must hdfsformat
-    if [ -d "${magpie_hadooptmpdir}" ]
+    if [ ! -d "${magpie_hadooptmpdir}" ]
     then
-        hdfsformat=0
-    else
-        hdfsformat=1
         mkdir -p ${magpie_hadooptmpdir}
         if [ $? -ne 0 ] ; then
             echo "mkdir failed making ${magpie_hadooptmpdir}"
@@ -1190,46 +1178,6 @@ then
         -e "s/DFSBACKUPHTTPADDRESS/${default_hadoop_hdfs_namenode_backup_http_address}/g" \
         -e "s/DFSPERMISSIONSSUPERUSERGROUP/${USER}/g" \
         ${post_hdfssitexml}
-fi
-
-#
-# Perform HDFS format if necessary
-#
-
-if Magpie_hadoop_filesystem_mode_is_hdfs_type
-then
-    if [ "${hdfsformat}" -eq "1" ]
-    then
-        if Magpie_hdfs_federation_enabled
-        then
-            if Magpie_am_I_a_hadoop_namenode
-            then
-                echo "*******************************************************"
-                echo "* Formatting HDFS Namenode on Namenode ${MAGPIE_CLUSTER_NODERANK}"
-                echo "*******************************************************"
-                cd $HADOOP_HOME
-                echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format -clusterId "Magpie${HADOOP_FILESYSTEM_MODE}"
-            else
-                # If this is the first time running, make everyone else wait
-                # until the format is complete
-                sleep 30
-            fi
-        else
-            # Only master will format the node
-            if Magpie_am_I_master
-            then
-                echo "*******************************************************"
-                echo "* Formatting HDFS Namenode"
-                echo "*******************************************************"
-                cd $HADOOP_HOME
-                echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
-            else
-                # If this is the first time running, make everyone else wait
-                # until the format is complete
-                sleep 30
-            fi
-        fi
-    fi
 fi
 
 exit 0
