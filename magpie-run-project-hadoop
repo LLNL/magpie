@@ -210,7 +210,7 @@ Magpie_run_start_hadoop () {
             fi
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-                if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
                 then
                     for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                     do
@@ -231,7 +231,7 @@ Magpie_run_start_hadoop () {
                 echo "*"
                 echo "* HDFS can be accessed directly at:"
                 echo "*"
-                if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
                 then
                     for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                     do
@@ -449,7 +449,7 @@ Magpie_run_start_hadoop () {
                 
                 for i in `seq 1 ${namenodemaxwaittimes}`
                 do
-                    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
                     then
                         local exittedsafemodeflag=1
 
@@ -652,7 +652,7 @@ Magpie_run_stop_hadoop () {
                 then
                     echo "Saving namespace before shutting down hdfs ..."
 
-                    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
                     then
                         for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                         do

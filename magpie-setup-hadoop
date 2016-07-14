@@ -829,7 +829,7 @@ then
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-tachyon.xml" "pre_coresitexml_tachyon"
     fi
 
-    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-viewfsmount.xml" "pre_coresitexml_viewfsmount"
     fi
@@ -1175,7 +1175,7 @@ if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
     cp ${pre_hdfssitexml} ${post_hdfssitexml}
 
-    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X-hdfs-federation.xml" "pre_hdfssitexml_namenode"
     else
@@ -1184,7 +1184,7 @@ then
 
     sed -i -e "/@NAMENODE@/{r ${pre_hdfssitexml_namenode}" -e "d}" ${post_hdfssitexml}
 
-    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
     then
         nameservices="ns1"
         for i in `seq 2 ${HDFS_FEDERATION_NAMENODE_COUNT}`
@@ -1252,7 +1252,7 @@ if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
     if [ "${hdfsformat}" -eq "1" ]
     then
-        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+        if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
         then
             if Magpie_am_I_a_hadoop_namenode
             then

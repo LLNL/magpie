@@ -93,11 +93,6 @@ then
         # Assume cores same on each node
         export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
     fi
-
-    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" == "X" ]
-    then
-        export HDFS_FEDERATION_NAMENODE_COUNT=1
-    fi
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]
