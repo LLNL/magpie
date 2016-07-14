@@ -44,8 +44,6 @@ fi
 # MAGPIE_LOCAL_SCRATCHSPACE_DIR & MAGPIE_LOCAL_CONF_DIR set
 Magpie_make_magpie_local_dirs_node_specific
 
-magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
-
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
     if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
@@ -57,42 +55,6 @@ then
     # HADOOP_LOCAL_SCRATCHSPACE_DIR & HADOOP_CONF_DIR & HADOOP_LOG_DIR set
     # YARN_LOCAL_SCRATCHSPACE_DIR & YARN_CONF_DIR & YARN_LOG_DIR set
     Magpie_make_hadoop_local_dirs_node_specific
-
-    # There are few duplicated exports we do b/c they are needed
-
-    # For jobhistoryserver
-    export HADOOP_MAPRED_HOME=${HADOOP_HOME}
-
-    export HADOOP_YARN_HOME=${HADOOP_HOME}
-    export HADOOP_YARN_USER="${USER}"
-
-    # Unsure if needed, read about these online
-    export HADOOP_HDFS_HOME=${HADOOP_HOME}
-    export HADOOP_COMMON_HOME=${HADOOP_HOME}
-    export YARN_COMMON_HOME=${HADOOP_HOME}
-  
-    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
-    if [ -f "${HADOOP_CONF_DIR}/masters" ]
-    then 
-        export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-        # XXX need to deal w/ fact can't use Magpie_hadoop_filesystem_mode_is_hdfs_type
-        if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-            || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-            || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
-        then
-            export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-            export HADOOP_NAMENODE_PORT="${default_hadoop_hdfs_namenode_address}"
-        fi
-    fi
-
-    if [ -f "${HADOOP_CONF_DIR}/slaves" ]
-    then
-        export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
-
-        # Assume cores same on each node
-        magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
-        export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
-    fi
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]
