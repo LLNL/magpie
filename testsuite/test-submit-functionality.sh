@@ -68,10 +68,26 @@ SubmitFunctionalityTests_JobTimeout () {
     BasicJobSubmit magpie.${submissiontype}-storm-functionality-jobtimeout
 }
 
+SubmitFunctionalityTests_MagpieExports() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-hdfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hadoop-rawnetworkfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-checkexports
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-functionality-checkexports
+}
+
 SubmitFunctionalityTests() {
     SubmitFunctionalityTests_BadJobNames
     SubmitFunctionalityTests_AltConfFilesDir
     SubmitFunctionalityTests_TestAll
     SubmitFunctionalityTests_InteractiveMode
     SubmitFunctionalityTests_JobTimeout
+    SubmitFunctionalityTests_MagpieExports
 }

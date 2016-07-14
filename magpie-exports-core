@@ -28,7 +28,7 @@
 # This is used by scripts, don't edit this
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
 # Do not ever "use" the LOCAL_JOB_DIR variables.  They should only be
 # referenced when setting SCRATCH_DIR or CONF_DIR or LOG_DIR variables.
@@ -123,8 +123,14 @@ then
     if [ -f "${HADOOP_CONF_DIR}/masters" ]
     then 
         export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-        export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-        export HADOOP_NAMENODE_PORT="${HADOOP_HDFS_NAMENODE_ADDRESS}"
+        # XXX need to deal w/ fact can't use Magpie_hadoop_filesystem_mode_is_hdfs_type
+        if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
+            || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
+            || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+        then
+            export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
+            export HADOOP_NAMENODE_PORT="${HADOOP_HDFS_NAMENODE_ADDRESS}"
+        fi
     fi
 
     if [ -f "${HADOOP_CONF_DIR}/slaves" ]
@@ -420,3 +426,4 @@ then
         export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/masters`
     fi
 fi
+

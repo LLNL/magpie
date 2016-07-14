@@ -137,10 +137,14 @@ HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
  		  must be specified in a script.
  		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
+                  Exported only if HDFS type file system used. 
+
 HADOOP_NAMENODE_PORT : the port of the namenode.  Often used for
  		  accessing HDFS when the namenode + port must be
  		  specified in a script.
  		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
+
+                  Exported only if HDFS type file system used. 
 
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.

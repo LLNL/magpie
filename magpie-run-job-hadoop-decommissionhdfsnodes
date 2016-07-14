@@ -29,9 +29,7 @@
 # XXX does this work w/ federation?
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -83,38 +81,24 @@ done
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
 then
-    count=0
-    while [ "${count}" -lt "${nodecounttodecommission}" ]
-    do
-        noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-$noderank"
-        else
-            rmpath="${HADOOP_HDFSOVERLUSTRE_PATH}/node-$noderank"
-        fi    
-        echo "Removing path ${rmpath} ..."
-        rm -rf ${rmpath}
-        count=`expr $count + 1`
-    done
+    basehdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
+else
+    basehdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
 fi
 
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
-then
-    count=0
-    while [ "${count}" -lt "${nodecounttodecommission}" ]
-    do
-        noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-$noderank"
-        else
-            rmpath="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-$noderank"
-        fi
-        echo "Removing path ${rmpath} ..."
-        rm -rf ${rmpath}
-        count=`expr $count + 1`
-    done
-fi
+count=0
+while [ "${count}" -lt "${nodecounttodecommission}" ]
+do
+    noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
+    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+    then
+        rmpath="${basehdfspath}/${MAGPIE_JOB_ID}/node-$noderank"
+    else
+        rmpath="${basehdfspath}/node-$noderank"
+    fi    
+    echo "Removing path ${rmpath} ..."
+    rm -rf ${rmpath}
+    count=`expr $count + 1`
+done
 
 exit 0

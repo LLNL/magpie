@@ -26,12 +26,14 @@
 #
 # This is used by scripts, don't edit this
 
-Magpie_make_magpie_local_dirs () {
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+
+__Magpie_make_magpie_local_dirs () {
     which=$1
 
     if [ "${MAGPIE_LOCAL_JOB_DIR}X" == "X" ]
     then
-        Magpie_output_internal_error "Magpie_make_magpie_local_dirs called without MAGPIE_LOCAL_JOB_DIR set"
+        Magpie_output_internal_error "__Magpie_make_magpie_local_dirs called without MAGPIE_LOCAL_JOB_DIR set"
         exit 1
     fi
 
@@ -47,21 +49,21 @@ Magpie_make_magpie_local_dirs () {
 }
 
 Magpie_make_magpie_local_dirs_unspecified () {
-    Magpie_make_magpie_local_dirs "generic"
+    __Magpie_make_magpie_local_dirs "generic"
 }
 
 Magpie_make_magpie_local_dirs_node_specific () {
-    Magpie_make_magpie_local_dirs "specific"
+    __Magpie_make_magpie_local_dirs "specific"
 }
 
-Magpie_make_hadoop_local_dirs () {
+__Magpie_make_hadoop_local_dirs () {
     which=$1
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
         if [ "${HADOOP_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_hadoop_local_dirs called without HADOOP_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_hadoop_local_dirs called without HADOOP_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -90,21 +92,21 @@ Magpie_make_hadoop_local_dirs () {
 }
 
 Magpie_make_hadoop_local_dirs_unspecified () {
-    Magpie_make_hadoop_local_dirs "generic"
+    __Magpie_make_hadoop_local_dirs "generic"
 }
 
 Magpie_make_hadoop_local_dirs_node_specific () {
-    Magpie_make_hadoop_local_dirs "specific"
+    __Magpie_make_hadoop_local_dirs "specific"
 }
 
-Magpie_make_pig_local_dirs () {
+__Magpie_make_pig_local_dirs () {
     which=$1
 
     if [ "${PIG_SETUP}" == "yes" ]
     then
         if [ "${PIG_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_pig_local_dirs called without PIG_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_pig_local_dirs called without PIG_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -121,11 +123,11 @@ Magpie_make_pig_local_dirs () {
 }
 
 Magpie_make_pig_local_dirs_unspecified () {
-    Magpie_make_pig_local_dirs "generic"
+    __Magpie_make_pig_local_dirs "generic"
 }
 
 Magpie_make_pig_local_dirs_node_specific () {
-    Magpie_make_pig_local_dirs "specific"
+    __Magpie_make_pig_local_dirs "specific"
 }
 
 Magpie_make_mahout_local_dirs () {
@@ -159,14 +161,14 @@ Magpie_make_mahout_local_dirs_node_specific () {
     Magpie_make_mahout_local_dirs "specific"
 }
 
-Magpie_make_hbase_local_dirs () {
+__Magpie_make_hbase_local_dirs () {
     which=$1
 
     if [ "${HBASE_SETUP}" == "yes" ]
     then
         if [ "${HBASE_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_hbase_local_dirs called without HBASE_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_hbase_local_dirs called without HBASE_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -187,21 +189,21 @@ Magpie_make_hbase_local_dirs () {
 }
 
 Magpie_make_hbase_local_dirs_unspecified () {
-    Magpie_make_hbase_local_dirs "generic"
+    __Magpie_make_hbase_local_dirs "generic"
 }
 
 Magpie_make_hbase_local_dirs_node_specific () {
-    Magpie_make_hbase_local_dirs "specific"
+    __Magpie_make_hbase_local_dirs "specific"
 }
 
-Magpie_make_phoenix_local_dirs () {
+__Magpie_make_phoenix_local_dirs () {
     which=$1
 
     if [ "${PHOENIX_SETUP}" == "yes" ]
     then
         if [ "${PHOENIX_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_phoenix_local_dirs called without PHOENIX_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -222,21 +224,21 @@ Magpie_make_phoenix_local_dirs () {
 }
 
 Magpie_make_phoenix_local_dirs_unspecified () {
-    Magpie_make_phoenix_local_dirs "generic"
+    __Magpie_make_phoenix_local_dirs "generic"
 }
 
 Magpie_make_phoenix_local_dirs_node_specific () {
-    Magpie_make_phoenix_local_dirs "specific"
+    __Magpie_make_phoenix_local_dirs "specific"
 }
 
-Magpie_make_spark_local_dirs () {
+__Magpie_make_spark_local_dirs () {
     which=$1
 
     if [ "${SPARK_SETUP}" == "yes" ]
     then
         if [ "${SPARK_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_spark_local_dirs called without SPARK_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_spark_local_dirs called without SPARK_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -257,21 +259,21 @@ Magpie_make_spark_local_dirs () {
 }
 
 Magpie_make_spark_local_dirs_unspecified () {
-    Magpie_make_spark_local_dirs "generic"
+    __Magpie_make_spark_local_dirs "generic"
 }
 
 Magpie_make_spark_local_dirs_node_specific () {
-    Magpie_make_spark_local_dirs "specific"
+    __Magpie_make_spark_local_dirs "specific"
 }
 
-Magpie_make_kafka_local_dirs () {
+__Magpie_make_kafka_local_dirs () {
     which=$1
 
     if [ "${KAFKA_SETUP}" == "yes" ]
     then
         if [ "${KAFKA_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_kafka_local_dirs called without KAFKA_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -292,11 +294,11 @@ Magpie_make_kafka_local_dirs () {
 }
 
 Magpie_make_kafka_local_dirs_unspecified () {
-    Magpie_make_kafka_local_dirs "generic"
+    __Magpie_make_kafka_local_dirs "generic"
 }
 
 Magpie_make_kafka_local_dirs_node_specific () {
-    Magpie_make_kafka_local_dirs "specific"
+    __Magpie_make_kafka_local_dirs "specific"
 }
 
 Magpie_make_zeppelin_local_dirs () {
@@ -334,14 +336,14 @@ Magpie_make_zeppelin_local_dirs_node_specific () {
     Magpie_make_zeppelin_local_dirs "specific"
 }
 
-Magpie_make_storm_local_dirs () {
+__Magpie_make_storm_local_dirs () {
     which=$1
 
     if [ "${STORM_SETUP}" == "yes" ]
     then
         if [ "${STORM_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_storm_local_dirs called without STORM_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_storm_local_dirs called without STORM_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -360,21 +362,21 @@ Magpie_make_storm_local_dirs () {
 }
 
 Magpie_make_storm_local_dirs_unspecified () {
-    Magpie_make_storm_local_dirs "generic"
+    __Magpie_make_storm_local_dirs "generic"
 }
 
 Magpie_make_storm_local_dirs_node_specific () {
-    Magpie_make_storm_local_dirs "specific"
+    __Magpie_make_storm_local_dirs "specific"
 }
 
-Magpie_make_tachyon_local_dirs () {
+__Magpie_make_tachyon_local_dirs () {
     which=$1
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
         if [ "${TACHYON_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -393,21 +395,21 @@ Magpie_make_tachyon_local_dirs () {
 }
 
 Magpie_make_tachyon_local_dirs_unspecified () {
-    Magpie_make_tachyon_local_dirs "generic"
+    __Magpie_make_tachyon_local_dirs "generic"
 }
 
 Magpie_make_tachyon_local_dirs_node_specific () {
-    Magpie_make_tachyon_local_dirs "specific"
+    __Magpie_make_tachyon_local_dirs "specific"
 }
 
-Magpie_make_zookeeper_local_dirs () {
+__Magpie_make_zookeeper_local_dirs () {
     which=$1
 
     if [ "${ZOOKEEPER_SETUP}" == "yes" ]
     then
         if [ "${ZOOKEEPER_LOCAL_JOB_DIR}X" == "X" ]
         then
-            Magpie_output_internal_error "Magpie_make_zookeeper_local_dirs called without ZOOKEEPER_LOCAL_JOB_DIR set"
+            Magpie_output_internal_error "__Magpie_make_zookeeper_local_dirs called without ZOOKEEPER_LOCAL_JOB_DIR set"
             exit 1
         fi
 
@@ -426,30 +428,30 @@ Magpie_make_zookeeper_local_dirs () {
 }
 
 Magpie_make_zookeeper_local_dirs_unspecified () {
-    Magpie_make_zookeeper_local_dirs "generic"
+    __Magpie_make_zookeeper_local_dirs "generic"
 }
 
 Magpie_make_zookeeper_local_dirs_node_specific () {
-    Magpie_make_zookeeper_local_dirs "specific"
+    __Magpie_make_zookeeper_local_dirs "specific"
 }
 
-Magpie_make_all_local_dirs () {
-    Magpie_make_magpie_local_dirs $1
-    Magpie_make_hadoop_local_dirs $1
-    Magpie_make_pig_local_dirs $1
-    Magpie_make_hbase_local_dirs $1
-    Magpie_make_phoenix_local_dirs $1
-    Magpie_make_spark_local_dirs $1
-    Magpie_make_kafka_local_dirs $1
-    Magpie_make_storm_local_dirs $1
-    Magpie_make_tachyon_local_dirs $1
-    Magpie_make_zookeeper_local_dirs $1
+__Magpie_make_all_local_dirs () {
+    __Magpie_make_magpie_local_dirs $1
+    __Magpie_make_hadoop_local_dirs $1
+    __Magpie_make_pig_local_dirs $1
+    __Magpie_make_hbase_local_dirs $1
+    __Magpie_make_phoenix_local_dirs $1
+    __Magpie_make_spark_local_dirs $1
+    __Magpie_make_kafka_local_dirs $1
+    __Magpie_make_storm_local_dirs $1
+    __Magpie_make_tachyon_local_dirs $1
+    __Magpie_make_zookeeper_local_dirs $1
 }
 
 Magpie_make_all_local_dirs_unspecified () {
-    Magpie_make_all_local_dirs "generic"
+    __Magpie_make_all_local_dirs "generic"
 }
 
 Magpie_make_all_local_dirs_node_specific () {
-    Magpie_make_all_local_dirs "specific"
+    __Magpie_make_all_local_dirs "specific"
 }

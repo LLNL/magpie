@@ -27,15 +27,13 @@
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
-yarn_job_kill_handler () {
+__Yarn_job_kill_handler () {
     childpid=$1
 
     echo "Received interrupt from user, killing yarn jobs and script"
@@ -140,7 +138,7 @@ then
             echo "*"
             echo "* ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${myhostname} kill -s 28 ${mypid}"
 
-            trap "yarn_job_kill_handler ${childpid}" 28
+            trap "__Yarn_job_kill_handler ${childpid}" 28
         fi
     fi
     echo "*******************************************************"

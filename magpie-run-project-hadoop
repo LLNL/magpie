@@ -28,12 +28,11 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_run_start_hadoop () {
@@ -48,12 +47,9 @@ Magpie_run_start_hadoop () {
             echo "Starting hadoop"
             local hadoop_should_be_setup=1
 
-            if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-                if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+                if Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
                     # Sets networkedhdfspath & hdfsstoredversionpath
                     Magpie_get_hdfsstoredversionpath
@@ -140,8 +136,7 @@ Magpie_run_start_hadoop () {
                 fi
 
                 if [ "${hdfs_was_setup}" == "1" ] \
-                    && ([ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ])
+                    && Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
                     if [ "${HADOOP_MODE}" != "upgradehdfs" ]
                     then
@@ -213,9 +208,7 @@ Magpie_run_start_hadoop () {
                 echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}"
                 echo "*"
             fi
-            if [ ${HADOOP_FILESYSTEM_MODE} == "hdfs" ] \
-                || [ ${HADOOP_FILESYSTEM_MODE} == "hdfsoverlustre" ] \
-                || [ ${HADOOP_FILESYSTEM_MODE} == "hdfsovernetworkfs" ]
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
                 if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
                 then
@@ -294,9 +287,7 @@ Magpie_run_start_hadoop () {
                     echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
                 fi
                 echo "*   cd $HADOOP_HOME"
-                if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-                    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                    || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+                if Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
                     echo "*   ${hadoopsetupscriptprefix}/start-dfs.sh" 
                 fi
@@ -337,9 +328,7 @@ Magpie_run_start_hadoop () {
             then
                 echo "*   ${hadoopsetupscriptprefix}/stop-yarn.sh"
             fi
-            if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
                 echo "*   ${hadoopsetupscriptprefix}/stop-dfs.sh"
             fi
@@ -393,8 +382,11 @@ Magpie_run_start_hadoop () {
                     echo "setenv HADOOP_MASTER_NODE \"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "setenv HADOOP_SLAVE_COUNT \"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "setenv HADOOP_SLAVE_CORE_COUNT \"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "setenv HADOOP_NAMENODE \"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "setenv HADOOP_NAMENODE_PORT \"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    if Magpie_hadoop_filesystem_mode_is_hdfs_type
+                    then
+                        echo "setenv HADOOP_NAMENODE \"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                        echo "setenv HADOOP_NAMENODE_PORT \"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    fi
                     echo "setenv HADOOP_VERSION \"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                     then
@@ -407,8 +399,11 @@ Magpie_run_start_hadoop () {
                     echo "export HADOOP_MASTER_NODE=\"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "export HADOOP_SLAVE_COUNT=\"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "export HADOOP_SLAVE_CORE_COUNT=\"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "export HADOOP_NAMENODE=\"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "export HADOOP_NAMENODE_PORT=\"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    if Magpie_hadoop_filesystem_mode_is_hdfs_type
+                    then
+                        echo "export HADOOP_NAMENODE=\"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                        echo "export HADOOP_NAMENODE_PORT=\"${HADOOP_NAMENODE_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    fi
                     echo "export HADOOP_VERSION=\"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                     then
@@ -424,9 +419,7 @@ Magpie_run_start_hadoop () {
         # We do not use "-safemode wait", b/c we want to inform the user
         # as we're waiting.
         if [ ${HADOOP_MODE} != "setuponly" ] \
-            && ([ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-            || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-            || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ])
+            && Magpie_hadoop_filesystem_mode_is_hdfs_type
         then
             if [ "${hdfs_was_setup}" == "1" ]
             then
@@ -537,9 +530,7 @@ Magpie_run_start_hadoop () {
         # created.  If it hasn't yet, lets create it for the user.
         if [ "${hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
         then
-            if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
                 ${hadoopcmdprefix}/hadoop fs -ls "/user/${USER}" >& /dev/null
                 if [ $? -ne 0 ]
@@ -655,11 +646,8 @@ Magpie_run_stop_hadoop () {
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
 
-            if [ "$HADOOP_FILESYSTEM_MODE" == "hdfs" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ] \
-                || [ "$HADOOP_FILESYSTEM_MODE" == "hdfsovernetworkfs" ]
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-
                 if [ "${hadoop_setup_successful}" == "1" ]
                 then
                     echo "Saving namespace before shutting down hdfs ..."

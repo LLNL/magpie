@@ -28,12 +28,11 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 Magpie_run_start_storm () {
     if [ "${STORM_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]

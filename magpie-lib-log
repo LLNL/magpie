@@ -26,7 +26,7 @@
 #
 # This is used by scripts, don't edit this
 
-Magpie_output_internal_message () {
+__Magpie_output_internal_message () {
     local leveltype=$1
     shift
     local msg=$@
@@ -35,9 +35,9 @@ Magpie_output_internal_message () {
 }
 
 Magpie_output_internal_warning () {
-    Magpie_output_internal_message "Warning" $@
+    __Magpie_output_internal_message "Warning" $@
 }
 
 Magpie_output_internal_error () {
-    Magpie_output_internal_message "Error" $@
+    __Magpie_output_internal_message "Error" $@
 }
