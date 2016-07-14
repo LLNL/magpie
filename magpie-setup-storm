@@ -60,14 +60,14 @@ then
     fi
 fi
 
-# Sets threadstouse and proccount
-Magpie_calculate_threadstouse
+# Sets magpie_threads_to_use and magpie_processor_count
+Magpie_calculate_threads_to_use
 
 if [ "${STORM_SUPERVISOR_SLOTS}X" != "X" ]
 then
     stormslotcount=${STORM_SUPERVISOR_SLOTS}
 else
-    stormslotcount=`expr ${proccount} \/ 2`
+    stormslotcount=`expr ${magpie_processor_count} \/ 2`
 
     if [ "${stormslotcount}" == "0" ]
     then

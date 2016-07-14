@@ -145,24 +145,24 @@ fi
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
-# Sets proccount & threadstouse
-Magpie_calculate_threadstouse
+# Sets magpie_processor_count & magpie_threads_to_use
+Magpie_calculate_threads_to_use
 
-# Sets memorytouse
-Magpie_calculate_memorytouse
+# Sets magpie_memory_to_use
+Magpie_calculate_memory_to_use
 
 if [ "${HADOOP_MAX_TASKS_PER_NODE}X" != "X" ]
 then
     maxtaskspernode=${HADOOP_MAX_TASKS_PER_NODE}
 else
-    maxtaskspernode=${threadstouse}
+    maxtaskspernode=${magpie_threads_to_use}
 fi
 
 if [ "${YARN_RESOURCE_MEMORY}X" != "X" ]
 then
     yarnresourcememory=${YARN_RESOURCE_MEMORY}
 else
-    yarnresourcememory=${memorytouse}
+    yarnresourcememory=${magpie_memory_to_use}
 fi
 
 if [ "${HADOOP_CHILD_HEAPSIZE}X" != "X" ]
@@ -681,7 +681,7 @@ else
     yardappmapreduceamstagingdir="${hadooptmpdir}/yarn/"
 fi
 
-# Sets hadoopstoptimeout
+# Sets magpie_hadoop_stop_timeout
 Magpie_calculate_stop_timeouts
 
 # set java.io.tmpdir
@@ -956,7 +956,7 @@ then
         -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
         -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
         -e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
-        -e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+        -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
         -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
         -e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
         -e "s/HADOOPPIDDIR/${hadooppiddirsubst}/g" \
@@ -1107,7 +1107,7 @@ then
         -e "s/YARNLOCALIZERADDRESS/${default_yarn_nodemanager_localizer_address}/g" \
         -e "s/YARNNODEMANAGERWEBAPPADDRESS/${default_yarn_nodemanager_webapp_address}/g" \
         -e "s/YARNDEFAULTUSER/${USER}/g" \
-        -e "s/YARNRESROUCECPUVCORES/${proccount}/g" \
+        -e "s/YARNRESROUCECPUVCORES/${magpie_processor_count}/g" \
         ${post_yarnsitexml}
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -1121,7 +1121,7 @@ then
     sed -i \
         -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
         -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-        -e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+        -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
         -e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
         -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
         -e "s/HADOOPHOME/${hadoophomesubst}/g" \
@@ -1143,7 +1143,7 @@ then
     sed -i \
         -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
         -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-        -e "s/HADOOPTIMEOUTSECONDS/${hadoopstoptimeout}/g" \
+        -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
         -e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
         -e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
         -e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \

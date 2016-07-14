@@ -124,7 +124,7 @@ do
     hbasezookeeperquorum="${hbasezookeeperquorum}${hbasezookeeperquorum:+","}${zookeepernode}"
 done
 
-# Sets hbase_slave_timeout
+# Sets magpie_hbase_slave_timeout
 Magpie_calculate_stop_timeouts
 
 openfiles=`ulimit -n`
@@ -270,7 +270,7 @@ sed -i \
     -e "s/HBASECLASSPATH/${hbaseclasspathsubst}/g" \
     ${post_hbaseenvsh}
 
-echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
+echo "export HBASE_SLAVE_TIMEOUT=\"${magpie_hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
 
 echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${post_hbaseenvsh}
 echo "export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\"" >> ${post_hbaseenvsh}

@@ -60,30 +60,30 @@ else
     sparkdaemonheapmax="1000"
 fi 
 
-# Sets threadstouse and proccount
-Magpie_calculate_threadstouse
+# Sets magpie_threads_to_use and magpie_processor_count
+Magpie_calculate_threads_to_use
 
-# Sets memorytouse
-Magpie_calculate_memorytouse
+# Sets magpie_memory_to_use
+Magpie_calculate_memory_to_use
 
 if [ "${SPARK_WORKER_CORES_PER_NODE}X" != "X" ]
 then
     workercores=${SPARK_WORKER_CORES_PER_NODE}
 else
-    workercores=${threadstouse}
+    workercores=${magpie_threads_to_use}
 fi
 
 # Spark is special, can't set > # of cores 
-if [ "${workercores}" -gt "${proccount}" ]
+if [ "${workercores}" -gt "${magpie_processor_count}" ]
 then
-    workercores=${proccount}
+    workercores=${magpie_processor_count}
 fi
 
 if [ "${SPARK_WORKER_MEMORY_PER_NODE}X" != "X" ]
 then
     workermemory=${SPARK_WORKER_MEMORY_PER_NODE}
 else
-    workermemory=${memorytouse}
+    workermemory=${magpie_memory_to_use}
 fi
 
 if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
@@ -289,7 +289,7 @@ fi
 # Tests show proc count is about the best performing when you have
 # many cores, which is likely the norm in HPC clusters
 
-akkathreads=`expr ${proccount}`
+akkathreads=`expr ${magpie_processor_count}`
 
 if [ "${akkathreads}" -lt "4" ]
 then

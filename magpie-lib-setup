@@ -31,18 +31,18 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 
 Magpie_calculate_stop_timeouts () {
-    local magpieshutdowntimeseconds=`expr ${magpie_shutdown_time_value} \* 60`
+    local shutdowntimeseconds=`expr ${magpie_shutdown_time_value} \* 60`
 
     if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
     then
         # Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_JOB_RUN
-        local magpiepostrunallocate=`expr ${magpieshutdowntimeseconds} \/ 3`
+        local magpiepostrunallocate=`expr ${shutdowntimeseconds} \/ 3`
         if [ "${magpiepostrunallocate}" -lt 300 ]
         then
             magpiepostrunallocate=300
         fi
 
-        magpieshutdowntimeseconds=`expr ${magpieshutdowntimeseconds} - ${magpiepostrunallocate}` 
+        shutdowntimeseconds=`expr ${shutdowntimeseconds} - ${magpiepostrunallocate}` 
     fi
 
     if [ "${HBASE_SETUP}" == "yes" ]
@@ -50,11 +50,11 @@ Magpie_calculate_stop_timeouts () {
         # Need to give Hbase more time b/c of compaction.  We'll say
         # Hbase always gets 50% of the time, Half for slave timeout and half for
         # compaction .  Input checks ensure
-        # magpieshutdowntimeseconds >= 1200 
+        # shutdowntimeseconds >= 1200 
 
-        local hbase_time=`expr ${magpieshutdowntimeseconds} \/ 2`
-        hbase_slave_timeout=`expr ${hbase_time} \/ 2`
-        magpieshutdowntimeseconds=${hbase_time}
+        local hbase_time=`expr ${shutdowntimeseconds} \/ 2`
+        magpie_hbase_slave_timeout=`expr ${hbase_time} \/ 2`
+        shutdowntimeseconds=${hbase_time}
     fi
 
     local stoptimeoutdivisor=1
@@ -115,14 +115,14 @@ Magpie_calculate_stop_timeouts () {
         stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
     fi
 
-    local stoptimeout=`expr ${magpieshutdowntimeseconds} \/ ${stoptimeoutdivisor}`
+    local stoptimeout=`expr ${shutdowntimeseconds} \/ ${stoptimeoutdivisor}`
         
     if [ "${stoptimeout}" -lt 5 ]
     then
         stoptimeout=5
     fi
 
-    hadoopstoptimeout=${stoptimeout}
+    magpie_hadoop_stop_timeout=${stoptimeout}
 }
 
 # Count how many big data systems we're using that can run jobs
@@ -157,13 +157,13 @@ __Magpie_calculate_canrunjobscount () {
     fi
 }
 
-Magpie_calculate_proccount () {
-    proccount=`cat /proc/cpuinfo | grep processor | wc -l`
+Magpie_calculate_processor_count () {
+    magpie_processor_count=`cat /proc/cpuinfo | grep processor | wc -l`
 }
 
-Magpie_calculate_threadstouse () {
-    # Sets proccount
-    Magpie_calculate_proccount
+Magpie_calculate_threads_to_use () {
+    # Sets magpie_processor_count
+    Magpie_calculate_processor_count
 
     # Sets __canrunjobscount
     __Magpie_calculate_canrunjobscount
@@ -173,18 +173,18 @@ Magpie_calculate_threadstouse () {
 
     if [ "${__canrunjobscount}" == "1" ]
     then
-        threadstouse=`expr ${proccount} + ${proccount} \/ 2`
+        magpie_threads_to_use=`expr ${magpie_processor_count} + ${magpie_processor_count} \/ 2`
     else
-        threadstouse=`expr ${proccount} \/ ${__canrunjobscount}`
+        magpie_threads_to_use=`expr ${magpie_processor_count} \/ ${__canrunjobscount}`
 
-        if [ "${threadstouse}" == "0" ]
+        if [ "${magpie_threads_to_use}" == "0" ]
         then
-            threadstouse="1"
+            magpie_threads_to_use="1"
         fi
     fi
 }
 
-Magpie_calculate_memorytouse () {
+Magpie_calculate_memory_to_use () {
     local memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
     local memtotalgig=`echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f"`
     
@@ -192,10 +192,10 @@ Magpie_calculate_memorytouse () {
     __Magpie_calculate_canrunjobscount
 
     # We start w/ 80% of system memory 
-    memorytouse=`echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f"`
-    memorytouse=`expr $memorytouse \/ ${__canrunjobscount}`
+    magpie_memory_to_use=`echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f"`
+    magpie_memory_to_use=`expr $magpie_memory_to_use \/ ${__canrunjobscount}`
 
-    memorytouse=`echo "${memorytouse} * 1024" | bc -l | xargs printf "%1.0f"`
+    magpie_memory_to_use=`echo "${magpie_memory_to_use} * 1024" | bc -l | xargs printf "%1.0f"`
 }
 
 Magpie_find_conffile () {
