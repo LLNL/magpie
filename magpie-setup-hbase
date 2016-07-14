@@ -99,12 +99,12 @@ fi
 
 # XXX how deal w/ fedreation?
 
-# sets hadooptmpdir and fsdefault
+# sets magpie_hadooptmpdir and magpie_fsdefault
 Magpie_calculate_hadoop_filesystem_paths ${hbasenoderank}
 
-hbasetmpdir="${hadooptmpdir}/hbase"
+hbasetmpdir="${magpie_hadooptmpdir}/hbase"
 hbasetmpdirsubst=`echo "${hbasetmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-hbaserootdir="${fsdefault}/hbase"
+hbaserootdir="${magpie_fsdefault}/hbase"
 hbaserootdirsubst=`echo ${hbaserootdir} | sed "s/\\//\\\\\\\\\//g"`
 
 if [ ! -d "${hbasetmpdir}" ]

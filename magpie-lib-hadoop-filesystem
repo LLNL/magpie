@@ -39,69 +39,69 @@ Magpie_calculate_hadoop_filesystem_paths () {
     local noderank=$1
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
-        hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
+        magpie_hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
         if Magpie_hdfs_federation_enabled
         then
-            fsdefault="viewfs:///"
+            magpie_fsdefault="viewfs:///"
         else
-            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
+            magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
         fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-            hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
         fi
         if Magpie_hdfs_federation_enabled
         then
-            fsdefault="viewfs:///"
+            magpie_fsdefault="viewfs:///"
         else
-            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
+            magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
         fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-            hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
         fi
         
         if Magpie_hdfs_federation_enabled
         then
-            fsdefault="viewfs:///"
+            magpie_fsdefault="viewfs:///"
         else
-            fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
+            magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
         fi
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-            hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
         fi
-        fsdefault="file:///"
+        magpie_fsdefault="file:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_ID}/tmp"
+            magpie_hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_ID}/tmp"
         else
-            hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
+            magpie_hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
         fi
-        fsdefault="lustre:///"
+        magpie_fsdefault="lustre:///"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
-            hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
         fi
-        fsdefault="magpienetworkfs:///"
+        magpie_fsdefault="magpienetworkfs:///"
     else
         Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
         exit 1

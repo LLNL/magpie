@@ -42,11 +42,11 @@ cd ${HADOOP_HOME}
 # to get hadoopnoderank
 Magpie_am_I_a_hadoop_node
 
-# to get hadooptmpdir
+# to get magpie_hadooptmpdir
 Magpie_calculate_hadoop_filesystem_paths ${hadoopnoderank}
 
-currentnamenodepath="${hadooptmpdir}/dfs/name/current"
-previousnamenodepath="${hadooptmpdir}/dfs/name/previous"
+currentnamenodepath="${magpie_hadooptmpdir}/dfs/name/current"
+previousnamenodepath="${magpie_hadooptmpdir}/dfs/name/previous"
 
 # The fact we are in this script means we are out of safe mode.
 #

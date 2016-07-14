@@ -77,9 +77,9 @@ else
     tachyonstorequota="100GB"
 fi
 
-# sets hadooptmpdir and fsdefault
+# sets magpie_hadooptmpdir and magpie_fsdefault
 Magpie_calculate_hadoop_filesystem_paths ${tachyonnoderank}
-tachyonunderfsaddress="${fsdefault}"
+tachyonunderfsaddress="${magpie_fsdefault}"
 
 if [ "${TACHYON_JOURNAL_FOLDER}X" != "X" ]
 then

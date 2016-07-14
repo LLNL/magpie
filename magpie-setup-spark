@@ -129,10 +129,10 @@ fi
 
 if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
-    # sets hadooptmpdir and fsdefault
+    # sets magpie_hadooptmpdir and magpie_fsdefault
     Magpie_calculate_hadoop_filesystem_paths ${sparknoderank}
 
-    sparklocalscratchdirpath="${hadooptmpdir}/spark/node-${sparknoderank}"
+    sparklocalscratchdirpath="${magpie_hadooptmpdir}/spark/node-${sparknoderank}"
     
     if [ ! -d "${sparklocalscratchdirpath}" ]
     then

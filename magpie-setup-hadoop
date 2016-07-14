@@ -462,16 +462,16 @@ fi
 
 pathcount=0
 
-# sets hadooptmpdir and fsdefault
+# sets magpie_hadooptmpdir and magpie_fsdefault
 Magpie_calculate_hadoop_filesystem_paths ${hadoopnoderank}
 
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
 then
-    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
+    magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
 
     # Assume if path doesn't exist must hdfsformat
-    if [ -d "${hadooptmpdir}" ]
+    if [ -d "${magpie_hadooptmpdir}" ]
     then
         hdfsformat=0
     else
@@ -505,24 +505,24 @@ then
     datanodedir=`echo "${datanodedirtmp}" | sed "s/\\//\\\\\\\\\//g"`
 elif Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
 then
-    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
+    magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
     # Assume if path doesn't exist must hdfsformat
-    if [ -d "${hadooptmpdir}" ]
+    if [ -d "${magpie_hadooptmpdir}" ]
     then
         hdfsformat=0
     else
         hdfsformat=1
-        mkdir -p ${hadooptmpdir}
+        mkdir -p ${magpie_hadooptmpdir}
         if [ $? -ne 0 ] ; then
-            echo "mkdir failed making ${hadooptmpdir}"
+            echo "mkdir failed making ${magpie_hadooptmpdir}"
             exit 1
         fi
 
         if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
         then
-            /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${hadooptmpdir}
+            /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
         fi
     fi
     
@@ -553,8 +553,8 @@ then
     fi
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
-    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
+    magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
     if [ ! -d "${HADOOP_RAWNETWORKFS_PATH}" ]
     then
@@ -565,11 +565,11 @@ then
         fi
     fi
         
-    if [ ! -d "${hadooptmpdir}" ]
+    if [ ! -d "${magpie_hadooptmpdir}" ]
     then
-        mkdir -p ${hadooptmpdir}
+        mkdir -p ${magpie_hadooptmpdir}
         if [ $? -ne 0 ] ; then
-            echo "mkdir failed making ${hadooptmpdir}"
+            echo "mkdir failed making ${magpie_hadooptmpdir}"
             exit 1
         fi
     fi
@@ -578,14 +578,14 @@ then
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
 then
     intellustrerootdir=`echo "${HADOOP_INTELLUSTRE_PATH}" | sed "s/\\//\\\\\\\\\//g"`
-    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
+    magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
 
-    if [ ! -d "${hadooptmpdir}" ]
+    if [ ! -d "${magpie_hadooptmpdir}" ]
     then
-        mkdir -p ${hadooptmpdir}
+        mkdir -p ${magpie_hadooptmpdir}
         if [ $? -ne 0 ] ; then
-            echo "mkdir failed making ${hadooptmpdir}"
+            echo "mkdir failed making ${magpie_hadooptmpdir}"
             exit 1
         fi
     fi
@@ -594,8 +594,8 @@ then
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
 then
     magpienetworkfsbase=`echo "${HADOOP_MAGPIENETWORKFS_PATH}" | sed "s/\\//\\\\\\\\\//g"`
-    hadooptmpdirsubst=`echo "${hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    fsdefaultsubst=`echo ${fsdefault} | sed "s/\\//\\\\\\\\\//g"`
+    magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+    magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
     
     if [ ! -d "${HADOOP_MAGPIENETWORKFS_PATH}" ]
     then
@@ -606,11 +606,11 @@ then
         fi
     fi
     
-    if [ ! -d "${hadooptmpdir}" ]
+    if [ ! -d "${magpie_hadooptmpdir}" ]
     then
-        mkdir -p ${hadooptmpdir}
+        mkdir -p ${magpie_hadooptmpdir}
         if [ $? -ne 0 ] ; then
-            echo "mkdir failed making ${hadooptmpdir}"
+            echo "mkdir failed making ${magpie_hadooptmpdir}"
             exit 1
         fi
     fi
@@ -678,7 +678,7 @@ then
     # If HDFS would be stored in HDFS, so pick a better path
     yardappmapreduceamstagingdir="${HADOOP_LOCAL_SCRATCHSPACE_DIR}/yarn/"
 else
-    yardappmapreduceamstagingdir="${hadooptmpdir}/yarn/"
+    yardappmapreduceamstagingdir="${magpie_hadooptmpdir}/yarn/"
 fi
 
 # Sets magpie_hadoop_stop_timeout
@@ -926,8 +926,8 @@ then
     fi
 
     sed -i \
-        -e "s/HADOOPTMPDIR/${hadooptmpdirsubst}/g" \
-        -e "s/FSDEFAULT/${fsdefaultsubst}/g" \
+        -e "s/HADOOPTMPDIR/${magpie_hadooptmpdirsubst}/g" \
+        -e "s/FSDEFAULT/${magpie_fsdefaultsubst}/g" \
         -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
         -e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
         -e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
