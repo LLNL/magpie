@@ -30,8 +30,6 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
@@ -50,8 +48,14 @@ Magpie_run_start_zeppelin () {
 
         if [ ${ZEPPELIN_MODE} != "setuponly" ]
         then
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_unspecified
+
             echo "Starting Zeppelin"
             ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh --config ${ZEPPELIN_CONF_DIR} start
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
 
             # My rough estimate for setup time is 30 seconds
             local sleepwait=30
@@ -221,8 +225,14 @@ Magpie_run_stop_zeppelin () {
         then
             cd ${ZEPPELIN_HOME}
             
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_unspecified
+
             echo "Stopping Zeppelin"
             ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh stop
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
         fi
     fi
     zeppelin_teardown_complete=1
