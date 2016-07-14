@@ -70,7 +70,7 @@ zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
 kafkazookeeperconnect=""
 for zookeepernode in ${zookeepernodes}
 do
-    kafkazookeeperconnect="${kafkazookeeperconnect}${kafkazookeeperconnect:+","}${zookeepernode}:${ZOOKEEPER_CLIENT_PORT}"
+    kafkazookeeperconnect="${kafkazookeeperconnect}${kafkazookeeperconnect:+","}${zookeepernode}:${default_zookeeper_client_port}"
 done
 
 if [ "${KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT}X" == "X" ]

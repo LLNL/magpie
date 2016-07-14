@@ -342,10 +342,6 @@ then
     # ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR & ZOOKEEPER_CONF_DIR & ZOOKEEPER_LOG_DIR set
     Magpie_make_zookeeper_local_dirs_node_specific
 
-    export ZOOKEEPER_CLIENT_PORT="2181"
-    export ZOOKEEPER_PEER_PORT="2888"
-    export ZOOKEEPER_LEADER_PORT="3888"
-
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     if [ -f "${ZOOKEEPER_CONF_DIR}/masters" ]
     then 

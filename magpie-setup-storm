@@ -143,7 +143,7 @@ sed -i \
     -e "s/NIMBUSHOST/${STORM_MASTER_NODE}/g" \
     -e "s/STORMLOCALDIR/${stormlocaldirsubst}/g" \
     -e "s/STORMLOGDIR/${stormlogdirsubst}/g" \
-    -e "s/STORMZOOKEEPERPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/STORMZOOKEEPERPORT/${default_zookeeper_client_port}/g" \
     -e "s/STORMUIPORT/${default_storm_ui_port}/g" \
     -e "s/STORMLOGVIEWERPORT/${default_storm_logviewer_port}/g" \
     -e "s/STORMDRPCPORT/${default_storm_drpc_port}/g" \

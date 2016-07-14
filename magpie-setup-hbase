@@ -246,7 +246,7 @@ sed -i \
     -e "s/HBASEMASTERINFOPORT/${default_hbase_master_info_port}/g" \
     -e "s/HBASEREGIONSERVERPORT/${default_hbase_regionserver_port}/g" \
     -e "s/HBASEREGIONSERVERINFOPORT/${default_hbase_regionserver_info_port}/g" \
-    -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${default_zookeeper_client_port}/g" \
     -e "s/HBASEMASTERHOST/${HBASE_MASTER_NODE}/g" \
     -e "s/HBASE_HOST/${HBASE_THIS_HOST}/g" \
     -e "s/ZOOKEEPERSESSIONTIMEOUT/${zookeepersessiontimeout}/g" \

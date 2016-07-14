@@ -31,6 +31,7 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
@@ -173,7 +174,7 @@ sed -i \
     -e "s/ZOOKEEPERTICKTIME/${zookeeperticktime}/g" \
     -e "s/ZOOKEEPERINITLIMIT/${zookeeperinitlimit}/g" \
     -e "s/ZOOKEEPERSYNCLIMIT/${zookeepersynclimit}/g" \
-    -e "s/ZOOKEEPERCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/ZOOKEEPERCLIENTPORT/${default_zookeeper_client_port}/g" \
     -e "s/ZOOKEEPERHOST/${ZOOKEEPER_THIS_HOST}/g" \
     ${post_zookeepercfg}
     
@@ -182,7 +183,7 @@ zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
 servercount=1
 for zookeepernode in ${zookeepernodes}
 do
-    echo "server.${servercount}=${zookeepernode}:${ZOOKEEPER_PEER_PORT}:${ZOOKEEPER_LEADER_PORT}" >> ${post_zookeepercfg}
+    echo "server.${servercount}=${zookeepernode}:${default_zookeeper_peer_port}:${default_zookeeper_leader_port}" >> ${post_zookeepercfg}
     servercount=`expr ${servercount} + 1`
 done
 
