@@ -22,13 +22,13 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export common functions
-#
 # This is used by scripts, don't edit this
 #
-# Unlike 'magpie-lib-misc-external', these functions are common but
-# live inside the Magpie system.  They largely require environment
-# variables, functions, etc. to have been setup.
+# This file has common node identification functions. These are used
+# predominantly to determine what node you're presently
+# configuring/setting up/running on.  Should be sourced and used only
+# after magpie-setup-core is run b/c it depends on master/slaves to be
+# setup.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs

@@ -24,7 +24,9 @@
 
 # This is used by scripts, don't edit this
 #
-# Should be sourced only after magpie-setup-core
+# This file has common hadoop filesystem path calculations.  Should be
+# sourced and used only after magpie-setup-core is run b/c it depends
+# on master/slaves to be setup and magpie-exports-user to be callable.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type

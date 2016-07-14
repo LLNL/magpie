@@ -22,13 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export helper functions
-#
 # This is used by scripts, don't edit this
 #
-# Unlike 'magpie-lib-node-identification', these are outside of 'magpie' and
-# do not depend on any variables/functions/environment variables
-# within the Magpie system.
+# This file has common helper functions.
 
 Magpie_walltime_to_minutes () {
     local walltime=$1

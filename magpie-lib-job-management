@@ -22,10 +22,10 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export common functions for running jobs, should only be sourced
-# from magpie-run* files.
-#
 # This is used by scripts, don't edit this
+#
+# This file has common job management functions.  Should be
+# sourced and used only in magpie-run* files.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type

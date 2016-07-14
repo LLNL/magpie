@@ -22,9 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export log functions
-#
 # This is used by scripts, don't edit this
+#
+# This file has helper log functions.
 
 __Magpie_output_internal_message () {
     local leveltype=$1

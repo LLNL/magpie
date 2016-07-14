@@ -23,6 +23,8 @@
 #############################################################################
 
 # This is used by scripts, don't edit this
+#
+# This file has common hdfs checks.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 

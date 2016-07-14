@@ -22,6 +22,10 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+# This is used by scripts, don't edit this
+#
+# Export common magpie exports promised by user documentation.
+
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
 
 __Magpie_calc_slurm_magpie_timelimit () {
