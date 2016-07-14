@@ -31,22 +31,16 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
 
 cd ${HADOOP_HOME}
             
-# to get hadoopnoderank
-Magpie_am_I_a_hadoop_node
+hadooptmpdir=`${hadoopcmdprefix}/hdfs getconf -confKey hadoop.tmp.dir 2> /dev/null`
 
-# to get magpie_hadooptmpdir
-Magpie_calculate_hadoop_filesystem_paths ${hadoopnoderank}
-
-currentnamenodepath="${magpie_hadooptmpdir}/dfs/name/current"
-previousnamenodepath="${magpie_hadooptmpdir}/dfs/name/previous"
+currentnamenodepath="${hadooptmpdir}/dfs/name/current"
+previousnamenodepath="${hadooptmpdir}/dfs/name/previous"
 
 # The fact we are in this script means we are out of safe mode.
 #

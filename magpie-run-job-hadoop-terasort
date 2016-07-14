@@ -155,12 +155,12 @@ else
             Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
             exit 1
         fi
-
+        
         mtasks=`expr $terasortfullsize \/ ${defaultblocksize}`
         mtasks=`expr $mtasks + 1`
         
         # But use the default map task count if it is smaller than this max.
-
+        
         defaultmaptasks=`${hadoopcmdprefix}/hdfs getconf -confKey mapreduce.job.maps 2> /dev/null`
         
         if [ "${defaultmaptasks}" -lt "${mtasks}" ]
