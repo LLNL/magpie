@@ -33,13 +33,13 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_phoenix () {
-    if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${hbase_setup_successful}" == "0" ]
+        if [ "${magpie_run_hbase_setup_successful}" == "0" ]
         then
             Magpie_output_internal_error "Attempt to setup Phoenix without Hbase being setup"
-            phoenix_should_be_torndown=0
-            phoenix_setup_successful=0
+            magpie_run_phoenix_should_be_torndown=0
+            magpie_run_phoenix_setup_successful=0
             return 1
         fi
 
@@ -60,7 +60,7 @@ Magpie_run_start_phoenix () {
 
             echo "Waiting ${sleepwait} seconds to allow Phoenix daemons to setup"
             sleep ${sleepwait}
-            totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+            magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
         fi
 
         echo "*******************************************************"
@@ -111,13 +111,13 @@ Magpie_run_start_phoenix () {
         then
             local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
-            if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
             then  
             # Could be more dynamic w/ slurm call to determine current
             # run time, but probably is sufficient for this trivial
-            # part.  Minimally, have to leave the totalsleepwait code
+            # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
             # around for non-slurm systems.
-                local phoenixmaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+                local phoenixmaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
                 
                 if [ "${phoenixmaxwaitseconds}" -lt 30 ]
                 then
@@ -156,26 +156,26 @@ Magpie_run_start_phoenix () {
 
                 echo "Waiting 30 more seconds for Queryservers to come up"
                 sleep 30
-                totalsleepwait=`expr ${totalsleepwait} + 30`
+                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
             done
             
             if [ "${phoenixcameup}" == "0" ]
             then
                 echo "Not all Phoenix Queryservers came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-                phoenix_should_be_torndown=1
-                phoenix_setup_successful=0
-                prior_setup_successful=false
+                magpie_run_phoenix_should_be_torndown=1
+                magpie_run_phoenix_setup_successful=0
+                magpie_run_prior_startup_successful=false
             else
-                phoenix_should_be_torndown=1
-                phoenix_setup_successful=1
+                magpie_run_phoenix_should_be_torndown=1
+                magpie_run_phoenix_setup_successful=1
             fi
         else
-            phoenix_should_be_torndown=1
-            phoenix_setup_successful=1
+            magpie_run_phoenix_should_be_torndown=1
+            magpie_run_phoenix_setup_successful=1
         fi
     else
-        phoenix_should_be_torndown=0
-        phoenix_setup_successful=1
+        magpie_run_phoenix_should_be_torndown=0
+        magpie_run_phoenix_setup_successful=1
     fi
 }
 
@@ -208,12 +208,12 @@ Magpie_run_phoenix () {
 }
 
 Magpie_run_stop_phoenix () {
-    if [ "${hbase_teardown_complete}" == "1" ]
+    if [ "${magpie_run_hbase_teardown_complete}" == "1" ]
     then
         Magpie_output_internal_warning "tearing down Phoenix after Hbase"
     fi
 
-    if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${phoenix_should_be_torndown}" == "1" ]
+    if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
     then
         if [ ${PHOENIX_MODE} == "server" ]
         then
@@ -229,5 +229,5 @@ Magpie_run_stop_phoenix () {
             Magpie_make_all_local_dirs_node_specific
         fi
     fi
-    phoenix_teardown_complete=1
+    magpie_run_phoenix_teardown_complete=1
 }

@@ -33,13 +33,13 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_tachyon () {
-    if [ "${TACHYON_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${TACHYON_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${hadoop_setup_successful}" == "0" ]
+        if [ "${magpie_run_hadoop_setup_successful}" == "0" ]
         then
             Magpie_output_internal_error "Attempt to setup Tachyon without Hadoop being setup"
-            tachyon_should_be_torndown=0
-            tachyon_setup_successful=0
+            magpie_run_tachyon_should_be_torndown=0
+            magpie_run_tachyon_setup_successful=0
             return 1
         fi
 
@@ -82,7 +82,7 @@ Magpie_run_start_tachyon () {
                 fi
                 echo "Waiting ${sleepwait} seconds to allow Tachyon format to complete"
                 sleep ${sleepwait}
-                totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
             fi
 
             echo "Starting tachyon"
@@ -96,7 +96,7 @@ Magpie_run_start_tachyon () {
             fi
             echo "Waiting ${sleepwait} seconds to allow Tachyon daemons to setup"
             sleep ${sleepwait}
-            totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+            magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
         fi
 
         echo "*******************************************************"
@@ -179,11 +179,11 @@ Magpie_run_start_tachyon () {
         fi
 
         # Nothing to check for Tachyon, setup always passes
-        tachyon_should_be_torndown=1
-        tachyon_setup_successful=1
+        magpie_run_tachyon_should_be_torndown=1
+        magpie_run_tachyon_setup_successful=1
     else
-        tachyon_should_be_torndown=0
-        tachyon_setup_successful=1
+        magpie_run_tachyon_should_be_torndown=0
+        magpie_run_tachyon_setup_successful=1
     fi
 }
 
@@ -216,12 +216,12 @@ Magpie_run_tachyon () {
 }
 
 Magpie_run_stop_tachyon () {
-    if [ "${hadoop_teardown_complete}" == "1" ]
+    if [ "${magpie_run_hadoop_teardown_complete}" == "1" ]
     then
         Magpie_output_internal_warning "tearing down Tachyon after Hadoop"
     fi
 
-    if [ "${TACHYON_SETUP}" == "yes" ] && [ "${tachyon_should_be_torndown}" == "1" ]
+    if [ "${TACHYON_SETUP}" == "yes" ] && [ "${magpie_run_tachyon_should_be_torndown}" == "1" ]
     then
         if [ ${TACHYON_MODE} != "setuponly" ]
         then
@@ -240,5 +240,5 @@ Magpie_run_stop_tachyon () {
         ${tachyoncmdprefix}/tachyon-stop.sh all
         fi
     fi
-    tachyon_teardown_complete=1
+    magpie_run_tachyon_teardown_complete=1
 }

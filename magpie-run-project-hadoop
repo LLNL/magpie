@@ -34,7 +34,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
 Magpie_run_start_hadoop () {
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
         local hdfs_was_setup=0
 
@@ -183,7 +183,7 @@ Magpie_run_start_hadoop () {
                 fi
                 echo "Waiting ${sleepwait} seconds to allows Hadoop daemons to setup"
                 sleep ${sleepwait}
-                totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
             fi
         fi
 
@@ -400,13 +400,13 @@ Magpie_run_start_hadoop () {
             then
                 local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
-                if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+                if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
                 then  
                     # Could be more dynamic w/ slurm call to determine current
                     # run time, but probably is sufficient for this trivial
-                    # part.  Minimally, have to leave the totalsleepwait code
+                    # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
                     # around for non-slurm systems.
-                    local namenodemaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+                    local namenodemaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
                     
                     if [ "${namenodemaxwaitseconds}" -lt 30 ]
                     then
@@ -463,32 +463,32 @@ Magpie_run_start_hadoop () {
 
                     echo "Waiting 30 more seconds for namenode to exit safe mode"
                     sleep 30
-                    totalsleepwait=`expr ${totalsleepwait} + 30`
+                    magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
                 done
                 
                 if [ "${exittedsafemode}" == "0" ]
                 then
                     echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-                    hadoop_should_be_torndown=1
-                    hadoop_setup_successful=0
-                    prior_setup_successful=false
+                    magpie_run_hadoop_should_be_torndown=1
+                    magpie_run_hadoop_setup_successful=0
+                    magpie_run_prior_startup_successful=false
                 else
-                    hadoop_should_be_torndown=1
-                    hadoop_setup_successful=1
+                    magpie_run_hadoop_should_be_torndown=1
+                    magpie_run_hadoop_setup_successful=1
                 fi
             else
-                hadoop_should_be_torndown=0
-                hadoop_setup_successful=0
-                prior_setup_successful=false
+                magpie_run_hadoop_should_be_torndown=0
+                magpie_run_hadoop_setup_successful=0
+                magpie_run_prior_startup_successful=false
             fi
         else
-            hadoop_should_be_torndown=1
-            hadoop_setup_successful=1
+            magpie_run_hadoop_should_be_torndown=1
+            magpie_run_hadoop_setup_successful=1
         fi
 
         # Setup job history server after namenode comes up, it may need to
         # write/create in HDFS
-        if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoop_setup_successful}" == "1" ]
+        if [ ${HADOOP_MODE} != "setuponly" ] && [ "${magpie_run_hadoop_setup_successful}" == "1" ]
         then
             if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
             then
@@ -503,7 +503,7 @@ Magpie_run_start_hadoop () {
 
         # A number of applications assume the user home directory has been
         # created.  If it hasn't yet, lets create it for the user.
-        if [ "${hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
+        if [ "${magpie_run_hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
         then
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
@@ -516,8 +516,8 @@ Magpie_run_start_hadoop () {
             fi
         fi
     else
-        hadoop_should_be_torndown=0
-        hadoop_setup_successful=1
+        magpie_run_hadoop_should_be_torndown=0
+        magpie_run_hadoop_setup_successful=1
     fi
 }
 
@@ -595,7 +595,7 @@ Magpie_run_hadoop () {
 }
  
 Magpie_run_stop_hadoop () {
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoop_should_be_torndown}" == "1" ]
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_hadoop_should_be_torndown}" == "1" ]
     then
         if [ ${HADOOP_MODE} != "setuponly" ]
         then
@@ -623,7 +623,7 @@ Magpie_run_stop_hadoop () {
 
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-                if [ "${hadoop_setup_successful}" == "1" ]
+                if [ "${magpie_run_hadoop_setup_successful}" == "1" ]
                 then
                     echo "Saving namespace before shutting down hdfs ..."
 
@@ -677,5 +677,5 @@ Magpie_run_stop_hadoop () {
             fi
         fi
     fi
-    hadoop_teardown_complete=1
+    magpie_run_hadoop_teardown_complete=1
 }

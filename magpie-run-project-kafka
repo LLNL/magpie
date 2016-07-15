@@ -33,13 +33,13 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_kafka () {
-    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${zookeeper_setup_successful}" == "0" ]
+        if [ "${magpie_run_zookeeper_setup_successful}" == "0" ]
         then
             Magpie_output_internal_error "Attempt to setup Kafka without Zookeeper being setup"
-            kafka_should_be_torndown=0
-            kafka_setup_successful=0
+            magpie_run_kafka_should_be_torndown=0
+            magpie_run_kafka_setup_successful=0
             return 1
         fi
 
@@ -63,7 +63,7 @@ Magpie_run_start_kafka () {
             fi
             echo "Waiting ${sleepwait} seconds to allow Kafka daemons to setup"
             sleep ${sleepwait}
-            totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+            magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
         fi
 
         echo "*******************************************************"
@@ -116,13 +116,13 @@ Magpie_run_start_kafka () {
         then
             local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
-            if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
             then  
             # Could be more dynamic w/ slurm call to determine current
             # run time, but probably is sufficient for this trivial
-            # part.  Minimally, have to leave the totalsleepwait code
+            # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
             # around for non-slurm systems.
-                local kafkamaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+                local kafkamaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
                 
                 if [ "${kafkamaxwaitseconds}" -lt 30 ]
                 then
@@ -171,26 +171,26 @@ Magpie_run_start_kafka () {
 
                 echo "Waiting 30 more seconds for Kafka Servers to come up"
                 sleep 30
-                totalsleepwait=`expr ${totalsleepwait} + 30`
+                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
             done
             
             if [ "${kafkacameup}" == "0" ]
             then
                 echo "Not all Kafka Servers came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-                kafka_should_be_torndown=1
-                kafka_setup_successful=0
-                prior_setup_successful=false
+                magpie_run_kafka_should_be_torndown=1
+                magpie_run_kafka_setup_successful=0
+                magpie_run_prior_startup_successful=false
             else
-                kafka_should_be_torndown=1
-                kafka_setup_successful=1
+                magpie_run_kafka_should_be_torndown=1
+                magpie_run_kafka_setup_successful=1
             fi
         else
-            kafka_should_be_torndown=1
-            kafka_setup_successful=1
+            magpie_run_kafka_should_be_torndown=1
+            magpie_run_kafka_setup_successful=1
         fi
     else
-        kafka_should_be_torndown=0
-        kafka_setup_successful=1
+        magpie_run_kafka_should_be_torndown=0
+        magpie_run_kafka_setup_successful=1
     fi
 }
 
@@ -215,12 +215,12 @@ Magpie_run_kafka () {
 }
 
 Magpie_run_stop_kafka () {
-    if [ "${zookeeper_teardown_complete}" == "1" ]
+    if [ "${magpie_run_zookeeper_teardown_complete}" == "1" ]
     then
         Magpie_output_internal_warning "tearing down Kafka after Zookeeper"
     fi
 
-    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${kafka_should_be_torndown}" == "1" ]
+    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${magpie_run_kafka_should_be_torndown}" == "1" ]
     then
         if [ ${KAFKA_MODE} != "setuponly" ]
         then
@@ -236,5 +236,5 @@ Magpie_run_stop_kafka () {
             Magpie_make_all_local_dirs_node_specific
         fi
     fi
-    kafka_teardown_complete=1
+    magpie_run_kafka_teardown_complete=1
 }

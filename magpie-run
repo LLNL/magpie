@@ -101,16 +101,16 @@ then
 fi
 
 # Global flag for setup check, will be set to false if any startup fails
-prior_setup_successful=true
+magpie_run_prior_startup_successful=true
 
 # Global, will be set/adjusted by various start functions
-totalsleepwait=0
+magpie_run_total_sleep_wait=0
 
 # Zookeeper setup must come first, as other things like Hbase & Storm require it
-# Will set zookeeper_should_be_torndown & zookeeper_setup_successful appropriately
+# Will set magpie_run_zookeeper_should_be_torndown & magpie_run_zookeeper_setup_successful appropriately
 Magpie_run_start_zookeeper
 
-# Will set hadoop_should_be_torndown & hadoop_setup_successful appropriately
+# Will set magpie_run_hadoop_should_be_torndown & magpie_run_hadoop_setup_successful appropriately
 Magpie_run_start_hadoop
 
 # After Hadoop setup, requires Hadoop
@@ -119,41 +119,41 @@ Magpie_run_start_pig
 Magpie_run_start_mahout
 
 # After Zookeeper setup, requires Zookeeper
-# Will set hbase_should_be_torndown & hbase_setup_successful appropriately
+# Will set magpie_run_hbase_should_be_torndown & magpie_run_hbase_setup_successful appropriately
 Magpie_run_start_hbase
 
 # After Hbase setup, requires Hbase
-# Will set phoenix_should_be_torndown & phoenix_setup_successful appropriately
+# Will set magpie_run_phoenix_should_be_torndown & magpie_run_phoenix_setup_successful appropriately
 Magpie_run_start_phoenix
 
-# Will set spark_should_be_torndown & spark_setup_successful appropriately
+# Will set magpie_run_spark_should_be_torndown & magpie_run_spark_setup_successful appropriately
 Magpie_run_start_spark
 
-# Will set kafka_should_be_torndown & kafka_setup_successful appropriately
+# Will set magpie_run_kafka_should_be_torndown & magpie_run_kafka_setup_successful appropriately
 Magpie_run_start_kafka
 
 # After Spark setup, requires Spark
-# Will set zeppelin_should_be_torndown & zeppelin_setup_successful appropriately
+# Will set magpie_run_zeppelin_should_be_torndown & magpie_run_zeppelin_setup_successful appropriately
 Magpie_run_start_zeppelin
 
 # After Zookeeper setup, requires Zookeeper
-# Will set storm_should_be_torndown & storm_setup_successful appropriately
+# Will set magpie_run_storm_should_be_torndown & magpie_run_storm_setup_successful appropriately
 Magpie_run_start_storm
 
 # After Hadoop setup, requires HDFS for formatting
-# Will set tachyon_should_be_torndown & tachyon_setup_successful appropriately
+# Will set magpie_run_tachyon_should_be_torndown & magpie_run_tachyon_setup_successful appropriately
 Magpie_run_start_tachyon
 
 # Make sure all setup passed
-if [ "${zookeeper_setup_successful}" == "1" ] \
-    && [ "${hadoop_setup_successful}" == "1" ] \
-    && [ "${hbase_setup_successful}" == "1" ] \
-    && [ "${phoenix_setup_successful}" == "1" ] \
-    && [ "${spark_setup_successful}" == "1" ] \
-    && [ "${kafka_setup_successful}" == "1" ] \
-    && [ "${zeppelin_setup_successful}" == "1" ] \
-    && [ "${storm_setup_successful}" == "1" ] \
-    && [ "${tachyon_setup_successful}" == "1" ]
+if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
+    && [ "${magpie_run_hadoop_setup_successful}" == "1" ] \
+    && [ "${magpie_run_hbase_setup_successful}" == "1" ] \
+    && [ "${magpie_run_phoenix_setup_successful}" == "1" ] \
+    && [ "${magpie_run_spark_setup_successful}" == "1" ] \
+    && [ "${magpie_run_kafka_setup_successful}" == "1" ] \
+    && [ "${magpie_run_zeppelin_setup_successful}" == "1" ] \
+    && [ "${magpie_run_storm_setup_successful}" == "1" ] \
+    && [ "${magpie_run_tachyon_setup_successful}" == "1" ]
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
@@ -216,34 +216,34 @@ then
 fi
 
 # Tachyon before Hadoop shutdown, may need to flush
-# Sets tachyon_teardown_complete if teardown done
+# Sets magpie_run_tachyon_teardown_complete if teardown done
 Magpie_run_stop_tachyon
 
-# Sets storm_teardown_complete if teardown done
+# Sets magpie_run_storm_teardown_complete if teardown done
 Magpie_run_stop_storm
 
 # Before Spark, depends on Spark
-# Sets zeppelin_teardown_complete if teardown done
+# Sets magpie_run_zeppelin_teardown_complete if teardown done
 Magpie_run_stop_zeppelin
 
-# Sets kafka_teardown_complete if teardown done
+# Sets magpie_run_kafka_teardown_complete if teardown done
 Magpie_run_stop_kafka
 
-# Sets spark_teardown_complete if teardown done
+# Sets magpie_run_spark_teardown_complete if teardown done
 Magpie_run_stop_spark
 
 # Before Hbase, depends on Hbase
-# Sets phoenix_teardown_complete if teardown done
+# Sets magpie_run_phoenix_teardown_complete if teardown done
 Magpie_run_stop_phoenix
 
-# Sets hbase_teardown_complete if teardown done
+# Sets magpie_run_hbase_teardown_complete if teardown done
 Magpie_run_stop_hbase
 
-# Sets hadoop_teardown_complete if teardown done
+# Sets magpie_run_hadoop_teardown_complete if teardown done
 Magpie_run_stop_hadoop
 
 # Zookeeper teardown comes last, as other things like Hbase & Storm require it
-# Sets zookeeper_teardown_complete if teardown done
+# Sets magpie_run_zookeeper_teardown_complete if teardown done
 Magpie_run_stop_zookeeper
 
 exit 0

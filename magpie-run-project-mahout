@@ -31,9 +31,9 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_mahout () {
-    if [ "${MAHOUT_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${MAHOUT_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${hadoop_setup_successful}" == "0" ]
+        if [ "${magpie_run_hadoop_setup_successful}" == "0" ]
         then
             Magpie_output_internal_warning "Attempt to setup Mahout without Hadoop being setup"
         fi
