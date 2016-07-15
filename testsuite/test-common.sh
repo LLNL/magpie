@@ -22,9 +22,6 @@ mahouthadoop27java17versions_javaversion=${java17}
 mahout_test_groups="mahouthadoop27java17versions"
 mahout_all_versions="${mahouthadoop27java17versions}"
 
-pighadoop24java16versions="0.12.0 0.12.1"
-pighadoop24java16versions_hadoopversion="2.4.1"
-pighadoop24java16versions_javaversion=${java16}
 pighadoop26java16versions="0.13.0 0.14.0"
 pighadoop26java16versions_hadoopversion="2.6.4"
 pighadoop26java16versions_javaversion=${java16}
@@ -32,8 +29,8 @@ pighadoop27java17versions="0.15.0"
 pighadoop27java17versions_hadoopversion="2.7.2"
 pighadoop27java17versions_javaversion=${java17}
 
-pig_test_groups="pighadoop24java16versions pighadoop26java16versions pighadoop27java17versions"
-pig_all_versions="${pighadoop24java16versions} ${pighadoop26java16versions} ${pighadoop27java17versions}"
+pig_test_groups="pighadoop26java16versions pighadoop27java17versions"
+pig_all_versions="${pighadoop26java16versions} ${pighadoop27java17versions}"
 
 hbasehadoop26zookeeper34java16versions="0.98.3-hadoop2 0.98.9-hadoop2"
 hbasehadoop26zookeeper34java16versions_hadoopversion="2.6.4"
