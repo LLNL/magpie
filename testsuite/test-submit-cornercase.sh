@@ -239,6 +239,10 @@ __SubmitCornerCaseTests_RequireYarn() {
 __SubmitCornerCaseTests_BadComboSettings() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-1
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-4
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
 }
 
 SubmitCornerCaseTests() {

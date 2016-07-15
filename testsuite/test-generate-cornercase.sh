@@ -958,8 +958,24 @@ __GenerateCornerCaseTests_BadComboSettings() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
         sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
         sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="MR1"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
-    fi
 
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-3
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfs"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-3
+        sed -i -e 's/export HADOOP_HDFS_PATH/# export HADOOP_HDFS_PATH/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-3
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-4
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-4
+        sed -i -e 's/export HADOOP_HDFSOVERLUSTRE_PATH/# export HADOOP_HDFSOVERLUSTRE_PATH/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-4
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
+        sed -i -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH/# export HADOOP_HDFSOVERNETWORKFS_PATH/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
+        sed -i -e 's/export HADOOP_RAWNETWORKFS_PATH/# export HADOOP_RAWNETWORKFS_PATH/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
+    fi
+    
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcombosettings*"`
     if [ -n "${files}" ]
     then
