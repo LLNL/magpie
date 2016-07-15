@@ -52,29 +52,26 @@ Magpie_run_start_mahout () {
         echo "*"
         echo "* Mahout Information"
         echo "*"
-        if [ "${MAHOUT_MODE}" == "interactive" ]
+        echo "* To run Mahout directly, follow above instructions for"
+        echo "* to your allocation then:"
+        echo "*"
+        if echo $MAGPIE_SHELL | grep -q csh
         then
-            echo "* To run mahout, follow above instructions for logging in"
-            echo "* to your allocation then:"
-            echo "*"
-            if echo $MAGPIE_SHELL | grep -q csh
+            echo "*   setenv MAHOUT_HOME \"${MAHOUT_HOME}\""
+            if [ "${MAHOUT_OPTS}X" != "X" ]
             then
-                echo "*   setenv MAHOUT_HOME \"${MAHOUT_HOME}\""
-                if [ "${MAHOUT_OPTS}X" != "X" ]
-                then
-                    echo "*   setenv MAHOUT_OPTS \"${MAHOUT_OPTS}\""
-                fi
-            else
-                echo "*   export MAHOUT_HOME=\"${MAHOUT_HOME}\""
-                if [ "${MAHOUT_OPTS}X" != "X" ]
-                then
-                    echo "*   export MAHOUT_OPTS=\"${MAHOUT_OPTS}\""
-                fi
+                echo "*   setenv MAHOUT_OPTS \"${MAHOUT_OPTS}\""
             fi
-            echo "*"
-            echo "* \$MAHOUT_HOME/${mahoutcmdprefix}/mahout ..."
-            echo "*" 
+        else
+            echo "*   export MAHOUT_HOME=\"${MAHOUT_HOME}\""
+            if [ "${MAHOUT_OPTS}X" != "X" ]
+            then
+                echo "*   export MAHOUT_OPTS=\"${MAHOUT_OPTS}\""
+            fi
         fi
+        echo "*"
+        echo "* \$MAHOUT_HOME/${mahoutcmdprefix}/mahout ..."
+        echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"

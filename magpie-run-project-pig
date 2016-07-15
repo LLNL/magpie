@@ -51,30 +51,27 @@ Magpie_run_start_pig () {
         echo "*"
         echo "* Pig Information"
         echo "*"
-        if [ "${PIG_MODE}" == "interactive" ]
+        echo "* To run Pig directly, follow above instructions for"
+        echo "* to your allocation, then:"
+        echo "*"
+        if echo $MAGPIE_SHELL | grep -q csh
         then
-            echo "* To run Pig, follow above instructions for logging in"
-            echo "* to your allocation then:"
-            echo "*"
-            if echo $MAGPIE_SHELL | grep -q csh
+            echo "*   setenv PIG_HOME \"${PIG_HOME}\""
+            echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
+            if [ "${PIG_OPTS}X" != "X" ]
             then
-                echo "*   setenv PIG_HOME \"${PIG_HOME}\""
-                echo "*   setenv PIG_CONF_DIR \"${PIG_CONF_DIR}\""
-                if [ "${PIG_OPTS}X" != "X" ]
-                then
-                    echo "*   setenv PIG_OPTS \"${PIG_OPTS}\""
-                fi
-            else
-                echo "*   export PIG_HOME=\"${PIG_HOME}\""
-                echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
-                if [ "${PIG_OPTS}X" != "X" ]
-                then
-                    echo "*   export PIG_OPTS=\"${PIG_OPTS}\""
-                fi
+                echo "*   setenv PIG_OPTS \"${PIG_OPTS}\""
             fi
-            echo "* \$PIG_HOME/${pigcmdprefix}/pig ..."
-            echo "*" 
+        else
+            echo "*   export PIG_HOME=\"${PIG_HOME}\""
+            echo "*   export PIG_CONF_DIR=\"${PIG_CONF_DIR}\""
+            if [ "${PIG_OPTS}X" != "X" ]
+            then
+                echo "*   export PIG_OPTS=\"${PIG_OPTS}\""
+            fi
         fi
+        echo "* \$PIG_HOME/${pigcmdprefix}/pig ..."
+        echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"
