@@ -75,6 +75,30 @@ __SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsethome
 }
 
+__SubmitCornerCaseTests_NoSetLocalDir() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetlocaldir
+}
+
+__SubmitCornerCaseTests_BadSetLocalDir() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badlocaldir
+}
+
 __SubmitCornerCaseTests_NoSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetscript
@@ -231,6 +255,8 @@ SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_NoSetVersion
     __SubmitCornerCaseTests_NoSetHome
     __SubmitCornerCaseTests_BadSetHome
+    __SubmitCornerCaseTests_NoSetLocalDir
+    __SubmitCornerCaseTests_BadSetLocalDir
     __SubmitCornerCaseTests_NoSetScript
     __SubmitCornerCaseTests_BadSetScript
 

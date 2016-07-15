@@ -236,7 +236,7 @@ then
 fi
 
 files=""
-for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
+for str in nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
 do
     filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
     if [ -n "${filestmp}" ]
@@ -282,6 +282,22 @@ then
     for file in ${files}
     do
         num=`grep -e "\(.*\)_HOME does not point to a directory" $file | wc -l`
+        if [ "${num}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+files=`find . -maxdepth 1 -name "${outputprefix}*badlocaldir*"`
+if [ -n "${files}" ]
+then
+    for file in ${files}
+    do
+        num=`grep -e "mkdir failed making" $file | wc -l`
         if [ "${num}" == "0" ]
         then
             echo "Error in $file"
