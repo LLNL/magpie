@@ -28,7 +28,7 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
-# This is a job, so no loading magpie-exports*, shouldn't be needed
+# This is a job, no loading export files or libs except for minimal convenience ones
 
 sparkwordcountclass="org.apache.spark.examples.JavaWordCount"
 
