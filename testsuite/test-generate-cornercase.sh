@@ -976,6 +976,11 @@ __GenerateCornerCaseTests_BadComboSettings() {
         sed -i -e 's/export HADOOP_RAWNETWORKFS_PATH/# export HADOOP_RAWNETWORKFS_PATH/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
     fi
     
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcombosettings
+        sed -i -e 's/export SPARK_LOCAL_SCRATCH_DIR/# export SPARK_LOCAL_SCRATCH_DIR/' magpie.${submissiontype}-spark-cornercase-badcombosettings
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcombosettings*"`
     if [ -n "${files}" ]
     then

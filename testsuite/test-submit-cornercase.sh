@@ -243,6 +243,7 @@ __SubmitCornerCaseTests_BadComboSettings() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-4
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badcombosettings
 }
 
 __SubmitCornerCaseTests_BadDirectories() {
