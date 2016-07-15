@@ -49,9 +49,9 @@ Magpie_run_start_hadoop () {
             then
                 if Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
-                    # Sets networkedhdfspath & magpie_hdfs_stored_version_path
+                    # Sets magpie_networkedhdfspath & magpie_hdfs_stored_version_path
                     Magpie_get_hdfs_stored_version_path
-                    # Sets networkedhdfspath & magpie_hdfs_stored_nodecount_path
+                    # Sets magpie_networkedhdfspath & magpie_hdfs_stored_nodecount_path
                     Magpie_get_hdfs_stored_nodecount_path
 
                     # Older versions of Magpie didn't store this variable
@@ -67,7 +67,7 @@ Magpie_run_start_hadoop () {
                             if [ "${vercomp_result}" == "1" ]
                             then
                                 echo "**** HDFS Issue ****"
-                                echo "HDFS version at mount ${networkedhdfspath} is older than ${HADOOP_VERSION}."
+                                echo "HDFS version at mount ${magpie_networkedhdfspath} is older than ${HADOOP_VERSION}."
                                 if [ "${HADOOP_MODE}" != "upgradehdfs" ]
                                 then
                                     echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
@@ -76,7 +76,7 @@ Magpie_run_start_hadoop () {
                                 echo "**** HDFS Issue ****"
                             else
                                 echo "**** HDFS Issue ****"
-                                echo "HDFS version at mount ${networkedhdfspath} is newer than ${HADOOP_VERSION}."
+                                echo "HDFS version at mount ${magpie_networkedhdfspath} is newer than ${HADOOP_VERSION}."
                                 echo "Please use a newer Hadoop version."
                                 echo "Or if you wish to use an older Hadoop version, you can setup HDFS on another path"
                                 echo "**** HDFS Issue ****"
