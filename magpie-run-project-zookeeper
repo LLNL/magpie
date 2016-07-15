@@ -29,7 +29,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
 
 __Magpie_run_output_zookeeper_help () {
     echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"

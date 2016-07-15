@@ -29,7 +29,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_hbase () {

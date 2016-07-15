@@ -24,7 +24,7 @@
 
 # This is used by scripts, don't edit this
 #
-# This file has common hdfs checks.
+# This file has common hadoop checks, does not assume anything setup yet
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 

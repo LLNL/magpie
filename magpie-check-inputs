@@ -201,7 +201,7 @@ __Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
 then

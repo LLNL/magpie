@@ -27,7 +27,7 @@
 # details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # This is a job, so no loading magpie-exports*, shouldn't be needed

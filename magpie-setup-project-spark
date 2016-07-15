@@ -37,7 +37,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
