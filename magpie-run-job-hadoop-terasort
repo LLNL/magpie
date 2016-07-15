@@ -165,7 +165,10 @@ else
             mtasks=${defaultmaptasks}
         fi
         
-        mapreducetasks="-Dmapred.map.tasks=${mtasks}"
+        mapreducemaptasks="-Dmapreduce.job.maps=${mtasks}"
+    elif [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+    then 
+        mapreducemaptasks=""
     fi
 fi
 
@@ -173,7 +176,7 @@ echo "*******************************************************"
 echo "* Executing TeraGen"
 echo "*******************************************************"
 
-command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${mapreducetasks} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${mapreducemaptasks} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
             
@@ -202,7 +205,15 @@ then
         whichchecksumcommand="terachecksum"
     fi
 
-    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} ${whichchecksumcommand} ${extralibjars} -Dmapred.reduce.tasks=$sumreducetasks ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
+    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+    then
+        mapreducereducetasks="-Dmapred.reduce.tasks=$sumreducetasks"
+    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+        mapreducereducetasks="-Dmapreduce.job.reduces=$sumreducetasks"
+    fi
+
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} ${whichchecksumcommand} ${extralibjars} ${mapreducereducetasks} ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
 
     echo "Running $command" >&2
     $command
@@ -234,7 +245,15 @@ echo "*******************************************************"
 echo "* Executing TeraSort"
 echo "*******************************************************"
 
-command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} -Dmapred.reduce.tasks=$sortreducetasks ${replicationcount} ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
+if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+then
+    mapreducereducetasks="-Dmapred.reduce.tasks=$sortreducetasks"
+elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+then
+    mapreducereducetasks="-Dmapreduce.job.reduces=$sortreducetasks"
+fi
+
+command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} ${mapreducereducetasks} ${replicationcount} ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
 
 echo "Running $command" >&2
 $command
@@ -250,7 +269,15 @@ then
     # I assume no user is concerned with performance here, we just go with this fixed number 
     validatereducetasks=`expr $HADOOP_SLAVE_COUNT`
 
-    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teravalidate ${extralibjars} -Dmapred.reduce.tasks=$validatereducetasks ${pathprefix}terasort-sort ${pathprefix}terasort-validate"
+    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+    then
+        mapreducereducetasks="-Dmapred.reduce.tasks=$validatereducetasks"
+    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    then
+        mapreducereducetasks="-Dmapreduce.job.reduces=$validatereducetasks"
+    fi
+    
+    command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teravalidate ${extralibjars} ${mapreducereducetasks} ${pathprefix}terasort-sort ${pathprefix}terasort-validate"
 
     echo "Running $command" >&2
     $command
