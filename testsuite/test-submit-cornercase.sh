@@ -166,7 +166,9 @@ __SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nocoresettings
-    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
 }
 
 __SubmitCornerCaseTests_BadCoreSettings() {
@@ -183,7 +185,9 @@ __SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badcoresettings
-    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
 }
 
 __SubmitCornerCaseTests_RequireHDFS() {

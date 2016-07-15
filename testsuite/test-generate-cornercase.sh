@@ -640,8 +640,14 @@ __GenerateCornerCaseTests_NoCoreSettings() {
     fi
 
     if [ "${zookeepertests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-1
         sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
+        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT/# export ZOOKEEPER_REPLICATION_COUNT/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
+        sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE/# export ZOOKEEPER_DATA_DIR_TYPE/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nocoresettings*"`
@@ -709,6 +715,12 @@ __GenerateCornerCaseTests_BadCoreSettings() {
     if [ "${zookeepertests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
         sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
+        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT="\(.*\)"/export ZOOKEEPER_REPLICATION_COUNT=0/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
+        sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcoresettings*"`
