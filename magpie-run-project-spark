@@ -24,7 +24,7 @@
 
 # These are functions to be called by magpie-run
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user

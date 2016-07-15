@@ -27,9 +27,9 @@
 # This file has common job management functions.  Should be
 # sourced and used only in magpie-run* files.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
