@@ -77,14 +77,13 @@ Magpie_run_start_mahout () {
         fi
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
-            echo "*"
             echo "* If running interactively, sourcing"
             echo "*"
             echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
             echo "*"
             echo "* will set most common environment variables for your job."
+            echo "*"
         fi
-        echo "*" 
         echo "*******************************************************"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]

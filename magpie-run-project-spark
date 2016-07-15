@@ -100,30 +100,30 @@ Magpie_run_start_spark () {
         else
             echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-submit --class <class> <jar>"
         fi
+        echo "*" 
 
         if [ "${SPARK_MODE}" == "setuponly" ]
         then
-            echo "*" 
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
             echo "*"
             echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/start-all.sh" 
+            echo "*" 
         fi
-        echo "*" 
         echo "* To end/cleanup your session & kill all daemons, login and set"
         echo "* environment variables per the instructions above, then run:"
         echo "*" 
         echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/stop-all.sh"
+        echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
-            echo "*"
             echo "* If running interactively, sourcing"
             echo "*"
             echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
             echo "*"
             echo "* will set most common environment variables for your job."
+            echo "*"
         fi
-        echo "*" 
         echo "*******************************************************"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]

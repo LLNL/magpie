@@ -248,7 +248,6 @@ Magpie_run_start_hadoop () {
                 fi
                 echo "*" 
             fi
-            echo "*" 
             echo "* To access Hadoop directly, you'll want to:"
             echo "*"
             echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
@@ -286,7 +285,6 @@ Magpie_run_start_hadoop () {
             echo "*" 
             if [ "${HADOOP_MODE}" == "setuponly" ]
             then
-                echo "*" 
                 echo "* To setup, login and set environment variables per the"
                 echo "* instructions above, then run:"
                 echo "*"
@@ -310,8 +308,8 @@ Magpie_run_start_hadoop () {
                 then
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
                 fi
+                echo "*" 
             fi
-            echo "*" 
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
             echo "*" 
@@ -335,16 +333,16 @@ Magpie_run_start_hadoop () {
             then
                 echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
             fi
+            echo "*" 
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
             then
-                echo "*"
                 echo "* If running interactively, sourcing"
                 echo "*"
                 echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
                 echo "*"
                 echo "* will set most common environment variables for your job."
+                echo "*"
             fi
-            echo "*" 
             echo "*******************************************************"
 
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]

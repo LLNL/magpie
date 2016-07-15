@@ -84,23 +84,25 @@ Magpie_run_start_zookeeper () {
             echo "*" 
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
+            echo "*" 
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-stop-all.sh"
+            echo "*" 
         else
             echo "* To end/cleanup your session & kill all daemons:"
             echo "*"
             __Magpie_run_output_zookeeper_help
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-stop-all.sh"
+            echo "*" 
         fi
-        echo "*" 
-        echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-stop-all.sh"
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
-            echo "*"
             echo "* If running interactively, sourcing"
             echo "*"
             echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
             echo "*"
             echo "* will set most common environment variables for your job."
+            echo "*"
         fi
-        echo "*" 
         echo "*******************************************************"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
