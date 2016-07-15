@@ -1204,13 +1204,13 @@ then
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -gt "0" ]
     then
-        echo "ZOOKEEPER_REPLICATION_COUNT must be > 0"
+        echo "ZOOKEEPER_REPLICATION_COUNT must be set to > 0"
         exit 1
     fi
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "255" ]
     then
-        echo "ZOOKEEPER_REPLICATION_COUNT must be less than <= 255"
+        echo "ZOOKEEPER_REPLICATION_COUNT must be set to <= 255"
         exit 1
     fi
 
