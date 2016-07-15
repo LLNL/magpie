@@ -49,6 +49,7 @@ __SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosetversion
 }
 
 __SubmitCornerCaseTests_NoSetHome() {
@@ -61,6 +62,7 @@ __SubmitCornerCaseTests_NoSetHome() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosethome
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosethome
 }
 
 __SubmitCornerCaseTests_BadSetHome() {
@@ -73,6 +75,7 @@ __SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsethome
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badsethome
 }
 
 __SubmitCornerCaseTests_NoSetLocalDir() {
@@ -85,6 +88,7 @@ __SubmitCornerCaseTests_NoSetLocalDir() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosetlocaldir
 }
 
 __SubmitCornerCaseTests_BadSetLocalDir() {
@@ -97,6 +101,7 @@ __SubmitCornerCaseTests_BadSetLocalDir() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
 }
 
 __SubmitCornerCaseTests_NoSetScript() {

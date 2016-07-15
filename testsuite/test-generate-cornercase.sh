@@ -193,6 +193,11 @@ __GenerateCornerCaseTests_NoSetVersion() {
         sed -i -e 's/export STORM_VERSION/# export STORM_VERSION/' magpie.${submissiontype}-storm-cornercase-nosetversion
     fi
 
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nosetversion
+        sed -i -e 's/export ZOOKEEPER_VERSION/# export ZOOKEEPER_VERSION/' magpie.${submissiontype}-zookeeper-cornercase-nosetversion
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetversion*"`
     if [ -n "${files}" ]
     then
@@ -239,6 +244,11 @@ __GenerateCornerCaseTests_NoSetHome() {
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nosethome
         sed -i -e 's/export STORM_HOME/# export STORM_HOME/' magpie.${submissiontype}-storm-cornercase-nosethome
+    fi
+
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nosethome
+        sed -i -e 's/export ZOOKEEPER_HOME/# export ZOOKEEPER_HOME/' magpie.${submissiontype}-zookeeper-cornercase-nosethome
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosethome*"`
@@ -289,6 +299,11 @@ __GenerateCornerCaseTests_BadSetHome() {
         sed -i -e 's/export STORM_HOME="\(.*\)"/export STORM_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-storm-cornercase-badsethome
     fi
 
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badsethome
+        sed -i -e 's/export ZOOKEEPER_HOME="\(.*\)"/export ZOOKEEPER_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-zookeeper-cornercase-badsethome
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsethome*"`
     if [ -n "${files}" ]
     then
@@ -337,6 +352,11 @@ __GenerateCornerCaseTests_NoSetLocalDir() {
         sed -i -e 's/export STORM_LOCAL_DIR/# export STORM_LOCAL_DIR/' magpie.${submissiontype}-storm-cornercase-nosetlocaldir
     fi
 
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nosetlocaldir
+        sed -i -e 's/export ZOOKEEPER_LOCAL_DIR/# export ZOOKEEPER_LOCAL_DIR/' magpie.${submissiontype}-zookeeper-cornercase-nosetlocaldir
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetlocaldir*"`
     if [ -n "${files}" ]
     then
@@ -383,6 +403,11 @@ __GenerateCornerCaseTests_BadSetLocalDir() {
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badlocaldir
         sed -i -e 's/export STORM_LOCAL_DIR="\(.*\)"/export STORM_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-storm-cornercase-badlocaldir
+    fi
+
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
+        sed -i -e 's/export ZOOKEEPER_LOCAL_DIR="\(.*\)"/export ZOOKEEPER_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badlocaldir*"`
@@ -737,7 +762,7 @@ __GenerateCornerCaseTests_NoCoreSettings() {
 
     if [ "${zookeepertests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-1
-        sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
+        sed -i -e 's/export ZOOKEEPER_MODE/# export ZOOKEEPER_MODE/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-1
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
         sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT/# export ZOOKEEPER_REPLICATION_COUNT/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
@@ -809,11 +834,11 @@ __GenerateCornerCaseTests_BadCoreSettings() {
     fi
 
     if [ "${zookeepertests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
-        sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-1
+        sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-1
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
-        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT="\(.*\)"/export ZOOKEEPER_REPLICATION_COUNT=0/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
+        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT=0/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
         sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
