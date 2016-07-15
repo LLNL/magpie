@@ -245,6 +245,16 @@ __SubmitCornerCaseTests_BadComboSettings() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
 }
 
+__SubmitCornerCaseTests_BadDirectories() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-4
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-5
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-baddirectories
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-baddirectories
+}
+
 SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_CatchProjectDependencies
 
@@ -282,4 +292,6 @@ SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_RequireYarn
 
     __SubmitCornerCaseTests_BadComboSettings
+
+    __SubmitCornerCaseTests_BadDirectories
 }

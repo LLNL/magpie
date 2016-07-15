@@ -292,7 +292,17 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badlocaldir*"`
+
+files=""
+for str in badlocaldir baddirectories
+do
+    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
+    if [ -n "${filestmp}" ]
+    then
+        files="${files}${files:+" "}${filestmp}"
+    fi
+done
+
 if [ -n "${files}" ]
 then
     for file in ${files}
