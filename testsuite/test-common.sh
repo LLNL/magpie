@@ -3,17 +3,17 @@
 java16="1.6"
 java17="1.7"
 
-hadoopjava16versions="2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4"
-hadoopjava16versions_javaversion=${java16}
+hadoop2Xjava16versions="2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4"
+hadoop2Xjava16versions_javaversion=${java16}
 # decommissionhdfsnodes doesn't work reliably in 2.2.X, removing it
-hadoopjava16versionsdecommission="2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4"
-hadoopjava16versionsdecommission_javaversion=${java16}
-hadoopjava17versions="2.7.0 2.7.1 2.7.2"
-hadoopjava17versions_javaversion=${java17}
+hadoop2Xjava16versionsdecommission="2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4"
+hadoop2Xjava16versionsdecommission_javaversion=${java16}
+hadoop2Xjava17versions="2.7.0 2.7.1 2.7.2"
+hadoop2Xjava17versions_javaversion=${java17}
 
-hadoop_test_groups="hadoopjava16versions hadoopjava17versions"
-hadoop_test_groups_decommission="hadoopjava16versionsdecommission hadoopjava17versions"
-hadoop_all_versions="${hadoopjava16versions} ${hadoopjava17versions}"
+hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions"
+hadoop_test_groups_decommission="hadoop2Xjava16versionsdecommission hadoop2Xjava17versions"
+hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions}"
 
 mahouthadoop27java17versions="0.11.0 0.11.1 0.11.2 0.12.0 0.12.1"
 mahouthadoop27java17versions_hadoopversion="2.7.2"
