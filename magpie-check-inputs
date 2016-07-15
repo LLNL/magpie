@@ -471,9 +471,7 @@ then
 
     if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
         || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-        && ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ])
+        && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_SETUP_TYPE=${HADOOP_SETUP_TYPE}"
         exit 1
@@ -481,8 +479,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+        && Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
         exit 1
@@ -490,9 +487,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_MODE}" == "upgradehdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+        && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
         exit 1
@@ -620,9 +615,7 @@ then
 
     __Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
     
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
     fi
@@ -775,9 +768,7 @@ then
 
     __Magpie_check_is_enabled "Zookeeper" "Hbase"
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "Magpie supports Hbase over HDFS, HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
         exit 1
@@ -972,9 +963,7 @@ then
             then
                 __Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_FILE to not use hdfs"
 
-                if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+                if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
                     echo "Cannot copy in file to SPARK_SPARKWORDCOUNT_FILE=${SPARK_SPARKWORDCOUNT_FILE}, HADOOP_FILESYSTEM_MODE must be set to an HDFS filesystem"
                     exit 1
@@ -985,9 +974,7 @@ then
             then
                 __Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_COPY_IN_FILE to not use hdfs"
 
-                if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+                if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
                     echo "Cannot copy file from SPARK_SPARKWORDCOUNT_COPY_IN_FILE=${SPARK_SPARKWORDCOUNT_FILE}, HADOOP_FILESYSTEM_MODE must be set to an HDFS filesystem"
                     exit 1
@@ -1164,9 +1151,7 @@ then
        exit 1
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "Magpie supports Tachyon over HDFS, HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
         exit 1
