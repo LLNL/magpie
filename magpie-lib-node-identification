@@ -30,7 +30,6 @@
 # after magpie-setup-core is run b/c it depends on master/slaves to be
 # setup.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 
 Magpie_am_I_master () {
