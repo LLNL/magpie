@@ -22,18 +22,16 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core processing script for setting up daemons and
-# running jobs.  For the most part, it shouldn't be editted.  See
-# job submission files for configuration details.
+# These are functions to be called by magpie-run
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
 Magpie_run_start_hadoop () {
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
@@ -51,15 +49,15 @@ Magpie_run_start_hadoop () {
             then
                 if Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
-                    # Sets networkedhdfspath & hdfsstoredversionpath
-                    Magpie_get_hdfsstoredversionpath
-                    # Sets networkedhdfspath & hdfsstorednodecountpath
-                    Magpie_get_hdfsstorednodecountpath
+                    # Sets networkedhdfspath & magpie_hdfs_stored_version_path
+                    Magpie_get_hdfs_stored_version_path
+                    # Sets networkedhdfspath & magpie_hdfs_stored_nodecount_path
+                    Magpie_get_hdfs_stored_nodecount_path
 
                     # Older versions of Magpie didn't store this variable
-                    if [ -f ${hdfsstoredversionpath} ]
+                    if [ -f ${magpie_hdfs_stored_version_path} ]
                     then
-                        hdfsstoredversion=`cat ${hdfsstoredversionpath}`
+                        hdfsstoredversion=`cat ${magpie_hdfs_stored_version_path}`
 
                         # 0 is =, 1 is >, 2 is <
                         Magpie_vercomp ${HADOOP_VERSION} ${hdfsstoredversion}
@@ -93,9 +91,9 @@ Magpie_run_start_hadoop () {
                     fi
 
                     # Older nodecounts of Magpie didn't store this variable
-                    if [ -f ${hdfsstorednodecountpath} ]
+                    if [ -f ${magpie_hdfs_stored_nodecount_path} ]
                     then
-                        local hdfsstorednodecount=`cat ${hdfsstorednodecountpath}`
+                        local hdfsstorednodecount=`cat ${magpie_hdfs_stored_nodecount_path}`
 
                         if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsstorednodecount}" ]
                         then
@@ -140,13 +138,13 @@ Magpie_run_start_hadoop () {
                 then
                     if [ "${HADOOP_MODE}" != "upgradehdfs" ]
                     then
-                        rm -f ${hdfsstoredversionpath}
-                        echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+                        rm -f ${magpie_hdfs_stored_version_path}
+                        echo "${HADOOP_VERSION}" > ${magpie_hdfs_stored_version_path}
                     fi
 
-                    if [ -f ${hdfsstorednodecountpath} ]
+                    if [ -f ${magpie_hdfs_stored_nodecount_path} ]
                     then
-                        local nodecount=`cat ${hdfsstorednodecountpath}`
+                        local nodecount=`cat ${magpie_hdfs_stored_nodecount_path}`
                         if [ "${nodecount}" -lt "${HADOOP_SLAVE_COUNT}" ]
                         then
                             nodecount=${HADOOP_SLAVE_COUNT}
@@ -154,8 +152,8 @@ Magpie_run_start_hadoop () {
                     else
                         local nodecount=${HADOOP_SLAVE_COUNT}
                     fi
-                    rm -f ${hdfsstorednodecountpath}
-                    echo "${nodecount}" > ${hdfsstorednodecountpath}
+                    rm -f ${magpie_hdfs_stored_nodecount_path}
+                    echo "${nodecount}" > ${magpie_hdfs_stored_nodecount_path}
                 fi
             fi
             
@@ -199,18 +197,18 @@ Magpie_run_start_hadoop () {
             echo "*"
             if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
             then
-                echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${MAPRED_JOB_TRACKER_HTTPADDRESS}"
+                echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${default_mapred_job_tracker_httpaddress}"
                 echo "*"
             elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
             then
-                echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${YARN_RESOURCEMANAGER_WEBAPP_ADDRESS}"
+                echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${default_yarn_resourcemanager_webapp_address}"
                 echo "*"
-                echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${HADOOP_JOBHISTORYSERVER_WEBAPP_ADDRESS}"
+                echo "* Job History Server: http://${HADOOP_MASTER_NODE}:${default_hadoop_jobhistoryserver_webapp_address}"
                 echo "*"
             fi
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-                if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                if Magpie_hdfs_federation_enabled
                 then
                     for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                     do
@@ -222,16 +220,16 @@ Magpie_run_start_hadoop () {
                             local numline=`expr ${i} - 1`
                             local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                         fi
-                        echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+                        echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${default_hadoop_hdfs_namenode_httpaddress}"
                     done
                 else
-                    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_HTTPADDRESS}"
+                    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_httpaddress}"
                 fi
-                echo "* HDFS DataNode: http://<DATANODE>:${HADOOP_HDFS_DATANODE_HTTPADDRESS}"
+                echo "* HDFS DataNode: http://<DATANODE>:${default_hadoop_hdfs_datanode_httpaddress}"
                 echo "*"
                 echo "* HDFS can be accessed directly at:"
                 echo "*"
-                if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                if Magpie_hdfs_federation_enabled
                 then
                     for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                     do
@@ -243,10 +241,10 @@ Magpie_run_start_hadoop () {
                             local numline=`expr ${i} - 1`
                             local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                         fi
-                        echo "* hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS}"
+                        echo "* hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address}"
                     done
                 else
-                    echo "*   hdfs://${HADOOP_MASTER_NODE}:${HADOOP_HDFS_NAMENODE_ADDRESS}" 
+                    echo "*   hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}" 
                 fi
                 echo "*" 
             fi
@@ -423,7 +421,7 @@ Magpie_run_start_hadoop () {
         then
             if [ "${hdfs_was_setup}" == "1" ]
             then
-                local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+                local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
                 if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
                 then  
@@ -449,7 +447,7 @@ Magpie_run_start_hadoop () {
                 
                 for i in `seq 1 ${namenodemaxwaittimes}`
                 do
-                    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                    if Magpie_hdfs_federation_enabled
                     then
                         local exittedsafemodeflag=1
 
@@ -465,7 +463,7 @@ Magpie_run_start_hadoop () {
                                 local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                             fi
 
-                            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode get 2>&1 | grep -q -i "off"
+                            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode get 2>&1 | grep -q -i "off"
                             if [ $? -ne 0 ]
                             then
                                 exittedsafemodeflag=0
@@ -590,13 +588,13 @@ Magpie_run_hadoop () {
 
         if [ $? -eq 0 ]
         then
-            # Sets hdfsstoredversionpath
-            Magpie_get_hdfsstoredversionpath
+            # Sets magpie_hdfs_stored_version_path
+            Magpie_get_hdfs_stored_version_path
 
-            if [ "${hdfsstoredversionpath}X" != "X" ]
+            if [ "${magpie_hdfs_stored_version_path}X" != "X" ]
             then
-                rm -f ${hdfsstoredversionpath}
-                echo "${HADOOP_VERSION}" > ${hdfsstoredversionpath}
+                rm -f ${magpie_hdfs_stored_version_path}
+                echo "${HADOOP_VERSION}" > ${magpie_hdfs_stored_version_path}
             fi
         fi
     elif [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
@@ -610,11 +608,11 @@ Magpie_run_hadoop () {
 
         if [ $? -eq 0 ]
         then
-            # Sets hdfsstorednodecountpath
-            Magpie_get_hdfsstorednodecountpath
+            # Sets magpie_hdfs_stored_nodecount_path
+            Magpie_get_hdfs_stored_nodecount_path
 
-            rm -f ${hdfsstorednodecountpath}
-            echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${hdfsstorednodecountpath}
+            rm -f ${magpie_hdfs_stored_nodecount_path}
+            echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${magpie_hdfs_stored_nodecount_path}
         fi
     fi
 }
@@ -652,7 +650,7 @@ Magpie_run_stop_hadoop () {
                 then
                     echo "Saving namespace before shutting down hdfs ..."
 
-                    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
+                    if Magpie_hdfs_federation_enabled
                     then
                         for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
                         do
@@ -665,15 +663,15 @@ Magpie_run_stop_hadoop () {
                                 federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
                             fi
                             
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode enter"
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode enter"
                             echo "Running $command" >&2
                             $command
                             
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -saveNamespace"
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -saveNamespace"
                             echo "Running $command" >&2
                             $command
                             
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${HADOOP_HDFS_NAMENODE_ADDRESS} -safemode leave"
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode leave"
                             echo "Running $command" >&2
                             $command
                         done

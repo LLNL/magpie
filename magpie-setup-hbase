@@ -31,10 +31,12 @@ then
     exit 0
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
 # hbasenoderank set if succeed
 if ! Magpie_am_I_a_hbase_node
@@ -97,12 +99,12 @@ fi
 
 # XXX how deal w/ fedreation?
 
-# sets hadooptmpdir and fsdefault
+# sets magpie_hadooptmpdir and magpie_fsdefault
 Magpie_calculate_hadoop_filesystem_paths ${hbasenoderank}
 
-hbasetmpdir="${hadooptmpdir}/hbase"
+hbasetmpdir="${magpie_hadooptmpdir}/hbase"
 hbasetmpdirsubst=`echo "${hbasetmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-hbaserootdir="${fsdefault}/hbase"
+hbaserootdir="${magpie_fsdefault}/hbase"
 hbaserootdirsubst=`echo ${hbaserootdir} | sed "s/\\//\\\\\\\\\//g"`
 
 if [ ! -d "${hbasetmpdir}" ]
@@ -122,66 +124,13 @@ do
     hbasezookeeperquorum="${hbasezookeeperquorum}${hbasezookeeperquorum:+","}${zookeepernode}"
 done
 
-# Sets hbase_slave_timeout
+# Sets magpie_hbase_slave_timeout
 Magpie_calculate_stop_timeouts
 
-openfiles=`ulimit -n`
-if [ "${openfiles}" != "unlimited" ]
-then
-    openfileshardlimit=`ulimit -H -n`
-
-    # we estimate 16384 per 64 nodes, minimum 32768, max 131072.
-    # Obviously depends on many factors, but it's a reasonble and safe
-    # over-estimate calculated based on experience.
-    openfilesslavecount=`expr ${HBASE_REGIONSERVER_COUNT} \/ 64`
-    openfilescount=`expr ${openfilesslavecount} \* 16384`
-    if [ "${openfilescount}" -lt "32768" ]
-    then
-        openfilescount=32768
-    fi
-    if [ "${openfilescount}" -gt "131072" ]
-    then
-        openfilescount=131072
-    fi
-    
-    if [ "${openfileshardlimit}" != "unlimited" ]
-    then
-        if [ ${openfilescount} -gt ${openfileshardlimit} ]
-        then
-            openfilescount=${openfileshardlimit}
-        fi
-    fi
-else
-    openfilescount="unlimited"
-fi
-
-userprocesses=`ulimit -u`
-if [ "${userprocesses}" != "unlimited" ]
-then
-    userprocesseshardlimit=`ulimit -H -u`
-
-    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
-    userprocessesslavecount=`expr ${HBASE_REGIONSERVER_COUNT} \/ 100`
-    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
-    if [ "${userprocessescount}" -lt "4096" ]
-    then
-        userprocessescount=4096
-    fi
-    if [ "${userprocessescount}" -gt "32768" ]
-    then
-        userprocessescount=32768
-    fi
-    
-    if [ "${userprocesseshardlimit}" != "unlimited" ]
-    then
-        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
-        then
-            userprocessescount=${userprocesseshardlimit}
-        fi
-    fi
-else
-    userprocessescount="unlimited"
-fi
+# Sets magpie_openfilescount
+Magpie_calculate_openfiles ${HBASE_REGIONSERVER_COUNT}
+# Sets magpie_userprocessescount
+Magpie_calculate_userprocesses ${HBASE_REGIONSERVER_COUNT}
 
 # set java.io.tmpdir
 extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
@@ -229,7 +178,7 @@ cp ${pre_hbasesitexml} ${post_hbasesitexml}
 if [ "${pre_hbasesitexml_phoenix}X" != "X" ]
 then
     sed -i -e "/@PHOENIX@/{r ${pre_hbasesitexml_phoenix}" -e "d}" ${post_hbasesitexml}
-    sed -i -e "s/PHOENIXQUERYSERVERPORT/$PHOENIX_QUERYSERVER_PORT/g" ${post_hbasesitexml}
+    sed -i -e "s/PHOENIXQUERYSERVERPORT/${default_phoenix_queryserver_port}/g" ${post_hbasesitexml}
 else
     sed -i -e "/@PHOENIX@/,+1d" ${post_hbasesitexml}
 fi
@@ -241,11 +190,11 @@ sed -i \
     -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
     -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
     -e "s/HBASEREGIONSERVERHANDLERCOUNT/${hbaseregionserverhandlercount}/g" \
-    -e "s/HBASEMASTERPORT/${HBASE_MASTER_PORT}/g" \
-    -e "s/HBASEMASTERINFOPORT/${HBASE_MASTER_INFO_PORT}/g" \
-    -e "s/HBASEREGIONSERVERPORT/${HBASE_REGIONSERVER_PORT}/g" \
-    -e "s/HBASEREGIONSERVERINFOPORT/${HBASE_REGIONSERVER_INFO_PORT}/g" \
-    -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${ZOOKEEPER_CLIENT_PORT}/g" \
+    -e "s/HBASEMASTERPORT/${default_hbase_master_port}/g" \
+    -e "s/HBASEMASTERINFOPORT/${default_hbase_master_info_port}/g" \
+    -e "s/HBASEREGIONSERVERPORT/${default_hbase_regionserver_port}/g" \
+    -e "s/HBASEREGIONSERVERINFOPORT/${default_hbase_regionserver_info_port}/g" \
+    -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${default_zookeeper_client_port}/g" \
     -e "s/HBASEMASTERHOST/${HBASE_MASTER_NODE}/g" \
     -e "s/HBASE_HOST/${HBASE_THIS_HOST}/g" \
     -e "s/ZOOKEEPERSESSIONTIMEOUT/${zookeepersessiontimeout}/g" \
@@ -268,7 +217,7 @@ sed -i \
     -e "s/HBASECLASSPATH/${hbaseclasspathsubst}/g" \
     ${post_hbaseenvsh}
 
-echo "export HBASE_SLAVE_TIMEOUT=\"${hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
+echo "export HBASE_SLAVE_TIMEOUT=\"${magpie_hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
 
 echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${post_hbaseenvsh}
 echo "export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\"" >> ${post_hbaseenvsh}
@@ -286,8 +235,8 @@ if [ "${HBASE_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HBASE_ENVIRONMENT_EXT
 then
     cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${post_hbaseenvsh}
 else
-    echo "ulimit -n ${openfilescount}" >> ${post_hbaseenvsh}
-    echo "ulimit -u ${userprocessescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -n ${magpie_openfilescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hbaseenvsh}
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}

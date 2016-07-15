@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateKafkaStandardTests_KafkaPerformance() {
+__GenerateKafkaStandardTests_KafkaPerformance() {
     local kafkaversion=$1
     local zookeeperversion=$2
     local javaversion=$3
@@ -45,7 +45,7 @@ GenerateKafkaStandardTests() {
 
     echo "Making Kafka Standard Tests"
 
-    for testfunction in GenerateKafkaStandardTests_KafkaPerformance
+    for testfunction in __GenerateKafkaStandardTests_KafkaPerformance
     do
         for testgroup in ${kafka_test_groups}
         do
@@ -60,7 +60,7 @@ GenerateKafkaStandardTests() {
     done
 }
 
-GenerateKafkaDependencyTests_Dependency1() {
+__GenerateKafkaDependencyTests_Dependency1() {
     local kafkaversion=$1
     local zookeeperversion=$2
     local javaversion=$3
@@ -88,7 +88,7 @@ GenerateKafkaDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for testfunction in GenerateKafkaDependencyTests_Dependency1
+    for testfunction in __GenerateKafkaDependencyTests_Dependency1
     do
         for testgroup in ${kafka_test_groups}
         do

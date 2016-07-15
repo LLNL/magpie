@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitHadoopStandardTests_StandardTerasort() {
+__SubmitHadoopStandardTests_StandardTerasort() {
     local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
@@ -26,7 +26,7 @@ SubmitHadoopStandardTests_StandardTerasort() {
 }
 
 SubmitHadoopStandardTests() {
-    for testfunction in SubmitHadoopStandardTests_StandardTerasort
+    for testfunction in __SubmitHadoopStandardTests_StandardTerasort
     do
         for testgroup in ${hadoop_test_groups}
         do
@@ -38,7 +38,7 @@ SubmitHadoopStandardTests() {
     done
 }
 
-SubmitHadoopDependencyTests_Dependency1() {
+__SubmitHadoopDependencyTests_Dependency1() {
     local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsoverlustre-run-hadoopterasort
@@ -48,7 +48,7 @@ SubmitHadoopDependencyTests_Dependency1() {
     DependentJobSubmit magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}-hdfsovernetworkfs-run-hadoopterasort
 }
 
-SubmitHadoopDependencyTests_Dependency2() {
+__SubmitHadoopDependencyTests_Dependency2() {
     local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A-hdfsoverlustre-run-hadoopterasort
@@ -64,7 +64,7 @@ SubmitHadoopDependencyTests_Dependency2() {
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A-hdfsovernetworkfs-run-hadoopterasort
 }
 
-SubmitHadoopDependencyTests_Dependency3() {
+__SubmitHadoopDependencyTests_Dependency3() {
     local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsoverlustre-run-scriptteragen
@@ -82,7 +82,7 @@ SubmitHadoopDependencyTests_Dependency3() {
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A-hdfsovernetworkfs-run-scriptterasort
 }
 
-SubmitHadoopDependencyTests_Dependency4() {
+__SubmitHadoopDependencyTests_Dependency4() {
     local hadoopversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A-hdfs-more-nodes-hdfsoverlustre-run-scriptteragen
@@ -96,7 +96,7 @@ SubmitHadoopDependencyTests_Dependency4() {
     DependentJobSubmit magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A-hdfsovernetworkfs-run-scriptterasort
 }
 
-SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
+__SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
     local hadoopversionold=$1
     local hadoopversionnew=$2
     local dependencynumber=$3
@@ -109,7 +109,7 @@ SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
 }
 
 SubmitHadoopDependencyTests() {
-    for testfunction in SubmitHadoopDependencyTests_Dependency1
+    for testfunction in __SubmitHadoopDependencyTests_Dependency1
     do
         for testgroup in ${hadoop_test_groups}
         do
@@ -120,7 +120,7 @@ SubmitHadoopDependencyTests() {
         done
     done
 
-    for testfunction in SubmitHadoopDependencyTests_Dependency2 SubmitHadoopDependencyTests_Dependency3 SubmitHadoopDependencyTests_Dependency4
+    for testfunction in __SubmitHadoopDependencyTests_Dependency2 __SubmitHadoopDependencyTests_Dependency3 __SubmitHadoopDependencyTests_Dependency4
     do
         for testgroup in ${hadoop_test_groups_decommission}
         do
@@ -153,9 +153,9 @@ SubmitHadoopDependencyTests() {
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A-hdfsovernetworkfs-run-hadoopupgradehdfs
     DependentJobSubmit magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A-hdfsovernetworkfs-run-hadoopterasort
 
-    SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" "6A"
-    SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" "7A"
-    SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" "8A"
-    SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" "9A"
-    SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" "10A"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" "6A"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" "7A"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" "8A"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" "9A"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" "10A"
 }

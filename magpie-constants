@@ -1,0 +1,196 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# Various constants that we want set
+#
+# This is used by scripts, don't edit this
+
+default_startup_time=30
+default_shutdown_time=30
+
+if [ "${MAGPIE_STARTUP_TIME}X" != "X" ]
+then
+    magpie_startup_time_value=${MAGPIE_STARTUP_TIME}
+else
+    magpie_startup_time_value=${default_startup_time}
+fi
+
+if [ "${MAGPIE_SHUTDOWN_TIME}X" != "X" ]
+then
+    magpie_shutdown_time_value=${MAGPIE_SHUTDOWN_TIME}
+else
+    magpie_shutdown_time_value=${default_shutdown_time}
+fi
+
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    default_yarn_resourcemanager_address="8032"
+    default_yarn_resourcemanager_scheduler_address="8030"
+    default_yarn_resourcemanager_webapp_address="8088"
+    default_yarn_resourcemanager_webapp_https_address="8090"
+    default_yarn_resourcemanager_resourcetracker_address="8031"
+    default_yarn_resourcemanager_admin_address="8033"
+    default_yarn_nodemanager_localizer_address="8040"
+    default_yarn_nodemanager_webapp_address="8042"
+    # In Hadoop code, default is 8020, but 54310 is the common legacy
+    # one used throughout the web.  I'll keep the 54310 one for now.
+    default_hadoop_hdfs_namenode_address="54310"
+    default_hadoop_hdfs_namenode_httpaddress="50070"
+    default_hadoop_hdfs_namenode_secondary_http_address="50090"
+    default_hadoop_hdfs_namenode_secondary_https_address="50091"
+    default_hadoop_hdfs_namenode_backup_address="50100"
+    default_hadoop_hdfs_namenode_backup_http_address="50100"
+    default_hadoop_hdfs_datanode_address="50010"
+    default_hadoop_hdfs_datanode_httpaddress="50075"
+    default_hadoop_hdfs_datanode_ipcaddress="50020"
+    default_hadoop_jobhistoryserver_address="10020"
+    default_hadoop_jobhistoryserver_webapp_address="19888"
+    default_mapred_job_tracker_address="54311"
+    default_mapred_job_tracker_httpaddress="50030"
+    # achu: Why not set dfs.namenode.rpc-address and
+    # dfs.namenode.servicerpc-address?  Unclear of why one might set
+    # this, internal to Hadoop 2.6.0 code, defaults to fs.defaultFS
+    # setting.  Perhaps legacy and I'm unaware of why.
+
+    # achu: Why not set dfs.journalnode.rpc-address,
+    # dfs.journalnode.http-address, dfs.journalnode.https-address?
+    # dfs.namenode.shared.edits.dir we do not set.
+
+    # achu: Why not set yarn.nodemanager.address?  Specific for node
+    # manager restart, we don't care about this.
+
+    # achu: Why not set yarn.timeline-service.address,
+    # yarn.timeline-service.webapp.address,
+    # yarn.timeline-service.webapp.https.address?  We do not set this,
+    # it is disabled by default in Hadoop.
+
+    default_hdfs_replication=3
+
+    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+    then
+        hadoopsetupscriptprefix="bin"
+        hadoopcmdprefix="bin"
+        dfsadminscript="hadoop"
+    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
+    then
+        hadoopsetupscriptprefix="sbin"
+        hadoopcmdprefix="bin"
+        dfsadminscript="hdfs"
+    fi
+fi
+
+if [ "${PIG_SETUP}" == "yes" ]
+then
+    pigcmdprefix="bin"
+fi
+
+if [ "${MAHOUT_SETUP}" == "yes" ]
+then
+    mahoutexamplesprefix="examples"
+    mahoutcmdprefix="bin"
+fi
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    default_hbase_master_port="60000"
+    default_hbase_master_info_port="60010"
+    default_hbase_regionserver_port="60020"
+    default_hbase_regionserver_info_port="60030"
+
+    # achu: Why not hbase.rest.port?  We don't enable the rest
+    # interface by default.
+
+    # achu: Why not hbase.status.multicast.address.port?  We don't
+    # enable hbase.status.published, it's off by default.
+
+    hbasesetupscriptprefix="bin"
+    hbasecmdprefix="bin"
+fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    default_phoenix_queryserver_port="8765"
+
+    phoenixcmdprefix="bin"
+fi
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    default_spark_master_port="7077"
+    default_spark_master_webui_port="8080"
+    default_spark_worker_webui_port="8081"
+    default_spark_application_dashboard_port="4040"
+
+    sparksetupscriptprefix="sbin"
+    sparkcmdprefix="bin"
+fi
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    default_kafka_port="6667"
+
+    kafkacmdprefix="bin"
+fi
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    default_zeppelin_port="18080"
+
+    zeppelincmdprefix="bin"
+fi
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    # Default is 8080, but that is same as Spark.  So up by 100
+    default_storm_ui_port="8180"
+
+    # Default is 8000, for consistency to above, up by 100
+    default_storm_logviewer_port="8100"
+
+    default_storm_drpc_port="3772"
+    default_storm_invocations_port="3773"
+    default_storm_drpc_http_port="3774"
+    default_storm_thrift_port="6627"
+
+    default_storm_supervisor_slots_starting_port="6700"
+
+    stormcmdprefix="bin"
+fi
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    default_tachyon_master_port="19998"
+    default_tachyon_master_web_port="19999"
+    default_tachyon_worker_port="29998"
+    default_tachyon_worker_data_port="29999"
+
+    tachyoncmdprefix="bin"
+fi
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    default_zookeeper_client_port="2181"
+    default_zookeeper_peer_port="2888"
+    default_zookeeper_leader_port="3888"
+fi

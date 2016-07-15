@@ -22,13 +22,9 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Export helper functions
-#
 # This is used by scripts, don't edit this
 #
-# Unlike 'magpie-lib-core', these are outside of 'magpie' and
-# do not depend on any variables/functions/environment variables
-# within the Magpie system.
+# This file has common helper functions.
 
 Magpie_walltime_to_minutes () {
     local walltime=$1
@@ -36,10 +32,10 @@ Magpie_walltime_to_minutes () {
 
     if [ "${numcolons}" == "2" ]
     then
-        walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
+        magpie_walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
     elif [ "${numcolons}" == "1" ]
     then
-        walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 + $2 / 60}' | xargs printf "%1.0f"`
+        magpie_walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 + $2 / 60}' | xargs printf "%1.0f"`
     fi
 }
 

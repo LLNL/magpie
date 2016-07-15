@@ -31,9 +31,10 @@ then
     exit 0
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
 # kafkanoderank set if succeed
 if ! Magpie_am_I_a_kafka_node
@@ -69,7 +70,7 @@ zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
 kafkazookeeperconnect=""
 for zookeepernode in ${zookeepernodes}
 do
-    kafkazookeeperconnect="${kafkazookeeperconnect}${kafkazookeeperconnect:+","}${zookeepernode}:${ZOOKEEPER_CLIENT_PORT}"
+    kafkazookeeperconnect="${kafkazookeeperconnect}${kafkazookeeperconnect:+","}${zookeepernode}:${default_zookeeper_client_port}"
 done
 
 if [ "${KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT}X" == "X" ]
@@ -126,7 +127,7 @@ cp ${pre_kafkaproperties} ${post_kafkaproperties}
 
 sed -i \
     -e "s/KAFKABROKERID/${kafkanoderank}/g" \
-    -e "s/KAFKAPORT/${KAFKA_PORT}/g" \
+    -e "s/KAFKAPORT/${default_kafka_port}/g" \
     -e "s/KAFKALOGDIRS/${kafkadatadirsubst}/g" \
     -e "s/KAFKAZOOKEEPERCNT/${kafkazookeeperconnect}/g" \
     -e "s/KAFKAZOOKEEPERTIMEOUT/${kafkazookeepertimeout}/g" \

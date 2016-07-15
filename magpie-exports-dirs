@@ -22,14 +22,18 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Helper functions to deal with variable conversions with Magpie
-#
 # This is used by scripts, don't edit this
+#
+# Export directories promised by user documentation.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
+# Do not ever "use" the LOCAL_JOB_DIR variables.  They should only be
+# referenced when setting SCRATCH_DIR or CONF_DIR or LOG_DIR variables.
+
 __Magpie_make_magpie_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${MAGPIE_LOCAL_JOB_DIR}X" == "X" ]
     then
@@ -57,7 +61,7 @@ Magpie_make_magpie_local_dirs_node_specific () {
 }
 
 __Magpie_make_hadoop_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
@@ -100,7 +104,7 @@ Magpie_make_hadoop_local_dirs_node_specific () {
 }
 
 __Magpie_make_pig_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${PIG_SETUP}" == "yes" ]
     then
@@ -131,7 +135,7 @@ Magpie_make_pig_local_dirs_node_specific () {
 }
 
 Magpie_make_mahout_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${MAHOUT_SETUP}" == "yes" ]
     then
@@ -162,7 +166,7 @@ Magpie_make_mahout_local_dirs_node_specific () {
 }
 
 __Magpie_make_hbase_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${HBASE_SETUP}" == "yes" ]
     then
@@ -197,7 +201,7 @@ Magpie_make_hbase_local_dirs_node_specific () {
 }
 
 __Magpie_make_phoenix_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${PHOENIX_SETUP}" == "yes" ]
     then
@@ -232,7 +236,7 @@ Magpie_make_phoenix_local_dirs_node_specific () {
 }
 
 __Magpie_make_spark_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${SPARK_SETUP}" == "yes" ]
     then
@@ -267,7 +271,7 @@ Magpie_make_spark_local_dirs_node_specific () {
 }
 
 __Magpie_make_kafka_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${KAFKA_SETUP}" == "yes" ]
     then
@@ -302,7 +306,7 @@ Magpie_make_kafka_local_dirs_node_specific () {
 }
 
 Magpie_make_zeppelin_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${ZEPPELIN_SETUP}" == "yes" ]
     then
@@ -337,7 +341,7 @@ Magpie_make_zeppelin_local_dirs_node_specific () {
 }
 
 __Magpie_make_storm_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${STORM_SETUP}" == "yes" ]
     then
@@ -370,7 +374,7 @@ Magpie_make_storm_local_dirs_node_specific () {
 }
 
 __Magpie_make_tachyon_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
@@ -403,7 +407,7 @@ Magpie_make_tachyon_local_dirs_node_specific () {
 }
 
 __Magpie_make_zookeeper_local_dirs () {
-    which=$1
+    local which=$1
 
     if [ "${ZOOKEEPER_SETUP}" == "yes" ]
     then
@@ -455,3 +459,147 @@ Magpie_make_all_local_dirs_unspecified () {
 Magpie_make_all_local_dirs_node_specific () {
     __Magpie_make_all_local_dirs "specific"
 }
+
+if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+then
+    export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+else
+    export MAGPIE_LOCAL_JOB_DIR=${MAGPIE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+fi
+
+# MAGPIE_LOCAL_SCRATCHSPACE_DIR & MAGPIE_LOCAL_CONF_DIR set
+Magpie_make_magpie_local_dirs_node_specific
+
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export HADOOP_LOCAL_JOB_DIR=${HADOOP_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # HADOOP_LOCAL_SCRATCHSPACE_DIR & HADOOP_CONF_DIR & HADOOP_LOG_DIR set
+    # YARN_LOCAL_SCRATCHSPACE_DIR & YARN_CONF_DIR & YARN_LOG_DIR set
+    Magpie_make_hadoop_local_dirs_node_specific
+fi
+
+if [ "${PIG_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export PIG_LOCAL_JOB_DIR=${PIG_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # PIG_LOCAL_SCRATCHSPACE_DIR & PIG_CONF_DIR set
+    Magpie_make_pig_local_dirs_node_specific
+fi
+
+if [ "${MAHOUT_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # MAHOUT_LOCAL_SCRATCHSPACE_DIR & MAHOUT_CONF_DIR set
+    Magpie_make_mahout_local_dirs_node_specific
+fi
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export HBASE_LOCAL_JOB_DIR=${HBASE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # HBASE_LOCAL_SCRATCHSPACE_DIR & HBASE_CONF_DIR & HBASE_LOG_DIR set
+    Magpie_make_hbase_local_dirs_node_specific
+fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export PHOENIX_LOCAL_JOB_DIR=${PHOENIX_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export PHOENIX_LOCAL_JOB_DIR=${PHOENIX_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # PHOENIX_LOCAL_SCRATCHSPACE_DIR & PHOENIX_CONF_DIR & PHOENIX_LOG_DIR set
+    Magpie_make_phoenix_local_dirs_node_specific
+fi
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export SPARK_LOCAL_JOB_DIR=${SPARK_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # SPARK_LOCAL_SCRATCHSPACE_DIR & SPARK_CONF_DIR & SPARK_LOG_DIR set
+    Magpie_make_spark_local_dirs_node_specific
+fi
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export KAFKA_LOCAL_JOB_DIR=${KAFKA_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export KAFKA_LOCAL_JOB_DIR=${KAFKA_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # KAFKA_LOCAL_SCRATCHSPACE_DIR & KAFKA_CONF_DIR & KAFKA_LOG_DIR set
+    Magpie_make_kafka_local_dirs_node_specific
+fi
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export ZEPPELIN_LOCAL_JOB_DIR=${ZEPPELIN_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export ZEPPELIN_LOCAL_JOB_DIR=${ZEPPELIN_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # ZEPPELIN_LOCAL_SCRATCHSPACE_DIR & ZEPPELIN_CONF_DIR & ZEPPELIN_LOG_DIR set
+    Magpie_make_zeppelin_local_dirs_node_specific
+fi
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export STORM_LOCAL_JOB_DIR=${STORM_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # STORM_LOCAL_SCRATCHSPACE_DIR & STORM_CONF_DIR & STORM_LOG_DIR set
+    Magpie_make_storm_local_dirs_node_specific
+fi
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # TACHYON_LOCAL_SCRATCHSPACE_DIR & TACHYON_CONF_DIR & TACHYON_LOG_DIR set
+    Magpie_make_tachyon_local_dirs_node_specific
+fi
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export ZOOKEEPER_LOCAL_JOB_DIR=${ZOOKEEPER_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR & ZOOKEEPER_CONF_DIR & ZOOKEEPER_LOG_DIR set
+    Magpie_make_zookeeper_local_dirs_node_specific
+fi
+

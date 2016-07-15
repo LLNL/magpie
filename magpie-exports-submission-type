@@ -22,19 +22,23 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
+# This is used by scripts, don't edit this
+#
+# Export common magpie exports promised by user documentation.
 
-Magpie_calc_slurm_magpie_timelimit () {
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
+
+__Magpie_calc_slurm_magpie_timelimit () {
     # Do not excessively call this
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
         local timelimitwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %l`
         Magpie_walltime_to_minutes ${timelimitwalltime}
-        export MAGPIE_TIMELIMIT_MINUTES=${walltimetominutes}
+        export MAGPIE_TIMELIMIT_MINUTES=${magpie_walltimetominutes}
     fi
 }
 
-Magpie_handle_job_name_corner_cases () {
+__Magpie_handle_job_name_corner_cases () {
     # Handle special corner cases where user's job name may not
     # play nice, as we use it in file paths and what not
     if [[ $MAGPIE_JOB_NAME =~ "\$" ]]; then
@@ -60,9 +64,9 @@ then
     then
         export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
     else
-        Magpie_calc_slurm_magpie_timelimit
+        __Magpie_calc_slurm_magpie_timelimit
     fi
-    Magpie_handle_job_name_corner_cases
+    __Magpie_handle_job_name_corner_cases
 fi
 
 # msubslurm legacy
@@ -76,9 +80,9 @@ then
     # Legacy: Use if user set MAGPIE_TIMELIMIT_MINUTES
     if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
     then
-        Magpie_calc_slurm_magpie_timelimit
+        __Magpie_calc_slurm_magpie_timelimit
     fi
-    Magpie_handle_job_name_corner_cases
+    __Magpie_handle_job_name_corner_cases
 fi
 
 # msubtorque legacy
@@ -93,7 +97,7 @@ then
     then
         export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
     fi
-    Magpie_handle_job_name_corner_cases
+    __Magpie_handle_job_name_corner_cases
 fi
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
@@ -118,5 +122,5 @@ then
         local walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
-    Magpie_handle_job_name_corner_cases
+    __Magpie_handle_job_name_corner_cases
 fi

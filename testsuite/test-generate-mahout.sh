@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateMahoutStandardTests_ClusterSyntheticcontrol() {
+__GenerateMahoutStandardTests_ClusterSyntheticcontrol() {
     local mahoutversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -25,7 +25,7 @@ GenerateMahoutStandardTests() {
 
     echo "Making Mahout Standard Tests"
 
-    for testfunction in GenerateMahoutStandardTests_ClusterSyntheticcontrol
+    for testfunction in __GenerateMahoutStandardTests_ClusterSyntheticcontrol
     do
         for testgroup in ${mahout_test_groups}
         do
@@ -40,7 +40,7 @@ GenerateMahoutStandardTests() {
     done
 }
 
-GenerateMahoutDependencyTests_Dependency1() {
+__GenerateMahoutDependencyTests_Dependency1() {
     local mahoutversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -74,7 +74,7 @@ GenerateMahoutDependencyTests() {
 
 # Dependency 1 Tests, run after another
 
-    for testfunction in GenerateMahoutDependencyTests_Dependency1
+    for testfunction in __GenerateMahoutDependencyTests_Dependency1
     do
         for testgroup in ${mahout_test_groups}
         do

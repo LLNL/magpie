@@ -22,16 +22,12 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core processing script for setting up daemons and
-# running jobs.  For the most part, it shouldn't be editted.  See
-# job submission files for configuration details.
+# These are functions to be called by magpie-run
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_zeppelin () {
@@ -49,8 +45,14 @@ Magpie_run_start_zeppelin () {
 
         if [ ${ZEPPELIN_MODE} != "setuponly" ]
         then
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_unspecified
+
             echo "Starting Zeppelin"
             ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh --config ${ZEPPELIN_CONF_DIR} start
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
 
             # My rough estimate for setup time is 30 seconds
             local sleepwait=30
@@ -65,7 +67,7 @@ Magpie_run_start_zeppelin () {
         echo "* Zeppelin Information"
         echo "*"
         echo "* To access Zeppelin's web interface, you'll want to navigate your browser to:"
-        echo "*     http://${ZEPPELIN_MASTER_NODE}:${ZEPPELIN_PORT}"
+        echo "*     http://${ZEPPELIN_MASTER_NODE}:${default_zeppelin_port}"
         echo "*"
         echo "* To access zeppelin directly, you'll want to:"
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZEPPELIN_MASTER_NODE}"
@@ -118,7 +120,7 @@ Magpie_run_start_zeppelin () {
 
         if [ ${ZEPPELIN_MODE} != "setuponly" ]
         then
-            local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
             if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
             then 
@@ -220,8 +222,14 @@ Magpie_run_stop_zeppelin () {
         then
             cd ${ZEPPELIN_HOME}
             
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_unspecified
+
             echo "Stopping Zeppelin"
             ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh stop
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
         fi
     fi
     zeppelin_teardown_complete=1

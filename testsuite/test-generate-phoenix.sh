@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GeneratePhoenixStandardTests_Performanceeval() {
+__GeneratePhoenixStandardTests_Performanceeval() {
     local phoenixversion=$1
     local hbaseversion=$2
     local hadoopversion=$3
@@ -58,7 +58,7 @@ GeneratePhoenixStandardTests() {
 
     echo "Making Phoenix Standard Tests"
     
-    for testfunction in GeneratePhoenixStandardTests_Performanceeval
+    for testfunction in __GeneratePhoenixStandardTests_Performanceeval
     do
         for testgroup in ${phoenix_test_groups}
         do
@@ -77,7 +77,7 @@ GeneratePhoenixStandardTests() {
     done
 }
 
-GeneratePhoenixDependencyTests_Dependency1() {
+__GeneratePhoenixDependencyTests_Dependency1() {
     local phoenixversion=$1
     local hbaseversion=$2
     local hadoopversion=$3
@@ -109,7 +109,7 @@ GeneratePhoenixDependencyTests_Dependency1() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-phoenixperformanceeval`
 }
 
-GeneratePhoenixDependencyTests_Dependency2() {
+__GeneratePhoenixDependencyTests_Dependency2() {
     local phoenixversion=$1
     local hbaseversion=$2
     local hadoopversion=$3
@@ -157,7 +157,7 @@ GeneratePhoenixDependencyTests() {
 # Dependency 1 Tests, run after another, HDFS over Lustre / NetworkFS
 # Dependency 2 Tests, run after another with hbase, HDFS over Lustre / NetworkFS
 
-    for testfunction in GeneratePhoenixDependencyTests_Dependency1 GeneratePhoenixDependencyTests_Dependency2
+    for testfunction in __GeneratePhoenixDependencyTests_Dependency1 __GeneratePhoenixDependencyTests_Dependency2
     do
         for testgroup in ${phoenix_test_groups}
         do

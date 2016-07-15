@@ -2,7 +2,7 @@
 
 source test-config.sh
 
-SubmitFunctionalityTests_BadJobNames () {
+__SubmitFunctionalityTests_BadJobNames () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-whitespace
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-dollarsign
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-job-name-whitespace
@@ -23,7 +23,7 @@ SubmitFunctionalityTests_BadJobNames () {
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-job-name-dollarsign
 }
 
-SubmitFunctionalityTests_AltConfFilesDir () {
+__SubmitFunctionalityTests_AltConfFilesDir () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-altconffilesdir
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-altconffilesdir
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-altconffilesdir
@@ -35,7 +35,7 @@ SubmitFunctionalityTests_AltConfFilesDir () {
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-altconffilesdir
 }
 
-SubmitFunctionalityTests_TestAll() {
+__SubmitFunctionalityTests_TestAll() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-testall
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-hadoopterasort-run-testpig-functionality-testall
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-hadoopterasort-run-clustersyntheticcontrol-functionality-testall
@@ -47,7 +47,7 @@ SubmitFunctionalityTests_TestAll() {
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-functionality-testall
 }
 
-SubmitFunctionalityTests_InteractiveMode () {
+__SubmitFunctionalityTests_InteractiveMode () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-interactive-mode
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-interactive-mode
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-interactive-mode
@@ -59,7 +59,7 @@ SubmitFunctionalityTests_InteractiveMode () {
     BasicJobSubmit magpie.${submissiontype}-storm-functionality-interactive-mode
 }
 
-SubmitFunctionalityTests_JobTimeout () {
+__SubmitFunctionalityTests_JobTimeout () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-jobtimeout
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-jobtimeout
     BasicJobSubmit magpie.${submissiontype}-spark-functionality-jobtimeout
@@ -68,7 +68,7 @@ SubmitFunctionalityTests_JobTimeout () {
     BasicJobSubmit magpie.${submissiontype}-storm-functionality-jobtimeout
 }
 
-SubmitFunctionalityTests_MagpieExports() {
+__SubmitFunctionalityTests_MagpieExports() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-hdfs-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-hadoop-rawnetworkfs-functionality-checkexports
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-checkexports
@@ -84,10 +84,10 @@ SubmitFunctionalityTests_MagpieExports() {
 }
 
 SubmitFunctionalityTests() {
-    SubmitFunctionalityTests_BadJobNames
-    SubmitFunctionalityTests_AltConfFilesDir
-    SubmitFunctionalityTests_TestAll
-    SubmitFunctionalityTests_InteractiveMode
-    SubmitFunctionalityTests_JobTimeout
-    SubmitFunctionalityTests_MagpieExports
+    __SubmitFunctionalityTests_BadJobNames
+    __SubmitFunctionalityTests_AltConfFilesDir
+    __SubmitFunctionalityTests_TestAll
+    __SubmitFunctionalityTests_InteractiveMode
+    __SubmitFunctionalityTests_JobTimeout
+    __SubmitFunctionalityTests_MagpieExports
 }

@@ -26,8 +26,8 @@
 # most part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -58,6 +58,6 @@ do
     bootstrap="${bootstrap}${bootstrap:+","}${node}:${KAFKA_PORT}"
 done
 
-${KAFKA_HOME}/bin/kafka-producer-perf-test.sh --topic performance --num-records ${kafkarecordcount} --record-size ${kafkarecordsize} --throughput ${kafkathroughput} --producer-props bootstrap.servers=${bootstrap}
+${KAFKA_HOME}/${kafkacmdprefix}/kafka-producer-perf-test.sh --topic performance --num-records ${kafkarecordcount} --record-size ${kafkarecordsize} --throughput ${kafkathroughput} --producer-props bootstrap.servers=${bootstrap}
 
 exit 0

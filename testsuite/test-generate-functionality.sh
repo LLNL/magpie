@@ -3,7 +3,7 @@
 source test-generate-common.sh
 source test-config.sh
 
-GenerateFunctionalityTests_BadJobNames() {
+__GenerateFunctionalityTests_BadJobNames() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-whitespace
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-dollarsign
@@ -73,7 +73,7 @@ GenerateFunctionalityTests_BadJobNames() {
     sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
 }
 
-GenerateFunctionalityTests_AltConfFilesDir() {
+__GenerateFunctionalityTests_AltConfFilesDir() {
 
     # Just set to the current CONF_DIR to make sure setting it works
 
@@ -152,7 +152,7 @@ GenerateFunctionalityTests_AltConfFilesDir() {
     fi
 }
 
-GenerateFunctionalityTests_TestAll() {
+__GenerateFunctionalityTests_TestAll() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-testall
     fi
@@ -200,7 +200,7 @@ GenerateFunctionalityTests_TestAll() {
     fi
 }
 
-GenerateFunctionalityTests_InteractiveMode() {
+__GenerateFunctionalityTests_InteractiveMode() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-functionality-interactive-mode
 
@@ -270,7 +270,7 @@ GenerateFunctionalityTests_InteractiveMode() {
     fi
 }
 
-GenerateFunctionalityTests_JobTimeout() {
+__GenerateFunctionalityTests_JobTimeout() {
     
     # timeoutputforjob returned
     GetSecondsJob 30
@@ -335,7 +335,7 @@ GenerateFunctionalityTests_JobTimeout() {
     fi
 }
 
-GenerateFunctionalityTests_MagpieExports() {
+__GenerateFunctionalityTests_MagpieExports() {
 
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-hdfs-functionality-checkexports
@@ -423,15 +423,15 @@ GenerateFunctionalityTests() {
     
     echo "Making Functionality Tests"
 
-    GenerateFunctionalityTests_BadJobNames
+    __GenerateFunctionalityTests_BadJobNames
 
-    GenerateFunctionalityTests_AltConfFilesDir
+    __GenerateFunctionalityTests_AltConfFilesDir
 
-    GenerateFunctionalityTests_TestAll
+    __GenerateFunctionalityTests_TestAll
     
-    GenerateFunctionalityTests_InteractiveMode
+    __GenerateFunctionalityTests_InteractiveMode
 
-    GenerateFunctionalityTests_JobTimeout
+    __GenerateFunctionalityTests_JobTimeout
 
-    GenerateFunctionalityTests_MagpieExports
+    __GenerateFunctionalityTests_MagpieExports
 }

@@ -1,0 +1,170 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This is used by scripts, don't edit this
+#
+# This file has common node identification functions. These are used
+# predominantly to determine what node you're presently
+# configuring/setting up/running on.  Should be sourced and used only
+# after magpie-setup-core is run b/c it depends on master/slaves to be
+# setup.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+
+Magpie_am_I_master () {
+    local myhostname=`hostname`
+
+    Magpie_make_all_local_dirs_node_specific
+
+    for project in HADOOP HBASE SPARK STORM KAFKA ZEPPELIN TACHYON ZOOKEEPER
+    do
+        local setupvar="${project}_SETUP"
+        local confdirvar="${project}_CONF_DIR"
+        if [ "${!setupvar}" == "yes" ] && [ -f "${!confdirvar}/masters" ]
+        then
+            if grep -q -E "^${myhostname}$" ${!confdirvar}/masters
+            then 
+                return 0
+            fi
+        fi
+    done
+
+    return 1
+}
+
+# For the common pattern
+__Magpie_am_I_a_project_node () {
+    local myhostname=`hostname`
+    local confdir=$1
+    local noderankvar=$2
+    local mastersfile=$3
+    local slavesfile=$4
+     
+    Magpie_make_spark_local_dirs_node_specific
+
+    if [ "${mastersfile}X" != "X" ]
+    then
+        if grep -q -E "^${myhostname}$" ${confdir}/${mastersfile}
+        then 
+            eval ${noderankvar}=0
+            return 0
+        fi
+    fi
+    
+    if [ "${slavesfile}X" != "X" ]
+    then
+        if grep -q -E "^${myhostname}$" ${confdir}/${slavesfile}
+        then 
+            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} | awk --field-separator=':' '{print $1}'`
+            eval ${noderankvar}="${noderank}"
+            return 0
+        fi
+    fi
+    
+    return 1
+}
+
+__Magpie_am_I_a_hadoop_namenode_in_hdfs_federation () {
+    local myhostname=`hostname`
+    
+    Magpie_make_hadoop_local_dirs_node_specific
+    
+    if grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
+    then 
+        local subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
+        hadoopnoderank="0${subrank}"
+        return 0
+    fi
+
+    return 1
+}
+
+Magpie_am_I_a_hadoop_node () {
+    __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "slaves"
+    local exitval=$?
+    if [ "${exitval}" == "1" ]
+    then
+        __Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
+        return $?
+    fi
+    
+    return ${exitval}
+}
+
+Magpie_am_I_a_hadoop_namenode () {
+    # Only check masters for namenode
+    __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" ""
+    local exitval=$?
+    if [ "${exitval}" == "1" ]
+    then
+        __Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
+        return $?
+    fi
+
+    return ${exitval}
+}
+
+Magpie_am_I_a_hbase_node () {
+    __Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "masters" "regionservers"
+    return $?
+}
+
+Magpie_am_I_a_phoenix_node () {
+    Magpie_am_I_a_hbase_node
+    return $?
+}
+
+Magpie_am_I_a_spark_node () {
+    __Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "slaves"
+    return $?
+}
+
+Magpie_am_I_a_kafka_node () {
+    __Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank" "masters" "slaves"
+    return $?
+}
+
+Magpie_am_I_a_storm_node () {
+    __Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "masters" "workers"
+    return $?
+}
+
+Magpie_am_I_a_tachyon_node () {
+    __Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank" "masters" "slaves"
+    return $?
+}
+
+Magpie_am_I_a_zeppelin_node() {
+    # Zeppelin only runs on the master
+    __Magpie_am_I_a_project_node ${ZEPPELIN_CONF_DIR} "zeppelinnoderank" "masters" ""
+    return $?
+}
+
+Magpie_am_I_a_zookeeper_node () {
+    # Do not consider the 'master' node, it is only for launching
+    # Zookeeper, it is not an actual Zookeeper node
+    __Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "slaves"
+    return $?
+}

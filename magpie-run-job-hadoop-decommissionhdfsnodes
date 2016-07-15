@@ -28,8 +28,9 @@
 
 # XXX does this work w/ federation?
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -40,27 +41,20 @@ then
     exit 1
 fi
 
-if [ "${HADOOP_HDFS_REPLICATION}X" != "X" ]
+cd ${HADOOP_HOME}
+
+hdfsreplication=`${hadoopcmdprefix}/hdfs getconf -confKey dfs.replication 2> /dev/null`
+
+if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt ${hdfsreplication} ]
 then
-    if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt "${HADOOP_HDFS_REPLICATION}" ]
-    then
-        echo "Cannot have fewer nodes than HDFS replication"
-        exit 1
-    fi
-else
-    if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -lt ${default_hdfs_replication} ]
-    then
-        echo "Cannot have fewer nodes than HDFS replication"
-        exit 1
-    fi
+    echo "Cannot have fewer nodes than HDFS replication"
+    exit 1
 fi
 
 nodecounttodecommission=`expr ${HADOOP_SLAVE_COUNT} - ${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}`
 
 echo "Creating ${HADOOP_CONF_DIR}/hosts-exclude"
 tail -n ${nodecounttodecommission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
-
-cd ${HADOOP_HOME}
 
 echo "Refreshing nodes in namenode"
 ${hadoopcmdprefix}/hdfs dfsadmin -refreshNodes

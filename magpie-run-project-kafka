@@ -22,16 +22,14 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the core processing script for setting up daemons and
-# running jobs.  For the most part, it shouldn't be editted.  See
-# job submission files for configuration details.
+# These are functions to be called by magpie-run
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 Magpie_run_start_kafka () {
@@ -123,7 +121,7 @@ Magpie_run_start_kafka () {
 
         if [ ${KAFKA_MODE} != "setuponly" ]
         then
-            local magpiestartuptimeseconds=`expr ${MAGPIE_STARTUP_TIME} \* 60`
+            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
             if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
             then  

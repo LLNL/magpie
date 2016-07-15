@@ -27,12 +27,11 @@
 # job submission files for configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-job-dependent
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hadoop
 source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hbase

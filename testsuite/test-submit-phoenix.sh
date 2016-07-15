@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitPhoenixStandardTests_Performanceeval() {
+__SubmitPhoenixStandardTests_Performanceeval() {
     local phoenixversion=$1
     local hbaseversion=$2
     local hadoopversion=$3
@@ -31,7 +31,7 @@ SubmitPhoenixStandardTests_Performanceeval() {
 }
 
 SubmitPhoenixStandardTests() {
-    for testfunction in SubmitPhoenixStandardTests_Performanceeval
+    for testfunction in __SubmitPhoenixStandardTests_Performanceeval
     do
         for testgroup in ${phoenix_test_groups}
         do
@@ -46,7 +46,7 @@ SubmitPhoenixStandardTests() {
     done
 }
 
-SubmitPhoenixDependencyTests_Dependency1() {
+__SubmitPhoenixDependencyTests_Dependency1() {
     local phoenixversion=$1
     local hbaseversion=$2
     local hadoopversion=$3
@@ -59,7 +59,7 @@ SubmitPhoenixDependencyTests_Dependency1() {
     DependentJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}-hdfsovernetworkfs-run-phoenixperformanceeval
 }
 
-SubmitPhoenixDependencyTests_Dependency2() {
+__SubmitPhoenixDependencyTests_Dependency2() {
     local phoenixversion=$1
     local hbaseversion=$2
     local hadoopversion=$3
@@ -77,7 +77,7 @@ SubmitPhoenixDependencyTests_Dependency2() {
 }
 
 SubmitPhoenixDependencyTests() {
-    for testfunction in SubmitPhoenixDependencyTests_Dependency1 SubmitPhoenixDependencyTests_Dependency2
+    for testfunction in __SubmitPhoenixDependencyTests_Dependency1 __SubmitPhoenixDependencyTests_Dependency2
     do
         for testgroup in ${phoenix_test_groups}
         do

@@ -26,8 +26,9 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -69,7 +70,7 @@ echo "*** Sleeping a bit to let WordCount run a bit"
 sleep 30
 
 echo "*** Checking that Storm WordCount is running"
-command="bin/storm list"
+command="${stormcmdprefix}/storm list"
 echo "Running $command" >&2
 stormlistrunning=`$command`
 echo ${stormlistrunning}
@@ -80,7 +81,7 @@ then
     echo "*** Storm appears to be executing WordCount properly"
 
     echo "*** Killing Storm Wordcount "
-    command="bin/storm kill WordCount"
+    command="${stormcmdprefix}/storm kill WordCount"
     echo "Running $command" >&2
     $command
 
@@ -91,7 +92,7 @@ then
         sleep 30
         
         echo "*** Checking that Storm WordCount is no longer running"
-        command="bin/storm list"
+        command="${stormcmdprefix}/storm list"
         echo "Running $command" >&2
         stormlistkilled=`$command`
         

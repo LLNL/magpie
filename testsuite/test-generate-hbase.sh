@@ -4,7 +4,7 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 
-GenerateHbaseStandardTests_StandardPerformanceEval() {
+__GenerateHbaseStandardTests_StandardPerformanceEval() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -75,7 +75,7 @@ GenerateHbaseStandardTests() {
 
     echo "Making Hbase Standard Tests"
 
-    for testfunction in GenerateHbaseStandardTests_StandardPerformanceEval
+    for testfunction in __GenerateHbaseStandardTests_StandardPerformanceEval
     do
         for testgroup in ${hbase_test_groups}
         do
@@ -92,7 +92,7 @@ GenerateHbaseStandardTests() {
     done
 }
 
-GenerateHbaseDependencyTests_Dependency1() {
+__GenerateHbaseDependencyTests_Dependency1() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -122,7 +122,7 @@ GenerateHbaseDependencyTests_Dependency1() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
 }
 
-GenerateHbaseDependencyTests_Dependency2() {
+__GenerateHbaseDependencyTests_Dependency2() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -188,7 +188,7 @@ GenerateHbaseDependencyTests() {
 # Dependency 1 Tests, run after another, HDFS over Lustre/NetworkFS
 # Dependency 2 Tests, leave data in HDFS, read/write from different jobs, HDFS over Lustre
 
-    for testfunction in GenerateHbaseDependencyTests_Dependency1 GenerateHbaseDependencyTests_Dependency2
+    for testfunction in __GenerateHbaseDependencyTests_Dependency1 __GenerateHbaseDependencyTests_Dependency2
     do
         for testgroup in ${hbase_test_groups}
         do

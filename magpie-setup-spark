@@ -31,12 +31,15 @@ then
     exit 0
 fi
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-misc-external
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
 # sparknoderank set if succeed
 if ! Magpie_am_I_a_spark_node
@@ -57,30 +60,30 @@ else
     sparkdaemonheapmax="1000"
 fi 
 
-# Sets threadstouse and proccount
-Magpie_calculate_threadstouse
+# Sets magpie_threads_to_use and magpie_processor_count
+Magpie_calculate_threads_to_use
 
-# Sets memorytouse
-Magpie_calculate_memorytouse
+# Sets magpie_memory_to_use
+Magpie_calculate_memory_to_use
 
 if [ "${SPARK_WORKER_CORES_PER_NODE}X" != "X" ]
 then
     workercores=${SPARK_WORKER_CORES_PER_NODE}
 else
-    workercores=${threadstouse}
+    workercores=${magpie_threads_to_use}
 fi
 
 # Spark is special, can't set > # of cores 
-if [ "${workercores}" -gt "${proccount}" ]
+if [ "${workercores}" -gt "${magpie_processor_count}" ]
 then
-    workercores=${proccount}
+    workercores=${magpie_processor_count}
 fi
 
 if [ "${SPARK_WORKER_MEMORY_PER_NODE}X" != "X" ]
 then
     workermemory=${SPARK_WORKER_MEMORY_PER_NODE}
 else
-    workermemory=${memorytouse}
+    workermemory=${magpie_memory_to_use}
 fi
 
 if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
@@ -119,17 +122,17 @@ fi
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
 then 
-    SPARK_JAVA_OPTS="-Dspark.ui.port=${SPARK_APPLICATION_DASHBOARD_PORT}"
+    SPARK_JAVA_OPTS="-Dspark.ui.port=${default_spark_application_dashboard_port}"
 else
     SPARK_JAVA_OPTS=""
 fi
 
 if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
-    # sets hadooptmpdir and fsdefault
+    # sets magpie_hadooptmpdir and magpie_fsdefault
     Magpie_calculate_hadoop_filesystem_paths ${sparknoderank}
 
-    sparklocalscratchdirpath="${hadooptmpdir}/spark/node-${sparknoderank}"
+    sparklocalscratchdirpath="${magpie_hadooptmpdir}/spark/node-${sparknoderank}"
     
     if [ ! -d "${sparklocalscratchdirpath}" ]
     then
@@ -286,7 +289,7 @@ fi
 # Tests show proc count is about the best performing when you have
 # many cores, which is likely the norm in HPC clusters
 
-akkathreads=`expr ${proccount}`
+akkathreads=`expr ${magpie_processor_count}`
 
 if [ "${akkathreads}" -lt "4" ]
 then
@@ -300,63 +303,10 @@ then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
 fi
 
-openfiles=`ulimit -n`
-if [ "${openfiles}" != "unlimited" ]
-then
-    openfileshardlimit=`ulimit -H -n`
-
-    # we estimate 8192 per 100 nodes, minimum 16384, max 65536.
-    # Obviously depends on many factors such as core count, but it's a
-    # reasonble and safe over-estimate calculated based on experience.
-    openfilesslavecount=`expr ${SPARK_SLAVE_COUNT} \/ 100`
-    openfilescount=`expr ${openfilesslavecount} \* 8192`
-    if [ "${openfilescount}" -lt "16384" ]
-    then
-        openfilescount=16384
-    fi
-    if [ "${openfilescount}" -gt "65536" ]
-    then
-        openfilescount=65536
-    fi
-    
-    if [ "${openfileshardlimit}" != "unlimited" ]
-    then
-        if [ ${openfilescount} -gt ${openfileshardlimit} ]
-        then
-            openfilescount=${openfileshardlimit}
-        fi
-    fi
-else
-    openfilescount="unlimited"
-fi
-
-userprocesses=`ulimit -u`
-if [ "${userprocesses}" != "unlimited" ]
-then
-    userprocesseshardlimit=`ulimit -H -u`
-
-    # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
-    userprocessesslavecount=`expr ${SPARK_SLAVE_COUNT} \/ 100`
-    userprocessescount=`expr ${userprocessesslavecount} \* 2048`
-    if [ "${userprocessescount}" -lt "4096" ]
-    then
-        userprocessescount=4096
-    fi
-    if [ "${userprocessescount}" -gt "32768" ]
-    then
-        userprocessescount=32768
-    fi
-    
-    if [ "${userprocesseshardlimit}" != "unlimited" ]
-    then
-        if [ ${userprocessescount} -gt ${userprocesseshardlimit} ]
-        then
-            userprocessescount=${userprocesseshardlimit}
-        fi
-    fi
-else
-    userprocessescount="unlimited"
-fi
+# Sets magpie_openfilescount
+Magpie_calculate_openfiles ${SPARK_SLAVE_COUNT}
+# Sets magpie_userprocessescount
+Magpie_calculate_userprocesses ${SPARK_SLAVE_COUNT}
 
 if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
 then
@@ -464,9 +414,9 @@ sed -i \
     -e "s/SPARKWORKERDIR/${workerdirectorysubst}/g" \
     -e "s/SPARKMEM/${sparkmem}/g" \
     -e "s/SPARKDRIVERMEMORY/${sparkdrivermemory}/g" \
-    -e "s/SPARKMASTERPORT/${SPARK_MASTER_PORT}/g" \
-    -e "s/SPARKMASTERWEBUIPORT/${SPARK_MASTER_WEBUI_PORT}/g" \
-    -e "s/SPARKWORKERWEBUIPORT/${SPARK_WORKER_WEBUI_PORT}/g" \
+    -e "s/SPARKMASTERPORT/${default_spark_master_port}/g" \
+    -e "s/SPARKMASTERWEBUIPORT/${default_spark_master_webui_port}/g" \
+    -e "s/SPARKWORKERWEBUIPORT/${default_spark_worker_webui_port}/g" \
     -e "s/SPARKDAEMONJAVAOPTS/${extrasparkdaemonjavaoptssubst}/g" \
     -e "s/SPARKPYSPARKPYTHON/${pysparkpythonsubst}/g" \
     ${post_sparkenvsh}
@@ -606,8 +556,8 @@ if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXT
 then
     cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${post_sparkenvsh}
 else
-    echo "ulimit -n ${openfilescount}" >> ${post_sparkenvsh}
-    echo "ulimit -u ${userprocessescount}" >> ${post_sparkenvsh}
+    echo "ulimit -n ${magpie_openfilescount}" >> ${post_sparkenvsh}
+    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_sparkenvsh}
 fi
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
@@ -616,7 +566,7 @@ then
     then
         sparkmaster="yarn-client"
     else
-        sparkmaster="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+        sparkmaster="spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
     fi
     sparkmastersubst=`echo "${sparkmaster}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -634,7 +584,7 @@ then
 
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
-        sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${TACHYON_MASTER_PORT}"
+        sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${default_tachyon_master_port}"
         sparktachyonstoreurlsubst=`echo "${sparktachyonstoreurl}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
@@ -670,7 +620,7 @@ then
         -e "s/SPARKSHUFFLECONSOLIDATEFILES/${sparkshuffleconsolidatefiles}/g" \
         -e "s/SPARKDEFAULTPARALLELISM/${sparkdefaultparallelism}/g" \
         -e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
-        -e "s/SPARKUIPORT/${SPARK_APPLICATION_DASHBOARD_PORT}/g" \
+        -e "s/SPARKUIPORT/${default_spark_application_dashboard_port}/g" \
         -e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
         -e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
         -e "s/SPARKDRIVEREXTRACLASSPATH/${sparkdriverclasspathsubst}/g" \

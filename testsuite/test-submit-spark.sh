@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SubmitSparkStandardTests_BasicTests() {
+__SubmitSparkStandardTests_BasicTests() {
     local sparkversion=$1
     local makenolocaldirtests=$2
 
@@ -15,7 +15,7 @@ SubmitSparkStandardTests_BasicTests() {
     fi
 }
 
-SubmitSparkStandardTests_WordCount() {
+__SubmitSparkStandardTests_WordCount() {
     local sparkversion=$1
     local hadoopversion=$2
     local makenolocaldirtests=$3
@@ -50,7 +50,7 @@ SubmitSparkStandardTests_WordCount() {
     fi
 }
 
-SubmitSparkStandardTests_YarnTests() {
+__SubmitSparkStandardTests_YarnTests() {
     local sparkversion=$1
     local hadoopversion=$2
     
@@ -61,7 +61,7 @@ SubmitSparkStandardTests_YarnTests() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkpi-no-local-dir
 }
 
-SubmitSparkStandardTests_YarnWordCount() {
+__SubmitSparkStandardTests_YarnWordCount() {
     local sparkversion=$1
     local hadoopversion=$2
 
@@ -93,7 +93,7 @@ SubmitSparkStandardTests_YarnWordCount() {
 }
 
 SubmitSparkStandardTests() {
-    for testfunction in SubmitSparkStandardTests_BasicTests
+    for testfunction in __SubmitSparkStandardTests_BasicTests
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -112,7 +112,7 @@ SubmitSparkStandardTests() {
         done
     done
 
-    for testfunction in SubmitSparkStandardTests_WordCount
+    for testfunction in __SubmitSparkStandardTests_WordCount
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -133,7 +133,7 @@ SubmitSparkStandardTests() {
         done
     done
 
-    for testfunction in SubmitSparkStandardTests_YarnTests SubmitSparkStandardTests_YarnWordCount
+    for testfunction in __SubmitSparkStandardTests_YarnTests __SubmitSparkStandardTests_YarnWordCount
     do
         for testgroup in ${spark_test_groups_after_1X}
         do
@@ -146,7 +146,7 @@ SubmitSparkStandardTests() {
     done
 }
 
-SubmitSparkDependencyTests_Dependency1HDFS() {
+__SubmitSparkDependencyTests_Dependency1HDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     local decommission=$3
@@ -172,7 +172,7 @@ SubmitSparkDependencyTests_Dependency1HDFS() {
     fi
 }
 
-SubmitSparkDependencyTests_Dependency2HDFS() {
+__SubmitSparkDependencyTests_Dependency2HDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     local decommission=$3
@@ -196,7 +196,7 @@ SubmitSparkDependencyTests_Dependency2HDFS() {
     fi
 }
 
-SubmitSparkDependencyTests_Dependency3YarnHDFS() {
+__SubmitSparkDependencyTests_Dependency3YarnHDFS() {
     local sparkversion=$1
     local hadoopversion=$2
 
@@ -213,7 +213,7 @@ SubmitSparkDependencyTests_Dependency3YarnHDFS() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
 }
 
-SubmitSparkDependencyTests_Dependency4YarnHDFS() {
+__SubmitSparkDependencyTests_Dependency4YarnHDFS() {
     local sparkversion=$1
     local hadoopversion=$2
     
@@ -230,7 +230,7 @@ SubmitSparkDependencyTests_Dependency4YarnHDFS() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
 }
 
-SubmitSparkDependencyTests_Dependency5rawnetworkfs() {
+__SubmitSparkDependencyTests_Dependency5rawnetworkfs() {
     local sparkversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}-run-sparkwordcount-copy-in
@@ -239,7 +239,7 @@ SubmitSparkDependencyTests_Dependency5rawnetworkfs() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}-run-sparkwordcount-no-copy
 }
 
-SubmitSparkDependencyTests_Dependency6rawnetworkfs() {
+__SubmitSparkDependencyTests_Dependency6rawnetworkfs() {
     local sparkversion=$1
 
     BasicJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
@@ -247,7 +247,7 @@ SubmitSparkDependencyTests_Dependency6rawnetworkfs() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}-run-sparkwordcount-no-copy
 }
 
-SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
+__SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
     local sparkversion=$1
     local hadoopversion=$2
 
@@ -257,7 +257,7 @@ SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
     DependentJobSubmit magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}-run-sparkwordcount-no-copy
 }
 
-SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
+__SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
     local sparkversion=$1
     local hadoopversion=$2
 
@@ -267,7 +267,7 @@ SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
 }
 
 SubmitSparkDependencyTests() {
-    for testfunction in SubmitSparkDependencyTests_Dependency1HDFS SubmitSparkDependencyTests_Dependency2HDFS
+    for testfunction in __SubmitSparkDependencyTests_Dependency1HDFS __SubmitSparkDependencyTests_Dependency2HDFS
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -288,7 +288,7 @@ SubmitSparkDependencyTests() {
         done
     done
 
-    for testfunction in SubmitSparkDependencyTests_Dependency3YarnHDFS SubmitSparkDependencyTests_Dependency4YarnHDFS
+    for testfunction in __SubmitSparkDependencyTests_Dependency3YarnHDFS __SubmitSparkDependencyTests_Dependency4YarnHDFS
     do
         for testgroup in ${spark_test_groups_after_1X}
         do
@@ -300,7 +300,7 @@ SubmitSparkDependencyTests() {
         done
     done
 
-    for testfunction in SubmitSparkDependencyTests_Dependency5rawnetworkfs SubmitSparkDependencyTests_Dependency6rawnetworkfs
+    for testfunction in __SubmitSparkDependencyTests_Dependency5rawnetworkfs __SubmitSparkDependencyTests_Dependency6rawnetworkfs
     do
         for testgroup in ${spark_test_groups_before_1X}
         do
@@ -319,7 +319,7 @@ SubmitSparkDependencyTests() {
         done
     done
 
-    for testfunction in SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs
+    for testfunction in __SubmitSparkDependencyTests_Dependency7Yarnrawnetworkfs __SubmitSparkDependencyTests_Dependency8Yarnrawnetworkfs
     do
         for testgroup in ${spark_test_groups_after_1X}
         do

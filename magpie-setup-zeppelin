@@ -31,9 +31,11 @@ then
     exit 0
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-core
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-local-dirs-conversion
+source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 
 # zeppelinnoderank set if succeed
 if ! Magpie_am_I_a_zeppelin_node
@@ -193,7 +195,7 @@ fi
 cp ${pre_zeppelinsitexml} ${post_zeppelinsitexml}
 
 sed -i \
-    -e "s/ZEPPELIN_PORT/${ZEPPELIN_PORT}/g" \
+    -e "s/ZEPPELINPORT/${default_zeppelin_port}/g" \
     -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
     -e "s/ZEPPELININTERPRETERDIR/${zeppelininterpreterdir}/g" \
     ${post_zeppelinsitexml}
