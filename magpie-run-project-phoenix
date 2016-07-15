@@ -68,31 +68,22 @@ Magpie_run_start_phoenix () {
         echo "* Phoenix Information"
         echo "*"
         echo "* To access phoenix directly, you'll want to:"
-        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
-        if echo $MAGPIE_SHELL | grep -q csh
-        then
-            echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
-        else
-            echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
-        fi
-        echo "*   cd $PHOENIX_HOME"
         echo "*"
-        echo "* Then you can do as you please.  To interact with Phoenix you can use:"
-        echo "*" 
-        echo "*   ${phoenixcmdprefix}/sqlline.py"
-
-        echo "*" 
-        echo "* Some additional environment variables you may sometimes wish to set"
-        echo "*" 
+        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
         if echo $MAGPIE_SHELL | grep -q csh
         then
             echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
             echo "*   setenv PHOENIX_HOME \"${PHOENIX_HOME}\""
+            echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
         else
             echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
             echo "*   export PHOENIX_HOME=\"${PHOENIX_HOME}\""
+            echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
         fi
-
+        echo "*"
+        echo "* Then you can do as you please.  To interact with Phoenix you can use:"
+        echo "*" 
+        echo "*   \$PHOENIX_HOME/${phoenixcmdprefix}/sqlline.py"
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "*"

@@ -79,64 +79,41 @@ Magpie_run_start_spark () {
         fi
         echo "*"
         echo "* To access Spark directly, you'll want to:"
+        echo "*"
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
         if echo $MAGPIE_SHELL | grep -q csh
         then
+            echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+            echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
             echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
         else
+            echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+            echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
             echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
         fi
-        echo "*   cd $SPARK_HOME"
         echo "*"
         echo "* Then you can do as you please.  For example to run a job:"
         echo "*" 
         if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
         then 
-            echo "*   ${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
+            echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
         else
-            echo "*   ${sparkcmdprefix}/spark-submit --class <class> <jar>"
+            echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-submit --class <class> <jar>"
         fi
 
         if [ "${SPARK_MODE}" == "setuponly" ]
         then
             echo "*" 
-            echo "* To setup, you probably want to run:" 
+            echo "* To setup, login and set environment variables per the"
+            echo "* instructions above, then run:"
             echo "*"
-            echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
-            if echo $MAGPIE_SHELL | grep -q csh
-            then
-                echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
-            else
-                echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
-            fi
-            echo "*   cd $SPARK_HOME"
-            echo "*   ${sparksetupscriptprefix}/start-all.sh" 
+            echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/start-all.sh" 
         fi
-
         echo "*" 
-        echo "* To end/cleanup your session, kill the daemons via:"
+        echo "* To end/cleanup your session & kill all daemons, login and set"
+        echo "* environment variables per the instructions above, then run:"
         echo "*" 
-        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${SPARK_MASTER_NODE}"
-        if echo $MAGPIE_SHELL | grep -q csh
-        then
-            echo "*   setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\""
-        else
-            echo "*   export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\""
-        fi
-        echo "*   cd $SPARK_HOME"
-        echo "*   ${sparksetupscriptprefix}/stop-all.sh"
-        echo "*" 
-        echo "* Some additional environment variables you may sometimes wish to set"
-        echo "*" 
-        if echo $MAGPIE_SHELL | grep -q csh
-        then
-            echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-            echo "*   setenv SPARK_HOME \"${SPARK_HOME}\""
-        else
-            echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
-            echo "*   export SPARK_HOME=\"${SPARK_HOME}\""
-        fi
-
+        echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/stop-all.sh"
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "*"

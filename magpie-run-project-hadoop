@@ -250,101 +250,13 @@ Magpie_run_start_hadoop () {
             fi
             echo "*" 
             echo "* To access Hadoop directly, you'll want to:"
-            echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
-            if echo $MAGPIE_SHELL | grep -q csh
-            then
-                echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-            else
-                echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-            fi
-            echo "*   cd $HADOOP_HOME"
             echo "*"
-            echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
-            echo "*" 
-            if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
-            then 
-                echo "*   ${hadoopcmdprefix}/hdfs dfs ..."
-                echo "*   or"
-            fi
-            echo "*   ${hadoopcmdprefix}/hadoop fs ..."
-            echo "*" 
-            echo "* To launch jobs you'll want to:"
-            echo "*" 
-            echo "*   ${hadoopcmdprefix}/hadoop jar ..."
-            echo "*" 
-            if [ "${HADOOP_MODE}" == "setuponly" ]
-            then
-                echo "*" 
-                echo "* To setup, you probably want to run:" 
-                echo "*"
-                echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
-                if echo $MAGPIE_SHELL | grep -q csh
-                then
-                    echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-                else
-                    echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-                fi
-                echo "*   cd $HADOOP_HOME"
-                if Magpie_hadoop_filesystem_mode_is_hdfs_type
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-dfs.sh" 
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-mapred.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-yarn.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
-                fi
-            fi
-
-            echo "*" 
-            echo "* To end/cleanup your session, kill the daemons via:"
-            echo "*" 
             echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
-            if echo $MAGPIE_SHELL | grep -q csh
-            then
-                echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-            else
-                echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-            fi
-            echo "*   cd $HADOOP_HOME"
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-yarn.sh"
-            fi
-            if Magpie_hadoop_filesystem_mode_is_hdfs_type
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-dfs.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
-            fi
-            echo "*" 
-            echo "* Some additional environment variables you may sometimes wish to set"
-            echo "*" 
             if echo $MAGPIE_SHELL | grep -q csh
             then
                 echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
                 echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
+                echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
                     echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
@@ -352,12 +264,77 @@ Magpie_run_start_hadoop () {
             else
                 echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
                 echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
+                echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
                     echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
                 fi
             fi
-
+            echo "*"
+            echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
+            echo "*" 
+            if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+            then 
+                echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hdfs dfs ..."
+            else
+                echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop fs ..."
+            fi
+            echo "*" 
+            echo "* To launch jobs you'll want to:"
+            echo "*" 
+            echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop jar ..."
+            echo "*" 
+            if [ "${HADOOP_MODE}" == "setuponly" ]
+            then
+                echo "*" 
+                echo "* To setup, login and set environment variables per the"
+                echo "* instructions above, then run:"
+                echo "*"
+                if Magpie_hadoop_filesystem_mode_is_hdfs_type
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-dfs.sh" 
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-mapred.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-yarn.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
+                fi
+            fi
+            echo "*" 
+            echo "* To end/cleanup your session & kill all daemons, login and set"
+            echo "* environment variables per the instructions above, then run:"
+            echo "*" 
+            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+            then
+                echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/stop-mapred.sh"
+            fi
+            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+            then
+                echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/stop-yarn.sh"
+            fi
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
+            then
+                echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/stop-dfs.sh"
+            fi
+            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+            then
+                echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
+            fi
+            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+            then
+                echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
+            fi
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
             then
                 echo "*"

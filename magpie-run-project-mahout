@@ -38,21 +38,6 @@ Magpie_run_start_mahout () {
             Magpie_output_internal_warning "Attempt to setup Mahout without Hadoop being setup"
         fi
 
-        echo "*******************************************************"
-        echo "*"
-        echo "* Mahout Information"
-        echo "*"
-        if [ "${MAHOUT_MODE}" == "interactive" ]
-        then
-            echo "* To run mahout:"
-            echo "*"
-            echo "* cd $MAHOUT_HOME"
-            echo "*"
-            echo "* ${mahoutcmdprefix}/mahout ..."
-            echo "*" 
-        fi
-        echo "* Some additional environment variables you may sometimes wish to set"
-        echo "*" 
         if [ "${MAHOUT_OPTS}X" != "X" ]
         then
             if ! echo ${MAHOUT_OPTS} | grep -q -E "java.io.tmpdir"
@@ -63,21 +48,33 @@ Magpie_run_start_mahout () {
             export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCHSPACE_DIR}/tmp"
         fi
 
-        if echo $MAGPIE_SHELL | grep -q csh
+        echo "*******************************************************"
+        echo "*"
+        echo "* Mahout Information"
+        echo "*"
+        if [ "${MAHOUT_MODE}" == "interactive" ]
         then
-            echo "*   setenv MAHOUT_HOME \"${MAHOUT_HOME}\""
-            if [ "${MAHOUT_OPTS}X" != "X" ]
+            echo "* To run mahout, follow above instructions for logging in"
+            echo "* to your allocation then:"
+            echo "*"
+            if echo $MAGPIE_SHELL | grep -q csh
             then
-                echo "*   setenv MAHOUT_OPTS \"${MAHOUT_OPTS}\""
+                echo "*   setenv MAHOUT_HOME \"${MAHOUT_HOME}\""
+                if [ "${MAHOUT_OPTS}X" != "X" ]
+                then
+                    echo "*   setenv MAHOUT_OPTS \"${MAHOUT_OPTS}\""
+                fi
+            else
+                echo "*   export MAHOUT_HOME=\"${MAHOUT_HOME}\""
+                if [ "${MAHOUT_OPTS}X" != "X" ]
+                then
+                    echo "*   export MAHOUT_OPTS=\"${MAHOUT_OPTS}\""
+                fi
             fi
-        else
-            echo "*   export MAHOUT_HOME=\"${MAHOUT_HOME}\""
-            if [ "${MAHOUT_OPTS}X" != "X" ]
-            then
-                echo "*   export MAHOUT_OPTS=\"${MAHOUT_OPTS}\""
-            fi
+            echo "*"
+            echo "* \$MAHOUT_HOME/${mahoutcmdprefix}/mahout ..."
+            echo "*" 
         fi
-        
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "*"

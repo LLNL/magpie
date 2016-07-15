@@ -70,30 +70,22 @@ Magpie_run_start_zeppelin () {
         echo "*     http://${ZEPPELIN_MASTER_NODE}:${default_zeppelin_port}"
         echo "*"
         echo "* To access zeppelin directly, you'll want to:"
+        echo "*"
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZEPPELIN_MASTER_NODE}"
-        if echo $MAGPIE_SHELL | grep -q csh
-        then
-            echo "*   setenv ZEPPELIN_CONF_DIR \"${ZEPPELIN_CONF_DIR}\""
-        else
-            echo "*   export ZEPPELIN_CONF_DIR=\"${ZEPPELIN_CONF_DIR}\""
-        fi
-        echo "*   cd $ZEPPELIN_HOME"
-        echo "*"
-        echo "* Then you can do as you please. To interact with Zeppelin you can use the applications available in:"
-        echo "*"
-        echo "*   ${ZEPPELIN_HOME}/${zeppelincmdprefix}"
-
-        echo "*"
-        echo "* Some additional environment variables you may sometimes wish to set"
-        echo "*"
         if echo $MAGPIE_SHELL | grep -q csh
         then
             echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
             echo "*   setenv ZEPPELIN_HOME \"${ZEPPELIN_HOME}\""
+            echo "*   setenv ZEPPELIN_CONF_DIR \"${ZEPPELIN_CONF_DIR}\""
         else
             echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
             echo "*   export ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\""
+            echo "*   export ZEPPELIN_CONF_DIR=\"${ZEPPELIN_CONF_DIR}\""
         fi
+        echo "*"
+        echo "* Then you can do as you please. To interact with Zeppelin you can use the applications available in:"
+        echo "*"
+        echo "*   \$ZEPPELIN_HOME/${zeppelincmdprefix}"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
