@@ -73,7 +73,13 @@ then
                     echo "* Formatting HDFS Namenode"
                     echo "*******************************************************"
                     cd $HADOOP_HOME
-                    echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+                    # Don't check version, legacy 0.2X versioning could be used
+                    if [ -x "${hadoopcmdprefix}/hdfs" ]
+                    then
+                        echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format
+                    else
+                        echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+                    fi
                     touch ${magpie_hdfs_format_file}
                 else
                     # If this is the first time running, make everyone else wait
