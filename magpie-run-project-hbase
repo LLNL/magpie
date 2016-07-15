@@ -31,6 +31,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
 Magpie_run_start_hbase () {
     if [ "${HBASE_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]

@@ -36,6 +36,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
 # tachyonnoderank set if succeed
 if ! Magpie_am_I_a_tachyon_node

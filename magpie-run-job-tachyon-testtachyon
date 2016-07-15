@@ -26,7 +26,7 @@
 # the most part, it shouldn't be editted.  See job submission files
 # for configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
 # This is a job, so no loading magpie-exports*, shouldn't be needed
 
