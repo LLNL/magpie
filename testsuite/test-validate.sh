@@ -150,13 +150,20 @@ __test_zookeeper_shutdown () {
     fi
 }
 
-__test_output_finalize () {
-    local file=$1
-
+__test_generic () {
     num=`grep -e "Magpie Internal" $file | wc -l`
     if [ "${num}" != "0" ]; then
         echo "Internal Magpie error detected in $file"
     fi
+
+    num=`grep -i -e "deprecated" $file | wc -l`
+    if [ "${num}" != "0" ]; then
+        echo "Deprecated keyword detected in $file"
+    fi
+}
+
+__test_output_finalize () {
+    local file=$1
 
     if [ "${verboseoutput}" == "y" ]
     then
@@ -184,6 +191,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -198,6 +206,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -218,6 +227,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -242,6 +252,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -257,6 +268,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -272,6 +284,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -288,6 +301,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -303,6 +317,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -318,6 +333,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -333,6 +349,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -353,6 +370,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -626,6 +644,7 @@ then
             __check_exports_zookeeper ${file}
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -649,6 +668,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -663,8 +683,10 @@ then
             echo "Error in $file"
         fi
         
+        __test_generic $file
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -681,6 +703,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -697,6 +720,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -713,6 +737,7 @@ then
         
         __test_no_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -729,6 +754,7 @@ then
         
         __test_no_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -745,6 +771,7 @@ then
         
         __test_no_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -762,6 +789,7 @@ then
         # On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
         __test_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -786,6 +814,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -805,6 +834,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -821,6 +851,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -838,6 +869,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -855,6 +887,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -872,6 +905,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -889,6 +923,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -910,6 +945,7 @@ then
             __test_spark_shutdown $file
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -945,6 +981,7 @@ then
             __test_hdfs_shutdown $file
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -961,6 +998,7 @@ then
         
         __test_kafka_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -1004,6 +1042,7 @@ then
 
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -1020,6 +1059,7 @@ then
         
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
