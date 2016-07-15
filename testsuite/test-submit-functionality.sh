@@ -43,7 +43,7 @@ __SubmitFunctionalityTests_TestAll() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-hbaseperformanceeval-run-phoenixperformanceeval-run-zookeeperruok-functionality-testall
     BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-testall
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkpi-functionality-testall
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkpi-functionality-testall
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-hadoopterasort-run-sparkpi-functionality-testall
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-functionality-testall
 }
 
