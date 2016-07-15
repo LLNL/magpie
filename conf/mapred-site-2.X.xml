@@ -142,7 +142,7 @@
 
 <property>
   <name>mapreduce.task.tmp.dir</name>
-  <value>${fs.default.name}/mapred/temp</value>
+  <value>${fs.defaultFS}/mapred/temp</value>
   <description> To set the value of tmp directory for map and reduce tasks.
   If the value is an absolute path, it is directly assigned. Otherwise, it is
   prepended with task's working directory. The java tasks are executed with
