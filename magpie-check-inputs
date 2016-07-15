@@ -403,6 +403,12 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
     then
+        if [ "${HADOOP_SETUP_TYPE}" != "MR2" ] && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
+        then
+            echo "HADOOP_SETUP_TYPE must be set to MR2 or HDFS2 for HADOOP_MODE of ${HADOOP_MODE}"
+            exit 1
+        fi
+
         if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
         then 
             echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
@@ -412,6 +418,12 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
     then
+        if [ "${HADOOP_SETUP_TYPE}" != "MR2" ] && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
+        then
+            echo "HADOOP_SETUP_TYPE must be set to MR2 or HDFS2 for HADOOP_MODE of ${HADOOP_MODE}"
+            exit 1
+        fi
+
         if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[3-9]\.[0-9]"
         then 
             echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.3.0 and more recent versions"
