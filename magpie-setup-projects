@@ -22,18 +22,13 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is the main setup script.  For the most part, it
+# This script is the main project setup script.  For the most part, it
 # shouldn't be editted.  See job submission files for configuration
 # details.
 
-(${MAGPIE_SCRIPTS_HOME}/magpie-setup-core)
-if [ $? -ne 0 ] ; then
-    exit 1
-fi
-
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hadoop)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-hadoop)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -41,7 +36,7 @@ fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-pig)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-pig)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -49,7 +44,7 @@ fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-mahout)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-mahout)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -57,7 +52,7 @@ fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-hbase)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-hbase)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -65,7 +60,7 @@ fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-phoenix)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-phoenix)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -73,7 +68,7 @@ fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-spark)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-spark)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -81,7 +76,7 @@ fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-kafka)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-kafka)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -89,7 +84,7 @@ fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zeppelin)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-zeppelin)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -97,7 +92,7 @@ fi
 
 if [ "${STORM_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-storm)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-storm)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -105,7 +100,7 @@ fi
 
 if [ "${TACHYON_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-tachyon)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-tachyon)
     if [ $? -ne 0 ] ; then
         exit 1
     fi
@@ -113,7 +108,7 @@ fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-zookeeper)
+    (${MAGPIE_SCRIPTS_HOME}/magpie-setup-project-zookeeper)
     if [ $? -ne 0 ] ; then
         exit 1
     fi

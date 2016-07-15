@@ -849,7 +849,12 @@ if [ $? -ne 0 ]
 then
     exit 1
 fi
-srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun --no-kill -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-projects
 if [ $? -ne 0 ]
 then
     exit 1
