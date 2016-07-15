@@ -104,8 +104,10 @@ Magpie_run_start_kafka () {
             if echo $MAGPIE_SHELL | grep -q csh
             then
                 echo "setenv KAFKA_HOME \"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv KAFKA_CONF_DIR \"${KAFKA_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             else
                 echo "export KAFKA_HOME=\"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export KAFKA_CONF_DIR=\"${KAFKA_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             fi
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
