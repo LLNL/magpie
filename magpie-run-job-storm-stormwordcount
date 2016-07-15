@@ -102,7 +102,7 @@ then
         then
             echo "*** WordCount no longer active, appears to have been killed correctly."
             stormkilled=1
-            break;
+            break
         else
             echo "*** WordCount was not killed ... wait some more."
         fi

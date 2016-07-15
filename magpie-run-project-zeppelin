@@ -140,11 +140,11 @@ Magpie_run_start_zeppelin () {
             do
                 local serverschk=0
                 local serversup=0
-                for server in `cat ${ZEPPELIN_CONF_DIR}/masters`;
+                for server in `cat ${ZEPPELIN_CONF_DIR}/masters`
                 do
                     serverschk=`expr ${serverschk} + 1`
                     local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c zeppelin`
-                    if [ "${serverisup}" -gt "0" ] ;
+                    if [ "${serverisup}" -gt "0" ]
                     then
                         serversup=`expr ${serversup} + 1`
                     fi

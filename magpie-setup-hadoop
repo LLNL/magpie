@@ -793,14 +793,14 @@ then
         for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
         do
             j=1
-            while true;
+            while true
             do
                 mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_${j}"
                 eval mountvalue="\$$mountname"
 
                 if [ "${mountvalue}X" == "X" ]
                 then
-                    break;
+                    break
                 fi
                 
                 sed -i -e "/@VIEWFSMOUNT@/{r ${pre_coresitexml_viewfsmount}" -e "d}" ${post_coresitexml}
