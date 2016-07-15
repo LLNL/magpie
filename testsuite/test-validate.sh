@@ -156,9 +156,12 @@ __test_generic () {
         echo "Internal Magpie error detected in $file"
     fi
 
-    num=`grep -i -e "deprecated" $file | wc -l`
-    if [ "${num}" != "0" ]; then
-        echo "Deprecated keyword detected in $file"
+    if [ "${verboseoutput}" == "y" ]
+    then
+        num=`grep -i -e "deprecated" $file | wc -l`
+        if [ "${num}" != "0" ]; then
+            echo "Deprecated keyword detected in $file"
+        fi
     fi
 }
 
