@@ -106,9 +106,9 @@ Zeppelin - 0.5.6
 
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
-[PigNote] - Default Pig build for versions 0.12.0, 0.12.1, and 0.13.0
-      is Hadoop 0.20 or 1.X, so recompilation may be necessary depending on
-      your environment.
+[PigNote] - Default Pig build for versions 0.12.X is Hadoop 0.20 or
+      1.X, so recompilation may be necessary depending on your
+      environment.
 
 [TachyonNote] - Default Tachyon build is against Hadoop 1.0.4 and
       Spark may be built against non-0.6.X builds.  Recompilation of
