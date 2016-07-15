@@ -30,12 +30,8 @@
 # script, then things like 'interactive' mode or 'setuponly' are just
 # "another script" and be managed just like any other script.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
-
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
 
 # Will set magpie_jobtimeseconds
 Magpie_job_time_seconds

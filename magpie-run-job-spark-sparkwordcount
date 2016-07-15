@@ -27,11 +27,8 @@
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
+# This is a job, so no loading magpie-exports*, shouldn't be needed
 
 sparkwordcountclass="org.apache.spark.examples.JavaWordCount"
 
