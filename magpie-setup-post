@@ -31,7 +31,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
 if Magpie_am_I_master
 then
     echo "*******************************************************"
-    echo "* Performing Pre-Run Setup"
+    echo "* Performing Post Setup"
     echo "*******************************************************"
 fi
 
@@ -94,7 +94,7 @@ fi
 if Magpie_am_I_master
 then
     echo "*******************************************************"
-    echo "* Pre-Run Setup Complete"
+    echo "* Post Setup Complete"
     echo "*******************************************************"
 fi
 

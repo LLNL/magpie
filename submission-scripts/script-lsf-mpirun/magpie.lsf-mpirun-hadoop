@@ -855,12 +855,16 @@ if [ $? -ne 0 ]
 then
     exit 1
 fi
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-setup-post
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
 mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-pre-run
 if [ $? -ne 0 ]
 then
     exit 1
 fi
-mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-run-setup
 mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-run
 mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-cleanup
 mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-post-run

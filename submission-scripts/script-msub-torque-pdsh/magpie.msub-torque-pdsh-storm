@@ -502,8 +502,8 @@ pdsh "$ENV;
       $MAGPIE_SCRIPTS_HOME/magpie-check-inputs &&
       $MAGPIE_SCRIPTS_HOME/magpie-setup-core &&
       $MAGPIE_SCRIPTS_HOME/magpie-setup-projects &&
+      $MAGPIE_SCRIPTS_HOME/magpie-setup-post &&
       $MAGPIE_SCRIPTS_HOME/magpie-pre-run &&
-      $MAGPIE_SCRIPTS_HOME/magpie-run-setup &&
       $MAGPIE_SCRIPTS_HOME/magpie-run &&
       $MAGPIE_SCRIPTS_HOME/magpie-cleanup &&
       $MAGPIE_SCRIPTS_HOME/magpie-post-run
