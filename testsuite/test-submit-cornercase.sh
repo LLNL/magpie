@@ -203,6 +203,11 @@ __SubmitCornerCaseTests_RequireYarn() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
 }
 
+__SubmitCornerCaseTests_BadComboSettings() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
+}
+
 SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_CatchProjectDependencies
 
@@ -236,4 +241,6 @@ SubmitCornerCaseTests() {
 
     __SubmitCornerCaseTests_RequireHDFS
     __SubmitCornerCaseTests_RequireYarn
+
+    __SubmitCornerCaseTests_BadComboSettings
 }

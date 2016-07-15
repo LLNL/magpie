@@ -816,6 +816,24 @@ __GenerateCornerCaseTests_RequireYarn() {
     fi
 }
 
+__GenerateCornerCaseTests_BadComboSettings() {
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-1
+        sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-1
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="MR1"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
+        sed -i -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="MR1"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcombosettings*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/badcombosettings-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 GenerateCornerCaseTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -846,4 +864,6 @@ GenerateCornerCaseTests() {
 
     __GenerateCornerCaseTests_RequireHDFS
     __GenerateCornerCaseTests_RequireYarn
+
+    __GenerateCornerCaseTests_BadComboSettings
 }

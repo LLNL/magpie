@@ -236,7 +236,7 @@ then
 fi
 
 files=""
-for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings requirehdfs requireyarn
+for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
 do
     filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
     if [ -n "${filestmp}" ]
