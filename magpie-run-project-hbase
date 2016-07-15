@@ -221,7 +221,7 @@ Magpie_run_hbase () {
         echo "*******************************************************"
         echo "* Running Performance Evaluation"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hbase-performanceeval &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-hbase-performanceeval &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${HBASE_MODE}" == "script" ]
@@ -245,7 +245,7 @@ Magpie_run_hbase () {
         echo "*******************************************************"
         echo "* Entering Hbase ${HBASE_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     fi

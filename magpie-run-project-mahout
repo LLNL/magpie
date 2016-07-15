@@ -110,7 +110,7 @@ Magpie_run_mahout () {
         echo "*******************************************************"
         echo "* Running Classifywikipedia"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-classifywikipedia &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-mahout-classifywikipedia &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
@@ -118,7 +118,7 @@ Magpie_run_mahout () {
         echo "*******************************************************"
         echo "* Running Clustersyntheticcontrol"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-clustersyntheticcontrol &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-mahout-clustersyntheticcontrol &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAHOUT_MODE}" == "script" ]

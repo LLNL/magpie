@@ -198,7 +198,7 @@ Magpie_run_zeppelin () {
         echo "*******************************************************"
         echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     fi

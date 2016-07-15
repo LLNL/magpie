@@ -211,7 +211,7 @@ Magpie_run_zookeeper () {
         echo "*******************************************************"
         echo "* Running Zookeeper ruok"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-zookeeper-zookeeperruok &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-zookeeper-zookeeperruok &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${ZOOKEEPER_MODE}" == "launch" ]
@@ -227,7 +227,7 @@ Magpie_run_zookeeper () {
         echo "*******************************************************"
         echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     fi

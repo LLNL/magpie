@@ -174,7 +174,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Running SparkPi"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkpi &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-spark-sparkpi &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "sparkwordcount" ]
@@ -182,7 +182,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Running SparkWordCount"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-spark-sparkwordcount &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-spark-sparkwordcount &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "script" ]
@@ -206,7 +206,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Entering Spark ${SPARK_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     fi

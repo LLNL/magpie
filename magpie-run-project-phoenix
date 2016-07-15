@@ -186,7 +186,7 @@ Magpie_run_phoenix () {
         echo "*******************************************************"
         echo "* Running Performance Evaluation"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-phoenix-performanceeval &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-phoenix-performanceeval &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${PHOENIX_MODE}" == "script" ]
