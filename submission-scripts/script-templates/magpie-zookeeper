@@ -12,7 +12,7 @@ export ZOOKEEPER_SETUP=no
 #
 # Recommended to be odd.
 #
-export ZOOKEEPER_REPLICATION_COUNT=3
+export ZOOKEEPER_REPLICATION_COUNT=ZOOKEEPERREPLICATIONCOUNT
 
 # Zookeeper Node Sharing
 #
