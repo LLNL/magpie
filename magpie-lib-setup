@@ -110,7 +110,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     fi
 }
 
-Magpie_calculate_hadoop_filesystem_format_file_path () {
+Magpie_calculate_hdfs_format_file_path () {
     local noderank=$1
     Magpie_calculate_hadoop_filesystem_paths ${noderank}
     magpie_hdfs_format_file="${magpie_hadooptmpdir}/magpie.hdfs_formatted"

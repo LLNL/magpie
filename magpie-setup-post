@@ -48,7 +48,7 @@ then
         && Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         # will set magpie_hdfs_format_file
-        Magpie_calculate_hadoop_filesystem_format_file_path ${hadoopnoderank}
+        Magpie_calculate_hdfs_format_file_path ${hadoopnoderank}
         
         if [ ! -f ${magpie_hdfs_format_file} ]
         then
