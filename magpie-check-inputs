@@ -479,7 +479,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
-        && Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
+        && ! Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
         exit 1
