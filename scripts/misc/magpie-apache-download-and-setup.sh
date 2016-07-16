@@ -42,7 +42,7 @@ PRESET_LAUNCH_SCRIPT_PATHS="N"
 #LUSTRE_DIR_PATH="/lustre/$USER"
 #NETWORKFS_DIR_PATH="/networkfs/$USER"
 #RAWNETWORKFS_DIR_PATH=/lustre/${USER}
-#ZOOKEEPER_DATA_DIR_PREFIX=/lustre/${USER}
+#ZOOKEEPER_DATA_DIR_PATH=/lustre/${USER}
 #LOCAL_DRIVE_PATH=/ssd/${USER}
 
 # And the rest of the script below will do its thing
@@ -379,6 +379,12 @@ then
     then
         rawnetworkfsdirpathsubst=`echo ${RAWNETWORKFS_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/RAWNETWORKFS_DIR_PREFIX=\(.*\)/RAWNETWORKFS_DIR_PREFIX=${rawnetworkfsdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+    fi 
+
+    if [ "${ZOOKEEPER_DATA_DIR_PATH}X" != "X" ]
+    then
+        localdrivepathsubst=`echo ${ZOOKEEPER_DATA_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+        sed -i -e "s/ZOOKEEPER_DATA_DIR_PREFIX=\(.*\)/ZOOKEEPER_DATA_DIR_PREFIX=${localdrivepathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
     if [ "${LOCAL_DRIVE_PATH}X" != "X" ]
