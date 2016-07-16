@@ -3,6 +3,7 @@
 source test-config.sh
 
 verboseoutput=n
+deprecateoutput=n
 
 while [[ $# -gt 0 ]]
 do
@@ -11,8 +12,11 @@ do
         -v|--verbose)
             verboseoutput=y
             ;;
+        -e|--deprecate)
+            deprecateoutput=y
+            ;;
         *)
-            echo "Usage: test-validate [-v]"
+            echo "Usage: test-validate [-v] [-e]"
             exit 1
             ;;
     esac
@@ -156,7 +160,7 @@ __test_generic () {
         echo "Internal Magpie error detected in $file"
     fi
 
-    if [ "${verboseoutput}" == "y" ]
+    if [ "${deprecateoutput}" == "y" ]
     then
         num=`grep -i -e "deprecated" $file | wc -l`
         if [ "${num}" != "0" ]; then
