@@ -1,6 +1,6 @@
-diff -pruN bin/hadoop-daemon.sh bin/hadoop-daemon.sh
---- bin/hadoop-daemon.sh	2013-07-22 15:26:38.000000000 -0700
-+++ bin/hadoop-daemon.sh	2013-09-05 23:01:30.063914000 -0700
+diff -pruN hadoop-1.2.1-orig/bin/hadoop-daemon.sh hadoop-1.2.1/bin/hadoop-daemon.sh
+--- hadoop-1.2.1-orig/bin/hadoop-daemon.sh	2013-07-22 15:26:38.000000000 -0700
++++ hadoop-1.2.1/bin/hadoop-daemon.sh	2016-07-15 10:21:01.625158000 -0700
 @@ -26,6 +26,7 @@
  #   HADOOP_PID_DIR   The pid files are stored. /tmp by default.
  #   HADOOP_IDENT_STRING   A string representing this instance of hadoop. $USER by default
@@ -26,10 +26,9 @@ diff -pruN bin/hadoop-daemon.sh bin/hadoop-daemon.sh
      fi
  
      hadoop_rotate_log $log
-diff -pruN bin/hadoop-daemon.sh.orig bin/hadoop-daemon.sh.orig
-diff -pruN bin/slaves.sh bin/slaves.sh
---- bin/slaves.sh	2013-07-22 15:26:38.000000000 -0700
-+++ bin/slaves.sh	2013-09-05 23:02:01.904041000 -0700
+diff -pruN hadoop-1.2.1-orig/bin/slaves.sh hadoop-1.2.1/bin/slaves.sh
+--- hadoop-1.2.1-orig/bin/slaves.sh	2013-07-22 15:26:38.000000000 -0700
++++ hadoop-1.2.1/bin/slaves.sh	2016-07-15 10:21:01.627159000 -0700
 @@ -24,6 +24,8 @@
  #     Default is ${HADOOP_CONF_DIR}/slaves.
  #   HADOOP_CONF_DIR  Alternate conf dir. Default is ${HADOOP_HOME}/conf.

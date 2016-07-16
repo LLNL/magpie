@@ -49,6 +49,7 @@ __SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosetversion
 }
 
 __SubmitCornerCaseTests_NoSetHome() {
@@ -61,6 +62,7 @@ __SubmitCornerCaseTests_NoSetHome() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosethome
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosethome
 }
 
 __SubmitCornerCaseTests_BadSetHome() {
@@ -73,6 +75,33 @@ __SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsethome
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badsethome
+}
+
+__SubmitCornerCaseTests_NoSetLocalDir() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosetlocaldir
+}
+
+__SubmitCornerCaseTests_BadSetLocalDir() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
 }
 
 __SubmitCornerCaseTests_NoSetScript() {
@@ -166,7 +195,9 @@ __SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nocoresettings
-    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
 }
 
 __SubmitCornerCaseTests_BadCoreSettings() {
@@ -183,7 +214,9 @@ __SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badcoresettings
-    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-1
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
 }
 
 __SubmitCornerCaseTests_RequireHDFS() {
@@ -201,6 +234,26 @@ __SubmitCornerCaseTests_RequireYarn() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
+}
+
+__SubmitCornerCaseTests_BadComboSettings() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-4
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badcombosettings
+}
+
+__SubmitCornerCaseTests_BadDirectories() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-4
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-baddirectories-5
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-baddirectories
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-baddirectories
 }
 
 SubmitCornerCaseTests() {
@@ -222,6 +275,8 @@ SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_NoSetVersion
     __SubmitCornerCaseTests_NoSetHome
     __SubmitCornerCaseTests_BadSetHome
+    __SubmitCornerCaseTests_NoSetLocalDir
+    __SubmitCornerCaseTests_BadSetLocalDir
     __SubmitCornerCaseTests_NoSetScript
     __SubmitCornerCaseTests_BadSetScript
 
@@ -236,4 +291,8 @@ SubmitCornerCaseTests() {
 
     __SubmitCornerCaseTests_RequireHDFS
     __SubmitCornerCaseTests_RequireYarn
+
+    __SubmitCornerCaseTests_BadComboSettings
+
+    __SubmitCornerCaseTests_BadDirectories
 }

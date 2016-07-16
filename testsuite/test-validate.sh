@@ -3,6 +3,7 @@
 source test-config.sh
 
 verboseoutput=n
+deprecateoutput=n
 
 while [[ $# -gt 0 ]]
 do
@@ -11,8 +12,11 @@ do
         -v|--verbose)
             verboseoutput=y
             ;;
+        -e|--deprecate)
+            deprecateoutput=y
+            ;;
         *)
-            echo "Usage: test-validate [-v]"
+            echo "Usage: test-validate [-v] [-e]"
             exit 1
             ;;
     esac
@@ -144,19 +148,34 @@ __test_kafka_shutdown () {
 __test_zookeeper_shutdown () {
     local file=$1
     
+    num=`grep -e "zkServer.sh" $file | grep -e "No such process" | wc -l`
+    if [ "${num}" != "0" ]; then
+        echo "Zookeeper shutdown error in $file"
+    fi
+
     num=`grep -e "Stopping zookeeper ... STOPPED" $file | wc -l`
     if [ "${num}" != "${zookeepernodecount}" ]; then
         echo "Zookeeper shutdown error in $file"
     fi
 }
 
-__test_output_finalize () {
-    local file=$1
-
+__test_generic () {
     num=`grep -e "Magpie Internal" $file | wc -l`
     if [ "${num}" != "0" ]; then
         echo "Internal Magpie error detected in $file"
     fi
+
+    if [ "${deprecateoutput}" == "y" ]
+    then
+        num=`grep -i -e "deprecated" $file | wc -l`
+        if [ "${num}" != "0" ]; then
+            echo "Deprecated keyword detected in $file"
+        fi
+    fi
+}
+
+__test_output_finalize () {
+    local file=$1
 
     if [ "${verboseoutput}" == "y" ]
     then
@@ -184,6 +203,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -198,6 +218,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -218,12 +239,13 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
 
 files=""
-for str in nosetjava nosetversion nosethome nosetscript nocoresettings badcoresettings requirehdfs requireyarn
+for str in nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
 do
     filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
     if [ -n "${filestmp}" ]
@@ -242,36 +264,57 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badsetjava*"`
+files=""
+for str in badsetjava badsethome
+do
+    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
+    if [ -n "${filestmp}" ]
+    then
+        files="${files}${files:+" "}${filestmp}"
+    fi
+done
+
 if [ -n "${files}" ]
 then
     for file in ${files}
     do
-        num=`grep -e "JAVA_HOME does not point to a directory" $file | wc -l`
+        num=`grep -e "does not point to a directory" $file | wc -l`
         if [ "${num}" == "0" ]
         then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badsethome*"`
+files=""
+for str in badlocaldir baddirectories
+do
+    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
+    if [ -n "${filestmp}" ]
+    then
+        files="${files}${files:+" "}${filestmp}"
+    fi
+done
+
 if [ -n "${files}" ]
 then
     for file in ${files}
     do
-        num=`grep -e "\(.*\)_HOME does not point to a directory" $file | wc -l`
+        num=`grep -e "mkdir failed making" $file | wc -l`
         if [ "${num}" == "0" ]
         then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -288,6 +331,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -303,6 +347,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -318,6 +363,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -333,6 +379,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -353,6 +400,7 @@ then
             echo "Error in $file"
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -626,6 +674,7 @@ then
             __check_exports_zookeeper ${file}
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -649,6 +698,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -663,8 +713,10 @@ then
             echo "Error in $file"
         fi
         
+        __test_generic $file
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -681,6 +733,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -697,6 +750,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -713,6 +767,7 @@ then
         
         __test_no_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -729,6 +784,7 @@ then
         
         __test_no_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -745,6 +801,7 @@ then
         
         __test_no_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -762,6 +819,7 @@ then
         # On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
         __test_hdfs_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -786,6 +844,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -805,6 +864,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -821,6 +881,7 @@ then
         
         __test_hadoop_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -838,6 +899,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -855,6 +917,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -872,6 +935,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -889,6 +953,7 @@ then
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -910,6 +975,7 @@ then
             __test_spark_shutdown $file
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -945,6 +1011,7 @@ then
             __test_hdfs_shutdown $file
         fi
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -961,6 +1028,7 @@ then
         
         __test_kafka_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -1004,6 +1072,7 @@ then
 
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi
@@ -1020,6 +1089,7 @@ then
         
         __test_zookeeper_shutdown $file
 
+        __test_generic $file
         __test_output_finalize $file
     done
 fi

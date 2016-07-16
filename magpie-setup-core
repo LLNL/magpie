@@ -22,13 +22,13 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script sets up configuration files for jobs.  For the most
+# This script sets up core configuration files for jobs.  For the most
 # part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 
 #
 # Setup a whole bunch of environment variables and directories

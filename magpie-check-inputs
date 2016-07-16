@@ -199,9 +199,9 @@ fi
 
 __Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
 then
@@ -403,6 +403,12 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
     then
+        if [ "${HADOOP_SETUP_TYPE}" != "MR2" ] && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
+        then
+            echo "HADOOP_SETUP_TYPE must be set to MR2 or HDFS2 for HADOOP_MODE of ${HADOOP_MODE}"
+            exit 1
+        fi
+
         if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
         then 
             echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
@@ -412,6 +418,12 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
     then
+        if [ "${HADOOP_SETUP_TYPE}" != "MR2" ] && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
+        then
+            echo "HADOOP_SETUP_TYPE must be set to MR2 or HDFS2 for HADOOP_MODE of ${HADOOP_MODE}"
+            exit 1
+        fi
+
         if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[3-9]\.[0-9]"
         then 
             echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.3.0 and more recent versions"
@@ -459,9 +471,7 @@ then
 
     if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] \
         || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
-        && ([ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ])
+        && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_SETUP_TYPE=${HADOOP_SETUP_TYPE}"
         exit 1
@@ -469,8 +479,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+        && ! Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
         exit 1
@@ -478,9 +487,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_MODE}" == "upgradehdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+        && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
         exit 1
@@ -608,9 +615,7 @@ then
 
     __Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
     
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
+    if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
     fi
@@ -763,9 +768,7 @@ then
 
     __Magpie_check_is_enabled "Zookeeper" "Hbase"
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "Magpie supports Hbase over HDFS, HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
         exit 1
@@ -960,9 +963,7 @@ then
             then
                 __Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_FILE to not use hdfs"
 
-                if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+                if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
                     echo "Cannot copy in file to SPARK_SPARKWORDCOUNT_FILE=${SPARK_SPARKWORDCOUNT_FILE}, HADOOP_FILESYSTEM_MODE must be set to an HDFS filesystem"
                     exit 1
@@ -973,9 +974,7 @@ then
             then
                 __Magpie_check_is_enabled "Hadoop" "Spark" "Or set SPARK_SPARKWORDCOUNT_COPY_IN_FILE to not use hdfs"
 
-                if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-                    && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+                if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
                     echo "Cannot copy file from SPARK_SPARKWORDCOUNT_COPY_IN_FILE=${SPARK_SPARKWORDCOUNT_FILE}, HADOOP_FILESYSTEM_MODE must be set to an HDFS filesystem"
                     exit 1
@@ -1152,9 +1151,7 @@ then
        exit 1
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ]
+    if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "Magpie supports Tachyon over HDFS, HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs"
         exit 1
@@ -1207,13 +1204,13 @@ then
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -gt "0" ]
     then
-        echo "ZOOKEEPER_REPLICATION_COUNT must be > 0"
+        echo "ZOOKEEPER_REPLICATION_COUNT must be set to > 0"
         exit 1
     fi
 
     if [ ! "${ZOOKEEPER_REPLICATION_COUNT}" -le "255" ]
     then
-        echo "ZOOKEEPER_REPLICATION_COUNT must be less than <= 255"
+        echo "ZOOKEEPER_REPLICATION_COUNT must be set to <= 255"
         exit 1
     fi
 

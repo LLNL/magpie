@@ -26,12 +26,9 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
+# This is a job, no loading export files or libs except for minimal convenience ones
 
 stormstarterjarpath="${STORM_HOME}/examples/storm-starter/storm-starter-topologies-${STORM_VERSION}.jar"
 
@@ -102,7 +99,7 @@ then
         then
             echo "*** WordCount no longer active, appears to have been killed correctly."
             stormkilled=1
-            break;
+            break
         else
             echo "*** WordCount was not killed ... wait some more."
         fi

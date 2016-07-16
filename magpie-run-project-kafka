@@ -24,22 +24,23 @@
 
 # These are functions to be called by magpie-run
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
 Magpie_run_start_kafka () {
-    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${zookeeper_setup_successful}" == "0" ]
+        if [ "${magpie_run_zookeeper_setup_successful}" == "0" ]
         then
             Magpie_output_internal_error "Attempt to setup Kafka without Zookeeper being setup"
-            kafka_should_be_torndown=0
-            kafka_setup_successful=0
+            magpie_run_kafka_should_be_torndown=0
+            magpie_run_kafka_setup_successful=0
             return 1
         fi
 
@@ -63,7 +64,7 @@ Magpie_run_start_kafka () {
             fi
             echo "Waiting ${sleepwait} seconds to allow Kafka daemons to setup"
             sleep ${sleepwait}
-            totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+            magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
         fi
 
         echo "*******************************************************"
@@ -71,41 +72,32 @@ Magpie_run_start_kafka () {
         echo "* Kafka Information"
         echo "*"
         echo "* To access kafka directly, you'll want to:"
-        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${KAFKA_MASTER_NODE}"
-        if echo $MAGPIE_SHELL | grep -q csh
-        then
-            echo "*   setenv KAFKA_CONF_DIR \"${KAFKA_CONF_DIR}\""
-        else
-            echo "*   export KAFKA_CONF_DIR=\"${KAFKA_CONF_DIR}\""
-        fi
-        echo "*   cd $KAFKA_HOME"
         echo "*"
-        echo "* Then you can do as you please.  To interact with Kafka you can use the applications available in:"
-        echo "*" 
-        echo "*   ${KAFKA_HOME}/${kafkacmdprefix}"
-
-        echo "*" 
-        echo "* Some additional environment variables you may sometimes wish to set"
-        echo "*" 
+        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${KAFKA_MASTER_NODE}"
         if echo $MAGPIE_SHELL | grep -q csh
         then
             echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
             echo "*   setenv KAFKA_HOME \"${KAFKA_HOME}\""
+            echo "*   setenv KAFKA_CONF_DIR \"${KAFKA_CONF_DIR}\""
         else
             echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
             echo "*   export KAFKA_HOME=\"${KAFKA_HOME}\""
+            echo "*   export KAFKA_CONF_DIR=\"${KAFKA_CONF_DIR}\""
         fi
-
+        echo "*"
+        echo "* Then you can do as you please.  To interact with Kafka you can use the applications available in:"
+        echo "*" 
+        echo "*   \$KAFKA_HOME/${kafkacmdprefix}"
+        echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
-            echo "*"
             echo "* If running interactively, sourcing"
             echo "*"
             echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
             echo "*"
             echo "* will set most common environment variables for your job."
+            echo "*"
         fi
-        echo "*" 
         echo "*******************************************************"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
@@ -113,8 +105,10 @@ Magpie_run_start_kafka () {
             if echo $MAGPIE_SHELL | grep -q csh
             then
                 echo "setenv KAFKA_HOME \"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv KAFKA_CONF_DIR \"${KAFKA_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             else
                 echo "export KAFKA_HOME=\"${KAFKA_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export KAFKA_CONF_DIR=\"${KAFKA_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             fi
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
@@ -123,13 +117,13 @@ Magpie_run_start_kafka () {
         then
             local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
-            if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
             then  
             # Could be more dynamic w/ slurm call to determine current
             # run time, but probably is sufficient for this trivial
-            # part.  Minimally, have to leave the totalsleepwait code
+            # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
             # around for non-slurm systems.
-                local kafkamaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+                local kafkamaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
                 
                 if [ "${kafkamaxwaitseconds}" -lt 30 ]
                 then
@@ -149,21 +143,21 @@ Magpie_run_start_kafka () {
             do
                 local serverschk=0
                 local serversup=0
-                for server in `cat ${KAFKA_CONF_DIR}/masters`;
+                for server in `cat ${KAFKA_CONF_DIR}/masters`
                 do
                     serverschk=`expr ${serverschk} + 1`
                     local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
-                    if [ "${serverisup}" -gt "0" ] ;
+                    if [ "${serverisup}" -gt "0" ]
                     then 
                         serversup=`expr ${serversup} + 1`
                     fi
                 done
 
-                for server in `cat ${KAFKA_CONF_DIR}/slaves`;
+                for server in `cat ${KAFKA_CONF_DIR}/slaves`
                 do
                     serverschk=`expr ${serverschk} + 1`
                     local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
-                    if [ "${serverisup}" -gt "0" ] ;
+                    if [ "${serverisup}" -gt "0" ]
                     then 
                         serversup=`expr ${serversup} + 1`
                     fi
@@ -178,26 +172,26 @@ Magpie_run_start_kafka () {
 
                 echo "Waiting 30 more seconds for Kafka Servers to come up"
                 sleep 30
-                totalsleepwait=`expr ${totalsleepwait} + 30`
+                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
             done
             
             if [ "${kafkacameup}" == "0" ]
             then
                 echo "Not all Kafka Servers came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-                kafka_should_be_torndown=1
-                kafka_setup_successful=0
-                prior_setup_successful=false
+                magpie_run_kafka_should_be_torndown=1
+                magpie_run_kafka_setup_successful=0
+                magpie_run_prior_startup_successful=false
             else
-                kafka_should_be_torndown=1
-                kafka_setup_successful=1
+                magpie_run_kafka_should_be_torndown=1
+                magpie_run_kafka_setup_successful=1
             fi
         else
-            kafka_should_be_torndown=1
-            kafka_setup_successful=1
+            magpie_run_kafka_should_be_torndown=1
+            magpie_run_kafka_setup_successful=1
         fi
     else
-        kafka_should_be_torndown=0
-        kafka_setup_successful=1
+        magpie_run_kafka_should_be_torndown=0
+        magpie_run_kafka_setup_successful=1
     fi
 }
 
@@ -207,7 +201,7 @@ Magpie_run_kafka () {
         echo "*******************************************************"
         echo "* Running Performance"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-kafka-performance &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-kafka-performance &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${KAFKA_MODE}" == "setuponly" ]
@@ -215,19 +209,19 @@ Magpie_run_kafka () {
         echo "*******************************************************"
         echo "* Entering Kafka ${KAFKA_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     fi
 }
 
 Magpie_run_stop_kafka () {
-    if [ "${zookeeper_teardown_complete}" == "1" ]
+    if [ "${magpie_run_zookeeper_teardown_complete}" == "1" ]
     then
         Magpie_output_internal_warning "tearing down Kafka after Zookeeper"
     fi
 
-    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${kafka_should_be_torndown}" == "1" ]
+    if [ "${KAFKA_SETUP}" == "yes" ] && [ "${magpie_run_kafka_should_be_torndown}" == "1" ]
     then
         if [ ${KAFKA_MODE} != "setuponly" ]
         then
@@ -243,5 +237,5 @@ Magpie_run_stop_kafka () {
             Magpie_make_all_local_dirs_node_specific
         fi
     fi
-    kafka_teardown_complete=1
+    magpie_run_kafka_teardown_complete=1
 }

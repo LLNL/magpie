@@ -131,9 +131,9 @@ DependentJobSubmit () {
 
 SubmitDefaultStandardTests
 
-SubmitFunctionalityTests
-
 SubmitCornerCaseTests
+
+SubmitFunctionalityTests
 
 SubmitHadoopStandardTests
 SubmitHadoopDependencyTests
@@ -160,4 +160,3 @@ SubmitKafkaStandardTests
 SubmitKafkaDependencyTests
 
 SubmitZookeeperStandardTests
-# SubmitZookeeperDependencyTest

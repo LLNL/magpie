@@ -27,6 +27,7 @@
 # Export common magpie exports promised by user documentation.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 __Magpie_calc_slurm_magpie_timelimit () {
     # Do not excessively call this
@@ -51,7 +52,7 @@ __Magpie_handle_job_name_corner_cases () {
     fi
 }
 
-# slurmsbatch legacy
+# slurmsbatch & msubslurm & msubtorque legacy values
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
@@ -67,10 +68,7 @@ then
         __Magpie_calc_slurm_magpie_timelimit
     fi
     __Magpie_handle_job_name_corner_cases
-fi
-
-# msubslurm legacy
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
+elif [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
     export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
@@ -83,10 +81,7 @@ then
         __Magpie_calc_slurm_magpie_timelimit
     fi
     __Magpie_handle_job_name_corner_cases
-fi
-
-# msubtorque legacy
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorque" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorquepdsh" ]
+elif [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorque" ] || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorquepdsh" ]
 then
     export MAGPIE_CLUSTER_NODERANK="$(($(echo ${MOAB_NODELIST} | sed 's/&/\n/g' | grep -n ${HOSTNAME} | cut -f1 -d:) - 1))"
     export MAGPIE_NODE_COUNT="${PBS_NUM_NODES}"
@@ -98,9 +93,7 @@ then
         export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
     fi
     __Magpie_handle_job_name_corner_cases
-fi
-
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
+elif [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
 then
     export MAGPIE_CLUSTER_NODERANK="$(echo ${LSB_HOSTS} | fmt -1 | head -1)"
     export MAGPIE_NODE_COUNT="$(echo ${LSB_HOSTS} | tr " " "\n" | sort -u | wc -w)"
@@ -123,4 +116,6 @@ then
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
     __Magpie_handle_job_name_corner_cases
+else
+    Magpie_output_internal_error "Invalid MAGPIE_SUBMISSION_TYPE = ${MAGPIE_SUBMISSION_TYPE}"
 fi

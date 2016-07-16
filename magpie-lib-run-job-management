@@ -27,9 +27,9 @@
 # This file has common job management functions.  Should be
 # sourced and used only in magpie-run* files.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
@@ -48,16 +48,16 @@ __Magpie_job_time_minutes () {
             Magpie_walltime_to_minutes ${timeleftwalltime}
             local walltimeminutes=${magpie_walltimetominutes}
         fi
-        jobtimeminutes=`expr ${walltimeminutes} - ${magpie_shutdown_time_value}`
+        __jobtimeminutes=`expr ${walltimeminutes} - ${magpie_shutdown_time_value}`
     else
         local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
-        jobtimeminutes=`expr ${timeleftminutes} - ${magpie_shutdown_time_value}`
+        __jobtimeminutes=`expr ${timeleftminutes} - ${magpie_shutdown_time_value}`
     fi
 }
 
 Magpie_job_time_seconds () {
     __Magpie_job_time_minutes
-    jobtimeseconds=`expr ${jobtimeminutes}  \* 60`
+    magpie_jobtimeseconds=`expr ${__jobtimeminutes}  \* 60`
 }
 
 __Magpie_wait_script_signal_on_timeout () {
@@ -95,7 +95,7 @@ Magpie_wait_script_kill_on_job_timeout () {
     # Will set jobtimeminutes
     __Magpie_job_time_minutes
 
-    __Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 9
+    __Magpie_wait_script_signal_on_timeout $scriptpid $__jobtimeminutes 9
 
     return $?
 }
@@ -106,7 +106,7 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     # Will set jobtimeminutes
     __Magpie_job_time_minutes
 
-    __Magpie_wait_script_signal_on_timeout $scriptpid $jobtimeminutes 12
+    __Magpie_wait_script_signal_on_timeout $scriptpid $__jobtimeminutes 12
 
     return $?
 }

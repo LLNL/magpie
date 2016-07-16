@@ -24,35 +24,20 @@
 
 # These are functions to be called by magpie-run
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
 Magpie_run_start_mahout () {
-    if [ "${MAHOUT_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${MAHOUT_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${hadoop_setup_successful}" == "0" ]
+        if [ "${magpie_run_hadoop_setup_successful}" == "0" ]
         then
             Magpie_output_internal_warning "Attempt to setup Mahout without Hadoop being setup"
         fi
 
-        echo "*******************************************************"
-        echo "*"
-        echo "* Mahout Information"
-        echo "*"
-        if [ "${MAHOUT_MODE}" == "interactive" ]
-        then
-            echo "* To run mahout:"
-            echo "*"
-            echo "* cd $MAHOUT_HOME"
-            echo "*"
-            echo "* ${mahoutcmdprefix}/mahout ..."
-            echo "*" 
-        fi
-        echo "* Some additional environment variables you may sometimes wish to set"
-        echo "*" 
         if [ "${MAHOUT_OPTS}X" != "X" ]
         then
             if ! echo ${MAHOUT_OPTS} | grep -q -E "java.io.tmpdir"
@@ -63,6 +48,13 @@ Magpie_run_start_mahout () {
             export MAHOUT_OPTS="-Djava.io.tmpdir=${MAHOUT_LOCAL_SCRATCHSPACE_DIR}/tmp"
         fi
 
+        echo "*******************************************************"
+        echo "*"
+        echo "* Mahout Information"
+        echo "*"
+        echo "* To run Mahout directly, follow above instructions for"
+        echo "* to your allocation then:"
+        echo "*"
         if echo $MAGPIE_SHELL | grep -q csh
         then
             echo "*   setenv MAHOUT_HOME \"${MAHOUT_HOME}\""
@@ -77,17 +69,18 @@ Magpie_run_start_mahout () {
                 echo "*   export MAHOUT_OPTS=\"${MAHOUT_OPTS}\""
             fi
         fi
-        
+        echo "*"
+        echo "* \$MAHOUT_HOME/${mahoutcmdprefix}/mahout ..."
+        echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
-            echo "*"
             echo "* If running interactively, sourcing"
             echo "*"
             echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
             echo "*"
             echo "* will set most common environment variables for your job."
+            echo "*"
         fi
-        echo "*" 
         echo "*******************************************************"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
@@ -117,7 +110,7 @@ Magpie_run_mahout () {
         echo "*******************************************************"
         echo "* Running Classifywikipedia"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-classifywikipedia &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-mahout-classifywikipedia &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
@@ -125,7 +118,7 @@ Magpie_run_mahout () {
         echo "*******************************************************"
         echo "* Running Clustersyntheticcontrol"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-mahout-clustersyntheticcontrol &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-mahout-clustersyntheticcontrol &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAHOUT_MODE}" == "script" ]

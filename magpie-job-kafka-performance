@@ -26,37 +26,36 @@
 # most part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
+# This is a job, no loading export files or libs except for minimal convenience ones
 
-if [ "${PHOENIX_PERFORMANCEEVAL_ROW_COUNT}X" == "X" ]
+if [ "${KAFKA_PERFORMANCE_RECORD_COUNT}X" == "X" ]
 then
-    phoenixrowcount=100000
+    kafkarecordcount=50000000
 else
-    phoenixrowcount=$PHOENIX_PERFORMANCEEVAL_ROW_COUNT
+    kafkarecordcount=$KAFKA_PERFORMANCE_RECORD_COUNT
 fi
 
-# lets cd into the tmp dir because of https://issues.apache.org/jira/browse/PHOENIX-2311
-cwd=`pwd`
-cd ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp
+if [ "${KAFKA_PERFORMANCE_RECORD_SIZE}X" == "X" ]
+then
+    kafkarecordsize=100
+else
+    kafkarecordsize=$KAFKA_PERFORMANCE_RECORD_SIZE
+fi
 
-# Make sure the correct java gets used
-command="python ${PHOENIX_HOME}/${phoenixcmdprefix}/performance.py $ZOOKEEPER_NODES_FIRST $phoenixrowcount"
-echo "Running $command" >&2
-$command
+if [ "${KAFKA_PERFORMANCE_THROUGHPUT}X" == "X" ]
+then
+    kafkathroughput=-1
+else
+    kafkathroughput=$KAFKA_PERFORMANCE_THROUGHPUT
+fi
 
-echo "drop table PERFORMANCE_$phoenixrowcount" > ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql
-echo "Cleanup Files:"
-cat ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql
-command="python ${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py $ZOOKEEPER_NODES_FIRST ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql"
-echo "Dropping Tables: $command" >&2
-$command
-rm ${PHOENIX_LOCAL_SCRATCHSPACE_DIR}/tmp/cleanup.sql
+for node in `cat ${KAFKA_CONF_DIR}/masters`
+do
+    bootstrap="${bootstrap}${bootstrap:+","}${node}:${KAFKA_PORT}"
+done
 
-# and back to where we were
-cd $cwd
+${KAFKA_HOME}/${kafkacmdprefix}/kafka-producer-perf-test.sh --topic performance --num-records ${kafkarecordcount} --record-size ${kafkarecordsize} --throughput ${kafkathroughput} --producer-props bootstrap.servers=${bootstrap}
 
 exit 0

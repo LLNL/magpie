@@ -22,26 +22,12 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# Various constants that we want set
+# Various defaults
 #
 # This is used by scripts, don't edit this
 
 default_startup_time=30
 default_shutdown_time=30
-
-if [ "${MAGPIE_STARTUP_TIME}X" != "X" ]
-then
-    magpie_startup_time_value=${MAGPIE_STARTUP_TIME}
-else
-    magpie_startup_time_value=${default_startup_time}
-fi
-
-if [ "${MAGPIE_SHUTDOWN_TIME}X" != "X" ]
-then
-    magpie_shutdown_time_value=${MAGPIE_SHUTDOWN_TIME}
-else
-    magpie_shutdown_time_value=${default_shutdown_time}
-fi
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
@@ -86,29 +72,16 @@ then
     # it is disabled by default in Hadoop.
 
     default_hdfs_replication=3
-
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-    then
-        hadoopsetupscriptprefix="bin"
-        hadoopcmdprefix="bin"
-        dfsadminscript="hadoop"
-    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-    then
-        hadoopsetupscriptprefix="sbin"
-        hadoopcmdprefix="bin"
-        dfsadminscript="hdfs"
-    fi
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]
 then
-    pigcmdprefix="bin"
+    :
 fi
 
 if [ "${MAHOUT_SETUP}" == "yes" ]
 then
-    mahoutexamplesprefix="examples"
-    mahoutcmdprefix="bin"
+    :
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
@@ -123,16 +96,11 @@ then
 
     # achu: Why not hbase.status.multicast.address.port?  We don't
     # enable hbase.status.published, it's off by default.
-
-    hbasesetupscriptprefix="bin"
-    hbasecmdprefix="bin"
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     default_phoenix_queryserver_port="8765"
-
-    phoenixcmdprefix="bin"
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
@@ -141,23 +109,16 @@ then
     default_spark_master_webui_port="8080"
     default_spark_worker_webui_port="8081"
     default_spark_application_dashboard_port="4040"
-
-    sparksetupscriptprefix="sbin"
-    sparkcmdprefix="bin"
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
     default_kafka_port="6667"
-
-    kafkacmdprefix="bin"
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
     default_zeppelin_port="18080"
-
-    zeppelincmdprefix="bin"
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]
@@ -174,8 +135,6 @@ then
     default_storm_thrift_port="6627"
 
     default_storm_supervisor_slots_starting_port="6700"
-
-    stormcmdprefix="bin"
 fi
 
 if [ "${TACHYON_SETUP}" == "yes" ]
@@ -184,8 +143,6 @@ then
     default_tachyon_master_web_port="19999"
     default_tachyon_worker_port="29998"
     default_tachyon_worker_data_port="29999"
-
-    tachyoncmdprefix="bin"
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]

@@ -30,7 +30,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # Do not ever "use" the LOCAL_JOB_DIR variables.  They should only be
-# referenced when setting SCRATCH_DIR or CONF_DIR or LOG_DIR variables.
+# referenced when setting SCRATCHSPACE_DIR or CONF_DIR or LOG_DIR variables.
 
 __Magpie_make_magpie_local_dirs () {
     local which=$1

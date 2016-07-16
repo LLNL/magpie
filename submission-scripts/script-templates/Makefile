@@ -66,6 +66,7 @@ JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0-oracle.x86_64/
 PYTHON_DEFAULT=/usr/bin/python
 
 HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+ZOOKEEPER_REPLICATION_COUNT=3
 
 #
 # Adjust for default versions
@@ -173,6 +174,7 @@ define common-substitution
 	sed -i -e 's;JAVADEFAULT;$(JAVA_DEFAULT);g' $(1)
 	sed -i -e 's;PYTHONDEFAULT;$(PYTHON_DEFAULT);g' $(1)
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
+	sed -i -e 's;ZOOKEEPERREPLICATIONCOUNT;$(ZOOKEEPER_REPLICATION_COUNT);g' $(1)
 	sed -i -e 's;DEFAULTJOBOUTPUTFILE;$(JOBOUTPUTFILE);g' $(1)
 endef
 

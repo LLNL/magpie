@@ -24,17 +24,19 @@
 
 # These are functions to be called by magpie-run
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
 
 Magpie_run_start_hadoop () {
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${prior_setup_successful}" == "true" ]
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
         local hdfs_was_setup=0
 
@@ -49,9 +51,9 @@ Magpie_run_start_hadoop () {
             then
                 if Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
-                    # Sets networkedhdfspath & magpie_hdfs_stored_version_path
+                    # Sets magpie_networkedhdfspath & magpie_hdfs_stored_version_path
                     Magpie_get_hdfs_stored_version_path
-                    # Sets networkedhdfspath & magpie_hdfs_stored_nodecount_path
+                    # Sets magpie_networkedhdfspath & magpie_hdfs_stored_nodecount_path
                     Magpie_get_hdfs_stored_nodecount_path
 
                     # Older versions of Magpie didn't store this variable
@@ -67,7 +69,7 @@ Magpie_run_start_hadoop () {
                             if [ "${vercomp_result}" == "1" ]
                             then
                                 echo "**** HDFS Issue ****"
-                                echo "HDFS version at mount ${networkedhdfspath} is older than ${HADOOP_VERSION}."
+                                echo "HDFS version at mount ${magpie_networkedhdfspath} is older than ${HADOOP_VERSION}."
                                 if [ "${HADOOP_MODE}" != "upgradehdfs" ]
                                 then
                                     echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
@@ -76,7 +78,7 @@ Magpie_run_start_hadoop () {
                                 echo "**** HDFS Issue ****"
                             else
                                 echo "**** HDFS Issue ****"
-                                echo "HDFS version at mount ${networkedhdfspath} is newer than ${HADOOP_VERSION}."
+                                echo "HDFS version at mount ${magpie_networkedhdfspath} is newer than ${HADOOP_VERSION}."
                                 echo "Please use a newer Hadoop version."
                                 echo "Or if you wish to use an older Hadoop version, you can setup HDFS on another path"
                                 echo "**** HDFS Issue ****"
@@ -183,7 +185,7 @@ Magpie_run_start_hadoop () {
                 fi
                 echo "Waiting ${sleepwait} seconds to allows Hadoop daemons to setup"
                 sleep ${sleepwait}
-                totalsleepwait=`expr ${totalsleepwait} + ${sleepwait}`
+                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
             fi
         fi
 
@@ -248,103 +250,14 @@ Magpie_run_start_hadoop () {
                 fi
                 echo "*" 
             fi
-            echo "*" 
             echo "* To access Hadoop directly, you'll want to:"
-            echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
-            if echo $MAGPIE_SHELL | grep -q csh
-            then
-                echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-            else
-                echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-            fi
-            echo "*   cd $HADOOP_HOME"
             echo "*"
-            echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
-            echo "*" 
-            if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
-            then 
-                echo "*   ${hadoopcmdprefix}/hdfs dfs ..."
-                echo "*   or"
-            fi
-            echo "*   ${hadoopcmdprefix}/hadoop fs ..."
-            echo "*" 
-            echo "* To launch jobs you'll want to:"
-            echo "*" 
-            echo "*   ${hadoopcmdprefix}/hadoop jar ..."
-            echo "*" 
-            if [ "${HADOOP_MODE}" == "setuponly" ]
-            then
-                echo "*" 
-                echo "* To setup, you probably want to run:" 
-                echo "*"
-                echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
-                if echo $MAGPIE_SHELL | grep -q csh
-                then
-                    echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-                else
-                    echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-                fi
-                echo "*   cd $HADOOP_HOME"
-                if Magpie_hadoop_filesystem_mode_is_hdfs_type
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-dfs.sh" 
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-mapred.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-yarn.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-                then
-                    echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
-                fi
-            fi
-
-            echo "*" 
-            echo "* To end/cleanup your session, kill the daemons via:"
-            echo "*" 
             echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HADOOP_MASTER_NODE}"
-            if echo $MAGPIE_SHELL | grep -q csh
-            then
-                echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
-            else
-                echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
-            fi
-            echo "*   cd $HADOOP_HOME"
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-mapred.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-yarn.sh"
-            fi
-            if Magpie_hadoop_filesystem_mode_is_hdfs_type
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-dfs.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-            then
-                echo "*   ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
-            fi
-            echo "*" 
-            echo "* Some additional environment variables you may sometimes wish to set"
-            echo "*" 
             if echo $MAGPIE_SHELL | grep -q csh
             then
                 echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
                 echo "*   setenv HADOOP_HOME \"${HADOOP_HOME}\""
+                echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
                     echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
@@ -352,22 +265,86 @@ Magpie_run_start_hadoop () {
             else
                 echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
                 echo "*   export HADOOP_HOME=\"${HADOOP_HOME}\""
+                echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
                     echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
                 fi
             fi
-
+            echo "*"
+            echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
+            echo "*" 
+            if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+            then 
+                echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hdfs dfs ..."
+            else
+                echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop fs ..."
+            fi
+            echo "*" 
+            echo "* To launch jobs you'll want to:"
+            echo "*" 
+            echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop jar ..."
+            echo "*" 
+            if [ "${HADOOP_MODE}" == "setuponly" ]
+            then
+                echo "* To setup, login and set environment variables per the"
+                echo "* instructions above, then run:"
+                echo "*"
+                if Magpie_hadoop_filesystem_mode_is_hdfs_type
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-dfs.sh" 
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-mapred.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-yarn.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+                then
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
+                fi
+                echo "*" 
+            fi
+            echo "* To end/cleanup your session & kill all daemons, login and set"
+            echo "* environment variables per the instructions above, then run:"
+            echo "*" 
+            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+            then
+                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-mapred.sh"
+            fi
+            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+            then
+                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-yarn.sh"
+            fi
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
+            then
+                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-dfs.sh"
+            fi
+            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+            then
+                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
+            fi
+            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+            then
+                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
+            fi
+            echo "*" 
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
             then
-                echo "*"
                 echo "* If running interactively, sourcing"
                 echo "*"
                 echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
                 echo "*"
                 echo "* will set most common environment variables for your job."
+                echo "*"
             fi
-            echo "*" 
             echo "*******************************************************"
 
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
@@ -423,13 +400,13 @@ Magpie_run_start_hadoop () {
             then
                 local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
-                if [ "${totalsleepwait}" -lt "${magpiestartuptimeseconds}" ]
+                if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
                 then  
                     # Could be more dynamic w/ slurm call to determine current
                     # run time, but probably is sufficient for this trivial
-                    # part.  Minimally, have to leave the totalsleepwait code
+                    # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
                     # around for non-slurm systems.
-                    local namenodemaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${totalsleepwait}`
+                    local namenodemaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
                     
                     if [ "${namenodemaxwaitseconds}" -lt 30 ]
                     then
@@ -486,32 +463,32 @@ Magpie_run_start_hadoop () {
 
                     echo "Waiting 30 more seconds for namenode to exit safe mode"
                     sleep 30
-                    totalsleepwait=`expr ${totalsleepwait} + 30`
+                    magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
                 done
                 
                 if [ "${exittedsafemode}" == "0" ]
                 then
                     echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
-                    hadoop_should_be_torndown=1
-                    hadoop_setup_successful=0
-                    prior_setup_successful=false
+                    magpie_run_hadoop_should_be_torndown=1
+                    magpie_run_hadoop_setup_successful=0
+                    magpie_run_prior_startup_successful=false
                 else
-                    hadoop_should_be_torndown=1
-                    hadoop_setup_successful=1
+                    magpie_run_hadoop_should_be_torndown=1
+                    magpie_run_hadoop_setup_successful=1
                 fi
             else
-                hadoop_should_be_torndown=0
-                hadoop_setup_successful=0
-                prior_setup_successful=false
+                magpie_run_hadoop_should_be_torndown=0
+                magpie_run_hadoop_setup_successful=0
+                magpie_run_prior_startup_successful=false
             fi
         else
-            hadoop_should_be_torndown=1
-            hadoop_setup_successful=1
+            magpie_run_hadoop_should_be_torndown=1
+            magpie_run_hadoop_setup_successful=1
         fi
 
         # Setup job history server after namenode comes up, it may need to
         # write/create in HDFS
-        if [ ${HADOOP_MODE} != "setuponly" ] && [ "${hadoop_setup_successful}" == "1" ]
+        if [ ${HADOOP_MODE} != "setuponly" ] && [ "${magpie_run_hadoop_setup_successful}" == "1" ]
         then
             if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
             then
@@ -526,7 +503,7 @@ Magpie_run_start_hadoop () {
 
         # A number of applications assume the user home directory has been
         # created.  If it hasn't yet, lets create it for the user.
-        if [ "${hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
+        if [ "${magpie_run_hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
         then
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
@@ -539,8 +516,8 @@ Magpie_run_start_hadoop () {
             fi
         fi
     else
-        hadoop_should_be_torndown=0
-        hadoop_setup_successful=1
+        magpie_run_hadoop_should_be_torndown=0
+        magpie_run_hadoop_setup_successful=1
     fi
 }
 
@@ -550,7 +527,7 @@ Magpie_run_hadoop () {
         echo "*******************************************************"
         echo "* Running Terasort"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-terasort &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-hadoop-terasort &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${HADOOP_MODE}" == "script" ]
@@ -574,7 +551,7 @@ Magpie_run_hadoop () {
         echo "*******************************************************"
         echo "* Entering Hadoop ${HADOOP_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
@@ -582,7 +559,7 @@ Magpie_run_hadoop () {
         echo "*******************************************************"
         echo "* Entering Hadoop ${HADOOP_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-upgradehdfs &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-job-hadoop-upgradehdfs &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
@@ -602,7 +579,7 @@ Magpie_run_hadoop () {
         echo "*******************************************************"
         echo "* Entering Hadoop ${HADOOP_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-run-job-hadoop-decommissionhdfsnodes &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie-job-hadoop-decommissionhdfsnodes &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
 
@@ -618,7 +595,7 @@ Magpie_run_hadoop () {
 }
  
 Magpie_run_stop_hadoop () {
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${hadoop_should_be_torndown}" == "1" ]
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_hadoop_should_be_torndown}" == "1" ]
     then
         if [ ${HADOOP_MODE} != "setuponly" ]
         then
@@ -646,7 +623,7 @@ Magpie_run_stop_hadoop () {
 
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-                if [ "${hadoop_setup_successful}" == "1" ]
+                if [ "${magpie_run_hadoop_setup_successful}" == "1" ]
                 then
                     echo "Saving namespace before shutting down hdfs ..."
 
@@ -700,5 +677,5 @@ Magpie_run_stop_hadoop () {
             fi
         fi
     fi
-    hadoop_teardown_complete=1
+    magpie_run_hadoop_teardown_complete=1
 }

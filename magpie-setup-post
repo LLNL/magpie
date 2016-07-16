@@ -22,16 +22,18 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
 if Magpie_am_I_master
 then
     echo "*******************************************************"
-    echo "* Performing Pre-Run Setup"
+    echo "* Performing Post Setup"
     echo "*******************************************************"
 fi
 
@@ -46,7 +48,7 @@ then
         && Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         # will set magpie_hdfs_format_file
-        Magpie_calculate_hadoop_filesystem_format_file_path ${hadoopnoderank}
+        Magpie_calculate_hdfs_format_file_path ${hadoopnoderank}
         
         if [ ! -f ${magpie_hdfs_format_file} ]
         then
@@ -73,7 +75,13 @@ then
                     echo "* Formatting HDFS Namenode"
                     echo "*******************************************************"
                     cd $HADOOP_HOME
-                    echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+                    # Don't check version, legacy 0.2X versioning could be used
+                    if [ -x "${hadoopcmdprefix}/hdfs" ]
+                    then
+                        echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format
+                    else
+                        echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
+                    fi
                     touch ${magpie_hdfs_format_file}
                 else
                     # If this is the first time running, make everyone else wait
@@ -88,7 +96,7 @@ fi
 if Magpie_am_I_master
 then
     echo "*******************************************************"
-    echo "* Pre-Run Setup Complete"
+    echo "* Post Setup Complete"
     echo "*******************************************************"
 fi
 

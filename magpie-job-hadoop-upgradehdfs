@@ -28,12 +28,9 @@
 
 # XXX does this work w/ federation?
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
+# This is a job, no loading export files or libs except for minimal convenience ones
 
 cd ${HADOOP_HOME}
             
@@ -51,7 +48,7 @@ while true
 do
     if [ -d ${previousnamenodepath} ]
     then
-        break;
+        break
     fi
     echo "Previous namenode directory ${previousnamenodepath} not seen, sleeping 60 seconds waiting for it."
     sleep 60 
@@ -68,7 +65,7 @@ while true
 do
     if [ ! -d ${previousnamenodepath} ]
     then
-        break;
+        break
     fi
     echo "Previous namenode directory ${previousnamenodepath} still not deleted, sleeping 60 seconds waiting for it."
     sleep 60 

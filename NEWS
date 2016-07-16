@@ -1,12 +1,67 @@
-magpie 1.74
------------
-Remove scripts/job-scripts/zookeeper-ruok-script.sh script, which was
-  duplicated within Magpie w/ 'zookeeperruok' option in Zookeeper.
-Rename start/stop scripts in bin/ for consistency to many big data
-  projects.  If you manually started/stopped services in the past, some 
-  script names may have changed.
-Rename some conf files in conf/.  If you manually copied files into
+magpie 2.0-BETA
+---------------
+Major refactoring and code cleanup within Magpie.
+
+Years of adding features, adding projects, cutting & pasting, and
+patches have run its course.  A major refactoring & code cleanup was
+needed.
+
+Apologies to anyone anyone looking through the git log.  One tiny
+cleanup beget another one.  For all intents and purposes, you should
+consider the scripts to have stopped at tag 1.73 and started anew at
+tag 1.74.
+
+Highlights:
+
+- General code cleanup throughout: function-ize common code, split
+  functions into different lib files to remove dependencies, split up
+  large files into project specific ones, remove strange dependencies
+  in different files, rename files to make more sense, rename
+  variables to be consistent, rename functions to indicate "public" vs
+  "private" ones, add consistency to error messages, cleanup help
+  output, add "assert" checks in various locations with dependencies,
+  consistent file creation of masters & slaves files, do not export
+  variables that aren't required to be exported, fix a variety of
+  deprecated situations, fix outputs that go into
+  MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT.
+
+- Attempt to be consistent with use of Bash code style throughout.
+  e.g. using backticks instead of $() for subshells. 
+
+  In an attempt to avoid flame wars on style decisions, I simply
+  looked at what had been most commonly done thus far and used those
+  styles.
+
+- Fix many minor corner cases
+
+- Add many additional corner case checks
+
+- Testsuite
+
+  - Add large suite of corner case tests & functionality tests
+
+- New exports
+
+  Export ZOOKEEPER_CLIENT_PORT for jobs.
+  Export KAFKA_PORT for jobs.
+
+- Potential backwards compatibility issues
+
+  Hadoop terasort may no longer does the "right" thing under Hadoop
+  1.0.  Users should set HADOOP_TERAGEN_MAP_COUNT and
+  HADOOP_TERASORT_REDUCER_COUNT appropriately.
+
+  Remove scripts/job-scripts/zookeeper-ruok-script.sh script
+
+  Rename start/stop scripts in bin/ for consistency to many big data
+  projects.
+
+  Rename some conf files in conf/.  If you manually copied files into
   new locations in the past, some conf file names could have changed.
+
+  Before, a number of variables were errantly exported.  In the rare
+  chance that you used one of these environment variables in scripts,
+  it's possible those scripts may no longer function.
 
 magpie 1.73
 -----------

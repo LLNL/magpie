@@ -28,12 +28,10 @@
 
 # XXX does this work w/ federation?
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
+# This is a job, no loading export files or libs except for minimal convenience ones
 
 if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -ge "${HADOOP_SLAVE_COUNT}" ]
 then
@@ -73,23 +71,14 @@ do
     break
 done
 
-if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
-then
-    basehdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
-else
-    basehdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
-fi
+# Sets magpie_networkedhdfspath
+Magpie_get_networkedhdfspath
 
 count=0
 while [ "${count}" -lt "${nodecounttodecommission}" ]
 do
     noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
-    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-    then
-        rmpath="${basehdfspath}/${MAGPIE_JOB_ID}/node-$noderank"
-    else
-        rmpath="${basehdfspath}/node-$noderank"
-    fi    
+    rmpath="${magpie_networkedhdfspath}/node-${noderank}"
     echo "Removing path ${rmpath} ..."
     rm -rf ${rmpath}
     count=`expr $count + 1`

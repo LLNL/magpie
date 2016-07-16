@@ -22,29 +22,27 @@
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# This script is for running the zookeeper zookeeperruok sanity test.
-# For the most part, it shouldn't be editted.  See job submission
-# files for configuration details.
+# This script is for running the mahout clustersyntheticcontrol sanity
+# test.  For the most part, it shouldn't be editted.  See job
+# submission files for configuration details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
-# For this run, we will use cluster specific paths
-Magpie_make_all_local_dirs_node_specific
+# This is a job, no loading export files or libs except for minimal convenience ones
 
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+export MAHOUT_WORK_DIR="${MAHOUT_LOCAL_SCRATCHSPACE_DIR}/mahout"
 
-if ! type nc >/dev/null 2>&1
+if [ ! -d "${MAHOUT_WORK_DIR}" ]
 then
-    echo "Zookeeper ruok cannot be run b/c netcat ('nc' command) cannot be found"
-    exit 1
+    mkdir -p ${MAHOUT_WORK_DIR}
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${MAHOUT_WORK_DIR}"
+        exit 1
+    fi
 fi
 
-for zookeepernode in ${zookeepernodes}
-do
-    echo "Sending ruok to ${zookeepernode} ... "
-    echo ruok | nc ${zookeepernode} ${ZOOKEEPER_CLIENT_PORT}
-    echo 
-done
+command="${MAHOUT_HOME}/${mahoutexamplesprefix}/${mahoutcmdprefix}/cluster-syntheticcontrol.sh"
+echo "Running $command" >&2
+echo "1" | $command
 
 exit 0

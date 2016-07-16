@@ -69,10 +69,4 @@ GenerateZookeeperPostProcessing () {
     then
         sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/' ${files}
     fi
-
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*"`
-    if [ -n "${files}" ]
-    then
-        sed -i -e 's/export ZOOKEEPER_REPLICATION_COUNT=\(.*\)/export ZOOKEEPER_REPLICATION_COUNT='"${zookeepernodecount}"'/' ${files}
-    fi
 }

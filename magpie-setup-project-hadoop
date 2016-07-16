@@ -31,13 +31,12 @@ then
     exit 0
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-filesystem
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
@@ -318,6 +317,8 @@ else
     hdfsreplication=${default_hdfs_replication}
 fi
 
+# If not rawnetworkfs don't want to affect other filesystems, so need
+# to check HADOOP_FILESYSTEM_MODE
 if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ] \
     && [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
@@ -363,8 +364,7 @@ else
     reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
 fi
 
-if [ "${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}X" != "X" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+if [ "${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}X" != "X" ]
 then
     magpienetworkfsblocksize=${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}
 else
@@ -457,7 +457,12 @@ then
 
         if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
         then
-            /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
+            lfscmd=`which lfs`
+            if [ $? -eq 0 ] ; then
+                ${lfscmd} setstripe --size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
+            else
+                Magpie_output_internal_warning "Can't find lfs and set stripe size"
+            fi
         fi
     fi
     
@@ -793,14 +798,14 @@ then
         for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
         do
             j=1
-            while true;
+            while true
             do
                 mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_${j}"
                 eval mountvalue="\$$mountname"
 
                 if [ "${mountvalue}X" == "X" ]
                 then
-                    break;
+                    break
                 fi
                 
                 sed -i -e "/@VIEWFSMOUNT@/{r ${pre_coresitexml_viewfsmount}" -e "d}" ${post_coresitexml}

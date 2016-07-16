@@ -29,8 +29,8 @@
 # Unlke magpie-exports-dirs, these exports are dependent on the magpie
 # setup.  This should be sourced only after magpie-setup-core has run.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-constants
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hdfs
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # Initially make variables specific to node
