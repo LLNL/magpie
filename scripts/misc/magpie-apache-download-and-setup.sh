@@ -35,7 +35,7 @@ INSTALL_PATH="$HOME/bigdata"
 #
 # Below are some additional paths that may be worth setting too.
 
-PRESET_LAUNCH_SCRIPT_PATHS="Y"
+PRESET_LAUNCH_SCRIPT_PATHS="N"
 
 #LOCAL_DIR_PATH="/tmp/$USER"
 #HOME_DIR_PATH="$HOME"
