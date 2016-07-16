@@ -27,7 +27,7 @@ ZEPPELIN_DOWNLOAD="N"
 
 # Second, indicate some paths you'd like everything to be installed into
 
-INSTALL_PATH="/home/${USER}/bigdata"
+INSTALL_PATH="$HOME/bigdata"
 
 # Third, indicate if you'd like Magpie to rebuild all launching
 # scripts to be pre-populated with INSTALL_PATH and several other
@@ -38,10 +38,12 @@ INSTALL_PATH="/home/${USER}/bigdata"
 PRESET_LAUNCH_SCRIPT_PATHS="Y"
 
 #LOCAL_DIR_PATH="/tmp/$USER"
-#HOME_DIR_PATH="/home/$USER"
+#HOME_DIR_PATH="$HOME"
 #LUSTRE_DIR_PATH="/lustre/$USER"
 #NETWORKFS_DIR_PATH="/networkfs/$USER"
-#SSD_DIR_PATH="/ssd/$USER"
+#RAWNETWORKFS_DIR_PATH=/lustre/${USER}
+#ZOOKEEPER_DATA_DIR_PREFIX=/lustre/${USER}
+#LOCAL_DRIVE_PATH=/ssd/${USER}
 
 # And the rest of the script below will do its thing
 
@@ -351,10 +353,16 @@ then
         sed -i -e "s/NETWORKFS_DIR_PREFIX=\(.*\)/NETWORKFS_DIR_PREFIX=${networkfsdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
-    if [ "${SSD_DIR_PATH}X" != "X" ]
+    if [ "${RAWNETWORKFS_DIR_PATH}X" != "X" ]
     then
-        ssddirpathsubst=`echo ${SSD_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-        sed -i -e "s/SSD_DIR_PREFIX=\(.*\)/SSD_DIR_PREFIX=${ssddirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+        rawnetworkfsdirpathsubst=`echo ${RAWNETWORKFS_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+        sed -i -e "s/RAWNETWORKFS_DIR_PREFIX=\(.*\)/RAWNETWORKFS_DIR_PREFIX=${rawnetworkfsdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+    fi 
+
+    if [ "${LOCAL_DRIVE_PATH}X" != "X" ]
+    then
+        localdrivepathsubst=`echo ${LOCAL_DRIVE_PATH} | sed "s/\\//\\\\\\\\\//g"`
+        sed -i -e "s/LOCAL_DRIVE_PREFIX=\(.*\)/LOCAL_DRIVE_PREFIX=${localdrivepathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
 
     cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
