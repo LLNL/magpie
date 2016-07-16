@@ -317,6 +317,8 @@ else
     hdfsreplication=${default_hdfs_replication}
 fi
 
+# If not rawnetworkfs don't want to affect other filesystems, so need
+# to check HADOOP_FILESYSTEM_MODE
 if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ] \
     && [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
@@ -362,8 +364,7 @@ else
     reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
 fi
 
-if [ "${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}X" != "X" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+if [ "${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}X" != "X" ]
 then
     magpienetworkfsblocksize=${HADOOP_MAGPIENETWORKFS_BLOCKSIZE}
 else
@@ -456,7 +457,12 @@ then
 
         if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
         then
-            /usr/bin/lfs setstripe --size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
+            lfscmd=`which lfs`
+            if [ $? -eq 0 ] ; then
+                ${lfscmd} setstripe --size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
+            else
+                Magpie_output_internal_warning "Can't find lfs and set stripe size"
+            fi
         fi
     fi
     
