@@ -53,14 +53,14 @@ PRESET_LAUNCH_SCRIPT_PATHS="Y"
 # Also, patches are based on the package version number.  I may not
 # have patches for every version.
 
-HADOOP_PACKAGE="hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
-HBASE_PACKAGE="hbase/1.1.3/hbase-1.1.3-bin.tar.gz"
+HADOOP_PACKAGE="hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz"
+HBASE_PACKAGE="hbase/1.2.1/hbase-1.2.1-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
-MAHOUT_PACKAGE="mahout/0.11.1/apache-mahout-distribution-0.11.1.tar.gz"
-ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz"
-SPARK_PACKAGE="spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz"
-STORM_PACKAGE="storm/apache-storm-0.9.5/apache-storm-0.9.5.tar.gz"
-PHOENIX_PACKAGE="phoenix/phoenix-4.6.0-HBase-1.1/bin/phoenix-4.6.0-HBase-1.1-bin.tar.gz"
+MAHOUT_PACKAGE="mahout/0.12.1/apache-mahout-distribution-0.12.1.tar.gz"
+ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz"
+SPARK_PACKAGE="spark/spark-1.6.2/spark-1.6.2-bin-hadoop2.6.tgz"
+STORM_PACKAGE="storm/apache-storm-1.0.1/apache-storm-1.0.1.tar.gz"
+PHOENIX_PACKAGE="phoenix/phoenix-4.7.0-HBase-1.1/bin/phoenix-4.7.0-HBase-1.1-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
 ZEPPELIN_PACKAGE="incubator/zeppelin/0.5.6-incubating/zeppelin-0.5.6-incubating-bin-all.tgz"
 
