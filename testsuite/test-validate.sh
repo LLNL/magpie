@@ -148,6 +148,11 @@ __test_kafka_shutdown () {
 __test_zookeeper_shutdown () {
     local file=$1
     
+    num=`grep -e "zkServer.sh" $file | grep -e "No such process" | wc -l`
+    if [ "${num}" != "0" ]; then
+        echo "Zookeeper shutdown error in $file"
+    fi
+
     num=`grep -e "Stopping zookeeper ... STOPPED" $file | wc -l`
     if [ "${num}" != "${zookeepernodecount}" ]; then
         echo "Zookeeper shutdown error in $file"
