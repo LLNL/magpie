@@ -27,7 +27,7 @@ ZEPPELIN_DOWNLOAD="N"
 
 # Second, indicate some paths you'd like everything to be installed into
 
-INSTALL_PATH="/home/username/base"
+INSTALL_PATH="/home/${USER}/bigdata"
 
 # Third, indicate if you'd like Magpie to rebuild all launching
 # scripts to be pre-populated with INSTALL_PATH and several other
@@ -37,11 +37,11 @@ INSTALL_PATH="/home/username/base"
 
 PRESET_LAUNCH_SCRIPT_PATHS="Y"
 
-#LOCAL_DIR_PATH="/tmp/username"
-#HOME_DIR_PATH="/home/username"
-#LUSTRE_DIR_PATH="/lustre/username"
-#NETWORKFS_DIR_PATH="/networkfs/username"
-#SSD_DIR_PATH="/ssd/username"
+#LOCAL_DIR_PATH="/tmp/$USER"
+#HOME_DIR_PATH="/home/$USER"
+#LUSTRE_DIR_PATH="/lustre/$USER"
+#NETWORKFS_DIR_PATH="/networkfs/$USER"
+#SSD_DIR_PATH="/ssd/$USER"
 
 # And the rest of the script below will do its thing
 
