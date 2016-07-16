@@ -56,7 +56,7 @@ Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type () {
     return 1
 }
 
-__Magpie_get_networkedhdfspath () {
+Magpie_get_networkedhdfspath () {
     if [ "$HADOOP_FILESYSTEM_MODE" == "hdfsoverlustre" ]
     then
         magpie_networkedhdfspath=${HADOOP_HDFSOVERLUSTRE_PATH}
@@ -64,7 +64,7 @@ __Magpie_get_networkedhdfspath () {
     then
         magpie_networkedhdfspath=${HADOOP_HDFSOVERNETWORKFS_PATH}
     else
-        Magpie_output_internal_error "__Magpie_get_networkedhdfspath called without HDFS networked path set used" 
+        Magpie_output_internal_error "Magpie_get_networkedhdfspath called without HDFS networked path set used" 
     fi
     
     if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
@@ -74,11 +74,11 @@ __Magpie_get_networkedhdfspath () {
 }
 
 Magpie_get_hdfs_stored_version_path () {
-    __Magpie_get_networkedhdfspath
+    Magpie_get_networkedhdfspath
     magpie_hdfs_stored_version_path=${magpie_networkedhdfspath}/magpie.hadoop-version
 }
 
 Magpie_get_hdfs_stored_nodecount_path () {
-    __Magpie_get_networkedhdfspath
+    Magpie_get_networkedhdfspath
     magpie_hdfs_stored_nodecount_path=${magpie_networkedhdfspath}/magpie.node-count
 }
