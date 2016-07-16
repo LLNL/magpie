@@ -61,6 +61,7 @@ PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.12.1/apache-mahout-distribution-0.12.1.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz"
 SPARK_PACKAGE="spark/spark-1.6.2/spark-1.6.2-bin-hadoop2.6.tgz"
+SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-2.6.4/hadoop-2.6.4.tar.gz"
 STORM_PACKAGE="storm/apache-storm-1.0.1/apache-storm-1.0.1.tar.gz"
 PHOENIX_PACKAGE="phoenix/phoenix-4.7.0-HBase-1.1/bin/phoenix-4.7.0-HBase-1.1-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
@@ -227,6 +228,27 @@ then
     echo "Applying patches"
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate-all.patch
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-no-local-dir.patch
+
+    APACHE_DOWNLOAD_HADOOP="${APACHE_DOWNLOAD_BASE}/${SPARK_HADOOP_PACKAGE}"
+
+    HADOOP_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_HADOOP} | grep "${SPARK_HADOOP_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+
+    echo "Downloading from ${HADOOP_DOWNLOAD_URL}"
+
+    SPARK_HADOOP_PACKAGE_BASENAME=`basename ${SPARK_HADOOP_PACKAGE}`
+
+    wget -O ${INSTALL_PATH}/${SPARK_HADOOP_PACKAGE_BASENAME} ${HADOOP_DOWNLOAD_URL}
+
+    echo "Untarring ${SPARK_HADOOP_PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${SPARK_HADOOP_PACKAGE_BASENAME}
+
+    SPARK_HADOOP_PACKAGE_BASEDIR=`echo $SPARK_HADOOP_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
+    cd ${INSTALL_PATH}/${SPARK_HADOOP_PACKAGE_BASEDIR}
+    echo "Applying patches"
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
