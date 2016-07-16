@@ -25,7 +25,3 @@ SubmitZookeeperStandardTests() {
         done
     done
 }
-
-#SubmitZookeeperDependencyTests() {
-#    # No Zookeeper Dependency Tests
-#}
