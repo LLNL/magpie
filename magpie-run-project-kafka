@@ -200,7 +200,7 @@ Magpie_run_kafka () {
         echo "*******************************************************"
         echo "* Entering Kafka ${KAFKA_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute server &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${KAFKA_MODE}" == "setuponly" ]
