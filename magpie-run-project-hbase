@@ -157,31 +157,14 @@ Magpie_run_start_hbase () {
 
         if [ ${HBASE_MODE} != "setuponly" ]
         then
-            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
-
-            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
-            then  
-                # Could be more dynamic w/ slurm call to determine current
-                # run time, but probably is sufficient for this trivial
-                # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
-                # around for non-slurm systems.
-                local hbasemastermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
-                
-                if [ "${hbasemastermaxwaitseconds}" -lt 30 ]
-                then
-                    hbasemastermaxwaitseconds=30
-                fi
-                
-                local hbasemastermaxwaittimes=`expr ${hbasemastermaxwaitseconds} \/ 30`
-            else
-                local hbasemastermaxwaittimes=1
-            fi
+            # Will set magpie_waittimes_count
+            Magpie_calculate_waittimes_count
             
             cd ${HBASE_HOME}
 
             hbasemastercameup=0
             
-            for i in `seq 1 ${hbasemastermaxwaittimes}`
+            for i in `seq 1 ${magpie_waittimes_count}`
             do                
                 # example output : "9 servers, 0 dead, 4.7778 average load"
                 if echo status | ${hbasecmdprefix}/hbase shell | grep -q "servers"

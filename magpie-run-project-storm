@@ -161,31 +161,14 @@ Magpie_run_start_storm () {
 
         if [ ${STORM_MODE} != "setuponly" ]
         then
-            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
-
-            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
-            then  
-                # Could be more dynamic w/ slurm call to determine current
-                # run time, but probably is sufficient for this trivial
-                # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
-                # around for non-slurm systems.
-                local stormmastermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
-                
-                if [ "${stormmastermaxwaitseconds}" -lt 30 ]
-                then
-                    stormmastermaxwaitseconds=30
-                fi
-                
-                local stormmastermaxwaittimes=`expr ${stormmastermaxwaitseconds} \/ 30`
-            else
-                local stormmastermaxwaittimes=1
-            fi
+            # Will set magpie_waittimes_count
+            Magpie_calculate_waittimes_count
             
             cd ${STORM_HOME}
 
             local stormmastercameup=0
             
-            for i in `seq 1 ${stormmastermaxwaittimes}` 
+            for i in `seq 1 ${magpie_waittimes_count}` 
             do
                 # example output : "No topologies running"
                 if ${stormcmdprefix}/storm list | grep -q "No topologies running"

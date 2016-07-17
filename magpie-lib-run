@@ -111,3 +111,24 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     return $?
 }
 
+Magpie_calculate_waittimes_count () {
+    local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
+
+    if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
+    then  
+        # Could be more dynamic w/ slurm call to determine current
+        # run time, but probably is sufficient for this trivial
+        # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
+        # around for non-slurm systems.
+        local waittimeseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
+                    
+        if [ "${waittimeseconds}" -lt 30 ]
+        then
+            waittimeseconds=30
+        fi
+        
+        magpie_waittimes_count=`expr ${waittimeseconds} \/ 30`
+    else
+        magpie_waittimes_count=1
+    fi
+}

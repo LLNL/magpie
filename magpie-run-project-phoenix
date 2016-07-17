@@ -110,31 +110,14 @@ Magpie_run_start_phoenix () {
 
         if [ ${PHOENIX_MODE} == "server" ]
         then
-            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
+            # Will set magpie_waittimes_count
+            Magpie_calculate_waittimes_count
 
-            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
-            then  
-            # Could be more dynamic w/ slurm call to determine current
-            # run time, but probably is sufficient for this trivial
-            # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
-            # around for non-slurm systems.
-                local phoenixmaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
-                
-                if [ "${phoenixmaxwaitseconds}" -lt 30 ]
-                then
-                    phoenixmaxwaitseconds=30
-                fi
-                
-                local phoenixmaxwaittimes=`expr ${phoenixmaxwaitseconds} \/ 30`
-            else
-                local phoenixrmaxwaittimes=1
-            fi
-            
             cd ${PHOENIX_HOME}
 
             local phoenixcameup=0
             
-            for i in `seq 1 ${phoenixmaxwaittimes}`
+            for i in `seq 1 ${magpie_waittimes_count}`
             do
                 local serverschk=0
                 local serversup=0

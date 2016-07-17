@@ -129,25 +129,8 @@ Magpie_run_start_zookeeper () {
         
         if [ ${ZOOKEEPER_MODE} != "setuponly" ]
         then
-            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
-
-            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
-            then  
-                # Could be more dynamic w/ slurm call to determine current
-                # run time, but probably is sufficient for this trivial
-                # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
-                # around for non-slurm systems.
-                local zookeepermaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
-                
-                if [ "${zookeepermaxwaitseconds}" -lt 30 ]
-                then
-                    zookeepermaxwaitseconds=30
-                fi
-                
-                local zookeepermaxwaittimes=`expr ${zookeepermaxwaitseconds} \/ 30`
-            else
-                local zookeepermaxwaittimes=1
-            fi
+            # Will set magpie_waittimes_count
+            Magpie_calculate_waittimes_count
             
             cd ${ZOOKEEPER_HOME}
 
@@ -159,7 +142,7 @@ Magpie_run_start_zookeeper () {
                 echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
                 zookeepercameup=1
             else 
-                for i in `seq 1 ${zookeepermaxwaittimes}`
+                for i in `seq 1 ${magpie_waittimes_count}`
                 do
                     local zookeeperbadresponse=0
                     
