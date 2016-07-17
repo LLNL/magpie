@@ -23,7 +23,8 @@ Highlights:
   consistent file creation of masters & slaves files, do not export
   variables that aren't required to be exported, fix a variety of
   deprecated situations, fix outputs that go into
-  MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT.
+  MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT, fix inconsistencies on support
+  in various MODE options.
 
 - Attempt to be consistent with use of Bash code style throughout.
   e.g. using backticks instead of $() for subshells. 
