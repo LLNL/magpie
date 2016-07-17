@@ -32,6 +32,8 @@ Highlights:
   looked at what had been most commonly done thus far and used those
   styles.
 
+- Support 'setuponly' option for PHOENIX_MODE.
+
 - Fix many minor corner cases
 
 - Add many additional corner case checks

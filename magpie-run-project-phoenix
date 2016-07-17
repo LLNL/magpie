@@ -70,7 +70,7 @@ Magpie_run_start_phoenix () {
 
         cd ${PHOENIX_HOME}
 
-        if [ ${PHOENIX_MODE} == "server" ]
+        if [ ${PHOENIX_MODE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -99,10 +99,12 @@ Magpie_run_start_phoenix () {
         then
             echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
             echo "*   setenv PHOENIX_HOME \"${PHOENIX_HOME}\""
+            echo "*   setenv PHOENIX_CONF_DIR \"${PHOENIX_CONF_DIR}\""
             echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
         else
             echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
             echo "*   export PHOENIX_HOME=\"${PHOENIX_HOME}\""
+            echo "*   export PHOENIX_CONF_DIR=\"${PHOENIX_CONF_DIR}\""
             echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
         fi
         echo "*"
@@ -110,6 +112,21 @@ Magpie_run_start_phoenix () {
         echo "*" 
         echo "*   \$PHOENIX_HOME/${phoenixcmdprefix}/sqlline.py"
         echo "*" 
+        if [ "${PHOENIX_MODE}" == "setuponly" ]
+        then
+            echo "* To setup Phoenix queryserver, login and set"
+            echo "* environment variables per the instructions above,"
+            echo "* then run:"
+            echo "*"
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-phoenix-start-all.sh"
+            echo "*" 
+        fi
+        echo "* To end/cleanup your session & kill all daemons, login and set"
+        echo "* environment variables per the instructions above, then run:"
+        echo "*" 
+        echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-phoenix-stop-all.sh"
+        echo "*" 
+
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"
@@ -132,7 +149,7 @@ Magpie_run_start_phoenix () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${PHOENIX_MODE} == "server" ]
+        if [ ${PHOENIX_MODE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Phoenix" "__Magpie_run_check_phoenix_up"
@@ -173,7 +190,7 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PHOENIX_MODE}" == "interactive" ] 
+    elif [ "${PHOENIX_MODE}" == "interactive" ] || [ "${PHOENIX_MODE}" == "server" ]
     then
         echo "*******************************************************"
         echo "* Entering Phoenix ${PHOENIX_MODE} mode"
@@ -181,6 +198,14 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
+    elif [ "${PHOENIX_MODE}" == "setuponly" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Phoenix ${PHOENIX_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
+        local scriptpid=$!
+        wait ${scriptpid}
     fi
 }
 
@@ -192,7 +217,7 @@ Magpie_run_stop_phoenix () {
 
     if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
     then
-        if [ ${PHOENIX_MODE} == "server" ]
+        if [ ${PHOENIX_MODE} != "setuponly" ]
         then
             cd ${PHOENIX_HOME}
             

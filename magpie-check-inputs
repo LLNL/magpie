@@ -865,9 +865,10 @@ then
     if [ "${PHOENIX_MODE}" != "performanceeval" ] \
         && [ "${PHOENIX_MODE}" != "script" ] \
         && [ "${PHOENIX_MODE}" != "interactive" ] \
-        && [ "${PHOENIX_MODE}" != "server" ]
+        && [ "${PHOENIX_MODE}" != "server" ] \
+        && [ "${PHOENIX_MODE}" != "setuponly" ]
     then
-        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, server"
+        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, server, or setuply"
         exit 1
     fi
 
