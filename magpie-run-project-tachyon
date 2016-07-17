@@ -238,7 +238,7 @@ Magpie_run_stop_tachyon () {
             fi
             
             echo "Stopping tachyon"
-        ${tachyoncmdprefix}/tachyon-stop.sh all
+            ${tachyoncmdprefix}/tachyon-stop.sh all
         fi
     fi
     magpie_run_tachyon_teardown_complete=1
