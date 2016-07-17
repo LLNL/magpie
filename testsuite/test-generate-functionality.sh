@@ -50,7 +50,7 @@ __GenerateFunctionalityTests_BadJobNames() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name*
 
         sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-job-name* \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name*
         sed -i \
@@ -126,7 +126,7 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir
 
         sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir
         sed -i \
@@ -280,7 +280,7 @@ __GenerateFunctionalityTests_JobTimeout() {
 
         sed -i \
             -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-            -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export HADOOP_SCRIPT_ARGS="\(.*\)"/export HADOOP_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-hadoop-functionality-jobtimeout
     fi
@@ -294,7 +294,7 @@ __GenerateFunctionalityTests_JobTimeout() {
 
         sed -i \
             -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
-            -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export HBASE_SCRIPT_ARGS="\(.*\)"/export HBASE_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-hbase-with-hdfs-functionality-jobtimeout
     fi
@@ -308,7 +308,7 @@ __GenerateFunctionalityTests_JobTimeout() {
         
         sed -i \
             -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
-            -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export SPARK_SCRIPT_ARGS="\(.*\)"/export SPARK_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-spark-functionality-jobtimeout \
             magpie.${submissiontype}-spark-with-hdfs-functionality-jobtimeout \
@@ -320,7 +320,7 @@ __GenerateFunctionalityTests_JobTimeout() {
 
         sed -i \
             -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' \
-            -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export STORM_SCRIPT_ARGS="\(.*\)"/export STORM_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-storm-functionality-jobtimeout
     fi
@@ -412,7 +412,7 @@ __GenerateFunctionalityTests_MagpieExports() {
     if [ -n "${files}" ]
     then
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' ${files}
-        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-env.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-env.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/checkexports-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
