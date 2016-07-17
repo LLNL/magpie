@@ -27,12 +27,24 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
+
+# Return 0 if service up, 1 if not
+__Magpie_run_check_hbase_up () {
+    cd ${HBASE_HOME}
+    
+    # example output : "9 servers, 0 dead, 4.7778 average load"
+    if echo status | ${hbasecmdprefix}/hbase shell | grep -q "servers"
+    then
+        return 0
+    fi
+
+    return 1
+}
 
 Magpie_run_start_hbase () {
     if [ "${HBASE_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
@@ -157,36 +169,17 @@ Magpie_run_start_hbase () {
 
         if [ ${HBASE_MODE} != "setuponly" ]
         then
-            # Will set magpie_waittimes_count
-            Magpie_calculate_waittimes_count
-            
-            cd ${HBASE_HOME}
+            # Return 0 if service up, 1 if not
+            Magpie_check_service_up "Hbase" "__Magpie_run_check_hbase_up"
 
-            hbasemastercameup=0
-            
-            for i in `seq 1 ${magpie_waittimes_count}`
-            do                
-                # example output : "9 servers, 0 dead, 4.7778 average load"
-                if echo status | ${hbasecmdprefix}/hbase shell | grep -q "servers"
-                then
-                    hbasemastercameup=1
-                    break
-                fi
-                
-                echo "Waiting 30 more seconds for Hbase master to come up"
-                sleep 30
-                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
-            done
-            
-            if [ "${hbasemastercameup}" == "0" ]
+            if [ $? -eq 0 ]
             then
-                echo "Hbase Master never came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+                magpie_run_hbase_should_be_torndown=1
+                magpie_run_hbase_setup_successful=1
+            else
                 magpie_run_hbase_should_be_torndown=1
                 magpie_run_hbase_setup_successful=0
                 magpie_run_prior_startup_successful=false
-            else
-                magpie_run_hbase_should_be_torndown=1
-                magpie_run_hbase_setup_successful=1
             fi
         else
             magpie_run_hbase_should_be_torndown=1

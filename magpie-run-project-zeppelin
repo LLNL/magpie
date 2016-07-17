@@ -27,10 +27,34 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
+
+# Return 0 if service up, 1 if not
+__Magpie_run_check_zeppelin_up () {
+    cd ${ZEPPELIN_HOME}
+
+    local serverschk=0
+    local serversup=0
+    for server in `cat ${ZEPPELIN_CONF_DIR}/masters`
+    do
+        serverschk=`expr ${serverschk} + 1`
+        local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c zeppelin`
+        if [ "${serverisup}" -gt "0" ]
+        then
+            serversup=`expr ${serversup} + 1`
+        fi
+    done
+    
+    echo "$serversup/$serverschk Zeppelin Servers are up."
+    if [ "$serverschk" -eq "$serversup" ]
+    then
+        return 0
+    fi
+
+    return 1
+}
 
 Magpie_run_start_zeppelin () {
     if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
@@ -114,48 +138,17 @@ Magpie_run_start_zeppelin () {
 
         if [ ${ZEPPELIN_MODE} != "setuponly" ]
         then
-            # Will set magpie_waittimes_count
-            Magpie_calculate_waittimes_count
+            # Return 0 if service up, 1 if not
+            Magpie_check_service_up "Zeppelin" "__Magpie_run_check_zeppelin_up"
 
-            cd ${ZEPPELIN_HOME}
-
-            local zeppelincameup=0
-
-            for i in `seq 1 ${magpie_waittimes_count}`
-            do
-                local serverschk=0
-                local serversup=0
-                for server in `cat ${ZEPPELIN_CONF_DIR}/masters`
-                do
-                    serverschk=`expr ${serverschk} + 1`
-                    local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c zeppelin`
-                    if [ "${serverisup}" -gt "0" ]
-                    then
-                        serversup=`expr ${serversup} + 1`
-                    fi
-                done
-
-                echo "$serversup/$serverschk Zeppelin Servers are up."
-                if [ "$serverschk" -eq "$serversup" ]
-                then
-                    zeppelincameup=1
-                    break
-                fi
-
-                echo "Waiting 30 more seconds for Zeppelin Servers to come up"
-                sleep 30
-                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
-            done
-
-            if [ "${zeppelincameup}" == "0" ]
+            if [ $? -eq 0 ] 
             then
-                echo "Not all Zeppelin Servers came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+                magpie_run_zeppelin_should_be_torndown=1
+                magpie_run_zeppelin_setup_successful=1
+            else
                 magpie_run_zeppelin_should_be_torndown=1
                 magpie_run_zeppelin_setup_successful=0
                 magpie_run_prior_startup_successful=false
-            else
-                magpie_run_zeppelin_should_be_torndown=1
-                magpie_run_zeppelin_setup_successful=1
             fi
         else
             magpie_run_zeppelin_should_be_torndown=1

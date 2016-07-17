@@ -27,13 +27,55 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
+
+# Return 0 if service up, 1 if not
+__Magpie_run_check_hadoop_up ()
+{
+    cd ${HADOOP_HOME}
+
+    if Magpie_hdfs_federation_enabled
+    then
+        local exittedsafemodeflag=1
+        
+        for j in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+        do
+            # First namenode is based on master
+            if [ "${j}" == "1" ]
+            then
+                local federationnamenodehost="${HADOOP_MASTER_NODE}"
+            else
+                local numline=`expr ${j} - 1`
+                local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+            fi
+
+            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode get 2>&1 | grep -q -i "off"
+            if [ $? -ne 0 ]
+            then
+                exittedsafemodeflag=0
+                break
+            fi
+        done
+
+        if [ "${exittedsafemodeflag}" == "1" ]
+        then
+            return 0
+        fi
+    else
+        ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
+        if [ $? -eq 0 ]
+        then
+            return 0
+        fi
+    fi
+
+    return 1
+}
 
 Magpie_run_start_hadoop () {
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
@@ -398,66 +440,17 @@ Magpie_run_start_hadoop () {
         then
             if [ "${hdfs_was_setup}" == "1" ]
             then
-                # Will set magpie_waittimes_count
-                Magpie_calculate_waittimes_count
-                
-                cd ${HADOOP_HOME}
+                # Return 0 if service up, 1 if not
+                Magpie_check_service_up "Hadoop" "__Magpie_run_check_hadoop_up"
 
-                local exittedsafemode=0
-                
-                for i in `seq 1 ${magpie_waittimes_count}`
-                do
-                    if Magpie_hdfs_federation_enabled
-                    then
-                        local exittedsafemodeflag=1
-
-                        for j in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-                        do
-                            
-                            # First namenode is based on master
-                            if [ "${j}" == "1" ]
-                            then
-                                local federationnamenodehost="${HADOOP_MASTER_NODE}"
-                            else
-                                local numline=`expr ${j} - 1`
-                                local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-                            fi
-
-                            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode get 2>&1 | grep -q -i "off"
-                            if [ $? -ne 0 ]
-                            then
-                                exittedsafemodeflag=0
-                            fi
-                        done
-
-                        if [ "${exittedsafemodeflag}" == "1" ]
-                        then
-                            exittedsafemode=1
-                            break
-                        fi
-                    else
-                        ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
-                        if [ $? -eq 0 ]
-                        then
-                            exittedsafemode=1
-                            break
-                        fi
-                    fi
-
-                    echo "Waiting 30 more seconds for namenode to exit safe mode"
-                    sleep 30
-                    magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
-                done
-                
-                if [ "${exittedsafemode}" == "0" ]
+                if [ $? -eq 0 ]
                 then
-                    echo "Namenode never exited safe mode, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+                    magpie_run_hadoop_should_be_torndown=1
+                    magpie_run_hadoop_setup_successful=1
+                else
                     magpie_run_hadoop_should_be_torndown=1
                     magpie_run_hadoop_setup_successful=0
                     magpie_run_prior_startup_successful=false
-                else
-                    magpie_run_hadoop_should_be_torndown=1
-                    magpie_run_hadoop_setup_successful=1
                 fi
             else
                 magpie_run_hadoop_should_be_torndown=0

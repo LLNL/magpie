@@ -111,7 +111,7 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     return $?
 }
 
-Magpie_calculate_waittimes_count () {
+__Magpie_calculate_waittimes_count () {
     local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
 
     if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
@@ -127,8 +127,33 @@ Magpie_calculate_waittimes_count () {
             waittimeseconds=30
         fi
         
-        magpie_waittimes_count=`expr ${waittimeseconds} \/ 30`
+        __magpie_waittimes_count=`expr ${waittimeseconds} \/ 30`
     else
-        magpie_waittimes_count=1
+        __magpie_waittimes_count=1
     fi
+}
+
+Magpie_check_service_up () {
+    local projectname=$1
+    local callbackcheck=$2
+
+    # Will set __magpie_waittimes_count
+    __Magpie_calculate_waittimes_count
+                
+    for i in `seq 1 ${__magpie_waittimes_count}`
+    do
+        $callbackcheck
+        
+        if [ $? -eq 0 ]
+        then
+            return 0
+        fi
+
+        echo "Waiting 30 more seconds for services to come up"
+        sleep 30
+        magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
+    done
+
+    echo "Part or all of ${projectname} service didn't come up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+    return 1
 }
