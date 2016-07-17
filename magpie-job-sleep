@@ -31,7 +31,7 @@
 # "another script" and be managed just like any other script.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
 
 # Will set magpie_jobtimeseconds
 Magpie_job_time_seconds

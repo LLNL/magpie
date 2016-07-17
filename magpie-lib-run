@@ -24,8 +24,8 @@
 
 # This is used by scripts, don't edit this
 #
-# This file has common job management functions.  Should be
-# sourced and used only in magpie-run* files.
+# This file has common run functions.  Should be sourced and used only
+# in magpie-run* files.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs

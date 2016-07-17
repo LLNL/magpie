@@ -30,7 +30,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
