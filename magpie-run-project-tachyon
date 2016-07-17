@@ -213,6 +213,8 @@ Magpie_run_tachyon () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
+    else
+        Magpie_output_internal_error "TACHYON_MODE = ${TACHYON_MODE} not handled"
     fi
 }
 

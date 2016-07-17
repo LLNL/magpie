@@ -208,6 +208,8 @@ Magpie_run_spark () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
+    else
+        Magpie_output_internal_error "SPARK_MODE = ${SPARK_MODE} not handled"
     fi
 }
 

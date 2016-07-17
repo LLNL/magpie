@@ -575,6 +575,8 @@ Magpie_run_hadoop () {
             rm -f ${magpie_hdfs_stored_nodecount_path}
             echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${magpie_hdfs_stored_nodecount_path}
         fi
+    else
+        Magpie_output_internal_error "HADOOP_MODE = ${HADOOP_MODE} not handled"
     fi
 }
  

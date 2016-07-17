@@ -228,6 +228,8 @@ Magpie_run_storm () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
+    else
+        Magpie_output_internal_error "STORM_MODE = ${STORM_MODE} not handled"
     fi
 }
 

@@ -30,6 +30,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 
 # Return 0 if service up, 1 if not
 __Magpie_run_check_zookeeper_up () {
@@ -200,6 +201,8 @@ Magpie_run_zookeeper () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
+    else
+        Magpie_output_internal_error "ZOOKEEPER_MODE = ${ZOOKEEPER_MODE} not handled"
     fi
 }
 

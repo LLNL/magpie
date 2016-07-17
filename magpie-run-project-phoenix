@@ -214,6 +214,8 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
+    else
+        Magpie_output_internal_error "PHOENIX_MODE = ${PHOENIX_MODE} not handled"
     fi
 }
 
