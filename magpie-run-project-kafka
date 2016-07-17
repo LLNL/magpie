@@ -124,6 +124,20 @@ Magpie_run_start_kafka () {
         echo "*" 
         echo "*   \$KAFKA_HOME/${kafkacmdprefix}"
         echo "*" 
+        if [ "${KAFKA_MODE}" == "setuponly" ]
+        then
+            echo "* To setup, login and set environment variables per the"
+            echo "* instructions above, then run:"
+            echo "*"
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-kafka-start-all.sh"
+            echo "*" 
+        fi
+        echo "* To end/cleanup your session & kill all daemons, login and set"
+        echo "* environment variables per the instructions above, then run:"
+        echo "*" 
+        echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-kafka-stop-all.sh"
+        echo "*" 
+
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"
@@ -181,6 +195,14 @@ Magpie_run_kafka () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-kafka-performance &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${KAFKA_MODE}" == "server" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Kafka ${KAFKA_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        local scriptpid=$!
+        wait $scriptpid
     elif [ "${KAFKA_MODE}" == "setuponly" ]
     then
         echo "*******************************************************"
