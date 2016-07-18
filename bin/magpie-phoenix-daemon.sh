@@ -87,5 +87,5 @@ then
 else
     echo "Stopping Phoenix on $myhostname"
 fi
-python $3/bin/queryserver.py $4 
+python $3/bin/queryserver.py $4 &
 
