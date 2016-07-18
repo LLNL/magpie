@@ -358,10 +358,7 @@ then
     cd ${INSTALL_PATH}
     tar -xzf ${ZEPPELIN_PACKAGE_BASENAME}
 
-    ZEPPELIN_PACKAGE_BASEDIR=`echo $ZEPPELIN_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${ZEPPELIN_PACKAGE_BASEDIR}
-
-    echo 'No patched needed currently.'
+    # No zeppelin patches at the moment
 fi
 
 if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]
