@@ -271,6 +271,9 @@ Magpie_run_start_hadoop () {
                 fi
                 echo "* HDFS DataNode: http://<DATANODE>:${default_hadoop_hdfs_datanode_httpaddress}"
                 echo "*"
+            fi
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
+            then
                 echo "* HDFS can be accessed directly at:"
                 echo "*"
                 if Magpie_hdfs_federation_enabled
