@@ -174,12 +174,12 @@ __GenerateHbaseDependencyTests_Dependency2() {
 
     sed -i \
         -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
-        -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hbasewritedata.sh"/' \
+        -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hbasewritedata.sh"/' \
         magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-scripthbasewritedata*
 
     sed -i \
         -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
-        -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-hbasereaddata.sh"/' \
+        -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hbasereaddata.sh"/' \
         magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase2A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-scripthbasereaddata*
 
     # XXX why not start w/ hadoop submission script? Still need zookeeper to take up 3 nodes.
