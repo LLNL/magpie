@@ -131,5 +131,7 @@ Magpie_run_pig () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
+    else
+        Magpie_output_internal_error "PIG_MODE = ${PIG_MODE} not handled"
     fi
 }

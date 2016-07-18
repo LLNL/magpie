@@ -29,7 +29,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
 
@@ -213,6 +213,8 @@ Magpie_run_tachyon () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
+    else
+        Magpie_output_internal_error "TACHYON_MODE = ${TACHYON_MODE} not handled"
     fi
 }
 
@@ -238,7 +240,7 @@ Magpie_run_stop_tachyon () {
             fi
             
             echo "Stopping tachyon"
-        ${tachyoncmdprefix}/tachyon-stop.sh all
+            ${tachyoncmdprefix}/tachyon-stop.sh all
         fi
     fi
     magpie_run_tachyon_teardown_complete=1

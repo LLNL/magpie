@@ -27,11 +27,35 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run-job-management
+source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
+
+# Return 0 if service up, 1 if not
+__Magpie_run_check_phoenix_up () {
+    cd ${PHOENIX_HOME}
+
+    local serverschk=0
+    local serversup=0
+    for server in `cat ${PHOENIX_CONF_DIR}/regionservers`;
+    do
+        serverschk=`expr ${serverschk} + 1`
+        local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c queryserver.py`
+        if [ "${serverisup}" -gt "0" ] ;
+        then 
+            serversup=`expr ${serversup} + 1`
+        fi
+    done
+
+    echo "$serversup/$serverschk Queryservers are up."
+    if [ "$serverschk" -eq "$serversup" ]
+    then 
+        return 0
+    fi
+
+    return 1
+}
 
 Magpie_run_start_phoenix () {
     if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
@@ -46,7 +70,7 @@ Magpie_run_start_phoenix () {
 
         cd ${PHOENIX_HOME}
 
-        if [ ${PHOENIX_MODE} == "server" ]
+        if [ ${PHOENIX_MODE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -75,10 +99,12 @@ Magpie_run_start_phoenix () {
         then
             echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
             echo "*   setenv PHOENIX_HOME \"${PHOENIX_HOME}\""
+            echo "*   setenv PHOENIX_CONF_DIR \"${PHOENIX_CONF_DIR}\""
             echo "*   setenv HBASE_CONF_DIR \"${HBASE_CONF_DIR}\""
         else
             echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
             echo "*   export PHOENIX_HOME=\"${PHOENIX_HOME}\""
+            echo "*   export PHOENIX_CONF_DIR=\"${PHOENIX_CONF_DIR}\""
             echo "*   export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\""
         fi
         echo "*"
@@ -86,6 +112,21 @@ Magpie_run_start_phoenix () {
         echo "*" 
         echo "*   \$PHOENIX_HOME/${phoenixcmdprefix}/sqlline.py"
         echo "*" 
+        if [ "${PHOENIX_MODE}" == "setuponly" ]
+        then
+            echo "* To setup Phoenix queryserver, login and set"
+            echo "* environment variables per the instructions above,"
+            echo "* then run:"
+            echo "*"
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-phoenix-start-all.sh"
+            echo "*" 
+        fi
+        echo "* To end/cleanup your session & kill all daemons, login and set"
+        echo "* environment variables per the instructions above, then run:"
+        echo "*" 
+        echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-phoenix-stop-all.sh"
+        echo "*" 
+
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"
@@ -108,67 +149,19 @@ Magpie_run_start_phoenix () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${PHOENIX_MODE} == "server" ]
+        if [ ${PHOENIX_MODE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
         then
-            local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
+            # Return 0 if service up, 1 if not
+            Magpie_check_service_up "Phoenix" "__Magpie_run_check_phoenix_up"
 
-            if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
-            then  
-            # Could be more dynamic w/ slurm call to determine current
-            # run time, but probably is sufficient for this trivial
-            # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
-            # around for non-slurm systems.
-                local phoenixmaxwaitseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
-                
-                if [ "${phoenixmaxwaitseconds}" -lt 30 ]
-                then
-                    phoenixmaxwaitseconds=30
-                fi
-                
-                local phoenixmaxwaittimes=`expr ${phoenixmaxwaitseconds} \/ 30`
-            else
-                local phoenixrmaxwaittimes=1
-            fi
-            
-            cd ${PHOENIX_HOME}
-
-            local phoenixcameup=0
-            
-            for i in `seq 1 ${phoenixmaxwaittimes}`
-            do
-                local serverschk=0
-                local serversup=0
-                for server in `cat ${PHOENIX_CONF_DIR}/regionservers`;
-                do
-                    serverschk=`expr ${serverschk} + 1`
-                    local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c queryserver.py`
-                    if [ "${serverisup}" -gt "0" ] ;
-                    then 
-                        serversup=`expr ${serversup} + 1`
-                    fi
-                done
-
-                echo "$serversup/$serverschk Queryservers are up."
-                if [ "$serverschk" -eq "$serversup" ]
-                then 
-                    phoenixcameup=1
-                    break
-                fi
-
-                echo "Waiting 30 more seconds for Queryservers to come up"
-                sleep 30
-                magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
-            done
-            
-            if [ "${phoenixcameup}" == "0" ]
+            if [ $? -eq 0 ]
             then
-                echo "Not all Phoenix Queryservers came up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+                magpie_run_phoenix_should_be_torndown=1
+                magpie_run_phoenix_setup_successful=1
+            else
                 magpie_run_phoenix_should_be_torndown=1
                 magpie_run_phoenix_setup_successful=0
                 magpie_run_prior_startup_successful=false
-            else
-                magpie_run_phoenix_should_be_torndown=1
-                magpie_run_phoenix_setup_successful=1
             fi
         else
             magpie_run_phoenix_should_be_torndown=1
@@ -197,7 +190,7 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PHOENIX_MODE}" == "interactive" ] 
+    elif [ "${PHOENIX_MODE}" == "interactive" ]
     then
         echo "*******************************************************"
         echo "* Entering Phoenix ${PHOENIX_MODE} mode"
@@ -205,6 +198,24 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
+    elif [ "${PHOENIX_MODE}" == "server" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Phoenix ${PHOENIX_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute server &
+        local scriptpid=$!
+        wait $scriptpid
+    elif [ "${PHOENIX_MODE}" == "setuponly" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Phoenix ${PHOENIX_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
+        local scriptpid=$!
+        wait ${scriptpid}
+    else
+        Magpie_output_internal_error "PHOENIX_MODE = ${PHOENIX_MODE} not handled"
     fi
 }
 
@@ -216,7 +227,7 @@ Magpie_run_stop_phoenix () {
 
     if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
     then
-        if [ ${PHOENIX_MODE} == "server" ]
+        if [ ${PHOENIX_MODE} != "setuponly" ]
         then
             cd ${PHOENIX_HOME}
             

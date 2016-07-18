@@ -24,8 +24,8 @@
 
 # This is used by scripts, don't edit this
 #
-# This file has common job management functions.  Should be
-# sourced and used only in magpie-run* files.
+# This file has common run functions.  Should be sourced and used only
+# in magpie-run* files.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
@@ -111,3 +111,49 @@ Magpie_wait_script_sigusr2_on_job_timeout () {
     return $?
 }
 
+__Magpie_calculate_waittimes_count () {
+    local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
+
+    if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
+    then  
+        # Could be more dynamic w/ slurm call to determine current
+        # run time, but probably is sufficient for this trivial
+        # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
+        # around for non-slurm systems.
+        local waittimeseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
+                    
+        if [ "${waittimeseconds}" -lt 30 ]
+        then
+            waittimeseconds=30
+        fi
+        
+        __magpie_waittimes_count=`expr ${waittimeseconds} \/ 30`
+    else
+        __magpie_waittimes_count=1
+    fi
+}
+
+Magpie_check_service_up () {
+    local projectname=$1
+    local callbackcheck=$2
+
+    # Will set __magpie_waittimes_count
+    __Magpie_calculate_waittimes_count
+                
+    for i in `seq 1 ${__magpie_waittimes_count}`
+    do
+        $callbackcheck
+        
+        if [ $? -eq 0 ]
+        then
+            return 0
+        fi
+
+        echo "Waiting 30 more seconds for services to come up"
+        sleep 30
+        magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
+    done
+
+    echo "Part or all of ${projectname} service didn't come up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+    return 1
+}

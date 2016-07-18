@@ -50,7 +50,7 @@ __GenerateFunctionalityTests_BadJobNames() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name*
 
         sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-job-name* \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name*
         sed -i \
@@ -126,7 +126,7 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir
 
         sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/test-wordcountfile\"/' \
+            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir
         sed -i \
@@ -270,6 +270,76 @@ __GenerateFunctionalityTests_InteractiveMode() {
     fi
 }
 
+__GenerateFunctionalityTests_Setuponlymode() {
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-functionality-setuponly-mode
+
+        sed -i \
+            -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="setuponly"/' \
+            magpie.${submissiontype}-hadoop-functionality-setuponly-mode
+    fi
+
+    # No Pig test, "setuponly" doesn't exist
+
+    # No Mahout test, "setuponly" doesn't exist
+
+    if [ "${hbasetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-setuponly-mode
+
+        sed -i \
+            -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="setuponly"/' \
+            -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="setuponly"/' \
+            -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="setuponly"/' \
+            magpie.${submissiontype}-hbase-with-hdfs-functionality-setuponly-mode
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-setuponly-mode
+
+        sed -i \
+            -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="setuponly"/' \
+            -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="setuponly"/' \
+            -e 's/export PHOENIX_MODE="\(.*\)"/export PHOENIX_MODE="setuponly"/' \
+            -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="setuponly"/' \
+            magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-setuponly-mode
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-setuponly-mode
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-setuponly-mode
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-setuponly-mode
+        
+        sed -i \
+            -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="setuponly"/' \
+            magpie.${submissiontype}-spark-functionality-setuponly-mode \
+            magpie.${submissiontype}-spark-with-hdfs-functionality-setuponly-mode \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-setuponly-mode
+
+        sed -i \
+            -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="setuponly"/' \
+            magpie.${submissiontype}-spark-with-hdfs-functionality-setuponly-mode \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-setuponly-mode
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-setuponly-mode
+
+        sed -i \
+            -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="setuponly"/' \
+            -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="setuponly"/' \
+            magpie.${submissiontype}-storm-functionality-setuponly-mode
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-setuponly-mode*"`
+    if [ -n "${files}" ]
+    then
+        # Guarantee atleast 5 mins for the job that should end quickly
+        ${functiontogettimeoutput} 5
+        sed -i -e "s/${timestringtoreplace}/${timeoutputforjob}/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/setuponlymode-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 __GenerateFunctionalityTests_JobTimeout() {
     
     # timeoutputforjob returned
@@ -280,7 +350,7 @@ __GenerateFunctionalityTests_JobTimeout() {
 
         sed -i \
             -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
-            -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export HADOOP_SCRIPT_ARGS="\(.*\)"/export HADOOP_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-hadoop-functionality-jobtimeout
     fi
@@ -294,7 +364,7 @@ __GenerateFunctionalityTests_JobTimeout() {
 
         sed -i \
             -e 's/export HBASE_MODE="\(.*\)"/export HBASE_MODE="script"/' \
-            -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export HBASE_SCRIPT_PATH="\(.*\)"/export HBASE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export HBASE_SCRIPT_ARGS="\(.*\)"/export HBASE_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-hbase-with-hdfs-functionality-jobtimeout
     fi
@@ -308,7 +378,7 @@ __GenerateFunctionalityTests_JobTimeout() {
         
         sed -i \
             -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
-            -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export SPARK_SCRIPT_ARGS="\(.*\)"/export SPARK_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-spark-functionality-jobtimeout \
             magpie.${submissiontype}-spark-with-hdfs-functionality-jobtimeout \
@@ -320,7 +390,7 @@ __GenerateFunctionalityTests_JobTimeout() {
 
         sed -i \
             -e 's/export STORM_MODE="\(.*\)"/export STORM_MODE="script"/' \
-            -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-sleep.sh"/' \
+            -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export STORM_SCRIPT_ARGS="\(.*\)"/export STORM_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-storm-functionality-jobtimeout
     fi
@@ -412,7 +482,7 @@ __GenerateFunctionalityTests_MagpieExports() {
     if [ -n "${files}" ]
     then
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' ${files}
-        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/test-env.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-env.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/checkexports-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
@@ -430,6 +500,8 @@ GenerateFunctionalityTests() {
     __GenerateFunctionalityTests_TestAll
     
     __GenerateFunctionalityTests_InteractiveMode
+
+    __GenerateFunctionalityTests_Setuponlymode
 
     __GenerateFunctionalityTests_JobTimeout
 
