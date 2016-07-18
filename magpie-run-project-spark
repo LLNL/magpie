@@ -66,10 +66,10 @@ Magpie_run_start_spark () {
         echo "*"
         echo "* Spark Information"
         echo "*"
-        echo "* You can view your Spark status by launching a web browser and pointing to ..."
-        echo "*"
         if [ "${SPARK_USE_YARN}" != "yes" ]
         then 
+            echo "* You can view your Spark status by launching a web browser and pointing to ..."
+            echo "*"
             echo "* Spark Master: http://${SPARK_MASTER_NODE}:${default_spark_master_webui_port}"
             echo "* Spark Worker: http://<WORKERNODE>:${default_spark_worker_webui_port}"
             echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${default_spark_application_dashboard_port}"
