@@ -64,6 +64,7 @@ SPARK_PACKAGE="spark/spark-1.6.2/spark-1.6.2-bin-hadoop2.6.tgz"
 SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-2.6.4/hadoop-2.6.4.tar.gz"
 STORM_PACKAGE="storm/apache-storm-1.0.1/apache-storm-1.0.1.tar.gz"
 PHOENIX_PACKAGE="phoenix/phoenix-4.7.0-HBase-1.1/bin/phoenix-4.7.0-HBase-1.1-bin.tar.gz"
+PHOENIX_HBASE_PACKAGE="hbase/1.1.4/hbase-1.1.4-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
 ZEPPELIN_PACKAGE="incubator/zeppelin/0.5.6-incubating/zeppelin-0.5.6-incubating-bin-all.tgz"
 
@@ -292,6 +293,27 @@ then
     cd ${INSTALL_PATH}/${PHOENIX_PACKAGE_BASEDIR}
     echo "Applying patches"
     patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
+
+    APACHE_DOWNLOAD_HBASE="${APACHE_DOWNLOAD_BASE}/${HBASE_PACKAGE}"
+
+    HBASE_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_HBASE} | grep "${HBASE_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+
+    echo "Downloading from ${HBASE_DOWNLOAD_URL}"
+
+    PHOENIX_HBASE_PACKAGE_BASENAME=`basename ${PHOENIX_HBASE_PACKAGE}`
+
+    wget -O ${INSTALL_PATH}/${PHOENIX_HBASE_PACKAGE_BASENAME} ${HBASE_DOWNLOAD_URL}
+
+    echo "Untarring ${PHOENIX_HBASE_PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${PHOENIX_HBASE_PACKAGE_BASENAME}
+
+    PHOENIX_HBASE_PACKAGE_BASEDIR=`echo $PHOENIX_HBASE_PACKAGE_BASENAME | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g'`
+    cd ${INSTALL_PATH}/${PHOENIX_HBASE_PACKAGE_BASEDIR}
+    echo "Applying patches"
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch
+    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${KAFKA_DOWNLOAD}" == "Y" ]
