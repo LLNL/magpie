@@ -34,6 +34,27 @@ then
     outputprefix="slurm"
 fi
 
+__get_test_files () {
+    local filekeys=$@
+
+    test_validate_files=""
+    for str in $filekeys
+    do
+        filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
+        if [ -n "${filestmp}" ]
+        then
+            test_validate_files="${test_validate_files}${test_validate_files:+" "}${filestmp}"
+        fi
+    done
+
+    if [ "${test_validate_files}X" != "X" ]
+    then
+        return 0
+    fi
+
+    return 1
+}
+
 __test_yarn_shutdown () {
     local file=$1
     num=`grep -e "stopping yarn daemons" $file | wc -l`
@@ -183,10 +204,10 @@ __test_output_finalize () {
     fi
 }
 
-files=`find . -maxdepth 1 -name "${outputprefix}*interactivemode*"`
-if [ -n "${files}" ]
+__get_test_files interactivemode
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Entering \(.*\) interactive mode" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -208,10 +229,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*jobtimeout*"`
-if [ -n "${files}" ]
+__get_test_files jobtimeout
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Killing script, did not exit within time limit" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -223,10 +244,12 @@ then
     done
 fi
 
+
 files=`find . -maxdepth 1 -name "${outputprefix}*catchprojectdependency*"`
-if [ -n "${files}" ]
+__get_test_files catchprojectdependency
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         # This is the more common catch
         num1=`grep -e "\(.*\) requires \(.*\) to be setup, set \(.*\) to yes" $file | wc -l`
@@ -244,17 +267,8 @@ then
     done
 fi
 
-files=""
-for str in nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
-do
-    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
-    if [ -n "${filestmp}" ]
-    then
-        files="${files}${files:+" "}${filestmp}"
-    fi
-done
-
-if [ -n "${files}" ]
+__get_test_files nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
+if [ $? -eq 0 ]
 then
     for file in $files
     do
@@ -269,19 +283,10 @@ then
     done
 fi
 
-files=""
-for str in badsetjava badsethome
-do
-    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
-    if [ -n "${filestmp}" ]
-    then
-        files="${files}${files:+" "}${filestmp}"
-    fi
-done
-
-if [ -n "${files}" ]
+__get_test_files badsetjava badsethome
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "does not point to a directory" $file | wc -l`
         if [ "${num}" == "0" ]
@@ -294,19 +299,10 @@ then
     done
 fi
 
-files=""
-for str in badlocaldir baddirectories
-do
-    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
-    if [ -n "${filestmp}" ]
-    then
-        files="${files}${files:+" "}${filestmp}"
-    fi
-done
-
-if [ -n "${files}" ]
+__get_test_files badlocaldir baddirectories
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "mkdir failed making" $file | wc -l`
         if [ "${num}" == "0" ]
@@ -319,10 +315,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badsetscript*"`
-if [ -n "${files}" ]
+__get_test_files badsetscript
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num1=`grep -e "\(.*\)_SCRIPT_PATH does not point to a regular file" $file | wc -l`
         num2=`grep -e "\(.*\)_SCRIPT_PATH=\"\(.*\)\" does not have execute permissions" $file | wc -l`
@@ -336,10 +332,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badjobtime*"`
-if [ -n "${files}" ]
+__get_test_files badjobtime
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "timelimit must be atleast the sum of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME" $file | wc -l`
         if [ "${num}" == "0" ]
@@ -352,10 +348,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badstartuptime*"`
-if [ -n "${files}" ]
+__get_test_files badstartuptime
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "MAGPIE_STARTUP_TIME must be >= 5 minutes if MAGPIE_PRE_JOB_RUN is set" $file | wc -l`
         if [ "${num}" == "0" ]
@@ -368,10 +364,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badshutdowntime*"`
-if [ -n "${files}" ]
+__get_test_files badshutdowntime
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "MAGPIE_SHUTDOWN_TIME must be >= 10 minutes if MAGPIE_POST_JOB_RUN is set" $file | wc -l`
         if [ "${num}" == "0" ]
@@ -384,10 +380,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*badnodecount*"`
-if [ -n "${files}" ]
+__get_test_files badnodecount
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         if echo ${file} | grep -q "small"
         then
@@ -626,10 +622,10 @@ __check_exports_zookeeper () {
     fi
 }
 
-files=`find . -maxdepth 1 -name "${outputprefix}*checkexports*"`
-if [ -n "${files}" ]
+__get_test_files checkexports
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         __check_exports_magpie ${file}
 
@@ -679,10 +675,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-hadoopterasort*"`
-if [ -n "${files}" ]
+__get_test_files run-hadoopterasort
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "completed successfully" $file | wc -l`
         if echo ${file} | grep -q "run-clustersyntheticcontrol"
@@ -703,10 +699,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-scriptteragen*"`
-if [ -n "${files}" ]
+__get_test_files run-scriptteragen
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "completed successfully" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -721,10 +717,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-scriptterasort*"`
-if [ -n "${files}" ]
+__get_test_files run-scriptterasort
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "completed successfully" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -738,10 +734,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-hadoopupgradehdfs*"`
-if [ -n "${files}" ]
+__get_test_files run-hadoopupgradehdfs
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Finalize upgrade successful" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -755,10 +751,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*hdfs-older-version*expected-failure*"`
-if [ -n "${files}" ]
+__get_test_files "hdfs-older-version*expected-failure"
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "HDFS version at mount" $file | grep -e "is older than" | wc -l`
         if [ "${num}" != "1" ]; then
@@ -772,10 +768,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*hdfs-newer-version*expected-failure*"`
-if [ -n "${files}" ]
+__get_test_files "hdfs-newer-version*expected-failure"
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "HDFS version at mount" $file | grep -e "is newer than" | wc -l`
         if [ "${num}" != "1" ]; then
@@ -789,10 +785,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*hdfs-fewer-nodes*expected-failure*"`
-if [ -n "${files}" ]
+__get_test_files "hdfs-fewer-nodes*expected-failure"
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "HDFS was last built using a larger slave node count" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -806,10 +802,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*decommissionhdfsnodes*"`
-if [ -n "${files}" ]
+__get_test_files decommissionhdfsnodes
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Decommissioned ${basenodecount} nodes" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -824,10 +820,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-testpig*"`
-if [ -n "${files}" ]
+__get_test_files run-testpig
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
     # Below only works on 0.14.0 and up
     # num=`grep -e "Pig script completed" $file | wc -l`
@@ -849,10 +845,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-pigscript*"`
-if [ -n "${files}" ]
+__get_test_files run-pigscript
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
     # Below only works on 0.14.0 and up
     # num=`grep -e "Pig script completed" $file | wc -l`
@@ -869,10 +865,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-clustersyntheticcontrol*"`
-if [ -n "${files}" ]
+__get_test_files run-clustersyntheticcontrol
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Dumping out clusters from clusters" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -886,10 +882,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-hbaseperformanceeval*"`
-if [ -n "${files}" ]
+__get_test_files run-hbaseperformanceeval
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Summary of timings" $file | wc -l`
         if [ "${num}" != "2" ]; then
@@ -904,10 +900,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-scripthbasewritedata*"`
-if [ -n "${files}" ]
+__get_test_files run-scripthbasewritedata
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Summary of timings" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -922,10 +918,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-scripthbasereaddata*"`
-if [ -n "${files}" ]
+__get_test_files run-scripthbasereaddata
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Summary of timings" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -940,10 +936,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-phoenixperformanceeval*"`
-if [ -n "${files}" ]
+__get_test_files run-phoenixperformanceeval
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Time" $file | grep "sec(s)" | wc -l`
         if [ "${num}" != "7" ]; then
@@ -958,10 +954,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-sparkpi*"`
-if [ -n "${files}" ]
+__get_test_files run-sparkpi
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "Pi is roughly" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -980,19 +976,10 @@ then
     done
 fi
 
-files=""
-for str in run-sparkwordcount run-pythonsparkwordcount
-do
-    filestmp=`find . -maxdepth 1 -name "${outputprefix}*${str}*"`
-    if [ -n "${filestmp}" ]
-    then
-        files="${files}${files:+" "}${filestmp}"
-    fi
-done
-
-if [ -n "${files}" ]
+__get_test_files run-sparkwordcount run-pythonsparkwordcount 
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "davidson: 4" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -1016,10 +1003,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-kafkaperformance*"`
-if [ -n "${files}" ]
+__get_test_files run-kafkaperformance
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "50000000 records sent" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -1033,10 +1020,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-stormwordcount*"`
-if [ -n "${files}" ]
+__get_test_files run-stormwordcount
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "WordCount no longer active, appears to have been killed correctly" $file | wc -l`
         if [ "${num}" != "1" ]; then
@@ -1077,10 +1064,10 @@ then
     done
 fi
 
-files=`find . -maxdepth 1 -name "${outputprefix}*run-zookeeperruok*"`
-if [ -n "${files}" ]
+__get_test_files run-zookeeperruok
+if [ $? -eq 0 ]
 then
-    for file in ${files}
+    for file in ${test_validate_files}
     do
         num=`grep -e "imok" $file | wc -l`
         if [ "${num}" != "${zookeepernodecount}" ]; then
