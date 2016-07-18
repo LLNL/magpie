@@ -70,7 +70,9 @@ Magpie_run_start_mahout () {
             fi
         fi
         echo "*"
-        echo "* \$MAHOUT_HOME/${mahoutcmdprefix}/mahout ..."
+        echo "* Then you can do as you please.  For example to run a job:"
+        echo "*"
+        echo "*   \$MAHOUT_HOME/${mahoutcmdprefix}/mahout ..."
         echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then

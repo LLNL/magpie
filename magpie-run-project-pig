@@ -70,7 +70,10 @@ Magpie_run_start_pig () {
                 echo "*   export PIG_OPTS=\"${PIG_OPTS}\""
             fi
         fi
-        echo "* \$PIG_HOME/${pigcmdprefix}/pig ..."
+        echo "*"
+        echo "* Then you can do as you please.  For example to run a job:"
+        echo "*"
+        echo "*   \$PIG_HOME/${pigcmdprefix}/pig ..."
         echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
