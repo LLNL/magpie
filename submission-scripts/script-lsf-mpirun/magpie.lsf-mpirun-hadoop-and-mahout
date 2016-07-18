@@ -771,7 +771,7 @@ export MAHOUT_SETUP=yes
 
 # Mahout Version
 #
-export MAHOUT_VERSION="0.12.1"
+export MAHOUT_VERSION="0.12.2"
 
 # Path to your Mahout build/binaries
 #

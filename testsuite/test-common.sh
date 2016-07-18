@@ -15,7 +15,7 @@ hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions"
 hadoop_test_groups_decommission="hadoop2Xjava16versionsdecommission hadoop2Xjava17versions"
 hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions}"
 
-mahouthadoop27java17versions="0.11.0 0.11.1 0.11.2 0.12.0 0.12.1"
+mahouthadoop27java17versions="0.11.0 0.11.1 0.11.2 0.12.0 0.12.1 0.12.2"
 mahouthadoop27java17versions_hadoopversion="2.7.0"
 mahouthadoop27java17versions_javaversion=${java17}
 

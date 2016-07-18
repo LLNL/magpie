@@ -98,6 +98,7 @@ mahout_0_11_1=y
 mahout_0_11_2=y
 mahout_0_12_0=y
 mahout_0_12_1=y
+mahout_0_12_2=y
 hbase_0_98_3_hadoop2=y
 hbase_0_98_9_hadoop2=y
 hbase_0_99_0=y
