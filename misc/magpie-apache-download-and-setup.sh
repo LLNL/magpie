@@ -57,7 +57,7 @@ PRESET_LAUNCH_SCRIPT_PATHS="N"
 
 HADOOP_PACKAGE="hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz"
 HBASE_PACKAGE="hbase/1.2.1/hbase-1.2.1-bin.tar.gz"
-PIG_PACKAGE="pig/pig-0.15.0/pig-0.15.0.tar.gz"
+PIG_PACKAGE="pig/pig-0.16.0/pig-0.16.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.12.1/apache-mahout-distribution-0.12.1.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz"
 SPARK_PACKAGE="spark/spark-1.6.2/spark-1.6.2-bin-hadoop2.6.tgz"
