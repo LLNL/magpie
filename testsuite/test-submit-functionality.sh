@@ -59,6 +59,16 @@ __SubmitFunctionalityTests_InteractiveMode () {
     BasicJobSubmit magpie.${submissiontype}-storm-functionality-interactive-mode
 }
 
+__SubmitFunctionalityTests_SetuponlyMode () {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-setuponly-mode
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-setuponly-mode
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-setuponly-mode
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-setuponly-mode
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-setuponly-mode
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-setuponly-mode
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-setuponly-mode
+}
+
 __SubmitFunctionalityTests_JobTimeout () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-jobtimeout
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-jobtimeout
@@ -88,6 +98,7 @@ SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_AltConfFilesDir
     __SubmitFunctionalityTests_TestAll
     __SubmitFunctionalityTests_InteractiveMode
+    __SubmitFunctionalityTests_SetuponlyMode
     __SubmitFunctionalityTests_JobTimeout
     __SubmitFunctionalityTests_MagpieExports
 }

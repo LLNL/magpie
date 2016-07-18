@@ -204,12 +204,17 @@ __test_output_finalize () {
     fi
 }
 
-__get_test_files interactivemode
+__get_test_files interactivemode setuponlymode
 if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
     do
-        num=`grep -e "Entering \(.*\) interactive mode" $file | wc -l`
+        if echo ${file} | grep -q "interactivemode"
+        then
+            num=`grep -e "Entering \(.*\) interactive mode" $file | wc -l`
+        else
+            num=`grep -e "Entering \(.*\) setuponly mode" $file | wc -l`
+        fi
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
@@ -219,9 +224,12 @@ then
             echo "Error in $file"
         fi
 
-        num=`grep -e "End of 'interactive' mode" $file | wc -l`
-        if [ "${num}" != "1" ]; then
-            echo "Error in $file"
+	if echo ${file} | grep -q "interactivemode"
+	then
+            num=`grep -e "End of 'interactive' mode" $file | wc -l`
+            if [ "${num}" != "1" ]; then
+                echo "Error in $file"
+            fi
         fi
 
         __test_generic $file
