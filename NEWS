@@ -2,9 +2,10 @@ magpie 1.74
 -----------
 Major refactoring and code cleanup within Magpie.
 
-Years of adding features, adding projects, cutting & pasting, and
-patches have run its course.  A major refactoring & code cleanup was
-needed.
+Years of adding features, adding projects, cutting & pasting,
+experiments, and patches have run its course for a set of "play
+scripts" that were originally only to support Hadoop 1.0.  A major
+refactoring & code cleanup was needed.
 
 Apologies to anyone anyone looking through the git log.  One tiny
 cleanup beget another one.  For all intents and purposes, you should
@@ -49,7 +50,7 @@ Highlights:
   Export ZOOKEEPER_CLIENT_PORT for jobs.
   Export KAFKA_PORT for jobs.
 
-- Potential compatibility issues:
+- Potential compatibility issues with older job submission scripts:
 
   Before, a number of variables were errantly exported.  Most notably
   port numbers and such that should have only been used internally
@@ -62,16 +63,17 @@ Highlights:
 
   Remove scripts/job-scripts/zookeeper-ruok-script.sh script
 
+- Potential issues if you scripted against the Magpie code base
+
   Rename start/stop scripts in bin/ for consistency to many big data
   projects.
 
-  Files in conf/ are now stored in subdirectories.
+  Files in conf/ are now stored in subdirectories.  So paths may have
+  changed.
 
-  Rename some conf files in conf/.  If you manually copied files into
-  new locations in the past, some conf file names could have changed.
+  Rename some conf files in conf/.
 
-  Rename a number of patches for consistency.  If you used a script to
-  patch before, the filenames may have changed.
+  Rename a number of patches for consistency.
 
 magpie 1.73
 -----------
