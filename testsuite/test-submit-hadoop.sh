@@ -168,4 +168,17 @@ SubmitHadoopDependencyTests() {
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" "6C"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" "6D"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" "6E"
+    
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6F"
+
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6G"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6H"
+    
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6I"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6J"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6K"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6L"
+    
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6M"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6N"
 }

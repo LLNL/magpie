@@ -376,6 +376,19 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "6C"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java16} "6D"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "6E"
+
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" ${java16} ${java16} "6F"
+    
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" ${java16} ${java16} "6G"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" ${java16} ${java16} "6H"
+
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" ${java16} ${java16} "6I"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" ${java16} ${java16} "6J"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" ${java16} ${java16} "6K"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" ${java16} ${java16} "6L"
+
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" ${java17} ${java17} "6M"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" ${java17} ${java17} "6N"
 }
 
 GenerateHadoopPostProcessing() {
