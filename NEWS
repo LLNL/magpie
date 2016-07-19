@@ -50,9 +50,10 @@ Highlights:
 
 - Potential backwards compatibility issues
 
-  Before, a number of variables were errantly exported.  In the rare
-  chance that you used one of these environment variables in scripts,
-  it's possible those scripts may no longer function.
+  Before, a number of variables were errantly exported.  Most notably
+  port numbers and such that should have only been used internally
+  within Magpie.  If by chance you used one of these environment
+  variables in scripts, you may need to adjust for it.
 
   Hadoop terasort may no longer do the "right" thing under Hadoop 1.0.
   Users should set HADOOP_TERAGEN_MAP_COUNT and
@@ -65,6 +66,9 @@ Highlights:
 
   Rename some conf files in conf/.  If you manually copied files into
   new locations in the past, some conf file names could have changed.
+
+  Rename a number of patches for consistency.  If you used a script to
+  patch before, the filenames may have changed.
 
 magpie 1.73
 -----------
