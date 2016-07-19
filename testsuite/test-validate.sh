@@ -252,8 +252,6 @@ then
     done
 fi
 
-
-files=`find . -maxdepth 1 -name "${outputprefix}*catchprojectdependency*"`
 __get_test_files catchprojectdependency
 if [ $? -eq 0 ]
 then
