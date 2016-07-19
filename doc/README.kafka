@@ -57,7 +57,7 @@ Instructions For Using Kafka
 
 4) Select how your job will run by setting KAFKA_MODE.  The first
    time you'll probably want to run w/ 'performance' mode just to try
-   things out and make things look setup correctly.
+   things out and make sure things look setup correctly.
 
    After this, you may want to run with 'server' mode to play
    around and figure things out.  In the job output you will see

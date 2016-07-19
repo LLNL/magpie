@@ -67,7 +67,7 @@ Instructions For Using Pig
 
 4) Select how your job will run by setting PIG_MODE.  The first
    time you'll probably want to run w/ 'testpig' mode just to try
-   things out and make things look setup correctly.
+   things out and make sure things look setup correctly.
 
    After this, you may want to run with 'interactive' mode to play
    around and figure things out.  In the job output you will see
