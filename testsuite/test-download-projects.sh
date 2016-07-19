@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source test-common.sh
-source ../magpie-lib-helper
+source ../magpie/lib/magpie-lib-helper
 
 # This script will download all of the supported Apache projects for
 # Magpie's testsuite, stick them in a directory based on settings

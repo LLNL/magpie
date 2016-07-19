@@ -26,7 +26,7 @@
 #
 # This is used by scripts, don't edit this
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 
 if [ "${MAGPIE_STARTUP_TIME}X" != "X" ]
 then

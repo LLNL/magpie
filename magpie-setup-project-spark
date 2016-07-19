@@ -31,14 +31,14 @@ then
     exit 0
 fi
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-node-identification
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-helper
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
 
 # sparknoderank set if succeed
 if ! Magpie_am_I_a_spark_node

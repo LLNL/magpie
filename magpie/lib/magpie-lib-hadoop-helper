@@ -26,7 +26,7 @@
 #
 # This file has common hadoop checks, does not assume anything setup yet
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 
 Magpie_hdfs_federation_enabled () {
     if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] \

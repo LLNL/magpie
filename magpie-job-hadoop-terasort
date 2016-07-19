@@ -26,9 +26,9 @@
 # it shouldn't be editted.  See job submission files for configuration
 # details.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-paths
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 
 # This is a job, no loading export files or libs except for minimal convenience ones
 

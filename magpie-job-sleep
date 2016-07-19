@@ -30,8 +30,8 @@
 # script, then things like 'interactive' mode or 'setuponly' are just
 # "another script" and be managed just like any other script.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-run
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-run
 
 # Will set magpie_jobtimeseconds
 Magpie_job_time_seconds

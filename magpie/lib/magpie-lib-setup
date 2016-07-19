@@ -28,13 +28,13 @@
 # used only by magpie-setup files, after magpie-setup-core has
 # completed.
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-dirs
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-user
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-defaults
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-calculate-values
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 
 # XXX deal with viewfs & federation
 Magpie_calculate_hadoop_filesystem_paths () {
