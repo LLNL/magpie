@@ -307,7 +307,7 @@ Magpie_find_conffile () {
 
     if [ ! -f ${conffilefound} ]
     then
-        echo "Missing ${project} configuration file ${conffiledesired}"
+        Magpie_output_internal_error "Missing ${project} configuration file ${conffiledesired}"
         exit 1
     fi
 
