@@ -158,6 +158,10 @@ SubmitHadoopDependencyTests() {
     done
 
     __SubmitHadoopDependencyTests_Dependency5 "5A" 2.4.0 2.5.0 2.6.0 2.7.0
+    __SubmitHadoopDependencyTests_Dependency5 "5B" 2.4.0 2.4.1
+    __SubmitHadoopDependencyTests_Dependency5 "5C" 2.5.0 2.5.1 2.5.2
+    __SubmitHadoopDependencyTests_Dependency5 "5D" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __SubmitHadoopDependencyTests_Dependency5 "5E" 2.7.0 2.7.1 2.7.2
 
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" "6A"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" "6B"

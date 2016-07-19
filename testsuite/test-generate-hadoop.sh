@@ -361,9 +361,13 @@ GenerateHadoopDependencyTests() {
         done
     done
 
-# Dependency 5 tests, upgrade hdfs, 2.4.0 -> 2.5.0 -> 2.6.0 -> 2.7.0, HDFS over Lustre / NetworkFS
+# Dependency 5 tests, upgrade hdfs, e.g. 2.4.0 -> 2.5.0 -> 2.6.0 -> 2.7.0, HDFS over Lustre / NetworkFS
 
     __GenerateHadoopDependencyTests_Dependency5 "5A" 2.4.0 2.5.0 2.6.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5B" 2.4.0 2.4.1
+    __GenerateHadoopDependencyTests_Dependency5 "5C" 2.5.0 2.5.1 2.5.2
+    __GenerateHadoopDependencyTests_Dependency5 "5D" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __GenerateHadoopDependencyTests_Dependency5 "5E" 2.7.0 2.7.1 2.7.2
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
