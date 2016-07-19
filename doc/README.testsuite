@@ -1,6 +1,12 @@
 A testsuite for Magpie is available in the subdirectory 'testsuite'.
 Generally speaking, to run it:
 
+0) Download projects to test
+
+   You can use the test-download-projects.sh script to download all
+   presently supported versions of projects that can be tested.  The
+   script will download and patch all appropriate projects.
+
 1) Test config
 
    - In test-config.sh, configure base configuration for the
