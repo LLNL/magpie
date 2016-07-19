@@ -1,0 +1,246 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${HBASE_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+
+# hbasenoderank set if succeed
+if ! Magpie_am_I_a_hbase_node
+then
+    exit 0
+fi
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+extrahbaseopts=""
+hbaseclasspath=""
+
+if [ "${HBASE_MASTER_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hbasemasterdaemonheapmax="${HBASE_MASTER_DAEMON_HEAP_MAX}"
+else
+    hbasemasterdaemonheapmax="1000"
+fi 
+
+if [ "${HBASE_REGIONSERVER_DAEMON_HEAP_MAX}X" != "X" ]
+then
+    hbaseregionserverdaemonheapmax="${HBASE_REGIONSERVER_DAEMON_HEAP_MAX}"
+else
+    hbaseregionserverdaemonheapmax="16000"
+
+    memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+    memtotalmeg=`echo "(${memtotal} / 1024)" | bc -l | xargs printf "%1.0f"`
+    # if memtotalmeg * 50% is less than hbaseregionserverdaemonheapmax, drop it down
+    hbaseresourcememory=`echo "${memtotalmeg} * .5" | bc -l | xargs printf "%1.0f"`
+
+    if [ "${hbaseresourcememory}" -lt "${hbaseregionserverdaemonheapmax}" ]
+    then
+        hbaseregionserverdaemonheapmax=${hbaseresourcememory}
+    fi
+fi
+
+# My experience default 30 is low.  We'll say 50% of nodes, floor 60, ceiling 200
+hbaseregionserverhandlercount=`echo "${HBASE_REGIONSERVER_COUNT} * .5" | bc -l | xargs printf "%1.0f"`
+if [ "${hbaseregionserverhandlercount}" -lt "60" ]
+then
+    hbaseregionserverhandlercount=60
+fi
+
+if [ "${hbaseregionserverhandlercount}" -gt "200" ]
+then
+    hbaseregionserverhandlercount=200
+fi
+
+if [ "${ZOOKEEPER_DATA_DIR_TYPE}" == "local" ]
+then
+    zookeepersessiontimeout=90000
+else
+    zookeepersessiontimeout=120000
+fi
+
+#
+# Setup file system to use
+#
+
+# XXX how deal w/ fedreation?
+
+# sets magpie_hadooptmpdir and magpie_fsdefault
+Magpie_calculate_hadoop_filesystem_paths ${hbasenoderank}
+
+hbasetmpdir="${magpie_hadooptmpdir}/hbase"
+hbasetmpdirsubst=`echo "${hbasetmpdir}" | sed "s/\\//\\\\\\\\\//g"`
+hbaserootdir="${magpie_fsdefault}/hbase"
+hbaserootdirsubst=`echo ${hbaserootdir} | sed "s/\\//\\\\\\\\\//g"`
+
+if [ ! -d "${hbasetmpdir}" ]
+then
+    mkdir -p ${hbasetmpdir}
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${hbasetmpdir}"
+        exit 1
+    fi
+fi
+
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+
+hbasezookeeperquorum=""
+for zookeepernode in ${zookeepernodes}
+do
+    hbasezookeeperquorum="${hbasezookeeperquorum}${hbasezookeeperquorum:+","}${zookeepernode}"
+done
+
+# Sets magpie_hbase_slave_timeout
+Magpie_calculate_stop_timeouts
+
+# Sets magpie_openfilescount
+Magpie_calculate_openfiles ${HBASE_REGIONSERVER_COUNT}
+# Sets magpie_userprocessescount
+Magpie_calculate_userprocesses ${HBASE_REGIONSERVER_COUNT}
+
+# set java.io.tmpdir
+extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-Djava.io.tmpdir=${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
+
+if [ ! -d "${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp" ]
+then
+    mkdir -p ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${HBASE_LOCAL_SCRATCHSPACE_DIR}/tmp"
+        exit 1
+    fi
+fi
+
+# disable hsperfdata if using NO_LOCAL_DIR
+if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+then
+    extrahbaseopts="${extrahbaseopts}${extrahbaseopts:+" "}-XX:-UsePerfData"
+fi
+
+#
+# Get config files for setup
+#
+
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site.xml" "pre_hbasesitexml"
+Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-env.sh" "pre_hbaseenvsh"
+Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase.log4j.properties" "pre_log4jproperties"
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+     hbaseclasspath=${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar:${hbaseclasspath}
+     Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix.xml" "pre_hbasesitexml_phoenix"
+fi
+
+post_hbasesitexml=${HBASE_CONF_DIR}/hbase-site.xml
+post_hbaseenvsh=${HBASE_CONF_DIR}/hbase-env.sh
+post_log4jproperties=${HBASE_CONF_DIR}/log4j.properties
+
+#
+# Setup Hbase configuration files and environment files
+#
+
+cp ${pre_hbasesitexml} ${post_hbasesitexml}
+
+if [ "${pre_hbasesitexml_phoenix}X" != "X" ]
+then
+    sed -i -e "/@PHOENIX@/{r ${pre_hbasesitexml_phoenix}" -e "d}" ${post_hbasesitexml}
+    sed -i -e "s/PHOENIXQUERYSERVERPORT/${default_phoenix_queryserver_port}/g" ${post_hbasesitexml}
+else
+    sed -i -e "/@PHOENIX@/,+1d" ${post_hbasesitexml}
+fi
+
+HBASE_THIS_HOST=`hostname`
+
+sed -i \
+    -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
+    -e "s/HBASEROOTDIR/${hbaserootdirsubst}/g" \
+    -e "s/HBASEZOOKEEPERQUORUM/${hbasezookeeperquorum}/g" \
+    -e "s/HBASEREGIONSERVERHANDLERCOUNT/${hbaseregionserverhandlercount}/g" \
+    -e "s/HBASEMASTERPORT/${default_hbase_master_port}/g" \
+    -e "s/HBASEMASTERINFOPORT/${default_hbase_master_info_port}/g" \
+    -e "s/HBASEREGIONSERVERPORT/${default_hbase_regionserver_port}/g" \
+    -e "s/HBASEREGIONSERVERINFOPORT/${default_hbase_regionserver_info_port}/g" \
+    -e "s/HBASEZOOKEEPERPROPERTYCLIENTPORT/${default_zookeeper_client_port}/g" \
+    -e "s/HBASEMASTERHOST/${HBASE_MASTER_NODE}/g" \
+    -e "s/HBASE_HOST/${HBASE_THIS_HOST}/g" \
+    -e "s/ZOOKEEPERSESSIONTIMEOUT/${zookeepersessiontimeout}/g" \
+    ${post_hbasesitexml}
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hbasepiddirsubst=`echo "${HBASE_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+
+extrahbaseoptssubst=`echo "${extrahbaseopts}" | sed "s/\\//\\\\\\\\\//g"`
+hbaseclasspathsubst=`echo "${hbaseclasspath}" | sed "s/\\//\\\\\\\\\//g"`
+
+cp ${pre_hbaseenvsh} ${post_hbaseenvsh}
+
+sed -i \
+    -e "s/HBASE_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/HBASEPIDDIR/${hbasepiddirsubst}/g" \
+    -e "s/HBASEMASTERDAEMONHEAP/${hbasemasterdaemonheapmax}/g" \
+    -e "s/HBASEREGIONSERVERDAEMONHEAP/${hbaseregionserverdaemonheapmax}/g" \
+    -e "s/EXTRAHBASEOPTS/${extrahbaseoptssubst}/g" \
+    -e "s/HBASECLASSPATH/${hbaseclasspathsubst}/g" \
+    ${post_hbaseenvsh}
+
+echo "export HBASE_SLAVE_TIMEOUT=\"${magpie_hbase_slave_timeout}\"" >> ${post_hbaseenvsh}
+
+echo "export HBASE_LOG_DIR=\"${HBASE_LOG_DIR}\"" >> ${post_hbaseenvsh}
+echo "export HBASE_CONF_DIR=\"${HBASE_CONF_DIR}\"" >> ${post_hbaseenvsh}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export HBASE_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hbaseenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export HBASE_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hbaseenvsh}
+fi
+
+if [ "${HBASE_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HBASE_ENVIRONMENT_EXTRA_PATH} ]
+then
+    cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${post_hbaseenvsh}
+else
+    echo "ulimit -n ${magpie_openfilescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hbaseenvsh}
+fi
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+# Need a copy of hdfs-site.xml for client defaults
+cp ${HADOOP_CONF_DIR}/hdfs-site.xml ${HBASE_CONF_DIR}/hdfs-site.xml
+
+exit 0

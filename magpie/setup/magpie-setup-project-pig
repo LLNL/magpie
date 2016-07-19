@@ -1,0 +1,61 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${PIG_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+ 
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+#
+# Get config files for setup
+#
+
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Pig" ${PIG_CONF_FILES:-""} "pig.properties" "pre_pigproperties"
+Magpie_find_conffile "Pig" ${PIG_CONF_FILES:-""} "pig.log4j.properties" "pre_log4jproperties"
+
+post_pigproperties=${PIG_CONF_DIR}/pig.properties
+post_log4jproperties=${PIG_CONF_DIR}/log4j.properties
+
+#
+# Setup Pig configuration files and environment files
+#
+
+# achu: nothing to sed right now, maybe later
+cp ${pre_pigproperties} ${post_pigproperties}
+    
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+exit 0

@@ -1,0 +1,105 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core performanceeval running script.  For the
+# most part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
+
+# This is a job, no loading export files or libs except for minimal convenience ones
+
+performanceevaljar="org.apache.hadoop.hbase.PerformanceEvaluation"
+
+if [ "${HBASE_PERFORMANCEEVAL_MODE}X" != "X" ]
+then
+    if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-thread" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-thread" ]
+    then
+        nomapredoption="--nomapred"
+    else
+        nomapredoption=""
+    fi
+
+    if [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-thread" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ]
+    then
+        writecmd="sequentialWrite"
+        readcmd="sequentialRead"
+    else
+        writecmd="randomWrite"
+        readcmd="randomRead"
+    fi
+else
+    nomapredoption="--nomapred"
+    writecmd="sequentialWrite"
+    readcmd="sequentialRead"
+fi
+
+if [ "${HBASE_PERFORMANCEEVAL_ROW_COUNT}X" == "X" ]
+then
+    hbaserowcount=1048576
+else
+    hbaserowcount=$HBASE_PERFORMANCEEVAL_ROW_COUNT
+fi
+
+if [ "${HBASE_PERFORMANCEEVAL_CLIENT_COUNT}X" == "X" ]
+then
+    hbaseclientcount=1
+else
+    hbaseclientcount=$HBASE_PERFORMANCEEVAL_CLIENT_COUNT
+fi
+            
+cd ${HBASE_HOME}
+            
+#
+# Remove previous runs if they are lingering
+#
+
+if echo list | ${hbasecmdprefix}/hbase shell | grep -q TestTable
+then
+    echo "Remove earlier run of TestTable job"
+    command="echo disable 'TestTable'"
+    echo "Running $command in hbase shell" >&2
+    $command | ${hbasecmdprefix}/hbase shell
+    command="echo drop 'TestTable'"
+    echo "Running $command in hbase shell" >&2
+    $command | ${hbasecmdprefix}/hbase shell
+fi
+
+command="${hbasecmdprefix}/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${writecmd} ${hbaseclientcount}"
+echo "Running $command" >&2
+$command
+
+command="${hbasecmdprefix}/hbase ${performanceevaljar} ${nomapredoption} --rows=${hbaserowcount} ${readcmd} ${hbaseclientcount}"
+echo "Running $command" >&2
+$command
+
+echo "Removing TestTable ..."
+command="echo disable 'TestTable'"
+echo "Running $command in hbase shell" >&2
+$command | ${hbasecmdprefix}/hbase shell
+command="echo drop 'TestTable'"
+echo "Running $command in hbase shell" >&2
+$command | ${hbasecmdprefix}/hbase shell
+
+exit 0

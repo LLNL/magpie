@@ -1,0 +1,159 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This is used by scripts, don't edit this
+#
+# This file has common run functions.  Should be sourced and used only
+# in magpie-run* files.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-calculate-values
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
+
+__Magpie_job_time_minutes () {
+    # slurmsbatch & msubslurm legacy
+    if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
+        || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
+        || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
+        || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmpdsh" ]
+    then
+        local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
+        if [ "${timeleftwalltime}" == "NOT_SET" ] || [ "${timeleftwalltime}" == "UNLIMITED" ]
+        then
+            local walltimeminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
+        else
+            Magpie_walltime_to_minutes ${timeleftwalltime}
+            local walltimeminutes=${magpie_walltimetominutes}
+        fi
+        __jobtimeminutes=`expr ${walltimeminutes} - ${magpie_shutdown_time_value}`
+    else
+        local timeleftminutes=`expr ${MAGPIE_TIMELIMIT_MINUTES} - ${magpie_startup_time_value}`
+        __jobtimeminutes=`expr ${timeleftminutes} - ${magpie_shutdown_time_value}`
+    fi
+}
+
+Magpie_job_time_seconds () {
+    __Magpie_job_time_minutes
+    magpie_jobtimeseconds=`expr ${__jobtimeminutes}  \* 60`
+}
+
+__Magpie_wait_script_signal_on_timeout () {
+    local scriptpid=$1
+    local timeoutminutes=$2
+    local signalnumber=$3
+    # We sleep in 30 second chunks, so times 2
+    local scriptsleepiterations=`expr ${timeoutminutes}  \* 2`
+    local scriptexitted=0
+
+    for i in `seq 1 ${scriptsleepiterations}`
+    do
+        if kill -0 ${scriptpid} 2&> /dev/null
+        then
+            sleep 30
+        else
+            scriptexitted=1
+            break
+        fi
+    done
+
+    if [ "${scriptexitted}" == "0" ]
+    then
+        echo "Killing script, did not exit within time limit"
+        kill -s ${signalnumber} ${scriptpid}
+        return 1
+    fi
+
+    return 0
+}
+
+Magpie_wait_script_kill_on_job_timeout () {
+    local scriptpid=$1
+
+    # Will set jobtimeminutes
+    __Magpie_job_time_minutes
+
+    __Magpie_wait_script_signal_on_timeout $scriptpid $__jobtimeminutes 9
+
+    return $?
+}
+
+Magpie_wait_script_sigusr2_on_job_timeout () {
+    local scriptpid=$1
+
+    # Will set jobtimeminutes
+    __Magpie_job_time_minutes
+
+    __Magpie_wait_script_signal_on_timeout $scriptpid $__jobtimeminutes 12
+
+    return $?
+}
+
+__Magpie_calculate_waittimes_count () {
+    local magpiestartuptimeseconds=`expr ${magpie_startup_time_value} \* 60`
+
+    if [ "${magpie_run_total_sleep_wait}" -lt "${magpiestartuptimeseconds}" ]
+    then  
+        # Could be more dynamic w/ slurm call to determine current
+        # run time, but probably is sufficient for this trivial
+        # part.  Minimally, have to leave the magpie_run_total_sleep_wait code
+        # around for non-slurm systems.
+        local waittimeseconds=`expr ${magpiestartuptimeseconds} - ${magpie_run_total_sleep_wait}`
+                    
+        if [ "${waittimeseconds}" -lt 30 ]
+        then
+            waittimeseconds=30
+        fi
+        
+        __magpie_waittimes_count=`expr ${waittimeseconds} \/ 30`
+    else
+        __magpie_waittimes_count=1
+    fi
+}
+
+Magpie_check_service_up () {
+    local projectname=$1
+    local callbackcheck=$2
+
+    # Will set __magpie_waittimes_count
+    __Magpie_calculate_waittimes_count
+                
+    for i in `seq 1 ${__magpie_waittimes_count}`
+    do
+        $callbackcheck
+        
+        if [ $? -eq 0 ]
+        then
+            return 0
+        fi
+
+        echo "Waiting 30 more seconds for services to come up"
+        sleep 30
+        magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + 30`
+    done
+
+    echo "Part or all of ${projectname} service didn't come up, setup problem or maybe need to increase MAGPIE_STARTUP_TIME"
+    return 1
+}

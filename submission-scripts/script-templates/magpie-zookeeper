@@ -56,10 +56,10 @@ export ZOOKEEPER_HOME="ZOOKEEPERDIRPREFIX/zookeeper-${ZOOKEEPER_VERSION}"
 #
 # If you wish to tweak the configuration files used by Magpie, set
 # ZOOKEEPER_CONF_FILES below, copy configuration templates from
-# $MAGPIE_SCRIPTS_HOME/conf into ZOOKEEPER_CONF_FILES, and modify as
-# you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
-# ZOOKEEPER_CONF_FILES.
+# $MAGPIE_SCRIPTS_HOME/conf/zookeeper into ZOOKEEPER_CONF_FILES, and
+# modify as you desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if of the files it needs are not
+# found in ZOOKEEPER_CONF_FILES.
 #
 # export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
 

@@ -1,0 +1,203 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This is used by scripts, don't edit this
+#
+# Export environment variables promised to export in documentation.
+#
+# Unlke magpie/exports/magpie-exports-dirs, these exports are dependent on the magpie
+# setup.  This should be sourced only after magpie-setup-core has run.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+
+# Initially make variables specific to node
+Magpie_make_all_local_dirs_node_specific
+
+# Assume cores same on each node
+magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
+
+if [ "${HADOOP_SETUP}" == "yes" ]
+then
+    if [ ! -f "${HADOOP_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${HADOOP_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${HADOOP_CONF_DIR}/slaves" ]
+    then 
+        Magpie_output_internal_error "${HADOOP_CONF_DIR}/slaves does not exist"
+    fi
+
+    # There are few duplicated exports we do b/c they are needed
+
+    # For jobhistoryserver
+    export HADOOP_MAPRED_HOME=${HADOOP_HOME}
+    export HADOOP_YARN_HOME=${HADOOP_HOME}
+    export HADOOP_YARN_USER="${USER}"
+
+    # Unsure if needed, read about these online
+    export HADOOP_HDFS_HOME=${HADOOP_HOME}
+    export HADOOP_COMMON_HOME=${HADOOP_HOME}
+    export YARN_COMMON_HOME=${HADOOP_HOME}
+    
+    # Why check for file existance?  Possible magpie-setup-core didn't create it yet
+    export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
+    
+    if Magpie_hadoop_filesystem_mode_is_hdfs_type
+    then
+        export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
+        export HADOOP_NAMENODE_PORT="${default_hadoop_hdfs_namenode_address}"
+    fi
+    
+    export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
+    
+    export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
+fi
+
+if [ "${HBASE_SETUP}" == "yes" ]
+then
+    if [ ! -f "${HBASE_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${SPARK_CONF_DIR}/masters does not exist"
+    fi
+    
+    if [ ! -f "${HBASE_CONF_DIR}/regionservers" ]
+    then
+        Magpie_output_internal_error "${SPARK_CONF_DIR}/regionservers does not exist"
+    fi
+
+    export HBASE_MASTER_NODE=`head -1 ${HBASE_CONF_DIR}/masters`
+    export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
+fi
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    if [ ! -f "${SPARK_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${SPARK_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${SPARK_CONF_DIR}/slaves" ]
+    then 
+        Magpie_output_internal_error "${SPARK_CONF_DIR}/slaves does not exist"
+    fi
+
+    export SPARK_MASTER_NODE=`head -1 ${SPARK_CONF_DIR}/masters`
+    if [ "${SPARK_USE_YARN}" != "yes" ]
+    then
+        export SPARK_MASTER_PORT=${default_spark_master_port}
+    fi
+    export SPARK_SLAVE_COUNT=`cat ${SPARK_CONF_DIR}/slaves|wc -l`
+    export SPARK_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${SPARK_SLAVE_COUNT}`
+fi
+
+if [ "${KAFKA_SETUP}" == "yes" ]
+then
+    if [ ! -f "${KAFKA_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${KAFKA_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${KAFKA_CONF_DIR}/slaves" ]
+    then 
+        Magpie_output_internal_error "${KAFKA_CONF_DIR}/slaves does not exist"
+    fi
+
+    export KAFKA_MASTER_NODE=`head -1 ${KAFKA_CONF_DIR}/masters`
+    export KAFKA_SLAVE_COUNT=`cat ${KAFKA_CONF_DIR}/slaves|wc -l`
+    export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${KAFKA_SLAVE_COUNT}`
+    export KAFKA_PORT=${default_kafka_port}
+fi
+
+if [ "${ZEPPELIN_SETUP}" == "yes" ]
+then
+    if [ ! -f "${ZEPPELIN_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${ZEPPELIN_CONF_DIR}/masters does not exist"
+    fi
+
+    export ZEPPELIN_MASTER_NODE=`head -1 ${ZEPPELIN_CONF_DIR}/masters`
+fi
+
+if [ "${STORM_SETUP}" == "yes" ]
+then
+    if [ ! -f "${STORM_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${STORM_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${STORM_CONF_DIR}/workers" ]
+    then 
+        Magpie_output_internal_error "${STORM_CONF_DIR}/workers does not exist"
+    fi
+
+    export STORM_MASTER_NODE=`head -1 ${STORM_CONF_DIR}/masters`
+    export STORM_NIMBUS_HOST=${STORM_MASTER_NODE}
+    export STORM_WORKERS_COUNT=`cat ${STORM_CONF_DIR}/workers|wc -l`
+fi
+
+if [ "${TACHYON_SETUP}" == "yes" ]
+then
+    if [ ! -f "${TACHYON_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${TACHYON_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${TACHYON_CONF_DIR}/slaves" ]
+    then 
+        Magpie_output_internal_error "${TACHYON_CONF_DIR}/slaves does not exist"
+    fi
+
+    export TACHYON_MASTER_NODE=`head -1 ${TACHYON_CONF_DIR}/masters`
+    export TACHYON_MASTER_PORT=${default_tachyon_master_port}
+    export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
+    export TACHYON_FIRST_WORKER_NODE=`head -1 ${TACHYON_CONF_DIR}/workers`
+fi
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
+then
+    if [ ! -f "${ZOOKEEPER_CONF_DIR}/masters" ]
+    then 
+        Magpie_output_internal_error "${ZOOKEEPER_CONF_DIR}/masters does not exist"
+    fi
+    
+    export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/masters`
+
+    zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+    zookeepernodesfirst=`echo "${zookeepernodes}" | head -1`
+
+    export ZOOKEEPER_NODES_FIRST="${zookeepernodesfirst}"
+
+    zookeepernodeslist=""
+    for zookeepernode in ${zookeepernodes}
+    do
+        zookeepernodeslist="${zookeepernodeslist}${zookeepernodeslist:+","}${zookeepernode}"
+    done
+
+    export ZOOKEEPER_NODES="${zookeepernodeslist}"
+
+    export ZOOKEEPER_CLIENT_PORT=${default_zookeeper_client_port}
+fi

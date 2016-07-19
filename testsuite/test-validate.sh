@@ -252,8 +252,6 @@ then
     done
 fi
 
-
-files=`find . -maxdepth 1 -name "${outputprefix}*catchprojectdependency*"`
 __get_test_files catchprojectdependency
 if [ $? -eq 0 ]
 then
@@ -278,7 +276,7 @@ fi
 __get_test_files nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
 if [ $? -eq 0 ]
 then
-    for file in $files
+    for file in ${test_validate_files}
     do
         num=`grep -e "must be set" $file | wc -l`
         if [ "${num}" == "0" ]

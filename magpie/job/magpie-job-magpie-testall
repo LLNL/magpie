@@ -1,0 +1,117 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is for running the 'testall' facility.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${HADOOP_SETUP}" == "yes" ] \
+   && [ "${HADOOP_MODE}" != "setuponly" ] \
+   && ([ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ])
+then
+    echo "*******************************************************"
+    echo "* Running Hadoop Terasort"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hadoop-terasort)
+fi
+
+if [ "${PIG_SETUP}" == "yes" ]
+then
+    echo "*******************************************************"
+    echo "* Running Pig Testpig"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-pig-testpig)
+fi
+
+if [ "${MAHOUT_SETUP}" == "yes" ]
+then
+    echo "*******************************************************"
+    echo "* Running Mahout Clustersyntheticcontrol"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-mahout-clustersyntheticcontrol)
+fi
+
+if [ "${HBASE_SETUP}" == "yes" ] \
+   && [ "${HBASE_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Hbase Performance Evaluation"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hbase-performanceeval)
+fi
+
+if [ "${PHOENIX_SETUP}" == "yes" ]
+then
+    echo "*******************************************************"
+    echo "* Running Phoenix Performance Evaluation"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-phoenix-performanceeval)
+fi
+
+if [ "${SPARK_SETUP}" == "yes" ] \
+   && [ "${SPARK_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Spark SparkPi"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkpi)
+fi
+
+if [ "${KAFKA_SETUP}" == "yes" ] \
+   && [ "${KAFKA_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Kafka Performance"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-kafka-performance)
+fi
+
+if [ "${STORM_SETUP}" == "yes" ] \
+   && [ "${STORM_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Storm Foobar"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-storm-stormwordcount)
+fi
+
+if [ "${TACHYON_SETUP}" == "yes" ] \
+   && [ "${TACHYON_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Tachyon Testtachyon"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tachyon-testtachyon)
+fi
+
+if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
+   && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Zookeeper Zookeeperruok"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-zookeeper-zookeeperruok)
+fi
+
+exit 0

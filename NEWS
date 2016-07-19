@@ -24,7 +24,8 @@ Highlights:
   variables that aren't required to be exported, fix a variety of
   deprecated situations, fix outputs that go into
   MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT, fix inconsistencies on support
-  in various MODE options.
+  in various MODE options, move various files into subdirs to cleanup
+  number of files in a single dir.
 
 - Attempt to be consistent with use of Bash code style throughout.
   e.g. using backticks instead of $() for subshells. 
@@ -48,7 +49,7 @@ Highlights:
   Export ZOOKEEPER_CLIENT_PORT for jobs.
   Export KAFKA_PORT for jobs.
 
-- Potential backwards compatibility issues
+- Potential compatibility issues:
 
   Before, a number of variables were errantly exported.  Most notably
   port numbers and such that should have only been used internally
@@ -63,6 +64,8 @@ Highlights:
 
   Rename start/stop scripts in bin/ for consistency to many big data
   projects.
+
+  Files in conf/ are now stored in subdirectories.
 
   Rename some conf files in conf/.  If you manually copied files into
   new locations in the past, some conf file names could have changed.

@@ -28,7 +28,9 @@
 
 __Magpie_check_is_enabled () {
     local projectnametocheck=$1
+    shift
     local projectnameneededfor=$2
+    shift
     local extramsg=$@
     local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
     local varnametocheck="${uppercaseprojectnametocheck}_SETUP"
@@ -199,9 +201,9 @@ fi
 
 __Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-exports-submission-type
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-hadoop-helper
-source ${MAGPIE_SCRIPTS_HOME}/magpie-lib-calculate-values
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-calculate-values
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
 then

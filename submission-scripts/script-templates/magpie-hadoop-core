@@ -58,10 +58,10 @@ export HADOOP_LOCAL_DIR="LOCALDIRPREFIX/hadoop"
 #
 # If you wish to tweak the configuration files used by Magpie, set
 # HADOOP_CONF_FILES below, copy configuration templates from
-# $MAGPIE_SCRIPTS_HOME/conf into HADOOP_CONF_FILES, and modify as you
-# desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf if of the files it needs are not found in
-# HADOOP_CONF_FILES.
+# $MAGPIE_SCRIPTS_HOME/conf/hadoop into HADOOP_CONF_FILES, and modify
+# as you desire.  Magpie will still use configuration files in
+# $MAGPIE_SCRIPTS_HOME/conf/hadoop if of the files it needs are not
+# found in HADOOP_CONF_FILES.
 #
 # export HADOOP_CONF_FILES="${HOME}/myconf"
 
@@ -94,11 +94,11 @@ export HADOOP_LOCAL_DIR="LOCALDIRPREFIX/hadoop"
 #
 # Specify extra environment information that should be passed into
 # Hadoop.  This file will simply be appended into the hadoop-env.sh
-# (and if appropriate) yarn-env.sh.
+# and (if appropriate) yarn-env.sh.
 #
 # By default, a reasonable estimate for max user processes and open
-# file descriptors will be calculated and put into hadoop-env.sh (and
-# if appropriate) yarn-env.sh.  However, it's always possible they may
+# file descriptors will be calculated and put into hadoop-env.sh and
+# (if appropriate) yarn-env.sh.  However, it's always possible they may
 # need to be set differently. Everyone's cluster/situation can be
 # slightly different.
 #
