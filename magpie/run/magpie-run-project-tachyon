@@ -194,7 +194,7 @@ Magpie_run_tachyon () {
         echo "*******************************************************"
         echo "* Running Testtachyon"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tachyon-testtachyon &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tachyon-testtachyon &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${TACHYON_MODE}" == "launch" ]
@@ -202,7 +202,7 @@ Magpie_run_tachyon () {
         echo "*******************************************************"
         echo "* Entering Tachyon ${TACHYON_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute launch &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute launch &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${TACHYON_MODE}" == "setuponly" ]

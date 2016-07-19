@@ -197,7 +197,7 @@ Magpie_run_hbase () {
         echo "*******************************************************"
         echo "* Running Performance Evaluation"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hbase-performanceeval &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hbase-performanceeval &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${HBASE_MODE}" == "script" ]
@@ -205,7 +205,7 @@ Magpie_run_hbase () {
         echo "*******************************************************"
         echo "* Executing script $HBASE_SCRIPT_PATH $HBASE_SCRIPT_ARGS"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${HBASE_SCRIPT_PATH} ${HBASE_SCRIPT_ARGS} &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${HBASE_SCRIPT_PATH} ${HBASE_SCRIPT_ARGS} &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${HBASE_MODE}" == "interactive" ]
@@ -213,7 +213,7 @@ Magpie_run_hbase () {
         echo "*******************************************************"
         echo "* Entering Hbase ${HBASE_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${HBASE_MODE}" == "setuponly" ]

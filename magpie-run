@@ -32,17 +32,17 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-run
 
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hadoop
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-hbase
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-kafka
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-mahout
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-pig
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-phoenix
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-spark
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-storm
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-tachyon
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-zeppelin
-source ${MAGPIE_SCRIPTS_HOME}/magpie-run-project-zookeeper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-hadoop
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-hbase
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-kafka
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-mahout
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-pig
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-phoenix
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-spark
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-storm
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-tachyon
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-zeppelin
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-zookeeper
 
 if ! Magpie_am_I_master
 then
@@ -159,7 +159,7 @@ then
         echo "*******************************************************"
         echo "* Executing script $MAGPIE_SCRIPT_PATH $MAGPIE_SCRIPT_ARGS"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPT_PATH} ${MAGPIE_SCRIPT_ARGS} &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPT_PATH} ${MAGPIE_SCRIPT_ARGS} &
         scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]
@@ -167,7 +167,7 @@ then
         echo "*******************************************************"
         echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         scriptpid=$!
         wait $scriptpid
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
@@ -208,7 +208,7 @@ then
         echo "*******************************************************"
         echo "* Running Magpie TestAll"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-magpie-testall &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-magpie-testall &
         scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     fi

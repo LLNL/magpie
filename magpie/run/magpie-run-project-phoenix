@@ -179,7 +179,7 @@ Magpie_run_phoenix () {
         echo "*******************************************************"
         echo "* Running Performance Evaluation"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-phoenix-performanceeval &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-phoenix-performanceeval &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${PHOENIX_MODE}" == "script" ]
@@ -187,7 +187,7 @@ Magpie_run_phoenix () {
         echo "*******************************************************"
         echo "* Executing script $PHOENIX_SCRIPT_PATH"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${PHOENIX_MODE}" == "interactive" ]
@@ -195,7 +195,7 @@ Magpie_run_phoenix () {
         echo "*******************************************************"
         echo "* Entering Phoenix ${PHOENIX_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${PHOENIX_MODE}" == "server" ]
@@ -203,7 +203,7 @@ Magpie_run_phoenix () {
         echo "*******************************************************"
         echo "* Entering Phoenix ${PHOENIX_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute server &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute server &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${PHOENIX_MODE}" == "setuponly" ]

@@ -173,7 +173,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Running SparkPi"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkpi &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkpi &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "sparkwordcount" ]
@@ -181,7 +181,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Running SparkWordCount"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkwordcount &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkwordcount &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "script" ]
@@ -189,7 +189,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${SPARK_MODE}" == "interactive" ]
@@ -197,7 +197,7 @@ Magpie_run_spark () {
         echo "*******************************************************"
         echo "* Entering Spark ${SPARK_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute interactive &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${SPARK_MODE}" == "setuponly" ]
