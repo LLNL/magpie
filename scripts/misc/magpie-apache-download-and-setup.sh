@@ -96,272 +96,139 @@ fi
 
 APACHE_DOWNLOAD_BASE="http://www.apache.org/dyn/closer.cgi"
 
-if [ "${HADOOP_DOWNLOAD}" == "Y" ]
-then
-    APACHE_DOWNLOAD_HADOOP="${APACHE_DOWNLOAD_BASE}/${HADOOP_PACKAGE}"
+__download_package () {
+    local package=$1
 
-    HADOOP_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_HADOOP} | grep "${HADOOP_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+    APACHE_DOWNLOAD_PACKAGE="${APACHE_DOWNLOAD_BASE}/${package}"
 
-    echo "Downloading from ${HADOOP_DOWNLOAD_URL}"
+    DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_PACKAGE} | grep "${package}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
 
-    HADOOP_PACKAGE_BASENAME=`basename ${HADOOP_PACKAGE}`
+    echo "Downloading from ${DOWNLOAD_URL}"
 
-    wget -O ${INSTALL_PATH}/${HADOOP_PACKAGE_BASENAME} ${HADOOP_DOWNLOAD_URL}
+    PACKAGE_BASENAME=`basename ${package}`
 
-    echo "Untarring ${HADOOP_PACKAGE_BASENAME}"
+    wget -O ${INSTALL_PATH}/${PACKAGE_BASENAME} ${DOWNLOAD_URL}
+
+    echo "Untarring ${PACKAGE_BASENAME}"
 
     cd ${INSTALL_PATH}
-    tar -xzf ${HADOOP_PACKAGE_BASENAME}
+    tar -xzf ${PACKAGE_BASENAME}
+}
 
-    HADOOP_PACKAGE_BASEDIR=`echo $HADOOP_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${HADOOP_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
+__apply_patches_if_exist () {
+    local basedir=$1
+    shift
+    local patchfiles=$@
+
+    cd ${INSTALL_PATH}/${basedir}
+
+    for patchfile in ${patchfiles}
+    do
+        if [ -f ${patchfile} ]
+        then
+            patch -p1 < ${patchfile}
+        fi
+    done
+}
+
+if [ "${HADOOP_DOWNLOAD}" == "Y" ]
+then
+    __download_package "${HADOOP_PACKAGE}"
+
+    HADOOP_PACKAGE_BASEDIR=$(echo `basename ${HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${HADOOP_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${HBASE_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_HBASE="${APACHE_DOWNLOAD_BASE}/${HBASE_PACKAGE}"
+    __download_package "${HBASE_PACKAGE}"
 
-    HBASE_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_HBASE} | grep "${HBASE_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${HBASE_DOWNLOAD_URL}"
-
-    HBASE_PACKAGE_BASENAME=`basename ${HBASE_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${HBASE_PACKAGE_BASENAME} ${HBASE_DOWNLOAD_URL}
-
-    echo "Untarring ${HBASE_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${HBASE_PACKAGE_BASENAME}
-
-    HBASE_PACKAGE_BASEDIR=`echo $HBASE_PACKAGE_BASENAME | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${HBASE_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
+    HBASE_PACKAGE_BASEDIR=$(echo `basename ${HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${HBASE_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${PIG_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_PIG="${APACHE_DOWNLOAD_BASE}/${PIG_PACKAGE}"
-
-    PIG_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_PIG} | grep "${PIG_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${PIG_DOWNLOAD_URL}"
-
-    PIG_PACKAGE_BASENAME=`basename ${PIG_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${PIG_PACKAGE_BASENAME} ${PIG_DOWNLOAD_URL}
-
-    echo "Untarring ${PIG_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${PIG_PACKAGE_BASENAME}
+    __download_package "${PIG_PACKAGE}"
 
     # No pig patches at the moment
 fi
 
 if [ "${MAHOUT_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_MAHOUT="${APACHE_DOWNLOAD_BASE}/${MAHOUT_PACKAGE}"
+    __download_package "${MAHOUT_PACKAGE}"
 
-    MAHOUT_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_MAHOUT} | grep "${MAHOUT_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${MAHOUT_DOWNLOAD_URL}"
-
-    MAHOUT_PACKAGE_BASENAME=`basename ${MAHOUT_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${MAHOUT_PACKAGE_BASENAME} ${MAHOUT_DOWNLOAD_URL}
-
-    echo "Untarring ${MAHOUT_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${MAHOUT_PACKAGE_BASENAME}
-
-    MAHOUT_PACKAGE_BASEDIR=`echo $MAHOUT_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${MAHOUT_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/mahout/${MAHOUT_PACKAGE_BASEDIR}.patch
+    MAHOUT_PACKAGE_BASEDIR=$(echo `basename ${MAHOUT_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${MAHOUT_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/mahout/${MAHOUT_PACKAGE_BASEDIR}.patch
 fi
 
 if [ "${ZOOKEEPER_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_ZOOKEEPER="${APACHE_DOWNLOAD_BASE}/${ZOOKEEPER_PACKAGE}"
-
-    ZOOKEEPER_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_ZOOKEEPER} | grep "${ZOOKEEPER_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${ZOOKEEPER_DOWNLOAD_URL}"
-
-    ZOOKEEPER_PACKAGE_BASENAME=`basename ${ZOOKEEPER_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${ZOOKEEPER_PACKAGE_BASENAME} ${ZOOKEEPER_DOWNLOAD_URL}
-
-    echo "Untarring ${ZOOKEEPER_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${ZOOKEEPER_PACKAGE_BASENAME}
+    __download_package "${ZOOKEEPER_PACKAGE}"
 
     # No zookeeper patches at the moment
 fi
 
 if [ "${SPARK_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_SPARK="${APACHE_DOWNLOAD_BASE}/${SPARK_PACKAGE}"
+    __download_package "${SPARK_PACKAGE}"
 
-    SPARK_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_SPARK} | grep "${SPARK_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+    SPARK_PACKAGE_BASEDIR=$(echo `basename ${SPARK_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1\.\2/g')
+    __apply_patches_if_exist ${SPARK_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate.patch \
+        ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-no-local-dir.patch
 
-    echo "Downloading from ${SPARK_DOWNLOAD_URL}"
+    __download_package "${SPARK_HADOOP_PACKAGE}"
 
-    SPARK_PACKAGE_BASENAME=`basename ${SPARK_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${SPARK_PACKAGE_BASENAME} ${SPARK_DOWNLOAD_URL}
-
-    echo "Untarring ${SPARK_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${SPARK_PACKAGE_BASENAME}
-
-    SPARK_PACKAGE_BASEDIR=`echo $SPARK_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1\.\2/g'`
-    cd ${INSTALL_PATH}/${SPARK_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate-all.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-no-local-dir.patch
-
-    APACHE_DOWNLOAD_HADOOP="${APACHE_DOWNLOAD_BASE}/${SPARK_HADOOP_PACKAGE}"
-
-    HADOOP_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_HADOOP} | grep "${SPARK_HADOOP_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${HADOOP_DOWNLOAD_URL}"
-
-    SPARK_HADOOP_PACKAGE_BASENAME=`basename ${SPARK_HADOOP_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${SPARK_HADOOP_PACKAGE_BASENAME} ${HADOOP_DOWNLOAD_URL}
-
-    echo "Untarring ${SPARK_HADOOP_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${SPARK_HADOOP_PACKAGE_BASENAME}
-
-    SPARK_HADOOP_PACKAGE_BASEDIR=`echo $SPARK_HADOOP_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${SPARK_HADOOP_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
+    SPARK_HADOOP_PACKAGE_BASEDIR=$(echo `basename ${SPARK_HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${SPARK_HADOOP_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_STORM="${APACHE_DOWNLOAD_BASE}/${STORM_PACKAGE}"
-
-    STORM_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_STORM} | grep "${STORM_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${STORM_DOWNLOAD_URL}"
-
-    STORM_PACKAGE_BASENAME=`basename ${STORM_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${STORM_PACKAGE_BASENAME} ${STORM_DOWNLOAD_URL}
-
-    echo "Untarring ${STORM_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${STORM_PACKAGE_BASENAME}
+    __download_package "${STORM_PACKAGE}"
 
     # No storm patches at the moment
 fi
 
 if [ "${PHOENIX_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_PHOENIX="${APACHE_DOWNLOAD_BASE}/${PHOENIX_PACKAGE}"
+    __download_package "${PHOENIX_PACKAGE}"
 
-    PHOENIX_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_PHOENIX} | grep "${PHOENIX_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
+    PHOENIX_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${PHOENIX_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
 
-    echo "Downloading from ${PHOENIX_DOWNLOAD_URL}"
+    __download_package "${HBASE_PACKAGE}"
 
-    PHOENIX_PACKAGE_BASENAME=`basename ${PHOENIX_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${PHOENIX_PACKAGE_BASENAME} ${PHOENIX_DOWNLOAD_URL}
-
-    echo "Untarring ${PHOENIX_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${PHOENIX_PACKAGE_BASENAME}
-
-    PHOENIX_PACKAGE_BASEDIR=`echo $PHOENIX_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${PHOENIX_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
-
-    APACHE_DOWNLOAD_HBASE="${APACHE_DOWNLOAD_BASE}/${HBASE_PACKAGE}"
-
-    HBASE_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_HBASE} | grep "${HBASE_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${HBASE_DOWNLOAD_URL}"
-
-    PHOENIX_HBASE_PACKAGE_BASENAME=`basename ${PHOENIX_HBASE_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${PHOENIX_HBASE_PACKAGE_BASENAME} ${HBASE_DOWNLOAD_URL}
-
-    echo "Untarring ${PHOENIX_HBASE_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${PHOENIX_HBASE_PACKAGE_BASENAME}
-
-    PHOENIX_HBASE_PACKAGE_BASEDIR=`echo $PHOENIX_HBASE_PACKAGE_BASENAME | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${PHOENIX_HBASE_PACKAGE_BASEDIR}
-    echo "Applying patches"
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
+    PHOENIX_HBASE_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${PHOENIX_HBASE_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch \
+        ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
 fi
 
 if [ "${KAFKA_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_KAFKA="${APACHE_DOWNLOAD_BASE}/${KAFKA_PACKAGE}"
+    __download_package "${KAFKA_PACKAGE}"
 
-    KAFKA_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_KAFKA} | grep "${KAFKA_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${KAFKA_DOWNLOAD_URL}"
-
-    KAFKA_PACKAGE_BASENAME=`basename ${KAFKA_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${KAFKA_PACKAGE_BASENAME} ${KAFKA_DOWNLOAD_URL}
-
-    echo "Untarring ${KAFKA_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${KAFKA_PACKAGE_BASENAME}
-
-    KAFKA_PACKAGE_BASEDIR=`echo $KAFKA_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${KAFKA_PACKAGE_BASEDIR}
-
-    echo 'Applying patches'
-    patch -p1 < ${MAGPIE_SCRIPTS_HOME}/patches/kafka/${KAFKA_PACKAGE_BASEDIR}-no-local-dir.patch
+    KAFKA_PACKAGE_BASEDIR=$(echo `basename ${KAFKA_PACKAGE}` | sed 's/\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${KAFKA_PACKAGE_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/kafka/${KAFKA_PACKAGE_BASEDIR}-no-local-dir.patch
 
 fi
 
 if [ "${ZEPPELIN_DOWNLOAD}" == "Y" ]
 then
-    APACHE_DOWNLOAD_ZEPPELIN="${APACHE_DOWNLOAD_BASE}/${ZEPPELIN_PACKAGE}"
+    __download_package "${ZEPPELIN_PACKAGE}"
 
-    ZEPPELIN_DOWNLOAD_URL=`wget -q -O - ${APACHE_DOWNLOAD_ZEPPELIN} | grep "${ZEPPELIN_PACKAGE}" | head -n 1 | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//'`
-
-    echo "Downloading from ${ZEPPELIN_DOWNLOAD_URL}"
-
-    ZEPPELIN_PACKAGE_BASENAME=`basename ${ZEPPELIN_PACKAGE}`
-
-    wget -O ${INSTALL_PATH}/${ZEPPELIN_PACKAGE_BASENAME} ${ZEPPELIN_DOWNLOAD_URL}
-
-    echo "Untarring ${ZEPPELIN_PACKAGE_BASENAME}"
-
-    cd ${INSTALL_PATH}
-    tar -xzf ${ZEPPELIN_PACKAGE_BASENAME}
-
-    ZEPPELIN_PACKAGE_BASEDIR=`echo $ZEPPELIN_PACKAGE_BASENAME | sed 's/\(.*\)\.\(.*\)/\1/g'`
-    cd ${INSTALL_PATH}/${ZEPPELIN_PACKAGE_BASEDIR}
-
-    echo 'No patched needed currently.'
+    # No zeppelin patches at the moment
 fi
 
 if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]

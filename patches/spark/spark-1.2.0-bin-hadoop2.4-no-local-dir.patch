@@ -1,6 +1,6 @@
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/slaves.sh spark-1.2.0-bin-hadoop2.4/sbin/slaves.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/slaves.sh	2015-01-20 11:17:42.478717000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/slaves.sh	2015-09-19 09:57:12.899105000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/slaves.sh spark-1.2.0-bin-hadoop2.4/sbin/slaves.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/slaves.sh	2016-07-18 17:03:47.217966000 -0700
++++ spark-1.2.0-bin-hadoop2.4/sbin/slaves.sh	2016-07-18 17:04:11.288874000 -0700
 @@ -50,23 +50,61 @@ if [ -f "$SPARK_SLAVES" ]; then
    HOSTLIST=`cat "$SPARK_SLAVES"`
  fi
@@ -63,9 +63,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/slaves.sh spark-1.2.0-bi
  . "$SPARK_PREFIX/bin/load-spark-env.sh"
  
  if [ "$HOSTLIST" = "" ]; then
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/spark-daemon.sh spark-1.2.0-bin-hadoop2.4/sbin/spark-daemon.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/spark-daemon.sh	2015-08-31 16:23:49.449590000 -0700
-+++ spark-1.2.0-bin-hadoop2.4/sbin/spark-daemon.sh	2015-09-19 09:57:12.901104000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/spark-daemon.sh spark-1.2.0-bin-hadoop2.4/sbin/spark-daemon.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/spark-daemon.sh	2016-07-18 17:03:47.219965000 -0700
++++ spark-1.2.0-bin-hadoop2.4/sbin/spark-daemon.sh	2016-07-18 17:04:11.290873000 -0700
 @@ -47,17 +47,28 @@ sbin="`cd "$sbin"; pwd`"
  # Check if --config is passed as an argument. It is an optional parameter.
  # Exit if the argument is not a directory.
@@ -131,9 +131,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/spark-daemon.sh spark-1.
  spark_rotate_log ()
  {
      log=$1;
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/spark-daemons.sh spark-1.2.0-bin-hadoop2.4/sbin/spark-daemons.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/spark-daemons.sh	2015-01-20 11:13:26.292158000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/spark-daemons.sh	2015-09-19 09:57:12.903105000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/spark-daemons.sh spark-1.2.0-bin-hadoop2.4/sbin/spark-daemons.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/spark-daemons.sh	2016-07-18 17:03:37.924274000 -0700
++++ spark-1.2.0-bin-hadoop2.4/sbin/spark-daemons.sh	2016-07-18 17:04:11.293868000 -0700
 @@ -30,6 +30,8 @@ fi
  sbin=`dirname "$0"`
  sbin=`cd "$sbin"; pwd`
@@ -184,9 +184,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/spark-daemons.sh spark-1
 +fi
 +
  exec "$sbin/slaves.sh" --config $SPARK_CONF_DIR cd "$SPARK_HOME" \; "$sbin/spark-daemon.sh" --config $SPARK_CONF_DIR "$@"
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-master.sh spark-1.2.0-bin-hadoop2.4/sbin/start-master.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-master.sh	2014-12-10 03:00:25.000000000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/start-master.sh	2015-09-19 09:57:12.906097000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/start-master.sh spark-1.2.0-bin-hadoop2.4/sbin/start-master.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/start-master.sh	2014-12-10 03:00:25.000000000 -0800
++++ spark-1.2.0-bin-hadoop2.4/sbin/start-master.sh	2016-07-18 17:04:11.296863000 -0700
 @@ -24,6 +24,8 @@ sbin="`cd "$sbin"; pwd`"
  
  START_TACHYON=false
@@ -252,9 +252,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-master.sh spark-1.
  "$sbin"/spark-daemon.sh start org.apache.spark.deploy.master.Master 1 --ip $SPARK_MASTER_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT
  
  if [ "$START_TACHYON" == "true" ]; then
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-slave.sh spark-1.2.0-bin-hadoop2.4/sbin/start-slave.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-slave.sh	2015-01-20 11:13:26.314138000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/start-slave.sh	2015-09-19 09:57:12.908096000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/start-slave.sh spark-1.2.0-bin-hadoop2.4/sbin/start-slave.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/start-slave.sh	2016-07-18 17:03:37.926273000 -0700
++++ spark-1.2.0-bin-hadoop2.4/sbin/start-slave.sh	2016-07-18 17:04:11.298862000 -0700
 @@ -26,16 +26,27 @@ sbin="`cd "$sbin"; pwd`"
  # Check if --config is passed as an argument. It is an optional parameter.
  # Exit if the argument is not a directory.
@@ -283,9 +283,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-slave.sh spark-1.2
      export SPARK_CONF_DIR=$conf_dir
    fi
    shift
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-slaves.sh spark-1.2.0-bin-hadoop2.4/sbin/start-slaves.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-slaves.sh	2015-01-20 11:34:50.658506000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/start-slaves.sh	2015-09-19 09:57:12.910095000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/start-slaves.sh spark-1.2.0-bin-hadoop2.4/sbin/start-slaves.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/start-slaves.sh	2016-07-18 17:03:37.929266000 -0700
++++ spark-1.2.0-bin-hadoop2.4/sbin/start-slaves.sh	2016-07-18 17:04:11.300864000 -0700
 @@ -23,6 +23,8 @@ sbin="`cd "$sbin"; pwd`"
  
  START_TACHYON=false
@@ -351,9 +351,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/start-slaves.sh spark-1.
  if [ "$START_TACHYON" == "true" ]; then
    "$sbin/slaves.sh" cd "$SPARK_HOME" \; "$sbin"/../tachyon/bin/tachyon bootstrap-conf "$SPARK_MASTER_IP"
  
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/stop-master.sh spark-1.2.0-bin-hadoop2.4/sbin/stop-master.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/stop-master.sh	2014-12-10 03:00:25.000000000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/stop-master.sh	2015-09-19 09:57:12.912095000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/stop-master.sh spark-1.2.0-bin-hadoop2.4/sbin/stop-master.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/stop-master.sh	2014-12-10 03:00:25.000000000 -0800
++++ spark-1.2.0-bin-hadoop2.4/sbin/stop-master.sh	2016-07-18 17:04:11.303856000 -0700
 @@ -22,8 +22,24 @@
  sbin=`dirname "$0"`
  sbin=`cd "$sbin"; pwd`
@@ -379,9 +379,9 @@ diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/stop-master.sh spark-1.2
  "$sbin"/spark-daemon.sh stop org.apache.spark.deploy.master.Master 1
  
  if [ -e "$sbin"/../tachyon/bin/tachyon ]; then
-diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/stop-slaves.sh spark-1.2.0-bin-hadoop2.4/sbin/stop-slaves.sh
---- spark-1.2.0-bin-hadoop2.4-alternate-all/sbin/stop-slaves.sh	2015-01-20 11:13:26.356097000 -0800
-+++ spark-1.2.0-bin-hadoop2.4/sbin/stop-slaves.sh	2015-09-19 09:57:12.914093000 -0700
+diff -pruN spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/stop-slaves.sh spark-1.2.0-bin-hadoop2.4/sbin/stop-slaves.sh
+--- spark-1.2.0-bin-hadoop2.4-alternate-ssh/sbin/stop-slaves.sh	2016-07-18 17:03:37.931267000 -0700
++++ spark-1.2.0-bin-hadoop2.4/sbin/stop-slaves.sh	2016-07-18 17:04:11.305855000 -0700
 @@ -20,10 +20,54 @@
  sbin=`dirname "$0"`
  sbin=`cd "$sbin"; pwd`
