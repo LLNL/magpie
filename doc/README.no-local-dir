@@ -22,16 +22,20 @@ configuring all projects to use this path.
 However, this requires a number of patches to various projects, which
 are as follows:
 
-Hadoop - Patches in /patches/hadoop with 'no-local-dir' in the filename.
-       - Requires 'alternate-ssh' patch to be applied first.
+Hadoop - Patches in /patches/hadoop with 'no-local-dir.patch' filename
+         suffix.
+       - Requires 'alternate-ssh.patch' patch to be applied first.
 
-Spark - Patches in /patches/spark with 'no-local-dir' in the filename.
-      - Requires 'alternate-all' patch to be applied first.
+Spark - Patches in /patches/spark with 'no-local-dir.patch' filename
+        suffix.
+      - Requires 'alternate.patch' patch to be applied first.
 
-Hbase - Patches in /patches/hbase with 'no-local-dir' in the filename.
-      - Requires 'alternate-ssh' patch to be applied first.
+Hbase - Patches in /patches/hbase with 'no-local-dir.patch' filename
+        suffix.
+      - Requires 'alternate-ssh.patch' patch to be applied first.
 
-Kafka - Patches in /patches/kafka with 'no-local-dir' in the filename.
+Kafka - Patches in /patches/kafka with 'no-local-dir.patch' filename
+        suffix.
 
 The submission scripts do not include MAGPIE_NO_LOCAL_DIR
 configuration fields by default.  To include them:

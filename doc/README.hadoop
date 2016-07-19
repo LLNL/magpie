@@ -572,8 +572,8 @@ Hadoop
   The patch to correct this is included in the patches/hadoop/ directory.
 
 - If MAGPIE_NO_LOCAL_DIR support is desired, patches in
-  patches/hadoop/ with 'no-local-dir' in the filename can be found for
-  support.  See README.no-local-dir for more details.
+  patches/hadoop/ with the "no-local-dir.patch" suffix in the filename
+  can be found for support.  See README.no-local-dir for more details.
 
 Hadoop Testing
 --------------

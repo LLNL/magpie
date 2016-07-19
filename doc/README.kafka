@@ -116,9 +116,9 @@ for Zookeeper environment variables that may be useful.
 
 Kafka Patching
 ----------------
-- If MAGPIE_NO_LOCAL_DIR support is desired, patches in
-  patches/kafka/ with 'no-local-dir' in the filename can be found for
-  support.  See README.no-local-dir for more details.
+- If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/kafka/
+  with the "no-local-dir.patch" suffix in the filename can be found
+  for support.  See README.no-local-dir for more details.
 
 Kafka Testing
 ---------------

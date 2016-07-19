@@ -344,32 +344,28 @@ Spark Patching
 --------------
 - Patch to support alternate config file directories is required.
 
-  For versions < 1.0.0, patch can be applied directly to startup
-  scripts, not needing a recompilation of source.
-
-  For atleast Spark version 1.0.0 (possibly versions newer than it),
-  patch for startup scripts and code is required, a recompilation of
-  source is required.
-
-  For Spark version 1.2.0 and newer, a patch for startup scripts is
-  required, but recompilation of source is not required.
-
-  Patches for this can be found in the patches/spark/ directory with
-  'alternate' in the filename.
-
 - Patch to support non-ssh remote execution may be needed in some
   environments.  Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
 
-  Patches for this can be found in the patches/spark/ directory with
-  'alternate-ssh' in the filename.
-
   The alternate remote execution command must be specified in the
   environment variable MAGPIE_REMOTE_CMD.
 
-- If MAGPIE_NO_LOCAL_DIR support is desired, patches in
-  patches/spark/ with 'no-local-dir' in the filename can be found for
-  support.  See README.no-local-dir for more details.
+- For versions < 1.0.0 and versions >= 1.2.0, a patch can be applied
+  directly to startup scripts, not needing a recompilation of source.
+
+  You can find patches for these versions in the patches/spark/ directory with 
+  the suffice "alternate.patch".
+
+  For atleast Spark version 1.0.0 (possibly a few versions newer than
+  it), patch for startup scripts and code is required, a recompilation
+  of source is required.
+
+  Patches for these versions can be found in the patches/spark/ directory.
+
+- If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/spark/
+  with the "no-local-dir.patch" suffix in the filename can be found
+  for support.  See README.no-local-dir for more details.
 
 Spark Testing
 -------------
