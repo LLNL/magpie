@@ -221,7 +221,7 @@ when using Hadoop, Storm, Hbase, etc. is not all that different.
    *
    * To access Spark directly, you'll want to:
    *
-   *   mrsh apex217
+   *   ssh apex217
    *   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
    *   setenv SPARK_HOME "/home/achu/hadoop/spark-1.6.2-bin-hadoop2.6"
    *   setenv SPARK_CONF_DIR "/tmp/achu/spark/test/1174784/conf"

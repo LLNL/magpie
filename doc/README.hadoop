@@ -270,7 +270,7 @@ HDFS Namenode.
    *
    * To access Hadoop directly, you'll want to:
    *
-   *   mrsh apex69
+   *   ssh apex69
    *   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
    *   setenv HADOOP_HOME "/home/achu/hadoop/hadoop-2.7.2"
    *   setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/test/1174570/conf"
@@ -297,7 +297,7 @@ HDFS Namenode.
    *******************************************************
    * Run
    *
-   * mrsh apex69 kill -s 10 27588
+   * ssh apex69 kill -s 10 27588
    *
    * to exit job early.
    *
@@ -309,7 +309,7 @@ HDFS Namenode.
    * kill all currently submitted Yarn jobs in the PREP or
    * RUNNING state to be killed before killing the job, run:
    *
-   * mrsh apex69 kill -s 28 27588
+   * ssh apex69 kill -s 28 27588
    *******************************************************
 
 5) The job then runs Teragen
