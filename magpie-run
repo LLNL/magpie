@@ -208,7 +208,7 @@ then
         echo "*******************************************************"
         echo "* Running Magpie TestAll"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-magpie-testall &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-magpie-testall &
         scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     fi

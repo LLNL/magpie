@@ -192,7 +192,7 @@ Magpie_run_kafka () {
         echo "*******************************************************"
         echo "* Running Performance"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie-job-kafka-performance &
+        ${MAGPIE_SCRIPTS_HOME}/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-kafka-performance &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${KAFKA_MODE}" == "server" ]
@@ -208,7 +208,7 @@ Magpie_run_kafka () {
         echo "*******************************************************"
         echo "* Entering Kafka ${KAFKA_MODE} mode"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
         local scriptpid=$!
         wait ${scriptpid}
     else

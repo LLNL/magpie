@@ -93,12 +93,12 @@ mypid=$$
 
 if [ "${jobtype}" == "interactive" ]
 then
-    ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep countdown &
+    ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
     childpid=$!
     typemessage="'${jobtype}' mode"
 elif [ "${jobtype}" == "launch" ] || [ "${jobtype}" == "server" ]
 then
-    ${MAGPIE_SCRIPTS_HOME}/magpie-job-sleep normal &
+    ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep normal &
     childpid=$!
     typemessage="'${jobtype}' mode"
 elif [ "${jobtype}" == "script" ] || [ "${jobtype}" == "scriptnokill" ]
