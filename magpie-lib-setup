@@ -291,7 +291,8 @@ Magpie_find_conffile () {
     local conffiledesired=$3
     local __returnvar=$4
     local conffilefound=""
-    
+    local projectlowercase=`echo ${project} | tr '[:upper:]' '[:lower:]'`
+
     if [ "${conffiledir}X" != "X" ]
     then
         if [ -f "${conffiledir}/${conffiledesired}" ]
@@ -302,7 +303,7 @@ Magpie_find_conffile () {
 
     if [ "${conffilefound}X" == "X" ]
     then
-        conffilefound="${magpieconffiledir}/${conffiledesired}"
+        conffilefound="${magpieconffiledir}/${projectlowercase}/${conffiledesired}"
     fi
 
     if [ ! -f ${conffilefound} ]
