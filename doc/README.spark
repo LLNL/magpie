@@ -82,8 +82,9 @@ Instructions For Spark
    output similar to the following:
 
       ssh node70
-      setenv SPARK_CONF_DIR "/tmp/username/spark/ajobname/1081559/conf"
-      cd /home/username/spark-1.2.0-bin-hadoop2.4
+      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+      setenv SPARK_HOME "/home/username/spark-1.6.2-bin-hadoop2.6"
+      setenv SPARK_CONF_DIR "/tmp/username/spark/ajobname/1174962/conf"
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in

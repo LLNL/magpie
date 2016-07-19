@@ -64,7 +64,9 @@ Instructions For Using Kafka
    output similar to the following:
 
       ssh node70
-      setenv KAFKA_CONF_DIR "/tmp/achu/kafka/ajobname/1081559/conf"
+      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+      setenv KAFKA_HOME "/home/username/kafka_2.11-0.9.0.0"
+      setenv KAFKA_CONF_DIR "/tmp/username/kafka/ajobtime/1174573/conf"
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in

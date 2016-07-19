@@ -67,8 +67,9 @@ Instructions For Running Hbase
    output similar to the following:
 
       ssh node70
-      setenv HBASE_CONF_DIR "/tmp/username/hbase/ajobname/1081559/conf"
-      cd /home/username/hbase-0.98.9-hadoop2
+      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+      setenv HBASE_HOME "/home/username/hbase-1.2.1"
+      setenv HBASE_CONF_DIR "/tmp/username/hbase/ajobtime/1174573/conf"
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in

@@ -78,8 +78,9 @@ Instructions For Running Hadoop
    output similar to the following:
 
       ssh node70
-      setenv HADOOP_CONF_DIR "/tmp/username/hadoop/ajobname/1081559/conf"
-      cd /home/username/hadoop-2.6.0
+      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+      setenv HADOOP_HOME "/home/username/hadoop-2.7.2"
+      setenv HADOOP_CONF_DIR "/tmp/username/hadoop/ajobname/1174570/conf"
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in

@@ -67,8 +67,9 @@ Instructions For Storm
    output similar to the following:
 
       ssh node70
-      setenv STORM_CONF_DIR "/tmp/username/storm/ajobname/1081559/conf"
-      cd /home/username/apache-storm-0.9.3
+      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+      setenv STORM_HOME "/home/username/apache-storm-1.0.1"
+      setenv STORM_CONF_DIR "/tmp/username/storm/ajobname/1175007/conf"
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in

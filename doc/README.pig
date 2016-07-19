@@ -70,18 +70,13 @@ Instructions For Using Pig
    things out and make sure things look setup correctly.
 
    After this, you may want to run with 'interactive' mode to play
-   around and figure things out.  In the job output you will see
-   output similar to the following:
+   around and figure things out.  See instructions under README.hadoop
+   for 'interactive' mode.
 
-      ssh node70
-      setenv HADOOP_CONF_DIR "/tmp/achu/hadoop/ajobname/1081559/conf"
-
-   These instructions will inform you how to login to the master node
-   of your allocation and how to initialize your session.  Once in
-   your session.  You can do as you please.  For example, you can
-   launch a pig job (bin/pig ...).  There will also be instructions in
-   your job output on how to tear the session down cleanly if you wish
-   to end your job early.
+   Once in your session.  You can do as you please.  For example, you
+   can launch a pig job (bin/pig ...).  There will also be
+   instructions in your job output on how to tear the session down
+   cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
    likely want to run with 'script' mode.  Create a Pig script and set
