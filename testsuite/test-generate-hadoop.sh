@@ -386,25 +386,13 @@ GenerateHadoopDependencyTests() {
         -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' \
         magpie.${submissiontype}-hadoop-2.7.0-DependencyHadoop5A*run-hadoopterasort
 
-# Dependency 6 test, detect newer hdfs version 2.3.0 from 2.2.0, HDFS over Lustre / NetworkFS
+# Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" ${java16} ${java16} "6A"
-
-# Dependency 7 test, detect newer hdfs version 2.4.0 from 2.3.0, HDFS over Lustre / NetworkFS
-
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" ${java16} ${java16} "7A"
-
-# Dependency 8 test, detect newer hdfs version 2.5.0 from 2.4.0, HDFS over Lustre / NetworkFS
-
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "8A"
-
-# Dependency 9 test, detect newer hdfs version 2.6.0 from 2.5.0, HDFS over Lustre / NetworkFS
-
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java16} "9A"
-
-# Dependency 10 test, detect newer hdfs version 2.7.0 from 2.6.0 HDFS over Lustre / NetworkFS
-
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "10A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" ${java16} ${java16} "6B"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "6C"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java16} "6D"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "6E"
 }
 
 GenerateHadoopPostProcessing() {
