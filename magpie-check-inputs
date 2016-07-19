@@ -28,7 +28,9 @@
 
 __Magpie_check_is_enabled () {
     local projectnametocheck=$1
+    shift
     local projectnameneededfor=$2
+    shift
     local extramsg=$@
     local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
     local varnametocheck="${uppercaseprojectnametocheck}_SETUP"
