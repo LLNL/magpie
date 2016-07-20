@@ -217,6 +217,8 @@ __GenerateHadoopDependencyTests_Dependency4() {
 __GenerateHadoopDependencyTests_Dependency5 () {
     local dependencynumber=$1
     shift
+    local silentsuccess=$1
+    shift
     local firstversion=$1
     shift
     local restofversions=$@
@@ -240,11 +242,21 @@ __GenerateHadoopDependencyTests_Dependency5 () {
     for version in ${restofversions}
     do
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-older-version-expected-failure
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs
+        if [ "${silentsuccess}" == "y" ]
+        then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs-silentsuccess
+        else
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs
+        fi
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-older-version-expected-failure
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopupgradehdfs
+        if [ "${silentsuccess}" == "y" ]
+        then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopupgradehdfs-silentsuccess
+        else
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopupgradehdfs
+        fi
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
 
         sed -i \
@@ -253,7 +265,7 @@ __GenerateHadoopDependencyTests_Dependency5 () {
 
         sed -i \
             -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
-            magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*run-hadoopupgradehdfs
+            magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*run-hadoopupgradehdfs*
 
         # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
         Magpie_vercomp ${version} "2.6.0"
@@ -362,12 +374,13 @@ GenerateHadoopDependencyTests() {
     done
 
 # Dependency 5 tests, upgrade hdfs, e.g. 2.4.0 -> 2.5.0 -> 2.6.0 -> 2.7.0, HDFS over Lustre / NetworkFS
+# - hadoop 2.4.X does not have "Finalize upgrade success" phrase output when complete
 
-    __GenerateHadoopDependencyTests_Dependency5 "5A" 2.4.0 2.5.0 2.6.0 2.7.0
-    __GenerateHadoopDependencyTests_Dependency5 "5B" 2.4.0 2.4.1
-    __GenerateHadoopDependencyTests_Dependency5 "5C" 2.5.0 2.5.1 2.5.2
-    __GenerateHadoopDependencyTests_Dependency5 "5D" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    __GenerateHadoopDependencyTests_Dependency5 "5E" 2.7.0 2.7.1 2.7.2
+    __GenerateHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5B" "y" 2.4.0 2.4.1
+    __GenerateHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.5.1 2.5.2
+    __GenerateHadoopDependencyTests_Dependency5 "5D" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __GenerateHadoopDependencyTests_Dependency5 "5E" "n" 2.7.0 2.7.1 2.7.2
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
@@ -414,6 +427,12 @@ GenerateHadoopPostProcessing() {
     if [ -n "${files}" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hadoopupgradehdfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop*run-hadoopupgradehdfs*silentsuccess*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/silentsuccess-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*decommissionhdfsnodes*"`

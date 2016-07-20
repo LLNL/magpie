@@ -746,8 +746,15 @@ then
     for file in ${test_validate_files}
     do
         num=`grep -e "Finalize upgrade successful" $file | wc -l`
-        if [ "${num}" != "1" ]; then
-            echo "Error in $file"
+        if echo ${file} | grep -q "silentsuccess"
+        then
+            if [ "${num}" != "0" ]; then
+                echo "Error in $file"
+            fi
+        else
+            if [ "${num}" != "1" ]; then
+                echo "Error in $file"
+            fi
         fi
         
         __test_hadoop_shutdown $file

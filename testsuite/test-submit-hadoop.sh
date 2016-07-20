@@ -99,6 +99,8 @@ __SubmitHadoopDependencyTests_Dependency4() {
 __SubmitHadoopDependencyTests_Dependency5 () {
     local dependencynumber=$1
     shift
+    local silentsuccess=$1
+    shift
     local firstversion=$1
     shift
     local restofversions=$@
@@ -108,7 +110,13 @@ __SubmitHadoopDependencyTests_Dependency5 () {
     for version in ${restofversions}
     do
         DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-older-version-expected-failure
-        DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs
+        if [ "${silentsuccess}" == "y" ]
+        then
+            DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs-silentsuccess
+        else
+            DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs
+        fi
+        
         DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
     done
     
@@ -117,7 +125,14 @@ __SubmitHadoopDependencyTests_Dependency5 () {
     for version in ${restofversions}
     do
         DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-older-version-expected-failure
-        DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopupgradehdfs
+
+        if [ "${silentsuccess}" == "y" ]
+        then
+            DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopupgradehdfs-silentsuccess
+        else
+            DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopupgradehdfs
+        fi
+
         DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
     done
 }
@@ -157,11 +172,11 @@ SubmitHadoopDependencyTests() {
         done
     done
 
-    __SubmitHadoopDependencyTests_Dependency5 "5A" 2.4.0 2.5.0 2.6.0 2.7.0
-    __SubmitHadoopDependencyTests_Dependency5 "5B" 2.4.0 2.4.1
-    __SubmitHadoopDependencyTests_Dependency5 "5C" 2.5.0 2.5.1 2.5.2
-    __SubmitHadoopDependencyTests_Dependency5 "5D" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    __SubmitHadoopDependencyTests_Dependency5 "5E" 2.7.0 2.7.1 2.7.2
+    __SubmitHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0
+    __SubmitHadoopDependencyTests_Dependency5 "5B" "y" 2.4.0 2.4.1
+    __SubmitHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.5.1 2.5.2
+    __SubmitHadoopDependencyTests_Dependency5 "5D" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __SubmitHadoopDependencyTests_Dependency5 "5E" "n" 2.7.0 2.7.1 2.7.2
 
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" "6A"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" "6B"
