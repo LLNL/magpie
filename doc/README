@@ -263,13 +263,13 @@ considered on the side of experimental.
 
 - Well
 
-  Packages: Storm, Mahout, Phoenix
+  Packages: Storm, Phoenix
 
   Features: No-local-dir
 
 - Experimental
 
-  Packages: UDA/uda-plugin, Kafka, Zeppelin, Tachyon
+  Packages: UDA/uda-plugin, Kafka, Zeppelin, Tachyon, Mahout
 
   Features: HDFS Federation, MagpieNetworkFS, IntelLustre
 
