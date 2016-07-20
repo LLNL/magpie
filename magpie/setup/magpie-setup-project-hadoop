@@ -932,7 +932,7 @@ then
     # Space w/ HADOOPEXTRATASKJAVAOPTS & EXTRAHADOOPOPTS substitution is intentional
     sed -i \
         -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
-        -e "s/MRPRALLELCOPIES/${parallelcopies}/g" \
+        -e "s/MRPARALLELCOPIES/${parallelcopies}/g" \
         -e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
         -e "s/MRSLOWSTART/${mapredslowstart}/g" \
         -e "s/ALLCHILDHEAPSIZE/${allchildheapsize}/g" \

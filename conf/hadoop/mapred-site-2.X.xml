@@ -55,7 +55,7 @@
 
 <property>
   <name>mapreduce.reduce.shuffle.parallelcopies</name>
-  <value>MRPRALLELCOPIES</value>
+  <value>MRPARALLELCOPIES</value>
   <description>The default number of parallel transfers run by reduce
   during the copy(shuffle) phase.
   </description>
