@@ -122,8 +122,6 @@
   <value>${yarn.nodemanager.hostname}:YARNNODEMANAGERWEBAPPADDRESS</value>
 </property>
 
-@UDA@
-
 <property>
   <description>List of directories to store localized files in. An
     application's localized file directory will be found in:

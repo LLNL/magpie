@@ -293,7 +293,7 @@ nodecount=${MAGPIE_NODE_COUNT}
 # nodecountmaster is a counter to count the master only once
 nodecountmaster=1
 
-magpieprojects="HADOOP HADOOP_UDA_SETUP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM ZOOKEEPER"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM ZOOKEEPER"
 
 for project in ${magpieprojects}
 do
@@ -547,33 +547,6 @@ then
         echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
         exit 1
     fi
-fi
-
-#
-# Check UDA Inputs 
-#
-
-if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-then
-    __Magpie_check_is_enabled "Hadoop" "UDA"
-
-    if [ "${HADOOP_SETUP_TYPE}" != "MR1" ]
-    then
-        echo "UDA is only supported with HADOOP_SETUP_TYPE = MR2"
-        exit 1
-    fi
-
-    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-    Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
-    if [ $? == "2" ]
-    then 
-        echo "HADOOP UDA only supported in Hadoop 2.2.0 and more recent versions"
-        exit 1
-    fi
-
-    __Magpie_check_must_be_set_and_is_regular_file "HADOOP_UDA_JAR" "to run Hadoop w/ UDA"
-
-    __Magpie_check_if_set_is_a_directory "HADOOP_UDA_LIBPATH"
 fi
 
 #
