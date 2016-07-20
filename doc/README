@@ -3,10 +3,10 @@ Magpie
 
 Magpie contains a number of scripts for running Big Data software in
 HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig, Mahout,
-Phoenix, Kafka, Tachyon, Zeppelin, and Zookeeper are supported.  It
-currently supports running over the parallel file system Lustre and
-running over any generic network filesytem.  There is
-scheduler/resource manager support for Slurm, Moab, Torque, and LSF.
+Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It currently
+supports running over the parallel file system Lustre and running over
+any generic network filesytem.  There is scheduler/resource manager
+support for Slurm, Moab, Torque, and LSF.
 
 Some of the features presently supported:
 
@@ -228,16 +228,9 @@ Kafka - 2.11-0.9.0.0
 Zeppelin - 0.5.6-incubating, 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2,
            0.7.3
 
-Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
-
 [PigNote] - Default Pig build for versions 0.12.X is Hadoop 0.20 or
       1.X, so recompilation may be necessary depending on your
       environment.
-
-[TachyonNote] - Default Tachyon build is against Hadoop 1.0.4 and
-      Spark may be built against non-0.6.X builds.  Recompilation of
-      Tachyon & Spark may be needed depending on your environment.
-      See README for more details
 
 Package Version Combinations
 ----------------------------
@@ -336,7 +329,7 @@ considered on the side of experimental.
 
 - Experimental
 
-  Packages: UDA/uda-plugin, Kafka, Zeppelin, Tachyon, Mahout
+  Packages: UDA/uda-plugin, Kafka, Zeppelin, Mahout
 
   Features: HDFS Federation
 
@@ -354,7 +347,6 @@ Mahout - See README.mahout
 Hbase - See README.hbase
 Spark - See README.spark
 Storm - See README.storm
-Tachyon - See README.tachyon
 Phoenix - See README.phoenix
 Kafka - See README.kafka
 Zeppelin - See README.zeppelin

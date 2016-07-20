@@ -84,11 +84,6 @@ then
     stormcmdprefix="bin"
 fi
 
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    tachyoncmdprefix="bin"
-fi
-
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     zookeepercmdprefix="bin"

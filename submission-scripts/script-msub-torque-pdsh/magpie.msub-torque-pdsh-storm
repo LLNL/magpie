@@ -515,7 +515,7 @@ export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 # Run Job
 ############################################################################
 
-ENV=$(env | grep -E '^MAGPIE|^HADOOP|^PIG|^ZOOKEEPER|^KAFKA|^ZEPPELIN|^PHOENIX|^HBASE|^SPARK|^STORM|^TACHYON|^JAVA|^LD_LIBRARY_PATH|^MOAB|^PATH|^PBS|RAMDISK'\
+ENV=$(env | grep -E '^MAGPIE|^HADOOP|^PIG|^ZOOKEEPER|^KAFKA|^ZEPPELIN|^PHOENIX|^HBASE|^SPARK|^STORM|^JAVA|^LD_LIBRARY_PATH|^MOAB|^PATH|^PBS|RAMDISK'\
           | sed 's/^/export /;s/=/="/;s/$/"/')
 
 pdsh "$ENV;

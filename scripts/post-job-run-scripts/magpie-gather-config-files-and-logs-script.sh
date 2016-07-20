@@ -68,7 +68,6 @@ fi
 
 Gather_common "kafka" "y" "y"
 Gather_common "storm" "y" "y"
-Gather_common "tachyon" "y" "y"
 Gather_common "zookeeper" "y" "y"
 Gather_common "zeppelin" "y" "y"
 

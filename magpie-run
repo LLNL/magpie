@@ -40,7 +40,6 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-pig
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-phoenix
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-spark
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-storm
-source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-tachyon
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-zeppelin
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-zookeeper
 
@@ -139,10 +138,6 @@ Magpie_run_start_zeppelin
 # Will set magpie_run_storm_should_be_torndown & magpie_run_storm_setup_successful appropriately
 Magpie_run_start_storm
 
-# After Hadoop setup, requires HDFS for formatting
-# Will set magpie_run_tachyon_should_be_torndown & magpie_run_tachyon_setup_successful appropriately
-Magpie_run_start_tachyon
-
 # Make sure all setup passed
 if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
     && [ "${magpie_run_hadoop_setup_successful}" == "1" ] \
@@ -151,8 +146,7 @@ if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
     && [ "${magpie_run_spark_setup_successful}" == "1" ] \
     && [ "${magpie_run_kafka_setup_successful}" == "1" ] \
     && [ "${magpie_run_zeppelin_setup_successful}" == "1" ] \
-    && [ "${magpie_run_storm_setup_successful}" == "1" ] \
-    && [ "${magpie_run_tachyon_setup_successful}" == "1" ]
+    && [ "${magpie_run_storm_setup_successful}" == "1" ]
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
@@ -197,9 +191,6 @@ then
     elif [ "${MAGPIE_JOB_TYPE}" == "storm" ]
     then
         Magpie_run_storm
-    elif [ "${MAGPIE_JOB_TYPE}" == "tachyon" ]
-    then
-        Magpie_run_tachyon
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
         Magpie_run_zookeeper
@@ -213,10 +204,6 @@ then
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     fi
 fi
-
-# Tachyon before Hadoop shutdown, may need to flush
-# Sets magpie_run_tachyon_teardown_complete if teardown done
-Magpie_run_stop_tachyon
 
 # Sets magpie_run_storm_teardown_complete if teardown done
 Magpie_run_stop_storm

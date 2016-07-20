@@ -3,10 +3,10 @@ Magpie
 
 Magpie contains a number of scripts for running Big Data software in
 HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig, Mahout,
-Phoenix, Kafka, Tachyon, Zeppelin, and Zookeeper are supported.  It
-currently supports running over the parallel file system Lustre and
-running over any generic network filesytem.  There is
-scheduler/resource manager support for Slurm, Moab, Torque, and LSF.
+Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It currently
+supports running over the parallel file system Lustre and running over
+any generic network filesytem.  There is scheduler/resource manager
+support for Slurm, Moab, Torque, and LSF.
 
 Some of the features presently supported:
 
@@ -151,16 +151,9 @@ Kafka - 2.11-0.9.0.0
 Zeppelin - 0.5.6-incubating, 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2,
            0.7.3, 0.8.0
 
-Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
-
 [PigNote] - Default Pig build for versions 0.12.X is Hadoop 0.20 or
       1.X, so recompilation may be necessary depending on your
       environment.
-
-[TachyonNote] - Default Tachyon build is against Hadoop 1.0.4 and
-      Spark may be built against non-0.6.X builds.  Recompilation of
-      Tachyon & Spark may be needed depending on your environment.
-      See README for more details
 
 Older Supported Packages & Features
 -----------------------------------
@@ -173,6 +166,7 @@ documentation.  If you are very interested in support in Magpie 2.0
 beyond an experimental nature, please submit a support request and we
 can reconsider adding it back in.
 
+   - Tachyon
    - IntelLustre option for a Hadoop Filesystem
    - MagpieNetworkFS option for a Hadoop Filesystem
 
