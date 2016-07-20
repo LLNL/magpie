@@ -1,5 +1,0 @@
-# "magpienetworkfs" - Use the Magpie Network FS plugin.  See README for
-#                     details.
-#
-#                     User must set HADOOP_MAGPIENETWORKFS_PATH below.
-#

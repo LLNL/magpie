@@ -95,15 +95,6 @@ Magpie_calculate_hadoop_filesystem_paths () {
             magpie_hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
         fi
         magpie_fsdefault="lustre:///"
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
-    then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
-        then
-            magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
-        else
-            magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
-        fi
-        magpie_fsdefault="magpienetworkfs:///"
     else
         Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
         exit 1

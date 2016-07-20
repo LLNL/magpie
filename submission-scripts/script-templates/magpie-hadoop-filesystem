@@ -28,8 +28,6 @@
 #
 @MODE_INTELLUSTRE@
 
-@MODE_MAGPIENETWORKFS@
-
 export HADOOP_FILESYSTEM_MODE=HADOOPFILESYSTEMMODE
 
 # Local Filesystem BlockSize
@@ -106,8 +104,6 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
 
 @CONFIG_INTELLUSTRE@
-
-@CONFIG_MAGPIENETWORKFS@
 
 # If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked

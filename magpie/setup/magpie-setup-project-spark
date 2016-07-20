@@ -188,8 +188,7 @@ then
         sparkshufflebufferkb=1024
         sparkshufflebuffer=1024k
         sparkshuffleconsolidatefiles="true"
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
         # Assuming Lustre, so copy above 1M
         sparkshufflebufferkb=1024

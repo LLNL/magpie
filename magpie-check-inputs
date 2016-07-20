@@ -471,10 +471,9 @@ then
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "magpienetworkfs" ]
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ]
     then
-        echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, hdfsovernetworkfs, rawnetworkfs, intellustre, or magpienetworkfs"
+        echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, hdfsovernetworkfs, rawnetworkfs, or intellustre"
         exit 1
     fi
 
@@ -502,8 +501,7 @@ then
         exit 1
     fi
 
-    if ([ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]) \
+    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
         && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
     then
         echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE = MR2"
@@ -546,20 +544,6 @@ then
         __Magpie_check_must_be_set "HADOOP_INTELLUSTRE_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
         
         __Magpie_check_if_set_is_yes_or_no "HADOOP_INTELLUSTRE_SHUFFLE"
-    fi
-
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ] \
-        && [ "${HADOOP_MAGPIENETWORKFS_PATH}X" == "X" ]
-    then
-        __Magpie_check_must_be_set "HADOOP_MAGPIENETWORKFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-
-        firstchar=`echo ${HADOOP_MAGPIENETWORKFS_PATH} | head -c 1`
-
-        if [ "${firstchar}" != "/" ]
-        then
-            echo "HADOOP_MAGPIENETWORKFS_PATH must be an absolute path"
-            exit 1
-        fi
     fi
 
     if Magpie_hdfs_federation_enabled
