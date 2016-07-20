@@ -2,6 +2,18 @@
 
 source test-config.sh
 
+__SubmitFunctionalityTests_LegacySubmissionType() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-legacysubmissiontype
+}
+
 __SubmitFunctionalityTests_BadJobNames () {
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-whitespace
     BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-dollarsign
@@ -94,6 +106,7 @@ __SubmitFunctionalityTests_MagpieExports() {
 }
 
 SubmitFunctionalityTests() {
+    __SubmitFunctionalityTests_LegacySubmissionType
     __SubmitFunctionalityTests_BadJobNames
     __SubmitFunctionalityTests_AltConfFilesDir
     __SubmitFunctionalityTests_TestAll
