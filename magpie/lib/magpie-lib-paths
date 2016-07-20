@@ -28,17 +28,9 @@
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-    then
-        hadoopsetupscriptprefix="bin"
-        hadoopcmdprefix="bin"
-        dfsadminscript="hadoop"
-    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-    then
-        hadoopsetupscriptprefix="sbin"
-        hadoopcmdprefix="bin"
-        dfsadminscript="hdfs"
-    fi
+    hadoopsetupscriptprefix="sbin"
+    hadoopcmdprefix="bin"
+    dfsadminscript="hdfs"
 fi
 
 if [ "${PIG_SETUP}" == "yes" ]

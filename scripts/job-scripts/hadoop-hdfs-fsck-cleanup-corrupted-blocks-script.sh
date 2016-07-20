@@ -4,16 +4,8 @@
 
 cd ${HADOOP_HOME}
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
-then
-    fsckscript="hadoop"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]
-then
-    fsckscript="hdfs"
-fi
-
 # This will clean up corrupted/missing blocks
-command="bin/${fsckscript} fsck -delete"
+command="bin/hdfs fsck -delete"
 echo "Running $command" >&2
 $command
 

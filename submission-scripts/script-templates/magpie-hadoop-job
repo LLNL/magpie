@@ -54,7 +54,7 @@
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2.
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS2.
 #
 export HADOOP_MODE="terasort"
 

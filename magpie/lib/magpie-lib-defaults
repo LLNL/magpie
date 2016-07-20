@@ -53,7 +53,6 @@ then
     default_hadoop_jobhistoryserver_address="10020"
     default_hadoop_jobhistoryserver_webapp_address="19888"
     default_mapred_job_tracker_address="54311"
-    default_mapred_job_tracker_httpaddress="50030"
     # achu: Why not set dfs.namenode.rpc-address and
     # dfs.namenode.servicerpc-address?  Unclear of why one might set
     # this, internal to Hadoop 2.6.0 code, defaults to fs.defaultFS

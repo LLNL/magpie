@@ -55,13 +55,7 @@ extrahadoopopts=""
 extrayarnopts=""
 extrahadooptaskopts=""
 
-if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
-then
-    # For some reason Hadoop 1.0 needs FQDN hosts in hosts-include
-    cp ${HADOOP_CONF_DIR}/slaves_fqdn ${HADOOP_CONF_DIR}/hosts-include
-else
-    cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
-fi
+cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
 hostsincludefile="${HADOOP_CONF_DIR}/hosts-include"
 hostsincludefilesubst=`echo "${hostsincludefile}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -183,12 +177,7 @@ if [ "${HADOOP_CHILD_REDUCE_HEAPSIZE}X" != "X" ]
 then
     reducechildheapsize=${HADOOP_CHILD_REDUCE_HEAPSIZE}
 else
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-        reducechildheapsize=`expr ${mapchildheapsize} \* 2`
-    else
-        reducechildheapsize=${allchildheapsize}
-    fi
+    reducechildheapsize=`expr ${mapchildheapsize} \* 2`
 fi
 
 if [ "${HADOOP_CHILD_MAP_CONTAINER_BUFFER}X" != "X" ]
@@ -280,20 +269,6 @@ then
     defaultreducetasks=${HADOOP_DEFAULT_REDUCE_TASKS}
 else
     defaultreducetasks=${HADOOP_SLAVE_COUNT}
-fi
-
-if [ "${HADOOP_MAX_MAP_TASKS}X" != "X" ]
-then
-    maxmaptasks=${HADOOP_MAX_MAP_TASKS}
-else
-    maxmaptasks=${maxtaskspernode}
-fi
-
-if [ "${HADOOP_MAX_REDUCE_TASKS}X" != "X" ]
-then
-    maxreducetasks=${HADOOP_MAX_REDUCE_TASKS}
-else
-    maxreducetasks=${maxtaskspernode}
 fi
 
 if [ "${HADOOP_HDFS_BLOCKSIZE}X" != "X" ]
@@ -395,13 +370,7 @@ then
             fi
         fi
 
-        if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
-        then
-            datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}${hdfspath}/dfs/data"
-        elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-        then
-            datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}file://${hdfspath}/dfs/data"
-        fi
+        datanodedirtmp="${datanodedirtmp}${datanodedirtmp:+","}file://${hdfspath}/dfs/data"
         pathcount=`expr ${pathcount} + 1`
     done
     IFS=${IFSORIG}
@@ -430,13 +399,7 @@ then
         fi
     fi
     
-    if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
-    then
-        datanodedir="$\{hadoop.tmp.dir\}\/dfs\/data"
-    elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-    then
-        datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
-    fi
+    datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
     
     pathcount=1
 
@@ -582,28 +545,14 @@ fi
 
 # Magpie_find_conffile will set the 'pre' filenames
 
-if [ ${HADOOP_SETUP_TYPE} == "MR1" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS1" ]
-then
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-1.X.xml" "pre_coresitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-1.X.xml" "pre_mapredsitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-1.X.sh" "pre_hadoopenvsh"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-1.X.xml" "pre_hdfssitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-1.X.properties" "pre_log4jproperties"
-elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ] || [ ${HADOOP_SETUP_TYPE} == "HDFS2" ]
-then
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X.xml" "pre_coresitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X.xml" "pre_mapredsitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-2.X.sh" "pre_hadoopenvsh"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X.xml" "pre_hdfssitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-2.X.properties" "pre_log4jproperties"
-
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-env-2.X.sh" "pre_mapredenvsh"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X.xml" "pre_yarnsitexml"
-    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-env-2.X.sh" "pre_yarnenvsh"
-else
-    Magpie_output_internal_error "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
-    exit 1
-fi
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X.xml" "pre_coresitexml"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X.xml" "pre_mapredsitexml"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-2.X.sh" "pre_hadoopenvsh"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X.xml" "pre_hdfssitexml"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-2.X.properties" "pre_log4jproperties"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-env-2.X.sh" "pre_mapredenvsh"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X.xml" "pre_yarnsitexml"
+Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-env-2.X.sh" "pre_yarnenvsh"
 
 post_coresitexml=${HADOOP_CONF_DIR}/core-site.xml
 post_mapredsitexml=${HADOOP_CONF_DIR}/mapred-site.xml
@@ -621,73 +570,66 @@ extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
 # Setup Hadoop configuration files and environment files
 #
 
-if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
-    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ] \
-    || [ ${HADOOP_SETUP_TYPE}  == "HDFS1" ] \
-    || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
+cp ${pre_coresitexml} ${post_coresitexml}
+
+sed -i \
+    -e "s/HADOOPTMPDIR/${magpie_hadooptmpdirsubst}/g" \
+    -e "s/FSDEFAULT/${magpie_fsdefaultsubst}/g" \
+    -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
+    -e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
+    -e "s/HADOOPDEFAULTUSER/${USER}/g" \
+    ${post_coresitexml}
+
+hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hadooplogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hadooppiddirsubst=`echo "${HADOOP_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hadoopmapredpiddirsubst=`echo "${HADOOP_MAPRED_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hadoophdfshomesubst=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+extrahadoopclassessubst=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
+
+cp ${pre_hadoopenvsh} ${post_hadoopenvsh}
+
+sed -i \
+    -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+    -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+    -e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
+    -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
+    -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+    -e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
+    -e "s/HADOOPPIDDIR/${hadooppiddirsubst}/g" \
+    -e "s/HADOOPMAPREDPIDDIR/${hadoopmapredpiddirsubst}/g" \
+    -e "s/HADOOPHOME/${hadoophomesubst}/g" \
+    -e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
+    -e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
+    -e "s/HADOOPHDFSHOME/${hadoophdfshomesubst}/g" \
+    -e "s/EXTRAHADOOPCLASSES/${extrahadoopclassessubst}/g" \
+    -e "s/EXTRAHADOOPOPTS/${extrahadoopoptssubst}/g" \
+    ${post_hadoopenvsh}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
-    cp ${pre_coresitexml} ${post_coresitexml}
-
-    sed -i \
-        -e "s/HADOOPTMPDIR/${magpie_hadooptmpdirsubst}/g" \
-        -e "s/FSDEFAULT/${magpie_fsdefaultsubst}/g" \
-        -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
-        -e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
-        -e "s/HADOOPDEFAULTUSER/${USER}/g" \
-        ${post_coresitexml}
-
-    hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadooplogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadooppiddirsubst=`echo "${HADOOP_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopmapredpiddirsubst=`echo "${HADOOP_MAPRED_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoophdfshomesubst=`echo "${HADOOP_HDFS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-
-    extrahadoopclassessubst=`echo "${extrahadoopclasses}" | sed "s/\\//\\\\\\\\\//g"`
-
-    cp ${pre_hadoopenvsh} ${post_hadoopenvsh}
-
-    sed -i \
-        -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
-        -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-        -e "s/HADOOP_NAMENODE_HEAP_MAX/${hadoopnamenodedaemonheapmax}/g" \
-        -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
-        -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
-        -e "s/HADOOPLOGDIR/${hadooplogdirsubst}/g" \
-        -e "s/HADOOPPIDDIR/${hadooppiddirsubst}/g" \
-        -e "s/HADOOPMAPREDPIDDIR/${hadoopmapredpiddirsubst}/g" \
-        -e "s/HADOOPHOME/${hadoophomesubst}/g" \
-        -e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
-        -e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
-        -e "s/HADOOPHDFSHOME/${hadoophdfshomesubst}/g" \
-        -e "s/EXTRAHADOOPCLASSES/${extrahadoopclassessubst}/g" \
-        -e "s/EXTRAHADOOPOPTS/${extrahadoopoptssubst}/g" \
-        ${post_hadoopenvsh}
-
-    if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
-    then
-        echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hadoopenvsh}
-    fi
-    if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
-    then
-        echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
-    fi
-
-    if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
-    then
-        cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
-    else
-        echo "ulimit -n ${magpie_openfilescount}" >> ${post_hadoopenvsh}
-        echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hadoopenvsh}
-    fi
-
-    cp ${pre_log4jproperties} ${post_log4jproperties}
+    echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hadoopenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
 fi
 
-if [ ${HADOOP_SETUP_TYPE} == "MR1" ] \
-    || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
+then
+    cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
+else
+    echo "ulimit -n ${magpie_openfilescount}" >> ${post_hadoopenvsh}
+    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hadoopenvsh}
+fi
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
     extrahadooptaskoptssubst=`echo "${extrahadooptaskopts}" | sed "s/\\//\\\\\\\\\//g"`
@@ -707,8 +649,6 @@ then
         -e "s/REDUCECONTAINERMB/${reducecontainermb}/g" \
         -e "s/DEFAULTMAPTASKS/${defaultmaptasks}/g" \
         -e "s/DEFAULTREDUCETASKS/${defaultreducetasks}/" \
-        -e "s/MAXMAPTASKS/${maxmaptasks}/g" \
-        -e "s/MAXREDUCETASKS/${maxreducetasks}/g" \
         -e "s/LOCALSTOREDIR/${mapredlocalstoredir}/g" \
         -e "s/IOSORTFACTOR/${iosortfactor}/g" \
         -e "s/IOSORTMB/${iosortmb}/g" \
@@ -719,7 +659,6 @@ then
         -e "s/HADOOPJOBHISTORYADDRESS/${default_hadoop_jobhistoryserver_address}/g" \
         -e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${default_hadoop_jobhistoryserver_webapp_address}/g" \
         -e "s/MAPREDJOBTRACKERADDRESS/${default_mapred_job_tracker_address}/g" \
-        -e "s/MAPREDJOBTRACKERHTTPADDRESS/${default_mapred_job_tracker_httpaddress}/g" \
         -e "s/YARNAPPMAPREDUCEAMSTAGINGDIR/${yardappmapreduceamstagingdirsubst}/g" \
         -e "s/HADOOPEXTRATASKJAVAOPTS/ ${extrahadooptaskoptssubst}/g" \
         -e "s/EXTRAHADOOPOPTS/ ${extrahadoopoptssubst}/g" \
@@ -778,10 +717,6 @@ then
         ${post_yarnsitexml}
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
     cp ${pre_mapredenvsh} ${post_mapredenvsh}
 
