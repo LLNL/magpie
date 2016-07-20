@@ -173,6 +173,8 @@ documentation.  If you are very interested in support in Magpie 2.0
 beyond an experimental nature, please submit a support request and we
 can reconsider adding it back in.
 
+   - MagpieNetworkFS option for a Hadoop Filesystem
+
 Documentation
 -------------
 

@@ -145,9 +145,6 @@ else
         elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
         then
             defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.block.size 2> /dev/null`
-        elif [ "${HADOOP_FILESYSTEM_MODE}" == "magpienetworkfs" ]
-        then
-            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.magpienetworkfs.block.size 2> /dev/null`
         else
             Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
             exit 1
