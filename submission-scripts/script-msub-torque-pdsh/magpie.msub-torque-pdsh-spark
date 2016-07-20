@@ -34,8 +34,7 @@
 # example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
 # specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
 #
-# Also take into account additional nodes needed for other services,
-# for example HDFS federation.
+# Also take into account additional nodes needed for other services.
 #
 # Many of the below can be configured on the msub command line.  If
 # you are more comfortable specifying these on the command line, feel

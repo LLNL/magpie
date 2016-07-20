@@ -8,8 +8,6 @@
 #
 # INSERT_HDFSOVERNETWORKFS - insert HDFS over NetworkFS configuration
 #
-# INSERT_HDFS_FEDERATION - insert HDFS federation configuration 
-#
 HADOOP_INCLUDE=y
 PIG_INCLUDE=y
 MAHOUT_INCLUDE=y
@@ -25,7 +23,6 @@ ZOOKEEPER_INCLUDE=y
 MAGPIE_NO_LOCAL_DIR=n
 INSERT_HDFSOVERLUSTRE=y
 INSERT_HDFSOVERNETWORKFS=y
-INSERT_HDFS_FEDERATION=n
 
 #
 # Adjust any of these paths for your own local defaults
@@ -241,12 +238,6 @@ define create-templates
 	else \
 		sed -i -e "/@MODE_HDFSOVERNETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
 		sed -i -e "/@CONFIG_HDFSOVERNETWORKFS@/,+1d" magpie-hadoop-filesystem-substitution; \
-	fi
-
-	if test "${INSERT_HDFS_FEDERATION}" = "y"; then \
-		sed -i -e "/@HDFS_FEDERATION@/{r magpie-hadoop-filesystem-hdfs-federation" -e "d}" magpie-hadoop-filesystem-substitution; \
-	else \
-		sed -i -e "/@HDFS_FEDERATION@/,+1d" magpie-hadoop-filesystem-substitution; \
 	fi
 
 	cp magpie-run-job-header magpie-run-job-header-substitution

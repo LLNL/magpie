@@ -36,18 +36,12 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 
-# XXX deal with viewfs & federation
 Magpie_calculate_hadoop_filesystem_paths () {
     local noderank=$1
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
         magpie_hadooptmpdir=`echo ${HADOOP_HDFS_PATH} | awk -F, '{print $1}'`
-        if Magpie_hdfs_federation_enabled
-        then
-            magpie_fsdefault="viewfs:///"
-        else
-            magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
-        fi
+        magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
@@ -56,12 +50,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         else
             magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
         fi
-        if Magpie_hdfs_federation_enabled
-        then
-            magpie_fsdefault="viewfs:///"
-        else
-            magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
-        fi
+        magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
@@ -70,13 +59,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         else
             magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
         fi
-        
-        if Magpie_hdfs_federation_enabled
-        then
-            magpie_fsdefault="viewfs:///"
-        else
-            magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
-        fi
+        magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]

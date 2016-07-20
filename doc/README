@@ -325,8 +325,6 @@ considered on the side of experimental.
 
   Packages: UDA/uda-plugin, Kafka, Zeppelin, Mahout
 
-  Features: HDFS Federation
-
 Documentation
 -------------
 
@@ -349,11 +347,6 @@ Zookeeper - See README.zookeeper
 Documentation on some optional features:
 
 - Support HPC systems without (or very small) /tmp filesystems - See README.no-local-dir
-
-Documentation on some experimental features that range from
-sorta-supported to barely-supported:
-
-- Support HDFS federation - See README.hdfsfederation
 
 Some miscellaneous documentation:
 
