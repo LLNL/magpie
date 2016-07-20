@@ -11,12 +11,9 @@ export HADOOP_SETUP=no
 # Set Hadoop Setup Type
 #
 # Will inform scripts on how to setup config files and what daemons to
-# launch/setup.  The hadoop build/binaries set by HADOOP_HOME
-# needs to match up with what you set here.
+# launch/setup.
 #
-# MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS1 - HDFS only w/ Hadoop 1.0
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
 # The HDFS only options may be useful when you want to use HDFS with

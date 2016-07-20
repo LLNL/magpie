@@ -263,12 +263,9 @@ export HADOOP_SETUP=yes
 # Set Hadoop Setup Type
 #
 # Will inform scripts on how to setup config files and what daemons to
-# launch/setup.  The hadoop build/binaries set by HADOOP_HOME
-# needs to match up with what you set here.
+# launch/setup.
 #
-# MR1 - MapReduce/Hadoop 1.0 w/ HDFS
 # MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS1 - HDFS only w/ Hadoop 1.0
 # HDFS2 - HDFS only w/ Hadoop 2.0
 #
 # The HDFS only options may be useful when you want to use HDFS with
@@ -415,7 +412,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS1 or HDFS2.
+# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS2.
 #
 export HADOOP_MODE="hdfsonly"
 

@@ -223,11 +223,6 @@ Magpie_run_start_hadoop () {
                 # Make variables unspecified for shutdown
                 Magpie_make_all_local_dirs_unspecified
 
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    ${hadoopsetupscriptprefix}/start-mapred.sh
-                fi
-                
                 if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
                 then
                     ${hadoopsetupscriptprefix}/start-yarn.sh
@@ -256,11 +251,7 @@ Magpie_run_start_hadoop () {
             echo "*"
             echo "* You can view your Hadoop status by launching a web browser and pointing to ..."
             echo "*"
-            if [ ${HADOOP_SETUP_TYPE}  == "MR1" ]
-            then
-                echo "* Jobtracker: http://${HADOOP_MASTER_NODE}:${default_mapred_job_tracker_httpaddress}"
-                echo "*"
-            elif [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+            if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
             then
                 echo "* Yarn Resource Manager: http://${HADOOP_MASTER_NODE}:${default_yarn_resourcemanager_webapp_address}"
                 echo "*"
@@ -324,30 +315,15 @@ Magpie_run_start_hadoop () {
                 then
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-dfs.sh" 
                 fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-mapred.sh"
-                fi
                 if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
                 then
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-yarn.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-jobhistoryserver.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-                then
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
                 fi
                 echo "*" 
                 echo "* To end/cleanup your session & kill all daemons, login and set"
                 echo "* environment variables per the instructions above, then run:"
                 echo "*" 
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-mapred.sh"
-                fi
                 if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
                 then
                     echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-yarn.sh"
@@ -355,10 +331,6 @@ Magpie_run_start_hadoop () {
                 if Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
                     echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-dfs.sh"
-                fi
-                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-                then
-                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
                 fi
                 if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
                 then
@@ -450,11 +422,6 @@ Magpie_run_start_hadoop () {
         # write/create in HDFS
         if [ ${HADOOP_MODE} != "setuponly" ] && [ "${magpie_run_hadoop_setup_successful}" == "1" ]
         then
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                ${hadoopsetupscriptprefix}/start-jobhistoryserver.sh
-            fi
-            
             if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
             then
                 ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
@@ -576,12 +543,6 @@ Magpie_run_stop_hadoop () {
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified
 
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                ${hadoopsetupscriptprefix}/stop-mapred.sh
-                ${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh
-            fi
-            
             if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
             then
                 ${hadoopsetupscriptprefix}/stop-yarn.sh

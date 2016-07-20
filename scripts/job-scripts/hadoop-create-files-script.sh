@@ -5,19 +5,11 @@
 
 cd ${HADOOP_HOME}
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-then
-    terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-then
-    terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
-fi
-
-command="bin/hadoop jar ${terasortexamples} teragen 50000000 teragen-1"
+command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-${HADOOP_VERSION}.jar teragen 50000000 teragen-1"
 echo "Running $command" >&2
 $command
 
-command="bin/hadoop jar ${terasortexamples} teragen 50000000 teragen-2"
+command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-${HADOOP_VERSION}.jar teragen 50000000 teragen-2"
 echo "Running $command" >&2
 $command
    

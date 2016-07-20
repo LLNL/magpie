@@ -166,16 +166,6 @@ if [ "${HADOOP_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${HADOOP_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HADOOP_CONF_DIR}/slaves
-
-    slavenodes=`cat ${HADOOP_CONF_DIR}/slaves`
-    `touch ${HADOOP_CONF_DIR}/slaves_fqdn`
-    dnsdomainname=`dnsdomainname`
-
-    # We assume FQDN across all nodes is the same
-    for node in ${slavenodes}
-    do
-        echo "${node}.${dnsdomainname}" >> ${HADOOP_CONF_DIR}/slaves_fqdn
-    done
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]

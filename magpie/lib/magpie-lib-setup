@@ -119,8 +119,7 @@ Magpie_calculate_stop_timeouts () {
 
     if [ "${HADOOP_SETUP}" == "yes" ]
     then
-        if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
-            || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
+        if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
         then
             # Need to split timeout time between namenode, datanodes,
             # secondary namenode, jobtracker/resource manager,
@@ -198,7 +197,7 @@ Magpie_calculate_stop_timeouts () {
 __Magpie_calculate_canrunjobscount () {
     __canrunjobscount=0
 
-    if [ "${HADOOP_SETUP}" == "yes" ] && ( [ "${HADOOP_SETUP_TYPE}" == "MR1" ] || [ "${HADOOP_SETUP_TYPE}" == "MR2" ] )
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
     then
         __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi

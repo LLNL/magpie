@@ -32,18 +32,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 
 # This is a job, no loading export files or libs except for minimal convenience ones
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-then
-    terasortexamples="hadoop-examples-$HADOOP_VERSION.jar"
-    rmoption="-rmr"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-then
-    terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar"
-    rmoption="-rm -r"
-else
-    Magpie_output_internal_error "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
-    exit 1
-fi
+terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-${HADOOP_VERSION}.jar"
 
 if [ "${HADOOP_TERASORT_SIZE}X" == "X" ]
 then
@@ -77,25 +66,25 @@ cd ${HADOOP_HOME}
 
 if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-teragen
 then
-    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+    command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-teragen"
     $command
 fi
 
 if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-sort
 then
-    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+    command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-sort"
     $command
 fi
 
 if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-checksum
 then
-    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-checksum"
+    command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-checksum"
     $command
 fi
 
 if ${hadoopcmdprefix}/hadoop fs -ls ${pathprefix} | grep -q terasort-validate
 then
-    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
+    command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-validate"
     $command
 fi
 
@@ -103,43 +92,35 @@ if [ "${HADOOP_TERAGEN_MAP_COUNT:-0}" -ne "0" ]
 then
     mtasks=$HADOOP_TERAGEN_MAP_COUNT
 else
-    # achu, as far as I can tell, Hadoop 1.0 does not have a mechanism
-    # to get the currently configured settings, so Hadoop 1.0 uses defaults.
-    if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+    # Calculate the sensible maximum number of map tasks there should be
+    # Want to add +1 mtasks, make each block just below blocksize
+    # instead of make each task make blocksize + scratch data.
+    terasortfullsize=`expr $terasortsize \* 100`
+        
+    if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
-        # Calculate the sensible maximum number of map tasks there should be
-        # Want to add +1 mtasks, make each block just below blocksize
-        # instead of make each task make blocksize + scratch data.
-        terasortfullsize=`expr $terasortsize \* 100`
-        
-        if Magpie_hadoop_filesystem_mode_is_hdfs_type
-        then
-            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey dfs.blocksize 2> /dev/null`
-        elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
-        then
-            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.local.block.size 2> /dev/null`
-        else
-            Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
-            exit 1
-        fi
-        
-        mtasks=`expr $terasortfullsize \/ ${defaultblocksize}`
-        mtasks=`expr $mtasks + 1`
-        
-        # But use the default map task count if it is smaller than this max.
-        
-        defaultmaptasks=`${hadoopcmdprefix}/hdfs getconf -confKey mapreduce.job.maps 2> /dev/null`
-        
-        if [ "${defaultmaptasks}" -lt "${mtasks}" ]
-        then
-            mtasks=${defaultmaptasks}
-        fi
-        
-        mapreducemaptasks="-Dmapreduce.job.maps=${mtasks}"
-    elif [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then 
-        mapreducemaptasks=""
+        defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey dfs.blocksize 2> /dev/null`
+    elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+    then
+        defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.local.block.size 2> /dev/null`
+    else
+        Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
+        exit 1
     fi
+        
+    mtasks=`expr $terasortfullsize \/ ${defaultblocksize}`
+    mtasks=`expr $mtasks + 1`
+    
+    # But use the default map task count if it is smaller than this max.
+    
+    defaultmaptasks=`${hadoopcmdprefix}/hdfs getconf -confKey mapreduce.job.maps 2> /dev/null`
+        
+    if [ "${defaultmaptasks}" -lt "${mtasks}" ]
+    then
+        mtasks=${defaultmaptasks}
+    fi
+        
+    mapreducemaptasks="-Dmapreduce.job.maps=${mtasks}"
 fi
 
 echo "*******************************************************"
@@ -175,13 +156,7 @@ then
         whichchecksumcommand="terachecksum"
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-        mapreducereducetasks="-Dmapred.reduce.tasks=$sumreducetasks"
-    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-        mapreducereducetasks="-Dmapreduce.job.reduces=$sumreducetasks"
-    fi
+    mapreducereducetasks="-Dmapreduce.job.reduces=$sumreducetasks"
 
     command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} ${whichchecksumcommand} ${extralibjars} ${mapreducereducetasks} ${pathprefix}terasort-teragen ${pathprefix}terasort-checksum"
 
@@ -215,13 +190,7 @@ echo "*******************************************************"
 echo "* Executing TeraSort"
 echo "*******************************************************"
 
-if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-then
-    mapreducereducetasks="-Dmapred.reduce.tasks=$sortreducetasks"
-elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-then
-    mapreducereducetasks="-Dmapreduce.job.reduces=$sortreducetasks"
-fi
+mapreducereducetasks="-Dmapreduce.job.reduces=$sortreducetasks"
 
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} terasort ${extralibjars} ${mapreducereducetasks} ${replicationcount} ${clearcache} ${pathprefix}terasort-teragen ${pathprefix}terasort-sort"
 
@@ -239,13 +208,7 @@ then
     # I assume no user is concerned with performance here, we just go with this fixed number 
     validatereducetasks=`expr $HADOOP_SLAVE_COUNT`
 
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-    then
-        mapreducereducetasks="-Dmapred.reduce.tasks=$validatereducetasks"
-    elif [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-    then
-        mapreducereducetasks="-Dmapreduce.job.reduces=$validatereducetasks"
-    fi
+    mapreducereducetasks="-Dmapreduce.job.reduces=$validatereducetasks"
     
     command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teravalidate ${extralibjars} ${mapreducereducetasks} ${pathprefix}terasort-sort ${pathprefix}terasort-validate"
 
@@ -287,18 +250,18 @@ then
     fi
 fi
 
-command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-teragen"
+command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-teragen"
 $command
-command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-sort"
+command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-sort"
 $command
 if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
 then
-    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-checksum"
+    command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-checksum"
     $command
 fi
 if [ "${HADOOP_TERASORT_RUN_TERAVALIDATE}" == "yes" ]
 then
-    command="${hadoopcmdprefix}/hadoop fs ${rmoption} ${pathprefix}terasort-validate"
+    command="${hadoopcmdprefix}/hadoop fs -rm -r ${pathprefix}terasort-validate"
     $command
 fi
 
