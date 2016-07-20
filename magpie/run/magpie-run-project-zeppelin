@@ -93,6 +93,7 @@ Magpie_run_start_zeppelin () {
         echo "* Zeppelin Information"
         echo "*"
         echo "* To access Zeppelin's web interface, you'll want to navigate your browser to:"
+        echo "*"
         echo "*     http://${ZEPPELIN_MASTER_NODE}:${default_zeppelin_port}"
         echo "*"
         echo "* To access zeppelin directly, you'll want to:"

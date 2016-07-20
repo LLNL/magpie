@@ -223,8 +223,8 @@ Some package versions from Apache require minimum Java versions.
 Although the minimums may be lower than those listed here, these are
 our recommendations based on testing & experience.
 
-Hadoop 2.0 -> 2.6 - Java 1.6
-Hadoop 2.7 -> ... - Java 1.7
+Hadoop 2.0 -> 2.5
+Hadoop 2.6 -> ... - Java 1.7
 
 Hbase 0.98 - Java 1.6
 Hbase 0.99 -> ... - Java 1.7 
@@ -525,8 +525,8 @@ submission-scripts/script-templates/Makefile and a new directory for
 these new submission scripts in submission-scripts.
 
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
-magpie-exports-submission-type and add appropriate input checks in
-magpie-check-inputs.
+magpie/exports/magpie-exports-submission-type and add appropriate
+input checks in magpie-check-inputs.
 
 I'd be glad to accept patches back for other schedulers/resource
 managers.  Please send me a pull request.
