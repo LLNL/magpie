@@ -135,14 +135,12 @@ Magpie_run_start_tachyon () {
             echo "*   \$TACHYON_HOME/${tachyoncmdprefix}/tachyon format"
             echo "*   \$TACHYON_HOME/${tachyoncmdprefix}/tachyon-start.sh -N all NoMount"
             echo "*" 
+            echo "* To end/cleanup your session & kill all daemons, login and set"
+            echo "* environment variables per the instructions above, then run:"
+            echo "*" 
+            echo "*   \$TACHYON_HOME/${tachyoncmdprefix}/tachyon-stop.sh all"
+            echo "*"
         fi
-
-        echo "* To end/cleanup your session & kill all daemons, login and set"
-        echo "* environment variables per the instructions above, then run:"
-        echo "*" 
-        echo "*   \$TACHYON_HOME/${tachyoncmdprefix}/tachyon-stop.sh all"
-        echo "*"
-
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"

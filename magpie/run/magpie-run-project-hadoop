@@ -356,31 +356,31 @@ Magpie_run_start_hadoop () {
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
                 fi
                 echo "*" 
+                echo "* To end/cleanup your session & kill all daemons, login and set"
+                echo "* environment variables per the instructions above, then run:"
+                echo "*" 
+                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+                then
+                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-mapred.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+                then
+                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-yarn.sh"
+                fi
+                if Magpie_hadoop_filesystem_mode_is_hdfs_type
+                then
+                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-dfs.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
+                then
+                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
+                fi
+                if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+                then
+                    echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
+                fi
+                echo "*" 
             fi
-            echo "* To end/cleanup your session & kill all daemons, login and set"
-            echo "* environment variables per the instructions above, then run:"
-            echo "*" 
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-mapred.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-            then
-                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-yarn.sh"
-            fi
-            if Magpie_hadoop_filesystem_mode_is_hdfs_type
-            then
-                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-dfs.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR1" ]
-            then
-                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-jobhistoryserver.sh"
-            fi
-            if [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-            then
-                echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
-            fi
-            echo "*" 
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
             then
                 echo "* If running interactively, sourcing"

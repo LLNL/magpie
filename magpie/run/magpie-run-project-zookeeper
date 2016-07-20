@@ -57,20 +57,6 @@ __Magpie_run_check_zookeeper_up () {
     return 1
 }
 
-__Magpie_run_output_zookeeper_help () {
-    echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
-    if echo $MAGPIE_SHELL | grep -q csh
-    then
-        echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
-        echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
-        echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
-    else
-        echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
-        echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
-        echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
-    fi
-}
-
 Magpie_run_start_zookeeper () {
 
     if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
@@ -105,18 +91,22 @@ Magpie_run_start_zookeeper () {
         then
             echo "* To setup, you probably want to run:" 
             echo "*"
-            __Magpie_run_output_zookeeper_help
+            echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+                echo "*   setenv ZOOKEEPER_HOME \"${ZOOKEEPER_HOME}\""
+                echo "*   setenv ZOOCFGDIR \"${ZOOKEEPER_CONF_DIR}\""
+            else
+                echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+                echo "*   export ZOOKEEPER_HOME=\"${ZOOKEEPER_HOME}\""
+                echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
+            fi
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-start-all.sh"
             echo "*" 
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
             echo "*" 
-            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-stop-all.sh"
-            echo "*" 
-        else
-            echo "* To end/cleanup your session & kill all daemons:"
-            echo "*"
-            __Magpie_run_output_zookeeper_help
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-stop-all.sh"
             echo "*" 
         fi

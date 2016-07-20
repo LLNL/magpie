@@ -110,12 +110,12 @@ Magpie_run_start_spark () {
             echo "*"
             echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/start-all.sh" 
             echo "*" 
+            echo "* To end/cleanup your session & kill all daemons, login and set"
+            echo "* environment variables per the instructions above, then run:"
+            echo "*" 
+            echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/stop-all.sh"
+            echo "*" 
         fi
-        echo "* To end/cleanup your session & kill all daemons, login and set"
-        echo "* environment variables per the instructions above, then run:"
-        echo "*" 
-        echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/stop-all.sh"
-        echo "*" 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
             echo "* If running interactively, sourcing"
