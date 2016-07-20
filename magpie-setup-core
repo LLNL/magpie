@@ -117,9 +117,7 @@ ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MA
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
 
 if [ "${HADOOP_SETUP}" == "yes" ] \
-    && ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
-        || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]) \
+    && Magpie_hadoop_filesystem_mode_is_hdfs_type \
     && Magpie_hdfs_federation_enabled
 then
     extranamenodecount=`expr ${HDFS_FEDERATION_NAMENODE_COUNT} - 1`
