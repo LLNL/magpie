@@ -470,10 +470,9 @@ then
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsoverlustre" ] \
         && [ "${HADOOP_FILESYSTEM_MODE}" != "hdfsovernetworkfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ] \
-        && [ "${HADOOP_FILESYSTEM_MODE}" != "intellustre" ]
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ]
     then
-        echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, hdfsovernetworkfs, rawnetworkfs, or intellustre"
+        echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, hdfsovernetworkfs, or rawnetworkfs"
         exit 1
     fi
 
@@ -498,13 +497,6 @@ then
         && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
-        exit 1
-    fi
-
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-        && [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
-    then
-        echo "HADOOP_FILESYSTEM_MODE=${HADOOP_FILESYSTEM_MODE} only works with HADOOP_SETUP_TYPE = MR2"
         exit 1
     fi
 
@@ -537,13 +529,6 @@ then
     if [ "${HADOOP_LOCALSTORE}X" != "X" ]
     then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_LOCALSTORE_CLEAR"
-    fi
-
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-    then
-        __Magpie_check_must_be_set "HADOOP_INTELLUSTRE_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-        
-        __Magpie_check_if_set_is_yes_or_no "HADOOP_INTELLUSTRE_SHUFFLE"
     fi
 
     if Magpie_hdfs_federation_enabled
@@ -644,14 +629,6 @@ then
     __Magpie_check_must_be_set_and_is_regular_file "HADOOP_UDA_JAR" "to run Hadoop w/ UDA"
 
     __Magpie_check_if_set_is_a_directory "HADOOP_UDA_LIBPATH"
-
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] \
-        && [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ] \
-        && [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
-    then
-        echo "UDA shuffling cannot be enabled alongside Lustre Shuffling, please disable one of them"
-        exit 1
-    fi
 fi
 
 #

@@ -194,12 +194,6 @@ then
         sparkshufflebufferkb=1024
         sparkshufflebuffer=1024k
         sparkshuffleconsolidatefiles="true"
-    elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-    then
-        # Assuming Lustre, so copy above 1M
-        sparkshufflebufferkb=1024
-        sparkshufflebuffer=1024k
-        sparkshuffleconsolidatefiles="true"
     fi 
 else
     # Accessing filesystem directly, assume Lustre

@@ -55,9 +55,6 @@ fi
 if [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     pathprefix="${HADOOP_RAWNETWORKFS_PATH}/"
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-then
-    pathprefix="${HADOOP_INTELLUSTRE_PATH}/"
 fi
 
 if [ "${HADOOP_TERASORT_CLEAR_CACHE}X" != "X" ]
@@ -142,9 +139,6 @@ else
         elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
         then
             defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.local.block.size 2> /dev/null`
-        elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-        then
-            defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey fs.block.size 2> /dev/null`
         else
             Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
             exit 1

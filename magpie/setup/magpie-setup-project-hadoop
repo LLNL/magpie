@@ -136,11 +136,7 @@ elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     # Assuming Lustre, so copy above 1M
     iobuffersize=1048576
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-then
-    # Assuming Lustre, so copy above 1M
-    iobuffersize=1048576
-fi 
+fi
 
 # Sets magpie_processor_count & magpie_threads_to_use
 Magpie_calculate_threads_to_use
@@ -340,41 +336,8 @@ else
     fi
 fi
 
-if [ "${HADOOP_INTELLUSTRE_BLOCKSIZE}X" != "X" ]
-then
-    intellustreblocksize=${HADOOP_INTELLUSTRE_BLOCKSIZE}
-else
-    intellustreblocksize=536870912
-fi
-
-if [ "${HADOOP_INTELLUSTRE_STRIPESIZE}X" != "X" ]
-then
-    intellustrestripesize=${HADOOP_INTELLUSTRE_STRIPESIZE}
-else
-    intellustrestripesize=134217728
-fi
-
-if [ "${HADOOP_INTELLUSTRE_STRIPECOUNT}X" != "X" ]
-then
-    intellustrestripecount=${HADOOP_INTELLUSTRE_STRIPECOUNT}
-else
-    intellustrestripecount=-1
-fi
-
-if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ] && [ "${HADOOP_INTELLUSTRE_SHUFFLE}X" != "X" ]
-then
-    if [ "${HADOOP_INTELLUSTRE_SHUFFLE}" == "yes" ]
-    then
-        mapoutputcollectorclass="org.apache.hadoop.mapred.SharedFsPlugins\$MapOutputBuffer"
-        reduceshuffleconsumerplugin="org.apache.hadoop.mapred.SharedFsPlugins\$Shuffle"
-    else
-        mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
-        reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
-    fi
-else
-    mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
-    reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
-fi
+mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
+reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
 
 if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
 then
@@ -519,22 +482,6 @@ then
     fi
     
     pathcount=1
-elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-then
-    intellustrerootdir=`echo "${HADOOP_INTELLUSTRE_PATH}" | sed "s/\\//\\\\\\\\\//g"`
-    magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
-    magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
-
-    if [ ! -d "${magpie_hadooptmpdir}" ]
-    then
-        mkdir -p ${magpie_hadooptmpdir}
-        if [ $? -ne 0 ] ; then
-            echo "mkdir failed making ${magpie_hadooptmpdir}"
-            exit 1
-        fi
-    fi
-
-    pathcount=1
 else
     Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
     exit 1
@@ -542,8 +489,7 @@ fi
 
 if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \
     || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ] \
-    || [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]) \
+    || [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]) \
     && [ "${HADOOP_LOCALSTORE}X" != "X" ]
 then
     IFSORIG=${IFS}
@@ -717,11 +663,6 @@ then
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X-uda.xml" "pre_yarnsitexml_uda"
     fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
-    then
-        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-intellustre.xml" "pre_coresitexml_intellustre"
-    fi
-
     if [ "${TACHYON_SETUP}" == "yes" ]
     then
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-tachyon.xml" "pre_coresitexml_tachyon"
@@ -758,13 +699,6 @@ if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
 then
     cp ${pre_coresitexml} ${post_coresitexml}
-
-    if [ "${pre_coresitexml_intellustre}X" != "X" ]
-    then
-        sed -i -e "/@INTELLUSTRE@/{r ${pre_coresitexml_intellustre}" -e "d}" ${post_coresitexml}
-    else
-        sed -i -e "/@INTELLUSTRE@/,+1d" ${post_coresitexml}
-    fi
 
     if [ "${pre_coresitexml_tachyon}X" != "X" ]
     then
@@ -821,10 +755,6 @@ then
         -e "s/FSDEFAULT/${magpie_fsdefaultsubst}/g" \
         -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
         -e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
-        -e "s/INTELLUSTREROOTDIR/${intellustrerootdir}/g" \
-        -e "s/INTELLUSTREBLOCKSIZE/${intellustreblocksize}/g" \
-        -e "s/INTELLUSTRESTRIPESIZE/${intellustrestripesize}/g" \
-        -e "s/INTELLUSTRESTRIPECOUNT/${intellustrestripecount}/g" \
         -e "s/HADOOPDEFAULTUSER/${USER}/g" \
         ${post_coresitexml}
 
