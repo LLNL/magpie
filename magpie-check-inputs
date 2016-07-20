@@ -162,6 +162,33 @@ __Magpie_check_must_be_set_and_is_executable () {
     __Magpie_check_is_executable "${varname}"
 }
     
+__Magpie_check_path_is_executable () {
+    local pathexec="$1"
+
+    if [ ! -x ${pathexec} ]
+    then
+        echo "Path ${patchexec} does not have execute permissions"
+        exit 1
+    fi
+}
+
+__Magpie_check_paths_are_executable () {
+    local scriptsvar=$1
+
+    if echo ${!scriptsvar} | grep -q -e ","
+    then
+        IFSORIG=${IFS}
+        IFS=","
+        for script in ${!scriptsvar}
+        do
+            __Magpie_check_path_is_executable ${script}
+        done
+        IFS=${IFSORIG}
+    else
+        __Magpie_check_is_executable "${scriptsvar}"
+    fi
+}
+
 #
 # Check Core Inputs
 #
@@ -251,7 +278,7 @@ fi
 
 if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then 
-    __Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
+    __Magpie_check_paths_are_executable "MAGPIE_PRE_JOB_RUN"
 
     if [ ${magpie_startup_time_value} -lt 5 ]
     then
@@ -262,7 +289,7 @@ fi
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then 
-    __Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
+    __Magpie_check_paths_are_executable "MAGPIE_POST_JOB_RUN"
     
     if [ ${magpie_shutdown_time_value} -lt 10 ]
     then

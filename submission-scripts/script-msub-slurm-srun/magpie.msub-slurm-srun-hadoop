@@ -169,6 +169,9 @@ export MAGPIE_JOB_TYPE="hadoop"
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
 #
+# If you wish, multiple scripts can be listed to be run if separated
+# by comma.
+#
 # A number of convenient scripts are available in the
 # ${MAGPIE_SCRIPTS_HOME}/scripts directory.
 #
