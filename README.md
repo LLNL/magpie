@@ -59,11 +59,13 @@ Supported Packages & Versions
 -----------------------------
 
 The following packages and their versions have been tested for minimal
-support in Magpie.  Please see full README for additional details.
+support in this version of Magpie.  Please see full README for
+additional details.
 
 Versions not listed below should work with Magpie if the
 configuration/setup of those versions is compatible with the versions
-listed below.
+listed below.  However, certain features or options may not work with
+those versions.
 
 * + - Requires patch against binary distro's scripts, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
@@ -159,6 +161,17 @@ Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
       Spark may be built against non-0.6.X builds.  Recompilation of
       Tachyon & Spark may be needed depending on your environment.
       See README for more details
+
+Older Supported Packages & Features
+-----------------------------------
+
+Some packages and features were dropped in Magpie 2.0 due to lack of
+interest, the software becoming old/deprecated, and/or their initial
+experimental addition into Magpie.  If you are interested in them,
+please look at Magpie 1.X versions for supported versions and
+documentation.  If you are very interested in support in Magpie 2.0
+beyond an experimental nature, please submit a support request and we
+can reconsider adding it back in.
 
 Documentation
 -------------
