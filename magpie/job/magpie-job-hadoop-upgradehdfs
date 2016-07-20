@@ -26,8 +26,6 @@
 # shouldn't be editted.  See job submission files for configuration
 # details.
 
-# XXX does this work w/ federation?
-
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 
 # This is a job, no loading export files or libs except for minimal convenience ones

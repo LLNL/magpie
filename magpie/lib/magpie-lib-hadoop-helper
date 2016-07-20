@@ -28,15 +28,6 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 
-Magpie_hdfs_federation_enabled () {
-    if [ "${HDFS_FEDERATION_NAMENODE_COUNT}X" != "X" ] \
-        && [ "${HDFS_FEDERATION_NAMENODE_COUNT}" -gt 1 ]
-    then
-        return 0
-    fi
-    return 1
-}
-
 Magpie_hadoop_filesystem_mode_is_hdfs_type () {
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
         || [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] \

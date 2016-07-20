@@ -528,58 +528,6 @@ then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_LOCALSTORE_CLEAR"
     fi
 
-    if Magpie_hdfs_federation_enabled
-    then
-        if ! Magpie_hadoop_filesystem_mode_is_hdfs_type
-        then
-            echo "HDFS federation can only work with an HDFS based file system, cannot work with HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-            exit 1
-        fi
-
-        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
-        if [ $? == "2" ]
-        then 
-            echo "HDFS Fderation only supported in Hadoop 2.2.0 and more recent versions"
-            exit 1
-        fi
-
-        # Ensure user listed atleast 1 mount for each namenode
-        for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-        do
-            mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_1"
-            eval mountvalue="\$$mountname"
-            if [ "${mountvalue}X" == "X" ]
-            then
-                echo "HDFS federation requires atleast one mount specified for each namenode, ${mountname} must be specified" 
-                exit 1
-            fi
-        done
-
-        # Check that all mounts are absolute paths
-        for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-        do
-            j=1
-            while true;
-            do
-                mountname="HDFS_FEDERATION_NAMENODE_${i}_MOUNT_${j}"
-                eval mountvalue="\$$mountname"
-                if [ "${mountvalue}X" == "X" ]
-                then
-                    break;
-                fi
-                if [[ "${mountvalue}" != /* ]]
-                then
-                    echo "HDFS federation mount must be an absolute path beginning with a /"
-                    exit 1
-                fi
-                j=`expr ${j} + 1`
-            done
-        done 
-
-        nodecount=`expr ${nodecount} - ${HDFS_FEDERATION_NAMENODE_COUNT-1}`
-    fi
-
     if [ "${HADOOP_MODE}" == "terasort" ]
     then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_CLEAR_CACHE"

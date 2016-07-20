@@ -167,6 +167,7 @@ beyond an experimental nature, please submit a support request and we
 can reconsider adding it back in.
 
    - Tachyon
+   - HDFS Federation in Hadoop
    - IntelLustre option for a Hadoop Filesystem
    - MagpieNetworkFS option for a Hadoop Filesystem
 

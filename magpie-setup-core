@@ -136,19 +136,6 @@ fi
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
 
-if [ "${HADOOP_SETUP}" == "yes" ] \
-    && Magpie_hadoop_filesystem_mode_is_hdfs_type \
-    && Magpie_hdfs_federation_enabled
-then
-    extranamenodecount=`expr ${HDFS_FEDERATION_NAMENODE_COUNT} - 1`
-
-    head -${extranamenodecount} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${MAGPIE_LOCAL_CONF_DIR}/namenode_hdfs_federation
-
-    tail -n+${HDFS_FEDERATION_NAMENODE_COUNT} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves_tmp
-
-    cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves_tmp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
-fi
-
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     tmpslavecount=`cat ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves | wc -l`
@@ -179,10 +166,6 @@ if [ "${HADOOP_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${HADOOP_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HADOOP_CONF_DIR}/slaves
-    if [ -f "${MAGPIE_LOCAL_CONF_DIR}/namenode_hdfs_federation" ]
-    then
-        cp ${MAGPIE_LOCAL_CONF_DIR}/namenode_hdfs_federation ${HADOOP_CONF_DIR}/namenode_hdfs_federation
-    fi
 
     slavenodes=`cat ${HADOOP_CONF_DIR}/slaves`
     `touch ${HADOOP_CONF_DIR}/slaves_fqdn`

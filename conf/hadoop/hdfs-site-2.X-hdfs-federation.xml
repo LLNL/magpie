@@ -1,7 +1,0 @@
-<property>
-  <name>dfs.nameservices</name>
-  <value>NAMESERVICES</value>
-</property>
-
-@NAMENODEINFO@
-

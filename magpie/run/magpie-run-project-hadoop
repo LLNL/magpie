@@ -43,39 +43,10 @@ __Magpie_run_check_hadoop_up ()
     #
     # We do not use "-safemode wait", b/c we want to inform the user
     # as we're waiting.
-    if Magpie_hdfs_federation_enabled
+    ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
+    if [ $? -eq 0 ]
     then
-        local exittedsafemodeflag=1
-        
-        for j in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-        do
-            # First namenode is based on master
-            if [ "${j}" == "1" ]
-            then
-                local federationnamenodehost="${HADOOP_MASTER_NODE}"
-            else
-                local numline=`expr ${j} - 1`
-                local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-            fi
-            
-            ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode get 2>&1 | grep -q -i "off"
-            if [ $? -ne 0 ]
-            then
-                exittedsafemodeflag=0
-                break
-            fi
-        done
-
-        if [ "${exittedsafemodeflag}" == "1" ]
-        then
-            return 0
-        fi
-    else
-        ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode get 2>&1 | grep -q -i "off"
-        if [ $? -eq 0 ]
-        then
-            return 0
-        fi
+        return 0
     fi
 
     return 1
@@ -298,23 +269,7 @@ Magpie_run_start_hadoop () {
             fi
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
-                if Magpie_hdfs_federation_enabled
-                then
-                    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-                    do
-                        # First namenode is based on master
-                        if [ "${i}" == "1" ]
-                        then
-                            local federationnamenodehost="${HADOOP_MASTER_NODE}"
-                        else
-                            local numline=`expr ${i} - 1`
-                            local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-                        fi
-                        echo "* HDFS Namenode ${i}: http://${federationnamenodehost}:${default_hadoop_hdfs_namenode_httpaddress}"
-                    done
-                else
-                    echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_httpaddress}"
-                fi
+                echo "* HDFS Namenode: http://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_httpaddress}"
                 echo "* HDFS DataNode: http://<DATANODE>:${default_hadoop_hdfs_datanode_httpaddress}"
                 echo "*"
             fi
@@ -322,23 +277,7 @@ Magpie_run_start_hadoop () {
             then
                 echo "* HDFS can be accessed directly at:"
                 echo "*"
-                if Magpie_hdfs_federation_enabled
-                then
-                    for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-                    do
-                        # First namenode is based on master
-                        if [ "${i}" == "1" ]
-                        then
-                            local federationnamenodehost="${HADOOP_MASTER_NODE}"
-                        else
-                            local numline=`expr ${i} - 1`
-                            local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-                        fi
-                        echo "* hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address}"
-                    done
-                else
-                    echo "*   hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}" 
-                fi
+                echo "*   hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}" 
                 echo "*" 
             fi
             echo "* To access Hadoop directly, you'll want to:"
@@ -662,44 +601,17 @@ Magpie_run_stop_hadoop () {
                     then
                         echo "Saving namespace before shutting down hdfs ..."
 
-                        if Magpie_hdfs_federation_enabled
-                        then
-                            for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-                            do
-                                # First namenode is based on master
-                                if [ "${i}" == "1" ]
-                                then
-                                    federationnamenodehost="${HADOOP_MASTER_NODE}"
-                                else
-                                    numline=`expr ${i} - 1`
-                                    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-                                fi
-                                
-                                command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode enter"
-                                echo "Running $command" >&2
-                                $command
-                                
-                                command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -saveNamespace"
-                                echo "Running $command" >&2
-                                $command
-                                
-                                command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode leave"
-                                echo "Running $command" >&2
-                                $command
-                            done
-                        else
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
-                            echo "Running $command" >&2
-                            $command
+                        command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
+                        echo "Running $command" >&2
+                        $command
                         
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
-                            echo "Running $command" >&2
-                            $command
+                        command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
+                        echo "Running $command" >&2
+                        $command
                         
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
-                            echo "Running $command" >&2
-                            $command
-                        fi
+                        command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
+                        echo "Running $command" >&2
+                        $command
                     fi
                 fi
 

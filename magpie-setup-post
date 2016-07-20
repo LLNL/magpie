@@ -52,42 +52,25 @@ then
         
         if [ ! -f ${magpie_hdfs_format_file} ]
         then
-            if Magpie_hdfs_federation_enabled
+            # Only master will format the node
+            if Magpie_am_I_master
             then
-                if Magpie_am_I_a_hadoop_namenode
-                then
-                    echo "*******************************************************"
-                    echo "* Formatting HDFS Namenode on Namenode ${MAGPIE_CLUSTER_NODERANK}"
-                    echo "*******************************************************"
-                    cd $HADOOP_HOME
-                    echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format -clusterId "Magpie${HADOOP_FILESYSTEM_MODE}"
-                    touch ${magpie_hdfs_format_file}
-                else
-                    # If this is the first time running, make everyone else wait
-                    # until the format is complete
-                    sleep 30
-                fi
-            else
-                # Only master will format the node
-                if Magpie_am_I_master
-                then
-                    echo "*******************************************************"
-                    echo "* Formatting HDFS Namenode"
-                    echo "*******************************************************"
-                    cd $HADOOP_HOME
+                echo "*******************************************************"
+                echo "* Formatting HDFS Namenode"
+                echo "*******************************************************"
+                cd $HADOOP_HOME
                     # Don't check version, legacy 0.2X versioning could be used
-                    if [ -x "${hadoopcmdprefix}/hdfs" ]
-                    then
-                        echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format
-                    else
-                        echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
-                    fi
-                    touch ${magpie_hdfs_format_file}
+                if [ -x "${hadoopcmdprefix}/hdfs" ]
+                then
+                    echo 'Y' | ${hadoopcmdprefix}/hdfs namenode -format
                 else
-                    # If this is the first time running, make everyone else wait
-                    # until the format is complete
-                    sleep 30
+                    echo 'Y' | ${hadoopcmdprefix}/hadoop namenode -format
                 fi
+                touch ${magpie_hdfs_format_file}
+            else
+                # If this is the first time running, make everyone else wait
+                # until the format is complete
+                sleep 30
             fi
         fi
     fi

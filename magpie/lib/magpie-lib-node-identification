@@ -85,44 +85,15 @@ __Magpie_am_I_a_project_node () {
     return 1
 }
 
-__Magpie_am_I_a_hadoop_namenode_in_hdfs_federation () {
-    local myhostname=`hostname`
-    
-    Magpie_make_hadoop_local_dirs_node_specific
-    
-    if grep -s -q -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation
-    then 
-        local subrank=`grep -n -E "^${myhostname}$" ${HADOOP_CONF_DIR}/namenode_hdfs_federation | awk --field-separator=':' '{print $1}'`
-        hadoopnoderank="0${subrank}"
-        return 0
-    fi
-
-    return 1
-}
-
 Magpie_am_I_a_hadoop_node () {
     __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "slaves"
-    local exitval=$?
-    if [ "${exitval}" == "1" ]
-    then
-        __Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
-        return $?
-    fi
-    
-    return ${exitval}
+    return $?
 }
 
 Magpie_am_I_a_hadoop_namenode () {
     # Only check masters for namenode
     __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" ""
-    local exitval=$?
-    if [ "${exitval}" == "1" ]
-    then
-        __Magpie_am_I_a_hadoop_namenode_in_hdfs_federation
-        return $?
-    fi
-
-    return ${exitval}
+    return $?
 }
 
 Magpie_am_I_a_hbase_node () {
