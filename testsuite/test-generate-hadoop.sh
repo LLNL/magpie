@@ -230,7 +230,7 @@ __GenerateHadoopDependencyTests_Dependency5 () {
         magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}*run-hadoopterasort
 
     # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-    Magpie_vercomp ${firstversion} "2.7.0"
+    Magpie_vercomp ${firstversion} "2.6.0"
     if [ $? == "2" ]; then
         JavaCommonSubstitution ${java16} `ls magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}*`
     else
@@ -256,7 +256,7 @@ __GenerateHadoopDependencyTests_Dependency5 () {
             magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*run-hadoopupgradehdfs
 
         # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${version} "2.7.0"
+        Magpie_vercomp ${version} "2.6.0"
         if [ $? == "2" ]; then
             JavaCommonSubstitution ${java16} `ls magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*`
         else
@@ -374,18 +374,18 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" ${java16} ${java16} "6A"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" ${java16} ${java16} "6B"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "6C"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java16} "6D"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java16} ${java17} "6E"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java17} "6D"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java17} ${java17} "6E"
 
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" ${java16} ${java16} "6F"
     
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" ${java16} ${java16} "6G"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" ${java16} ${java16} "6H"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" ${java16} ${java16} "6I"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" ${java16} ${java16} "6J"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" ${java16} ${java16} "6K"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" ${java16} ${java16} "6L"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" ${java17} ${java17} "6I"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" ${java17} ${java17} "6J"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" ${java17} ${java17} "6K"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" ${java17} ${java17} "6L"
 
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" ${java17} ${java17} "6M"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" ${java17} ${java17} "6N"
