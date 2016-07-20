@@ -525,8 +525,8 @@ submission-scripts/script-templates/Makefile and a new directory for
 these new submission scripts in submission-scripts.
 
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
-magpie-exports-submission-type and add appropriate input checks in
-magpie-check-inputs.
+magpie/exports/magpie-exports-submission-type and add appropriate
+input checks in magpie-check-inputs.
 
 I'd be glad to accept patches back for other schedulers/resource
 managers.  Please send me a pull request.
