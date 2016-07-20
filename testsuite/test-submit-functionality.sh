@@ -105,6 +105,30 @@ __SubmitFunctionalityTests_MagpieExports() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-functionality-checkexports
 }
 
+__SubmitFunctionalityTests_PrePostRunScripts() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts
+}
+
+__SubmitFunctionalityTests_PreRunScriptError() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-prerunscripterror
+}
+
 SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_LegacySubmissionType
     __SubmitFunctionalityTests_BadJobNames
@@ -114,4 +138,6 @@ SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_SetuponlyMode
     __SubmitFunctionalityTests_JobTimeout
     __SubmitFunctionalityTests_MagpieExports
+    __SubmitFunctionalityTests_PrePostRunScripts
+    __SubmitFunctionalityTests_PreRunScriptError
 }

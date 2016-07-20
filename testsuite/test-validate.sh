@@ -681,6 +681,47 @@ then
     done
 fi
 
+__check_prepostrunscripts () {
+    local file=$1
+    local preorpost=$2
+
+    num=`grep -e "${preorpost}RUN SCRIPT" $file | wc -l`
+    if [ "${num}" != "0" ]
+    then
+        echo "Error in $file"
+    fi
+}
+
+__get_test_files prepostrunscripts
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        __check_prepostrunscripts ${file} "PRE"
+        __check_prepostrunscripts ${file} "POST"
+        
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+__get_test_files prerunscripterror
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        __check_prepostrunscripts ${file} "PRE"
+        
+        num=`grep -e "Magpie General Job Info" $file | wc -l`
+        if [ "${num}" != "0" ]; then
+            echo "Error in $file"
+        fi
+        
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __get_test_files run-hadoopterasort
 if [ $? -eq 0 ]
 then
