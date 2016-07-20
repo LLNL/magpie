@@ -26,8 +26,6 @@
 #
 #           User must set HADOOP_RAWNETWORKFS_PATH below.
 #
-@MODE_INTELLUSTRE@
-
 export HADOOP_FILESYSTEM_MODE=HADOOPFILESYSTEMMODE
 
 # Local Filesystem BlockSize
@@ -102,8 +100,6 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 # This is used with HADOOP_FILESYSTEM_MODE="rawnetworkfs"
 #
 export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
-
-@CONFIG_INTELLUSTRE@
 
 # If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked

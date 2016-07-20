@@ -4,8 +4,6 @@
 #
 # MAGPIE_NO_LOCAL_DIR - support MAGPIE_NO_LOCAL_DIR
 #
-# INSERT_INTELLUSTRE - insert intellustre configuration
-#
 # INSERT_HDFSOVERLUSTRE - insert HDFS over Lustre configuration
 #
 # INSERT_HDFSOVERNETWORKFS - insert HDFS over NetworkFS configuration
@@ -26,7 +24,6 @@ ZEPPELIN_INCLUDE=y
 ZOOKEEPER_INCLUDE=y
 
 MAGPIE_NO_LOCAL_DIR=n
-INSERT_INTELLUSTRE=n
 INSERT_HDFSOVERLUSTRE=y
 INSERT_HDFSOVERNETWORKFS=y
 INSERT_HDFS_FEDERATION=n
@@ -234,14 +231,6 @@ define create-templates
 	fi
 
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution
-
-	if test "${INSERT_INTELLUSTRE}" = "y"; then \
-		sed -i -e "/@MODE_INTELLUSTRE@/{r magpie-hadoop-filesystem-mode-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@CONFIG_INTELLUSTRE@/{r magpie-hadoop-filesystem-config-intellustre" -e "d}" magpie-hadoop-filesystem-substitution; \
-	else \
-		sed -i -e "/@MODE_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
-		sed -i -e "/@CONFIG_INTELLUSTRE@/,+1d" magpie-hadoop-filesystem-substitution; \
-	fi
 
 	if test "${INSERT_HDFSOVERLUSTRE}" = "y"; then \
 		sed -i -e "/@MODE_HDFSOVERLUSTRE@/{r magpie-hadoop-filesystem-mode-hdfsoverlustre" -e "d}" magpie-hadoop-filesystem-substitution; \
