@@ -39,9 +39,7 @@ then
     default_yarn_resourcemanager_admin_address="8033"
     default_yarn_nodemanager_localizer_address="8040"
     default_yarn_nodemanager_webapp_address="8042"
-    # In Hadoop code, default is 8020, but 54310 is the common legacy
-    # one used throughout the web.  I'll keep the 54310 one for now.
-    default_hadoop_hdfs_namenode_address="54310"
+    default_hadoop_hdfs_namenode_address="8020"
     default_hadoop_hdfs_namenode_httpaddress="50070"
     default_hadoop_hdfs_namenode_secondary_http_address="50090"
     default_hadoop_hdfs_namenode_secondary_https_address="50091"
