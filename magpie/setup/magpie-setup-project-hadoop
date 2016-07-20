@@ -604,22 +604,6 @@ else
 fi
 
 #
-# Tachyon
-#
-
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    tachyonjar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
-
-    extrahadoopclasses="${extrahadoopclasses}${extrahadoopclasses:+":"}${tachyonjar}"
-
-    if [ "${TACHYON_ASYNCHRONOUS_WRITES}" == "yes" ]
-    then
-        extrahadooptaskopts="${extrahadooptaskopts}${extrahadooptaskopts:+" "}-Dtachyon.async.enabled=true -Dtachyon.user.file.writetype.default=ASYNC_THROUGH"
-    fi
-fi
-
-#
 # Get config files for setup
 #
 
@@ -648,11 +632,6 @@ then
     then
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X-uda.xml" "pre_mapredsitexml_uda"
         Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X-uda.xml" "pre_yarnsitexml_uda"
-    fi
-
-    if [ "${TACHYON_SETUP}" == "yes" ]
-    then
-        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X-tachyon.xml" "pre_coresitexml_tachyon"
     fi
 
     if Magpie_hdfs_federation_enabled
@@ -686,13 +665,6 @@ if [ ${HADOOP_SETUP_TYPE}  == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "HDFS2" ]
 then
     cp ${pre_coresitexml} ${post_coresitexml}
-
-    if [ "${pre_coresitexml_tachyon}X" != "X" ]
-    then
-        sed -i -e "/@TACHYON@/{r ${pre_coresitexml_tachyon}" -e "d}" ${post_coresitexml}
-    else
-        sed -i -e "/@TACHYON@/,+1d" ${post_coresitexml}
-    fi
 
     if [ "${pre_coresitexml_viewfsmount}X" != "X" ]
     then

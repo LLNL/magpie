@@ -364,11 +364,6 @@ else
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-0.X.properties" "pre_log4jproperties"
 fi
 
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-defaults.conf-tachyon" "pre_sparkdefaultsconf_tachyon"
-fi
-
 if [ "${SPARK_USE_YARN}" == "yes" ]
 then
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-defaults.conf-yarn" "pre_sparkdefaultsconf_yarn"
@@ -433,19 +428,6 @@ echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
 if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
 then
     sparkclasspath="${SPARK_JOB_CLASSPATH}"
-fi
-
-# Must put jar in for 0.9.1
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    tachyon_jar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
-    
-    if [ "${sparkclasspath}X" != "X" ]
-    then
-        sparkclasspath="${tachyon_jar}:${sparkclasspath}"
-    else
-        sparkclasspath="${tachyon_jar}"
-    fi
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
@@ -597,20 +579,7 @@ then
         sparkdriverlibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
-    if [ "${TACHYON_SETUP}" == "yes" ]
-    then
-        sparktachyonstoreurl="tachyon://${TACHYON_MASTER_NODE}:${default_tachyon_master_port}"
-        sparktachyonstoreurlsubst=`echo "${sparktachyonstoreurl}" | sed "s/\\//\\\\\\\\\//g"`
-    fi
-
     cp ${pre_sparkdefaultsconf} ${post_sparkdefaultsconf}
-
-    if [ "${pre_sparkdefaultsconf_tachyon}X" != "X" ]
-    then
-        sed -i -e "/@TACHYON@/{r ${pre_sparkdefaultsconf_tachyon}" -e "d}" ${post_sparkdefaultsconf}
-    else
-        sed -i -e "/@TACHYON@/,+1d" ${post_sparkdefaultsconf}
-    fi
 
     if [ "${pre_sparkdefaultsconf_yarn}X" != "X" ]
     then
@@ -651,7 +620,6 @@ then
         -e "s/SPARKMEMORYFRACTION/${sparkmemoryfraction}/g" \
         -e "s/SPARKMEMORYSTORAGEFRACTION/${sparkmemorystoragefraction}/g" \
         -e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
-        -e "s/SPARKTACHYONSTOREURL/${sparktachyonstoreurlsubst}/g" \
         -e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
         -e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
         -e "s/SPARKYARNEXECUTORCORES/${workercores}/g" \

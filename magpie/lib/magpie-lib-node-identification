@@ -37,7 +37,7 @@ Magpie_am_I_master () {
 
     Magpie_make_all_local_dirs_node_specific
 
-    for project in HADOOP HBASE SPARK STORM KAFKA ZEPPELIN TACHYON ZOOKEEPER
+    for project in HADOOP HBASE SPARK STORM KAFKA ZEPPELIN ZOOKEEPER
     do
         local setupvar="${project}_SETUP"
         local confdirvar="${project}_CONF_DIR"
@@ -147,11 +147,6 @@ Magpie_am_I_a_kafka_node () {
 
 Magpie_am_I_a_storm_node () {
     __Magpie_am_I_a_project_node ${STORM_CONF_DIR} "stormnoderank" "masters" "workers"
-    return $?
-}
-
-Magpie_am_I_a_tachyon_node () {
-    __Magpie_am_I_a_project_node ${TACHYON_CONF_DIR} "tachyonnoderank" "masters" "slaves"
     return $?
 }
 

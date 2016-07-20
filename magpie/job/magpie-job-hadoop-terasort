@@ -79,17 +79,6 @@ then
     fi
 fi
 
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    tachyonjar="${TACHYON_HOME}/client/target/tachyon-client-${TACHYON_VERSION}-jar-with-dependencies.jar"
-    if [ "${extralibjars}X" == "X" ]
-    then
-        extralibjars="-libjars ${tachyonjar}"
-    else
-        extralibjars="${extralibjars},${tachyonjar}"
-    fi
-fi
-
 cd ${HADOOP_HOME}
 
 #

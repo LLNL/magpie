@@ -19,7 +19,6 @@ PHOENIX_INCLUDE=y
 SPARK_INCLUDE=y
 KAFKA_INCLUDE=y
 STORM_INCLUDE=y
-TACHYON_INCLUDE=y
 ZEPPELIN_INCLUDE=y
 ZOOKEEPER_INCLUDE=y
 
@@ -49,7 +48,6 @@ PHOENIX_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 PIG_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 SPARK_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 STORM_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
-TACHYON_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 UDA_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZEPPELIN_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
@@ -87,7 +85,6 @@ KAFKA_VERSION_DEFAULT=2.11-0.9.0.0
 STORM_VERSION_DEFAULT=1.2.1
 STORM_ZOOKEEPER_VERSION_DEFAULT=3.4.12
 ZOOKEEPER_VERSION_DEFAULT=3.4.12
-TACHYON_VERSION_DEFAULT=0.6.1
 ZEPPELIN_VERSION_DEFAULT=0.7.3
 ZEPPELIN_SPARK_VERSION_DEFAULT=1.6.3-bin-hadoop2.6
 
@@ -153,7 +150,6 @@ define common-substitution
 	sed -i -e 's;PIGDIRPREFIX;$(PIG_DIR_PREFIX);g' $(1)
 	sed -i -e 's;SPARKDIRPREFIX;$(SPARK_DIR_PREFIX);g' $(1)
 	sed -i -e 's;STORMDIRPREFIX;$(STORM_DIR_PREFIX);g' $(1)
-	sed -i -e 's;TACHYONDIRPREFIX;$(TACHYON_DIR_PREFIX);g' $(1)
 	sed -i -e 's;UDADIRPREFIX;$(UDA_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZEPPELINDIRPREFIX;$(ZEPPELIN_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZOOKEEPERDIRPREFIX;$(ZOOKEEPER_DIR_PREFIX);g' $(1)
@@ -167,7 +163,6 @@ define common-substitution
 	sed -i -e 's;KAFKAVERSIONDEFAULT;$(KAFKA_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;STORMVERSIONDEFAULT;$(STORM_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;ZOOKEEPERVERSIONDEFAULT;$(ZOOKEEPER_VERSION_DEFAULT);g' $(1)
-	sed -i -e 's;TACHYONVERSIONDEFAULT;$(TACHYON_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;ZEPPELINVERSIONDEFAULT;$(ZEPPELIN_VERSION_DEFAULT);g' $(1)
 
 	sed -i -e 's;REMOTECMDDEFAULT;$(REMOTE_CMD_DEFAULT);g' $(1)
@@ -197,7 +192,7 @@ endef
 # Perhaps there is a niftier way to do this in sed than what I'm doing, glad
 # to take suggestions.  I couldn't figure out a way to do it in 1 pass.
 define common-addition
-	for project in hadoop hbase phoenix pig mahout spark kafka zeppelin storm tachyon zookeeper; do \
+	for project in hadoop hbase phoenix pig mahout spark kafka zeppelin storm zookeeper; do \
 		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/{r magpie-magpie-customizations-job-$$project" -e "}" $(1); \
@@ -281,7 +276,6 @@ define create-templates
 	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
 	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
 	$(eval MAGPIE_SPARK_WITH_YARN_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn-and-hdfs)
-	$(eval MAGPIE_SPARK_WITH_TACHYON_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-tachyon-and-hdfs)
 	$(eval MAGPIE_SPARK_WITH_ZEPPELIN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-zeppelin)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 	cp magpie-header $(MAGPIE)
@@ -296,7 +290,6 @@ define create-templates
 	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn-and-hdfs))
-	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-spark-with-tachyon-and-hdfs))
 	$(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), $(call create-spark-with-zeppelin))
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
 endef
@@ -353,10 +346,6 @@ define create-all
 			cat magpie-storm >> $(MAGPIE); \
 		fi
 
-		if test "${TACHYON_INCLUDE}" = "y"; then \
-			cat magpie-tachyon >> $(MAGPIE); \
-		fi
-
 		if test "${ZOOKEEPER_INCLUDE}" = "y"; then \
 			cat magpie-zookeeper >> $(MAGPIE); \
 		fi
@@ -373,7 +362,6 @@ define create-all
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${KAFKA_INCLUDE}", "y"), "kafka"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), "zeppelin"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${STORM_INCLUDE}", "y"), "storm"))
-	$(call common-addition, ${MAGPIE}, $(if $(findstring "${TACHYON_INCLUDE}", "y"), "tachyon"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ZOOKEEPER_INCLUDE}", "y"), "zookeeper"))
 	$(call common-addition-end, ${MAGPIE})
 endef
@@ -578,32 +566,6 @@ define create-spark-with-yarn-and-hdfs
 	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 	sed -i -e "s/^# export SPARK_USE_YARN/export SPARK_USE_YARN/g" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
-endef
-
-define create-spark-with-tachyon-and-hdfs
-	echo "Creating magpie.$(SCHED)-spark-with-tachyon-and-hdfs"
-	cat 	magpie-header \
-		magpie-config-$(SCHED) \
-		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
-		magpie-general-configuration-python \
-		magpie-hadoop-core \
-		magpie-hadoop-job \
-		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
-		magpie-spark \
-		magpie-tachyon \
-		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	$(call common-substitution, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS},${SPARK_JAVA_DEFAULT})
-	$(call common-additions, ${MAGPIE_SPARK_WITH_TACHYON_AND_HDFS}, spark tachyon)
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS2\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
-	sed -i -e "s/TACHYON_SETUP=.*/TACHYON_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 endef
 
 define create-spark-with-zeppelin

@@ -373,39 +373,6 @@ Magpie_make_storm_local_dirs_node_specific () {
     __Magpie_make_storm_local_dirs "specific"
 }
 
-__Magpie_make_tachyon_local_dirs () {
-    local which=$1
-
-    if [ "${TACHYON_SETUP}" == "yes" ]
-    then
-        if [ "${TACHYON_LOCAL_JOB_DIR}X" == "X" ]
-        then
-            Magpie_output_internal_error "__Magpie_make_tachyon_local_dirs called without TACHYON_LOCAL_JOB_DIR set"
-            exit 1
-        fi
-
-        export TACHYON_CONF_DIR=${TACHYON_LOCAL_JOB_DIR}/conf
-        export TACHYON_LOG_DIR=${TACHYON_LOCAL_JOB_DIR}/log
-        export TACHYON_LOCAL_SCRATCHSPACE_DIR=${TACHYON_LOCAL_JOB_DIR}/scratch
-
-        if [ "${which}" == "specific" ]
-        then
-            myhostname=`hostname`
-            export TACHYON_CONF_DIR=`echo $TACHYON_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-            export TACHYON_LOG_DIR=`echo $TACHYON_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-            export TACHYON_LOCAL_SCRATCHSPACE_DIR=`echo $TACHYON_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-        fi
-    fi
-}
-
-Magpie_make_tachyon_local_dirs_unspecified () {
-    __Magpie_make_tachyon_local_dirs "generic"
-}
-
-Magpie_make_tachyon_local_dirs_node_specific () {
-    __Magpie_make_tachyon_local_dirs "specific"
-}
-
 __Magpie_make_zookeeper_local_dirs () {
     local which=$1
 
@@ -448,7 +415,6 @@ __Magpie_make_all_local_dirs () {
     __Magpie_make_spark_local_dirs $1
     __Magpie_make_kafka_local_dirs $1
     __Magpie_make_storm_local_dirs $1
-    __Magpie_make_tachyon_local_dirs $1
     __Magpie_make_zookeeper_local_dirs $1
 }
 
@@ -577,18 +543,6 @@ then
     fi
     # STORM_LOCAL_SCRATCHSPACE_DIR & STORM_CONF_DIR & STORM_LOG_DIR set
     Magpie_make_storm_local_dirs_node_specific
-fi
-
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
-    then
-        export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    else
-        export TACHYON_LOCAL_JOB_DIR=${TACHYON_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
-    fi
-    # TACHYON_LOCAL_SCRATCHSPACE_DIR & TACHYON_CONF_DIR & TACHYON_LOG_DIR set
-    Magpie_make_tachyon_local_dirs_node_specific
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]

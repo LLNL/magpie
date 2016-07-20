@@ -160,24 +160,6 @@ then
     export STORM_WORKERS_COUNT=`cat ${STORM_CONF_DIR}/workers|wc -l`
 fi
 
-if [ "${TACHYON_SETUP}" == "yes" ]
-then
-    if [ ! -f "${TACHYON_CONF_DIR}/masters" ]
-    then 
-        Magpie_output_internal_error "${TACHYON_CONF_DIR}/masters does not exist"
-    fi
-
-    if [ ! -f "${TACHYON_CONF_DIR}/slaves" ]
-    then 
-        Magpie_output_internal_error "${TACHYON_CONF_DIR}/slaves does not exist"
-    fi
-
-    export TACHYON_MASTER_NODE=`head -1 ${TACHYON_CONF_DIR}/masters`
-    export TACHYON_MASTER_PORT=${default_tachyon_master_port}
-    export TACHYON_SLAVE_COUNT=`cat ${TACHYON_CONF_DIR}/workers|wc -l`
-    export TACHYON_FIRST_WORKER_NODE=`head -1 ${TACHYON_CONF_DIR}/workers`
-fi
-
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     if [ ! -f "${ZOOKEEPER_CONF_DIR}/masters" ]
