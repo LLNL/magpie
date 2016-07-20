@@ -69,16 +69,6 @@ else
     clearcache="-Ddfs.datanode.drop.cache.behind.reads=true -Ddfs.datanode.drop.cache.behind.writes=true"
 fi
 
-if [ "${HADOOP_UDA_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
-then
-    if [ "${extralibjars}X" == "X" ]
-    then
-        extralibjars="-libjars ${HADOOP_UDA_JAR}"
-    else
-        extralibjars="${extralibjars},${HADOOP_UDA_JAR}"
-    fi
-fi
-
 cd ${HADOOP_HOME}
 
 #

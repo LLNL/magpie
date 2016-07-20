@@ -336,9 +336,6 @@ else
     fi
 fi
 
-mapoutputcollectorclass="org.apache.hadoop.mapred.MapTask\$MapOutputBuffer"
-reduceshuffleconsumerplugin="org.apache.hadoop.mapreduce.task.reduce.Shuffle"
-
 if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
 then
     hadoopdaemonheapmax="${HADOOP_DAEMON_HEAP_MAX}"
@@ -580,30 +577,6 @@ then
 fi
 
 #
-# Hadoop UDA Setup
-#
-
-if [ "${HADOOP_UDA_SETUP}" == "yes" ] \
-    && [ "${HADOOP_SETUP_TYPE}"  == "MR2" ]
-then
-    extrahadoopclasses="${extrahadoopclasses}${extrahadoopclasses:+":"}${HADOOP_UDA_JAR}"
-
-    if [ "${HADOOP_UDA_LIBPATH}X" != "X" ]
-    then
-        extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-Djava.library.path=${HADOOP_UDA_LIBPATH}"
-
-        extrayarnlibrarypath="${extrayarnlibrarypath}${extrayarnlibrarypath:+":"}${HADOOP_UDA_LIBPATH}"
-    fi
-fi
-
-if [ "${HADOOP_UDA_RDMA_BUFFER_SIZE}X" != "X" ]
-then
-    rdmabufsize=${HADOOP_UDA_RDMA_BUFFER_SIZE}
-else
-    rdmabufsize=1024
-fi
-
-#
 # Get config files for setup
 #
 
@@ -627,12 +600,6 @@ then
     Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-env-2.X.sh" "pre_mapredenvsh"
     Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X.xml" "pre_yarnsitexml"
     Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-env-2.X.sh" "pre_yarnenvsh"
-
-    if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-    then
-        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X-uda.xml" "pre_mapredsitexml_uda"
-        Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X-uda.xml" "pre_yarnsitexml_uda"
-    fi
 else
     Magpie_output_internal_error "Illegal HADOOP_SETUP_TYPE \"${HADOOP_SETUP_TYPE}\" specified"
     exit 1
@@ -722,34 +689,10 @@ fi
 if [ ${HADOOP_SETUP_TYPE} == "MR1" ] \
     || [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
-    if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-    then
-        #
-        # A few settings depend on version
-        #
-
-        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
-        if [ $? == "2" ]
-        then 
-            shuffleproviderservices="uda.shuffle"
-        else
-            shuffleproviderservices="uda_shuffle"
-        fi
-        reduceshuffleconsumerplugin="com.mellanox.hadoop.mapred.UdaShuffleConsumerPlugin"
-    fi
-
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
     extrahadooptaskoptssubst=`echo "${extrahadooptaskopts}" | sed "s/\\//\\\\\\\\\//g"`
 
     cp ${pre_mapredsitexml} ${post_mapredsitexml}
-
-    if [ "${pre_mapredsitexml_uda}X" != "X" ]
-    then
-        sed -i -e "/@UDA@/{r ${pre_mapredsitexml_uda}" -e "d}" ${post_mapredsitexml}
-    else
-        sed -i -e "/@UDA@/,+1d" ${post_mapredsitexml}
-    fi
 
     # Space w/ HADOOPEXTRATASKJAVAOPTS & EXTRAHADOOPOPTS substitution is intentional
     sed -i \
@@ -773,10 +716,6 @@ then
         -e "s/HADOOPHOSTSINCLUDEFILENAME/${hostsincludefilesubst}/g" \
         -e "s/HADOOPHOSTSEXCLUDEFILENAME/${hostsexcludefilesubst}/g" \
         -e "s/SUBMITFILEREPLICATION/${submitfilereplication}/g" \
-        -e "s/MAPOUTPUTCOLLECTORCLASS/${mapoutputcollectorclass}/g" \
-        -e "s/REDUCESHUFFLECONSUMERPLUGIN/${reduceshuffleconsumerplugin}/g" \
-        -e "s/SHUFFLEPROVIDERSERVICES/${shuffleproviderservices}/g" \
-        -e "s/RDMABUFSIZE/${rdmabufsize}/g" \
         -e "s/HADOOPJOBHISTORYADDRESS/${default_hadoop_jobhistoryserver_address}/g" \
         -e "s/HADOOPJOBHISTORYWEBAPPADDRESS/${default_hadoop_jobhistoryserver_webapp_address}/g" \
         -e "s/MAPREDJOBTRACKERADDRESS/${default_mapred_job_tracker_address}/g" \
@@ -789,30 +728,14 @@ fi
 
 if [ ${HADOOP_SETUP_TYPE}  == "MR2" ]
 then
-    #
-    # A few settings depend on version
-    #
-
     # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
     Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
     if [ $? == "2" ]
     then 
-        if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-        then
-            yarnauxservices="mapreduce.shuffle,uda.shuffle"
-            yarnauxudashuffle="yarn.nodemanager.aux-services.uda.shuffle.class"
-        else
-            yarnauxservices="mapreduce.shuffle"
-        fi
+        yarnauxservices="mapreduce.shuffle"
         yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
     else
-        if [ "${HADOOP_UDA_SETUP}" == "yes" ]
-        then
-            yarnauxservices="mapreduce_shuffle,uda_shuffle"
-            yarnauxudashuffle="yarn.nodemanager.aux-services.uda_shuffle.class"
-        else
-            yarnauxservices="mapreduce_shuffle"
-        fi
+        yarnauxservices="mapreduce_shuffle"
         yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
     fi
 
@@ -832,13 +755,6 @@ then
 
     cp ${pre_yarnsitexml} ${post_yarnsitexml}
 
-    if [ "${pre_yarnsitexml_uda}X" != "X" ]
-    then
-        sed -i -e "/@UDA@/{r ${pre_yarnsitexml_uda}" -e "d}" ${post_yarnsitexml}
-    else
-        sed -i -e "/@UDA@/,+1d" ${post_yarnsitexml}
-    fi
-
     sed -i \
         -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
         -e "s/YARNMINCONTAINER/${yarnmincontainer}/g" \
@@ -847,7 +763,6 @@ then
         -e "s/LOCALSTOREDIR/${yarnlocalstoredir}/g" \
         -e "s/YARNAUXSERVICES/${yarnauxservices}/g" \
         -e "s/YARNAUXMAPREDUCESHUFFLE/${yarnauxmapreduceshuffle}/g" \
-        -e "s/YARNAUXUDASHUFFLE/${yarnauxudashuffle}/g" \
         -e "s/YARNRESOURCEMANAGERADDRESS/${default_yarn_resourcemanager_address}/g" \
         -e "s/YARNRESOURCEMANAGERSCHEDULERADDRESS/${default_yarn_resourcemanager_scheduler_address}/g" \
         -e "s/YARNRESOURCEMANAGERWEBAPPADDRESS/${default_yarn_resourcemanager_webapp_address}/g" \

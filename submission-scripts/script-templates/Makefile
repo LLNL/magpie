@@ -11,7 +11,6 @@
 HADOOP_INCLUDE=y
 PIG_INCLUDE=y
 MAHOUT_INCLUDE=y
-UDA_INCLUDE=y
 HBASE_INCLUDE=y
 PHOENIX_INCLUDE=y
 SPARK_INCLUDE=y
@@ -45,7 +44,6 @@ PHOENIX_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 PIG_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 SPARK_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 STORM_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
-UDA_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZEPPELIN_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 
@@ -147,7 +145,6 @@ define common-substitution
 	sed -i -e 's;PIGDIRPREFIX;$(PIG_DIR_PREFIX);g' $(1)
 	sed -i -e 's;SPARKDIRPREFIX;$(SPARK_DIR_PREFIX);g' $(1)
 	sed -i -e 's;STORMDIRPREFIX;$(STORM_DIR_PREFIX);g' $(1)
-	sed -i -e 's;UDADIRPREFIX;$(UDA_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZEPPELINDIRPREFIX;$(ZEPPELIN_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZOOKEEPERDIRPREFIX;$(ZOOKEEPER_DIR_PREFIX);g' $(1)
 
@@ -259,7 +256,6 @@ define create-templates
 	mkdir -p ../script-$(SCHED)
 	$(eval MAGPIE := ../script-$(SCHED)/magpie.$(SCHED))
 	$(eval MAGPIE_HADOOP := ../script-$(SCHED)/magpie.$(SCHED)-hadoop)
-	$(eval MAGPIE_HADOOP_WITH_UDA := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-with-uda)
 	$(eval MAGPIE_HADOOP_AND_PIG := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-and-pig)
 	$(eval MAGPIE_HADOOP_AND_MAHOUT := ../script-$(SCHED)/magpie.$(SCHED)-hadoop-and-mahout)
 	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs)
@@ -273,7 +269,6 @@ define create-templates
 
 	$(call create-all)
 	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
-	$(if $(findstring "${HADOOP_INCLUDE}${UDA_INCLUDE}", "yy"), $(call create-hadoop-with-uda))
 	$(if $(findstring "${HADOOP_INCLUDE}${PIG_INCLUDE}", "yy"), $(call create-hadoop-and-pig))
 	$(if $(findstring "${HADOOP_INCLUDE}${MAHOUT_INCLUDE}", "yy"), $(call create-hadoop-and-mahout))
 	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hbase-with-hdfs))
@@ -300,9 +295,6 @@ define create-all
 				magpie-hadoop-filesystem-substitution \
 				magpie-hadoop-mode-terasort \
 				magpie-hadoop-mode-details >> $(MAGPIE); \
-		fi
-		if test "${UDA_INCLUDE}" = "y"; then \
-			cat magpie-uda >> $(MAGPIE); \
 		fi
 
 		if test "${PIG_INCLUDE}" = "y"; then \
@@ -375,27 +367,6 @@ define create-hadoop
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP)
-endef
-
-define create-hadoop-with-uda
-	echo "Creating magpie.$(SCHED)-hadoop-with-uda"
-	cat 	magpie-header \
-		magpie-config-$(SCHED) \
-		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
-		magpie-hadoop-core \
-		magpie-hadoop-job \
-		magpie-hadoop-job-details \
-		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-terasort \
-		magpie-hadoop-mode-details \
-		magpie-uda \
-		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_WITH_UDA)
-	$(call common-substitution, ${MAGPIE_HADOOP_WITH_UDA},${JAVA_DEFAULT})
-	$(call common-additions, ${MAGPIE_HADOOP_WITH_UDA}, hadoop)
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP_WITH_UDA)
-	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_WITH_UDA)
 endef
 
 define create-hadoop-and-pig

@@ -204,24 +204,6 @@
 </property>
 
 <property>
-  <name>mapreduce.job.map.output.collector.class</name>
-  <value>MAPOUTPUTCOLLECTORCLASS</value>
-  <description>
-    It defines the MapOutputCollector implementation to use.
-  </description>
-</property>
-
-<property>
-  <name>mapreduce.job.reduce.shuffle.consumer.plugin.class</name>
-  <value>REDUCESHUFFLECONSUMERPLUGIN</value>
-  <description>
-  Name of the class whose instance will be used
-  to send shuffle requests by reducetasks of this job.
-  The class must be an instance of org.apache.hadoop.mapred.ShuffleConsumerPlugin.
-  </description>
-</property>
-
-<property>
   <name>mapreduce.output.fileoutputformat.compress</name>
   <value>HADOOPCOMPRESSION</value>
   <description>Should the job outputs be compressed?
@@ -287,21 +269,6 @@
   should be around the square root of the number of nodes.
   </description>
 </property>
-
-<!--
-Presently only used by UDA, but could be used by other services
-in the future.  Leave in the main mapred-site.xml file
--->
-
-<property>
-  <name>mapreduce.job.shuffle.provider.services</name>
-  <value>SHUFFLEPROVIDERSERVICES</value>
-  <description>A comma-separated list of classes that should be loaded as additional ShuffleProviderPlugin(s).
-    A ShuffleProviderPlugin can serve shuffle requests from reducetasks.
-  </description>
-</property>
-
-@UDA@
 
 </configuration>
 

@@ -1,4 +1,0 @@
-<property>
-  <name>YARNAUXUDASHUFFLE</name>
-  <value>com.mellanox.hadoop.mapred.UdaShuffleHandler</value>
-</property>
