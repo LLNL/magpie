@@ -175,14 +175,6 @@ Magpie_run_zookeeper () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-zookeeper-zookeeperruok &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${ZOOKEEPER_MODE}" == "launch" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute launch &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "ZOOKEEPER_MODE = ${ZOOKEEPER_MODE} not handled"
     fi

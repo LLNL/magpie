@@ -968,10 +968,9 @@ then
 
     __Magpie_check_must_be_set "ZOOKEEPER_LOCAL_DIR" "to run Zookeeper"
 
-    if [ "${ZOOKEEPER_MODE}" != "zookeeperruok" ] \
-       && [ "${ZOOKEEPER_MODE}" != "launch" ]
+    if [ "${ZOOKEEPER_MODE}" != "zookeeperruok" ]
     then
-       echo "ZOOKEEPER_MODE must be set to zookeeperruok or launch"
+       echo "ZOOKEEPER_MODE must be set to zookeeperruok"
        exit 1
     fi
 
