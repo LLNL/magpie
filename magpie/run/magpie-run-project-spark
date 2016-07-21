@@ -192,14 +192,6 @@ Magpie_run_spark () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${SPARK_SCRIPT_PATH} ${SPARK_SCRIPT_ARGS} &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${SPARK_MODE}" == "interactive" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Spark ${SPARK_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "SPARK_MODE = ${SPARK_MODE} not handled"
     fi

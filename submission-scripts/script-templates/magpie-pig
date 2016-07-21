@@ -56,11 +56,6 @@ export PIG_LOCAL_DIR="LOCALDIRPREFIX/pig"
 #
 # "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
 #
-# "interactive" - manually interact to run pig scripts. In this mode
-#                 you'll login to the cluster node that is your
-#                 'master' node and run pig scripts directly
-#                 (e.g. bin/pig ...).
-#
 export PIG_MODE="testpig"
 
 # Specify script to execute for "script" mode in PIG_MODE.  This pig

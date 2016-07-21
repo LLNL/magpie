@@ -140,11 +140,6 @@ export SPARK_LOCAL_DIR="LOCALDIRPREFIX/spark"
 # "script" - execute a script that lists all of your Spark jobs.  Be
 #            sure to set SPARK_SCRIPT_PATH to your script.
 #
-# "interactive" - manually interact to submit jobs, peruse Spark, etc.
-#                 In this mode you'll login to the cluster node that
-#                 is your 'master' node and interact with Spark
-#                 directly (e.g. bin/spark-shell ...)
-#
 export SPARK_MODE="sparkpi"
 
 # SPARK_DEFAULT_PARALLELISM
