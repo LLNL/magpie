@@ -168,7 +168,7 @@ Magpie_run_start_spark () {
 }
 
 Magpie_run_spark () {
-    if [ "${SPARK_MODE}" == "sparkpi" ]
+    if [ "${SPARK_JOB}" == "sparkpi" ]
     then
         echo "*******************************************************"
         echo "* Running SparkPi"
@@ -176,7 +176,7 @@ Magpie_run_spark () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkpi &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${SPARK_MODE}" == "sparkwordcount" ]
+    elif [ "${SPARK_JOB}" == "sparkwordcount" ]
     then
         echo "*******************************************************"
         echo "* Running SparkWordCount"
@@ -184,7 +184,7 @@ Magpie_run_spark () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkwordcount &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${SPARK_MODE}" == "script" ]
+    elif [ "${SPARK_JOB}" == "script" ]
     then
         echo "*******************************************************"
         echo "* Executing script $SPARK_SCRIPT_PATH $SPARK_SCRIPT_ARGS"
@@ -193,7 +193,7 @@ Magpie_run_spark () {
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
-        Magpie_output_internal_error "SPARK_MODE = ${SPARK_MODE} not handled"
+        Magpie_output_internal_error "SPARK_JOB = ${SPARK_JOB} not handled"
     fi
 }
 

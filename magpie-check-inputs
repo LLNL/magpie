@@ -781,7 +781,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_JOB}" == "sparkwordcount" ]
     then
-        __Magpie_check_must_be_set "SPARK_SPARKWORDCOUNT_FILE" "for SPARK_JOB = ${SPARK_MODE}"
+        __Magpie_check_must_be_set "SPARK_SPARKWORDCOUNT_FILE" "for SPARK_JOB = ${SPARK_JOB}"
 
         if ! echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^[a-zA-Z0-9_]+:\/\/"
         then
@@ -834,7 +834,7 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_JOB = ${SPARK_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_JOB = ${SPARK_JOB}"
     fi
 
     __Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
