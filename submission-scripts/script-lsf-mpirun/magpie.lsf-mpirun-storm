@@ -107,6 +107,10 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #                 Hadoop/Hbase/Spark/etc. and are experimenting with
 #                 things.
 #
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#
 export MAGPIE_JOB_TYPE="storm"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
@@ -340,9 +344,6 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 #                 is your 'master' node and interact with Storm
 #                 directly (e.g. bin/storm ...)
 #
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export STORM_MODE="stormwordcount"
 
 ############################################################################
@@ -401,9 +402,6 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 #             to all Zookeeper daemons.
 #
 # "launch" - Magpie will launch Zookeeper daemons
-#
-# "setuponly" - Like 'launch' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
 #
 export ZOOKEEPER_MODE="launch"
 

@@ -91,9 +91,6 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 #                 is your 'master' node and interact with Storm
 #                 directly (e.g. bin/storm ...)
 #
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export STORM_MODE="stormwordcount"
 
 ############################################################################

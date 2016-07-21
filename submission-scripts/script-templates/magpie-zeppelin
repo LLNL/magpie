@@ -55,9 +55,6 @@ export ZEPPELIN_LOCAL_DIR="LOCALDIRPREFIX/zeppelin"
 #                 you'll login to the cluster node that is your
 #                 'master' node and interact with Zeppelin directly.
 #
-# "setuponly" - Like 'server' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export ZEPPELIN_MODE="checkzeppelinup"
 
 # Path to the root scala dir

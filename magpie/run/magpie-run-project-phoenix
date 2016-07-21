@@ -70,7 +70,7 @@ Magpie_run_start_phoenix () {
 
         cd ${PHOENIX_HOME}
 
-        if [ ${PHOENIX_MODE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -112,7 +112,7 @@ Magpie_run_start_phoenix () {
         echo "*" 
         echo "*   \$PHOENIX_HOME/${phoenixcmdprefix}/sqlline.py"
         echo "*" 
-        if [ "${PHOENIX_MODE}" == "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup Phoenix queryserver, login and set"
             echo "* environment variables per the instructions above,"
@@ -148,7 +148,7 @@ Magpie_run_start_phoenix () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${PHOENIX_MODE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Phoenix" "__Magpie_run_check_phoenix_up"
@@ -205,14 +205,6 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute server &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${PHOENIX_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Phoenix ${PHOENIX_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "PHOENIX_MODE = ${PHOENIX_MODE} not handled"
     fi
@@ -228,7 +220,7 @@ Magpie_run_stop_phoenix () {
         && [ ${PHOENIX_MODE} == "server" ] \
         && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
     then
-        if [ ${PHOENIX_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${PHOENIX_HOME}
             

@@ -61,7 +61,7 @@ Magpie_run_start_zookeeper () {
 
     if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
     then
-        if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" != "setuponly" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -87,7 +87,7 @@ Magpie_run_start_zookeeper () {
         echo "*"
         echo "* Zookeeper Information"
         echo "*"
-        if [ "${ZOOKEEPER_MODE}" == "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, you probably want to run:" 
             echo "*"
@@ -142,7 +142,7 @@ Magpie_run_start_zookeeper () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
         
-        if [ ${ZOOKEEPER_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Zookeeper" "__Magpie_run_check_zookeeper_up"
@@ -183,14 +183,6 @@ Magpie_run_zookeeper () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute launch &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${ZOOKEEPER_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Zookeeper ${ZOOKEEPER_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "ZOOKEEPER_MODE = ${ZOOKEEPER_MODE} not handled"
     fi
@@ -199,7 +191,7 @@ Magpie_run_zookeeper () {
 Magpie_run_stop_zookeeper () {
     if [ "${ZOOKEEPER_SETUP}" == "yes" ] && [ "${magpie_run_zookeeper_should_be_torndown}" == "1" ]
     then
-        if [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" != "setuponly" ]
         then
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified

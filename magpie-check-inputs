@@ -46,25 +46,6 @@ __Magpie_check_is_enabled () {
     fi
 }
 
-__Magpie_check_dependencies_not_setuponly () {
-    local projectnametocheck=$1
-    local projectnameneededfor=$2
-    local uppercaseprojectnametocheck=`echo ${projectnametocheck} | tr '[:lower:]' '[:upper:]'`
-    local modevarnametocheck="${uppercaseprojectnametocheck}_MODE"
-    local lowercaseprojectnameneededfor=`echo ${projectnameneededfor} | tr '[:upper:]' '[:lower:]'`
-    local uppercaseprojectnameneededfor=`echo ${projectnameneededfor} | tr '[:lower:]' '[:upper:]'`
-    local modevarnameneededfor="${uppercaseprojectnameneededfor}_MODE"
-
-    if [ "${MAGPIE_JOB_TYPE}" == "${lowercaseprojectnameneededfor}" ] && [ "${!modevarnameneededfor}" != "setuponly" ]
-    then
-        if [ "${!modevarnametocheck}" == "setuponly" ]
-        then
-            echo "Cannot run/setup ${projectnameneededfor} if ${projectnametocheck} mode is setuponly"
-            exit 1
-        fi
-    fi
-}
-
 __Magpie_check_if_set_is_yes_or_no () {
     local varname="$1"
 
@@ -232,9 +213,10 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
-    && [ "${MAGPIE_JOB_TYPE}" != "interactive" ]
+    && [ "${MAGPIE_JOB_TYPE}" != "interactive" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "setuponly" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, kafka, zeppelin, storm, zookeeper, testall, script, or interactive"
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, kafka, zeppelin, storm, zookeeper, testall, script, interactive, or setuponly"
     exit 1
 fi
 
@@ -393,10 +375,9 @@ then
         && [ "${HADOOP_MODE}" != "upgradehdfs" ] \
         && [ "${HADOOP_MODE}" != "decommissionhdfsnodes" ] \
         && [ "${HADOOP_MODE}" != "launch" ] \
-        && [ "${HADOOP_MODE}" != "setuponly" ] \
         && [ "${HADOOP_MODE}" != "hdfsonly" ]
     then
-        echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, decommissionhdfsnodes, launch, setuponly, or hdfsonly"
+        echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, decommissionhdfsnodes, launch, or hdfsonly"
         exit 1
     fi
 
@@ -583,8 +564,6 @@ then
         echo "HADOOP_SETUP_TYPE must be set to MR for PIG_MODE=${PIG_MODE}"
         exit 1
     fi
-
-    __Magpie_check_dependencies_not_setuponly "Hadoop" "Pig"
 fi
 
 #
@@ -624,8 +603,6 @@ then
         echo "HADOOP_SETUP_TYPE must be set to MR2 for MAHOUT_MODE=${MAHOUT_MODE}"
         exit 1
     fi
-
-    __Magpie_check_dependencies_not_setuponly "Hadoop" "Mahout"
 fi
 
 #
@@ -666,10 +643,9 @@ then
 
     if [ "${HBASE_MODE}" != "performanceeval" ] \
         && [ "${HBASE_MODE}" != "script" ] \
-        && [ "${HBASE_MODE}" != "interactive" ] \
-        && [ "${HBASE_MODE}" != "setuponly" ]
+        && [ "${HBASE_MODE}" != "interactive" ]
     then
-        echo "HBASE_MODE must be set to performanceeval, script, interactive, setuponly"
+        echo "HBASE_MODE must be set to performanceeval, script, or interactive"
         exit 1
     fi
 
@@ -720,9 +696,6 @@ then
 
     __Magpie_check_if_set_is_yes_or_no "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN"
 
-    __Magpie_check_dependencies_not_setuponly "Hadoop" "Hbase"
-    __Magpie_check_dependencies_not_setuponly "Zookeeper" "Hbase"
-
     if [ ${nodecount} -le "0" ]
     then
         echo "No remaining nodes for Hbase regionservers, increase node count or adjust node allocations"
@@ -749,10 +722,9 @@ then
     if [ "${PHOENIX_MODE}" != "performanceeval" ] \
         && [ "${PHOENIX_MODE}" != "script" ] \
         && [ "${PHOENIX_MODE}" != "interactive" ] \
-        && [ "${PHOENIX_MODE}" != "server" ] \
-        && [ "${PHOENIX_MODE}" != "setuponly" ]
+        && [ "${PHOENIX_MODE}" != "server" ]
     then
-        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, server, or setuponly"
+        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, or server"
         exit 1
     fi
 
@@ -772,8 +744,6 @@ then
     then
         __Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
     fi
-
-    __Magpie_check_dependencies_not_setuponly "Hbase" "Phoenix"
 fi
 
 #
@@ -810,10 +780,9 @@ then
     if [ "${SPARK_MODE}" != "sparkpi" ] \
         && [ "${SPARK_MODE}" != "sparkwordcount" ] \
         && [ "${SPARK_MODE}" != "script" ] \
-        && [ "${SPARK_MODE}" != "interactive" ] \
-        && [ "${SPARK_MODE}" != "setuponly" ]
+        && [ "${SPARK_MODE}" != "interactive" ]
     then
-        echo "SPARK_MODE must be set to sparkpi, sparkwordcount, script, interactive, setuponly"
+        echo "SPARK_MODE must be set to sparkpi, sparkwordcount, script, or interactive"
         exit 1
     fi
 
@@ -895,11 +864,6 @@ then
 	fi
     fi
 
-    if [ "${HADOOP_SETUP}" == "yes" ]
-    then
-        __Magpie_check_dependencies_not_setuponly "Hadoop" "Spark"
-    fi
-
     if [ ${nodecount} -le "0" ]
     then
         echo "No remaining nodes for Spark slaves, increase node count or adjust node allocations"
@@ -924,14 +888,11 @@ then
     __Magpie_check_is_enabled "Zookeeper" "Kafka"
 
     if [ "${KAFKA_MODE}" != "performance" ] \
-        && [ "${KAFKA_MODE}" != "server" ] \
-        && [ "${KAFKA_MODE}" != "setuponly" ]
+        && [ "${KAFKA_MODE}" != "server" ]
     then
-        echo "KAFKA_MODE must be set to performance, server or setuponly"
+        echo "KAFKA_MODE must be set to performance or server"
         exit 1
     fi
-
-    __Magpie_check_dependencies_not_setuponly "Zookeeper" "Kafka"
 fi
 
 #
@@ -952,14 +913,11 @@ then
 
     if [ "${ZEPPELIN_MODE}" != "server" ] \
         && [ "${ZEPPELIN_MODE}" != "checkzeppelinup" ] \
-        && [ "${ZEPPELIN_MODE}" != "interactive" ] \
-        && [ "${ZEPPELIN_MODE}" != "setuponly" ]
+        && [ "${ZEPPELIN_MODE}" != "interactive" ]
     then
-        echo "ZEPPELIN_MODE must be set to server, checkzeppelinup, interactive, or setuponly"
+        echo "ZEPPELIN_MODE must be set to server, checkzeppelinup, or interactive"
         exit 1
     fi
-
-    __Magpie_check_dependencies_not_setuponly "Spark" "Zeppelin"
 fi
 
 #
@@ -984,10 +942,9 @@ then
 
     if [ "${STORM_MODE}" != "stormwordcount" ] \
         && [ "${STORM_MODE}" != "script" ] \
-        && [ "${STORM_MODE}" != "interactive" ] \
-        && [ "${STORM_MODE}" != "setuponly" ]
+        && [ "${STORM_MODE}" != "interactive" ]
     then
-        echo "STORM_MODE must be set to stormwordcount, script, interactive, setuponly"
+        echo "STORM_MODE must be set to stormwordcount, script, or interactive"
         exit 1
     fi
 
@@ -1000,8 +957,6 @@ then
     then
         __Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_MODE = ${STORM_MODE}"
     fi
-
-    __Magpie_check_dependencies_not_setuponly "Zookeeper" "Storm"
 
     if [ ${nodecount} -le "0" ]
     then
@@ -1025,10 +980,9 @@ then
     __Magpie_check_must_be_set "ZOOKEEPER_LOCAL_DIR" "to run Zookeeper"
 
     if [ "${ZOOKEEPER_MODE}" != "zookeeperruok" ] \
-       && [ "${ZOOKEEPER_MODE}" != "launch" ] \
-       && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+       && [ "${ZOOKEEPER_MODE}" != "launch" ]
     then
-       echo "ZOOKEEPER_MODE must be set to zookeeperruok, launch, or setuponly"
+       echo "ZOOKEEPER_MODE must be set to zookeeperruok or launch"
        exit 1
     fi
 

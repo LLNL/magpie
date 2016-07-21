@@ -164,6 +164,14 @@ then
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         scriptpid=$!
         wait $scriptpid
+    elif [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Magpie ${MAGPIE_JOB_TYPE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
+        local scriptpid=$!
+        wait ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "pig" ]
     then
         Magpie_run_pig

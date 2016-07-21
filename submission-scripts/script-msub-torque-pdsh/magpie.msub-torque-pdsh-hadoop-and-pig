@@ -110,6 +110,10 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #                 Hadoop/Hbase/Spark/etc. and are experimenting with
 #                 things.
 #
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#
 export MAGPIE_JOB_TYPE="pig"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
@@ -407,9 +411,6 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # "launch" - Launch Hadoop but do nothing, usually set to this because
 #            another project (e.g. Hbase, Pig) will run something that
 #            uses Hadoop MapReduce.
-#
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
 #
 # "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS.
 #

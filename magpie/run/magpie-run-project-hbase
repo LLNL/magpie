@@ -67,7 +67,7 @@ Magpie_run_start_hbase () {
 
         cd ${HBASE_HOME}
 
-        if [ ${HBASE_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -121,7 +121,7 @@ Magpie_run_start_hbase () {
         echo "*   \$HBASE_HOME/${hbasecmdprefix}/hbase shell"
         echo "*" 
 
-        if [ "${HBASE_MODE}" == "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
@@ -166,7 +166,7 @@ Magpie_run_start_hbase () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${HBASE_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Hbase" "__Magpie_run_check_hbase_up"
@@ -215,14 +215,6 @@ Magpie_run_hbase () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${HBASE_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Hbase ${HBASE_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "HBASE_MODE = ${HBASE_MODE} not handled"
     fi
@@ -241,7 +233,7 @@ Magpie_run_stop_hbase () {
 
     if [ "${HBASE_SETUP}" == "yes" ] && [ "${magpie_run_hbase_should_be_torndown}" == "1" ]
     then
-        if [ ${HBASE_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${HBASE_HOME}
             

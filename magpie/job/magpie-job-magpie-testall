@@ -27,7 +27,6 @@
 # configuration details.
 
 if [ "${HADOOP_SETUP}" == "yes" ] \
-   && [ "${HADOOP_MODE}" != "setuponly" ] \
    && [ "${HADOOP_SETUP_TYPE}" == "MR" ]
 then
     echo "*******************************************************"
@@ -52,8 +51,7 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-mahout-clustersyntheticcontrol)
 fi
 
-if [ "${HBASE_SETUP}" == "yes" ] \
-   && [ "${HBASE_MODE}" != "setuponly" ]
+if [ "${HBASE_SETUP}" == "yes" ]
 then
     echo "*******************************************************"
     echo "* Running Hbase Performance Evaluation"
@@ -69,8 +67,7 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-phoenix-performanceeval)
 fi
 
-if [ "${SPARK_SETUP}" == "yes" ] \
-   && [ "${SPARK_MODE}" != "setuponly" ]
+if [ "${SPARK_SETUP}" == "yes" ]
 then
     echo "*******************************************************"
     echo "* Running Spark SparkPi"
@@ -78,8 +75,7 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-spark-sparkpi)
 fi
 
-if [ "${KAFKA_SETUP}" == "yes" ] \
-   && [ "${KAFKA_MODE}" != "setuponly" ]
+if [ "${KAFKA_SETUP}" == "yes" ]
 then
     echo "*******************************************************"
     echo "* Running Kafka Performance"
@@ -87,8 +83,7 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-kafka-performance)
 fi
 
-if [ "${STORM_SETUP}" == "yes" ] \
-   && [ "${STORM_MODE}" != "setuponly" ]
+if [ "${STORM_SETUP}" == "yes" ]
 then
     echo "*******************************************************"
     echo "* Running Storm Foobar"
@@ -96,8 +91,7 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-storm-stormwordcount)
 fi
 
-if [ "${ZOOKEEPER_SETUP}" == "yes" ] \
-   && [ "${ZOOKEEPER_MODE}" != "setuponly" ]
+if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     echo "*******************************************************"
     echo "* Running Zookeeper Zookeeperruok"

@@ -37,7 +37,7 @@ Magpie_run_start_spark () {
     then
         cd ${SPARK_HOME}
 
-        if [ ${SPARK_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             if [ "${SPARK_USE_YARN}" != "yes" ]
             then
@@ -103,7 +103,7 @@ Magpie_run_start_spark () {
         fi
         echo "*" 
 
-        if [ "${SPARK_MODE}" == "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
@@ -200,14 +200,6 @@ Magpie_run_spark () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${SPARK_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Spark ${SPARK_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "SPARK_MODE = ${SPARK_MODE} not handled"
     fi
@@ -216,7 +208,7 @@ Magpie_run_spark () {
 Magpie_run_stop_spark () {
     if [ "${SPARK_SETUP}" == "yes" ] && [ "${magpie_run_spark_should_be_torndown}" == "1" ]
     then
-        if [ ${SPARK_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             if [ "${SPARK_USE_YARN}" != "yes" ]
             then
