@@ -399,10 +399,6 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #		            complete fully, it can leave HDFS in a bad
 #		            state.
 #
-# "launch" - Launch Hadoop but do nothing, usually set to this because
-#            another project (e.g. Hbase, Pig) will run something that
-#            uses Hadoop MapReduce.
-#
 export HADOOP_MODE="terasort"
 
 ############################################################################

@@ -387,7 +387,6 @@ define create-hadoop-and-pig
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
-	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/PIG_SETUP=.*/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 endef
 
@@ -409,7 +408,6 @@ define create-hadoop-and-mahout
 	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"mahout\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_MAHOUT)
-	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
 	sed -i -e "s/MAHOUT_SETUP=.*/MAHOUT_SETUP=yes/" $(MAGPIE_HADOOP_AND_MAHOUT)
 endef
 

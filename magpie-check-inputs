@@ -372,10 +372,9 @@ then
     if [ "${HADOOP_MODE}" != "terasort" ] \
         && [ "${HADOOP_MODE}" != "script" ] \
         && [ "${HADOOP_MODE}" != "upgradehdfs" ] \
-        && [ "${HADOOP_MODE}" != "decommissionhdfsnodes" ] \
-        && [ "${HADOOP_MODE}" != "launch" ]
+        && [ "${HADOOP_MODE}" != "decommissionhdfsnodes" ]
     then
-        echo "HADOOP_MODE must be set to terasort, script, upgradehdfs, decommissionhdfsnodes, or launch"
+        echo "HADOOP_MODE must be set to terasort, script, upgradehdfs, or decommissionhdfsnodes"
         exit 1
     fi
 
