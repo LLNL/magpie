@@ -363,9 +363,6 @@ post-job-run-scripts - These are scripts that you would run after the
 actual calculation is executed.  You would set these scripts in the
 MAGPIE_POST_JOB_RUN environment variable.
 
-misc - Other miscellaneous scripts.  These may be useful outside of
-Magpie or are convenient in some other way.
-
 Notable scripts worth mentioning:
 
 pre-job-run-scripts/magpie-output-config-files-script.sh - This script
@@ -377,10 +374,10 @@ This script will get all of the conf files and log files from Hadoop,
 Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
 for post-analysis of your job.  It's convenient for debugging.
 
-misc/magpie-apache-download-and-setup.sh - Script will automatically
-download and patch Apache projects for you so you don't have to
-manually download them.  It'll also configure several paths for you in
-the launch scripts automatically.
+In addition, the misc/magpie-apache-download-and-setup.sh may be
+convenient for initially downloading and patching Apache projects for
+you so you don't have to manually download them.  It'll also configure
+several paths for you in the launch scripts automatically.
 
 General Advanced Usage
 ----------------------
