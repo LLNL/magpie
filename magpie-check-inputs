@@ -867,7 +867,7 @@ then
         && [ "${PHOENIX_MODE}" != "server" ] \
         && [ "${PHOENIX_MODE}" != "setuponly" ]
     then
-        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, server, or setuply"
+        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, server, or setuponly"
         exit 1
     fi
 
