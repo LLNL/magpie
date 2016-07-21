@@ -70,7 +70,7 @@ Magpie_run_start_phoenix () {
 
         cd ${PHOENIX_HOME}
 
-        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ ${PHOENIX_START_QUERYSERVER} == "yes" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -148,7 +148,7 @@ Magpie_run_start_phoenix () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ ${PHOENIX_MODE} == "server" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ ${PHOENIX_START_QUERYSERVER} == "yes" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Phoenix" "__Magpie_run_check_phoenix_up"
@@ -189,14 +189,6 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PHOENIX_MODE}" == "server" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Phoenix ${PHOENIX_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute server &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "PHOENIX_MODE = ${PHOENIX_MODE} not handled"
     fi
@@ -209,7 +201,7 @@ Magpie_run_stop_phoenix () {
     fi
 
     if [ "${PHOENIX_SETUP}" == "yes" ] \
-        && [ ${PHOENIX_MODE} == "server" ] \
+        && [ ${PHOENIX_START_QUERYSERVER} == "yes" ] \
         && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
     then
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]

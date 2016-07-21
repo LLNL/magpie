@@ -44,13 +44,17 @@ export PHOENIX_LOCAL_DIR="LOCALDIRPREFIX/phoenix"
 #
 # export PHOENIX_CONF_FILES="${HOME}/myconf"
 
+# Start Phoenix with queryserver per regionserver
+#
+# Defaults to 'no'
+#
+# export PHOENIX_START_QUERYSERVER="no"
+
 # Set how Phoenix should run
 #
 # "performanceeval" - run performance evaluation write and read.
 #              Useful for making sure things are setup the way you
 #              like.
-#
-# "server" - start up the queryserver per regionserver
 #
 # "script" - execute a phoenix script indicated by PHOENIX_SCRIPT_PATH.
 #
