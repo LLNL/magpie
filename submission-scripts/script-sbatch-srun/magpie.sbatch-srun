@@ -94,7 +94,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
-# "kafka" - Run a job according to the settings of KAFKA_MODE.
+# "kafka" - Run a job according to the settings of KAFKA_JOB.
 #
 # "zeppelin" - Run a job according to the settings of ZEPPELIN_MODE.
 #
@@ -1733,7 +1733,7 @@ export KAFKA_LOCAL_DIR="/tmp/${USER}/kafka"
 # "performance" - run performance test. Useful for making sure things are
 #                 setup and running properly
 #
-export KAFKA_MODE="performance"
+export KAFKA_JOB="performance"
 
 # Set the Zookeeper connection timeout for Kafka
 #
