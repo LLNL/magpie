@@ -1,23 +1,4 @@
 ############################################################################
-# Hadoop Script Configurations
-############################################################################
-
-# Specify script to execute for "script" mode
-#
-# See examples/hadoop-example-job-script for example of what to put in
-# the script.
-#
-# export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
-
-# Specify arguments for script specified in HADOOP_SCRIPT_PATH
-#
-# Note that many Magpie generated environment variables, such as
-# HADOOP_MASTER_NODE, are not generated until the job has launched.
-# You won't be able to use them here.
-#
-# export HADOOP_SCRIPT_ARGS="" 
-
-############################################################################
 # Hadoop Decommission HDFS Nodes Configurations
 ############################################################################
 

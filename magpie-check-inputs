@@ -370,11 +370,10 @@ then
     fi
 
     if [ "${HADOOP_JOB}" != "terasort" ] \
-        && [ "${HADOOP_JOB}" != "script" ] \
         && [ "${HADOOP_JOB}" != "upgradehdfs" ] \
         && [ "${HADOOP_JOB}" != "decommissionhdfsnodes" ]
     then
-        echo "HADOOP_JOB must be set to terasort, script, upgradehdfs, or decommissionhdfsnodes"
+        echo "HADOOP_JOB must be set to terasort, upgradehdfs, or decommissionhdfsnodes"
         exit 1
     fi
 
@@ -384,11 +383,6 @@ then
     then
         echo "HADOOP_SETUP_TYPE must be set to MR for HADOOP_JOB = ${HADOOP_JOB}"
         exit 1
-    fi
-
-    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_JOB}" == "script" ]
-    then
-        __Magpie_check_must_be_set_and_is_executable "HADOOP_SCRIPT_PATH" "for HADOOP_JOB = ${HADOOP_JOB}"
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_JOB}" == "upgradehdfs" ]
