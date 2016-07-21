@@ -349,7 +349,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #              the way you like.
 #
 #              There are additional configuration options for this
-#              example listed below.
+#              listed below.
 #
 # "script" - execute a script that lists all of your Hadoop jobs.  Be
 #            sure to set HADOOP_SCRIPT_PATH to your script.
@@ -708,7 +708,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 #              like.
 #
 #              There are additional configuration options for this
-#              example listed below.
+#              listed below.
 #
 # "script" - execute a script that lists all of your Hbase jobs.  Be
 #            sure to set HBASE_SCRIPT_PATH to your script.

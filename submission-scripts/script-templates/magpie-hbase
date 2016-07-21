@@ -82,7 +82,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 #              like.
 #
 #              There are additional configuration options for this
-#              example listed below.
+#              listed below.
 #
 # "script" - execute a script that lists all of your Hbase jobs.  Be
 #            sure to set HBASE_SCRIPT_PATH to your script.
