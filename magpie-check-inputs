@@ -711,13 +711,14 @@ then
 
     __Magpie_check_must_be_set "PHOENIX_LOCAL_DIR" "to run Phoenix"
 
+    __Magpie_check_if_set_is_yes_or_no "PHOENIX_START_QUERYSERVER"
+
     __Magpie_check_is_enabled "Hbase" "Phoenix"
 
     if [ "${PHOENIX_MODE}" != "performanceeval" ] \
-        && [ "${PHOENIX_MODE}" != "script" ] \
-        && [ "${PHOENIX_MODE}" != "server" ]
+        && [ "${PHOENIX_MODE}" != "script" ]
     then
-        echo "PHOENIX_MODE must be set to performanceeval, script, or server"
+        echo "PHOENIX_MODE must be set to performanceeval or script"
         exit 1
     fi
 
