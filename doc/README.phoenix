@@ -73,7 +73,10 @@ Instructions For Using Phoenix
    output similar to the following:
 
       ssh node70
-      setenv HBASE_CONF_DIR "/tmp/achu/hadoop/ajobname/1081559/conf"
+      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+      setenv PHOENIX_HOME "/home/username/phoenix-4.7.0-HBase-1.1-bin"
+      setenv PHOENIX_CONF_DIR "/tmp/achu/phoenix/ajobname/1081559/conf"
+      setenv HBASE_CONF_DIR "/tmp/achu/hbase/ajobname/1081559/conf"
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in
