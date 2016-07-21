@@ -156,9 +156,12 @@ Magpie_calculate_stop_timeouts () {
             # time
             stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 7`
         else
-            # Need to split timeout time between namenode, datanodes,
-            # secondary namenode, jobhistory server, & saveNameSpace time
-            stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 5`
+            if Magpie_hadoop_filesystem_mode_is_hdfs_type
+            then
+                # Need to split timeout time between namenode, datanodes,
+                # secondary namenode, & saveNameSpace time
+                stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 4`
+            fi
         fi    
     
         # + 2 for scratch extra time in scripts and what not
