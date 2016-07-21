@@ -34,7 +34,7 @@ export ZOOKEEPER_REPLICATION_COUNT=ZOOKEEPERREPLICATIONCOUNT
 #             setup correctly.  zookeeperruok will do a simple 'ruok'
 #             to all Zookeeper daemons.
 #
-export ZOOKEEPER_MODE="zookeeperruok"
+export ZOOKEEPER_JOB="zookeeperruok"
 
 # Zookeeper Version
 #
