@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # This script executes a basic Storm job.  It is an example of how you
-# can setup a script to run an Storm job.  It is set via the
-# STORM_SCRIPT_PATH environment variable and setting the STORM_JOB to
-# 'script'.  See the job submission file for details.
+# can setup a script to run an Storm job.  It is set by setting
+# MAGPIE_JOB_TYPE to "script" and setting MAGPIE_SCRIPT_PATH
+# environment variable to the script.  See the job submission file for
+# details.
 #
 # Please adjust to whatever you would want to do with Storm
 
