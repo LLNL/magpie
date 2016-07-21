@@ -506,10 +506,7 @@ then
     if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
     then
         __Magpie_check_must_be_set "HADOOP_HDFS_PATH" "for HADOOP_FILESYSTEM_MODE = ${HADOOP_FILESYSTEM_MODE}"
-    fi
 
-    if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
-    then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_HDFS_PATH_CLEAR"
     fi
 
