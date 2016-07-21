@@ -194,14 +194,6 @@ Magpie_run_kafka () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-kafka-performance &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${KAFKA_MODE}" == "server" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Kafka ${KAFKA_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute server &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "KAFKA_MODE = ${KAFKA_MODE} not handled"
     fi
