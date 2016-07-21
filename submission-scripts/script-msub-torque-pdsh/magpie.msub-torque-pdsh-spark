@@ -107,6 +107,10 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #                 Hadoop/Hbase/Spark/etc. and are experimenting with
 #                 things.
 #
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#
 export MAGPIE_JOB_TYPE="spark"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
@@ -397,9 +401,6 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 #                 In this mode you'll login to the cluster node that
 #                 is your 'master' node and interact with Spark
 #                 directly (e.g. bin/spark-shell ...)
-#
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
 #
 export SPARK_MODE="sparkpi"
 

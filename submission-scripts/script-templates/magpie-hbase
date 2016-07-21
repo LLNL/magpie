@@ -92,9 +92,6 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 #                 is your 'master' node and interact with Hbase
 #                 directly (e.g. bin/hbase ...)
 #
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export HBASE_MODE="performanceeval"
 
 # Start Hbase with thrift

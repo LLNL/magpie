@@ -51,9 +51,6 @@ export KAFKA_LOCAL_DIR="LOCALDIRPREFIX/kafka"
 #
 # "server" - setup the server
 #
-# "setuponly" - Like 'server' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export KAFKA_MODE="performance"
 
 # Set the Zookeeper connection timeout for Kafka

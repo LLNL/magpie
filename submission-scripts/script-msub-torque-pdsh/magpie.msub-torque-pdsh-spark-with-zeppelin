@@ -110,6 +110,10 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #                 Hadoop/Hbase/Spark/etc. and are experimenting with
 #                 things.
 #
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#
 export MAGPIE_JOB_TYPE="zeppelin"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
@@ -401,9 +405,6 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 #                 is your 'master' node and interact with Spark
 #                 directly (e.g. bin/spark-shell ...)
 #
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export SPARK_MODE="sparkpi"
 
 # SPARK_DEFAULT_PARALLELISM
@@ -595,7 +596,7 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 # SPARK_USE_YARN is set to 'yes'.  Please set HADOOP_LOCALSTORE to
 # inform Yarn to set a local SSD for Yarn to use for local scratch.
 #
-# Make sure that HADOOP_SETUP_TYPE is set to MR2 so Yarn will be
+# Make sure that HADOOP_SETUP_TYPE is set to MR so Yarn will be
 # launched if you set SPARK_USE_YARN to yes.
 #
 # Defaults to no.
@@ -734,9 +735,6 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 # "interactive" - manually interact with Zeppelin.  In this mode
 #                 you'll login to the cluster node that is your
 #                 'master' node and interact with Zeppelin directly.
-#
-# "setuponly" - Like 'server' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
 #
 export ZEPPELIN_MODE="checkzeppelinup"
 

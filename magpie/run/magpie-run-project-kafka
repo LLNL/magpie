@@ -81,7 +81,7 @@ Magpie_run_start_kafka () {
 
         cd ${KAFKA_HOME}
 
-        if [ ${KAFKA_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -124,7 +124,7 @@ Magpie_run_start_kafka () {
         echo "*" 
         echo "*   \$KAFKA_HOME/${kafkacmdprefix}"
         echo "*" 
-        if [ "${KAFKA_MODE}" == "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
@@ -161,7 +161,7 @@ Magpie_run_start_kafka () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${KAFKA_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Kafka" "__Magpie_run_check_kafka_up"
@@ -202,14 +202,6 @@ Magpie_run_kafka () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute server &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${KAFKA_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Kafka ${KAFKA_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "KAFKA_MODE = ${KAFKA_MODE} not handled"
     fi
@@ -223,7 +215,7 @@ Magpie_run_stop_kafka () {
 
     if [ "${KAFKA_SETUP}" == "yes" ] && [ "${magpie_run_kafka_should_be_torndown}" == "1" ]
     then
-        if [ ${KAFKA_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${KAFKA_HOME}
             

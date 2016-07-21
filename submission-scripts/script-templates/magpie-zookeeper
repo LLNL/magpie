@@ -36,9 +36,6 @@ export ZOOKEEPER_REPLICATION_COUNT=ZOOKEEPERREPLICATIONCOUNT
 #
 # "launch" - Magpie will launch Zookeeper daemons
 #
-# "setuponly" - Like 'launch' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version

@@ -41,6 +41,10 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #                 Hadoop/Hbase/Spark/etc. and are experimenting with
 #                 things.
 #
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#
 export MAGPIE_JOB_TYPE="script"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE

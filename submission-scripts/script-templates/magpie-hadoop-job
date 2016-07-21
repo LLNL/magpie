@@ -51,9 +51,6 @@
 #            another project (e.g. Hbase, Pig) will run something that
 #            uses Hadoop MapReduce.
 #
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 # "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS.
 #
 export HADOOP_MODE="terasort"

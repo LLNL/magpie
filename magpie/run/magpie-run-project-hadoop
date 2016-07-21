@@ -59,7 +59,7 @@ Magpie_run_start_hadoop () {
 
         cd ${HADOOP_HOME}
 
-        if [ ${HADOOP_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             echo "Starting hadoop"
             local hadoop_should_be_setup=1
@@ -243,7 +243,7 @@ Magpie_run_start_hadoop () {
             fi
         fi
 
-        if [ "${hadoop_should_be_setup}" == "1" ] || [ ${HADOOP_MODE} == "setuponly" ]
+        if [ "${hadoop_should_be_setup}" == "1" ] || [ ${MAGPIE_JOB_TYPE} == "setuponly" ]
         then
             echo "*******************************************************"
             echo "*"
@@ -306,7 +306,7 @@ Magpie_run_start_hadoop () {
             echo "*" 
             echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop jar ..."
             echo "*" 
-            if [ "${HADOOP_MODE}" == "setuponly" ]
+            if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
             then
                 echo "* To setup, login and set environment variables per the"
                 echo "* instructions above, then run:"
@@ -391,7 +391,7 @@ Magpie_run_start_hadoop () {
             fi
         fi
 
-        if [ ${HADOOP_MODE} != "setuponly" ] \
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] \
             && Magpie_hadoop_filesystem_mode_is_hdfs_type
         then
             if [ "${hdfs_was_setup}" == "1" ]
@@ -420,7 +420,7 @@ Magpie_run_start_hadoop () {
 
         # Setup job history server after namenode comes up, it may need to
         # write/create in HDFS
-        if [ ${HADOOP_MODE} != "setuponly" ] && [ "${magpie_run_hadoop_setup_successful}" == "1" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ] && [ "${magpie_run_hadoop_setup_successful}" == "1" ]
         then
             if [ "${HADOOP_SETUP_TYPE}" == "MR" ]
             then
@@ -430,7 +430,7 @@ Magpie_run_start_hadoop () {
 
         # A number of applications assume the user home directory has been
         # created.  If it hasn't yet, lets create it for the user.
-        if [ "${magpie_run_hadoop_setup_successful}" == "1" ] && [ ${HADOOP_MODE} != "setuponly" ]
+        if [ "${magpie_run_hadoop_setup_successful}" == "1" ] && [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
@@ -481,14 +481,6 @@ Magpie_run_hadoop () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute launch &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${HADOOP_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Hadoop ${HADOOP_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
     then
         echo "*******************************************************"
@@ -534,7 +526,7 @@ Magpie_run_hadoop () {
 Magpie_run_stop_hadoop () {
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_hadoop_should_be_torndown}" == "1" ]
     then
-        if [ ${HADOOP_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${HADOOP_HOME}
             

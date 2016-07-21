@@ -69,7 +69,7 @@ Magpie_run_start_zeppelin () {
 
         cd ${ZEPPELIN_HOME}
 
-        if [ ${ZEPPELIN_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -141,7 +141,7 @@ Magpie_run_start_zeppelin () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${ZEPPELIN_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Zeppelin" "__Magpie_run_check_zeppelin_up"
@@ -190,14 +190,6 @@ Magpie_run_zeppelin () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${ZEPPELIN_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "ZEPPELIN_MODE = ${ZEPPELIN_MODE} not handled"
     fi
@@ -211,7 +203,7 @@ Magpie_run_stop_zeppelin () {
 
     if [ "${ZEPPELIN_SETUP}" == "yes" ] && [ "${magpie_run_zeppelin_should_be_torndown}" == "1" ]
     then
-        if [ ${ZEPPELIN_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${ZEPPELIN_HOME}
             

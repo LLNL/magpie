@@ -57,7 +57,7 @@ Magpie_run_start_storm () {
             return 1
         fi
 
-        if [ ${STORM_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
@@ -113,7 +113,7 @@ Magpie_run_start_storm () {
         echo "*" 
         echo "*   \$STORM_HOME/${stormcmdprefix}/storm jar ..."
         echo "*" 
-        if [ "${STORM_MODE}" == "setuponly" ]
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
@@ -170,7 +170,7 @@ Magpie_run_start_storm () {
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
 
-        if [ ${STORM_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Storm" "__Magpie_run_check_storm_up"
@@ -219,14 +219,6 @@ Magpie_run_storm () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${STORM_MODE}" == "setuponly" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Storm ${STORM_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
-        local scriptpid=$!
-        wait ${scriptpid}
     else
         Magpie_output_internal_error "STORM_MODE = ${STORM_MODE} not handled"
     fi
@@ -240,7 +232,7 @@ Magpie_run_stop_storm () {
 
     if [ "${STORM_SETUP}" == "yes" ] && [ "${magpie_run_storm_should_be_torndown}" == "1" ]
     then
-        if [ ${STORM_MODE} != "setuponly" ]
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified

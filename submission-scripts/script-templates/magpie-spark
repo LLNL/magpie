@@ -145,9 +145,6 @@ export SPARK_LOCAL_DIR="LOCALDIRPREFIX/spark"
 #                 is your 'master' node and interact with Spark
 #                 directly (e.g. bin/spark-shell ...)
 #
-# "setuponly" - Like 'interactive' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
 export SPARK_MODE="sparkpi"
 
 # SPARK_DEFAULT_PARALLELISM
