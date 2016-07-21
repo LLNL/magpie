@@ -44,7 +44,7 @@ export ZEPPELIN_HOME="ZEPPELINDIRPREFIX/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 #
 export ZEPPELIN_LOCAL_DIR="LOCALDIRPREFIX/zeppelin"
 
-# Set how Zeppelin should run
+# Set zeppelin job for MAGPIE_JOB_TYPE = zeppelin
 #
 # "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
 #                     correctly and up.

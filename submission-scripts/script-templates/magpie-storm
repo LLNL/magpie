@@ -73,7 +73,7 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 # Storm Job/Run Configurations
 ############################################################################
 
-# Set how Storm should run
+# Set storm job for MAGPIE_JOB_TYPE = storm
 #
 # "stormwordcount" - run Storm word count example.  Useful for making
 #            sure things are setup the way you like.

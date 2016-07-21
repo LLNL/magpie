@@ -374,7 +374,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # Spark Job/Run Configurations
 ############################################################################
 
-# Set how Spark should run
+# Set spark job for MAGPIE_JOB_TYPE = spark
 #
 # "sparkpi" - run sparkpi example. Useful for making sure things are
 #             setup the way you like.

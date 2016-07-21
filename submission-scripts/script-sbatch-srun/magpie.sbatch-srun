@@ -384,7 +384,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # Hadoop Job/Run Configurations
 ############################################################################
 
-# Set how Hadoop should run
+# Set hadoop job for MAGPIE_JOB_TYPE = hadoop
 #
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
@@ -895,7 +895,7 @@ export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 #
 export PIG_LOCAL_DIR="/tmp/${USER}/pig"
 
-# Set how Pig should run
+# Set pig job for MAGPIE_JOB_TYPE = pig
 #
 # "testpig" - Run a quick sanity test to see that pig is setup
 #             correctly.  Testpig will do a simple ls of the root
@@ -1066,7 +1066,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # Hbase Job/Run Configurations
 ############################################################################
 
-# Set how Hbase should run
+# Set hbase job for MAGPIE_JOB_TYPE = hbase
 #
 # "performanceeval" - run performance evaluation write and read.
 #              Useful for making sure things are setup the way you
@@ -1178,7 +1178,7 @@ export PHOENIX_LOCAL_DIR="/tmp/${USER}/phoenix"
 #
 # export PHOENIX_START_QUERYSERVER="no"
 
-# Set how Phoenix should run
+# Set phoenix job for MAGPIE_JOB_TYPE = phoenix
 #
 # "performanceeval" - run performance evaluation write and read.
 #              Useful for making sure things are setup the way you
@@ -1340,7 +1340,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # Spark Job/Run Configurations
 ############################################################################
 
-# Set how Spark should run
+# Set spark job for MAGPIE_JOB_TYPE = spark
 #
 # "sparkpi" - run sparkpi example. Useful for making sure things are
 #             setup the way you like.
@@ -1654,7 +1654,7 @@ export KAFKA_LOCAL_DIR="/tmp/${USER}/kafka"
 #
 # export KAFKA_CONF_FILES="${HOME}/myconf"
 
-# Set how Kafka should run
+# Set kafka job for MAGPIE_JOB_TYPE = kafka
 #
 # "performance" - run performance test. Useful for making sure things are
 #                 setup and running properly
@@ -1736,7 +1736,7 @@ export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 #
 export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 
-# Set how Zeppelin should run
+# Set zeppelin job for MAGPIE_JOB_TYPE = zeppelin
 #
 # "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
 #                     correctly and up.
@@ -1845,7 +1845,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 # Storm Job/Run Configurations
 ############################################################################
 
-# Set how Storm should run
+# Set storm job for MAGPIE_JOB_TYPE = storm
 #
 # "stormwordcount" - run Storm word count example.  Useful for making
 #            sure things are setup the way you like.
@@ -1886,7 +1886,7 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 #
 # export ZOOKEEPER_SHARE_NODES=yes
 
-# Set how Zookeeper should run
+# Set zookeeper job for MAGPIE_JOB_TYPE = zookeeper
 #
 # "zookeeperruok" - Run a quick sanity test to see that zookeeper is
 #             setup correctly.  zookeeperruok will do a simple 'ruok'

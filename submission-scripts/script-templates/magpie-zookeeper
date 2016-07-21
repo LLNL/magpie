@@ -28,7 +28,7 @@ export ZOOKEEPER_REPLICATION_COUNT=ZOOKEEPERREPLICATIONCOUNT
 #
 # export ZOOKEEPER_SHARE_NODES=yes
 
-# Set how Zookeeper should run
+# Set zookeeper job for MAGPIE_JOB_TYPE = zookeeper
 #
 # "zookeeperruok" - Run a quick sanity test to see that zookeeper is
 #             setup correctly.  zookeeperruok will do a simple 'ruok'

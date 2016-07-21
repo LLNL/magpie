@@ -361,7 +361,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # Hadoop Job/Run Configurations
 ############################################################################
 
-# Set how Hadoop should run
+# Set hadoop job for MAGPIE_JOB_TYPE = hadoop
 #
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
@@ -900,7 +900,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # Hbase Job/Run Configurations
 ############################################################################
 
-# Set how Hbase should run
+# Set hbase job for MAGPIE_JOB_TYPE = hbase
 #
 # "performanceeval" - run performance evaluation write and read.
 #              Useful for making sure things are setup the way you
@@ -990,7 +990,7 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 #
 # export ZOOKEEPER_SHARE_NODES=yes
 
-# Set how Zookeeper should run
+# Set zookeeper job for MAGPIE_JOB_TYPE = zookeeper
 #
 # "zookeeperruok" - Run a quick sanity test to see that zookeeper is
 #             setup correctly.  zookeeperruok will do a simple 'ruok'

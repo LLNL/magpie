@@ -50,7 +50,7 @@ export PHOENIX_LOCAL_DIR="LOCALDIRPREFIX/phoenix"
 #
 # export PHOENIX_START_QUERYSERVER="no"
 
-# Set how Phoenix should run
+# Set phoenix job for MAGPIE_JOB_TYPE = phoenix
 #
 # "performanceeval" - run performance evaluation write and read.
 #              Useful for making sure things are setup the way you
