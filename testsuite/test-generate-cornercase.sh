@@ -52,10 +52,6 @@ __GenerateCornerCaseTests_CatchProjectDependencies() {
             magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
 
-        sed -i \
-            -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
-
         sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
@@ -892,10 +888,6 @@ __GenerateCornerCaseTests_RequireHDFS() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 
         sed -i \
-            -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
-
-        sed -i \
             -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
@@ -932,10 +924,6 @@ __GenerateCornerCaseTests_RequireYarn() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
-
-        sed -i \
-            -e 's/# export SPARK_USE_YARN="\(.*\)"/export SPARK_USE_YARN=yes/' \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
 
         sed -i \
             -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="HDFS2"/' \
