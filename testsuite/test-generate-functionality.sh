@@ -600,9 +600,13 @@ __GenerateFunctionalityTests_PrePostRunScripts() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts
     fi
 
-    sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-job-run.sh"/' magpie.${submissiontype}*functionality-prepostrunscripts
-    sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh"/' magpie.${submissiontype}*functionality-prepostrunscripts
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostrunscripts-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-prepostrunscripts
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostrunscripts*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-job-run.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostrunscripts-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
 }
 
 __GenerateFunctionalityTests_PreRunScriptError() {
@@ -657,8 +661,12 @@ __GenerateFunctionalityTests_PreRunScriptError() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-prerunscripterror
     fi
 
-    sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-job-run-error.sh"/' magpie.${submissiontype}*functionality-prerunscripterror
-    sed -i -e "s/FILENAMESEARCHREPLACEKEY/prerunscripterror-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}*functionality-prerunscripterror
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prerunscripterror*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-job-run-error.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/prerunscripterror-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
 }
 
 GenerateFunctionalityTests() {
