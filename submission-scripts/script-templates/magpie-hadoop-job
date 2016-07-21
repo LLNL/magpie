@@ -40,3 +40,219 @@
 #
 export HADOOP_JOB="terasort"
 
+# Tasks per Node
+#
+# If not specified, a reasonable estimate will be calculated based on
+# number of CPUs on the system.
+#
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
+#
+# export HADOOP_MAX_TASKS_PER_NODE=8
+
+# Default Map tasks for Job
+#
+# If not specified, defaults to HADOOP_MAX_TASKS_PER_NODE * compute
+# nodes.
+#
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
+#
+# export HADOOP_DEFAULT_MAP_TASKS=8
+
+# Default Reduce tasks for Job
+#
+# If not specified, defaults to # compute nodes (i.e. 1 reducer per
+# node)
+#
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
+#
+# export HADOOP_DEFAULT_REDUCE_TASKS=8
+
+# Heap size for JVM
+#
+# Specified in M.  If not specified, a reasonable estimate will be
+# calculated based on total memory available and number of CPUs on the
+# system.
+#
+# HADOOP_CHILD_MAP_HEAPSIZE and HADOOP_CHILD_REDUCE_HEAPSIZE are for
+# Yarn
+#
+# If HADOOP_CHILD_MAP_HEAPSIZE is not specified, it is assumed to be
+# HADOOP_CHILD_HEAPSIZE.
+#
+# If HADOOP_CHILD_REDUCE_HEAPSIZE is not specified, it is assumed to
+# be 2X the HADOOP_CHILD_MAP_HEAPSIZE.
+#
+# If running Hbase (or other Big Data software) with Hadoop MapReduce,
+# be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
+#
+# export HADOOP_CHILD_HEAPSIZE=2048
+# export HADOOP_CHILD_MAP_HEAPSIZE=2048
+# export HADOOP_CHILD_REDUCE_HEAPSIZE=4096
+
+# Container Buffer
+#
+# Specify the amount of overhead each Yarn container will have over
+# the heap size.  Specified in M.  If not specified, a reasonable
+# estimate will be calculated based on total memory available.
+#
+# export HADOOP_CHILD_MAP_CONTAINER_BUFFER=256
+# export HADOOP_CHILD_REDUCE_CONTAINER_BUFFER=512
+
+# Mapreduce Slowstart, indicating percent of maps that should complete
+# before reducers begin.
+#
+# If not specified, defaults to 0.05
+#
+# export HADOOP_MAPREDUCE_SLOWSTART=0.05
+
+# Container Memory
+#
+# Memory on compute nodes for containers.  Typically "nice-chunk" less
+# than actual memory on machine, b/c machine needs memory for its own
+# needs (kernel, daemons, etc.).  Specified in megs.
+#
+# If not specified, a reasonable estimate will be calculated based on
+# total memory on the system.
+#
+# export YARN_RESOURCE_MEMORY=32768
+
+# Check Memory Limits
+# 
+# Should physical and virtual memory limits be enforced for containers.
+# This can be helpful in cases where the OS (Centos/Redhat) is aggressive
+# at allocating virtual memory and causes the vmem-to-pmem ratio to be
+# hit. Defaults to true
+#
+# export YARN_VMEM_CHECK="false"
+# export YARN_PMEM_CHECK="false"
+
+# Compression
+#
+# Should compression of outputs and intermediate data be enabled.
+# Specify yes or no.  Defaults to no.
+#
+# Effectively, is time spend compressing data going to save you time
+# on I/O.  Sometimes yes, sometimes no.
+#
+# export HADOOP_COMPRESSION=yes
+
+# IO Sort Factors + MB
+#
+# The number of streams of files to sort while reducing and the memory
+# amount to use while sorting.  This is a quite advanced mechanism
+# taking into account many factors.  If not specified, some reasonable
+# number will be calculated.
+#
+# export HADOOP_IO_SORT_FACTOR=10
+# export HADOOP_IO_SORT_MB=100
+
+# Parallel Copies
+#
+# The default number of parallel transfers run by reduce during the
+# copy(shuffle) phase.  If not specified, some reasonable number will
+# be calculated.
+# export HADOOP_PARALLEL_COPIES=10
+
+############################################################################
+# Hadoop Terasort Configurations
+############################################################################
+
+# Terasort size
+#
+# For "terasort" mode.
+#
+# Specify terasort size in units of 100.  Specify 10000000000 for
+# terabyte, for actual benchmarking
+#
+# Specify something small, for basic sanity tests.
+#
+# Defaults to 50000000.
+#
+# export HADOOP_TERASORT_SIZE=HADOOPDEFAULTTERASORTSIZE
+
+# Terasort map count
+#
+# For "terasort" mode during the teragen of data.
+#
+# If not specified, will be computed to a reasonable number given
+# HADOOP_TERASORT_SIZE and the block size of the the filesyste you are
+# using (e.g. for HDFS the HADOOP_HDFS_BLOCKSIZE)
+#
+# export HADOOP_TERAGEN_MAP_COUNT=4
+
+# Terasort reducer count
+#
+# For "terasort" mode during the actual terasort of data.
+#
+# If not specified, will be compute node count * 2.
+#
+# export HADOOP_TERASORT_REDUCER_COUNT=4
+
+# Terasort cache
+#
+# For "real benchmarking" you should flush page cache between a
+# teragen and a terasort.  You can disable this for sanity runs/tests
+# to make things go faster.  Specify yes or no.  Defaults to yes.
+#
+# export HADOOP_TERASORT_CLEAR_CACHE=no
+
+# Terasort output replication count
+#
+# For "terasort" mode during the actual terasort of data
+#
+# In some circumstances, replication of the output from the terasort
+# must be equal to the replication of data for the input.  In other
+# cases it can be less.  The below can be adjusted to tweak for
+# benchmarking purposes.
+#
+# If not specified, defaults to Terasort default, which is 1 in most
+# versions of Hadoop
+#
+# export HADOOP_TERASORT_OUTPUT_REPLICATION=1
+
+# Terachecksum
+#
+# For "terasort" mode after the teragen of data
+#
+# After executing the teragen, run terachecksum to calculate a checksum of
+# the input.
+#
+# If both this and HADOOP_TERASORT_RUN_TERAVALIDATE are set, the
+# checksums will be compared afterwards for equality.
+#
+# Defaults to no
+#
+# export HADOOP_TERASORT_RUN_TERACHECKSUM=no
+
+# Teravalidate
+#
+# For "terasort" mode after the actual terasort of data
+#
+# After executing the sort, run teravalidate to validate the sorted data.
+#
+# If both this and HADOOP_TERASORT_RUN_TERACHECKSUM are set, the
+# checksums will be compared afterwards for equality.
+#
+# Defaults to no
+#
+# export HADOOP_TERASORT_RUN_TERAVALIDATE=no
+
+############################################################################
+# Hadoop Decommission HDFS Nodes Configurations
+############################################################################
+
+# Specify decommission node size for "decommissionhdfsnodes" mode
+#
+# For example, if your current HDFS node size is 16, your job size is
+# likely 17 nodes (including the master).  If you wish to decommission
+# to 8 data nodes (job size of 9 nodes total), set this to 8.
+#
+# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=8
+
