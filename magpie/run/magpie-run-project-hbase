@@ -199,14 +199,6 @@ Magpie_run_hbase () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hbase-performanceeval &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${HBASE_JOB}" == "script" ]
-    then
-        echo "*******************************************************"
-        echo "* Executing script $HBASE_SCRIPT_PATH $HBASE_SCRIPT_ARGS"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${HBASE_SCRIPT_PATH} ${HBASE_SCRIPT_ARGS} &
-        local scriptpid=$!
-        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
         Magpie_output_internal_error "HBASE_JOB = ${HBASE_JOB} not handled"
     fi

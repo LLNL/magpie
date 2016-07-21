@@ -84,9 +84,6 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 #              There are additional configuration options for this
 #              listed below.
 #
-# "script" - execute a script that lists all of your Hbase jobs.  Be
-#            sure to set HBASE_SCRIPT_PATH to your script.
-#
 export HBASE_JOB="performanceeval"
 
 # Start Hbase with thrift
@@ -137,23 +134,4 @@ export HBASE_JOB="performanceeval"
 # If not specified, defaults to 1.
 #
 # export HBASE_PERFORMANCEEVAL_CLIENT_COUNT=1
-
-############################################################################
-# Hbase Script Configurations
-############################################################################
-
-# Specify script to execute for "script" mode
-#
-# See examples/hbase-example-job-script for example of what to put in
-# the script.
-#
-# export HBASE_SCRIPT_PATH="${HOME}/my-job-script"
-
-# Specify arguments for script specified in HBASE_SCRIPT_PATH
-#
-# Note that many Magpie generated environment variables, such as
-# HBASE_MASTER_NODE, are not generated until the job has launched.
-# You won't be able to use them here.
-#
-# export HBASE_SCRIPT_ARGS="" 
  
