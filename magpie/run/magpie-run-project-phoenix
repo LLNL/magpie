@@ -224,7 +224,9 @@ Magpie_run_stop_phoenix () {
         Magpie_output_internal_warning "tearing down Phoenix after Hbase"
     fi
 
-    if [ "${PHOENIX_SETUP}" == "yes" ] && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
+    if [ "${PHOENIX_SETUP}" == "yes" ] \
+        && [ ${PHOENIX_MODE} == "server" ] \
+        && [ "${magpie_run_phoenix_should_be_torndown}" == "1" ]
     then
         if [ ${PHOENIX_MODE} != "setuponly" ]
         then
