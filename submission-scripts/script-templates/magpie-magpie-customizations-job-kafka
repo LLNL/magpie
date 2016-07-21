@@ -1,2 +1,2 @@
-# "kafka" - Run a job according to the settings of KAFKA_MODE.
+# "kafka" - Run a job according to the settings of KAFKA_JOB.
 #

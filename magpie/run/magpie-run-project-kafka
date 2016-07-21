@@ -186,7 +186,7 @@ Magpie_run_start_kafka () {
 }
 
 Magpie_run_kafka () {
-    if [ "${KAFKA_MODE}" == "performance" ]
+    if [ "${KAFKA_JOB}" == "performance" ]
     then
         echo "*******************************************************"
         echo "* Running Performance"
@@ -195,7 +195,7 @@ Magpie_run_kafka () {
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
-        Magpie_output_internal_error "KAFKA_MODE = ${KAFKA_MODE} not handled"
+        Magpie_output_internal_error "KAFKA_JOB = ${KAFKA_JOB} not handled"
     fi
 }
 

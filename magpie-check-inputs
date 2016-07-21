@@ -880,9 +880,9 @@ then
 
     __Magpie_check_is_enabled "Zookeeper" "Kafka"
 
-    if [ "${KAFKA_MODE}" != "performance" ]
+    if [ "${KAFKA_JOB}" != "performance" ]
     then
-        echo "KAFKA_MODE must be set to performance"
+        echo "KAFKA_JOB must be set to performance"
         exit 1
     fi
 fi
