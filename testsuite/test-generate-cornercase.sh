@@ -1034,6 +1034,39 @@ __GenerateCornerCaseTests_RequireHDFS() {
     fi
 }
 
+__GenerateCornerCaseTests_RequireRawnetworkfs() {
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-1
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="YARN"/' magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-1
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfs"/' magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-2
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="YARN"/' magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-2
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-3
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="YARN"/' magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-3
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' magpie.${submissiontype}-hadoop-cornercase-requirerawnetworkfs-3
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-hdfs-cornercase-requirerawnetworkfs-1
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfs"/' magpie.${submissiontype}-spark-with-hdfs-cornercase-requirerawnetworkfs-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-hdfs-cornercase-requirerawnetworkfs-2
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' magpie.${submissiontype}-spark-with-hdfs-cornercase-requirerawnetworkfs-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-hdfs-cornercase-requirerawnetworkfs-3
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' magpie.${submissiontype}-spark-with-hdfs-cornercase-requirerawnetworkfs-3
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-requirerawnetworkfs*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/requirerawnetworkfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 __GenerateCornerCaseTests_RequireYarn() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-requireyarn
@@ -1227,6 +1260,7 @@ GenerateCornerCaseTests() {
     __GenerateCornerCaseTests_BadCoreSettings
 
     __GenerateCornerCaseTests_RequireHDFS
+    __GenerateCornerCaseTests_RequireRawnetworkfs
     __GenerateCornerCaseTests_RequireYarn
 
     __GenerateCornerCaseTests_BadComboSettings

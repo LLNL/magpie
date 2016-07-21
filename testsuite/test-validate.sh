@@ -273,7 +273,7 @@ then
     done
 fi
 
-__get_test_files nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requireyarn badcombosettings
+__get_test_files nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requirerawnetworkfs requireyarn badcombosettings
 if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
