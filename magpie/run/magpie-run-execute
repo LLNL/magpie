@@ -28,6 +28,7 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -129,7 +130,7 @@ then
 
         # We use SIGUSR1 and SIGUSR2 above & below.  Signal 28, SIGWINCH seems a good choice
         # to use.
-        if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR" ]
+        if [ "${HADOOP_SETUP}" == "yes" ] && Magpie_hadoop_setup_type_enables_yarn
         then
             echo "*"
             echo "* Magpie is aware that Yarn has been launched.  If user wishes to"

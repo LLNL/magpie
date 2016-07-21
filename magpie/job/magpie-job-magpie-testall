@@ -26,8 +26,10 @@
 # part, it shouldn't be editted.  See job submission files for
 # configuration details.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+
 if [ "${HADOOP_SETUP}" == "yes" ] \
-   && [ "${HADOOP_SETUP_TYPE}" == "MR" ]
+   && Magpie_hadoop_setup_type_enables_yarn
 then
     echo "*******************************************************"
     echo "* Running Hadoop Terasort"

@@ -263,12 +263,18 @@ export HADOOP_SETUP=yes
 # launch/setup.
 #
 # MR - Launch HDFS and Yarn
+# YARN - Enable only Yarn
 # HDFS - Enable only HDFS
 #
 # HDFS only may be useful when you want to use HDFS with other big
 # data software, such as Hbase, and do not care for MapReduce or Yarn.
 # It only works with HDFS based HADOOP_FILESYSTEM_MODE, such as
 # "hdfs", "hdfsoverlustre", or "hdfsovernetworkfs".
+#
+# YARN only may be useful when you need Yarn setup for scheduling, but                                                               
+# will not be using HDFS.  For example, you may be reading from a                                                                    
+# networked file system directly.  This option requires                                                                              
+# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.        
 #
 export HADOOP_SETUP_TYPE="HDFS"
 

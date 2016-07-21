@@ -363,9 +363,10 @@ then
     __Magpie_check_must_be_set "HADOOP_LOCAL_DIR" "to run Hadoop"
 
     if [ "${HADOOP_SETUP_TYPE}" != "MR" ] \
+        && [ "${HADOOP_SETUP_TYPE}" != "YARN" ] \
         && [ "${HADOOP_SETUP_TYPE}" != "HDFS" ]
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR or HDFS"
+        echo "HADOOP_SETUP_TYPE must be set to MR or YARN or HDFS"
         exit 1
     fi
 
@@ -377,11 +378,11 @@ then
         exit 1
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
+    if ! Magpie_hadoop_setup_type_enables_yarn \
         && [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_JOB}" == "terasort" ]
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR for HADOOP_JOB = ${HADOOP_JOB}"
+        echo "HADOOP_SETUP_TYPE must be set to MR or YARN for HADOOP_JOB = ${HADOOP_JOB}"
         exit 1
     fi
 
@@ -450,6 +451,13 @@ then
         exit 1
     fi
 
+    if [ "${HADOOP_SETUP_TYPE}" == "YARN" ] \
+        && [ "${HADOOP_FILESYSTEM_MODE}" != "rawnetworkfs" ]
+    then
+        echo "HADOOP_FILESYSTEM_MODE must be set to rawnetworkfs if HADOOP_SETUP_TYPE=${HADOOP_SETUP_TYPE}"
+        exit 1
+    fi
+    
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_JOB}" == "decommissionhdfsnodes" ] \
         && ! Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
@@ -546,12 +554,12 @@ then
         __Magpie_check_must_be_set_and_is_regular_file "PIG_SCRIPT_PATH" "for PIG_JOB = ${PIG_JOB}"
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
+    if ! Magpie_hadoop_setup_type_enables_yarn \
         && [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
         && ([ "${PIG_JOB}" == "testpig" ] \
         || [ "${PIG_JOB}" == "script" ])
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR for PIG_JOB=${PIG_JOB}"
+        echo "HADOOP_SETUP_TYPE must be set to MR or YARN for PIG_JOB=${PIG_JOB}"
         exit 1
     fi
 fi
@@ -578,11 +586,13 @@ then
         exit 1
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ] \
+    if (! Magpie_hadoop_setup_type_enables_yarn \
+        || ! Magpie_hadoop_setup_type_enables_hdfs \
+        || ! Magpie_hadoop_filesystem_mode_is_hdfs_type) \
         && [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
         && [ "${MAHOUT_JOB}" == "clustersyntheticcontrol" ]
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR2 for MAHOUT_JOB=${MAHOUT_JOB}"
+        echo "HADOOP_SETUP_TYPE must be set to MR for MAHOUT_JOB=${MAHOUT_JOB}"
         exit 1
     fi
 fi
@@ -642,7 +652,7 @@ then
                 exit 1
             fi
 
-            if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
+            if ! Magpie_hadoop_setup_type_enables_yarn \
                 && ([ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-mr" ])
             then
                 echo "HADOOP_SETUP_TYPE must be set to MR for HBASE_PERFORMANCEEVAL_MODE=${HBASE_PERFORMANCEEVAL_MODE}"
@@ -818,10 +828,10 @@ then
     then
         __Magpie_check_is_enabled "Hadoop" "Spark"
 
-        if [ "${HADOOP_SETUP_TYPE}" != "MR" ]
+        if ! Magpie_hadoop_setup_type_enables_yarn
         then
             echo "SPARK_USE_YARN set to '${SPARK_USE_YARN}' but HADOOP_SETUP_TYPE set to '${HADOOP_SETUP_TYPE}'"
-            echo "HADOOP_SETUP_TYPE must be set to 'MR'"
+            echo "HADOOP_SETUP_TYPE must be set to MR or YARN"
             exit 1
         fi
 
