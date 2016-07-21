@@ -766,10 +766,9 @@ then
     fi
 
     if [ "${SPARK_JOB}" != "sparkpi" ] \
-        && [ "${SPARK_JOB}" != "sparkwordcount" ] \
-        && [ "${SPARK_JOB}" != "script" ]
+        && [ "${SPARK_JOB}" != "sparkwordcount" ]
     then
-        echo "SPARK_JOB must be set to sparkpi, sparkwordcount, or script"
+        echo "SPARK_JOB must be set to sparkpi or sparkwordcount"
         exit 1
     fi
 
@@ -825,11 +824,6 @@ then
     fi
 
     __Magpie_check_if_set_is_true_or_false "SPARK_DEPLOY_SPREADOUT"
-
-    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_JOB}" == "script" ]
-    then
-        __Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_JOB = ${SPARK_JOB}"
-    fi
 
     __Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
 
