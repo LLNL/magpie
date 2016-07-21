@@ -142,8 +142,6 @@ then
     iobuffersize=1048576
 fi 
 
-javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-
 # Sets magpie_processor_count & magpie_threads_to_use
 Magpie_calculate_threads_to_use
 
@@ -759,6 +757,7 @@ post_yarnenvsh=${HADOOP_CONF_DIR}/yarn-env.sh
 post_hdfssitexml=${HADOOP_CONF_DIR}/hdfs-site.xml
 post_log4jproperties=${HADOOP_CONF_DIR}/log4j.properties
 
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
 
 #
