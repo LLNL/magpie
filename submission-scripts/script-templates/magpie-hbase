@@ -75,7 +75,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 # Hbase Job/Run Configurations
 ############################################################################
 
-# Set how Hbase should run
+# Set hbase job for MAGPIE_JOB_TYPE = hbase
 #
 # "performanceeval" - run performance evaluation write and read.
 #              Useful for making sure things are setup the way you

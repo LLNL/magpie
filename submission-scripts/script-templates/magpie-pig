@@ -47,7 +47,7 @@ export PIG_HOME="PIGDIRPREFIX/pig-${PIG_VERSION}"
 #
 export PIG_LOCAL_DIR="LOCALDIRPREFIX/pig"
 
-# Set how Pig should run
+# Set pig job for MAGPIE_JOB_TYPE = pig
 #
 # "testpig" - Run a quick sanity test to see that pig is setup
 #             correctly.  Testpig will do a simple ls of the root

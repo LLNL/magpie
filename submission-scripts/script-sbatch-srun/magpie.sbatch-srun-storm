@@ -322,7 +322,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 # Storm Job/Run Configurations
 ############################################################################
 
-# Set how Storm should run
+# Set storm job for MAGPIE_JOB_TYPE = storm
 #
 # "stormwordcount" - run Storm word count example.  Useful for making
 #            sure things are setup the way you like.
@@ -363,7 +363,7 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 #
 # export ZOOKEEPER_SHARE_NODES=yes
 
-# Set how Zookeeper should run
+# Set zookeeper job for MAGPIE_JOB_TYPE = zookeeper
 #
 # "zookeeperruok" - Run a quick sanity test to see that zookeeper is
 #             setup correctly.  zookeeperruok will do a simple 'ruok'

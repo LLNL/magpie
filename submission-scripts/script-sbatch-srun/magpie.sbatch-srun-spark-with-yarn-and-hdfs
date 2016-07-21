@@ -360,7 +360,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # Hadoop Job/Run Configurations
 ############################################################################
 
-# Set how Hadoop should run
+# Set hadoop job for MAGPIE_JOB_TYPE = hadoop
 #
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
@@ -947,7 +947,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # Spark Job/Run Configurations
 ############################################################################
 
-# Set how Spark should run
+# Set spark job for MAGPIE_JOB_TYPE = spark
 #
 # "sparkpi" - run sparkpi example. Useful for making sure things are
 #             setup the way you like.

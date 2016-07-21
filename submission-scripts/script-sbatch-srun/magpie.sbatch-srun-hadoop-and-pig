@@ -356,7 +356,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # Hadoop Job/Run Configurations
 ############################################################################
 
-# Set how Hadoop should run
+# Set hadoop job for MAGPIE_JOB_TYPE = hadoop
 #
 # "terasort" - run terasort.  Useful for making sure things are setup
 #              the way you like.
@@ -867,7 +867,7 @@ export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 #
 export PIG_LOCAL_DIR="/tmp/${USER}/pig"
 
-# Set how Pig should run
+# Set pig job for MAGPIE_JOB_TYPE = pig
 #
 # "testpig" - Run a quick sanity test to see that pig is setup
 #             correctly.  Testpig will do a simple ls of the root

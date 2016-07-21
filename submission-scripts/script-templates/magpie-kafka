@@ -44,7 +44,7 @@ export KAFKA_LOCAL_DIR="LOCALDIRPREFIX/kafka"
 #
 # export KAFKA_CONF_FILES="${HOME}/myconf"
 
-# Set how Kafka should run
+# Set kafka job for MAGPIE_JOB_TYPE = kafka
 #
 # "performance" - run performance test. Useful for making sure things are
 #                 setup and running properly
