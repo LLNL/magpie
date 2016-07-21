@@ -13,12 +13,6 @@
 # "script" - execute a script that lists all of your Hadoop jobs.  Be
 #            sure to set HADOOP_SCRIPT_PATH to your script.
 #
-# "interactive" - manually interact to submit jobs, peruse HDFS, etc.
-#                 also useful for moving data in/out of HDFS.  In this
-#                 mode you'll login to the cluster node that is your
-#                 'master' node and interact with Hadoop directly
-#                 (e.g. bin/hadoop ...)
-#
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
 #                 used when you are switching to a newer Hadoop
 #                 version and the HDFS version would be inconsistent

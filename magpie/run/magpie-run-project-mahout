@@ -123,14 +123,6 @@ Magpie_run_mahout () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${MAHOUT_HOME}/${mahoutcmdprefix}/mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${MAHOUT_MODE}" == "interactive" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Mahout ${MAHOUT_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "MAHOUT_MODE = ${MAHOUT_MODE} not handled"
     fi

@@ -97,12 +97,10 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #            It is primarily used if you want to launch without
 #            Hadoop/Hbase/Spark and are experimenting with things..
 #
-# "interactive" - manually interact with job run.  This functionally
-#                 is very similar to setting "interactive" in
-#                 HADOOP_MODE, HBASE_MODE, SPARK_MODE, etc.  It is
-#                 primarily used if you want to launch without
-#                 Hadoop/Hbase/Spark/etc. and are experimenting with
-#                 things.
+# "interactive" - manually interact with job run to submit jobs,
+#                 peruse data (e.g. HDFS), move data, etc.  See job
+#                 output for instructions to access your job
+#                 allocation.
 #
 # "setuponly" - do not launch any daemons or services, only setup
 #               configuration files.  Useful for debugging or
@@ -367,12 +365,6 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #
 # "script" - execute a script that lists all of your Hadoop jobs.  Be
 #            sure to set HADOOP_SCRIPT_PATH to your script.
-#
-# "interactive" - manually interact to submit jobs, peruse HDFS, etc.
-#                 also useful for moving data in/out of HDFS.  In this
-#                 mode you'll login to the cluster node that is your
-#                 'master' node and interact with Hadoop directly
-#                 (e.g. bin/hadoop ...)
 #
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
 #                 used when you are switching to a newer Hadoop

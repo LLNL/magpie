@@ -182,14 +182,6 @@ Magpie_run_zeppelin () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-zeppelin-checkzeppelinup.py &
         local scriptpid=$!
         wait $scriptpid
-    elif [ "${ZEPPELIN_MODE}" == "interactive" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "ZEPPELIN_MODE = ${ZEPPELIN_MODE} not handled"
     fi

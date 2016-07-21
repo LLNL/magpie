@@ -211,14 +211,6 @@ Magpie_run_storm () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${STORM_SCRIPT_PATH} ${STORM_SCRIPT_ARGS} &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${STORM_MODE}" == "interactive" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Storm ${STORM_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "STORM_MODE = ${STORM_MODE} not handled"
     fi

@@ -371,13 +371,12 @@ then
 
     if [ "${HADOOP_MODE}" != "terasort" ] \
         && [ "${HADOOP_MODE}" != "script" ] \
-        && [ "${HADOOP_MODE}" != "interactive" ] \
         && [ "${HADOOP_MODE}" != "upgradehdfs" ] \
         && [ "${HADOOP_MODE}" != "decommissionhdfsnodes" ] \
         && [ "${HADOOP_MODE}" != "launch" ] \
         && [ "${HADOOP_MODE}" != "hdfsonly" ]
     then
-        echo "HADOOP_MODE must be set to terasort, script, interactive, upgradehdfs, decommissionhdfsnodes, launch, or hdfsonly"
+        echo "HADOOP_MODE must be set to terasort, script, upgradehdfs, decommissionhdfsnodes, launch, or hdfsonly"
         exit 1
     fi
 
@@ -544,10 +543,9 @@ then
     __Magpie_check_is_enabled "Hadoop" "Pig"
 
     if [ "${PIG_MODE}" != "testpig" ] \
-        && [ "${PIG_MODE}" != "script" ] \
-        && [ "${PIG_MODE}" != "interactive" ]
+        && [ "${PIG_MODE}" != "script" ]
     then
-        echo "PIG_MODE must be set to testpig, script, interactive"
+        echo "PIG_MODE must be set to testpig or script"
         exit 1
     fi
 
@@ -583,10 +581,9 @@ then
     __Magpie_check_is_enabled "Hadoop" "Mahout"
 
     if [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
-        && [ "${MAHOUT_MODE}" != "script" ] \
-        && [ "${MAHOUT_MODE}" != "interactive" ]
+        && [ "${MAHOUT_MODE}" != "script" ]
     then
-        echo "MAHOUT_MODE must be set to clustersyntheticcontrol, script, interactive"
+        echo "MAHOUT_MODE must be set to clustersyntheticcontrol or script"
         exit 1
     fi
 
@@ -642,10 +639,9 @@ then
     fi
 
     if [ "${HBASE_MODE}" != "performanceeval" ] \
-        && [ "${HBASE_MODE}" != "script" ] \
-        && [ "${HBASE_MODE}" != "interactive" ]
+        && [ "${HBASE_MODE}" != "script" ]
     then
-        echo "HBASE_MODE must be set to performanceeval, script, or interactive"
+        echo "HBASE_MODE must be set to performanceeval or script"
         exit 1
     fi
 
@@ -721,10 +717,9 @@ then
 
     if [ "${PHOENIX_MODE}" != "performanceeval" ] \
         && [ "${PHOENIX_MODE}" != "script" ] \
-        && [ "${PHOENIX_MODE}" != "interactive" ] \
         && [ "${PHOENIX_MODE}" != "server" ]
     then
-        echo "PHOENIX_MODE must be set to performanceeval, script, interactive, or server"
+        echo "PHOENIX_MODE must be set to performanceeval, script, or server"
         exit 1
     fi
 
@@ -779,10 +774,9 @@ then
 
     if [ "${SPARK_MODE}" != "sparkpi" ] \
         && [ "${SPARK_MODE}" != "sparkwordcount" ] \
-        && [ "${SPARK_MODE}" != "script" ] \
-        && [ "${SPARK_MODE}" != "interactive" ]
+        && [ "${SPARK_MODE}" != "script" ]
     then
-        echo "SPARK_MODE must be set to sparkpi, sparkwordcount, script, or interactive"
+        echo "SPARK_MODE must be set to sparkpi, sparkwordcount, or script"
         exit 1
     fi
 
@@ -912,10 +906,9 @@ then
     __Magpie_check_is_enabled "Spark" "Zeppelin"
 
     if [ "${ZEPPELIN_MODE}" != "server" ] \
-        && [ "${ZEPPELIN_MODE}" != "checkzeppelinup" ] \
-        && [ "${ZEPPELIN_MODE}" != "interactive" ]
+        && [ "${ZEPPELIN_MODE}" != "checkzeppelinup" ]
     then
-        echo "ZEPPELIN_MODE must be set to server, checkzeppelinup, or interactive"
+        echo "ZEPPELIN_MODE must be set to server or checkzeppelinup"
         exit 1
     fi
 fi
@@ -941,10 +934,9 @@ then
     __Magpie_check_is_enabled "Zookeeper" "Storm"
 
     if [ "${STORM_MODE}" != "stormwordcount" ] \
-        && [ "${STORM_MODE}" != "script" ] \
-        && [ "${STORM_MODE}" != "interactive" ]
+        && [ "${STORM_MODE}" != "script" ]
     then
-        echo "STORM_MODE must be set to stormwordcount, script, or interactive"
+        echo "STORM_MODE must be set to stormwordcount or script"
         exit 1
     fi
 

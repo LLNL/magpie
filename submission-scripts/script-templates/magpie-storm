@@ -86,11 +86,6 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 # "script" - execute a script that lists all of your Storm jobs.  Be
 #            sure to set STORM_SCRIPT_PATH to your script.
 #
-# "interactive" - manually interact to submit jobs, peruse Storm, etc.
-#                 In this mode you'll login to the cluster node that
-#                 is your 'master' node and interact with Storm
-#                 directly (e.g. bin/storm ...)
-#
 export STORM_MODE="stormwordcount"
 
 ############################################################################

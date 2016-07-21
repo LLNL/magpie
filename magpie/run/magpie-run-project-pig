@@ -126,14 +126,6 @@ Magpie_run_pig () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${PIG_HOME}/${pigcmdprefix}/pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PIG_MODE}" == "interactive" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Pig ${PIG_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
-        local scriptpid=$!
-        wait $scriptpid
     else
         Magpie_output_internal_error "PIG_MODE = ${PIG_MODE} not handled"
     fi

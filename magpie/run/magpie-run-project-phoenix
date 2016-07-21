@@ -189,14 +189,6 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${PHOENIX_HOME}/${phoenixcmdprefix}/sqlline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PHOENIX_MODE}" == "interactive" ]
-    then
-        echo "*******************************************************"
-        echo "* Entering Phoenix ${PHOENIX_MODE} mode"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
-        local scriptpid=$!
-        wait $scriptpid
     elif [ "${PHOENIX_MODE}" == "server" ]
     then
         echo "*******************************************************"

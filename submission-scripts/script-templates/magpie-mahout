@@ -46,11 +46,6 @@ export MAHOUT_LOCAL_DIR="LOCALDIRPREFIX/mahout"
 #
 # "script" - execute a mahout script indicated by MAHOUT_SCRIPT_PATH.
 #
-# "interactive" - manually interact to run mahout scripts. In this mode
-#                 you'll login to the cluster node that is your
-#                 'master' node and run mahout scripts directly
-#                 (e.g. bin/mahout ...).
-#
 export MAHOUT_MODE="clustersyntheticcontrol"
 
 # Specify script to execute for "script" mode in MAHOUT_MODE.  This mahout

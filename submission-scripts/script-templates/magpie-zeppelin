@@ -51,10 +51,6 @@ export ZEPPELIN_LOCAL_DIR="LOCALDIRPREFIX/zeppelin"
 # "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
 #                     correctly and up.
 #
-# "interactive" - manually interact with Zeppelin.  In this mode
-#                 you'll login to the cluster node that is your
-#                 'master' node and interact with Zeppelin directly.
-#
 export ZEPPELIN_MODE="checkzeppelinup"
 
 # Path to the root scala dir

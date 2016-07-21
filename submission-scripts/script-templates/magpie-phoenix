@@ -54,11 +54,6 @@ export PHOENIX_LOCAL_DIR="LOCALDIRPREFIX/phoenix"
 #
 # "script" - execute a phoenix script indicated by PHOENIX_SCRIPT_PATH.
 #
-# "interactive" - manually interact to run phoenix scripts. In this mode
-#                 you'll login to the cluster node that is your
-#                 'master' node and run phoenix scripts directly
-#                 (e.g. bin/sqlline.py ...).
-#
 export PHOENIX_MODE="performanceeval"
 
 # Specify script to execute for "script" mode in PHOENIX_MODE.  This phoenix
