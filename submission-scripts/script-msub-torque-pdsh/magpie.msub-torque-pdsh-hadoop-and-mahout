@@ -83,7 +83,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
-# "hadoop" - Run a job according to the settings of HADOOP_MODE.
+# "hadoop" - Run a job according to the settings of HADOOP_JOB.
 #
 # "mahout" - Run a job according to the settings of MAHOUT_MODE.
 #
@@ -97,7 +97,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
-#            setting "script" in HADOOP_MODE or HBASE_MODE or
+#            setting "script" in HADOOP_JOB or HBASE_MODE or
 #            SPARK_MODE.
 #
 #            It is primarily used if you want to launch without
@@ -400,7 +400,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #		            complete fully, it can leave HDFS in a bad
 #		            state.
 #
-export HADOOP_MODE="terasort"
+export HADOOP_JOB="terasort"
 
 # Tasks per Node
 #

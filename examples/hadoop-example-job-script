@@ -3,7 +3,7 @@
 # This script executes a teragen and terasort with Hadoop 2.0.  It is
 # an example of how you can setup a script to run Hadoop job.  It is
 # set via the HADOOP_SCRIPT_PATH environment variable and setting the
-# HADOOP_MODE to 'script'.  See the job submission file for details.
+# HADOOP_JOB to 'script'.  See the job submission file for details.
 #
 # Please adjust to whatever you would want to do with Hadoop
 
