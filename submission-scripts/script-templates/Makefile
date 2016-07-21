@@ -309,7 +309,8 @@ define create-all
 		magpie-general-configuration-python > $(MAGPIE)
 
 		if test "${HADOOP_INCLUDE}" = "y"; then \
-			cat magpie-hadoop-core magpie-hadoop-job \
+			cat magpie-hadoop-core \
+				magpie-hadoop-job \
 				magpie-hadoop-job-details \
 				magpie-hadoop-filesystem-substitution \
 				magpie-hadoop-mode-terasort \
@@ -382,7 +383,8 @@ define create-hadoop
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
-		magpie-hadoop-core magpie-hadoop-job \
+		magpie-hadoop-core \
+		magpie-hadoop-job \
 		magpie-hadoop-job-details \
 		magpie-hadoop-filesystem-substitution \
 		magpie-hadoop-mode-terasort \
@@ -401,7 +403,8 @@ define create-hadoop-with-uda
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
-		magpie-hadoop-core magpie-hadoop-job \
+		magpie-hadoop-core \
+		magpie-hadoop-job \
 		magpie-hadoop-job-details \
 		magpie-hadoop-filesystem-substitution \
 		magpie-hadoop-mode-terasort \
