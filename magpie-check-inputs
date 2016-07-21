@@ -630,10 +630,9 @@ then
         exit 1
     fi
 
-    if [ "${HBASE_JOB}" != "performanceeval" ] \
-        && [ "${HBASE_JOB}" != "script" ]
+    if [ "${HBASE_JOB}" != "performanceeval" ]
     then
-        echo "HBASE_JOB must be set to performanceeval or script"
+        echo "HBASE_JOB must be set to performanceeval"
         exit 1
     fi
 
@@ -675,11 +674,6 @@ then
                 exit 1
             fi
         fi
-    fi
-
-    if [ "${MAGPIE_JOB_TYPE}" == "hbase" ] && [ "${HBASE_JOB}" == "script" ]
-    then
-        __Magpie_check_must_be_set_and_is_executable "HBASE_SCRIPT_PATH" "for HBASE_JOB = ${HBASE_JOB}"
     fi
 
     __Magpie_check_if_set_is_yes_or_no "HBASE_MAJOR_COMPACTION_ON_SHUTDOWN"
