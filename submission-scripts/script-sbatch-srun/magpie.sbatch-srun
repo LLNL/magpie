@@ -84,7 +84,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "hadoop" - Run a job according to the settings of HADOOP_JOB.
 #
-# "hbase" - Run a job according to the settings of HBASE_MODE.
+# "hbase" - Run a job according to the settings of HBASE_JOB.
 #
 # "phoenix" - Run a job according to the settings of PHOENIX_MODE.
 #
@@ -120,7 +120,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
-#            setting "script" in HADOOP_JOB or HBASE_MODE or
+#            setting "script" in HADOOP_JOB or HBASE_JOB or
 #            SPARK_MODE.
 #
 #            It is primarily used if you want to launch without
@@ -1109,7 +1109,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # "script" - execute a script that lists all of your Hbase jobs.  Be
 #            sure to set HBASE_SCRIPT_PATH to your script.
 #
-export HBASE_MODE="performanceeval"
+export HBASE_JOB="performanceeval"
 
 # Start Hbase with thrift
 #
