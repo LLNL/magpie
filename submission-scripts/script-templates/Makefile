@@ -262,6 +262,7 @@ define create-templates
 	$(eval MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs-with-phoenix)
 	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
 	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
+	$(eval MAGPIE_SPARK_WITH_YARN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn)
 	$(eval MAGPIE_SPARK_WITH_YARN_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn-and-hdfs)
 	$(eval MAGPIE_SPARK_WITH_ZEPPELIN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-zeppelin)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
@@ -275,6 +276,7 @@ define create-templates
 	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hbase-with-hdfs-with-phoenix))
 	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-hdfs))
+	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn-and-hdfs))
 	$(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), $(call create-spark-with-zeppelin))
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
@@ -487,6 +489,30 @@ define create-spark-with-hdfs
 	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"HDFS\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_HDFS)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_HDFS)
+endef
+
+define create-spark-with-yarn
+	echo "Creating magpie.$(SCHED)-spark-with-yarn"
+	cat 	magpie-header \
+		magpie-config-$(SCHED) \
+		magpie-magpie-customizations-substitution \
+		magpie-general-configuration \
+		magpie-general-configuration-python \
+		magpie-hadoop-core \
+		magpie-hadoop-job \
+		magpie-hadoop-filesystem-substitution \
+		magpie-spark \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_YARN)
+	$(call common-substitution, ${MAGPIE_SPARK_WITH_YARN},${SPARK_JAVA_DEFAULT})
+	$(call common-additions, ${MAGPIE_SPARK_WITH_YARN}, hadoop spark)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/HADOOP_SETUP_TYPE=\"\(.*\)\"/HADOOP_SETUP_TYPE=\"YARN\"/" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/HADOOP_FILESYSTEM_MODE=\"\(.*\)\"/HADOOP_FILESYSTEM_MODE=\"rawnetworkfs\"/" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/^# export SPARK_USE_YARN/export SPARK_USE_YARN/g" $(MAGPIE_SPARK_WITH_YARN)
 endef
 
 define create-spark-with-yarn-and-hdfs
