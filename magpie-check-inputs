@@ -930,21 +930,21 @@ then
 
     __Magpie_check_is_enabled "Zookeeper" "Storm"
 
-    if [ "${STORM_MODE}" != "stormwordcount" ] \
-        && [ "${STORM_MODE}" != "script" ]
+    if [ "${STORM_JOB}" != "stormwordcount" ] \
+        && [ "${STORM_JOB}" != "script" ]
     then
-        echo "STORM_MODE must be set to stormwordcount or script"
+        echo "STORM_JOB must be set to stormwordcount or script"
         exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "stormwordcount" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_JOB}" == "stormwordcount" ]
     then
         __Magpie_check_if_set_is_regular_file "STORM_STARTER_EXAMPLE_JAR_PATH"
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_MODE}" == "script" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "storm" ] && [ "${STORM_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_MODE = ${STORM_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "STORM_SCRIPT_PATH" "for STORM_JOB = ${STORM_JOB}"
     fi
 
     if [ ${nodecount} -le "0" ]

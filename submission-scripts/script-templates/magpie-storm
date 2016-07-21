@@ -86,7 +86,7 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 # "script" - execute a script that lists all of your Storm jobs.  Be
 #            sure to set STORM_SCRIPT_PATH to your script.
 #
-export STORM_MODE="stormwordcount"
+export STORM_JOB="stormwordcount"
 
 ############################################################################
 # Storm Script Configurations
