@@ -110,9 +110,9 @@ Magpie_run_start_hadoop () {
                             then
                                 echo "**** HDFS Issue ****"
                                 echo "HDFS version at mount ${magpie_networkedhdfspath} is older than ${HADOOP_VERSION}."
-                                if [ "${HADOOP_MODE}" != "upgradehdfs" ]
+                                if [ "${HADOOP_JOB}" != "upgradehdfs" ]
                                 then
-                                    echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_MODE=upgradehdfs"
+                                    echo "With newer Hadoop versions, you can upgrade HDFS via HADOOP_JOB=upgradehdfs"
                                     echo "Or if you wish to use a newer Hadoop version without upgrading HDFS, you can setup HDFS on another path"
                                 fi
                                 echo "**** HDFS Issue ****"
@@ -125,7 +125,7 @@ Magpie_run_start_hadoop () {
                             fi
 
                             # or ...vercomp_result == 1 && hadoop_mode == upgradehdfs
-                            if [ "${vercomp_result}" != "1" ] || [ "${HADOOP_MODE}" != "upgradehdfs" ]
+                            if [ "${vercomp_result}" != "1" ] || [ "${HADOOP_JOB}" != "upgradehdfs" ]
                             then
                                 hadoop_should_be_setup=0
                             fi
@@ -150,7 +150,7 @@ Magpie_run_start_hadoop () {
                                 echo "started.  However, it is not recommended for future runs and there is still a chance HDFS will not start."
                             else
                                 echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decommissioning process to"
-                                echo "reduce the number of nodes your HDFS is built on via HADOOP_MODE=decommissionhdfsnodes."
+                                echo "reduce the number of nodes your HDFS is built on via HADOOP_JOB=decommissionhdfsnodes."
                                 hadoop_should_be_setup=0
                             fi
                             echo "**** HDFS Issue ****"
@@ -158,7 +158,7 @@ Magpie_run_start_hadoop () {
                     fi
                 fi
 
-                if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
+                if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_JOB}" == "upgradehdfs" ]
                 then
                     local startdfsoptions="-upgrade"
                 fi
@@ -197,7 +197,7 @@ Magpie_run_start_hadoop () {
                     # file system dependent, we choose to do this
                     # unsafely and hope its good enough.
 
-                    if [ "${HADOOP_MODE}" != "upgradehdfs" ]
+                    if [ "${HADOOP_JOB}" != "upgradehdfs" ]
                     then
                         rm -f ${magpie_hdfs_stored_version_path}
                         echo "${HADOOP_VERSION}" > ${magpie_hdfs_stored_version_path}
@@ -449,7 +449,7 @@ Magpie_run_start_hadoop () {
 }
 
 Magpie_run_hadoop () {
-    if [ "${HADOOP_MODE}" == "terasort" ]
+    if [ "${HADOOP_JOB}" == "terasort" ]
     then
         echo "*******************************************************"
         echo "* Running Terasort"
@@ -457,7 +457,7 @@ Magpie_run_hadoop () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hadoop-terasort &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${HADOOP_MODE}" == "script" ]
+    elif [ "${HADOOP_JOB}" == "script" ]
     then
         echo "*******************************************************"
         echo "* Executing script $HADOOP_SCRIPT_PATH $HADOOP_SCRIPT_ARGS"
@@ -465,10 +465,10 @@ Magpie_run_hadoop () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${HADOOP_SCRIPT_PATH} ${HADOOP_SCRIPT_ARGS} &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${HADOOP_MODE}" == "upgradehdfs" ]
+    elif [ "${HADOOP_JOB}" == "upgradehdfs" ]
     then
         echo "*******************************************************"
-        echo "* Entering Hadoop ${HADOOP_MODE} mode"
+        echo "* Entering Hadoop ${HADOOP_JOB} mode"
         echo "*******************************************************"
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hadoop-upgradehdfs &
         local scriptpid=$!
@@ -485,10 +485,10 @@ Magpie_run_hadoop () {
                 echo "${HADOOP_VERSION}" > ${magpie_hdfs_stored_version_path}
             fi
         fi
-    elif [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
+    elif [ "${HADOOP_JOB}" == "decommissionhdfsnodes" ]
     then
         echo "*******************************************************"
-        echo "* Entering Hadoop ${HADOOP_MODE} mode"
+        echo "* Entering Hadoop ${HADOOP_JOB} mode"
         echo "*******************************************************"
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute scriptnokill ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hadoop-decommissionhdfsnodes &
         local scriptpid=$!
@@ -503,7 +503,7 @@ Magpie_run_hadoop () {
             echo "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" > ${magpie_hdfs_stored_nodecount_path}
         fi
     else
-        Magpie_output_internal_error "HADOOP_MODE = ${HADOOP_MODE} not handled"
+        Magpie_output_internal_error "HADOOP_JOB = ${HADOOP_JOB} not handled"
     fi
 }
  

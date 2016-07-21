@@ -1,2 +1,2 @@
-# "hadoop" - Run a job according to the settings of HADOOP_MODE.
+# "hadoop" - Run a job according to the settings of HADOOP_JOB.
 #

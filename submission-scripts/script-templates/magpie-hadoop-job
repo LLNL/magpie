@@ -41,5 +41,5 @@
 #		            complete fully, it can leave HDFS in a bad
 #		            state.
 #
-export HADOOP_MODE="terasort"
+export HADOOP_JOB="terasort"
 

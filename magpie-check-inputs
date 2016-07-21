@@ -369,50 +369,50 @@ then
         exit 1
     fi
 
-    if [ "${HADOOP_MODE}" != "terasort" ] \
-        && [ "${HADOOP_MODE}" != "script" ] \
-        && [ "${HADOOP_MODE}" != "upgradehdfs" ] \
-        && [ "${HADOOP_MODE}" != "decommissionhdfsnodes" ]
+    if [ "${HADOOP_JOB}" != "terasort" ] \
+        && [ "${HADOOP_JOB}" != "script" ] \
+        && [ "${HADOOP_JOB}" != "upgradehdfs" ] \
+        && [ "${HADOOP_JOB}" != "decommissionhdfsnodes" ]
     then
-        echo "HADOOP_MODE must be set to terasort, script, upgradehdfs, or decommissionhdfsnodes"
+        echo "HADOOP_JOB must be set to terasort, script, upgradehdfs, or decommissionhdfsnodes"
         exit 1
     fi
 
     if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
         && [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
-        && [ "${HADOOP_MODE}" == "terasort" ]
+        && [ "${HADOOP_JOB}" == "terasort" ]
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR for HADOOP_MODE = ${HADOOP_MODE}"
+        echo "HADOOP_SETUP_TYPE must be set to MR for HADOOP_JOB = ${HADOOP_JOB}"
         exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "script" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_executable "HADOOP_SCRIPT_PATH" "for HADOOP_MODE = ${HADOOP_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "HADOOP_SCRIPT_PATH" "for HADOOP_JOB = ${HADOOP_JOB}"
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "upgradehdfs" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_JOB}" == "upgradehdfs" ]
     then
         # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
         Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
         if [ $? == "2" ]
         then 
-            echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
+            echo "HADOOP_JOB of ${HADOOP_JOB} only supported in Hadoop 2.2.0 and more recent versions"
             exit 1
         fi
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] && [ "${HADOOP_JOB}" == "decommissionhdfsnodes" ]
     then
         # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
         Magpie_vercomp ${HADOOP_VERSION} "2.3.0"
         if [ $? == "2" ]
         then 
-            echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.3.0 and more recent versions"
+            echo "HADOOP_JOB of ${HADOOP_JOB} only supported in Hadoop 2.3.0 and more recent versions"
             exit 1
         fi
 
-        __Magpie_check_must_be_set "HADOOP_DECOMMISSION_HDFS_NODE_SIZE" "for HADOOP_MODE = ${HADOOP_MODE}"
+        __Magpie_check_must_be_set "HADOOP_DECOMMISSION_HDFS_NODE_SIZE" "for HADOOP_JOB = ${HADOOP_JOB}"
 
         if [ ! "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -gt "0" ]
         then
@@ -422,17 +422,17 @@ then
 
         # Few things can't be running at the same time
         if [ "${HBASE_SETUP}" == "yes" ]; then
-            echo "HBASE_SETUP must be set to no for HADOOP_MODE = ${HADOOP_MODE}"
+            echo "HBASE_SETUP must be set to no for HADOOP_JOB = ${HADOOP_JOB}"
             exit 1
         fi
 
         if [ "${PHOENIX_SETUP}" == "yes" ]; then
-            echo "PHOENIX_SETUP must be set to no for HADOOP_MODE = ${HADOOP_MODE}"
+            echo "PHOENIX_SETUP must be set to no for HADOOP_JOB = ${HADOOP_JOB}"
             exit 1
         fi
 
         if [ "${SPARK_SETUP}" == "yes" ]; then
-            echo "SPARK_SETUP must be set to no for HADOOP_MODE = ${HADOOP_MODE}"
+            echo "SPARK_SETUP must be set to no for HADOOP_JOB = ${HADOOP_JOB}"
             exit 1
         fi
 
@@ -457,18 +457,18 @@ then
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
-        && [ "${HADOOP_MODE}" == "decommissionhdfsnodes" ] \
+        && [ "${HADOOP_JOB}" == "decommissionhdfsnodes" ] \
         && ! Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
     then
-        echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
+        echo "HADOOP_FILESYSTEM_MODE must be set to hdfsoverlustre or hdfsovernetworkfs with HADOOP_JOB=${HADOOP_JOB}"
         exit 1
     fi
 
     if [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
-        && [ "${HADOOP_MODE}" == "upgradehdfs" ] \
+        && [ "${HADOOP_JOB}" == "upgradehdfs" ] \
         && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
-        echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_MODE=${HADOOP_MODE}"
+        echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_JOB=${HADOOP_JOB}"
         exit 1
     fi
 
@@ -503,7 +503,7 @@ then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_LOCALSTORE_CLEAR"
     fi
 
-    if [ "${HADOOP_MODE}" == "terasort" ]
+    if [ "${HADOOP_JOB}" == "terasort" ]
     then
         __Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_CLEAR_CACHE"
         __Magpie_check_if_set_is_yes_or_no "HADOOP_TERASORT_RUN_TERACHECKSUM"
