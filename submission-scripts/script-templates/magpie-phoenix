@@ -58,9 +58,9 @@ export PHOENIX_LOCAL_DIR="LOCALDIRPREFIX/phoenix"
 #
 # "script" - execute a phoenix script indicated by PHOENIX_SCRIPT_PATH.
 #
-export PHOENIX_MODE="performanceeval"
+export PHOENIX_JOB="performanceeval"
 
-# Specify script to execute for "script" mode in PHOENIX_MODE.  This phoenix
+# Specify script to execute for "script" mode in PHOENIX_JOB.  This phoenix
 # script will be fed into phoenix via "sqline.py ${PHOENIX_SCRIPT_OPTS} ${PHOENIX_SCRIPT_PATH}"
 #
 # export PHOENIX_SCRIPT_PATH="${HOME}/my-phoenix-script"

@@ -173,7 +173,7 @@ Magpie_run_start_phoenix () {
 }
 
 Magpie_run_phoenix () {
-    if [ "${PHOENIX_MODE}" == "performanceeval" ]
+    if [ "${PHOENIX_JOB}" == "performanceeval" ]
     then
         echo "*******************************************************"
         echo "* Running Performance Evaluation"
@@ -181,7 +181,7 @@ Magpie_run_phoenix () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-phoenix-performanceeval &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PHOENIX_MODE}" == "script" ]
+    elif [ "${PHOENIX_JOB}" == "script" ]
     then
         echo "*******************************************************"
         echo "* Executing script $PHOENIX_SCRIPT_PATH"
@@ -190,7 +190,7 @@ Magpie_run_phoenix () {
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
-        Magpie_output_internal_error "PHOENIX_MODE = ${PHOENIX_MODE} not handled"
+        Magpie_output_internal_error "PHOENIX_JOB = ${PHOENIX_JOB} not handled"
     fi
 }
 
