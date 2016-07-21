@@ -56,9 +56,9 @@ export PIG_LOCAL_DIR="LOCALDIRPREFIX/pig"
 #
 # "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
 #
-export PIG_MODE="testpig"
+export PIG_JOB="testpig"
 
-# Specify script to execute for "script" mode in PIG_MODE.  This pig
+# Specify script to execute for "script" mode in PIG_JOB.  This pig
 # script will be fed into pig via "pig ${PIG_SCRIPT_OPTS} ${PIG_SCRIPT_PATH}"
 #
 # export PIG_SCRIPT_PATH="${HOME}/my-pig-script"
