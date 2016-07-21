@@ -365,9 +365,6 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #              There are additional configuration options for this
 #              listed below.
 #
-# "script" - execute a script that lists all of your Hadoop jobs.  Be
-#            sure to set HADOOP_SCRIPT_PATH to your script.
-#
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
 #                 used when you are switching to a newer Hadoop
 #                 version and the HDFS version would be inconsistent
@@ -725,25 +722,6 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 # as Magpie will not clear data from prior jobs.
 #
 # export HADOOP_PER_JOB_HDFS_PATH="yes"
-
-############################################################################
-# Hadoop Script Configurations
-############################################################################
-
-# Specify script to execute for "script" mode
-#
-# See examples/hadoop-example-job-script for example of what to put in
-# the script.
-#
-# export HADOOP_SCRIPT_PATH="${HOME}/my-job-script"
-
-# Specify arguments for script specified in HADOOP_SCRIPT_PATH
-#
-# Note that many Magpie generated environment variables, such as
-# HADOOP_MASTER_NODE, are not generated until the job has launched.
-# You won't be able to use them here.
-#
-# export HADOOP_SCRIPT_ARGS="" 
 
 ############################################################################
 # Hadoop Decommission HDFS Nodes Configurations

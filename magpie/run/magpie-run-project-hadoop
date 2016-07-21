@@ -457,14 +457,6 @@ Magpie_run_hadoop () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hadoop-terasort &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${HADOOP_JOB}" == "script" ]
-    then
-        echo "*******************************************************"
-        echo "* Executing script $HADOOP_SCRIPT_PATH $HADOOP_SCRIPT_ARGS"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${HADOOP_SCRIPT_PATH} ${HADOOP_SCRIPT_ARGS} &
-        local scriptpid=$!
-        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${HADOOP_JOB}" == "upgradehdfs" ]
     then
         echo "*******************************************************"

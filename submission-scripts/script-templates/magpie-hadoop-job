@@ -10,9 +10,6 @@
 #              There are additional configuration options for this
 #              listed below.
 #
-# "script" - execute a script that lists all of your Hadoop jobs.  Be
-#            sure to set HADOOP_SCRIPT_PATH to your script.
-#
 # "upgradehdfs" - upgrade your version of HDFS.  Most notably this is
 #                 used when you are switching to a newer Hadoop
 #                 version and the HDFS version would be inconsistent
