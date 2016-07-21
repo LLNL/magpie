@@ -98,12 +98,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             For Zookeeper, testall will run zookeeperruok
 #
 # "script" - Run an arbitraty script, as specified by
-#            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
-#            setting "script" in HADOOP_JOB or HBASE_JOB or
-#            SPARK_JOB.
-#
-#            It is primarily used if you want to launch without
-#            Hadoop/Hbase/Spark and are experimenting with things..
+#            MAGPIE_SCRIPT_PATH.  You can find example job scripts in
+#            examples/.
 #
 # "interactive" - manually interact with job run to submit jobs,
 #                 peruse data (e.g. HDFS), move data, etc.  See job
