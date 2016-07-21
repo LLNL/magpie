@@ -402,9 +402,7 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 #            another project (e.g. Hbase, Pig) will run something that
 #            uses Hadoop MapReduce.
 #
-# "hdfsonly" - For use if HADOOP_SETUP_TYPE is set to HDFS.
-#
-export HADOOP_MODE="hdfsonly"
+export HADOOP_MODE="terasort"
 
 ############################################################################
 # Hadoop Filesystem Mode Configurations
