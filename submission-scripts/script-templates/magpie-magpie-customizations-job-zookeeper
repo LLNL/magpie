@@ -1,2 +1,2 @@
-# "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
+# "zookeeper" - Run a job according to the settings of ZOOKEEPER_JOB.
 #

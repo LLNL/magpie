@@ -167,7 +167,7 @@ Magpie_run_start_zookeeper () {
 }
 
 Magpie_run_zookeeper () {
-    if [ "${ZOOKEEPER_MODE}" == "zookeeperruok" ]
+    if [ "${ZOOKEEPER_JOB}" == "zookeeperruok" ]
     then
         echo "*******************************************************"
         echo "* Running Zookeeper ruok"
@@ -176,7 +176,7 @@ Magpie_run_zookeeper () {
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
-        Magpie_output_internal_error "ZOOKEEPER_MODE = ${ZOOKEEPER_MODE} not handled"
+        Magpie_output_internal_error "ZOOKEEPER_JOB = ${ZOOKEEPER_JOB} not handled"
     fi
 }
 

@@ -84,7 +84,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "storm" - Run a job according to the settings of STORM_JOB.
 #
-# "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
+# "zookeeper" - Run a job according to the settings of ZOOKEEPER_JOB.
 #
 # "testall" - Run a job that runs all basic sanity tests for all
 #             software that is configured to be setup.  This is a good
@@ -396,7 +396,7 @@ export ZOOKEEPER_REPLICATION_COUNT=3
 #             setup correctly.  zookeeperruok will do a simple 'ruok'
 #             to all Zookeeper daemons.
 #
-export ZOOKEEPER_MODE="zookeeperruok"
+export ZOOKEEPER_JOB="zookeeperruok"
 
 # Zookeeper Version
 #
