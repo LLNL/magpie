@@ -49,8 +49,6 @@ export KAFKA_LOCAL_DIR="LOCALDIRPREFIX/kafka"
 # "performance" - run performance test. Useful for making sure things are
 #                 setup and running properly
 #
-# "server" - setup the server
-#
 export KAFKA_MODE="performance"
 
 # Set the Zookeeper connection timeout for Kafka
