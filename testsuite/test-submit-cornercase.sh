@@ -11,6 +11,7 @@ __SubmitCornerCaseTests_CatchProjectDependencies() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-hbase
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-zookeeper
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-catchprojectdependency-zookeeper
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-catchprojectdependency-spark
@@ -24,6 +25,7 @@ __SubmitCornerCaseTests_NoSetJava() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetjava
@@ -37,6 +39,7 @@ __SubmitCornerCaseTests_BadSetJava() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badsetjava
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsetjava
@@ -50,6 +53,7 @@ __SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetversion
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosetversion
@@ -64,6 +68,7 @@ __SubmitCornerCaseTests_NoSetHome() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosethome
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosethome
@@ -78,6 +83,7 @@ __SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badsethome
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badsethome
@@ -92,6 +98,7 @@ __SubmitCornerCaseTests_NoSetLocalDir() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nosetlocaldir
@@ -106,6 +113,7 @@ __SubmitCornerCaseTests_BadSetLocalDir() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badlocaldir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
@@ -114,30 +122,16 @@ __SubmitCornerCaseTests_BadSetLocalDir() {
 
 __SubmitCornerCaseTests_NoSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetscript
-    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nosetscript
 }
 
 __SubmitCornerCaseTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-1
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-2
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-3
-    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badsetscript
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
-    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badsetscript
-    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badsetscript
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsetscript
-    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badsetscript
 }
 
 __SubmitCornerCaseTests_BadJobTime() {
@@ -148,6 +142,7 @@ __SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime
@@ -179,18 +174,23 @@ __SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-minutes-seconds
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-days-hours
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-days-hours
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-days-hours
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-days-hours-minutes
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-days-hours-minutes
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
@@ -212,6 +212,7 @@ __SubmitCornerCaseTests_BadStartupTime() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badstartuptime
@@ -225,6 +226,7 @@ __SubmitCornerCaseTests_BadShutdownTime() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badshutdowntime
@@ -240,6 +242,7 @@ __SubmitCornerCaseTests_BadNodeCount() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badnodecount-big
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badnodecount-small
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badnodecount-big
@@ -258,6 +261,7 @@ __SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-1
@@ -278,6 +282,7 @@ __SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-1
@@ -289,6 +294,8 @@ __SubmitCornerCaseTests_BadCoreSettings() {
 __SubmitCornerCaseTests_RequireHDFS() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-1
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-3
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requirehdfs
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requirehdfs
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-requirehdfs
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs
@@ -301,6 +308,7 @@ __SubmitCornerCaseTests_RequireYarn() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-1
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-2
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
 }
 
