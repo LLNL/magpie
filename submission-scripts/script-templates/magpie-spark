@@ -140,7 +140,7 @@ export SPARK_LOCAL_DIR="LOCALDIRPREFIX/spark"
 # "script" - execute a script that lists all of your Spark jobs.  Be
 #            sure to set SPARK_SCRIPT_PATH to your script.
 #
-export SPARK_MODE="sparkpi"
+export SPARK_JOB="sparkpi"
 
 # SPARK_DEFAULT_PARALLELISM
 #
@@ -324,7 +324,7 @@ export SPARK_MODE="sparkpi"
 # - The default Spark master will be set to 'yarn-client' in all
 #   appropriate locations (e.g. spark-defaults.conf)
 # - All situations that would otherwise use the standalone scheduler
-#   (e.g. SPARK_MODE="sparkpi" or SPARK_MODE="script") will now use
+#   (e.g. SPARK_JOB="sparkpi" or SPARK_JOB="script") will now use
 #   Yarn instead.
 # 
 # Note that SPARK_LOCAL_SCRATCH_DIR above will not work if

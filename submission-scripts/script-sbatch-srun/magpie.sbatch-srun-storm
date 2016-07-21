@@ -97,7 +97,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to
 #            setting "script" in HADOOP_JOB or HBASE_JOB or
-#            SPARK_MODE.
+#            SPARK_JOB.
 #
 #            It is primarily used if you want to launch without
 #            Hadoop/Hbase/Spark and are experimenting with things..

@@ -1,2 +1,2 @@
-# "spark" - Run a job according to the settings of SPARK_MODE.
+# "spark" - Run a job according to the settings of SPARK_JOB.
 #

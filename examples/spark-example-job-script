@@ -2,7 +2,7 @@
 
 # This script executes a basic Spark job.  It is an example of how you
 # can setup a script to run an Spark job.  It is set via the
-# SPARK_SCRIPT_PATH environment variable and setting the SPARK_MODE to
+# SPARK_SCRIPT_PATH environment variable and setting the SPARK_JOB to
 # 'script'.  See the job submission file for details.
 #
 # For versions < 1.0.0, remember to set SPARK_CLASSPATH or
