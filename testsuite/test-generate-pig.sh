@@ -82,7 +82,7 @@ __GeneratePigDependencyTests_Dependency1() {
         magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*run-pigscript*
 
     sed -i \
-        -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="script"/' \
+        -e 's/export PIG_JOB="\(.*\)"/export PIG_JOB="script"/' \
         -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pig.pig"/' \
         magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*no-copy-run-pigscript*
     
