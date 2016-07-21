@@ -13,16 +13,15 @@ export HADOOP_SETUP=no
 # Will inform scripts on how to setup config files and what daemons to
 # launch/setup.
 #
-# MR2 - MapReduce/Hadoop 2.0 w/ HDFS
-# HDFS2 - HDFS only w/ Hadoop 2.0
+# MR - Launch HDFS and Yarn
+# HDFS - Enable only HDFS
 #
-# The HDFS only options may be useful when you want to use HDFS with
-# other big data software, such as Hbase, and do not care for using
-# Hadoop MapReduce.  It only works with HDFS based
-# HADOOP_FILESYSTEM_MODE, such as "hdfs", "hdfsoverlustre", or
-# "hdfsovernetworkfs".
+# HDFS only may be useful when you want to use HDFS with other big
+# data software, such as Hbase, and do not care for MapReduce or Yarn.
+# It only works with HDFS based HADOOP_FILESYSTEM_MODE, such as
+# "hdfs", "hdfsoverlustre", or "hdfsovernetworkfs".
 #
-export HADOOP_SETUP_TYPE="MR2"
+export HADOOP_SETUP_TYPE="MR"
 
 # Version
 #

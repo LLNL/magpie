@@ -589,7 +589,7 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 # SPARK_USE_YARN is set to 'yes'.  Please set HADOOP_LOCALSTORE to
 # inform Yarn to set a local SSD for Yarn to use for local scratch.
 #
-# Make sure that HADOOP_SETUP_TYPE is set to MR2 so Yarn will be
+# Make sure that HADOOP_SETUP_TYPE is set to MR so Yarn will be
 # launched if you set SPARK_USE_YARN to yes.
 #
 # Defaults to no.
