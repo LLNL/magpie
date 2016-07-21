@@ -57,6 +57,8 @@ export PHOENIX_LOCAL_DIR="LOCALDIRPREFIX/phoenix"
 #              like.
 #
 # "script" - execute a phoenix script indicated by PHOENIX_SCRIPT_PATH.
+#            Unlike "script" in MAGPIE_JOB_TYPE, this script is
+#            executed via the 'sqline.py' command.
 #
 export PHOENIX_JOB="performanceeval"
 
