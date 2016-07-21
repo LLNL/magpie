@@ -903,6 +903,8 @@ export PIG_LOCAL_DIR="/tmp/${USER}/pig"
 #             lustre, etc.).
 #
 # "script" - execute a pig script indicated by PIG_SCRIPT_PATH.
+#            Unlike "script" in MAGPIE_JOB_TYPE, this script is
+#            executed via the 'pig' command.
 #
 export PIG_JOB="testpig"
 
