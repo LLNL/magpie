@@ -87,7 +87,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 
 # Magpie job type
 #
-# "storm" - Run a job according to the settings of STORM_MODE.
+# "storm" - Run a job according to the settings of STORM_JOB.
 #
 # "zookeeper" - Run a job according to the settings of ZOOKEEPER_MODE.
 #
@@ -344,7 +344,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 # "script" - execute a script that lists all of your Storm jobs.  Be
 #            sure to set STORM_SCRIPT_PATH to your script.
 #
-export STORM_MODE="stormwordcount"
+export STORM_JOB="stormwordcount"
 
 ############################################################################
 # Storm Script Configurations
