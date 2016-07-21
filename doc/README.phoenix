@@ -49,7 +49,7 @@ Instructions For Using Phoenix
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : This should be set to 'pig'
+   MAGPIE_JOB_TYPE : This should be set to 'phoenix'
 
    JAVA_HOME : B/c you need to ...
 
