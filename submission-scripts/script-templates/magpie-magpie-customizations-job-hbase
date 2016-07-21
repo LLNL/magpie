@@ -1,2 +1,2 @@
-# "hbase" - Run a job according to the settings of HBASE_MODE.
+# "hbase" - Run a job according to the settings of HBASE_JOB.
 #
