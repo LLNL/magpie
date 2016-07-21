@@ -468,7 +468,8 @@ define create-hbase-with-hdfs
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
-		magpie-hadoop-core magpie-hadoop-job \
+		magpie-hadoop-core \
+		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
 		magpie-hadoop-mode-details \
 		magpie-hbase \
