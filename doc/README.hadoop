@@ -42,7 +42,7 @@ Instructions For Running Hadoop
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : This should be set to 'hadoop'
+   MAGPIE_JOB_TYPE : This should be set to 'hadoop' initially
 
    JAVA_HOME : B/c you need to ...
 
@@ -50,8 +50,8 @@ Instructions For Running Hadoop
 
    HADOOP_SETUP : Set to yes
 
-   HADOOP_SETUP_TYPE : Are you running Mapreduce version 1 or 2.  Or
-   if you are only configuring HDFS, HDFS 1 or 2.
+   HADOOP_SETUP_TYPE : Set if you want to run both Yarn & HDFS, or
+   just one only.  Most users will want to set to "MR".
 
    HADOOP_VERSION : Make sure your build matches HADOOP_SETUP_TYPE
    (i.e. don't say you want MapReduce 1 and point to Hadoop 2.0 build)
@@ -69,13 +69,15 @@ Instructions For Running Hadoop
    need to set this.  If not using HDFS over Lustre, set the
    appropriate path for your filesystem mode choice.
 
-4) Select how your job will run by setting HADOOP_MODE.  The first
-   time you'll probably want to run w/ 'terasort' mode just to try
-   things out and make sure things look setup correctly.
+4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
+   HADOOP_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   to 'hadoop' and setting HADOOP_JOB to 'terasort'.  This will allow
+   you to run a pre-written job to make sure things are setup
+   correctly.
 
-   After this, you may want to run with 'interactive' mode to play
-   around and figure things out.  In the job output you will see
-   output similar to the following:
+   After this, you may want to run with MAGPIE_JOB_TYPE set to
+   'interactive' to play around and figure things out.  In the job
+   output you will see output similar to the following:
 
       ssh node70
       setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"

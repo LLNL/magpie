@@ -45,7 +45,7 @@ Instructions For Using Mahout
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : This should be set to 'mahout'
+   MAGPIE_JOB_TYPE : This should be set to 'mahout' initially
 
    JAVA_HOME : B/c you need to ...
 
@@ -60,13 +60,15 @@ Instructions For Using Mahout
    MAHOUT_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting MAHOUT_MODE.  The first
-   time you'll probably want to run w/ 'clustersyntheticcontrol' mode
-   just to try things out and make things look setup correctly.
+4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
+   MAHOUT_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   to 'mahout' and setting MAHOUT_JOB to 'clustersyntheticcontrol'.
+   This will allow you to run a pre-written job to make sure things
+   are setup correctly.
 
-   After this, you may want to run with 'interactive' mode to play
-   around and figure things out.  See instructions under README.hadoop
-   for 'interactive' mode.
+   After this, you may want to run with MAGPIE_JOB_TYPE set to
+   'interactive' to play around and figure things out.  See
+   instructions under README.hadoop for 'interactive' mode.
 
    Once in your session, you can do as you please.  For example, you
    can launch a mahout job (bin/mahout ...).  There will also be
@@ -82,9 +84,9 @@ Instructions For Using Mahout
    common exported environment variables that may be useful in
    scripts.
 
-   See below in "Mahout Exported Environment Variables", for
-   information on Mahout specific exported environment variables that
-   may be useful in scripts.
+   See below in "Mahout Exported Environment Variables", for information
+   on Mahout specific exported environment variables that may be useful
+   in scripts.
 
 5) Mahout requires Hadoop, so ensure the Hadoop is configured and also in
    your submission script.  See README.hadoop for Hadoop setup instructions.

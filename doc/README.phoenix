@@ -49,7 +49,7 @@ Instructions For Using Phoenix
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : This should be set to 'phoenix'
+   MAGPIE_JOB_TYPE : This should be set to 'phoenix' initially
 
    JAVA_HOME : B/c you need to ...
 
@@ -64,13 +64,15 @@ Instructions For Using Phoenix
    PHOENIX_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting PHOENIX_MODE.  The first
-   time you'll probably want to run w/ 'performanceeval' mode just to try
-   things out and make sure things look setup correctly.
+4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
+   PHOENIX_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   to 'phoenix' and setting PHOENIX_JOB to 'performanceeval'.  This
+   will allow you to run a pre-written job to make sure things are
+   setup correctly.
 
-   After this, you may want to run with 'interactive' mode to play
-   around and figure things out.  In the job output you will see
-   output similar to the following:
+   After this, you may want to run with MAGPIE_JOB_TYPE set to
+   'interactive' to play around and figure things out.  In the job
+   output you will see output similar to the following:
 
       ssh node70
       setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"

@@ -50,7 +50,7 @@ Instructions For Using Pig
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : This should be set to 'pig'
+   MAGPIE_JOB_TYPE : This should be set to 'pig' initially
 
    JAVA_HOME : B/c you need to ...
 
@@ -65,13 +65,14 @@ Instructions For Using Pig
    PIG_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting PIG_MODE.  The first
-   time you'll probably want to run w/ 'testpig' mode just to try
-   things out and make sure things look setup correctly.
+4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
+   PIG_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE to
+   'pig' and setting PIG_JOB to 'testpig'.  This will allow you to run
+   a pre-written job to make sure things are setup correctly.
 
-   After this, you may want to run with 'interactive' mode to play
-   around and figure things out.  See instructions under README.hadoop
-   for 'interactive' mode.
+   After this, you may want to run with MAGPIE_JOB_TYPE set to
+   'interactive' to play around and figure things out.  See
+   instructions under README.hadoop for 'interactive' mode.
 
    Once in your session, you can do as you please.  For example, you
    can launch a pig job (bin/pig ...).  There will also be
