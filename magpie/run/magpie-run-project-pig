@@ -110,7 +110,7 @@ Magpie_run_start_pig () {
 }
 
 Magpie_run_pig () {
-    if [ "${PIG_MODE}" == "testpig" ]
+    if [ "${PIG_JOB}" == "testpig" ]
     then
         echo "*******************************************************"
         echo "* Running Testpig"
@@ -118,7 +118,7 @@ Magpie_run_pig () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-pig-testpig &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${PIG_MODE}" == "script" ]
+    elif [ "${PIG_JOB}" == "script" ]
     then
         echo "*******************************************************"
         echo "* Executing Pig script $PIG_SCRIPT_PATH"
@@ -127,6 +127,6 @@ Magpie_run_pig () {
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
-        Magpie_output_internal_error "PIG_MODE = ${PIG_MODE} not handled"
+        Magpie_output_internal_error "PIG_JOB = ${PIG_JOB} not handled"
     fi
 }
