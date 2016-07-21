@@ -715,14 +715,14 @@ then
 
     __Magpie_check_is_enabled "Hbase" "Phoenix"
 
-    if [ "${PHOENIX_MODE}" != "performanceeval" ] \
-        && [ "${PHOENIX_MODE}" != "script" ]
+    if [ "${PHOENIX_JOB}" != "performanceeval" ] \
+        && [ "${PHOENIX_JOB}" != "script" ]
     then
-        echo "PHOENIX_MODE must be set to performanceeval or script"
+        echo "PHOENIX_JOB must be set to performanceeval or script"
         exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "performanceeval" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_JOB}" == "performanceeval" ]
     then
         if [ "${PHOENIX_PERFORMANCEEVAL_ROW_COUNT}X" != "X" ]
         then
@@ -734,9 +734,9 @@ then
         fi
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_MODE}" == "script" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "phoenix" ] && [ "${PHOENIX_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_MODE = ${PHOENIX_MODE}"
+        __Magpie_check_must_be_set_and_is_regular_file "PHOENIX_SCRIPT_PATH" "for PHOENIX_JOB = ${PHOENIX_JOB}"
     fi
 fi
 
@@ -771,17 +771,17 @@ then
         __Magpie_check_if_set_is_yes_or_no "SPARK_LOCAL_SCRATCH_DIR_CLEAR"
     fi
 
-    if [ "${SPARK_MODE}" != "sparkpi" ] \
-        && [ "${SPARK_MODE}" != "sparkwordcount" ] \
-        && [ "${SPARK_MODE}" != "script" ]
+    if [ "${SPARK_JOB}" != "sparkpi" ] \
+        && [ "${SPARK_JOB}" != "sparkwordcount" ] \
+        && [ "${SPARK_JOB}" != "script" ]
     then
-        echo "SPARK_MODE must be set to sparkpi, sparkwordcount, or script"
+        echo "SPARK_JOB must be set to sparkpi, sparkwordcount, or script"
         exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "sparkwordcount" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_JOB}" == "sparkwordcount" ]
     then
-        __Magpie_check_must_be_set "SPARK_SPARKWORDCOUNT_FILE" "for SPARK_MODE = ${SPARK_MODE}"
+        __Magpie_check_must_be_set "SPARK_SPARKWORDCOUNT_FILE" "for SPARK_JOB = ${SPARK_MODE}"
 
         if ! echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "^[a-zA-Z0-9_]+:\/\/"
         then
@@ -832,9 +832,9 @@ then
 
     __Magpie_check_if_set_is_true_or_false "SPARK_DEPLOY_SPREADOUT"
 
-    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_MODE}" == "script" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "spark" ] && [ "${SPARK_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_MODE = ${SPARK_MODE}"
+        __Magpie_check_must_be_set_and_is_executable "SPARK_SCRIPT_PATH" "for SPARK_JOB = ${SPARK_MODE}"
     fi
 
     __Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
