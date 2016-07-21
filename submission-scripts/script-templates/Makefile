@@ -302,10 +302,7 @@ define create-all
 		if test "${HADOOP_INCLUDE}" = "y"; then \
 			cat magpie-hadoop-core \
 				magpie-hadoop-job \
-				magpie-hadoop-job-details \
-				magpie-hadoop-filesystem-substitution \
-				magpie-hadoop-mode-terasort \
-				magpie-hadoop-mode-details >> $(MAGPIE); \
+				magpie-hadoop-filesystem-substitution >> $(MAGPIE);\
 		fi
 
 		if test "${PIG_INCLUDE}" = "y"; then \
@@ -368,10 +365,7 @@ define create-hadoop
 		magpie-general-configuration \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
-		magpie-hadoop-job-details \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-terasort \
-		magpie-hadoop-mode-details \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP},${HADOOP_JAVA_DEFAULT})
@@ -388,9 +382,7 @@ define create-hadoop-and-pig
 		magpie-general-configuration \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
-		magpie-hadoop-job-details \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
 		magpie-pig \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
@@ -410,9 +402,7 @@ define create-hadoop-and-mahout
 		magpie-general-configuration \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
-		magpie-hadoop-job-details \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
 		magpie-mahout \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_MAHOUT)
@@ -433,7 +423,6 @@ define create-hbase-with-hdfs
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
 		magpie-hbase \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
@@ -458,7 +447,6 @@ define create-hbase-with-hdfs-with-phoenix
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
 		magpie-hbase \
                 magpie-phoenix \
 		magpie-zookeeper \
@@ -504,7 +492,6 @@ define create-spark-with-hdfs
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
 		magpie-spark \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_HDFS)
@@ -527,7 +514,6 @@ define create-spark-with-yarn-and-hdfs
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
-		magpie-hadoop-mode-details \
 		magpie-spark \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
