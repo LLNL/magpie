@@ -42,7 +42,7 @@ Instructions For Storm
 
    MAGPIE_LOCAL_DIR : For scratch space files
 
-   MAGPIE_JOB_TYPE : This should be set to 'storm'
+   MAGPIE_JOB_TYPE : This should be set to 'storm' initially
 
    JAVA_HOME : B/c you need to ...
 

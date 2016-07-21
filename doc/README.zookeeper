@@ -47,8 +47,6 @@ Instructions For Running Zookeeper
    ZOOKEEPER_REPLICATION_COUNT : Number of nodes in your Zookeeper
    quorom.
 
-   ZOOKEEPER_MODE : This will almost certainly be "launch". 
-
    ZOOKEEPER_FILESYSTEM_MODE : most will likely want "networkfs" so
    data files can be stored to Lustre.  If you have local disks such
    as SSDs, you can use "local" instead, and set ZOOKEEPER_DATA_DIR to
