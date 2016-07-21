@@ -17,6 +17,8 @@ SubmitDefaultStandardTests() {
     BasicJobSubmit magpie.${submissiontype}-spark-default-run-sparkpi-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in-no-local-dir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-default-run-sparkwordcount-copy-in
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-default-run-sparkwordcount-copy-in-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-storm-default-run-stormwordcount

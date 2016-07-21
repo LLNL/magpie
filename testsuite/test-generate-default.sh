@@ -38,12 +38,17 @@ GenerateDefaultStandardTests() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-default-run-sparkpi-no-local-dir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in-no-local-dir
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-default-run-sparkwordcount-copy-in
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-default-run-sparkwordcount-copy-in-no-local-dir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in-no-local-dir
 
         SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in* \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in*`
+
+        SetupSparkWordCountRawNetworkFSNoCopy `ls \
+            magpie.${submissiontype}-spark-with-yarn-default-run-sparkwordcount-copy-in*`
     fi
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-default-run-stormwordcount

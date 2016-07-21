@@ -697,19 +697,43 @@ GenerateSparkPostProcessing () {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-pythonsparkwordcount-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*with-hdfs*run-sparkwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/withhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*with-hdfs*run-pythonsparkwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/withhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*and-hdfs*run-sparkwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/withhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*and-hdfs*run-pythonsparkwordcount*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/withhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-yarn*"`
     if [ -n "${files}" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/usingyarn-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-rawnetworkfs*"`
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-yarn-with-hdfs*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/yarnwithhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-yarn-and-rawnetworkfs*"`
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*spark-with-rawnetworkfs*"`
     if [ -n "${files}" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/rawnetworkfs-FILENAMESEARCHREPLACEKEY/" ${files}
