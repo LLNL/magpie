@@ -126,6 +126,11 @@ Magpie_calculate_stop_timeouts () {
             # tasktracker/nodemanagers, jobhistory server, & saveNameSpace
             # time
             stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 7`
+        elif [ ${HADOOP_SETUP_TYPE}  == "YARN" ]                                                                                     
+        then                                                                                                                         
+            # Need to split timeout time between jobtracker/resource                                                                 
+            # manager, tasktracker/nodemanagers, jobhistory server                                                                   
+            stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 3`   
         else
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
@@ -197,7 +202,7 @@ Magpie_calculate_stop_timeouts () {
 __Magpie_calculate_canrunjobscount () {
     __canrunjobscount=0
 
-    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR" ]
+    if [ "${HADOOP_SETUP}" == "yes" ] && Magpie_hadoop_setup_type_enables_yarn
     then
         __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi

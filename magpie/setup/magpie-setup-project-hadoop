@@ -642,7 +642,7 @@ fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}
 
-if [ ${HADOOP_SETUP_TYPE}  == "MR" ]
+if Magpie_hadoop_setup_type_enables_yarn
 then
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
     extrahadooptaskoptssubst=`echo "${extrahadooptaskopts}" | sed "s/\\//\\\\\\\\\//g"`
@@ -678,7 +678,7 @@ then
         ${post_mapredsitexml}
 fi
 
-if [ ${HADOOP_SETUP_TYPE}  == "MR" ]
+if Magpie_hadoop_setup_type_enables_yarn
 then
     # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
     Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
