@@ -34,9 +34,7 @@ export ZOOKEEPER_REPLICATION_COUNT=ZOOKEEPERREPLICATIONCOUNT
 #             setup correctly.  zookeeperruok will do a simple 'ruok'
 #             to all Zookeeper daemons.
 #
-# "launch" - Magpie will launch Zookeeper daemons
-#
-export ZOOKEEPER_MODE="launch"
+export ZOOKEEPER_MODE="zookeeperruok"
 
 # Zookeeper Version
 #
