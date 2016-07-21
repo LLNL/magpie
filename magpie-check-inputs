@@ -380,17 +380,10 @@ then
 
     __Magpie_check_must_be_set "HADOOP_LOCAL_DIR" "to run Hadoop"
 
-    if [ "${HADOOP_SETUP_TYPE}" == "MR1" ] \
-        || [ "${HADOOP_SETUP_TYPE}" == "HDFS1" ]
+    if [ "${HADOOP_SETUP_TYPE}" != "MR" ] \
+        && [ "${HADOOP_SETUP_TYPE}" != "HDFS" ]
     then
-        echo "HADOOP_SETUP_TYPE = ${HADOOP_SETUP_TYPE} no longer supported, please set to MR2 or HDFS2"
-        exit 1
-    fi
-
-    if [ "${HADOOP_SETUP_TYPE}" != "MR2" ] \
-        && [ "${HADOOP_SETUP_TYPE}" != "HDFS2" ]
-    then
-        echo "HADOOP_SETUP_TYPE must be set to MR2 or HDFS2"
+        echo "HADOOP_SETUP_TYPE must be set to MR or HDFS"
         exit 1
     fi
 
@@ -407,11 +400,11 @@ then
         exit 1
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ] \
+    if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
         && [ "${MAGPIE_JOB_TYPE}" == "hadoop" ] \
         && [ "${HADOOP_MODE}" == "terasort" ]
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR2 for HADOOP_MODE = ${HADOOP_MODE}"
+        echo "HADOOP_SETUP_TYPE must be set to MR for HADOOP_MODE = ${HADOOP_MODE}"
         exit 1
     fi
 
@@ -478,7 +471,7 @@ then
         exit 1
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ] \
+    if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
         && ! Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         echo "HADOOP_FILESYSTEM_MODE must be set to hdfs, hdfsoverlustre, or hdfsovernetworkfs with HADOOP_SETUP_TYPE=${HADOOP_SETUP_TYPE}"
@@ -582,12 +575,12 @@ then
         __Magpie_check_must_be_set_and_is_regular_file "PIG_SCRIPT_PATH" "for PIG_MODE = ${PIG_MODE}"
     fi
 
-    if [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ] \
+    if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
         && [ "${MAGPIE_JOB_TYPE}" == "pig" ] \
         && ([ "${PIG_MODE}" == "testpig" ] \
         || [ "${PIG_MODE}" == "script" ])
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR2 for PIG_MODE=${PIG_MODE}"
+        echo "HADOOP_SETUP_TYPE must be set to MR for PIG_MODE=${PIG_MODE}"
         exit 1
     fi
 
@@ -693,10 +686,10 @@ then
                 exit 1
             fi
 
-            if [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ] \
+            if [ "${HADOOP_SETUP_TYPE}" == "HDFS" ] \
                 && ([ "${HBASE_PERFORMANCEEVAL_MODE}" == "sequential-mr" ] || [ "${HBASE_PERFORMANCEEVAL_MODE}" == "random-mr" ])
             then
-                echo "HADOOP_SETUP_TYPE must be set to MR2 for HBASE_PERFORMANCEEVAL_MODE=${HBASE_PERFORMANCEEVAL_MODE}"
+                echo "HADOOP_SETUP_TYPE must be set to MR for HBASE_PERFORMANCEEVAL_MODE=${HBASE_PERFORMANCEEVAL_MODE}"
                 exit 1
             fi
         fi
@@ -888,10 +881,10 @@ then
     then
         __Magpie_check_is_enabled "Hadoop" "Spark"
 
-        if [ "${HADOOP_SETUP_TYPE}" != "MR2" ]
+        if [ "${HADOOP_SETUP_TYPE}" != "MR" ]
         then
             echo "SPARK_USE_YARN set to '${SPARK_USE_YARN}' but HADOOP_SETUP_TYPE set to '${HADOOP_SETUP_TYPE}'"
-            echo "HADOOP_SETUP_TYPE must be set to 'MR2'"
+            echo "HADOOP_SETUP_TYPE must be set to 'MR'"
             exit 1
         fi
 

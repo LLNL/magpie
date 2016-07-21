@@ -129,7 +129,7 @@ then
 
         # We use SIGUSR1 and SIGUSR2 above & below.  Signal 28, SIGWINCH seems a good choice
         # to use.
-        if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR2" ]
+        if [ "${HADOOP_SETUP}" == "yes" ] && [ "${HADOOP_SETUP_TYPE}" == "MR" ]
         then
             echo "*"
             echo "* Magpie is aware that Yarn has been launched.  If user wishes to"
