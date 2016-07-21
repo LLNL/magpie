@@ -83,27 +83,4 @@ export STORM_LOCAL_DIR="LOCALDIRPREFIX/storm"
 #            magpie-gather-config-files-and-logs-script.sh to gather
 #            those log files.
 #
-# "script" - execute a script that lists all of your Storm jobs.  Be
-#            sure to set STORM_SCRIPT_PATH to your script.
-#
 export STORM_JOB="stormwordcount"
-
-############################################################################
-# Storm Script Configurations
-############################################################################
-
-# Specify script to execute for "script" mode
-#
-# See examples/storm-example-job-script for example of what to put in
-# the script.
-#
-# export STORM_SCRIPT_PATH="${HOME}/my-job-script"
-
-# Specify arguments for script specified in STORM_SCRIPT_PATH
-#
-# Note that many Magpie generated environment variables, such as
-# STORM_MASTER_NODE, are not generated until the job has launched.
-# You won't be able to use them here.
-#
-# export STORM_SCRIPT_ARGS="" 
-

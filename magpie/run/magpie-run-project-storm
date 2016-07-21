@@ -203,14 +203,6 @@ Magpie_run_storm () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-storm-stormwordcount &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${STORM_JOB}" == "script" ]
-    then
-        echo "*******************************************************"
-        echo "* Executing script $STORM_SCRIPT_PATH $STORM_SCRIPT_ARGS"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${STORM_SCRIPT_PATH} ${STORM_SCRIPT_ARGS} &
-        local scriptpid=$!
-        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
         Magpie_output_internal_error "STORM_JOB = ${STORM_JOB} not handled"
     fi
