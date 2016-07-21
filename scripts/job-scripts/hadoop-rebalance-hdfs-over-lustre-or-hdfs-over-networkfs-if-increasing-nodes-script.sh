@@ -8,8 +8,8 @@
 # location back to the original.  Small minor adjustments on the
 # user's part may be needed if you need to rebalance files not in your
 # home directory, but the script below should work at it's most basic
-# core by running it under 'script' mode in the main job submission file and
-# setting HADOOP_SCRIPT_PATH to this script.
+# core by setting MAGPIE_JOB_TYPE set to 'script' and setting
+# MAGPIE_SCRIPT_PATH to this script.
 #
 # Those familiar with the start-balancer.sh script should know it
 # really can't be used.  HDFS over Lustre does not have real local

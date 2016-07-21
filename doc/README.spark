@@ -95,10 +95,10 @@ Instructions For Spark
    cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
-   likely want to run with 'script' mode.  Create a script that will
-   run your job/calculation automatically, set it in
-   SPARK_SCRIPT_PATH, and then run your job.  You can find an example
-   job script in examples/spark-example-job-script.
+   likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
+   Create a script that will run your job/calculation automatically,
+   set it in MAGPIE_SCRIPT_PATH, and then run your job.  You can find
+   an example job script in examples/spark-example-job-script.
 
    See "Exported Environment Variables" in README for information on
    common exported environment variables that may be useful in

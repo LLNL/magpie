@@ -1,9 +1,10 @@
 #!/bin/sh
 
-# This script executes a performance test w/ Hbase 0.96.1.1-hadoop2.  It is
-# an example of how you can setup a script to run an Hbase job.  It is
-# set via the HBASE_SCRIPT_PATH environment variable and setting the
-# HBASE_JOB to 'script'.  See the job submission file for details.
+# This script executes a basic Hbase job.  It is an example of how you
+# can setup a script to run an Hbase job.  It is set by setting
+# MAGPIE_JOB_TYPE to "script" and setting MAGPIE_SCRIPT_PATH
+# environment variable to the script.  See the job submission file for
+# details.
 #
 # Please adjust to whatever you would want to do with Hbase
 

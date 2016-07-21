@@ -397,9 +397,8 @@ directory, both for possible usefulness and as examples.  They are
 organized within the directory as follows:
 
 job-scripts - These are scripts that you would run as a possible job
-in Magpie.  You would set these scripts in Magpie job scripts in
-environment variables such as MAGPIE_SCRIPT_PATH, HADOOP_SCRIPT_PATH,
-HBASE_SCRIPT_PATH, etc.
+in Magpie.  You would set these scripts in the MAGPIE_SCRIPT_PATH
+environment variable.
 
 pre-job-run-scripts - These are scripts that you would run before the
 actual calculation is executed.  You would set these scripts in the

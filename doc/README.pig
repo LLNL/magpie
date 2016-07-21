@@ -80,8 +80,8 @@ Instructions For Using Pig
    cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
-   likely want to run with 'script' mode.  Create a Pig script and set
-   it in PIG_SCRIPT_PATH, and then run your job.  
+   likely want to run with PIG_JOB set to 'script'.  Create a Pig
+   script and set it in PIG_SCRIPT_PATH, and then run your job.
 
    See "Exported Environment Variables" in README for information on
    common exported environment variables that may be useful in

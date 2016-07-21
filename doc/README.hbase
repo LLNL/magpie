@@ -81,10 +81,10 @@ Instructions For Running Hbase
    session down cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
-   likely want to run with 'script' mode.  Create a script that will
-   run your job/calculation automatically, set it in
-   HBASE_SCRIPT_PATH, and then run your job.  You can find an example
-   job script in examples/hbase-example-job-script.
+   likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
+   Create a script that will run your job/calculation automatically,
+   set it in MAGPIE_SCRIPT_PATH, and then run your job.  You can find
+   an example job script in examples/hbase-example-job-script.
 
    See "Exported Environment Variables" in README for information on
    common exported environment variables that may be useful in
@@ -150,7 +150,8 @@ Hbase Convenience Scripts
 -------------------------
 
 The following job scripts may be convenient.  They can be run by
-running in 'script' mode and setting HBASE_SCRIPT_PATH to the script.
+setting MAGPIE_JOB_TYPE set to 'script' and setting MAGPIE_SCRIPT_PATH
+to the script.
 
 job-scripts/hbase-major-compaction.sh - Perform a major compaction on
 all Hbase tables.
