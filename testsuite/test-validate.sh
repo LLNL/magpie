@@ -326,8 +326,8 @@ if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
     do
-        num1=`grep -e "\(.*\)_SCRIPT_PATH does not point to a regular file" $file | wc -l`
-        num2=`grep -e "\(.*\)_SCRIPT_PATH=\"\(.*\)\" does not have execute permissions" $file | wc -l`
+        num1=`grep -e "does not point to a regular file" $file | wc -l`
+        num2=`grep -e "does not have execute permissions" $file | wc -l`
         if [ "${num1}" == "0" ] && [ "${num2}" == "0" ]
         then
             echo "Error in $file"

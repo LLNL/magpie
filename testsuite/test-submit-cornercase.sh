@@ -118,7 +118,9 @@ __SubmitCornerCaseTests_NoSetScript() {
 }
 
 __SubmitCornerCaseTests_BadSetScript() {
-    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-1
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-2
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-3
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badsetscript
