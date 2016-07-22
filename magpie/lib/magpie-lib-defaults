@@ -51,22 +51,6 @@ then
     default_hadoop_jobhistoryserver_address="10020"
     default_hadoop_jobhistoryserver_webapp_address="19888"
     default_mapred_job_tracker_address="54311"
-    # achu: Why not set dfs.namenode.rpc-address and
-    # dfs.namenode.servicerpc-address?  Unclear of why one might set
-    # this, internal to Hadoop 2.6.0 code, defaults to fs.defaultFS
-    # setting.  Perhaps legacy and I'm unaware of why.
-
-    # achu: Why not set dfs.journalnode.rpc-address,
-    # dfs.journalnode.http-address, dfs.journalnode.https-address?
-    # dfs.namenode.shared.edits.dir we do not set.
-
-    # achu: Why not set yarn.nodemanager.address?  Specific for node
-    # manager restart, we don't care about this.
-
-    # achu: Why not set yarn.timeline-service.address,
-    # yarn.timeline-service.webapp.address,
-    # yarn.timeline-service.webapp.https.address?  We do not set this,
-    # it is disabled by default in Hadoop.
 
     default_hdfs_replication=3
 fi
@@ -87,12 +71,6 @@ then
     default_hbase_master_info_port="60010"
     default_hbase_regionserver_port="60020"
     default_hbase_regionserver_info_port="60030"
-
-    # achu: Why not hbase.rest.port?  We don't enable the rest
-    # interface by default.
-
-    # achu: Why not hbase.status.multicast.address.port?  We don't
-    # enable hbase.status.published, it's off by default.
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
