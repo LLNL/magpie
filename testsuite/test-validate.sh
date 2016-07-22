@@ -224,8 +224,8 @@ then
             echo "Error in $file"
         fi
 
-	if echo ${file} | grep -q "interactivemode"
-	then
+        if echo ${file} | grep -q "interactivemode"
+        then
             num=`grep -e "End of 'interactive' mode" $file | wc -l`
             if [ "${num}" != "1" ]; then
                 echo "Error in $file"
