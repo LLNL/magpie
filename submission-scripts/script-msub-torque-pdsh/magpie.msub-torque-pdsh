@@ -916,7 +916,7 @@ export PIG_SETUP=no
 
 # Pig Version
 #
-export PIG_VERSION="0.15.0"
+export PIG_VERSION="0.16.0"
 
 # Path to your Pig build/binaries
 #
@@ -1008,7 +1008,7 @@ export MAHOUT_SETUP=no
 
 # Mahout Version
 #
-export MAHOUT_VERSION="0.12.1"
+export MAHOUT_VERSION="0.12.2"
 
 # Path to your Mahout build/binaries
 #
@@ -1071,7 +1071,7 @@ export HBASE_SETUP=no
 
 # Version
 #
-export HBASE_VERSION="1.2.1"
+export HBASE_VERSION="1.2.2"
 
 # Path to your Hbase build/binaries
 #
