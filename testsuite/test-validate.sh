@@ -289,6 +289,23 @@ then
     done
 fi
 
+__get_test_files badversion
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num1=`grep -e "no longer supported" $file | wc -l`
+        num2=`grep -e "not supported" $file | wc -l`
+        if [ "${num1}" == "0" ] && [ "${num2}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __get_test_files badsetjava badsethome
 if [ $? -eq 0 ]
 then
