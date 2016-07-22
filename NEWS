@@ -1,3 +1,97 @@
+Magpie 2.0
+----------
+
+Magpie 2.0 includes new software support, but primarily involves a
+large amount of re-architecture and removal of legacy experimental
+support.  Job submission scripts from Magpie 1.X versions will be
+incompatible with Magpie 2.0.  So please read details below for
+highlights.
+
+Re-architecture and changes
+
+o Rearchitect MAGPIE_JOB_TYPE to be overarching job configuration
+  variable.
+
+  - "setuponly" and "interactive" jobs are now configured by
+    MAGPIE_JOB_TYPE and not through any of the former "MODE" variables
+    (e.g. HADOOP_MODE, SPARK_MODE, etc.)
+
+  - Generic "script" jobs are now configured by MAGPIE_JOB_TYPE and
+    not through any of the former "MODE" variables.
+    (e.g. HADOOP_MODE, SPARK_MODE, etc.)
+
+    However, "script" is still available for those projects that run a
+    script through a specific service, e.g. PIG and PHOENIX.
+
+o Rearchitect HADOOP_SETUP_TYPE to be version agnostic.  It now takes
+  "MR", "YARN", or "HDFS" as inputs.
+
+  - A new submission script variant to support Spark w/ Yarn and w/o
+    HDFS is now available.
+
+o "MODE" variables (e.g. HADOOP_MODE, SPARK_MODE, etc.) are now named
+  "JOB" (e.g. HADOOP_JOB, SPARK_JOB, etc.).  This change was done to
+  indicate that they truly only run jobs and are not meant for
+  configuring the project in any way.
+
+  - As a result the following configurations have been removed.
+
+    "launch" from HADOOP_JOB
+    "hdfsonly" from HADOOP_JOB
+    "server" from KAFKA_JOB
+    "server" from PHOENIX_JOB
+    "launch" from ZOOKEEPER_JOB
+    "server" from ZEPPELIN_JOB
+
+  - The Phoenix mode "server" is now available through the
+    configuration variable PHOENIX_START_QUERYSERVER.
+
+o Remove experimental features and experimental/non-heavily used
+  projects.  If you wish for these features to be brought back beyond
+  an 'experimental' nature, please submit an issue request.  Features
+  & projects listed below.
+
+  - Hadoop 1.X versions
+  - Tachyon
+  - UDA
+  - 'MagpieNetworkFS' Filesystem
+  - 'IntelLustre' Filesystem
+  - HDFS Federation
+
+o Older "quirky" version numbers in Hadoop (e.g. 0.21.0 in Hadoop) are
+  no longer supported.
+
+Misc Changes
+
+- Default HDFS namenode port is now 8020 instead of 54310
+
+Backwards Compatibility Notes
+
+o The following are possible changes users may need to make in older
+  job submission scripts.
+
+  - "MODE" variables (e.g. HADOOP_MODE, SPARK_MODE, etc.) are now
+    named "JOB" (e.g. HADOOP_JOB, SPARK_JOB, etc.).
+
+  - "JOB" variables no longer support "interactive" or "setuponly"
+    options.  These are now controlled via MAGPIE_JOB_TYPE.
+
+  - "JOB" variables no longer support "server", "launch", or
+    "hdfsonly" options.  A service "launching" is always assumed
+    unless MAGPIE_JOB_TYPE is set to "setuponly".
+
+  - Many "JOB" variables no longer support "script" options, these are
+    done via MAGPIE_JOB_TYPE.
+
+  - "PHOENIX_MODE"'s "server" option is now configured through
+    PHOENIX_START_QUERYSERVER.
+
+  - HADOOP_SETUP_TYPE no longer takes input of "MR1", "MR2", "HDFS1",
+    or "HDFS2".  It now only takes "MR", "YARN", or "HDFS".
+
+  - HADOOP_FILESYSTEM_MODE no longer takes input of "magpienetworkfs"
+    or "intellustre".
+
 magpie 1.85
 -----------
 - Fix corner case, where if user sets identical LOCAL_DIR for all
