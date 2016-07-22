@@ -686,7 +686,7 @@ __check_prepostrunscripts () {
     local preorpost=$2
 
     num=`grep -e "${preorpost}RUN SCRIPT" $file | wc -l`
-    if [ "${num}" != "0" ]
+    if [ "${num}" == "0" ]
     then
         echo "Error in $file"
     fi
