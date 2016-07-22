@@ -109,13 +109,30 @@ __Magpie_check_if_set_is_regular_file () {
     fi
 }
 
-__Magpie_check_is_executable () {
-    local varname="$1"
-
-    if [ ! -x ${!varname} ]
+__Magpie_check_path_is_executable () {
+    local pathexec="$1"
+    
+    if [ ! -x ${pathexec} ]
     then
-        echo "${varname}=\"${!varname}\" does not have execute permissions"
+        echo "Path ${patchexec} does not have execute permissions"
         exit 1
+    fi
+}
+
+__Magpie_check_paths_are_executable () {
+    local scriptsvar=$1
+    
+    if echo ${!scriptsvar} | grep -q -e ","
+    then
+        IFSORIG=${IFS}
+        IFS=","
+        for script in ${!scriptsvar}
+        do
+            __Magpie_check_path_is_executable ${script}
+        done
+        IFS=${IFSORIG}
+    else
+        __Magpie_check_path_is_executable ${!scriptsvar}
     fi
 }
 
@@ -135,14 +152,6 @@ __Magpie_check_must_be_set_and_is_regular_file () {
     __Magpie_check_if_set_is_regular_file "${varname}"
 }
 
-__Magpie_check_must_be_set_and_is_executable () {
-    local varname="$1"
-    local extramsg="$2"
-
-    __Magpie_check_must_be_set "${varname}" "${extramsg}"
-    __Magpie_check_is_executable "${varname}"
-}
-    
 __Magpie_check_if_version_format_correct () {
     local varname=$1
 
@@ -232,7 +241,9 @@ fi
 
 if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
-    __Magpie_check_must_be_set_and_is_executable "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
+    __Magpie_check_must_be_set "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
+    
+    __Magpie_check_path_is_executable ${MAGPIE_SCRIPT_PATH}
 fi
 
 magpiestartupshutdowntime=`expr ${magpie_startup_time_value} + ${magpie_shutdown_time_value}`
@@ -245,7 +256,7 @@ fi
 
 if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then 
-    __Magpie_check_is_executable "MAGPIE_PRE_JOB_RUN"
+    __Magpie_check_paths_are_executable "MAGPIE_PRE_JOB_RUN"
 
     if [ ${magpie_startup_time_value} -lt 5 ]
     then
@@ -256,7 +267,7 @@ fi
 
 if [ "${MAGPIE_POST_JOB_RUN}X" != "X" ]
 then 
-    __Magpie_check_is_executable "MAGPIE_POST_JOB_RUN"
+    __Magpie_check_paths_are_executable "MAGPIE_POST_JOB_RUN"
     
     if [ ${magpie_shutdown_time_value} -lt 10 ]
     then

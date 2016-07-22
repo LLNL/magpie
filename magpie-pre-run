@@ -34,8 +34,24 @@ Magpie_make_all_local_dirs_node_specific
 
 if [ "${MAGPIE_PRE_JOB_RUN}X" != "X" ]
 then    
-    ${MAGPIE_PRE_JOB_RUN}
-    exit $?
+    if echo ${MAGPIE_PRE_JOB_RUN} | grep -q -e ","
+    then
+        IFSORIG=${IFS}
+        IFS=","
+        for script in ${MAGPIE_PRE_JOB_RUN}
+        do
+            ${script}
+            exitval=$?
+            if [ ${exitval} -ne 0 ]
+            then
+                exit ${exitval}
+            fi
+        done
+        IFS=${IFSORIG}
+    else
+        ${MAGPIE_PRE_JOB_RUN}
+        exit $?
+    fi
 fi
 
 exit 0
