@@ -99,9 +99,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             For Hbase, testall will run performanceeval
 #             For Zookeeper, testall will run zookeeperruok
 #
-# "script" - Run an arbitraty script, as specified by
-#            MAGPIE_SCRIPT_PATH.  You can find example job scripts in
-#            examples/.
+# "script" - Run arbitraty script, as specified by MAGPIE_SCRIPT_PATH.
+#            You can find example job scripts in examples/.
 #
 # "interactive" - manually interact with job run to submit jobs,
 #                 peruse data (e.g. HDFS), move data, etc.  See job
@@ -188,6 +187,8 @@ export MAGPIE_JOB_TYPE="hbase"
 # See example magpie-example-pre-job-script and
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
+#
+# Multiple scripts can be specified separated by comma.
 #
 # A number of convenient scripts are available in the
 # ${MAGPIE_SCRIPTS_HOME}/scripts directory.

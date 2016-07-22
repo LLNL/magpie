@@ -91,9 +91,8 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 #             For Spark, testall will run sparkpi
 #
-# "script" - Run arbitraty script(s), as specified by
-#            MAGPIE_SCRIPT_PATH.  You can find example job scripts in
-#            examples/.
+# "script" - Run arbitraty script, as specified by MAGPIE_SCRIPT_PATH.
+#            You can find example job scripts in examples/.
 #
 # "interactive" - manually interact with job run to submit jobs,
 #                 peruse data (e.g. HDFS), move data, etc.  See job
@@ -106,9 +105,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 export MAGPIE_JOB_TYPE="spark"
 
-# Specify script(s) to execute for "script" mode in MAGPIE_JOB_TYPE
-#
-# Multiple scripts can be specified separated by comma.
+# Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
 # export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
 
