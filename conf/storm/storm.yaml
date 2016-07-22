@@ -52,8 +52,6 @@ storm.cluster.mode: "distributed"
 nimbus.host: "NIMBUSHOST"
 nimbus.seeds: ["NIMBUSHOST"]
 
-nimbus.thrift.port: NIMBUSTHRIFTPORT
-
 nimbus.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 
 supervisor.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
@@ -69,11 +67,6 @@ logviewer.port: STORMLOGVIEWERPORT
 logviewer.childopts: "-XmxSTORM_DAEMON_HEAP_MAXm EXTRAJVMOPTS"
 
 worker.childopts: "-XmxSTORM_WORKER_HEAP_MAXm EXTRAJVMOPTS"
-
-drpc.port: STORMDRPCPORT
-drpc.invocations.port: STORMDRPCINVOCATIONSPORT
-drpc.http.port: STORMDRPCHTTPPORT
-drpc.https.port: -1
 
 storm.local.dir: "STORMLOCALDIR"
 
