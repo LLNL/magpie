@@ -220,6 +220,36 @@ __GenerateCornerCaseTests_NoSetVersion() {
     fi
 }
 
+__GenerateCornerCaseTests_BadVersion() {
+    if [ "${hadooptests}" == "y" ]; then
+        # 0.2X are early builds of Hadoop, we no longer support
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-1
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="0.20.2"/' magpie.${submissiontype}-hadoop-cornercase-badversion-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-2
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="0.23.20"/' magpie.${submissiontype}-hadoop-cornercase-badversion-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-3
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="0.24."/' magpie.${submissiontype}-hadoop-cornercase-badversion-3
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-4
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="1.0.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-4
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-5
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="1.0.1"/' magpie.${submissiontype}-hadoop-cornercase-badversion-5
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-6
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="1.2.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-6
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badversion*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/badversion-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 __GenerateCornerCaseTests_NoSetHome() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nosethome
@@ -1240,6 +1270,7 @@ GenerateCornerCaseTests() {
     __GenerateCornerCaseTests_BadSetJava
 
     __GenerateCornerCaseTests_NoSetVersion
+    __GenerateCornerCaseTests_BadVersion
 
     __GenerateCornerCaseTests_NoSetHome
     __GenerateCornerCaseTests_BadSetHome
