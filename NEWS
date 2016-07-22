@@ -1,3 +1,12 @@
+magpie 1.75
+-----------
+Support Pig 0.16.0.
+Update default Pig to 0.16.0
+Support Hbase 1.2.2.
+Update default Hbase to 1.2.2
+Support Mahout 0.12.2.
+Update default Mahout to 0.12.2
+
 magpie 1.74
 -----------
 Major refactoring and code cleanup within Magpie.
