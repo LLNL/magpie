@@ -186,32 +186,81 @@ __SubmitFunctionalityTests_MagpieExports() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-checkexports
 }
 
+__SubmitFunctionalityTests_MagpieScript() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-magpiescript
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-magpiescript
+}
+
 __SubmitFunctionalityTests_PrePostRunScripts() {
-    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts
-    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostrunscripts
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostrunscripts-single
+
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostrunscripts-multi
 }
 
 __SubmitFunctionalityTests_PreRunScriptError() {
-    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-spark-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-storm-functionality-prerunscripterror
-    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-prerunscripterror
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-prerunscripterror-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-prerunscripterror-single
+
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-prerunscripterror-multi1
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-prerunscripterror-multi1
+
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-prerunscripterror-multi2
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-prerunscripterror-multi2
 }
 
 __SubmitFunctionalityTests_ScriptArgs() {
@@ -234,6 +283,7 @@ SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_SetuponlyMode
     __SubmitFunctionalityTests_JobTimeout
     __SubmitFunctionalityTests_MagpieExports
+    __SubmitFunctionalityTests_MagpieScript
     __SubmitFunctionalityTests_PrePostRunScripts
     __SubmitFunctionalityTests_PreRunScriptError
     __SubmitFunctionalityTests_ScriptArgs
