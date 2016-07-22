@@ -222,6 +222,9 @@ __GenerateCornerCaseTests_NoSetVersion() {
 
 __GenerateCornerCaseTests_BadVersion() {
     if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.2"/' magpie.${submissiontype}-hadoop-cornercase-badversion
+
         # 0.2X are early builds of Hadoop, we no longer support
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-1
@@ -241,6 +244,48 @@ __GenerateCornerCaseTests_BadVersion() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-6
         sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="1.2.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-6
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-cornercase-badversion
+        sed -i -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="2.2"/' magpie.${submissiontype}-hadoop-and-pig-cornercase-badversion
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-cornercase-badversion
+        sed -i -e 's/export MAHOUT_VERSION="\(.*\)"/export MAHOUT_VERSION="2.2"/' magpie.${submissiontype}-hadoop-and-mahout-cornercase-badversion
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badversion
+        sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="2.2"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-badversion
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badversion
+        sed -i -e 's/export PHOENIX_VERSION="\(.*\)"/export PHOENIX_VERSION="2.2"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badversion
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badversion
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badversion
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badversion
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badversion
+        sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="2.2"/' \
+            magpie.${submissiontype}-spark-cornercase-badversion \
+            magpie.${submissiontype}-spark-with-hdfs-cornercase-badversion \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-badversion \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badversion
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badversion
+        sed -i -e 's/export STORM_VERSION="\(.*\)"/export STORM_VERSION="2.2"/' magpie.${submissiontype}-storm-cornercase-badversion
+    fi
+
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badversion
+        sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="2.2"/' magpie.${submissiontype}-zookeeper-cornercase-badversion
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badversion*"`

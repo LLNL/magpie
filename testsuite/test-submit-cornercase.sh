@@ -61,6 +61,18 @@ __SubmitCornerCaseTests_NoSetVersion() {
 }
 
 __SubmitCornerCaseTests_BadVersion() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badversion
+    BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badversion
+
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-1
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-2
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-3
