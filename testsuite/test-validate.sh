@@ -882,12 +882,7 @@ then
     # Below only works on 0.14.0 and up
     # num=`grep -e "Pig script completed" $file | wc -l`
         
-        if echo ${file} | grep -q "rawnetworkfs"
-        then
-            num=`grep -e "file:\/" $file | grep "<dir>" | wc -l`
-        else
-            num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
-        fi
+        num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
         if [ ! "${num}" -gt "0" ]; then
             echo "Error in $file"
         fi
