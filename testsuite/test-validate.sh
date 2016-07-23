@@ -297,9 +297,11 @@ then
         num1=`grep -e "no longer supported" $file | wc -l`
         num2=`grep -e "not supported" $file | wc -l`
         num3=`grep -e "not formatted correctly" $file | wc -l`
+        num4=`grep -e "only supported in" $file | wc -l`
         if [ "${num1}" == "0" ] \
             && [ "${num2}" == "0" ] \
-            && [ "${num3}" == "0" ]
+            && [ "${num3}" == "0" ] \
+            && [ "${num4}" == "0" ]
         then
             echo "Error in $file"
         fi
