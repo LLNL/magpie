@@ -244,6 +244,16 @@ __GenerateCornerCaseTests_BadVersion() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-6
         sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="1.2.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-6
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-7
+        sed -i -e 's/export HADOOP_JOB="\(.*\)"/export HADOOP_JOB="decommissionhdfsnodes"/' magpie.${submissiontype}-hadoop-cornercase-badversion-7
+        sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.2.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-7
+
+        # Earliest version of 'upgradehdfs' supported in this testsuite is 2.2.0, so any earlier version will fail because HADOOP_HOME
+        # directory cannot be found.  Skip creation of this test 
+        # cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-8
+        # sed -i -e 's/export HADOOP_JOB="\(.*\)"/export HADOOP_JOB="upgradehdfs"/' magpie.${submissiontype}-hadoop-cornercase-badversion-8
+        # sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.1.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-8
     fi
 
     if [ "${pigtests}" == "y" ]; then

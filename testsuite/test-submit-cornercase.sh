@@ -79,6 +79,8 @@ __SubmitCornerCaseTests_BadVersion() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-4
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-5
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-6
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-7
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion-8
 }
 
 __SubmitCornerCaseTests_NoSetHome() {
