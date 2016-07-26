@@ -505,6 +505,71 @@ you feel are better, etc.
 Any patches you submit to me for fixes will be appreciated.  I am by
 no means a bash expert ... in fact I'm quite bad at it.
 
+Other Projects
+--------------
+
+We welcome additions of other projects into Magpie.  Here's a somewhat
+general guide to including other projects in Magpie.  This is very
+high level.  Please see internal implementation for details.
+Hopefully it's somewhat obvious.
+
+1) Add appropriate "templates" into
+   submission-scripts/script-templates/ for the new project so the
+   project can be setup.  You can copy templates from other projects
+   to begin.  Although there can be variations depending on the
+   project's purpose, you'll most likely want to add:
+
+   magpie-XXX
+   magpie-magpie-customizations-job-XXX
+   magpie-magpie-customizations-testall-XXX
+
+   files for project XXX.
+
+   Then after that, update
+   submission-scripts/script-templates/Makefile to add your project
+   into the primary job submission files.  Generate additional
+   submission scripts for the new project if you desire to.  After
+   this you can run make and ensure your new project has been added
+   correctly into the job submission scripts.
+
+2) Add appropriate input checks to 'magpie-check-inputs'
+
+3) Add an appropriate "setup" file to magpie/setup/
+
+4) Add an appropriate "run" file to magpie/run/
+
+5) Update 'magpie-setup-projects' and 'magpie-run' appropriately for
+   new calls.
+
+6) If necessary create new directories and setup master/slave files in
+   'magpie-setup-core'
+
+7) If necessary, following libraries could warrant updates:
+
+   magpie/lib/magpie-lib-node-identification - to identify master/slave nodes
+
+   magpie/lib/magpie-lib-paths - set various path defaults
+
+   magpie/lib/magpie-lib-defaults - set various defaults
+
+8) Add any necessary patches to patches/
+
+9) Add new tests into Magpie's testsuite
+
+   - Add new test-generate-XXX.sh file to generate new tests.
+
+   - Update test-generate.sh appropriately for new test generation.
+
+   - Add new test test-submit-XXX file to submit new tests.
+
+   - Update test-validate.sh for validate jobs suceeded.
+
+   - Update test-download-projects.sh to download & patch projects if
+     necessary.
+
+10) (Optional) Add download options for the project in
+   misc/magpie-apache-download-and-setup.sh
+
 Other Schedulers/Resource Managers
 ----------------------------------
 
