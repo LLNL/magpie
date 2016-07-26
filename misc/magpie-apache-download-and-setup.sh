@@ -31,12 +31,14 @@ INSTALL_PATH="$HOME/bigdata"
 
 # Third, indicate if you'd like Magpie to rebuild all launching
 # scripts to be pre-populated with INSTALL_PATH and several other
-# paths appropriately.  It's unlikely you'd ever want to say no here.
+# paths & settings appropriately.  It's unlikely you'd ever want to
+# say no here.
 #
-# Below are some additional paths that may be worth setting too.
+# Below are some additional paths & configs that may be worth setting too.
 
-PRESET_LAUNCH_SCRIPT_PATHS="N"
+PRESET_LAUNCH_SCRIPT_CONFIGS="N"
 
+#JAVA_DEFAULT_PATH="/mypath/to/java"
 #LOCAL_DIR_PATH="/tmp/$USER"
 #HOME_DIR_PATH="$HOME"
 #LUSTRE_DIR_PATH="/lustre/$USER"
@@ -44,6 +46,7 @@ PRESET_LAUNCH_SCRIPT_PATHS="N"
 #RAWNETWORKFS_DIR_PATH=/lustre/${USER}
 #ZOOKEEPER_DATA_DIR_PATH=/lustre/${USER}
 #LOCAL_DRIVE_PATH=/ssd/${USER}
+#REMOTE_CMD=ssh
 
 # And the rest of the script below will do its thing
 
@@ -231,7 +234,7 @@ then
     # No zeppelin patches at the moment
 fi
 
-if [ "${PRESET_LAUNCH_SCRIPT_PATHS}" == "Y" ]
+if [ "${PRESET_LAUNCH_SCRIPT_CONFIGS}" == "Y" ]
 then
     MAGPIE_SCRIPTS_HOME_DIRNAME=`dirname ${MAGPIE_SCRIPTS_HOME}`
     magpiescriptshomedirnamesubst=`echo ${MAGPIE_SCRIPTS_HOME_DIRNAME} | sed "s/\\//\\\\\\\\\//g"`
@@ -240,6 +243,12 @@ then
     installpathsubst=`echo ${INSTALL_PATH} | sed "s/\\//\\\\\\\\\//g"`
     sed -i -e "s/PROJECT_DIR_PREFIX=\(.*\)/PROJECT_DIR_PREFIX=${installpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
+    if [ "${JAVA_DEFAULT_PATH}X" != "X" ]
+    then
+        javadefaultpathsubst=`echo ${JAVA_DEFAULT_PATH} | sed "s/\\//\\\\\\\\\//g"`
+        sed -i -e "s/JAVA_DEFAULT=\(.*\)/JAVA_DEFAULT=${javadefaultpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+    fi
+    
     if [ "${LOCAL_DIR_PATH}X" != "X" ]
     then
         localdirpathsubst=`echo ${LOCAL_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
@@ -281,6 +290,12 @@ then
         localdrivepathsubst=`echo ${LOCAL_DRIVE_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/LOCAL_DRIVE_PREFIX=\(.*\)/LOCAL_DRIVE_PREFIX=${localdrivepathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi 
+
+    if [ "${REMOTE_CMD}X" != "X" ]
+    then
+        remotecmdsubst=`echo ${REMOTE_CMD} | sed "s/\\//\\\\\\\\\//g"`
+        sed -i -e "s/REMOTE_CMD_DEFAULT=\(.*\)/REMOTE_CMD_DEFAULT=${remotecmdsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+    fi
 
     cd ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/
 
