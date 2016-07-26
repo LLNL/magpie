@@ -716,12 +716,11 @@ then
 
     __Magpie_check_is_enabled "Hadoop" "Mahout"
 
-    if [ "${MAHOUT_MODE}" != "classifywikipedia" ] \
-        && [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
+    if [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
         && [ "${MAHOUT_MODE}" != "script" ] \
         && [ "${MAHOUT_MODE}" != "interactive" ]
     then
-        echo "MAHOUT_MODE must be set to classifywikipedia, clustersyntheticcontrol, script, interactive"
+        echo "MAHOUT_MODE must be set to clustersyntheticcontrol, script, interactive"
         exit 1
     fi
 
@@ -732,8 +731,7 @@ then
 
     if ([ "${HADOOP_SETUP_TYPE}" == "HDFS1" ] || [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ]) \
         && [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
-        && ([ "${MAHOUT_MODE}" == "classifywikipedia" ] \
-            || [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ] \
+        && ([ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ] \
             || [ "${MAHOUT_MODE}" == "script" ])
     then
         echo "HADOOP_SETUP_TYPE must be set to MR1 or MR2 for MAHOUT_MODE=${MAHOUT_MODE}"

@@ -1032,11 +1032,6 @@ export MAHOUT_LOCAL_DIR="/tmp/${USER}/mahout"
 
 # Set how Mahout should run
 #
-# "classifywikipedia" - Run the Mahout classify-wikipedia.sh example.
-#                       An internet connection outside of your cluster
-#                       is required, as data will be downloaded for
-#                       the test.
-#
 # "clustersyntheticcontrol" - Run the Mahout
 #                             cluster-syntheticcontrol.sh example.  An
 #                             internet connection outside of your

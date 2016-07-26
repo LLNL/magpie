@@ -61,9 +61,8 @@ Instructions For Using Mahout
    each node.  Typically /tmp directory.
 
 4) Select how your job will run by setting MAHOUT_MODE.  The first
-   time you'll probably want to run w/ 'classifywikipedia' mode or
-   'clustersyntheticcontrol' mode just to try things out and make
-   things look setup correctly.
+   time you'll probably want to run w/ 'clustersyntheticcontrol' mode
+   just to try things out and make things look setup correctly.
 
    After this, you may want to run with 'interactive' mode to play
    around and figure things out.  See instructions under README.hadoop

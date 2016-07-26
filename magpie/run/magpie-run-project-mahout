@@ -107,15 +107,7 @@ Magpie_run_start_mahout () {
 }
 
 Magpie_run_mahout () {
-    if [ "${MAHOUT_MODE}" == "classifywikipedia" ]
-    then
-        echo "*******************************************************"
-        echo "* Running Classifywikipedia"
-        echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-mahout-classifywikipedia &
-        local scriptpid=$!
-        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
+    if [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
     then
         echo "*******************************************************"
         echo "* Running Clustersyntheticcontrol"

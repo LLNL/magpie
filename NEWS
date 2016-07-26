@@ -1,5 +1,6 @@
 magpie 1.75
 -----------
+Remove 'classifywikipedia' example with Mahout.
 Support Pig 0.16.0.
 Update default Pig to 0.16.0
 Support Hbase 1.2.2.
