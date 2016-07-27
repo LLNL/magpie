@@ -43,8 +43,8 @@ cd ${SPARK_HOME}
 
 if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
-    # Need to set MASTER environment variable for run-example
-    if [ "${SPARK_USE_YARN}" == "yes" ]
+    # For some reason need to set MASTER environment variable for run-example, makes no sense
+    if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
     then
         export MASTER="yarn-client"
     else

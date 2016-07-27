@@ -101,7 +101,7 @@ else
 fi
 
 # Need to calculate in overhead appropriately
-if [ "${SPARK_USE_YARN}" == "yes" ]
+if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
 then
     sparkmemoverhead=`expr ${sparkmem} \/ 10`
     sparkmem=`expr ${sparkmem} - ${sparkmemoverhead}`
@@ -364,7 +364,7 @@ else
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-0.X.properties" "pre_log4jproperties"
 fi
 
-if [ "${SPARK_USE_YARN}" == "yes" ]
+if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
 then
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-defaults.conf-yarn" "pre_sparkdefaultsconf_yarn"
 fi
@@ -414,7 +414,7 @@ sed -i \
     ${post_sparkenvsh}
 
 # Comment out a few lines we don't need if using Yarn
-if [ "${SPARK_USE_YARN}" == "yes" ]
+if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
 then
     sed -i \
         -e "s/export SPARK_MASTER_PORT/# export SPARK_MASTER_PORT/g" \
@@ -531,7 +531,7 @@ fi
 if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
 then
     # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs 
-    if [ "${SPARK_USE_YARN}" != "yes" ]
+    if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
     then
         echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
     fi
@@ -559,7 +559,7 @@ fi
 
 if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
 then
-    if [ "${SPARK_USE_YARN}" == "yes" ]
+    if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
     then
         sparkmaster="yarn-client"
     else
@@ -689,7 +689,7 @@ then
     Magpie_vercomp ${magpie_sparkmajorminorversion} 1.5
     vercomp_result=$?
     # Comment out a few lines we don't need if using Yarn
-    if [ "${SPARK_USE_YARN}" == "yes" ] && [ "${vercomp_result}" != "1" ]
+    if [ "${SPARK_SETUP_TYPE}" == "YARN" ] && [ "${vercomp_result}" != "1" ]
     then
         sed -i \
             -e "s/spark.authenticate/# spark.authenticate/g" \

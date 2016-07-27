@@ -39,7 +39,7 @@ Magpie_run_start_spark () {
 
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
-            if [ "${SPARK_USE_YARN}" != "yes" ]
+            if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
             then
                 # Make variables unspecified for launching
                 Magpie_make_all_local_dirs_unspecified
@@ -66,7 +66,7 @@ Magpie_run_start_spark () {
         echo "*"
         echo "* Spark Information"
         echo "*"
-        if [ "${SPARK_USE_YARN}" != "yes" ]
+        if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
         then 
             echo "* You can view your Spark status by launching a web browser and pointing to ..."
             echo "*"
@@ -135,7 +135,7 @@ Magpie_run_start_spark () {
                 echo "setenv SPARK_CONF_DIR \"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv SPARK_LOG_DIR \"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv SPARK_MASTER_NODE \"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                if [ "${SPARK_USE_YARN}" != "yes" ]
+                if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
                 then
                     echo "setenv SPARK_MASTER_PORT \"${default_spark_master_port}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
@@ -147,7 +147,7 @@ Magpie_run_start_spark () {
                 echo "export SPARK_CONF_DIR=\"${SPARK_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export SPARK_MASTER_NODE=\"${SPARK_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                if [ "${SPARK_USE_YARN}" != "yes" ]
+                if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
                 then
                     echo "export SPARK_MASTER_PORT=\"${default_spark_master_port}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
@@ -194,7 +194,7 @@ Magpie_run_stop_spark () {
     then
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
-            if [ "${SPARK_USE_YARN}" != "yes" ]
+            if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
             then
                 cd ${SPARK_HOME}
                 

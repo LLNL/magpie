@@ -106,7 +106,7 @@ then
     fi
 
     export SPARK_MASTER_NODE=`head -1 ${SPARK_CONF_DIR}/masters`
-    if [ "${SPARK_USE_YARN}" != "yes" ]
+    if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
     then
         export SPARK_MASTER_PORT=${default_spark_master_port}
     fi

@@ -212,7 +212,7 @@ __Magpie_calculate_canrunjobscount () {
         __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi
  
-    if [ "${SPARK_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" != "yes" ]
+    if [ "${SPARK_SETUP}" == "yes" ] && [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
     then
         __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi

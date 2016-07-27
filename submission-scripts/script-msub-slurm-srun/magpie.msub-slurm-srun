@@ -1237,6 +1237,34 @@ export PHOENIX_JOB="performanceeval"
 #
 export SPARK_SETUP=no
 
+# Set Spark Setup Type
+#
+# Will inform scripts on how to setup config files and what daemons to
+# launch/setup.
+#
+# STANDALONE - Launch Spark stand alone scheduler
+# YARN - do not setup stand alone scheduler, use Yarn scheduler
+#
+# For most users, the stand alone scheulder is likely preferred.
+# Resources do not need to be competed for in a Magpie environment
+# (you the user have all the resources allocated via the
+# scheduler/resource manager of your cluster).
+#
+# However, portability and integration with other services may require
+# Spark to work with Yarn instead.  If SPARK_SETUP_TYPE is set to
+# YARN:
+#
+# - The Spark standalone scheduler will not be launched 
+# - The default Spark master will be set to 'yarn-client' in all
+#   appropriate locations (e.g. spark-defaults.conf)
+# - All situations that would otherwise use the standalone scheduler
+#   (e.g. SPARK_JOB="sparkpi") will now use Yarn instead.
+# 
+# Make sure that HADOOP_SETUP_TYPE is set to MR or YARN for the
+# SPARK_SETUP_TYPE="YARN".
+#
+export SPARK_SETUP_TYPE="STANDALONE" 
+
 # Version
 #
 export SPARK_VERSION="2.3.1-bin-hadoop2.7"
@@ -1517,9 +1545,9 @@ export SPARK_JOB="sparkpi"
 # multiple drives), make them comma separated
 # (e.g. /dir1,/dir2,/dir3).
 #
-# Note that this field will not work if SPARK_USE_YARN is set to
-# 'yes'.  Please set HADOOP_LOCALSTORE to inform Yarn to set a local
-# SSD for Yarn to use for local scratch.
+# Note that this field will not work if SPARK_SETUP_TYPE="YARN".
+# Please set HADOOP_LOCALSTORE to inform Yarn to set a local SSD for
+# Yarn to use for local scratch.
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
@@ -1532,36 +1560,6 @@ export SPARK_JOB="sparkpi"
 # work before the next user uses the node.
 #
 # export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
-
-# SPARK_USE_YARN
-#
-# By default, Magpie uses the Spark standalone scheduler.  As
-# resources do not need to be competed for in a Magpie environment
-# (you the user have all the resources allocated via the
-# scheduler/resource manager of your cluster), the Spark scheduler is
-# more appropriate for use under Magpie.
-#
-# However, users who may have scripted/coded against Yarn before may
-# find porting into Magpie easier if Yarn was defaulted to instead of
-# the standalone scheduler.  If SPARK_USE_YARN is set to 'yes' below,
-# the following differences will happen within Magpie.
-#
-# - The Spark standalone scheduler will not be launched 
-# - The default Spark master will be set to 'yarn-client' in all
-#   appropriate locations (e.g. spark-defaults.conf)
-# - All situations that would otherwise use the standalone scheduler
-#   (e.g. SPARK_JOB="sparkpi") will now use Yarn instead.
-# 
-# Note that SPARK_LOCAL_SCRATCH_DIR above will not work if
-# SPARK_USE_YARN is set to 'yes'.  Please set HADOOP_LOCALSTORE to
-# inform Yarn to set a local SSD for Yarn to use for local scratch.
-#
-# Make sure that HADOOP_SETUP_TYPE is set to MR so Yarn will be
-# launched if you set SPARK_USE_YARN to yes.
-#
-# Defaults to no.
-#
-# export SPARK_USE_YARN=yes
 
 # SPARK_YARN_STAGING_DIR
 #

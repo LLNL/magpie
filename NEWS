@@ -46,6 +46,9 @@ o "MODE" variables (e.g. HADOOP_MODE, SPARK_MODE, etc.) are now named
   - The Phoenix mode "server" is now available through the
     configuration variable PHOENIX_START_QUERYSERVER.
 
+o SPARK_USE_YARN has been removed and replaced with SPARK_SETUP_TYPE
+  with settings options of "STANDALONE" or "YARN".
+
 o Remove experimental features and experimental/non-heavily used
   projects.  If you wish for these features to be brought back beyond
   an 'experimental' nature, please submit an issue request.  Features
@@ -91,6 +94,8 @@ o The following are possible changes users may need to make in older
 
   - HADOOP_SETUP_TYPE no longer takes input of "MR1", "MR2", "HDFS1",
     or "HDFS2".  It now only takes "MR", "YARN", or "HDFS".
+
+  - SPARK_USE_YARN is now configured through SPARK_SETUP_TYPE.
 
   - HADOOP_FILESYSTEM_MODE no longer takes input of "magpienetworkfs"
     or "intellustre".

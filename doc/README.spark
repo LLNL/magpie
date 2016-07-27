@@ -61,6 +61,9 @@ Instructions For Spark
 
    SPARK_SETUP : Set to yes
 
+   SPARK_SETUP_TYPE : Set if you want to run with or without Yarn.
+   Most users will want to set to "STANDALONE".
+
    SPARK_VERSION : Set appropriately.
 
    SPARK_HOME : Where your Spark code is.  Typically in an NFS
