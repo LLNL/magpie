@@ -446,6 +446,22 @@ then
     done
 fi
 
+__get_test_files nolongersupported
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "is no longer supported" $file | wc -l`
+        if [ "${num}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __check_exports_magpie () {
     local file=$1
 

@@ -1345,6 +1345,88 @@ __GenerateCornerCaseTests_NotEnoughNodesForHDFS() {
     fi
 }
 
+__GenerateCornerCaseTests_NoLongerSupported() {
+    # Way we're going to do these tests is to stuff an environment variable right before job running code
+    # We set to "foobar" because the value shouldn't matter
+
+    if [ "${magpietests}" == "y" ]; then
+        # We put these under "magpie tests" b/c there's no better place to put them
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-1
+        sed -i '/# Run Job/a export KAFKA_MODE="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-2
+        sed -i '/# Run Job/a export ZEPPELIN_MODE="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-3
+        sed -i '/# Run Job/a export TACHYON_SETUP="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-3
+    fi
+
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nolongersupported-1
+        sed -i '/# Run Job/a export HADOOP_MODE="foobar"' magpie.${submissiontype}-hadoop-cornercase-nolongersupported-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nolongersupported-2
+        sed -i '/# Run Job/a export HADOOP_UDA_SETUP="foobar"' magpie.${submissiontype}-hadoop-cornercase-nolongersupported-2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nolongersupported-3
+        sed -i '/# Run Job/a export HDFS_FEDERATION_NAMENODE_COUNT="foobar"' magpie.${submissiontype}-hadoop-cornercase-nolongersupported-3
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-cornercase-nolongersupported
+        sed -i '/# Run Job/a export PIG_MODE="foobar"' magpie.${submissiontype}-hadoop-and-pig-cornercase-nolongersupported
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-cornercase-nolongersupported
+        sed -i '/# Run Job/a export MAHOUT_MODE="foobar"' magpie.${submissiontype}-hadoop-and-mahout-cornercase-nolongersupported
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nolongersupported
+        sed -i '/# Run Job/a export HBASE_MODE="foobar"' magpie.${submissiontype}-hbase-with-hdfs-cornercase-nolongersupported
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nolongersupported
+        sed -i '/# Run Job/a export PHOENIX_MODE="foobar"' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nolongersupported
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nolongersupported-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nolongersupported-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nolongersupported-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nolongersupported-1
+        sed -i '/# Run Job/a export SPARK_MODE="foobar"' \
+            magpie.${submissiontype}-spark-cornercase-nolongersupported-1 \
+            magpie.${submissiontype}-spark-with-hdfs-cornercase-nolongersupported-1 \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-nolongersupported-1 \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nolongersupported-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nolongersupported-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nolongersupported-2
+        sed -i '/# Run Job/a export SPARK_USE_YARN="foobar"' \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-nolongersupported-2 \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nolongersupported-2
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nolongersupported
+        sed -i '/# Run Job/a export STORM_MODE="foobar"' magpie.${submissiontype}-storm-cornercase-nolongersupported
+    fi
+
+    if [ "${zookeepertests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nolongersupported
+        sed -i '/# Run Job/a export ZOOKEEPER_MODE="foobar"' magpie.${submissiontype}-zookeeper-cornercase-nolongersupported
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nolongersupported*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/nolongersupported-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 GenerateCornerCaseTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -1386,4 +1468,6 @@ GenerateCornerCaseTests() {
     __GenerateCornerCaseTests_BadDirectories
 
     __GenerateCornerCaseTests_NotEnoughNodesForHDFS
+
+    __GenerateCornerCaseTests_NoLongerSupported
 }
