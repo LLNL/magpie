@@ -512,7 +512,7 @@ define create-spark-with-yarn
 	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_YARN)
 	sed -i -e "s/HADOOP_FILESYSTEM_MODE=\"\(.*\)\"/HADOOP_FILESYSTEM_MODE=\"rawnetworkfs\"/" $(MAGPIE_SPARK_WITH_YARN)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_YARN)
-	sed -i -e "s/^# export SPARK_USE_YARN/export SPARK_USE_YARN/g" $(MAGPIE_SPARK_WITH_YARN)
+	sed -i -e "s/SPARK_SETUP_TYPE=\"\(.*\)\"/SPARK_SETUP_TYPE=\"YARN\"/g" $(MAGPIE_SPARK_WITH_YARN)
 endef
 
 define create-spark-with-yarn-and-hdfs
@@ -534,7 +534,7 @@ define create-spark-with-yarn-and-hdfs
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(SPARK_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
-	sed -i -e "s/^# export SPARK_USE_YARN/export SPARK_USE_YARN/g" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
+	sed -i -e "s/SPARK_SETUP_TYPE=\"\(.*\)\"/SPARK_SETUP_TYPE=\"YARN\"/g" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 endef
 
 define create-spark-with-zeppelin

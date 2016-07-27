@@ -795,6 +795,31 @@ then
         __Magpie_check_if_set_is_yes_or_no "SPARK_LOCAL_SCRATCH_DIR_CLEAR"
     fi
 
+    if [ "${SPARK_SETUP_TYPE}" != "STANDALONE" ] \
+        && [ "${SPARK_SETUP_TYPE}" != "YARN" ]
+    then
+        echo "SPARK_SETUP_TYPE must be set to STANDALONE or YARN"
+        exit 1
+    fi
+
+    if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
+    then
+        __Magpie_check_is_enabled "Hadoop" "Spark"
+
+        if ! Magpie_hadoop_setup_type_enables_yarn
+        then
+            echo "SPARK_SETUP_TYPE set to '${SPARK_SETUP_TYPE}' but HADOOP_SETUP_TYPE set to '${HADOOP_SETUP_TYPE}'"
+            echo "HADOOP_SETUP_TYPE must be set to MR or YARN"
+            exit 1
+        fi
+
+        if ! echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
+        then
+            echo "SPARK_SETUP_TYPE='${SPARK_SETUP_TYPE}' only works with SPARK_VERSION >= 1.0.0"
+            exit 1
+        fi
+    fi
+
     if [ "${SPARK_JOB}" != "sparkpi" ] \
         && [ "${SPARK_JOB}" != "sparkwordcount" ]
     then
@@ -854,26 +879,6 @@ then
     fi
 
     __Magpie_check_if_set_is_true_or_false "SPARK_DEPLOY_SPREADOUT"
-
-    __Magpie_check_if_set_is_yes_or_no "SPARK_USE_YARN"
-
-    if [ "${SPARK_USE_YARN}" == "yes" ]
-    then
-        __Magpie_check_is_enabled "Hadoop" "Spark"
-
-        if ! Magpie_hadoop_setup_type_enables_yarn
-        then
-            echo "SPARK_USE_YARN set to '${SPARK_USE_YARN}' but HADOOP_SETUP_TYPE set to '${HADOOP_SETUP_TYPE}'"
-            echo "HADOOP_SETUP_TYPE must be set to MR or YARN"
-            exit 1
-        fi
-
-	if ! echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
-	then
-	    echo "SPARK_USE_YARN only works with SPARK_VERSION >= 1.0.0"
-	    exit 1
-	fi
-    fi
 
     if [ ${nodecount} -le "0" ]
     then
