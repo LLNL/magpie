@@ -961,15 +961,25 @@ __GenerateCornerCaseTests_NoCoreSettings() {
     fi
 
     if [ "${sparktests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nocoresettings
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nocoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-1
         sed -i -e 's/export SPARK_JOB/# export SPARK_JOB/' \
-            magpie.${submissiontype}-spark-cornercase-nocoresettings \
-            magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings \
-            magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings
+            magpie.${submissiontype}-spark-cornercase-nocoresettings-1 \
+            magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-1 \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-1 \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nocoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-2
+        sed -i -e 's/export SPARK_SETUP_TYPE/# export SPARK_SETUP_TYPE/' \
+            magpie.${submissiontype}-spark-cornercase-nocoresettings-2 \
+            magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-2 \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-2 \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-2
     fi
 
     if [ "${stormtests}" == "y" ]; then
@@ -1041,15 +1051,25 @@ __GenerateCornerCaseTests_BadCoreSettings() {
     fi
 
     if [ "${sparktests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcoresettings
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-1
         sed -i -e 's/export SPARK_JOB="\(.*\)"/export SPARK_JOB="foobar"/' \
-            magpie.${submissiontype}-spark-cornercase-badcoresettings \
-            magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings \
-            magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings
+            magpie.${submissiontype}-spark-cornercase-badcoresettings-1 \
+            magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-1 \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-1 \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-2
+        sed -i -e 's/export SPARK_SETUP_TYPE="\(.*\)"/export SPARK_SETUP_TYPE="foobar"/' \
+            magpie.${submissiontype}-spark-cornercase-badcoresettings-2 \
+            magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-2 \
+            magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-2 \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-2
     fi
 
     if [ "${stormtests}" == "y" ]; then
