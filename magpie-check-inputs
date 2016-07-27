@@ -162,6 +162,30 @@ __Magpie_check_if_version_format_correct () {
     fi
 }
 
+__Magpie_check_deprecated_configs () {
+    local varname=$1
+
+    if [ "${!varname}X" != "X" ]
+    then
+        echo "Variable ${varname} is no longer supported, please adjust for newer Magpie version"
+        exit 1
+    fi
+}
+
+#
+# Flag deprecated settings for user
+#
+
+oldmodes="HADOOP_MODE PIG_MODE MAHOUT_MODE HBASE_MODE PHOENIX_MODE SPARK_MODE KAFKA_MODE ZEPPELIN_MODE STORM_MODE ZOOKEEPER_MODE"
+oldprojects="HADOOP_UDA_SETUP TACHYON_SETUP"
+oldfeatures="HDFS_FEDERATION_NAMENODE_COUNT"
+oldvars="SPARK_USE_YARN"
+
+for var in ${oldmodes} ${oldprojects} ${oldfeatures} ${oldvars}
+do
+    __Magpie_check_deprecated_configs ${var}
+done
+
 #
 # Check Core Inputs
 #
