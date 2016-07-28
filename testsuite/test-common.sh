@@ -90,3 +90,8 @@ zookeeperjava17versions_javaversion=${java17}
 
 zookeeper_test_groups="zookeeperjava17versions"
 zookeeper_all_versions="${zookeeperjava17versions}"
+
+zeppelin_versions="0.5.6 0.6.0"
+
+zeppelin_test_groups="zeppelin_versions"
+zeppelin_all_versions="${zeppelin_versions}"
