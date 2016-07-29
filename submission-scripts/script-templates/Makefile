@@ -86,7 +86,7 @@ STORM_VERSION_DEFAULT=1.0.1
 STORM_ZOOKEEPER_VERSION_DEFAULT=3.4.8
 ZOOKEEPER_VERSION_DEFAULT=3.4.8
 TACHYON_VERSION_DEFAULT=0.6.1
-ZEPPELIN_VERSION_DEFAULT=0.5.6
+ZEPPELIN_VERSION_DEFAULT=0.5.6-incubating
 
 #
 # If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed
@@ -284,6 +284,7 @@ define create-templates
 	$(eval MAGPIE_SPARK_WITH_YARN_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn-and-hdfs)
 	$(eval MAGPIE_SPARK_WITH_TACHYON_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-tachyon-and-hdfs)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
+	$(eval MAGPIE_ZEPPELIN := ../script-$(SCHED)/magpie.$(SCHED)-zeppelin)
 	cp magpie-header $(MAGPIE)
 
 	$(call create-all)
@@ -298,6 +299,7 @@ define create-templates
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn-and-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-spark-with-tachyon-and-hdfs))
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
+	$(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), $(call create-zeppelin))
 endef
 
 define create-all
@@ -621,4 +623,25 @@ define create-storm
 	sed -i -e "s/STORM_SETUP=.*/STORM_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/ZOOKEEPER_SETUP=.*/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(STORM_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_STORM)
+endef
+
+define create-zeppelin
+	echo "Creating magpie.$(SCHED)-zeppelin"
+	cat 	magpie-header \
+		magpie-config-$(SCHED) \
+		magpie-magpie-customizations-substitution \
+		magpie-general-configuration \
+		magpie-general-configuration-python \
+		magpie-spark \
+		magpie-zeppelin \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST) > $(MAGPIE_ZEPPELIN)
+	$(call common-substitution, ${MAGPIE_ZEPPELIN})
+	$(call common-additions, ${MAGPIE_ZEPPELIN}, zeppelin)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_ZEPPELIN)
+	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_ZEPPELIN)
+	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR=/export SPARK_LOCAL_SCRATCH_DIR=/g" $(MAGPIE_ZEPPELIN)
+    sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="setuponly"/' $(MAGPIE_ZEPPELIN)
+    sed -i -e 's/export ZEPPELIN_SETUP=no/export ZEPPELIN_SETUP=yes/' $(MAGPIE_ZEPPELIN)
+    sed -i -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="server"/' $(MAGPIE_ZEPPELIN)
 endef
