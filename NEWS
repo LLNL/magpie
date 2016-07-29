@@ -1,6 +1,9 @@
 magpie 1.75
 -----------
 Remove 'classifywikipedia' example with Mahout.
+Support Spark 2.0.0.
+Update default Spark to 2.0.0 w/ Hadoop 2.7. 
+Support new SPARK_YARN_STAGING_DIR option.
 Support Pig 0.16.0.
 Update default Pig to 0.16.0
 Support Hbase 1.2.2.
