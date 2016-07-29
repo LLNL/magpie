@@ -283,6 +283,7 @@ define create-templates
 	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
 	$(eval MAGPIE_SPARK_WITH_YARN_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn-and-hdfs)
 	$(eval MAGPIE_SPARK_WITH_TACHYON_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-tachyon-and-hdfs)
+	$(eval MAGPIE_SPARK_WITH_ZEPPELIN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-zeppelin)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
 	cp magpie-header $(MAGPIE)
 
@@ -297,6 +298,7 @@ define create-templates
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn-and-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-spark-with-tachyon-and-hdfs))
+	$(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), $(call create-spark-with-zeppelin))
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
 endef
 
@@ -603,6 +605,27 @@ define create-spark-with-tachyon-and-hdfs
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"hdfsonly\"/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
 	sed -i -e "s/TACHYON_SETUP=.*/TACHYON_SETUP=yes/" $(MAGPIE_SPARK_WITH_TACHYON_AND_HDFS)
+endef
+
+define create-spark-with-zeppelin
+	echo "Creating magpie.$(SCHED)-spark-with-zeppelin"
+	cat 	magpie-header \
+		magpie-config-$(SCHED) \
+		magpie-magpie-customizations-substitution \
+		magpie-general-configuration \
+		magpie-general-configuration-python \
+		magpie-spark \
+		magpie-zeppelin \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	$(call common-substitution, ${MAGPIE_SPARK_WITH_ZEPPELIN})
+	$(call common-additions, ${MAGPIE_SPARK_WITH_ZEPPELIN}, spark)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR=/export SPARK_LOCAL_SCRATCH_DIR=/g" $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="interactive"/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e 's/export ZEPPELIN_SETUP=no/export ZEPPELIN_SETUP=yes/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="server"/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
 endef
 
 define create-storm
