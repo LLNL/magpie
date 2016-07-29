@@ -298,7 +298,7 @@ define create-templates
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn-and-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${TACHYON_INCLUDE}", "yyy"), $(call create-spark-with-tachyon-and-hdfs))
-	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}${ZEPPELIN_INCLUDE}", "yyy"), $(call create-spark-with-zeppelin))
+	$(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), $(call create-spark-with-zeppelin))
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
 endef
 
@@ -619,7 +619,7 @@ define create-spark-with-zeppelin
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_ZEPPELIN})
-	$(call common-additions, ${MAGPIE_SPARK_WITH_ZEPPELIN}, zeppelin)
+	$(call common-additions, ${MAGPIE_SPARK_WITH_ZEPPELIN}, spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR=/export SPARK_LOCAL_SCRATCH_DIR=/g" $(MAGPIE_SPARK_WITH_ZEPPELIN)
