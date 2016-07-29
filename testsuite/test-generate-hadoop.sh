@@ -377,10 +377,13 @@ GenerateHadoopDependencyTests() {
 # - hadoop 2.4.X does not have "Finalize upgrade success" phrase output when complete
 
     __GenerateHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0
-    __GenerateHadoopDependencyTests_Dependency5 "5B" "y" 2.4.0 2.4.1
-    __GenerateHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.5.1 2.5.2
-    __GenerateHadoopDependencyTests_Dependency5 "5D" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    __GenerateHadoopDependencyTests_Dependency5 "5E" "n" 2.7.0 2.7.1 2.7.2
+    __GenerateHadoopDependencyTests_Dependency5 "5B" "n" 2.4.0 2.5.0
+    __GenerateHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.6.0
+    __GenerateHadoopDependencyTests_Dependency5 "5D" "n" 2.6.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5E" "y" 2.4.0 2.4.1
+    __GenerateHadoopDependencyTests_Dependency5 "5F" "n" 2.5.0 2.5.1 2.5.2
+    __GenerateHadoopDependencyTests_Dependency5 "5G" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __GenerateHadoopDependencyTests_Dependency5 "5H" "n" 2.7.0 2.7.1 2.7.2
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
