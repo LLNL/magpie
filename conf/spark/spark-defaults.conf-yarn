@@ -17,3 +17,5 @@ spark.yarn.executor.memoryOverhead SPARKYARNEXECUTOROVERHEAD
 # Used w/ yarn-client on driver
 spark.local.dir          SPARKLOCALDIR
 
+# So Spark won't assume home directory if we aren't using HDFS
+# spark.yarn.stagingDir    SPARKYARNSTAGINGDIR
