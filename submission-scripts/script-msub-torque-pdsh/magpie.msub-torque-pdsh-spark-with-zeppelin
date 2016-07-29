@@ -381,7 +381,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-export SPARK_MODE="setuponly"
+export SPARK_MODE="interactive"
 
 # SPARK_DEFAULT_PARALLELISM
 #
