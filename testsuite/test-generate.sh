@@ -176,9 +176,6 @@ sed -i -e "s/MAGPIE_SCRIPTS_DIR_PREFIX=\(.*\)/MAGPIE_SCRIPTS_DIR_PREFIX=${magpie
 localdirpathsubst=`echo ${LOCAL_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/LOCAL_DIR_PREFIX=\(.*\)/LOCAL_DIR_PREFIX=${localdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
-projectdirpathsubst=`echo ${PROJECT_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-sed -i -e "s/PROJECT_DIR_PREFIX=\(.*\)/PROJECT_DIR_PREFIX=${projectdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-
 homedirpathsubst=`echo ${HOME_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/HOME_DIR_PREFIX=\(.*\)/HOME_DIR_PREFIX=${homedirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
@@ -200,6 +197,63 @@ sed -i -e "s/SSD_DIR_PREFIX=\(.*\)/SSD_DIR_PREFIX=${ssddirpathsubst}/" ${MAGPIE_
 sed -i -e "s/REMOTE_CMD_DEFAULT=ssh/REMOTE_CMD_DEFAULT=${REMOTE_CMD}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 sed -i -e "s/MAGPIE_NO_LOCAL_DIR=n/MAGPIE_NO_LOCAL_DIR=y/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+projectdirpathsubst=`echo ${PROJECT_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+sed -i -e "s/PROJECT_DIR_PREFIX=\(.*\)/PROJECT_DIR_PREFIX=${projectdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
+if [ "${HADOOP_DIR_PATH}X" != "X" ]
+then
+    hadoopdirpathsubst=`echo ${HADOOP_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/HADOOP_DIR_PREFIX=\(.*\)/HADOOP_DIR_PREFIX=${hadoopdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${HBASE_DIR_PATH}X" != "X" ]
+then
+    hbasedirpathsubst=`echo ${HBASE_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/HBASE_DIR_PREFIX=\(.*\)/HBASE_DIR_PREFIX=${hbasedirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${KAFKA_DIR_PATH}X" != "X" ]
+then
+    kafkadirpathsubst=`echo ${KAFKA_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/KAFKA_DIR_PREFIX=\(.*\)/KAFKA_DIR_PREFIX=${kafkadirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${MAHOUT_DIR_PATH}X" != "X" ]
+then
+    mahoutdirpathsubst=`echo ${MAHOUT_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/MAHOUT_DIR_PREFIX=\(.*\)/MAHOUT_DIR_PREFIX=${mahoutdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${PHOENIX_DIR_PATH}X" != "X" ]
+then
+    phoenixdirpathsubst=`echo ${PHOENIX_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/PHOENIX_DIR_PREFIX=\(.*\)/PHOENIX_DIR_PREFIX=${phoenixdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${PIG_DIR_PATH}X" != "X" ]
+then
+    pigdirpathsubst=`echo ${PIG_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/PIG_DIR_PREFIX=\(.*\)/PIG_DIR_PREFIX=${pigdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${SPARK_DIR_PATH}X" != "X" ]
+then
+    sparkdirpathsubst=`echo ${SPARK_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/SPARK_DIR_PREFIX=\(.*\)/SPARK_DIR_PREFIX=${sparkdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${STORM_DIR_PATH}X" != "X" ]
+then
+    stormdirpathsubst=`echo ${STORM_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/STORM_DIR_PREFIX=\(.*\)/STORM_DIR_PREFIX=${stormdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
+if [ "${ZOOKEEPER_DIR_PATH}X" != "X" ]
+then
+    zookeeperdirpathsubst=`echo ${ZOOKEEPER_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/ZOOKEEPER_DIR_PREFIX=\(.*\)/ZOOKEEPER_DIR_PREFIX=${zookeeperdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
 
 defaultlocalreqpathsubstr=`echo ${DEFAULT_LOCAL_REQUIREMENTS_FILE} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/LOCAL_REQUIREMENTS=n/LOCAL_REQUIREMENTS=${DEFAULT_LOCAL_REQUIREMENTS}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile

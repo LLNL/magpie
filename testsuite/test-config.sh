@@ -35,13 +35,25 @@ zookeepernodecount=3
 DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 LOCAL_DIR_PATH="/tmp/\${USER}"
-PROJECT_DIR_PATH="\${HOME}/hadoop"
 HOME_DIR_PATH="\${HOME}"
 LUSTRE_DIR_PATH="/p/lscratchg/\${USER}/testing"
 NETWORKFS_DIR_PATH="/p/lscratchg/\${USER}/testing"
 RAWNETWORKFS_DIR_PATH="/p/lscratchg/\${USER}/testing"
 ZOOKEEPER_DATA_DIR_PATH="/p/lscratchg/\${USER}/testing"
 SSD_DIR_PATH="/ssd/tmp1/\${USER}"
+
+# Set just PROJECT_DIR_PATH is it's the prefix for all
+# projects, or set individual ones
+PROJECT_DIR_PATH="\${HOME}/hadoop"
+# HADOOP_DIR_PATH=""
+# HBASE_DIR_PATH=""
+# KAFKA_DIR_PATH=""
+# MAHOUT_DIR_PATH=""
+# PHOENIX_DIR_PATH=""
+# PIG_DIR_PATH=""
+# SPARK_DIR_PATH=""
+# STORM_DIR_PATH=""
+# ZOOKEEPER_DIR_PATH=""
 
 JAVA16PATH="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 JAVA17PATH="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
