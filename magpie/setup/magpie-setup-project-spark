@@ -359,7 +359,7 @@ fi
 
 # Magpie_find_conffile will set the 'pre' filenames
 
-if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
 then
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-env-1.X.sh" "pre_sparkenvsh"
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-1.X.properties" "pre_log4jproperties"
@@ -530,7 +530,7 @@ fi
 
 # Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
 # - spark.local.dir for < 1.0.0 set above
-if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
 then
     # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs 
     if [ "${SPARK_USE_YARN}" != "yes" ]
@@ -559,7 +559,7 @@ else
     echo "ulimit -u ${magpie_userprocessescount}" >> ${post_sparkenvsh}
 fi
 
-if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
+if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
 then
     if [ "${SPARK_USE_YARN}" == "yes" ]
     then
@@ -612,6 +612,11 @@ then
 
     sparklocalscratchdirpathsubst=`echo "${sparklocalscratchdirpath}" | sed "s/\\//\\\\\\\\\//g"`
 
+    if [ "${SPARK_YARN_STAGING_DIR}X" != "X" ]
+    then
+	sparkyarnstagingdirsubst=`echo "${SPARK_YARN_STAGING_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+    fi
+
     sed -i \
         -e "s/SPARKMASTER/${sparkmastersubst}/g" \
         -e "s/SPARKSHUFFLEFILEBUFFERKB/${sparkshufflebufferkb}/g" \
@@ -637,6 +642,7 @@ then
         -e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_SLAVE_COUNT}/g" \
         -e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
         -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
+	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \
         ${post_sparkdefaultsconf}
     
     # Remove lingering "-bin-hadoop2.4" and similar text"
@@ -674,6 +680,18 @@ then
         sed -i -e "s/spark.memory.storageFraction/# spark.memory.storageFraction/" ${post_sparkdefaultsconf}
     fi
     
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${sparktestversion} 2.0
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+	if [ "${SPARK_YARN_STAGING_DIR}X" != "X" ]
+	then
+	    sed -i -e "s/# spark.yarn.stagingDir/spark.yarn.stagingDir/" ${post_sparkdefaultsconf}
+	fi
+    fi
+
     # spark authenticate doesn't work with yarn in Spark 1.2 -> 1.5.
     # Unclear why it works on Spark 1.6.  Not sure of subtlety in
     # implementation or what.  No apparent bug fix upstream that would
