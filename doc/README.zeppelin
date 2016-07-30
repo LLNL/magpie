@@ -111,6 +111,8 @@ Zeppelin Exported Environment Variables
 The following environment variables are exported when your job is run
 and may be useful in scripts in your run or in pre/post run scripts.
 
+ZEPPELIN_MASTER_NODE : the master node running Zeppelin
+
 ZEPPELIN_CONF_DIR : the directory that Zeppelin configuration files local
                    to the node are stored
 
