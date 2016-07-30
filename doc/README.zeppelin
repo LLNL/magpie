@@ -118,10 +118,6 @@ ZEPPELIN_CONF_DIR : the directory that Zeppelin configuration files local
 
 ZEPPELIN_LOG_DIR : the directory Zeppelin log files are stored
 
-ZEPPELIN_SCALA_PATH : the path to the version of Scala needed
-
-ZEPPELIN_SPARK_SUBMIT_OPTIONS : options for when Zeppelin submits jobs
-
 See "Spark Exported Environment Variables" in README.spark,
 for Spark environment variables that may be useful.
 
