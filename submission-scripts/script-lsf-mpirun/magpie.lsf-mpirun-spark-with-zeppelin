@@ -240,7 +240,7 @@ export SPARK_SETUP=yes
 
 # Version
 #
-export SPARK_VERSION="1.6.2-bin-hadoop2.6"
+export SPARK_VERSION="2.0.0-bin-hadoop2.7"
 
 # Path to your Spark build/binaries
 #
@@ -569,6 +569,21 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 #
 # export SPARK_USE_YARN=yes
 
+# SPARK_YARN_STAGING_DIR
+#
+# By default, Spark w/ Yarn will use your home directory for staging
+# files for a job.  This home directory must be accessible by all
+# nodes.
+#
+# This may pose a problem if you are not using HDFS and your home
+# directory is not NFS or network mounted.  Set this value to a
+# network location as your staging directory.  Be sure to prefix this
+# path the appropriate scheme, such as file://.
+# 
+# This option is only available beginning in Spark 2.0.
+#
+# export SPARK_YARN_STAGING_DIR="file:///lustre/${USER}/sparkStaging/"
+
 ############################################################################
 # Spark SparkPi Configuration
 ############################################################################
@@ -658,13 +673,6 @@ export ZEPPELIN_VERSION="0.5.6"
 #
 export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-incubating-bin-all"
 
-# Path to store data local to each cluster node, typically something
-# in /tmp.  This will store local conf files and log files for your
-# job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
-#
-export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
-
 # Directory where alternate Zeppelin configuration templates are stored
 #
 # If you wish to tweak the configuration files used by Magpie, set
@@ -676,12 +684,29 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 #
 # export ZEPPELIN_CONF_FILES="${HOME}/myconf"
 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
+
+# Set how Zeppelin should run
+#
+# "server" - setup the server
+#
+# "setuponly" - Like 'server' but only setup conf files. useful
+#               if user wants to setup & teardown daemons themselves.
+#
+export ZEPPELIN_MODE="server"
+
 # Path to the root scala dir
 #
 # This may need to be modified if the interpreter uses the wrong
 # version of scala.
 #
 # The default does not add anything to your paths
+#
 # export ZEPPELIN_SCALA_PATH=${HOME}/scala-2.10.4
 
 # Zeppelin Spark Submit Options
@@ -691,17 +716,8 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 # Note that when Zeppelin starts up it will use all cores and memory that
 # Spark has available, this can be changed by adjusting Spark submit options.
 # e.g. --total-executor-cores 20 --executor-memory 16G
+#
 # ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
-
-# Set how Zeppelin should run
-#
-# "server" - setup the server
-#
-# "setuponly" - Like 'server' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
-#
-export ZEPPELIN_MODE="server"
 
 ############################################################################
 # Run Job
