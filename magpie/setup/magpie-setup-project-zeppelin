@@ -128,7 +128,7 @@ then
     zeppelin_jars="${zeppelin_jars},${phoenix_jars}"
 fi
 
-ZEPPELIN_SPARK_SUBMIT_OPTS="${ZEPPELIN_SPARK_SUBMIT_OPTIONS} --jars $zeppelin_jars"
+ZEPPELIN_SPARK_SUBMIT_OPTS="${ZEPPELIN_SPARK_SUBMIT_OPTIONS}${ZEPPELIN_SPARK_SUBMIT_OPTIONS:+" "}--jars $zeppelin_jars"
 
 zeppelinclasspath=${SPARK_HOME}/lib/*:${CLASSPATH}
 

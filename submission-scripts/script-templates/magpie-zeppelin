@@ -70,5 +70,5 @@ export ZEPPELIN_MODE="server"
 # Spark has available, this can be changed by adjusting Spark submit options.
 # e.g. --total-executor-cores 20 --executor-memory 16G
 #
-# ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
+# export ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
 
