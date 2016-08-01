@@ -578,24 +578,24 @@ then
 
     __Magpie_check_is_enabled "Hadoop" "Mahout"
 
-    if [ "${MAHOUT_MODE}" != "clustersyntheticcontrol" ] \
-        && [ "${MAHOUT_MODE}" != "script" ]
+    if [ "${MAHOUT_JOB}" != "clustersyntheticcontrol" ] \
+        && [ "${MAHOUT_JOB}" != "script" ]
     then
-        echo "MAHOUT_MODE must be set to clustersyntheticcontrol or script"
+        echo "MAHOUT_JOB must be set to clustersyntheticcontrol or script"
         exit 1
     fi
 
-    if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] && [ "${MAHOUT_MODE}" == "script" ]
+    if [ "${MAGPIE_JOB_TYPE}" == "mahout" ] && [ "${MAHOUT_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_regular_file "MAHOUT_SCRIPT_PATH" "for MAHOUT_MODE = ${MAHOUT_MODE}"
+        __Magpie_check_must_be_set_and_is_regular_file "MAHOUT_SCRIPT_PATH" "for MAHOUT_JOB = ${MAHOUT_JOB}"
     fi
 
     if [ "${HADOOP_SETUP_TYPE}" == "HDFS2" ] \
         && [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
-        && ([ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ] \
-            || [ "${MAHOUT_MODE}" == "script" ])
+        && ([ "${MAHOUT_JOB}" == "clustersyntheticcontrol" ] \
+            || [ "${MAHOUT_JOB}" == "script" ])
     then
-        echo "HADOOP_SETUP_TYPE must be set to MR2 for MAHOUT_MODE=${MAHOUT_MODE}"
+        echo "HADOOP_SETUP_TYPE must be set to MR2 for MAHOUT_JOB=${MAHOUT_JOB}"
         exit 1
     fi
 fi

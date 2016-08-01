@@ -46,9 +46,9 @@ export MAHOUT_LOCAL_DIR="LOCALDIRPREFIX/mahout"
 #
 # "script" - execute a mahout script indicated by MAHOUT_SCRIPT_PATH.
 #
-export MAHOUT_MODE="clustersyntheticcontrol"
+export MAHOUT_JOB="clustersyntheticcontrol"
 
-# Specify script to execute for "script" mode in MAHOUT_MODE.  This mahout
+# Specify script to execute for "script" mode in MAHOUT_JOB.  This mahout
 # script will be fed into mahout via "mahout ${MAHOUT_SCRIPT_OPTS} ${MAHOUT_SCRIPT_PATH}"
 #
 # export MAHOUT_SCRIPT_PATH="${HOME}/my-mahout-script"

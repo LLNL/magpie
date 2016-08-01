@@ -107,7 +107,7 @@ Magpie_run_start_mahout () {
 }
 
 Magpie_run_mahout () {
-    if [ "${MAHOUT_MODE}" == "clustersyntheticcontrol" ]
+    if [ "${MAHOUT_JOB}" == "clustersyntheticcontrol" ]
     then
         echo "*******************************************************"
         echo "* Running Clustersyntheticcontrol"
@@ -115,7 +115,7 @@ Magpie_run_mahout () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-mahout-clustersyntheticcontrol &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
-    elif [ "${MAHOUT_MODE}" == "script" ]
+    elif [ "${MAHOUT_JOB}" == "script" ]
     then
         echo "*******************************************************"
         echo "* Executing Mahout script $MAHOUT_SCRIPT_PATH"
@@ -124,6 +124,6 @@ Magpie_run_mahout () {
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
-        Magpie_output_internal_error "MAHOUT_MODE = ${MAHOUT_MODE} not handled"
+        Magpie_output_internal_error "MAHOUT_JOB = ${MAHOUT_JOB} not handled"
     fi
 }
