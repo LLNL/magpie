@@ -730,7 +730,9 @@ then
         num=`grep -e "completed successfully" $file | wc -l`
         if echo ${file} | grep -q "run-clustersyntheticcontrol"
         then
-            if [ "${num}" != "14" ]; then
+            # runs clustering algorithm, can be random-ish, we'll
+            # guess it always takes atleast 5 iters
+            if [ "${num}" -lt "7" ]; then
                 echo "Error in $file"
             fi
         else
