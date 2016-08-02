@@ -215,7 +215,7 @@ Magpie_calculate_stop_timeouts () {
 }
 
 # Count how many big data systems we're using that can run jobs
-# Pig as a wrapper around Hadoop, so it doesn't count
+# Pig and Mahout are wrappers around Hadoop, so it doesn't count
 __Magpie_calculate_canrunjobscount () {
     __canrunjobscount=0
 
