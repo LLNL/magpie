@@ -893,7 +893,7 @@ __GenerateCornerCaseTests_NoCoreSettings() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
-        sed -i -e 's/export ZEPPELIN_MODE/# export ZEPPELIN_MODE/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
+        sed -i -e 's/export ZEPPELIN_JOB/# export ZEPPELIN_JOB/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nocoresettings*"`
@@ -973,7 +973,7 @@ __GenerateCornerCaseTests_BadCoreSettings() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
-        sed -i -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="foobar"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
+        sed -i -e 's/export ZEPPELIN_JOB="\(.*\)"/export ZEPPELIN_JOB="foobar"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcoresettings*"`
