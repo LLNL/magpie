@@ -63,10 +63,10 @@ spark1Xjava17hadoop26versions="1.4.0-bin-hadoop2.6 1.4.1-bin-hadoop2.6 1.5.0-bin
 spark1Xjava17hadoop26versions_hadoopversion="2.6.0"
 spark1Xjava17hadoop26versions_javaversion=${java17}
 spark2Xjava17hadoop26versions="2.0.0-bin-hadoop2.6"
-spark2Xjava17hadoop26versions_hadoopversion="2.6.4"
+spark2Xjava17hadoop26versions_hadoopversion="2.6.0"
 spark2Xjava17hadoop26versions_javaversion=${java17}
 spark2Xjava17hadoop27versions="2.0.0-bin-hadoop2.7"
-spark2Xjava17hadoop27versions_hadoopversion="2.7.2"
+spark2Xjava17hadoop27versions_hadoopversion="2.7.0"
 spark2Xjava17hadoop27versions_javaversion=${java17}
 
 spark_test_groups="spark0Xjava16hadoop2versions spark1Xjava16hadoop24versions spark1Xjava17hadoop26versions spark2Xjava17hadoop26versions spark2Xjava17hadoop27versions"
