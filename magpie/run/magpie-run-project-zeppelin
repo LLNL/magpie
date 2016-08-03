@@ -166,7 +166,7 @@ Magpie_run_start_zeppelin () {
 }
 
 Magpie_run_zeppelin () {
-    if [ "${ZEPPELIN_MODE}" == "checkzeppelinup" ]
+    if [ "${ZEPPELIN_JOB}" == "checkzeppelinup" ]
     then
         echo "*******************************************************"
         echo "* Running CheckZeppelinUp"
@@ -175,7 +175,7 @@ Magpie_run_zeppelin () {
         local scriptpid=$!
         wait $scriptpid
     else
-        Magpie_output_internal_error "ZEPPELIN_MODE = ${ZEPPELIN_MODE} not handled"
+        Magpie_output_internal_error "ZEPPELIN_JOB = ${ZEPPELIN_JOB} not handled"
     fi
 }
 
