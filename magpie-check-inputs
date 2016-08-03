@@ -903,9 +903,9 @@ then
 
     __Magpie_check_is_enabled "Spark" "Zeppelin"
 
-    if [ "${ZEPPELIN_MODE}" != "checkzeppelinup" ]
+    if [ "${ZEPPELIN_JOB}" != "checkzeppelinup" ]
     then
-        echo "ZEPPELIN_MODE must be set to checkzeppelinup"
+        echo "ZEPPELIN_JOB must be set to checkzeppelinup"
         exit 1
     fi
 fi

@@ -49,7 +49,7 @@ export ZEPPELIN_LOCAL_DIR="LOCALDIRPREFIX/zeppelin"
 # "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
 #                     correctly and up.
 #
-export ZEPPELIN_MODE="checkzeppelinup"
+export ZEPPELIN_JOB="checkzeppelinup"
 
 # Path to the root scala dir
 #
