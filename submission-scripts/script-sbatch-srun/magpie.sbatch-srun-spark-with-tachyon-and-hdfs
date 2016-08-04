@@ -673,8 +673,8 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # If not specified, a reasonable estimate will be calculated based on
 # number of CPUs on the system.
 #
-# If also running Hbase or Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by other software.
+# Be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export SPARK_WORKER_CORES_PER_NODE=8
 
@@ -684,8 +684,8 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # calculated based on total memory available and number of CPUs on the
 # system.
 #
-# If also running Hbase or Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by other software.
+# Be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export SPARK_WORKER_MEMORY_PER_NODE=16000
 
