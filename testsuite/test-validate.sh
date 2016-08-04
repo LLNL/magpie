@@ -938,9 +938,19 @@ if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
     do
-        num=`grep -e "Summary of timings" $file | wc -l`
-        if [ "${num}" != "2" ]; then
-            echo "Error in $file"
+        if echo ${file} | grep -q "oldhbase"
+        then
+            # Older versions didn't output the "Summary of timings", use the following instead
+            num=`grep -e 'Finished class org.apache.hadoop.hbase.PerformanceEvaluation' $file | wc -l`
+            if [ "${num}" != "2" ]
+            then
+                echo "Error in $file"
+            fi
+        else
+            num=`grep -e "Summary of timings" $file | wc -l`
+            if [ "${num}" != "2" ]; then
+                echo "Error in $file"
+            fi
         fi
         
         __test_hdfs_shutdown $file

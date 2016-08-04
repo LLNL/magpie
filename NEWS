@@ -1,3 +1,14 @@
+magpie 1.76
+-----------
+
+Add older support for Hbase 0.98.0-hadoop2 0.98.1-hadoop2
+  0.98.2-hadoop2 0.98.4-hadoop2 0.98.5-hadoop2 0.98.6-hadoop2
+  0.98.6.1-hadoop2 0.98.7-hadoop2 0.98.8-hadoop2 0.98.10-hadoop2
+  0.98.10.1-hadoop2 0.98.11-hadoop2 0.98.12-hadoop2 0.98.12.1-hadoop2
+  0.98.13-hadoop2 0.98.14-hadoop2 0.98.15-hadoop2 0.98.16-hadoop2
+  0.98.16.1-hadoop2 0.98.17-hadoop2 0.98.18-hadoop2 0.98.19-hadoop2
+  0.98.20-hadoop2
+
 magpie 1.75
 -----------
 Remove 'classifywikipedia' example with Mahout.
