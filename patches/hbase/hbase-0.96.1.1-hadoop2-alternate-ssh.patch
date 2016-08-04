@@ -1,6 +1,6 @@
-diff -pruN bin-orig/hbase-cleanup.sh bin/hbase-cleanup.sh
---- bin-orig/hbase-cleanup.sh	2013-12-17 11:05:37.000000000 -0800
-+++ bin/hbase-cleanup.sh	2014-03-12 14:05:46.277831000 -0700
+diff -pruN hbase-0.96.1.1-hadoop2-orig/bin/hbase-cleanup.sh hbase-0.96.1.1-hadoop2/bin/hbase-cleanup.sh
+--- hbase-0.96.1.1-hadoop2-orig/bin/hbase-cleanup.sh	2013-12-17 11:05:37.000000000 -0800
++++ hbase-0.96.1.1-hadoop2/bin/hbase-cleanup.sh	2016-08-04 10:03:18.183283000 -0700
 @@ -28,6 +28,8 @@
  #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
  #   HADOOP_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
@@ -10,9 +10,9 @@ diff -pruN bin-orig/hbase-cleanup.sh bin/hbase-cleanup.sh
  #   HADOOP_SSH_OPTS Options passed to ssh when running remote commands.
  #
  
-diff -pruN bin-orig/master-backup.sh bin/master-backup.sh
---- bin-orig/master-backup.sh	2013-12-17 11:05:37.000000000 -0800
-+++ bin/master-backup.sh	2014-03-12 14:09:30.887993000 -0700
+diff -pruN hbase-0.96.1.1-hadoop2-orig/bin/master-backup.sh hbase-0.96.1.1-hadoop2/bin/master-backup.sh
+--- hbase-0.96.1.1-hadoop2-orig/bin/master-backup.sh	2013-12-17 11:05:37.000000000 -0800
++++ hbase-0.96.1.1-hadoop2/bin/master-backup.sh	2016-08-04 10:03:18.185282000 -0700
 @@ -29,6 +29,8 @@
  #   HADOOP_CONF_DIR  Alternate conf dir. Default is ${HADOOP_HOME}/conf.
  #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
@@ -35,9 +35,9 @@ diff -pruN bin-orig/master-backup.sh bin/master-backup.sh
       2>&1 | sed "s/^/$hmaster: /" &
     if [ "$HBASE_SLAVE_SLEEP" != "" ]; then
       sleep $HBASE_SLAVE_SLEEP
-diff -pruN bin-orig/regionservers.sh bin/regionservers.sh
---- bin-orig/regionservers.sh	2013-12-17 11:05:37.000000000 -0800
-+++ bin/regionservers.sh	2014-03-12 14:09:14.758139000 -0700
+diff -pruN hbase-0.96.1.1-hadoop2-orig/bin/regionservers.sh hbase-0.96.1.1-hadoop2/bin/regionservers.sh
+--- hbase-0.96.1.1-hadoop2-orig/bin/regionservers.sh	2013-12-17 11:05:37.000000000 -0800
++++ hbase-0.96.1.1-hadoop2/bin/regionservers.sh	2016-08-04 10:03:18.188277000 -0700
 @@ -29,6 +29,8 @@
  #   HADOOP_CONF_DIR  Alternate conf dir. Default is ${HADOOP_HOME}/conf.
  #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
@@ -68,9 +68,9 @@ diff -pruN bin-orig/regionservers.sh bin/regionservers.sh
        2>&1 | sed "s/^/$regionserver: /"
    fi
    if [ "$HBASE_SLAVE_SLEEP" != "" ]; then
-diff -pruN bin-orig/rolling-restart.sh bin/rolling-restart.sh
---- bin-orig/rolling-restart.sh	2013-12-17 11:05:37.000000000 -0800
-+++ bin/rolling-restart.sh	2014-03-12 14:06:23.129939000 -0700
+diff -pruN hbase-0.96.1.1-hadoop2-orig/bin/rolling-restart.sh hbase-0.96.1.1-hadoop2/bin/rolling-restart.sh
+--- hbase-0.96.1.1-hadoop2-orig/bin/rolling-restart.sh	2013-12-17 11:05:37.000000000 -0800
++++ hbase-0.96.1.1-hadoop2/bin/rolling-restart.sh	2016-08-04 10:03:18.191275000 -0700
 @@ -30,6 +30,8 @@
  #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
  #   HADOOP_SLAVE_SLEEP Seconds to sleep between spawning remote commands.
@@ -80,9 +80,9 @@ diff -pruN bin-orig/rolling-restart.sh bin/rolling-restart.sh
  #   HADOOP_SSH_OPTS Options passed to ssh when running remote commands.
  #
  # Modelled after $HADOOP_HOME/bin/slaves.sh.
-diff -pruN bin-orig/zookeepers.sh bin/zookeepers.sh
---- bin-orig/zookeepers.sh	2013-12-17 11:05:37.000000000 -0800
-+++ bin/zookeepers.sh	2014-03-12 14:09:02.129781000 -0700
+diff -pruN hbase-0.96.1.1-hadoop2-orig/bin/zookeepers.sh hbase-0.96.1.1-hadoop2/bin/zookeepers.sh
+--- hbase-0.96.1.1-hadoop2-orig/bin/zookeepers.sh	2013-12-17 11:05:37.000000000 -0800
++++ hbase-0.96.1.1-hadoop2/bin/zookeepers.sh	2016-08-04 10:03:18.193276000 -0700
 @@ -26,6 +26,8 @@
  #
  #   HBASE_CONF_DIR  Alternate hbase conf dir. Default is ${HBASE_HOME}/conf.
