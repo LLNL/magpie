@@ -118,12 +118,3 @@ PIG_CONF_DIR : the directory that Pig configuration files
 
 See "Hadoop Exported Environment Variables" in README.hadoop, for
 Hadoop environment variables that may be useful.
-
-Pig Patching
-------------
-- A major bug exists in 0.12.0, which most users may wish to patch and
-  recompile.
-
-  https://issues.apache.org/jira/browse/PIG-3512
-
-  It would be wise to recompile 0.12.0 with this fix.
