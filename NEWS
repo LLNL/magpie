@@ -71,6 +71,13 @@ Misc Features & Changes
 
 - Default HDFS namenode port is now 8020 instead of 54310
 
+Misc Documentation Changes
+
+- No longer list support for versions that require re-compilation.
+
+- No longer list support for versions that are not included in Magpie
+  testsuite.
+
 Backwards Compatibility Notes
 
 o The following are possible changes users may need to make in older

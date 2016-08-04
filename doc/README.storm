@@ -128,46 +128,8 @@ STORM_LOG_DIR : the directory Storm log files are stored
 See "Zookeeper Exported Environment Variables" in README.zookeeper,
 for Zookeeper environment variables that may be useful.
 
-Storm Patching
---------------
-- Patch to support alternate config file directories and log file
-  directories is required atleast through Storm 0.9.2.  Storm requires
-  a recompilation of source.  Patch is no longer needed in 0.9.3 and
-  newer.
-
-- Patches for these issues can be found in the patches/storm/
-  directory.
-
 Storm Recompilation
 -------------------
-- By default (up to atleast Storm 0.9.2) logs
-  are stored in STORM_HOME/logs and does not recognize the environment
-  variable STORM_LOG_DIR.
-
-  It is currently being tracked in the Jira:
-
-  https://issues.apache.org/jira/browse/STORM-279
-
-  In addition, Storm (up to atleast Storm 0.9.2) does not support
-  alternate config file directories other than its default of
-  STORM_HOME/conf.  Another patch is available in the 'patches'
-  directory to handle this.  It is currently being tracked by:
-
-  https://issues.apache.org/jira/browse/STORM-320
-
-  Patches to support alternate log and conf directories in Storm 0.9.2
-  are included in the patches/storm/ directory.  As of this writing, a
-  re-compile with the patches are necessary.
-
-  After applying the patches to the Storm tree, a simple
-
-  mvn clean install -DskipTests=true
-  cd storm-dist/binary
-  mvn package
-
-  should net you a binary package with everything you need in the target
-  directory.
-
 - Beginning with Storm 1.1.0, the package no longer includes the storm
   starter jar file by default.  You will have to compile it by default
   in order to run stormwordcount.  A simple:

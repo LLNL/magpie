@@ -123,12 +123,9 @@ zookeeperjava17versions_javaversion=${java17}
 zookeeper_test_groups="zookeeperjava17versions"
 zookeeper_all_versions="${zookeeperjava17versions}"
 
-zeppelinspark15java17versions="0.5.6-incubating"
-zeppelinspark15java17versions_sparkversion="1.5.0-bin-hadoop2.6"
-zeppelinspark15java17versions_javaversion="${java17}"
 zeppelinspark16java17versions="0.6.0 0.6.1 0.6.2 0.7.0 0.7.1 0.7.2 0.7.3"
 zeppelinspark16java17versions_sparkversion="1.6.0-bin-hadoop2.6"
 zeppelinspark16java17versions_javaversion="${java17}"
 
-zeppelin_test_groups="zeppelinspark15java17versions zeppelinspark16java17versions"
-zeppelin_all_versions="${zeppelinspark15java17versions} ${zeppelinspark16java17versions}"
+zeppelin_test_groups="zeppelinspark16java17versions"
+zeppelin_all_versions="${zeppelinspark16java17versions}"

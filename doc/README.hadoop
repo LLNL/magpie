@@ -544,25 +544,6 @@ Hadoop
   The alternate remote execution command must be specified in the
   environment variable MAGPIE_REMOTE_CMD.
 
-- Hadoop 1.0 may require recompilation if alternate solution for
-  increased entropy cannot be done.
-
-  https://issues.apache.org/jira/browse/HDFS-1835
-
-  Hadoop 1.0 appears to have more trouble on diskless systems, as
-  diskless systems have less entropy in them.  So you may wish to apply
-  the patch in the above jira if things don't seem to be working.  I
-  noticed datanode log error on my diskless cluster:
-
-  2013-09-19 10:45:37,620 INFO org.apache.hadoop.hdfs.server.datanode.DataNode: dnRegistration = DatanodeRegistration(apex114.llnl.gov:50010, storageID=, infoPort=50075, ipcPort=50020)
-
-  Notice the storageID is blank, that's b/c the random number
-  calculation failed.  Subsequently daemons aren't started, datanodes
-  can't connect to the namenode, etc., badness all around.
-
-  If you have root privileges, starting up the rngd daemon is another
-  way to solve this problem without resorting to patching.
-
 - Hadoop terasort may require recompilation if running over 'rawnetworkfs'.
 
   There is a bug in the Terasort example, leading to issues with
