@@ -44,14 +44,20 @@ hbasehadoop27zookeeper34java17versions_javaversion=${java17}
 hbase_test_groups="hbasehadoop22zookeeper34java16versions hbasehadoop27zookeeper34java17versions"
 hbase_all_versions="${hbasehadoop22zookeeper34java16versions} ${hbasehadoop27zookeeper34java17versions}"
 
+phoenixhbase10hadoop27zookeeper34java17versions="4.5.0-HBase-1.0 4.5.1-HBase-1.0 4.5.2-HBase-1.0 4.6.0-HBase-1.0 4.7.0-HBase-1.0"
+phoenixhbase10hadoop27zookeeper34java17versions_hbaseversion="1.0.0"
+phoenixhbase10hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
+phoenixhbase10hadoop27zookeeper34java17versions_zookeeperversion="3.4.8"
+phoenixhbase10hadoop27zookeeper34java17versions_javaversion=${java17}
+
 phoenixhbase11hadoop27zookeeper34java17versions="4.5.0-HBase-1.1 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1"
 phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion="1.1.0"
 phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
 phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion="3.4.8"
 phoenixhbase11hadoop27zookeeper34java17versions_javaversion=${java17}
 
-phoenix_test_groups="phoenixhbase11hadoop27zookeeper34java17versions"
-phoenix_all_versions="${phoenixhbase11hadoop27zookeeper34java17versions}"
+phoenix_test_groups="phoenixhbase10hadoop27zookeeper34java17versions phoenixhbase11hadoop27zookeeper34java17versions"
+phoenix_all_versions="${phoenixhbase10hadoop27zookeeper34java17versions} ${phoenixhbase11hadoop27zookeeper34java17versions}"
 
 spark0Xjava16hadoop2versions="0.9.1-bin-hadoop2 0.9.2-bin-hadoop2"
 spark0Xjava16hadoop2versions_hadoopversion="2.2.0"
