@@ -47,7 +47,7 @@ CheckForDependency() {
     local projectcheck=$2
     local checkversion=$3
 
-    local checkversionunderscore=`echo ${checkversion} | sed -e "s/\./_/g"`
+    local checkversionunderscore=`echo ${checkversion} | sed -e "s/\./_/g" -e "s/-/_/g"`
     local projectchecklowercase=`echo ${projectcheck} | tr '[:upper:]' '[:lower:]'`
     local variabletocheck="${projectchecklowercase}_${checkversionunderscore}"
 
