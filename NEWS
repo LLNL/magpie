@@ -1,6 +1,6 @@
 magpie 1.76
 -----------
-
+Add older support for Phoenix 4.5.0-Hbase-1.1
 Add older support for Hbase 0.98.0-hadoop2 0.98.1-hadoop2
   0.98.2-hadoop2 0.98.4-hadoop2 0.98.5-hadoop2 0.98.6-hadoop2
   0.98.6.1-hadoop2 0.98.7-hadoop2 0.98.8-hadoop2 0.98.10-hadoop2

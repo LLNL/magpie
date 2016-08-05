@@ -1,0 +1,196 @@
+diff -pruN phoenix-4.5.0-HBase-1.1-bin-orig/bin/performance.py phoenix-4.5.0-HBase-1.1-bin/bin/performance.py
+--- phoenix-4.5.0-HBase-1.1-bin-orig/bin/performance.py	2015-07-22 21:52:31.000000000 -0700
++++ phoenix-4.5.0-HBase-1.1-bin/bin/performance.py	2016-08-04 21:43:14.749816000 -0700
+@@ -65,10 +65,40 @@ phoenix_utils.setPath()
+ # HBase/Phoenix client side property override
+ hbase_config_path = os.getenv('HBASE_CONF_DIR', phoenix_utils.current_dir)
+ 
+-execute = ('java -cp "%s%s%s" -Dlog4j.configuration=file:' +
++java_home = os.getenv('JAVA_HOME')
++
++# load hbase-env.??? to extract JAVA_HOME, HBASE_PID_DIR, HBASE_LOG_DIR
++hbase_env_path = None
++hbase_env_cmd  = None
++if os.name == 'posix':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.sh')
++    hbase_env_cmd = ['bash', '-c', 'source %s && env' % hbase_env_path]
++elif os.name == 'nt':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.cmd')
++    hbase_env_cmd = ['cmd.exe', '/c', 'call %s & set' % hbase_env_path]
++if not hbase_env_path or not hbase_env_cmd:
++    print >> sys.stderr, "hbase-env file unknown on platform %s" % os.name
++    sys.exit(-1)
++
++hbase_env = {}
++if os.path.isfile(hbase_env_path):
++    p = subprocess.Popen(hbase_env_cmd, stdout = subprocess.PIPE)
++    for x in p.stdout:
++        (k, _, v) = x.partition('=')
++        hbase_env[k.strip()] = v.strip()
++
++if hbase_env.has_key('JAVA_HOME'):
++    java_home = hbase_env['JAVA_HOME']
++
++if java_home:
++    java_cmd = os.path.join(java_home, 'bin', 'java')
++else:
++    java_cmd = 'java'
++
++execute = ('%s -cp "%s%s%s" -Dlog4j.configuration=file:' +
+            os.path.join(phoenix_utils.current_dir, "log4j.properties") +
+            ' org.apache.phoenix.util.PhoenixRuntime -t %s %s ') % \
+-    (hbase_config_path, os.pathsep, phoenix_utils.phoenix_client_jar, table, zookeeper)
++    (java_cmd, hbase_config_path, os.pathsep, phoenix_utils.phoenix_client_jar, table, zookeeper)
+ 
+ # Create Table DDL
+ createtable = "CREATE TABLE IF NOT EXISTS %s (HOST CHAR(2) NOT NULL,\
+@@ -97,7 +127,7 @@ queryex("4 - Truncate + Group By", "SELE
+ queryex("5 - Filter + Count", "SELECT COUNT(1) FROM %s WHERE CORE<10;" % (table))
+ 
+ print "\nGenerating and upserting data..."
+-exitcode = subprocess.call('java -jar %s %s' % (phoenix_utils.testjar, rowcount), shell=True)
++exitcode = subprocess.call('%s -jar %s %s' % (java_cmd, phoenix_utils.testjar, rowcount), shell=True)
+ if exitcode != 0:
+     sys.exit(exitcode)
+ 
+diff -pruN phoenix-4.5.0-HBase-1.1-bin-orig/bin/psql.py phoenix-4.5.0-HBase-1.1-bin/bin/psql.py
+--- phoenix-4.5.0-HBase-1.1-bin-orig/bin/psql.py	2015-07-22 21:52:31.000000000 -0700
++++ phoenix-4.5.0-HBase-1.1-bin/bin/psql.py	2016-08-04 21:43:14.752810000 -0700
+@@ -30,7 +30,39 @@ args = phoenix_utils.shell_quote(sys.arg
+ 
+ # HBase configuration folder path (where hbase-site.xml reside) for
+ # HBase/Phoenix client side property override
+-java_cmd = 'java -cp "' + phoenix_utils.hbase_conf_dir + os.pathsep + phoenix_utils.phoenix_client_jar + \
++hbase_config_path = os.getenv('HBASE_CONF_DIR', phoenix_utils.current_dir)
++
++java_home = os.getenv('JAVA_HOME')
++
++# load hbase-env.??? to extract JAVA_HOME, HBASE_PID_DIR, HBASE_LOG_DIR
++hbase_env_path = None
++hbase_env_cmd  = None
++if os.name == 'posix':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.sh')
++    hbase_env_cmd = ['bash', '-c', 'source %s && env' % hbase_env_path]
++elif os.name == 'nt':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.cmd')
++    hbase_env_cmd = ['cmd.exe', '/c', 'call %s & set' % hbase_env_path]
++if not hbase_env_path or not hbase_env_cmd:
++    print >> sys.stderr, "hbase-env file unknown on platform %s" % os.name
++    sys.exit(-1)
++
++hbase_env = {}
++if os.path.isfile(hbase_env_path):
++    p = subprocess.Popen(hbase_env_cmd, stdout = subprocess.PIPE)
++    for x in p.stdout:
++        (k, _, v) = x.partition('=')
++        hbase_env[k.strip()] = v.strip()
++
++if hbase_env.has_key('JAVA_HOME'):
++    java_home = hbase_env['JAVA_HOME']
++
++if java_home:
++    java = os.path.join(java_home, 'bin', 'java')
++else:
++    java = 'java'
++
++java_cmd = java +' -cp "' + phoenix_utils.hbase_conf_dir + os.pathsep + phoenix_utils.phoenix_client_jar + \
+     '" -Dlog4j.configuration=file:' + \
+     os.path.join(phoenix_utils.current_dir, "log4j.properties") + \
+     " org.apache.phoenix.util.PhoenixRuntime " + args 
+diff -pruN phoenix-4.5.0-HBase-1.1-bin-orig/bin/sqlline-thin.py phoenix-4.5.0-HBase-1.1-bin/bin/sqlline-thin.py
+--- phoenix-4.5.0-HBase-1.1-bin-orig/bin/sqlline-thin.py	2015-07-22 21:52:31.000000000 -0700
++++ phoenix-4.5.0-HBase-1.1-bin/bin/sqlline-thin.py	2016-08-04 21:43:14.754812000 -0700
+@@ -77,7 +77,41 @@ colorSetting = "true"
+ if os.name == 'nt':
+     colorSetting = "false"
+ 
+-java_cmd = 'java -cp "' + phoenix_utils.hbase_conf_dir + os.pathsep + phoenix_utils.phoenix_thin_client_jar + \
++# HBase configuration folder path (where hbase-site.xml reside) for
++# HBase/Phoenix client side property override
++hbase_config_path = os.getenv('HBASE_CONF_DIR', phoenix_utils.current_dir)
++
++java_home = os.getenv('JAVA_HOME')
++
++# load hbase-env.??? to extract JAVA_HOME, HBASE_PID_DIR, HBASE_LOG_DIR
++hbase_env_path = None
++hbase_env_cmd  = None
++if os.name == 'posix':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.sh')
++    hbase_env_cmd = ['bash', '-c', 'source %s && env' % hbase_env_path]
++elif os.name == 'nt':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.cmd')
++    hbase_env_cmd = ['cmd.exe', '/c', 'call %s & set' % hbase_env_path]
++if not hbase_env_path or not hbase_env_cmd:
++    print >> sys.stderr, "hbase-env file unknown on platform %s" % os.name
++    sys.exit(-1)
++
++hbase_env = {}
++if os.path.isfile(hbase_env_path):
++    p = subprocess.Popen(hbase_env_cmd, stdout = subprocess.PIPE)
++    for x in p.stdout:
++        (k, _, v) = x.partition('=')
++        hbase_env[k.strip()] = v.strip()
++
++if hbase_env.has_key('JAVA_HOME'):
++    java_home = hbase_env['JAVA_HOME']
++
++if java_home:
++    java = os.path.join(java_home, 'bin', 'java')
++else:
++    java = 'java'
++
++java_cmd = java + ' -cp "' + phoenix_utils.hbase_conf_dir + os.pathsep + phoenix_utils.phoenix_thin_client_jar + \
+     '" -Dlog4j.configuration=file:' + \
+     os.path.join(phoenix_utils.current_dir, "log4j.properties") + \
+     " sqlline.SqlLine -d org.apache.phoenix.queryserver.client.Driver " + \
+diff -pruN phoenix-4.5.0-HBase-1.1-bin-orig/bin/sqlline.py phoenix-4.5.0-HBase-1.1-bin/bin/sqlline.py
+--- phoenix-4.5.0-HBase-1.1-bin-orig/bin/sqlline.py	2015-07-22 21:52:31.000000000 -0700
++++ phoenix-4.5.0-HBase-1.1-bin/bin/sqlline.py	2016-08-04 21:43:14.757805000 -0700
+@@ -48,12 +48,46 @@ sqlfile = ""
+ if len(sys.argv) > 2:
+     sqlfile = "--run=" + phoenix_utils.shell_quote([sys.argv[2]])
+ 
++# HBase configuration folder path (where hbase-site.xml reside) for
++# HBase/Phoenix client side property override
++hbase_config_path = os.getenv('HBASE_CONF_DIR', phoenix_utils.current_dir)
++
++java_home = os.getenv('JAVA_HOME')
++
++# load hbase-env.??? to extract JAVA_HOME, HBASE_PID_DIR, HBASE_LOG_DIR
++hbase_env_path = None
++hbase_env_cmd  = None
++if os.name == 'posix':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.sh')
++    hbase_env_cmd = ['bash', '-c', 'source %s && env' % hbase_env_path]
++elif os.name == 'nt':
++    hbase_env_path = os.path.join(hbase_config_path, 'hbase-env.cmd')
++    hbase_env_cmd = ['cmd.exe', '/c', 'call %s & set' % hbase_env_path]
++if not hbase_env_path or not hbase_env_cmd:
++    print >> sys.stderr, "hbase-env file unknown on platform %s" % os.name
++    sys.exit(-1)
++
++hbase_env = {}
++if os.path.isfile(hbase_env_path):
++    p = subprocess.Popen(hbase_env_cmd, stdout = subprocess.PIPE)
++    for x in p.stdout:
++        (k, _, v) = x.partition('=')
++        hbase_env[k.strip()] = v.strip()
++
++if hbase_env.has_key('JAVA_HOME'):
++    java_home = hbase_env['JAVA_HOME']
++
++if java_home:
++    java = os.path.join(java_home, 'bin', 'java')
++else:
++    java = 'java'
++
+ colorSetting = "true"
+ # disable color setting for windows OS
+ if os.name == 'nt':
+     colorSetting = "false"
+ 
+-java_cmd = 'java -cp "' + phoenix_utils.hbase_conf_dir + os.pathsep + phoenix_utils.phoenix_client_jar + os.pathsep + phoenix_utils.hadoop_common_jar + os.pathsep + phoenix_utils.hadoop_hdfs_jar + \
++java_cmd = java + ' -cp "' + phoenix_utils.hbase_conf_dir + os.pathsep + phoenix_utils.phoenix_client_jar + os.pathsep + phoenix_utils.hadoop_common_jar + os.pathsep + phoenix_utils.hadoop_hdfs_jar + \
+     '" -Dlog4j.configuration=file:' + \
+     os.path.join(phoenix_utils.current_dir, "log4j.properties") + \
+     " sqlline.SqlLine -d org.apache.phoenix.jdbc.PhoenixDriver \
