@@ -262,7 +262,7 @@ GenerateHbasePostProcessing () {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-hbaseperformanceeval-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-hbaseperformanceeval*-mr-*"`
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*-mr-*run-hbaseperformanceeval*"`
     if [ -n "${files}" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/mr-FILENAMESEARCHREPLACEKEY/" ${files}
