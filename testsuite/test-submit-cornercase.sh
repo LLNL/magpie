@@ -234,7 +234,8 @@ __SubmitCornerCaseTests_RequireYarn() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requireyarn
-    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-1
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-2
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requireyarn
 }
 

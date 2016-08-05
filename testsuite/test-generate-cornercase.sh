@@ -923,9 +923,13 @@ __GenerateCornerCaseTests_RequireYarn() {
     fi
 
     if [ "${hbasetests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn
-        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="HDFS2"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn
-        sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="\(.*\)"/export HBASE_PERFORMANCEEVAL_MODE="sequential-mr"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-1
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="HDFS2"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-1
+        sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="\(.*\)"/export HBASE_PERFORMANCEEVAL_MODE="sequential-mr"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-2
+        sed -i -e 's/export HADOOP_SETUP_TYPE="\(.*\)"/export HADOOP_SETUP_TYPE="HDFS2"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-2
+        sed -i -e 's/# export HBASE_PERFORMANCEEVAL_MODE="\(.*\)"/export HBASE_PERFORMANCEEVAL_MODE="random-mr"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-2
     fi
 
     if [ "${sparktests}" == "y" ]; then
