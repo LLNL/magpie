@@ -2,6 +2,7 @@
 
 source test-common.sh
 source test-config.sh
+source ../magpie/lib/magpie-lib-helper
 
 GetMinutesJob () {
     local addminutes=$1
@@ -55,6 +56,25 @@ CheckForDependency() {
     then
         echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
         break
+    fi
+}
+
+CheckForHadoopDecomissionMinimum() {
+    local testfunction=$1
+    local project=$2
+    local projectcheck=$3
+    local projectversion=$4
+    local projectminimum=$5
+
+    if echo ${testfunction} | grep -q "requiredecommissionhdfs"
+    then
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${projectversion} ${projectminimum}
+        if [ $? == "2" ]
+        then
+            echo "Cannot generate ${project} tests that depend on ${projectcheck} ${projectversion}, minimum needed for tests is ${projectminimum}"
+            continue
+        fi
     fi
 }
 

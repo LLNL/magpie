@@ -165,7 +165,7 @@ __GenerateHbaseDependencyTests_Dependency1() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-DependencyHbase1A-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
 }
 
-__GenerateHbaseDependencyTests_Dependency2() {
+__GenerateHbaseDependencyTests_Dependency2_requiredecommissionhdfs() {
     local hbaseversion=$1
     local hadoopversion=$2
     local zookeeperversion=$3
@@ -238,7 +238,7 @@ GenerateHbaseDependencyTests() {
 # Dependency 1 Tests, run after another, HDFS over Lustre/NetworkFS
 # Dependency 2 Tests, leave data in HDFS, read/write from different jobs, HDFS over Lustre
 
-    for testfunction in __GenerateHbaseDependencyTests_Dependency1 __GenerateHbaseDependencyTests_Dependency2
+    for testfunction in __GenerateHbaseDependencyTests_Dependency1 __GenerateHbaseDependencyTests_Dependency2_requiredecommissionhdfs
     do
         for testgroup in ${hbase_test_groups}
         do
@@ -246,6 +246,7 @@ GenerateHbaseDependencyTests() {
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
             CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
+            CheckForHadoopDecomissionMinimum ${testfunction} "Hbase" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
             CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
             for testversion in ${!testgroup}
             do

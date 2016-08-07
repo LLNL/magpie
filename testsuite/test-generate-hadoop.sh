@@ -90,7 +90,7 @@ __GenerateHadoopDependencyTests_Dependency1() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-DependencyHadoop1A-hadoop-${hadoopversion}*`
 }
 
-__GenerateHadoopDependencyTests_Dependency2() {
+__GenerateHadoopDependencyTests_Dependency2_requiredecommissionhdfs() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -124,7 +124,7 @@ __GenerateHadoopDependencyTests_Dependency2() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop2A*`
 }
 
-__GenerateHadoopDependencyTests_Dependency3() {
+__GenerateHadoopDependencyTests_Dependency3_requiredecommissionhdfs() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -170,7 +170,7 @@ __GenerateHadoopDependencyTests_Dependency3() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*`
 }
 
-__GenerateHadoopDependencyTests_Dependency4() {
+__GenerateHadoopDependencyTests_Dependency4_requiredecommissionhdfs() {
     local hadoopversion=$1
     local javaversion=$2
 
@@ -344,30 +344,18 @@ GenerateHadoopDependencyTests() {
 # Dependency Tests for Hadoop
 
 # Dependency 1 Tests, run after another
+# Dependency 2 test, increase & decrease size
+# Dependency 3 test, ensure data exists between runs, including increase node size and decrease node size
+# Dependency 4 test, ensure data exists between runs, decommission data filled blocks
 
-    for testfunction in __GenerateHadoopDependencyTests_Dependency1
+    for testfunction in __GenerateHadoopDependencyTests_Dependency1 __GenerateHadoopDependencyTests_Dependency2_requiredecommissionhdfs __GenerateHadoopDependencyTests_Dependency3_requiredecommissionhdfs __GenerateHadoopDependencyTests_Dependency4_requiredecommissionhdfs
     do
         for testgroup in ${hadoop_test_groups}
         do
             local javaversion="${testgroup}_javaversion"
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${testversion} ${!javaversion}
-            done
-        done
-    done
-
-# Dependency 2 test, increase & decrease size
-# Dependency 3 test, ensure data exists between runs, including increase node size and decrease node size
-# Dependency 4 test, ensure data exists between runs, decommission data filled blocks
-
-    for testfunction in __GenerateHadoopDependencyTests_Dependency2 __GenerateHadoopDependencyTests_Dependency3 __GenerateHadoopDependencyTests_Dependency4
-    do
-        for testgroup in ${hadoop_test_groups_decommission}
-        do
-            local javaversion="${testgroup}_javaversion"
-            for testversion in ${!testgroup}
-            do
+                CheckForHadoopDecomissionMinimum ${testfunction} "Hadoop" "Hadoop" ${testversion} ${hadoop_decomissionhdfs_minimum}
                 ${testfunction} ${testversion} ${!javaversion}
             done
         done

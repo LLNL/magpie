@@ -311,29 +311,22 @@ GenerateSparkStandardTests() {
     done
 }
 
-__GenerateSparkDependencyTests_Dependency1HDFS() {
+__GenerateSparkDependencyTests_Dependency1HDFS_requiredecommissionhdfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
-    local decommission=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-no-copy
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
-    if [ "${decommission}" == "y" ]
-    then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
-    fi
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-run-sparkwordcount-no-copy
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
-    if [ "${decommission}" == "y" ]
-    then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
-    fi
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
 
     sed -i \
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
@@ -378,7 +371,7 @@ __GenerateSparkDependencyTests_Dependency1HDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency2HDFS() {
+__GenerateSparkDependencyTests_Dependency2HDFS_requiredecommissionhdfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -387,20 +380,14 @@ __GenerateSparkDependencyTests_Dependency2HDFS() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-no-copy
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsoverlustre-expected-failure
-    if [ "${decommission}" == "y" ]
-    then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
-    fi
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-decommissionhdfsnodes
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-run-sparkwordcount-no-copy
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-fewer-nodes-hdfsovernetworkfs-expected-failure
-    if [ "${decommission}" == "y" ]
-    then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
-    fi
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsovernetworkfs-decommissionhdfsnodes
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsovernetworkfs-run-sparkwordcount-no-copy
 
     sed -i \
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
@@ -445,7 +432,7 @@ __GenerateSparkDependencyTests_Dependency2HDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency3YarnHDFS() {
+__GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -502,7 +489,7 @@ __GenerateSparkDependencyTests_Dependency3YarnHDFS() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency4YarnHDFS() {
+__GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -684,25 +671,14 @@ GenerateSparkDependencyTests() {
 # Dependency 1 Tests, run after another, HDFS over Lustre/Networkfs
 # Dependency 2 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs
 
-    for testfunction in __GenerateSparkDependencyTests_Dependency1HDFS __GenerateSparkDependencyTests_Dependency2HDFS
+    for testfunction in __GenerateSparkDependencyTests_Dependency1HDFS_requiredecommissionhdfs __GenerateSparkDependencyTests_Dependency2HDFS_requiredecommissionhdfs
     do
-# No decommissionhdfsnodes for Hadoop 2.2.0
-        for testgroup in ${spark_test_groups_before_1X}
+        for testgroup in ${spark_test_groups}
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
             CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
-            for testversion in ${!testgroup}
-            do
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "n"
-            done
-        done
-
-        for testgroup in ${spark_test_groups_after_1X}
-        do
-            local hadoopversion="${testgroup}_hadoopversion"
-            local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "y"
@@ -713,13 +689,14 @@ GenerateSparkDependencyTests() {
 # Dependency 3 Tests, run after another, HDFS over Lustre/Networkfs w/ Yarn 
 # Dependency 4 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs w/ Yarn
 
-    for testfunction in __GenerateSparkDependencyTests_Dependency3YarnHDFS __GenerateSparkDependencyTests_Dependency4YarnHDFS
+    for testfunction in __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs __GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs
     do
         for testgroup in ${spark_test_groups_after_1X}
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
             CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
@@ -732,16 +709,7 @@ GenerateSparkDependencyTests() {
 
     for testfunction in __GenerateSparkDependencyTests_Dependency5rawnetworkfs __GenerateSparkDependencyTests_Dependency6rawnetworkfs
     do
-        for testgroup in ${spark_test_groups_before_1X}
-        do
-            local javaversion="${testgroup}_javaversion"
-            for testversion in ${!testgroup}
-            do
-                ${testfunction} ${testversion} ${!javaversion}
-            done
-        done
-        
-        for testgroup in ${spark_test_groups_after_1X}
+        for testgroup in ${spark_test_groups}
         do
             local javaversion="${testgroup}_javaversion"
             for testversion in ${!testgroup}

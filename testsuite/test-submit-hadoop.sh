@@ -150,20 +150,9 @@ __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS() {
 }
 
 SubmitHadoopDependencyTests() {
-    for testfunction in __SubmitHadoopDependencyTests_Dependency1
+    for testfunction in __SubmitHadoopDependencyTests_Dependency1 __SubmitHadoopDependencyTests_Dependency2 __SubmitHadoopDependencyTests_Dependency3 __SubmitHadoopDependencyTests_Dependency4
     do
         for testgroup in ${hadoop_test_groups}
-        do
-            for testversion in ${!testgroup}
-            do
-                ${testfunction} ${testversion}
-            done
-        done
-    done
-
-    for testfunction in __SubmitHadoopDependencyTests_Dependency2 __SubmitHadoopDependencyTests_Dependency3 __SubmitHadoopDependencyTests_Dependency4
-    do
-        for testgroup in ${hadoop_test_groups_decommission}
         do
             for testversion in ${!testgroup}
             do
