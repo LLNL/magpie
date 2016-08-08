@@ -40,3 +40,13 @@ Magpie_get_spark_major_minor_version() {
 
     magpie_sparkmajorminorversion="$sparkmajor.$sparkminor"
 }
+
+Magpie_get_storm_major_minor_version() {
+    local stormversion=$1
+
+    # Get only the major and minor version, we don't care about the release                                                               
+    stormmajor=`echo ${stormversion} | cut -d. -f1`
+    stormminor=`echo ${stormversion} | cut -d. -f2`
+    
+    magpie_stormmajorminorversion="$stormmajor.$stormminor"
+}

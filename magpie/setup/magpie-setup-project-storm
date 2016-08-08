@@ -37,6 +37,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-version-helper
 
 # stormnoderank set if succeed
 if ! Magpie_am_I_a_storm_node
@@ -215,16 +216,12 @@ then
     echo "export STORM_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_stormdaemonenvsh}
 fi
 
-# Get only the major and minor version, we don't care about the release
-
-stormmajor=`echo ${STORM_VERSION} | cut -d. -f1`
-stormminor=`echo ${STORM_VERSION} | cut -d. -f2`
-
-stormtestversion="$stormmajor.$stormminor"
+# Sets magpie_stormmajorminorversion
+Magpie_get_storm_major_minor_version ${STORM_VERSION}
 
 # Handle special settings depending on version
 # 0 is =, 1 is >, 2 is <
-Magpie_vercomp ${stormtestversion} 1.0
+Magpie_vercomp ${magpie_stormmajorminorversion} 1.0
 vercomp_result=$?
 if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
 then
