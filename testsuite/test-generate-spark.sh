@@ -4,26 +4,16 @@ source test-generate-common.sh
 source test-common.sh
 source test-config.sh
 source ../magpie/lib/magpie-lib-helper
-
-__GetSparkVersionToCheck() {
-    local projectversion=$1
-
-    # Remove lingering "-bin-hadoop2.4" and similar text"
-    local sparktestversion=`echo ${projectversion} | cut -f1 -d"-"`
-    local sparkmajor=`echo $sparktestversion | cut -d. -f1`
-    local sparkminor=`echo $sparktestversion | cut -d. -f2`
-    local sparktestversion="$sparkmajor.$sparkminor"
-
-    test_generate_spark_sparkversiontest=${sparktestversion}
-}
+source ../magpie/lib/magpie-lib-version-helper
 
 __CheckForSparkNoLocalDirMinimum() {
     local projectversion=$1
 
-    __GetSparkVersionToCheck ${projectversion}
+    # Sets magpie_sparkmajorminorversion
+    Magpie_get_spark_major_minor_version ${projectversion}
 
     # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-    Magpie_vercomp ${test_generate_spark_sparkversiontest} "1.2"
+    Magpie_vercomp ${magpie_sparkmajorminorversion} "1.2"
     if [ $? == "2" ]
     then
         echo "Cannot generate Spark tests for ${projectversion}, No Local Dir not supported in that version"
@@ -37,12 +27,13 @@ __CheckForSparkYarnMinimum() {
     local testfunction=$1
     local projectversion=$2
 
-    __GetSparkVersionToCheck ${projectversion}
+    # Sets magpie_sparkmajorminorversion
+    Magpie_get_spark_major_minor_version ${projectversion}
 
     if echo ${testfunction} | grep -q "requireyarn"
     then
         # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${projectversion} "1.2"
+        Magpie_vercomp ${magpie_sparkmajorminorversion} "1.2"
         if [ $? == "2" ]
         then
             echo "Cannot generate Spark ${projectversion} tests, it depends on Yarn, Spark minimum needed for tests is 1.2.0"

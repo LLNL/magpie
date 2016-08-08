@@ -39,6 +39,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-version-helper
 
 # sparknoderank set if succeed
 if ! Magpie_am_I_a_spark_node
@@ -645,20 +646,12 @@ then
 	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \
         ${post_sparkdefaultsconf}
     
-    # Remove lingering "-bin-hadoop2.4" and similar text"
-
-    sparktestversion=`echo $SPARK_VERSION | cut -f1 -d"-"`
-
-    # Get only the major and minor version, we don't care about the release
-
-    sparkmajor=`echo $sparktestversion | cut -d. -f1`
-    sparkminor=`echo $sparktestversion | cut -d. -f2`
-
-    sparktestversion="$sparkmajor.$sparkminor"
-
+    # Sets magpie_sparkmajorminorversion
+    Magpie_get_spark_major_minor_version ${SPARK_VERSION}
+    
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
-    Magpie_vercomp ${sparktestversion} 1.3
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 1.3
     vercomp_result=$?
     if [ "${vercomp_result}" == "1" ]
     then
@@ -669,7 +662,7 @@ then
 
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
-    Magpie_vercomp ${sparktestversion} 1.5
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 1.5
     vercomp_result=$?
     if [ "${vercomp_result}" == "1" ]
     then
@@ -682,7 +675,7 @@ then
     
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
-    Magpie_vercomp ${sparktestversion} 2.0
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 2.0
     vercomp_result=$?
     if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
     then
@@ -699,7 +692,7 @@ then
 
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
-    Magpie_vercomp ${sparktestversion} 1.5
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 1.5
     vercomp_result=$?
     # Comment out a few lines we don't need if using Yarn
     if [ "${SPARK_USE_YARN}" == "yes" ] && [ "${vercomp_result}" != "1" ]
