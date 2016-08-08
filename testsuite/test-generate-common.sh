@@ -72,7 +72,7 @@ CheckForHadoopDecomissionMinimum() {
         Magpie_vercomp ${projectversion} ${projectminimum}
         if [ $? == "2" ]
         then
-            echo "Cannot generate ${project} tests that depend on ${projectcheck} ${projectversion}, minimum needed for tests is ${projectminimum}"
+            #echo "Cannot generate ${project} tests that depend on ${projectcheck} ${projectversion}, minimum needed for tests is ${projectminimum}"
             continue
         fi
     fi

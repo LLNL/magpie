@@ -16,7 +16,7 @@ __CheckForSparkNoLocalDirMinimum() {
     Magpie_vercomp ${magpie_sparkmajorminorversion} "1.2"
     if [ $? == "2" ]
     then
-        echo "Cannot generate Spark tests for ${projectversion}, No Local Dir not supported in that version"
+        #echo "Cannot generate Spark tests for ${projectversion}, No Local Dir not supported in that version"
         return 1
     fi
 
@@ -36,7 +36,7 @@ __CheckForSparkYarnMinimum() {
         Magpie_vercomp ${magpie_sparkmajorminorversion} "1.2"
         if [ $? == "2" ]
         then
-            echo "Cannot generate Spark ${projectversion} tests, it depends on Yarn, Spark minimum needed for tests is 1.2.0"
+            #echo "Cannot generate Spark ${projectversion} tests, it depends on Yarn, Spark minimum needed for tests is 1.2.0"
             continue
         fi
     fi
