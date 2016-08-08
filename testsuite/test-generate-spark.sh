@@ -45,7 +45,7 @@ __CheckForSparkYarnMinimum() {
         Magpie_vercomp ${projectversion} "1.2"
         if [ $? == "2" ]
         then
-            echo "Cannot generate Spark tests that depend on Yarn, Spark minimum needed for tests is ${projectminimum}"
+            echo "Cannot generate Spark ${projectversion} tests, it depends on Yarn, Spark minimum needed for tests is 1.2.0"
             continue
         fi
     fi
