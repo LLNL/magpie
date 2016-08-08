@@ -74,8 +74,6 @@ spark2Xjava17hadoop27versions_hadoopversion="2.7.0"
 spark2Xjava17hadoop27versions_javaversion=${java17}
 
 spark_test_groups="spark0Xjava16hadoop2versions spark1Xjava16hadoop24versions spark1Xjava17hadoop26versions spark2Xjava17hadoop26versions spark2Xjava17hadoop27versions"
-spark_test_groups_before_1X="spark0Xjava16hadoop2versions"
-spark_test_groups_after_1X="spark1Xjava16hadoop24versions spark1Xjava17hadoop26versions spark2Xjava17hadoop26versions spark2Xjava17hadoop27versions"
 spark_all_versions="${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions} ${spark1Xjava17hadoop26versions} ${spark2Xjava17hadoop26versions} ${spark2Xjava17hadoop27versions}"
 
 stormzookeeper34java16versions="0.9.3 0.9.4"

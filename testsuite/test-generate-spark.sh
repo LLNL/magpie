@@ -3,15 +3,61 @@
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
+source ../magpie/lib/magpie-lib-helper
+
+__GetSparkVersionToCheck() {
+    local projectversion=$1
+
+    # Remove lingering "-bin-hadoop2.4" and similar text"
+    local sparktestversion=`echo ${projectversion} | cut -f1 -d"-"`
+    local sparkmajor=`echo $sparktestversion | cut -d. -f1`
+    local sparkminor=`echo $sparktestversion | cut -d. -f2`
+    local sparktestversion="$sparkmajor.$sparkminor"
+
+    test_generate_spark_sparkversiontest=${sparktestversion}
+}
+
+__CheckForSparkNoLocalDirMinimum() {
+    local projectversion=$1
+
+    __GetSparkVersionToCheck ${projectversion}
+
+    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+    Magpie_vercomp ${test_generate_spark_sparkversiontest} "1.2"
+    if [ $? == "2" ]
+    then
+        echo "Cannot generate Spark tests for ${projectversion}, No Local Dir not supported in that version"
+        return 1
+    fi
+
+    return 0
+}
+
+__CheckForSparkYarnMinimum() {
+    local testfunction=$1
+    local projectversion=$2
+
+    __GetSparkVersionToCheck ${projectversion}
+
+    if echo ${testfunction} | grep -q "requireyarn"
+    then
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${projectversion} "1.2"
+        if [ $? == "2" ]
+        then
+            echo "Cannot generate Spark tests that depend on Yarn, Spark minimum needed for tests is ${projectminimum}"
+            continue
+        fi
+    fi
+}
 
 __GenerateSparkStandardTests_BasicTests() {
     local sparkversion=$1
     local javaversion=$2
-    local makenolocaldirtests=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
 
-    if [ "${makenolocaldirtests}" == "y" ]
+    if __CheckForSparkNoLocalDirMinimum ${sparkversion}
     then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi-no-local-dir
     fi
@@ -25,7 +71,6 @@ __GenerateSparkStandardTests_WordCount() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
-    local makenolocaldirtests=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -40,7 +85,7 @@ __GenerateSparkStandardTests_WordCount() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-localscratch-multiple-paths-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}-localscratch-multiple-paths-run-sparkwordcount
 
-    if [ "${makenolocaldirtests}" == "y" ]
+    if __CheckForSparkNoLocalDirMinimum ${sparkversion}
     then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in-no-local-dir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in-no-local-dir
@@ -120,7 +165,7 @@ __GenerateSparkStandardTests_WordCount() {
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*`
 }
 
-__GenerateSparkStandardTests_YarnTests() {
+__GenerateSparkStandardTests_YarnTests_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -141,7 +186,7 @@ __GenerateSparkStandardTests_YarnTests() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkpi*`
 }
 
-__GenerateSparkStandardTests_YarnWordCount() {
+__GenerateSparkStandardTests_YarnWordCount_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -252,59 +297,26 @@ GenerateSparkStandardTests() {
 
     for testfunction in __GenerateSparkStandardTests_BasicTests
     do
-        for testgroup in ${spark_test_groups_before_1X}
+        for testgroup in ${spark_test_groups}
         do
             local javaversion="${testgroup}_javaversion"
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${testversion} ${!javaversion} "n"
-            done
-        done
-
-        for testgroup in ${spark_test_groups_after_1X}
-        do
-            local javaversion="${testgroup}_javaversion"
-            for testversion in ${!testgroup}
-            do
-                ${testfunction} ${testversion} ${!javaversion} "y"
+                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
             done
         done
     done
 
-    for testfunction in __GenerateSparkStandardTests_WordCount
+    for testfunction in __GenerateSparkStandardTests_WordCount __GenerateSparkStandardTests_YarnTests_requireyarn __GenerateSparkStandardTests_YarnWordCount_requireyarn
     do
-        for testgroup in ${spark_test_groups_before_1X}
+        for testgroup in ${spark_test_groups}
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
             CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "n"
-            done
-        done
-
-        for testgroup in ${spark_test_groups_after_1X}
-        do
-            local hadoopversion="${testgroup}_hadoopversion"
-            local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
-            for testversion in ${!testgroup}
-            do
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} "y"
-            done
-        done
-    done
-
-    for testfunction in __GenerateSparkStandardTests_YarnTests __GenerateSparkStandardTests_YarnWordCount
-    do
-        for testgroup in ${spark_test_groups_after_1X}
-        do
-            local hadoopversion="${testgroup}_hadoopversion"
-            local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
-            for testversion in ${!testgroup}
-            do
+                __CheckForSparkYarnMinimum ${testfunction} ${testversion}
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
             done
         done
@@ -432,7 +444,7 @@ __GenerateSparkDependencyTests_Dependency2HDFS_requiredecommissionhdfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs() {
+__GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -489,7 +501,7 @@ __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs() {
+__GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -596,7 +608,7 @@ __GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
+__GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -629,7 +641,7 @@ __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs() {
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 }
 
-__GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs() {
+__GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
@@ -689,9 +701,9 @@ GenerateSparkDependencyTests() {
 # Dependency 3 Tests, run after another, HDFS over Lustre/Networkfs w/ Yarn 
 # Dependency 4 Tests, run after another, start with more nodes, HDFS over Lustre/Networkfs w/ Yarn
 
-    for testfunction in __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs __GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs
+    for testfunction in __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs_requireyarn __GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs_requireyarn
     do
-        for testgroup in ${spark_test_groups_after_1X}
+        for testgroup in ${spark_test_groups}
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
@@ -699,6 +711,7 @@ GenerateSparkDependencyTests() {
             CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
             for testversion in ${!testgroup}
             do
+                __CheckForSparkYarnMinimum ${testfunction} ${testversion}
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
             done
         done
@@ -722,15 +735,16 @@ GenerateSparkDependencyTests() {
 # Dependency 7 Tests, run after another, rawnetworkfs w/ Yarn
 # Dependency 8 Tests, run after another, start with more nodes, rawnetworkfs w/ Yarn
 
-    for testfunction in __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs
+    for testfunction in __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn
     do
-        for testgroup in ${spark_test_groups_after_1X}
+        for testgroup in ${spark_test_groups}
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
             CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
             for testversion in ${!testgroup}
             do
+                __CheckForSparkYarnMinimum ${testfunction} ${testversion}
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
             done
         done
