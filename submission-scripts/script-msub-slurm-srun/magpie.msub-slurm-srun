@@ -1867,6 +1867,10 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 #
 # "server" - setup the server
 #
+# "interactive" - manually interact with Zeppelin.  In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and interact with Zeppelin directly.
+#
 # "setuponly" - Like 'server' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
