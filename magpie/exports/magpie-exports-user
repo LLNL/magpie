@@ -140,6 +140,7 @@ then
     fi
 
     export ZEPPELIN_MASTER_NODE=`head -1 ${ZEPPELIN_CONF_DIR}/masters`
+    export ZEPPELIN_SERVER_PORT=${default_zeppelin_port}
 fi
 
 if [ "${STORM_SETUP}" == "yes" ]
