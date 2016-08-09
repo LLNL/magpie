@@ -620,12 +620,11 @@ define create-spark-with-zeppelin
 		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_ZEPPELIN})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_ZEPPELIN}, spark)
-	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"zeppelin\"/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR=/export SPARK_LOCAL_SCRATCH_DIR=/g" $(MAGPIE_SPARK_WITH_ZEPPELIN)
-	sed -i -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="interactive"/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	sed -i -e 's/export ZEPPELIN_SETUP=no/export ZEPPELIN_SETUP=yes/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
-	sed -i -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="server"/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
+	sed -i -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="interactive"/' $(MAGPIE_SPARK_WITH_ZEPPELIN)
 endef
 
 define create-storm
