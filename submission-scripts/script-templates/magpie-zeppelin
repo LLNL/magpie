@@ -24,7 +24,7 @@ export ZEPPELIN_VERSION="ZEPPELINVERSIONDEFAULT"
 #
 # Ensure the build matches the hbase version this will run against.
 #
-export ZEPPELIN_HOME="ZEPPELINDIRPREFIX/zeppelin-${ZEPPELIN_VERSION}-incubating-bin-all"
+export ZEPPELIN_HOME="ZEPPELINDIRPREFIX/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 
 # Directory where alternate Zeppelin configuration templates are stored
 #

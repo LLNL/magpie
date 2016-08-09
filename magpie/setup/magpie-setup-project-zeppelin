@@ -91,7 +91,7 @@ for j in `ls $SPARK_HOME/lib`
 do
     zeppelin_jars="$SPARK_HOME/lib/$j,$zeppelin_jars"
 done
-zeppelin_jars="${zeppelin_jars},${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}-incubating.jar"
+zeppelin_jars="${zeppelin_jars},${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}.jar"
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then

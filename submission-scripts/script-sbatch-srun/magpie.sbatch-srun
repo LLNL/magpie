@@ -1829,7 +1829,7 @@ export ZEPPELIN_SETUP=no
 
 # Zeppelin Version
 #
-export ZEPPELIN_VERSION="0.5.6"
+export ZEPPELIN_VERSION="0.5.6-incubating"
 
 # Path to your Zeppelin build/binaries
 #
@@ -1838,7 +1838,7 @@ export ZEPPELIN_VERSION="0.5.6"
 #
 # Ensure the build matches the hbase version this will run against.
 #
-export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-incubating-bin-all"
+export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 
 # Directory where alternate Zeppelin configuration templates are stored
 #
