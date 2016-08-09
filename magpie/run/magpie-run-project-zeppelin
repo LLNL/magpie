@@ -131,8 +131,10 @@ Magpie_run_start_zeppelin () {
             if echo $MAGPIE_SHELL | grep -q csh
             then
                 echo "setenv ZEPPELIN_HOME \"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZEPPELIN_MASTER_NODE \"${ZEPPELIN_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             else
                 echo "export ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZEPPELIN_MASTER_NODE=\"${ZEPPELIN_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             fi
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
