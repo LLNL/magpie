@@ -108,7 +108,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #                 Hadoop/Hbase/Spark/etc. and are experimenting with
 #                 things.
 #
-export MAGPIE_JOB_TYPE="spark"
+export MAGPIE_JOB_TYPE="zeppelin"
 
 # Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
 #
@@ -385,7 +385,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # "setuponly" - Like 'interactive' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-export SPARK_MODE="interactive"
+export SPARK_MODE="sparkpi"
 
 # SPARK_DEFAULT_PARALLELISM
 #
@@ -709,7 +709,7 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 # "setuponly" - Like 'server' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-export ZEPPELIN_MODE="server"
+export ZEPPELIN_MODE="interactive"
 
 # Path to the root scala dir
 #
