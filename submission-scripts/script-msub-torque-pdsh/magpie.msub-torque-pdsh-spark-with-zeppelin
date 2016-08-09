@@ -698,6 +698,10 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 #
 # "server" - setup the server
 #
+# "interactive" - manually interact with Zeppelin.  In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and interact with Zeppelin directly.
+#
 # "setuponly" - Like 'server' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
@@ -720,7 +724,7 @@ export ZEPPELIN_MODE="server"
 # Spark has available, this can be changed by adjusting Spark submit options.
 # e.g. --total-executor-cores 20 --executor-memory 16G
 #
-# ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
+# export ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
 
 ############################################################################
 # Run Job
