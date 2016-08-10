@@ -14,6 +14,7 @@ source test-generate-pig.sh
 source test-generate-spark.sh
 source test-generate-storm.sh
 source test-generate-zookeeper.sh
+source test-generate-zeppelin.sh
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
@@ -41,6 +42,7 @@ sparktests=y
 stormtests=y
 kafkatests=y
 zookeepertests=y
+zeppelintests=y
 
 # Sections to test
 # - version tests, test permutation of versions 
@@ -57,6 +59,7 @@ sparkversiontests=y
 stormversiontests=y
 kafkaversiontests=y
 zookeeperversiontests=y
+zeppelinversiontests=y
 
 # Add or eliminate certain types of tests
 #
@@ -201,6 +204,8 @@ zookeeper_3_4_5=y
 zookeeper_3_4_6=y
 zookeeper_3_4_7=y
 zookeeper_3_4_8=y
+zeppelin_0_5_6_incubating=y
+zeppelin_0_6_0=y
 
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
@@ -429,6 +434,11 @@ if [ "${zookeepertests}" == "y" ] && [ "${zookeeperversiontests}" == "y" ]; then
         GenerateZookeeperStandardTests
     fi
 fi
+if [ "${zeppelintests}" == "y" ] && [ "${zeppelinversiontests}" == "y" ]; then
+    if ["${standardtests}" == "y" ]; then
+        GenerateZeppelinStandardTests
+    fi
+fi
 
 # Remove any tests we don't want
 
@@ -467,14 +477,14 @@ then
     rm -f magpie.${submissiontype}*no-local-dir*
 fi
 
-for project in hadoop pig mahout hbase phoenix spark storm kafka zookeeper
+for project in hadoop pig mahout hbase phoenix spark storm kafka zookeeper zeppelin
 do
     versionsvariable="${project}_all_versions"
     for version in ${!versionsvariable}
     do
         RemoveTestsCheck ${project} ${version}
     done
-done    
+done
 
 # No if checks, may process files created outside of these files
 # e.g. like functionality tests of default tests
@@ -487,6 +497,7 @@ GenerateSparkPostProcessing
 GenerateStormPostProcessing
 GenerateKafkaPostProcessing
 GenerateZookeeperPostProcessing
+GenerateZeppelinPostProcessing
 
 # Seds for all tests
 
@@ -530,20 +541,20 @@ then
     then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
-        
+
         sed -i -e "s/<my partition>/${sbatchsrunpartition}/" ${files}
     elif [ "${submissiontype}" == "msub-slurm-srun" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
-        
+
         sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" ${files}
         sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" ${files}
     elif [ "${submissiontype}" == "lsf-mpirun" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" ${files}
-        
+
         sed -i -e "s/<my queue>/${lsfqueue}/" ${files}
     fi
 fi

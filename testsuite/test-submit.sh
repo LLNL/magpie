@@ -12,6 +12,7 @@ source test-submit-pig.sh
 source test-submit-spark.sh
 source test-submit-storm.sh
 source test-submit-zookeeper.sh
+source test-submit-zeppelin.sh
 source test-config.sh
 
 # How to submit
@@ -160,3 +161,5 @@ SubmitKafkaStandardTests
 SubmitKafkaDependencyTests
 
 SubmitZookeeperStandardTests
+
+SubmitZeppelinStandardTests

@@ -488,7 +488,7 @@ fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
-    zeppelin_jars="${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}-incubating.jar"
+    zeppelin_jars="${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}.jar"
     zeppelin_jars="${zeppelin_jars}:${ZEPPELIN_HOME}/lib/*"
     if [ "${sparkclasspath}X" != "X" ]
     then
