@@ -10,21 +10,19 @@ __GenerateZeppelinStandardTests_BasicTests() {
     local zeppelinversion=$3
     local zeppelinhome=$4
 
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 
-    sed -i -e 's|export MAGPIE_JOB_TYPE="\(.*\)"|export MAGPIE_JOB_TYPE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    sed -i -e 's|export MAGPIE_JOB_TYPE="\(.*\)"|export MAGPIE_JOB_TYPE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 
-    sed -i -e 's|export SPARK_VERSION="\(.*\)"|export SPARK_VERSION="'"${sparkversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    sed -i -e 's|export SPARK_VERSION="\(.*\)"|export SPARK_VERSION="'"${sparkversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 
-    sed -i -e 's|export SPARK_MODE="\(.*\)"|export SPARK_MODE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    sed -i -e 's|export SPARK_MODE="\(.*\)"|export SPARK_MODE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 
-    sed -i -e 's|# export SPARK_SCRIPT_PATH="\(.*\)"|export SPARK_SCRIPT_PATH="testscripts/test-zeppelin.py"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    sed -i -e 's|# export MAGPIE_SCRIPT_PATH="\(.*\)"|export MAGPIE_SCRIPT_PATH="testscripts/test-zeppelin.py"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 
-    sed -i -e 's|export ZEPPELIN_VERSION="\(.*\)"|export ZEPPELIN_VERSION="'"${zeppelinversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    sed -i -e 's|export ZEPPELIN_VERSION="\(.*\)"|export ZEPPELIN_VERSION="'"${zeppelinversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 
-    sed -i -e 's|export ZEPPELIN_HOME="\(.*\)"|export ZEPPELIN_HOME="'"${zeppelinhome}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
-
-    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}`
+    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}`
 
 }
 

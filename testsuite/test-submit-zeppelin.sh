@@ -7,7 +7,7 @@ __SubmitZeppelinStandardTests_BasicTests() {
     local zeppelinversion=$1
     local sparkversion=$1
 
-    BasicJobsubmit magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-${sparkversion}
+    BasicJobsubmit magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
 }
 
 SubmitZeppelinStandardTests() {
