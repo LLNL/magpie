@@ -14,6 +14,7 @@ source test-generate-pig.sh
 source test-generate-spark.sh
 source test-generate-storm.sh
 source test-generate-zookeeper.sh
+source test-generate-zeppelin.sh
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
@@ -41,6 +42,7 @@ sparktests=y
 stormtests=y
 kafkatests=y
 zookeepertests=y
+zeppelintests=y
 
 # Sections to test
 # - version tests, test permutation of versions 
@@ -57,6 +59,7 @@ sparkversiontests=y
 stormversiontests=y
 kafkaversiontests=y
 zookeeperversiontests=y
+zeppelinversiontests=y
 
 # Add or eliminate certain types of tests
 #
@@ -176,6 +179,8 @@ storm_0_10_1=y
 storm_1_0_0=y
 storm_1_0_1=y
 kafka_2_11_0_9_0_0=y
+zeppelin_0_5_6=y
+zeppelin_0_6_0=y
 zookeeper_3_4_0=y
 zookeeper_3_4_1=y
 zookeeper_3_4_2=y
@@ -408,6 +413,11 @@ if [ "${kafkatests}" == "y" ] && [ "${kafkaversiontests}" == "y" ]; then
         GenerateKafkaDependencyTests
     fi
 fi
+if [ "${zeppelintests}" == "y" ] && [ "${zeppelinversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+        GenerateZeppelinStandardTests
+    fi
+fi
 if [ "${zookeepertests}" == "y" ] && [ "${zookeeperversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
         GenerateZookeeperStandardTests
@@ -451,7 +461,7 @@ then
     rm -f magpie.${submissiontype}*no-local-dir*
 fi
 
-for project in hadoop pig mahout hbase phoenix spark storm kafka zookeeper
+for project in hadoop pig mahout hbase phoenix spark storm kafka zookeeper zeppelin
 do
     versionsvariable="${project}_all_versions"
     for version in ${!versionsvariable}
@@ -471,6 +481,7 @@ GenerateSparkPostProcessing
 GenerateStormPostProcessing
 GenerateKafkaPostProcessing
 GenerateZookeeperPostProcessing
+GenerateZeppelinPostProcessing
 
 # Seds for all tests
 

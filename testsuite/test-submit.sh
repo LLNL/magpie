@@ -11,6 +11,7 @@ source test-submit-phoenix.sh
 source test-submit-pig.sh
 source test-submit-spark.sh
 source test-submit-storm.sh
+source test-submit-zeppelin.sh
 source test-submit-zookeeper.sh
 source test-config.sh
 
@@ -158,5 +159,7 @@ SubmitStormDependencyTests
 
 SubmitKafkaStandardTests
 SubmitKafkaDependencyTests
+
+SubmitZeppelinStandardTests
 
 SubmitZookeeperStandardTests
