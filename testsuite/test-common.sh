@@ -96,3 +96,13 @@ zookeeperjava17versions_javaversion=${java17}
 
 zookeeper_test_groups="zookeeperjava17versions"
 zookeeper_all_versions="${zookeeperjava17versions}"
+
+zeppelinspark15versions="0.5.6-incubating"
+zeppelinspark15versions_sparkversion="1.5.2-bin-hadoop2.6"
+zeppelinspark15versions_javaversion="${java17}"
+zeppelinspark16versions="0.6.0"
+zeppelinspark16versions_sparkversion="1.6.1-bin-hadoop2.6"
+zeppelinspark16versions_javaversion="${java17}"
+
+zeppelin_test_groups="zeppelinspark15versions zeppelinspark16versions"
+zeppelin_all_versions="${zeppelinspark15versions} ${zeppelinspark16versions}"
