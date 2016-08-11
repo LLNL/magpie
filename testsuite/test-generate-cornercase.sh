@@ -63,6 +63,12 @@ __GenerateCornerCaseTests_CatchProjectDependencies() {
         sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-storm-cornercase-catchprojectdependency-zookeeper
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-catchprojectdependency-spark
+
+        sed -i -e 's/export SPARK_SETUP=\(.*\)/export SPARK_SETUP=no/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-catchprojectdependency-spark
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-catchprojectdependency*"`
     if [ -n "${files}" ]
     then
@@ -99,6 +105,10 @@ __GenerateCornerCaseTests_NoSetJava() {
 
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-nosetjava
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetjava
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetjava*"`
@@ -138,6 +148,10 @@ __GenerateCornerCaseTests_BadSetJava() {
 
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badsetjava
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsetjava
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsetjava*"`
@@ -194,6 +208,11 @@ __GenerateCornerCaseTests_NoSetVersion() {
         sed -i -e 's/export ZOOKEEPER_VERSION/# export ZOOKEEPER_VERSION/' magpie.${submissiontype}-zookeeper-cornercase-nosetversion
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetversion
+        sed -i -e 's/export ZEPPELIN_VERSION/# export ZEPPELIN_VERSION/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetversion
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetversion*"`
     if [ -n "${files}" ]
     then
@@ -245,6 +264,11 @@ __GenerateCornerCaseTests_NoSetHome() {
     if [ "${zookeepertests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nosethome
         sed -i -e 's/export ZOOKEEPER_HOME/# export ZOOKEEPER_HOME/' magpie.${submissiontype}-zookeeper-cornercase-nosethome
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosethome
+        sed -i -e 's/export ZEPPELIN_HOME/# export ZEPPELIN_HOME/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosethome
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosethome*"`
@@ -300,6 +324,11 @@ __GenerateCornerCaseTests_BadSetHome() {
         sed -i -e 's/export ZOOKEEPER_HOME="\(.*\)"/export ZOOKEEPER_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-zookeeper-cornercase-badsethome
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsethome
+        sed -i -e 's/export ZEPPELIN_HOME="\(.*\)"/export ZEPPELIN_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsethome
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsethome*"`
     if [ -n "${files}" ]
     then
@@ -353,6 +382,11 @@ __GenerateCornerCaseTests_NoSetLocalDir() {
         sed -i -e 's/export ZOOKEEPER_LOCAL_DIR/# export ZOOKEEPER_LOCAL_DIR/' magpie.${submissiontype}-zookeeper-cornercase-nosetlocaldir
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetlocaldir
+        sed -i -e 's/export ZEPPELIN_LOCAL_DIR/# export ZEPPELIN_LOCAL_DIR/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetlocaldir
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetlocaldir*"`
     if [ -n "${files}" ]
     then
@@ -404,6 +438,11 @@ __GenerateCornerCaseTests_BadSetLocalDir() {
     if [ "${zookeepertests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
         sed -i -e 's/export ZOOKEEPER_LOCAL_DIR="\(.*\)"/export ZOOKEEPER_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-zookeeper-cornercase-badlocaldir
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badlocaldir
+        sed -i -e 's/export ZEPPELIN_LOCAL_DIR="\(.*\)"/export ZEPPELIN_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badlocaldir
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badlocaldir*"`
@@ -567,6 +606,10 @@ __GenerateCornerCaseTests_BadJobTime() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badjobtime
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badjobtime*"`
     if [ -n "${files}" ]
     then
@@ -609,6 +652,10 @@ __GenerateCornerCaseTests_BadStartupTime() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badstartuptime
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badstartuptime
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badstartuptime*"`
     if [ -n "${files}" ]
     then
@@ -647,6 +694,10 @@ __GenerateCornerCaseTests_BadShutdownTime() {
 
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badshutdowntime
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badshutdowntime
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badshutdowntime*"`
@@ -689,6 +740,10 @@ __GenerateCornerCaseTests_BadNodeCount() {
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badnodecount-small
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-cornercase-badnodecount-big
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badnodecount-small
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badnodecount-small*"`
@@ -773,6 +828,11 @@ __GenerateCornerCaseTests_NoCoreSettings() {
         sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE/# export ZOOKEEPER_DATA_DIR_TYPE/' magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
+        sed -i -e 's/export ZEPPELIN_MODE/# export ZEPPELIN_MODE/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nocoresettings*"`
     if [ -n "${files}" ]
     then
@@ -844,6 +904,11 @@ __GenerateCornerCaseTests_BadCoreSettings() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
         sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="foobar"/' magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
+        sed -i -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="foobar"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcoresettings*"`
