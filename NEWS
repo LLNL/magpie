@@ -1,5 +1,6 @@
 magpie 1.76
 -----------
+Add support for Hbase 1.0.3 and 1.1.5.
 Add older support for Phoenix 4.5.0-Hbase-1.0, 4.5.0-Hbase-1.1,
   4.5.1-Hbase-1.0, 4.5.2-Hbase-1.0, 4.6.0-Hbase-1.0, 4.7.0-Hbase-1.0
 Add older support for Hbase 0.98.0-hadoop2 0.98.1-hadoop2
