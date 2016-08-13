@@ -184,12 +184,26 @@ if [ "${PHOENIX_DOWNLOAD}" == "y" ]
 then
     for phoenixversion in ${phoenix_all_versions}
     do
-        PHOENIX_PACKAGE="phoenix-${phoenixversion}/bin/phoenix-${phoenixversion}-bin.tar.gz"
+        # Remove hyphen if necessary
+        phoenixtestversion=`echo ${phoenixversion} | cut -f1 -d"-"`
+
+        # achu: before 4.8.0, no 'apache' prefix
+
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${phoenixtestversion} "4.8.0"
+        if [ $? == "2" ]
+        then
+            PHOENIX_PACKAGE="phoenix-${phoenixversion}/bin/phoenix-${phoenixversion}-bin.tar.gz"
+        else
+            PHOENIX_PACKAGE="apache-phoenix-${phoenixversion}/bin/apache-phoenix-${phoenixversion}-bin.tar.gz"
+        fi
+
         PHOENIX_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/phoenix/${PHOENIX_PACKAGE}"
         
         __download_package ${PHOENIX_PACKAGE} ${PHOENIX_DOWNLOAD_URL}
         
         PHOENIX_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
+        echo $PHOENIX_PACKAGE_BASEDIR
         __apply_patches_if_exist ${PHOENIX_PACKAGE_BASEDIR} \
             ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
     done

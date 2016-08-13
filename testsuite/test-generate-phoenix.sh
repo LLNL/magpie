@@ -3,6 +3,25 @@
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
+source ../magpie/lib/magpie-lib-helper
+source ../magpie/lib/magpie-lib-version-helper
+
+# Ugh, before 4.8.0 the paths didn't have 'apache' in them
+__FixPhoenixHome() {
+    local phoenixversion=$1
+    shift
+    local files=$@
+
+    # Sets magpie_phoenixmajorminorversion
+    Magpie_get_phoenix_major_minor_version ${phoenixversion}
+
+    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+    Magpie_vercomp ${magpie_phoenixmajorminorversion} "4.8"
+    if [ $? == "2" ]
+    then
+        sed -i -e 's/apache-phoenix-${PHOENIX_VERSION}-bin/phoenix-${PHOENIX_VERSION}-bin/' ${files}
+    fi
+}
 
 __GeneratePhoenixStandardTests_Performanceeval() {
     local phoenixversion=$1
@@ -50,6 +69,8 @@ __GeneratePhoenixStandardTests_Performanceeval() {
     sed -i -e 's/# export ZOOKEEPER_SHARE_NODES=yes/export ZOOKEEPER_SHARE_NODES=yes/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*zookeeper-shared*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
+
+    __FixPhoenixHome ${phoenixversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
 }
 
 GeneratePhoenixStandardTests() {
@@ -114,6 +135,8 @@ __GeneratePhoenixDependencyTests_Dependency1() {
         magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsovernetworkfs*
     
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-phoenixperformanceeval`
+
+    __FixPhoenixHome ${phoenixversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix1A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*run-phoenixperformanceeval`
 }
 
 __GeneratePhoenixDependencyTests_Dependency2() {
@@ -160,6 +183,8 @@ __GeneratePhoenixDependencyTests_Dependency2() {
         magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*hdfsovernetworkfs*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
+
+    __FixPhoenixHome ${phoenixversion} `ls magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-DependencyPhoenix2A-phoenix-${phoenixversion}-hadoop-${hadoopversion}-hbase-${hbaseversion}-zookeeper-${zookeeperversion}*`
 }
 
 GeneratePhoenixDependencyTests() {

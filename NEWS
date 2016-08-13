@@ -1,5 +1,8 @@
 magpie 1.76
 -----------
+Add support for Phoenix 4.8.0-Hbase-1.0, 4.8.0-Hbase-1.1,
+  4.8.0-Hbase-1.2.
+Update default Phoenix to 4.8.0-Hbase-1.2.
 Add support for Storm 1.0.2.
 Update default Storm to 1.0.2.
 Add support for Hbase 1.0.3 and 1.1.5.

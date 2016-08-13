@@ -638,7 +638,7 @@ export HBASE_SETUP=yes
 
 # Version
 #
-export HBASE_VERSION="1.1.4"
+export HBASE_VERSION="1.2.2"
 
 # Path to your Hbase build/binaries
 #
@@ -810,7 +810,7 @@ export PHOENIX_SETUP=yes
 
 # Phoenix Version
 #
-export PHOENIX_VERSION="4.7.0-HBase-1.1"
+export PHOENIX_VERSION="4.8.0-HBase-1.2"
 
 # Path to your Phoenix build/binaries
 #
@@ -819,7 +819,7 @@ export PHOENIX_VERSION="4.7.0-HBase-1.1"
 #
 # Ensure the build matches the hbase version this will run against.
 #
-export PHOENIX_HOME="${HOME}/phoenix-${PHOENIX_VERSION}-bin"
+export PHOENIX_HOME="${HOME}/apache-phoenix-${PHOENIX_VERSION}-bin"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
