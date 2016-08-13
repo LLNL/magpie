@@ -36,6 +36,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-version-helper
 
 # hbasenoderank set if succeed
 if ! Magpie_am_I_a_hbase_node
@@ -161,7 +162,18 @@ Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase.log4j.properties" "p
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
      hbaseclasspath=${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar:${hbaseclasspath}
-     Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix-pre-4.8.xml" "pre_hbasesitexml_phoenix"
+
+     # Sets magpie_phoenixmajorminorversion
+     Magpie_get_phoenix_major_minor_version ${PHOENIX_VERSION}
+
+     # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+     Magpie_vercomp ${magpie_phoenixmajorminorversion} "4.8"
+     if [ $? == "2" ]
+     then
+         Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix-pre-4.8.xml" "pre_hbasesitexml_phoenix"
+     else
+         Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix-post-4.8.xml" "pre_hbasesitexml_phoenix"
+     fi
 fi
 
 post_hbasesitexml=${HBASE_CONF_DIR}/hbase-site.xml
