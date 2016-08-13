@@ -161,7 +161,7 @@ Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase.log4j.properties" "p
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
      hbaseclasspath=${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar:${hbaseclasspath}
-     Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix.xml" "pre_hbasesitexml_phoenix"
+     Magpie_find_conffile "Hbase" ${HBASE_CONF_FILES:-""} "hbase-site-phoenix-pre-4.8.xml" "pre_hbasesitexml_phoenix"
 fi
 
 post_hbasesitexml=${HBASE_CONF_DIR}/hbase-site.xml
