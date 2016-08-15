@@ -167,6 +167,7 @@ spark_1_3_0_bin_hadoop2_3=y
 spark_1_3_0_bin_hadoop2_4=y
 spark_1_3_1_bin_hadoop2_3=y
 spark_1_3_1_bin_hadoop2_4=y
+spark_1_3_1_bin_hadoop2_6=y
 spark_1_4_0_bin_hadoop2_6=y
 spark_1_4_1_bin_hadoop2_6=y
 spark_1_5_0_bin_hadoop2_6=y
