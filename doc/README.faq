@@ -97,12 +97,12 @@ FAQ
   environments when distributing their binaries.
 
   For example, I believe most Hbase 0.98 binary versions distributed
-  via the official Hbase website were compiled against Java 1.6 while
-  newer Phoenix versions were compiled with (minimally) Java 1.7.
-  Even though there exists a Phoenix 4.5.0 that is ABI compatible with
-  Hbase 0.98, it may not be binary compatible to Hbase 0.98 versions
-  released by the Hbase website.  A re-compile of Hbase 0.98 against
-  Java 1.7 would be required by the user.
+  via the official Hbase website were compiled for Java 1.6 while
+  newer Phoenix versions were compiled for Java 1.7.  Even though
+  there exists a Phoenix 4.5.0 that is ABI compatible with Hbase 0.98,
+  it may not be binary compatible to Hbase 0.98 versions released by
+  the Hbase website.  A re-compile of Hbase 0.98 would be required by
+  the user.
   
   This issue has been found in several circumstances.
 
