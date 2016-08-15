@@ -66,6 +66,9 @@ phoenix_all_versions="${phoenixhbase10hadoop27zookeeper34java17versions} ${phoen
 spark0Xjava16hadoop2versions="0.9.1-bin-hadoop2 0.9.2-bin-hadoop2"
 spark0Xjava16hadoop2versions_hadoopversion="2.2.0"
 spark0Xjava16hadoop2versions_javaversion=${java16}
+spark1Xjava16hadoop23versions="1.2.0-bin-hadoop2.3 1.2.1-bin-hadoop2.3 1.2.2-bin-hadoop2.3 1.3.0-bin-hadoop2.3 1.3.1-bin-hadoop2.3"
+spark1Xjava16hadoop23versions_hadoopversion="2.3.0"
+spark1Xjava16hadoop23versions_javaversion=${java16}
 spark1Xjava16hadoop24versions="1.2.0-bin-hadoop2.4 1.2.1-bin-hadoop2.4 1.2.2-bin-hadoop2.4 1.3.0-bin-hadoop2.4 1.3.1-bin-hadoop2.4"
 spark1Xjava16hadoop24versions_hadoopversion="2.4.0"
 spark1Xjava16hadoop24versions_javaversion=${java16}
@@ -79,8 +82,8 @@ spark2Xjava17hadoop27versions="2.0.0-bin-hadoop2.7"
 spark2Xjava17hadoop27versions_hadoopversion="2.7.0"
 spark2Xjava17hadoop27versions_javaversion=${java17}
 
-spark_test_groups="spark0Xjava16hadoop2versions spark1Xjava16hadoop24versions spark1Xjava17hadoop26versions spark2Xjava17hadoop26versions spark2Xjava17hadoop27versions"
-spark_all_versions="${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop24versions} ${spark1Xjava17hadoop26versions} ${spark2Xjava17hadoop26versions} ${spark2Xjava17hadoop27versions}"
+spark_test_groups="spark0Xjava16hadoop2versions spark1Xjava16hadoop23versions spark1Xjava16hadoop24versions spark1Xjava17hadoop26versions spark2Xjava17hadoop26versions spark2Xjava17hadoop27versions"
+spark_all_versions="${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop23versions} ${spark1Xjava16hadoop24versions} ${spark1Xjava17hadoop26versions} ${spark2Xjava17hadoop26versions} ${spark2Xjava17hadoop27versions}"
 
 stormzookeeper34java16versions="0.9.3 0.9.4"
 stormzookeeper34java16versions_zookeeperversion="3.4.6"
