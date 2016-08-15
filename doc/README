@@ -214,11 +214,11 @@ Mahout 0.11.X w/ Hadoop 2.7.X
 Mahout 0.12.X w/ Hadoop 2.7.X
 
 Hbase 0.98.X w/ Hadoop 2.2.X, Zookeeper 3.4.X
-Hbase 0.99.X, 1.0.X, 1.1.X, 1.2.X w/ Hadoop 2.7.X
+Hbase 0.99.X, 1.0.X, 1.1.X, 1.2.X w/ Hadoop 2.7.X, Zookeeper 3.4.X
 
 Phoenix 4.4.X, 4.5.X, 4.6.0 - Beginning w/ Phoenix 4.4.0, versions
-  prebuilt for Hbase 0.98, 1.0, and 1.1 are available.  Use the
-  version it is prebuilt for appropriately.
+  prebuilt for Hbase 1.0 and 1.1 are available.  Use the version it is
+  prebuilt for appropriately.
 
 Spark 0.9.X-bin-hadoop2 w/ Hadoop 2.2.X
 Spark 1.X - Beginning w/ Spark 1.0 versions prebuilt for Hadoop 2.2,
@@ -227,7 +227,7 @@ Spark 1.X - Beginning w/ Spark 1.0 versions prebuilt for Hadoop 2.2,
 Spark 2.X - Builds against Hadoop 2.3, 2.4, 2.6, and 2.7.  Use the
   version it is prebuilt for appropriately.
 
-Storm 0.9.X, 0.10.0 w/ Zookeeper 3.4.X 
+Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X 
 
 Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
 
