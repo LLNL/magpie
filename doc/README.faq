@@ -84,17 +84,12 @@ FAQ
   For those unaware, legend has it magpie birds like shiny objects.
 
 * Why aren't all project combinations supported?  For example, Spark
-  1.3.1 has a build against Hadoop 2.6 and Phoenix 4.5.0 has a build
+  1.5.0 has a build against Hadoop 2.4 and Phoenix 4.5.0 has a build
   against Hbase 0.98 on their official websites.
 
-  So the short answer is that Magpie "should" work with all of these
-  combinations, but I don't list it because I don't have tests for it
-  in the testsuite and it would require more work to get working.
-
   Magpie's primary attempt is to work with the official binary builds
-  distributed by these projects on their official websites.
-  Unfortunately, different developers are building in different
-  environments when distributing their binaries.
+  distributed by projects on their official websites.  Unfortunately,
+  different projects have build/release differences in their binaries.
 
   For example, I believe most Hbase 0.98 binary versions distributed
   via the official Hbase website were compiled for Java 1.6 while
@@ -103,8 +98,12 @@ FAQ
   it may not be binary compatible to Hbase 0.98 versions released by
   the Hbase website.  A re-compile of Hbase 0.98 would be required by
   the user.
-  
+
   This issue has been found in several circumstances.
+
+  So the somewhat shorter answer is that Magpie "should" work with all
+  of these combinations, but I don't list it because I don't have
+  tests for it in the testsuite and it would require more work.
 
 * I have a question, can you help?
 
