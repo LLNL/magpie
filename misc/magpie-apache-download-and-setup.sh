@@ -63,13 +63,13 @@ HBASE_PACKAGE="hbase/1.2.2/hbase-1.2.2-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.16.0/pig-0.16.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.12.2/apache-mahout-distribution-0.12.1.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz"
-SPARK_PACKAGE="spark/spark-1.6.2/spark-1.6.2-bin-hadoop2.6.tgz"
+SPARK_PACKAGE="spark/spark-2.0.0/spark-2.0.0-bin-hadoop2.7.tgz"
 SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-2.6.4/hadoop-2.6.4.tar.gz"
 STORM_PACKAGE="storm/apache-storm-1.0.2/apache-storm-1.0.2.tar.gz"
 PHOENIX_PACKAGE="phoenix/apache-phoenix-4.8.0-HBase-1.2/bin/apache-phoenix-4.8.0-HBase-1.2-bin.tar.gz"
-PHOENIX_HBASE_PACKAGE="hbase/1.1.4/hbase-1.1.4-bin.tar.gz"
+PHOENIX_HBASE_PACKAGE="hbase/1.2.2/hbase-1.2.2-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
-ZEPPELIN_PACKAGE="incubator/zeppelin/0.5.6-incubating/zeppelin-0.5.6-incubating-bin-all.tgz"
+ZEPPELIN_PACKAGE="incubator/zeppelin/0.6.0/zeppelin-0.6.0-bin-all.tgz"
 
 # First check some basics
 
@@ -186,12 +186,15 @@ then
         ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate.patch \
         ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-no-local-dir.patch
 
-    __download_package "${SPARK_HADOOP_PACKAGE}"
+    if [ "${HADOOP_PACKAGE}" != "${SPARK_HADOOP_PACKAGE}" ]
+    then
+        __download_package "${SPARK_HADOOP_PACKAGE}"
 
-    SPARK_HADOOP_PACKAGE_BASEDIR=$(echo `basename ${SPARK_HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
-    __apply_patches_if_exist ${SPARK_HADOOP_PACKAGE_BASEDIR} \
-        ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch \
-        ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
+        SPARK_HADOOP_PACKAGE_BASEDIR=$(echo `basename ${SPARK_HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
+        __apply_patches_if_exist ${SPARK_HADOOP_PACKAGE_BASEDIR} \
+            ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-alternate-ssh.patch \
+            ${MAGPIE_SCRIPTS_HOME}/patches/hadoop/${SPARK_HADOOP_PACKAGE_BASEDIR}-no-local-dir.patch
+    fi
 fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
@@ -209,12 +212,15 @@ then
     __apply_patches_if_exist ${PHOENIX_PACKAGE_BASEDIR} \
         ${MAGPIE_SCRIPTS_HOME}/patches/phoenix/${PHOENIX_PACKAGE_BASEDIR}-java-home.patch
 
-    __download_package "${HBASE_PACKAGE}"
+    if [ "${HBASE_PACKAGE}" != "${PHOENIX_HBASE_PACKAGE}" ]
+    then
+        __download_package "${PHOENIX_HBASE_PACKAGE}"
 
-    PHOENIX_HBASE_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
-    __apply_patches_if_exist ${PHOENIX_HBASE_PACKAGE_BASEDIR} \
-        ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch \
-        ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
+        PHOENIX_HBASE_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
+        __apply_patches_if_exist ${PHOENIX_HBASE_PACKAGE_BASEDIR} \
+            ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch \
+            ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${PHOENIX_HBASE_PACKAGE_BASEDIR}-no-local-dir.patch
+    fi
 fi
 
 if [ "${KAFKA_DOWNLOAD}" == "Y" ]
