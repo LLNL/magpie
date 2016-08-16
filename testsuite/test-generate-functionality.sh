@@ -50,13 +50,17 @@ __GenerateFunctionalityTests_LegacySubmissionType() {
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-legacysubmissiontype
     fi
-
-    if [ "${submissiontype}" == "sbatch-srun" ]
+   
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-legacysubmissiontype*"`
+    if [ -n "${files}" ]
     then
-        sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="slurmsbatch"/' magpie.${submissiontype}*functionality-legacysubmissiontype
-    elif [ "${submissiontype}" == "msub-slurm-srun" ]
-    then
-        sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="msubslurm"/' magpie.${submissiontype}*functionality-legacysubmissiontype
+        if [ "${submissiontype}" == "sbatch-srun" ]
+        then
+            sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="slurmsbatch"/' magpie.${submissiontype}*functionality-legacysubmissiontype
+        elif [ "${submissiontype}" == "msub-slurm-srun" ]
+        then
+            sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="msubslurm"/' magpie.${submissiontype}*functionality-legacysubmissiontype
+        fi
     fi
 }
 
@@ -117,14 +121,18 @@ __GenerateFunctionalityTests_BadJobNames() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-job-name-dollarsign
     fi
 
-    # Some job scripts use environment variable, some use command line
-    # options.  So check for quoted situation first.  If no quotes,
-    # add them.
-    sed -i -e 's/\"<my job name>\"/test job/' magpie.${submissiontype}*functionality-job-name-whitespace
-    sed -i -e 's/<my job name>/\"test job\"/' magpie.${submissiontype}*functionality-job-name-whitespace
-
-    sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
-    sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-job-name*"`
+    if [ -n "${files}" ]
+    then
+        # Some job scripts use environment variable, some use command line
+        # options.  So check for quoted situation first.  If no quotes,
+        # add them.
+        sed -i -e 's/\"<my job name>\"/test job/' magpie.${submissiontype}*functionality-job-name-whitespace
+        sed -i -e 's/<my job name>/\"test job\"/' magpie.${submissiontype}*functionality-job-name-whitespace
+    
+        sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
+        sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
+    fi
 }
 
 __GenerateFunctionalityTests_AltConfFilesDir() {
