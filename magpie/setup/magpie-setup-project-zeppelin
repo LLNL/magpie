@@ -36,6 +36,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-version-helper
 
 # zeppelinnoderank set if succeed
 if ! Magpie_am_I_a_zeppelin_node
@@ -136,10 +137,12 @@ zeppelinclasspath=${SPARK_HOME}/lib/*:${CLASSPATH}
 Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin-env.sh" "pre_zeppelinenvsh"
 Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin-site.xml" "pre_zeppelinsitexml"
 Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin.log4j.properties" "pre_log4jproperties"
+Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "shiro.ini" "pre_shiroini"
 
 post_zeppelinenvsh=${ZEPPELIN_CONF_DIR}/zeppelin-env.sh
 post_zeppelinsitexml=${ZEPPELIN_CONF_DIR}/zeppelin-site.xml
 post_log4jproperties=${ZEPPELIN_CONF_DIR}/log4j.properties
+post_shiroini=${ZEPPELIN_CONF_DIR}/shiro.ini
 
 zeppelin_spark_master="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
 
@@ -199,6 +202,18 @@ sed -i \
     -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
     -e "s/ZEPPELININTERPRETERDIR/${zeppelininterpreterdir}/g" \
     ${post_zeppelinsitexml}
+
+# sets magpie_zeppelinmajorminorversion
+Magpie_get_zeppelin_major_minor_version ${ZEPPELIN_VERSION}
+
+# Handle special settings depending on version
+# 0 is =, 1 is >, 2 is <
+Magpie_vercomp ${magpie_zeppelinmajorminorversion} 0.6
+vercomp_result=$?
+if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+then
+    cp ${pre_shiroini} ${post_shiroini}
+fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}
 
