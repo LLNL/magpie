@@ -81,12 +81,15 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 # "spark" - Run a job according to the settings of SPARK_MODE.
 #
+# "zeppelin" - Run a job according to the settings of ZEPPELIN_MODE.
+#
 # "testall" - Run a job that runs all basic sanity tests for all
 #             software that is configured to be setup.  This is a good
 #             way to sanity check that everything has been setup
 #             correctly and the way you like.
 #
 #             For Spark, testall will run sparkpi
+#             For Zeppelin, testall will run checkzeppelinup
 #
 # "script" - Run an arbitraty script, as specified by
 #            MAGPIE_SCRIPT_PATH.  This functionally is very similar to

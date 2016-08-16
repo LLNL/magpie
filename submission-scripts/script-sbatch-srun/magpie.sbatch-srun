@@ -113,6 +113,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             For Mahout, testall will run clustersyntheticcontrol
 #             For Spark, testall will run sparkpi
 #             For Kafka, testall will run performance
+#             For Zeppelin, testall will run checkzeppelinup
 #             For Storm, testall will run stormwordcount
 #             For tachyon, testall will run testtachyon
 #             For Zookeeper, testall will run zookeeperruok
