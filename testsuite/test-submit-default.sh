@@ -23,4 +23,5 @@ SubmitDefaultStandardTests() {
     BasicJobSubmit magpie.${submissiontype}-storm-default-run-stormwordcount-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-zookeeper-default-run-zookeeperruok
     BasicJobSubmit magpie.${submissiontype}-zookeeper-default-run-zookeeperruok-no-local-dir
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-default-run-checkzeppelinup
 }

@@ -60,3 +60,13 @@ Magpie_get_storm_major_minor_version() {
     
     magpie_stormmajorminorversion="$stormmajor.$stormminor"
 }
+
+Magpie_get_zeppelin_major_minor_version() {
+    local zeppelinversion=$1
+
+    # Get only the major and minor version, we don't care about the release                                                               
+    zeppelinmajor=`echo ${zeppelinversion} | cut -d. -f1`
+    zeppelinminor=`echo ${zeppelinversion} | cut -d. -f2`
+    
+    magpie_zeppelinmajorminorversion="$zeppelinmajor.$zeppelinminor"
+}

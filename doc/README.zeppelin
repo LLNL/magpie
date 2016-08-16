@@ -19,8 +19,11 @@ Instructions For Using Zeppelin
    scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
    using mpirun in script-lsf-mpirun.
 
-   You'll likely want to start with the base script
-   (e.g. magpie.sbatch-srun) for your scheduler/resource manager 
+   You'll likely want to start with the base spark script
+   (e.g. magpie.sbatch-srun-spark) or spark w/ zeppelin
+   (e.g. magpie.sbatch-srun-spark-with-zeppelin) for your
+   scheduler/resource manager.  If you wish to configure more, you can
+   choose to start with the base script (e.g. magpie.sbatch-srun)
    which contains all configuration options.
 
 2) Setup your job essentials at the top of the submission script.  As
@@ -55,21 +58,25 @@ Instructions For Using Zeppelin
    ZEPPELIN_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting ZEPPELIN_MODE.  
-   You may want to run with 'server' mode to play around and figure things
-   out.  In the job output you will see output similar to the following:
+4) Select how your job will run by setting ZEPPELIN_MODE.  The first
+   time you'll probably want to run w/ 'checkzeppelinup' just to try
+   things out and make sure things look setup correctly.
+
+   You may want to run with 'interactive' mode to play around and
+   figure things out.  In the job output you will see output similar
+   to the following:
 
    * To access Zeppelin's web interface, you'll want to navigate your browser to:
    *     http://some-node:18080 
 
-   If you point your browser to this node and port you can access the Zeppelin
-   Notebook/Interpreter. From here you can create notebooks and run code.
+   If you point your browser to this node and port you can access the
+   Zeppelin Notebook/Interpreter. From here you can create notebooks
+   and run code.
 
    A quick example once you navigate to the webpage:
    - Click the link "Create new note"
-   - Click "Create Note"
    - In the first paragraph add the following:
-   """
+
     %spark
     val count = sc.parallelize(1 to 1000).map{i =>
       val x = Math.random()
@@ -77,7 +84,7 @@ Instructions For Using Zeppelin
       if (x*x + y*y < 1) 1 else 0
     }.reduce(_ + _)
     println("Pi is roughly " + 4.0 * count / 1000)
-   """
+
    - Click the 'play' button in the top right corner of the paragraph.
 
    This should display a value around 3.14 if successful.
@@ -111,14 +118,14 @@ Zeppelin Exported Environment Variables
 The following environment variables are exported when your job is run
 and may be useful in scripts in your run or in pre/post run scripts.
 
+ZEPPELIN_MASTER_NODE : the master node running Zeppelin
+
+ZEPPELIN_SERVER_PORT : the web server port for Zeppelin
+
 ZEPPELIN_CONF_DIR : the directory that Zeppelin configuration files local
                    to the node are stored
 
 ZEPPELIN_LOG_DIR : the directory Zeppelin log files are stored
-
-ZEPPELIN_SCALA_PATH : the path to the version of Scala needed
-
-ZEPPELIN_SPARK_SUBMIT_OPTIONS : options for when Zeppelin submits jobs
 
 See "Spark Exported Environment Variables" in README.spark,
 for Spark environment variables that may be useful.
