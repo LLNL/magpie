@@ -46,8 +46,6 @@ export ZEPPELIN_LOCAL_DIR="LOCALDIRPREFIX/zeppelin"
 
 # Set how Zeppelin should run
 #
-# "server" - setup the server
-#
 # "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
 #                     correctly and up.
 #
