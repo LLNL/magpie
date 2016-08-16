@@ -5,11 +5,11 @@ import urllib2
 
 master_url = "http://" + os.environ['ZEPPELIN_MASTER_NODE'] + ":" + os.environ['ZEPPELIN_SERVER_PORT']
 
+print "Attempting to connect to: ", master_url
+
 response = urllib2.urlopen(master_url).getcode()
 
 if response == 200:
-    print "Success"
-    return 0
+    print "Success connecting to Zeppelin"
 else:
-    print "Invalid response code:", response
-    return 1
+    print "Failed connecting to Zeppelin - invalid response code:", response

@@ -5,25 +5,23 @@ source test-common.sh
 source test-config.sh
 
 __GenerateZeppelinStandardTests_BasicTests() {
-    local sparkversion=$1
-    local javaversion=$2
-    local zeppelinversion=$3
-    local zeppelinhome=$4
+    local zeppelinversion=$1
+    local sparkversion=$2
+    local javaversion=$3
 
-    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
+    cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    sed -i -e 's|export MAGPIE_JOB_TYPE="\(.*\)"|export MAGPIE_JOB_TYPE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
+    sed -i -e 's|export MAGPIE_JOB_TYPE="\(.*\)"|export MAGPIE_JOB_TYPE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    sed -i -e 's|export SPARK_VERSION="\(.*\)"|export SPARK_VERSION="'"${sparkversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
+    sed -i -e 's|export SPARK_VERSION="\(.*\)"|export SPARK_VERSION="'"${sparkversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    sed -i -e 's|export SPARK_MODE="\(.*\)"|export SPARK_MODE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
+    sed -i -e 's|export SPARK_MODE="\(.*\)"|export SPARK_MODE="script"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    sed -i -e 's|# export MAGPIE_SCRIPT_PATH="\(.*\)"|export MAGPIE_SCRIPT_PATH="testscripts/test-zeppelin.py"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
+    sed -i -e 's|# export MAGPIE_SCRIPT_PATH="\(.*\)"|export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts/test-zeppelin.py"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    sed -i -e 's|export ZEPPELIN_VERSION="\(.*\)"|export ZEPPELIN_VERSION="'"${zeppelinversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}
+    sed -i -e 's|export ZEPPELIN_VERSION="\(.*\)"|export ZEPPELIN_VERSION="'"${zeppelinversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}`
-
+    JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup`
 }
 
 GenerateZeppelinStandardTests() {
@@ -41,12 +39,16 @@ GenerateZeppelinStandardTests() {
 
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${sparkversion} ${javaversion} ${testversion} ${zeppelinhome}
+                ${testfunction} ${testversion} ${!sparkversion} ${!javaversion}
             done
         done
     done
 }
 
 GenerateZeppelinPostProcessing () {
-
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*run-checkzeppelinup*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/run-checkzeppelinup-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
 }

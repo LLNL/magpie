@@ -435,7 +435,7 @@ if [ "${zookeepertests}" == "y" ] && [ "${zookeeperversiontests}" == "y" ]; then
     fi
 fi
 if [ "${zeppelintests}" == "y" ] && [ "${zeppelinversiontests}" == "y" ]; then
-    if ["${standardtests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
         GenerateZeppelinStandardTests
     fi
 fi

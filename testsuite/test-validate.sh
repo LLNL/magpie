@@ -1149,3 +1149,20 @@ then
         __test_output_finalize $file
     done
 fi
+
+__get_test_files run-checkzeppelinup
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "Success connecting to Zeppelin" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Error in $file"
+        fi
+        
+        __test_spark_shutdown $file
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
