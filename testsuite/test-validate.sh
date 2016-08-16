@@ -628,6 +628,24 @@ __check_exports_zookeeper () {
     fi
 }
 
+__check_exports_zeppelin () {
+    local file=$1
+
+    __check_exports_project_base ${file} "ZEPPELIN"
+
+    num=`grep -E "ZEPPELIN_MASTER_NODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ZEPPELIN_MASTER_NODE"
+    fi
+
+    num=`grep -E "ZEPPELIN_SERVER_PORT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export ZEPPELIN_SERVER_PORT"
+    fi
+}
+
 __get_test_files checkexports
 if [ $? -eq 0 ]
 then
@@ -674,6 +692,11 @@ then
         if echo ${file} | grep -q "zookeeper"
         then
             __check_exports_zookeeper ${file}
+        fi
+
+        if echo ${file} | grep -q "zeppelin"
+        then
+            __check_exports_zeppelin ${file}
         fi
 
         __test_generic $file

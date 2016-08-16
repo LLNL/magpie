@@ -50,6 +50,10 @@ __GenerateFunctionalityTests_LegacySubmissionType() {
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-legacysubmissiontype
     fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-legacysubmissiontype
+    fi
    
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-legacysubmissiontype*"`
     if [ -n "${files}" ]
@@ -119,6 +123,11 @@ __GenerateFunctionalityTests_BadJobNames() {
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-job-name-whitespace
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-job-name-dollarsign
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-job-name-whitespace
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-job-name-dollarsign
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-job-name*"`
@@ -209,6 +218,12 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
         sed -i -e 's/# export STORM_CONF_FILES="\(.*\)"/export STORM_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-storm-run-stormwordcount-functionality-altconffilesdir
         sed -i -e 's/# export ZOOKEEPER_CONF_FILES="\(.*\)"/export ZOOKEEPER_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-storm-run-stormwordcount-functionality-altconffilesdir
     fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altconffilesdir
+        sed -i -e 's/# export SPARK_CONF_FILES="\(.*\)"/export SPARK_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altconffilesdir
+        sed -i -e 's/# export ZEPPELIN_CONF_FILES="\(.*\)"/export ZEPPELIN_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altconffilesdir
+    fi
 }
 
 __GenerateFunctionalityTests_TestAll() {
@@ -242,6 +257,10 @@ __GenerateFunctionalityTests_TestAll() {
 
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-run-zookeeperruok-functionality-testall
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-sparkpi-run-checkzeppelinup-functionality-testall
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-testall*"`
@@ -315,6 +334,14 @@ __GenerateFunctionalityTests_InteractiveMode() {
             magpie.${submissiontype}-storm-functionality-interactive-mode
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-interactive-mode
+
+        sed -i \
+            -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="interactive"/' \
+            magpie.${submissiontype}-spark-with-zeppelin-functionality-interactive-mode
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-interactive-mode*"`
     if [ -n "${files}" ]
     then
@@ -385,6 +412,15 @@ __GenerateFunctionalityTests_Setuponlymode() {
             magpie.${submissiontype}-storm-functionality-setuponly-mode
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-setuponly-mode
+
+        sed -i \
+            -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="setuponly"/' \
+            -e 's/export ZEPPELIN_MODE="\(.*\)"/export ZEPPELIN_MODE="setuponly"/' \
+            magpie.${submissiontype}-spark-with-zeppelin-functionality-setuponly-mode
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-setuponly-mode*"`
     if [ -n "${files}" ]
     then
@@ -448,6 +484,16 @@ __GenerateFunctionalityTests_JobTimeout() {
             -e 's/# export STORM_SCRIPT_PATH="\(.*\)"/export STORM_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
             -e 's/# export STORM_SCRIPT_ARGS="\(.*\)"/export STORM_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
             magpie.${submissiontype}-storm-functionality-jobtimeout
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-jobtimeout
+
+        sed -i \
+            -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
+            -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
+            -e 's/# export MAGPIE_SCRIPT_ARGS="\(.*\)"/export MAGPIE_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
+            magpie.${submissiontype}-spark-with-zeppelin-functionality-jobtimeout
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-jobtimeout*"`
@@ -528,6 +574,11 @@ __GenerateFunctionalityTests_MagpieExports() {
         sed -i -e 's/export STORM_SETUP=yes/export STORM_SETUP=no/' magpie.${submissiontype}-zookeeper-functionality-checkexports
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-zookeeper-functionality-checkexports
     fi
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-checkexports
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/spark-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-spark-with-zeppelin-functionality-checkexports
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/zeppelin-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-spark-with-zeppelin-functionality-checkexports
+    fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-checkexports*"`
     if [ -n "${files}" ]
@@ -586,6 +637,10 @@ __GenerateFunctionalityTests_PrePostRunScripts() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts
     fi
 
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostrunscripts
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostrunscripts*"`
     if [ -n "${files}" ]
     then
@@ -641,6 +696,10 @@ __GenerateFunctionalityTests_PreRunScriptError() {
     
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-prerunscripterror
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-prerunscripterror
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prerunscripterror*"`
