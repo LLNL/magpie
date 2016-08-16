@@ -131,8 +131,12 @@ Magpie_run_start_zeppelin () {
             if echo $MAGPIE_SHELL | grep -q csh
             then
                 echo "setenv ZEPPELIN_HOME \"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZEPPELIN_MASTER_NODE \"${ZEPPELIN_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv ZEPPELIN_SERVER_PORT \"${ZEPPELIN_SERVER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             else
                 echo "export ZEPPELIN_HOME=\"${ZEPPELIN_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZEPPELIN_MASTER_NODE=\"${ZEPPELIN_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export ZEPPELIN_SERVER_PORT=\"${ZEPPELIN_SERVER_PORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             fi
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
@@ -168,6 +172,22 @@ Magpie_run_zeppelin () {
         echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
         echo "*******************************************************"
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute server &
+        local scriptpid=$!
+        wait $scriptpid
+    elif [ "${ZEPPELIN_MODE}" == "checkzeppelinup" ]
+    then
+        echo "*******************************************************"
+        echo "* Running CheckZeppelinUp"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-zeppelin-checkzeppelinup.py &
+        local scriptpid=$!
+        wait $scriptpid
+    elif [ "${ZEPPELIN_MODE}" == "interactive" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Zeppelin ${ZEPPELIN_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
         local scriptpid=$!
         wait $scriptpid
     elif [ "${ZEPPELIN_MODE}" == "setuponly" ]

@@ -189,7 +189,7 @@ UDA/uda-plugin - 3.3.2-0
 
 Kafka - 2.11-0.9.0.0
 
-Zeppelin - 0.5.6
+Zeppelin - 0.5.6-incubating, 0.6.0
 
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
@@ -236,6 +236,8 @@ Spark 2.X - Builds against Hadoop 2.3, 2.4, 2.6, and 2.7.  Use the
 Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X 
 
 Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
+
+Zeppelin 0.6.0 w/ Spark 1.6.X
 
 Package Java Versions
 ---------------------

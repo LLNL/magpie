@@ -114,6 +114,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             For Mahout, testall will run clustersyntheticcontrol
 #             For Spark, testall will run sparkpi
 #             For Kafka, testall will run performance
+#             For Zeppelin, testall will run checkzeppelinup
 #             For Storm, testall will run stormwordcount
 #             For tachyon, testall will run testtachyon
 #             For Zookeeper, testall will run zookeeperruok
@@ -1830,7 +1831,7 @@ export ZEPPELIN_SETUP=no
 
 # Zeppelin Version
 #
-export ZEPPELIN_VERSION="0.5.6"
+export ZEPPELIN_VERSION="0.5.6-incubating"
 
 # Path to your Zeppelin build/binaries
 #
@@ -1839,14 +1840,7 @@ export ZEPPELIN_VERSION="0.5.6"
 #
 # Ensure the build matches the hbase version this will run against.
 #
-export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-incubating-bin-all"
-
-# Path to store data local to each cluster node, typically something
-# in /tmp.  This will store local conf files and log files for your
-# job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
-#
-export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
+export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 
 # Directory where alternate Zeppelin configuration templates are stored
 #
@@ -1859,12 +1853,36 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 #
 # export ZEPPELIN_CONF_FILES="${HOME}/myconf"
 
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
+
+# Set how Zeppelin should run
+#
+# "server" - setup the server
+#
+# "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
+#                     correctly and up.
+#
+# "interactive" - manually interact with Zeppelin.  In this mode
+#                 you'll login to the cluster node that is your
+#                 'master' node and interact with Zeppelin directly.
+#
+# "setuponly" - Like 'server' but only setup conf files. useful
+#               if user wants to setup & teardown daemons themselves.
+#
+export ZEPPELIN_MODE="checkzeppelinup"
+
 # Path to the root scala dir
 #
 # This may need to be modified if the interpreter uses the wrong
 # version of scala.
 #
 # The default does not add anything to your paths
+#
 # export ZEPPELIN_SCALA_PATH=${HOME}/scala-2.10.4
 
 # Zeppelin Spark Submit Options
@@ -1874,17 +1892,8 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 # Note that when Zeppelin starts up it will use all cores and memory that
 # Spark has available, this can be changed by adjusting Spark submit options.
 # e.g. --total-executor-cores 20 --executor-memory 16G
-# ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
-
-# Set how Zeppelin should run
 #
-# "server" - setup the server
-#
-# "setuponly" - Like 'server' but only setup conf files. useful
-#               if user wants to setup & teardown daemons themselves.
-#
-#
-export ZEPPELIN_MODE="server"
+# export ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
 
 ############################################################################
 # Storm Core Configurations

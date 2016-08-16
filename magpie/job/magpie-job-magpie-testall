@@ -114,4 +114,13 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-zookeeper-zookeeperruok)
 fi
 
+if [ "${ZEPPELIN_SETUP}" == "yes" ] \
+   && [ "${ZEPPELIN_MODE}" != "setuponly" ]
+then
+    echo "*******************************************************"
+    echo "* Running Zeppelin CheckZeppelinUp"
+    echo "*******************************************************"
+    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-zeppelin-checkzeppelinup.py)
+fi
+
 exit 0
