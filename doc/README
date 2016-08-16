@@ -226,9 +226,9 @@ Phoenix 4.4.X, 4.5.X, 4.6.0 - Beginning w/ Phoenix 4.4.0, versions
   prebuilt for appropriately.
 
 Spark 0.9.X-bin-hadoop2 w/ Hadoop 2.2.X
-Spark 1.X - Beginning w/ Spark 1.0 versions prebuilt for Hadoop 2.2,
-  2.3, 2.4, 2.6, etc. are available.  Use the version it is prebuilt
-  for appropriately.  See above for supported versions.
+Spark 1.X - Beginning w/ Spark 1.1 versions prebuilt for Hadoop 2.3,
+  2.4, 2.6, etc. are available.  Use the version it is prebuilt for
+  appropriately.  See above for supported versions.
 Spark 2.X - Builds against Hadoop 2.3, 2.4, 2.6, and 2.7.  Use the
   version it is prebuilt for appropriately.  See above for supported
   versions.
