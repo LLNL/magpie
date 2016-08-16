@@ -276,8 +276,8 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # If not specified, a reasonable estimate will be calculated based on
 # number of CPUs on the system.
 #
-# If also running Hbase or Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by other software.
+# Be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export SPARK_WORKER_CORES_PER_NODE=8
 
@@ -287,8 +287,8 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # calculated based on total memory available and number of CPUs on the
 # system.
 #
-# If also running Hbase or Hadoop MapReduce, be aware of the number of
-# tasks and the amount of memory that may be needed by other software.
+# Be aware of the number of tasks and the amount of memory that may be
+# needed by other software.
 #
 # export SPARK_WORKER_MEMORY_PER_NODE=16000
 
@@ -697,6 +697,9 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 #
 # "server" - setup the server
 #
+# "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
+#                     correctly and up.
+#
 # "interactive" - manually interact with Zeppelin.  In this mode
 #                 you'll login to the cluster node that is your
 #                 'master' node and interact with Zeppelin directly.
@@ -704,7 +707,7 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 # "setuponly" - Like 'server' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-export ZEPPELIN_MODE="interactive"
+export ZEPPELIN_MODE="checkzeppelinup"
 
 # Path to the root scala dir
 #

@@ -1064,10 +1064,11 @@ then
     __Magpie_check_is_enabled "Spark" "Zeppelin"
 
     if [ "${ZEPPELIN_MODE}" != "server" ] \
+        && [ "${ZEPPELIN_MODE}" != "checkzeppelinup" ] \
         && [ "${ZEPPELIN_MODE}" != "interactive" ] \
         && [ "${ZEPPELIN_MODE}" != "setuponly" ]
     then
-        echo "ZEPPELIN_MODE must be set to server, interactive, or setuponly"
+        echo "ZEPPELIN_MODE must be set to server, checkzeppelinup, interactive, or setuponly"
         exit 1
     fi
 

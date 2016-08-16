@@ -1860,6 +1860,9 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 #
 # "server" - setup the server
 #
+# "checkzeppelinup" - Run a simple script to ensure Zeppelin is setup
+#                     correctly and up.
+#
 # "interactive" - manually interact with Zeppelin.  In this mode
 #                 you'll login to the cluster node that is your
 #                 'master' node and interact with Zeppelin directly.
@@ -1867,7 +1870,7 @@ export ZEPPELIN_LOCAL_DIR="/tmp/${USER}/zeppelin"
 # "setuponly" - Like 'server' but only setup conf files. useful
 #               if user wants to setup & teardown daemons themselves.
 #
-export ZEPPELIN_MODE="server"
+export ZEPPELIN_MODE="checkzeppelinup"
 
 # Path to the root scala dir
 #
