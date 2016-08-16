@@ -41,6 +41,16 @@ Magpie_get_spark_major_minor_version() {
     magpie_sparkmajorminorversion="$sparkmajor.$sparkminor"
 }
 
+Magpie_get_spark_major_minor_patch_version() {
+    local sparkversion=$1
+
+    # Remove lingering "-bin-hadoop2.4" and similar text"
+
+    local sparkcoreversion=`echo ${sparkversion} | cut -f1 -d"-"`
+
+    magpie_sparkmajorminorpatchversion="$sparkcoreversion"
+}
+
 Magpie_get_phoenix_major_minor_version() {
     local phoenixversion=$1
 
