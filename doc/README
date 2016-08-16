@@ -237,6 +237,8 @@ Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X
 
 Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
 
+Zeppelin 0.6.0 w/ Spark 1.6.X
+
 Package Java Versions
 ---------------------
 
