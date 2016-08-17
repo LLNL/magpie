@@ -19,8 +19,8 @@ HADOOP_LOCAL_DIR, HBASE_LOCAL_DIR, etc.).  Magpie will manipulate all
 paths to be unique by adding the node name into the path and
 configuring all projects to use this path.
 
-However, this requires a number of patches to various projects, which
-are as follows:
+However, this requires a patch to several projects, which are as
+follows:
 
 Hadoop - Support for no local dir begins with Hadoop 2.2.0.
        - Patches in /patches/hadoop with 'no-local-dir.patch' filename
@@ -40,6 +40,9 @@ Hbase - Support for no local dir begins with 0.98.0.
 Kafka - Support for no local dir begins with 2.11-0.9.0.0.
       - Patches in /patches/kafka with 'no-local-dir.patch' filename
         suffix.
+
+It is believed no local dir works in remaining projects without
+patches.
 
 The submission scripts do not include MAGPIE_NO_LOCAL_DIR
 configuration fields by default.  To include them:
