@@ -30,29 +30,29 @@ Magpie_walltime_to_minutes () {
     local walltime=$1
     local numcolons=`echo ${walltime} | awk -F: '{print NF-1}'`
     if [[ $walltime == *"-"* ]]
-	then
-		if [ "${numcolons}" == "2" ]
+    then
+	if [ "${numcolons}" == "2" ]
     	then
-        	magpie_walltimetominutes=`echo ${walltime} | awk -F'-|:' '{print $1 * 24 * 60 + $2 * 60 + $3 + $4 / 60}' | xargs printf "%1.0f"`
+            magpie_walltimetominutes=`echo ${walltime} | awk -F'-|:' '{print $1 * 24 * 60 + $2 * 60 + $3 + $4 / 60}' | xargs printf "%1.0f"`
         elif [ "${numcolons}" == "1" ]
     	then
-    		magpie_walltimetominutes=`echo ${walltime} | awk -F'-|:' '{print $1 * 24 * 60 + $2 * 60 + $3}' | xargs printf "%1.0f"`
+    	    magpie_walltimetominutes=`echo ${walltime} | awk -F'-|:' '{print $1 * 24 * 60 + $2 * 60 + $3}' | xargs printf "%1.0f"`
     	elif [ "${numcolons}" == "0" ]
     	then
-        	magpie_walltimetominutes=`echo ${walltime} | awk -F'-' '{print $1 * 24 * 60 + $2 * 60}' | xargs printf "%1.0f"`
+            magpie_walltimetominutes=`echo ${walltime} | awk -F'-' '{print $1 * 24 * 60 + $2 * 60}' | xargs printf "%1.0f"`
     	fi
-	else
-		if [ "${numcolons}" == "2" ]
+    else
+	if [ "${numcolons}" == "2" ]
     	then
-        	magpie_walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
+            magpie_walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 * 60 + $2 + $3 / 60}' | xargs printf "%1.0f"`
     	elif [ "${numcolons}" == "1" ]
     	then
-        	magpie_walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 + $2 / 60}' | xargs printf "%1.0f"`
+            magpie_walltimetominutes=`echo ${walltime} | awk -F':' '{print $1 + $2 / 60}' | xargs printf "%1.0f"`
         elif [ "${numcolons}" == "0" ]
     	then
-    		magpie_walltimetominutes=`echo ${walltime} | xargs printf "%1.0f"`	
+    	    magpie_walltimetominutes=`echo ${walltime} | xargs printf "%1.0f"`	
     	fi
-	fi
+    fi
 }
 
 # From http://stackoverflow.com/questions/4023830/bash-how-compare-two-strings-in-version-format
