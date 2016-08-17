@@ -144,6 +144,132 @@ __GenerateFunctionalityTests_BadJobNames() {
     fi
 }
 
+__GenerateFunctionalityTests_AltJobTimes() {
+
+    # According to sbatch manpage, acceptable time formats:
+    # "minutes", "minutes:seconds", "hours:minutes:seconds", "days-hours", "days-hours:minutes" and "days-hours:minutes:seconds".
+    # Default is "minutes" in the testsuite, so we only test the other formats
+    if [ "${submissiontype}" == "sbatch-srun" ]
+    then
+        if [ "${hadooptests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${pigtests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${mahouttests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${hbasetests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${phoenixtests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${sparktests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-minutes-seconds
+
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours
+
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours-minutes
+
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+
+            sed -i \
+                -e 's/export SPARK_JOB="\(.*\)"/export SPARK_JOB="sparkwordcount"/' \
+                magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun* \
+                magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun*
+
+            sed -i \
+                -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
+                magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun* \
+                magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun*
+
+            sed -i \
+                -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
+                magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun* \
+                magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun*
+        fi
+
+        if [ "${stormtests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${zeppelintests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-altjobtime-sbatchsrun*"`
+        if [ -n "${files}" ]
+        then
+            # Just go w/ 60 minutes to make it easier
+            GetMinutesJob 60
+            local minutes=${timeoutputforjob}
+
+            GetHoursMinutesJob 60
+            local hoursminutes=${timeoutputforjob}
+
+            filesminutesseconds=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-altjobtime-sbatchsrun-minutes-seconds*"`
+            fileshoursminutesseconds=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-altjobtime-sbatchsrun-hours-minutes-seconds*"`
+            filesdayshours=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-altjobtime-sbatchsrun-days-hours"`
+            filesdayshoursminutes=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-altjobtime-sbatchsrun-days-hours-minutes"`
+            filesdayshoursminutesseconds=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds"`
+
+            sed -i -e "s/${timestringtoreplace}/${minutes}:00/" ${filesminutesseconds}
+            sed -i -e "s/${timestringtoreplace}/${hoursminutes}:00/" ${fileshoursminutesseconds}
+            # Since there's no minutes field on this one, we'll just go w/ 2 hours
+            sed -i -e "s/${timestringtoreplace}/0-2/" ${filesdayshours}
+            sed -i -e "s/${timestringtoreplace}/0-${hoursminutes}/" ${filesdayshoursminutes}
+            sed -i -e "s/${timestringtoreplace}/0-${hoursminutes}:00/" ${filesdayshoursminutesseconds}
+        fi
+    fi
+}
+
 __GenerateFunctionalityTests_AltConfFilesDir() {
 
     # Just set to the current CONF_DIR to make sure setting it works
@@ -719,6 +845,8 @@ GenerateFunctionalityTests() {
     __GenerateFunctionalityTests_LegacySubmissionType
 
     __GenerateFunctionalityTests_BadJobNames
+
+    __GenerateFunctionalityTests_AltJobTimes
 
     __GenerateFunctionalityTests_AltConfFilesDir
 
