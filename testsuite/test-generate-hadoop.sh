@@ -182,15 +182,11 @@ __GenerateHadoopDependencyTests_Dependency3_requiredecommissionhdfs() {
 
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 
-    sed -i \
-        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopteragen.sh"/' \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptteragen*
+    SetupMagpieTestScript "test-hadoopteragen.sh" `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptteragen*`
 
-    sed -i \
-        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopterasort.sh"/' \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptterasort*
+    SetupMagpieTestScript "test-hadoopterasort.sh" `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptterasort*`
 
     SetupHDFSoverLustreDependency "Hadoop3A" ${hadoopversion} `ls \
         magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsoverlustre*`
@@ -220,15 +216,11 @@ __GenerateHadoopDependencyTests_Dependency4_requiredecommissionhdfs() {
 
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*
 
-    sed -i \
-        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopteragen.sh"/' \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptteragen*
+    SetupMagpieTestScript "test-hadoopteragen.sh" `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptteragen*`
 
-    sed -i \
-        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopterasort.sh"/' \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptterasort*
+    SetupMagpieTestScript "test-hadoopterasort.sh" `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptterasort*`
 
     SetupHDFSoverLustreDependency "Hadoop4A" ${hadoopversion} `ls \
         magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsoverlustre*`
