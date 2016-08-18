@@ -32,7 +32,7 @@ __GenerateFunctionalityTests_LegacySubmissionType() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype`
     fi
@@ -94,7 +94,7 @@ __GenerateFunctionalityTests_BadJobNames() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name-whitespace
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name-dollarsign
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-job-name* \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name*`
     fi
@@ -191,7 +191,7 @@ __GenerateFunctionalityTests_AltJobTimes() {
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
 
-            SetupSparkWordCountHDFSGenericCopyIn `ls \
+            SetupSparkWordCountHDFSCopyIn `ls \
                 magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun* \
                 magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altjobtime-sbatchsrun*`
         fi
@@ -280,7 +280,7 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir`
 
@@ -700,7 +700,7 @@ __GenerateFunctionalityTests_PrePostRunScripts() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts`
     fi
@@ -750,7 +750,7 @@ __GenerateFunctionalityTests_PreRunScriptError() {
         
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror
         
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror`
     fi

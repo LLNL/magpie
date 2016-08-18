@@ -38,7 +38,7 @@ __GenerateCornerCaseTests_CatchProjectDependencies() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop`
 
@@ -1045,7 +1045,7 @@ __GenerateCornerCaseTests_RequireHDFS() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs`
 

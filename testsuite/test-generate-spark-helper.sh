@@ -3,7 +3,7 @@
 source test-common.sh
 source test-config.sh
 
-SetupSparkWordCountHDFSGenericNoCopy() {
+SetupSparkWordCountHDFSNoCopy() {
     local files=$@
 
     sed -i \
@@ -12,17 +12,17 @@ SetupSparkWordCountHDFSGenericNoCopy() {
         ${files}
 }
 
-SetupSparkWordCountHDFSGenericCopyIn() {
+SetupSparkWordCountHDFSCopyIn() {
     local files=$@
 
-    SetupSparkWordCountHDFSGenericNoCopy ${files}
+    SetupSparkWordCountHDFSNoCopy ${files}
 
     sed -i \
         -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
         ${files}
 }
 
-SetupSparkWordCountRawNetworkFSGenericNoCopy() {
+SetupSparkWordCountRawNetworkFSNoCopy() {
     local files=$@
     
     sed -i \

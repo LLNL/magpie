@@ -39,7 +39,7 @@ GenerateDefaultStandardTests() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in-no-local-dir
 
-        SetupSparkWordCountHDFSGenericCopyIn `ls \
+        SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in* \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-default-run-sparkwordcount-copy-in*`
     fi

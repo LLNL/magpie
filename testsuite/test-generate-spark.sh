@@ -138,10 +138,10 @@ __GenerateSparkStandardTests_WordCount() {
         -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs*
 
-    SetupSparkWordCountHDFSGenericCopyIn `ls \
+    SetupSparkWordCountHDFSCopyIn `ls \
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
-    SetupSparkWordCountRawNetworkFSGenericNoCopy `ls \
+    SetupSparkWordCountRawNetworkFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*run-sparkwordcount*`
 
     sed -i \
@@ -254,10 +254,10 @@ __GenerateSparkStandardTests_YarnWordCount_requireyarn() {
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*
 
-    SetupSparkWordCountHDFSGenericCopyIn `ls \
+    SetupSparkWordCountHDFSCopyIn `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
-    SetupSparkWordCountRawNetworkFSGenericNoCopy `ls \
+    SetupSparkWordCountRawNetworkFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
     sed -i \
@@ -357,14 +357,14 @@ __GenerateSparkDependencyTests_Dependency1HDFS_requiredecommissionhdfs() {
         -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark1A\/'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfsovernetworkfs*
 
-    SetupSparkWordCountHDFSGenericCopyIn `ls \
+    SetupSparkWordCountHDFSCopyIn `ls \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-copy-in*`
     
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-no-copy*`
 
     # Need to set to get through magpie-check-inputs
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfs-fewer-nodes*expected-failure`
 
     sed -i \
@@ -409,14 +409,14 @@ __GenerateSparkDependencyTests_Dependency2HDFS_requiredecommissionhdfs() {
         -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark2A\/'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfsovernetworkfs*
 
-    SetupSparkWordCountHDFSGenericCopyIn `ls \
+    SetupSparkWordCountHDFSCopyIn `ls \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-copy-in*`
     
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-no-copy*`
 
     # Need to set to get through magpie-check-inputs
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfs-fewer-nodes*expected-failure`
 
     sed -i \
@@ -461,13 +461,13 @@ __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs_requi
         -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark3A\/'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfsovernetworkfs*
 
-    SetupSparkWordCountHDFSGenericCopyIn `ls \
+    SetupSparkWordCountHDFSCopyIn `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-copy-in*`
     
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-no-copy*`
     # Need to set to get through magpie-check-inputs
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfs-fewer-nodes*expected-failure`
 
     sed -i \
@@ -512,14 +512,14 @@ __GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs_requi
         -e 's/export HADOOP_HDFSOVERNETWORKFS_PATH="\(.*\)"/export HADOOP_HDFSOVERNETWORKFS_PATH="'"${networkfsdirpathsubst}"'\/hdfsovernetworkfs\/DEPENDENCYPREFIX\/Spark4A\/'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfsovernetworkfs*
 
-    SetupSparkWordCountHDFSGenericCopyIn `ls \
+    SetupSparkWordCountHDFSCopyIn `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-copy-in*`
    
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-no-copy*`
     
     # Need to set to get through magpie-check-inputs
-    SetupSparkWordCountHDFSGenericNoCopy `ls \
+    SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfs-fewer-nodes*expected-failure`
 
     sed -i \
