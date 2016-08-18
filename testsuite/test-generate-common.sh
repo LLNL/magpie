@@ -105,6 +105,21 @@ SetupZookeeperShared() {
         ${files}
 }
 
+SetupZookeeperNetworkFSDependency() {
+    local dependencystr=$1
+    shift
+    local projectversion=$1
+    shift
+    local filesystem=$1
+    shift
+    local files=$@
+
+    sed -i \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/'"${filesystem}"'\/'"${dependencystr}"'\/'"${projectversion}"'"/' \
+        ${files}
+}
+
 CheckForDependency() {
     local project=$1
     local projectcheck=$2
