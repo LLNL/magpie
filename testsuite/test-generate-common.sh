@@ -25,6 +25,17 @@ GetHoursMinutesJob () {
     timeoutputforjob=`printf "%d:%02d" ${hours} ${minutesleft}`
 }
 
+SetupMagpieTestScript () {
+    local testscript=$1
+    shift
+    local files=$@
+
+    sed -i \
+        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
+        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/'"${testscript}"'"/' \
+        ${files}
+}
+
 JavaCommonSubstitution() {
     local javaversion=$1
 
