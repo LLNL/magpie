@@ -130,18 +130,6 @@ __GenerateSparkStandardTests_WordCount() {
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}* \
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*
 
-    SetupHDFSoverLustreStandard `ls \
-        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre*`
-
-    SetupHDFSoverNetworkFSStandard `ls \
-        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs*`
-
-    SetupSparkWordCountHDFSCopyIn `ls \
-        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
-
-    SetupSparkWordCountRawNetworkFSNoCopy `ls \
-        magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*run-sparkwordcount*`
-
     sed -i \
         -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
         -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pythonsparkwordcount-sparkstandalone.sh"/' \
@@ -167,6 +155,18 @@ __GenerateSparkStandardTests_WordCount() {
         -e 's/# export SPARK_LOCAL_SCRATCH_DIR_CLEAR="\(.*\)"/export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"/' \
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*localscratch* \
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*localscratch*
+
+    SetupHDFSoverLustreStandard `ls \
+        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre*`
+
+    SetupHDFSoverNetworkFSStandard `ls \
+        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs*`
+
+    SetupSparkWordCountHDFSCopyIn `ls \
+        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
+
+    SetupSparkWordCountRawNetworkFSNoCopy `ls \
+        magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*run-sparkwordcount*`
 
     JavaCommonSubstitution ${javaversion} `ls \
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}* \
@@ -242,22 +242,6 @@ __GenerateSparkStandardTests_YarnWordCount_requireyarn() {
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*
 
-    SetupHDFSoverLustreStandard `ls \
-        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre*run-sparkwordcount*`
-
-    SetupHDFSoverNetworkFSStandard `ls \
-        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs*run-sparkwordcount*`
-
-    SetupRawnetworkFSStandard `ls \
-        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
-        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*`
-
-    SetupSparkWordCountHDFSCopyIn `ls \
-        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
-
-    SetupSparkWordCountRawNetworkFSNoCopy `ls \
-        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
-
     sed -i \
         -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="script"/' \
         -e 's/# export SPARK_SCRIPT_PATH="\(.*\)"/export SPARK_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pythonsparkwordcount-yarn.sh"/' \
@@ -282,6 +266,22 @@ __GenerateSparkStandardTests_YarnWordCount_requireyarn() {
 	-e 's/# export SPARK_YARN_STAGING_DIR="\(.*\)"/export SPARK_YARN_STAGING_DIR="file:\/\/'"${rawnetworkfsdirpathsubst}"'\/sparkStaging\/'"${sparkversion}"'\/\"/' \
 	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
 	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*
+
+    SetupHDFSoverLustreStandard `ls \
+        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre*run-sparkwordcount*`
+
+    SetupHDFSoverNetworkFSStandard `ls \
+        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs*run-sparkwordcount*`
+
+    SetupRawnetworkFSStandard `ls \
+        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
+        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*`
+
+    SetupSparkWordCountHDFSCopyIn `ls \
+        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
+
+    SetupSparkWordCountRawNetworkFSNoCopy `ls \
+        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
     JavaCommonSubstitution ${javaversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
@@ -444,6 +444,7 @@ __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs_requi
     
     SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*run-sparkwordcount-no-copy*`
+
     # Need to set to get through magpie-check-inputs
     SetupSparkWordCountHDFSNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*hdfs-fewer-nodes*expected-failure`
@@ -554,6 +555,10 @@ __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn() {
         -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*
 
+    sed -i \
+	-e 's/# export SPARK_YARN_STAGING_DIR="\(.*\)"/export SPARK_YARN_STAGING_DIR="file:\/\/'"${rawnetworkfsdirpathsubst}"'\/sparkStaging\/DEPENDENCYPREFIX\/Spark7A\/'"${sparkversion}"'\/\"/' \
+	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*
+
     SetupRawnetworkFSDependency "Spark7A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 
@@ -562,10 +567,6 @@ __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn() {
 
     __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark7A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-no-copy*`
-
-    sed -i \
-	-e 's/# export SPARK_YARN_STAGING_DIR="\(.*\)"/export SPARK_YARN_STAGING_DIR="file:\/\/'"${rawnetworkfsdirpathsubst}"'\/sparkStaging\/DEPENDENCYPREFIX\/Spark7A\/'"${sparkversion}"'\/\"/' \
-	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 }
@@ -584,6 +585,10 @@ __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn() {
         -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*
 
+    sed -i \
+	-e 's/# export SPARK_YARN_STAGING_DIR="\(.*\)"/export SPARK_YARN_STAGING_DIR="file:\/\/'"${rawnetworkfsdirpathsubst}"'\/sparkStaging\/DEPENDENCYPREFIX\/Spark8A\/'"${sparkversion}"'\/\"/' \
+	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*
+
     SetupRawnetworkFSDependency "Spark8A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 
@@ -593,10 +598,6 @@ __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn() {
     __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark8A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-no-copy*`
     
-    sed -i \
-	-e 's/# export SPARK_YARN_STAGING_DIR="\(.*\)"/export SPARK_YARN_STAGING_DIR="file:\/\/'"${rawnetworkfsdirpathsubst}"'\/sparkStaging\/DEPENDENCYPREFIX\/Spark8A\/'"${sparkversion}"'\/\"/' \
-	magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*
-
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 }
 

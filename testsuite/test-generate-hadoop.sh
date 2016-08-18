@@ -33,7 +33,6 @@ __GenerateHadoopStandardTests_StandardTerasort() {
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}*
     
     sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfs"/' magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk*
-    
     sed -i -e 's/export HADOOP_HDFS_PATH="\(.*\)"/export HADOOP_HDFS_PATH="'"${ssddirpathsubst}"'\/a"/' magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-single-path*
     sed -i -e 's/export HADOOP_HDFS_PATH="\(.*\)"/export HADOOP_HDFS_PATH="'"${ssddirpathsubst}"'\/a,'"${ssddirpathsubst}"'\/b,'"${ssddirpathsubst}"'\/c"/' magpie.${submissiontype}-hadoop-${hadoopversion}-hdfsondisk-multiple-paths*
 
@@ -137,12 +136,6 @@ __GenerateHadoopDependencyTests_Dependency3_requiredecommissionhdfs() {
 
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*
 
-    SetupHDFSoverLustreDependency "Hadoop3A" ${hadoopversion} `ls \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsoverlustre*`
-    
-    SetupHDFSoverNetworkFSDependency "Hadoop3A" ${hadoopversion} `ls \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsovernetworkfs*`
-    
     sed -i \
         -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
         -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopteragen.sh"/' \
@@ -152,6 +145,12 @@ __GenerateHadoopDependencyTests_Dependency3_requiredecommissionhdfs() {
         -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
         -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopterasort.sh"/' \
         magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*scriptterasort*
+
+    SetupHDFSoverLustreDependency "Hadoop3A" ${hadoopversion} `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsoverlustre*`
+    
+    SetupHDFSoverNetworkFSDependency "Hadoop3A" ${hadoopversion} `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*hdfsovernetworkfs*`
 
     SetupHadoopDecommissionHDFSNodes `ls \
         magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop3A*decommissionhdfsnodes*`
@@ -175,12 +174,6 @@ __GenerateHadoopDependencyTests_Dependency4_requiredecommissionhdfs() {
 
     sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*
 
-    SetupHDFSoverLustreDependency "Hadoop4A" ${hadoopversion} `ls \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsoverlustre*`
-    
-    SetupHDFSoverNetworkFSDependency "Hadoop4A" ${hadoopversion} `ls \
-        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsovernetworkfs*`
-
     sed -i \
         -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
         -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopteragen.sh"/' \
@@ -190,6 +183,12 @@ __GenerateHadoopDependencyTests_Dependency4_requiredecommissionhdfs() {
         -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="script"/' \
         -e 's/# export HADOOP_SCRIPT_PATH="\(.*\)"/export HADOOP_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hadoopterasort.sh"/' \
         magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*scriptterasort*
+
+    SetupHDFSoverLustreDependency "Hadoop4A" ${hadoopversion} `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsoverlustre*`
+    
+    SetupHDFSoverNetworkFSDependency "Hadoop4A" ${hadoopversion} `ls \
+        magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*hdfsovernetworkfs*`
 
     SetupHadoopDecommissionHDFSNodes `ls \
         magpie.${submissiontype}-hadoop-${hadoopversion}-DependencyHadoop4A*decommissionhdfsnodes*`

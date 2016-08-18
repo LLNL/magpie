@@ -20,12 +20,13 @@ __GenerateKafkaStandardTests_KafkaPerformance() {
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-networkfs-run-kafkaperformance-no-local-dir
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype} magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}-zookeeper-shared-zookeeper-local-run-kafkaperformance-no-local-dir
 
-    sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="kafka"/' magpie.${submissiontype}-kafka-*
-    sed -i -e 's/export KAFKA_SETUP=no/export KAFKA_SETUP=yes/' magpie.${submissiontype}-kafka-*
-    sed -i -e 's/export KAFKA_VERSION="\(.*\)"/export KAFKA_VERSION="'"${kafkaversion}"'"/' magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*
-
-    sed -i -e 's/export ZOOKEEPER_SETUP=no/export ZOOKEEPER_SETUP=yes/' magpie.${submissiontype}-kafka-*
-    sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*
+    sed -i \
+        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="kafka"/' \
+        -e 's/export KAFKA_SETUP=no/export KAFKA_SETUP=yes/' \
+        -e 's/export KAFKA_VERSION="\(.*\)"/export KAFKA_VERSION="'"${kafkaversion}"'"/' \
+        -e 's/export ZOOKEEPER_SETUP=no/export ZOOKEEPER_SETUP=yes/' \
+        -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
+        magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*
     
     SetupZookeeperLocal `ls \
         magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*zookeeper-local*`
