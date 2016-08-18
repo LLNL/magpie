@@ -37,20 +37,9 @@ __GenerateCornerCaseTests_CatchProjectDependencies() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
 
-        sed -i \
-            -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+        SetupSparkWordCountHDFSGenericCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
-
-        sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
-            magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
-
-        sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
-            magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop`
 
         sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
@@ -1055,20 +1044,9 @@ __GenerateCornerCaseTests_RequireHDFS() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 
-        sed -i \
-            -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+        SetupSparkWordCountHDFSGenericCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
-
-        sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
-            magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
-
-        sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
-            magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs`
 
         sed -i \
             -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' \
