@@ -9,7 +9,7 @@ SetupZookeeperFromStorm() {
     sed -i \
         -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="zookeeper"/' \
         -e 's/export STORM_SETUP=yes/export STORM_SETUP=no/' \
-        -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' \
+        -e 's/export ZOOKEEPER_JOB="\(.*\)"/export ZOOKEEPER_JOB="zookeeperruok"/' \
         ${files}
 }
 
