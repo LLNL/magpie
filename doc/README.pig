@@ -126,10 +126,3 @@ Pig Patching
   https://issues.apache.org/jira/browse/PIG-3512
 
   It would be wise to recompile 0.12.0 with this fix.
-
-Pig Testing
------------
-
-Pig support was added/tested against version 0.12.0.  Please see
-testsuite to see all versions of Pig that Magpie has been atleast
-nominally tested with.

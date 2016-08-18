@@ -121,10 +121,3 @@ Mahout Patching
 
   Patches for all of these issues can be found in the patches/mahout/
   directory.
-
-Mahout Testing
---------------
-
-Mahout support was added/tested against verison 0.11.1.  Please see
-testsuite to see all versions of Mahout that Magpie has been atleast
-nominally tested with.

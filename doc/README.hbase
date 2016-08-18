@@ -169,11 +169,3 @@ Hbase Patching
 - If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/hbase/
   with the "no-local-dir.patch" suffix in the filename can be found
   for support.  See README.no-local-dir for more details.
-
-Hbase Testing
--------------
-
-Hbase was tested against hbase-0.96.1.1-hadoop2.  It has only been
-tested against HDFS based file systems.  Nominal testing was done with
-Hbase 0.98.3-hadoop2, 0.98.9-hadoop2, 0.99.0, 0.99.1, 0.99.2, 1.0.0,
-1.0.1, 1.0.1.1, 1.0.2, 1.1.0, 1.1.0.1, and 1.1.2.

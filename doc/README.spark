@@ -348,13 +348,6 @@ Spark Patching
   with the "no-local-dir.patch" suffix in the filename can be found
   for support.  See README.no-local-dir for more details.
 
-Spark Testing
--------------
-
-Spark was added/tested against spark-0.9.1 and spark-1.0.0.  Please
-see testsuite to see all versions of Spark that Magpie has been
-atleast nominally tested with.
-
 Spark Troubleshooting
 ---------------------
 
