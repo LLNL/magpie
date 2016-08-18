@@ -9,6 +9,8 @@ source ../magpie/lib/magpie-lib-version-helper
 __SetupSparkWordCountRawNetworkFSDependencyNoCopy() {
     local dependencystr=$1
     shift
+    local sparkversion=$1
+    shift
     local files=$@
 
     sed -i \
@@ -20,9 +22,11 @@ __SetupSparkWordCountRawNetworkFSDependencyNoCopy() {
 __SetupSparkWordCountRawNetworkFSDependencyCopyIn() {
     local dependencystr=$1
     shift
+    local sparkversion=$1
+    shift
     local files=$@
 
-    __SetupSparkWordCountRawNetworkFSDependencyNoCopy ${dependencystr} ${files}
+    __SetupSparkWordCountRawNetworkFSDependencyNoCopy ${dependencystr} ${sparkversion} ${files}
 
     sed -i \
         -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
@@ -542,10 +546,10 @@ __GenerateSparkDependencyTests_Dependency5rawnetworkfs() {
         -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*
 
-    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark5A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark5A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*run-sparkwordcount-copy-in*`
 
-    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark5A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark5A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*run-sparkwordcount-no-copy*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*`
@@ -563,10 +567,10 @@ __GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
         -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*
     
-    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark6A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark6A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*run-sparkwordcount-copy-in*`
 
-    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark6A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark6A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*run-sparkwordcount-no-copy*`
     
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*`
@@ -588,10 +592,10 @@ __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn() {
         -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*
 
-    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark7A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark7A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-copy-in*`
 
-    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark7A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark7A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-no-copy*`
 
     sed -i \
@@ -617,10 +621,10 @@ __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn() {
         -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*
     
-    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark8A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyCopyIn "Spark8A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-copy-in*`
 
-    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark8A" `ls \
+    __SetupSparkWordCountRawNetworkFSDependencyNoCopy "Spark8A" ${sparkversion} `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-no-copy*`
     
     sed -i \
