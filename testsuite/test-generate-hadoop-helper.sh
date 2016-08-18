@@ -91,7 +91,7 @@ SetupHadoopDecommissionHDFSNodes() {
 
     sed -i \
         -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="hadoop"/' \
-        -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="decommissionhdfsnodes"/' \
+        -e 's/export HADOOP_JOB="\(.*\)"/export HADOOP_JOB="decommissionhdfsnodes"/' \
         -e 's/# export HADOOP_DECOMMISSION_HDFS_NODE_SIZE=.*/export HADOOP_DECOMMISSION_HDFS_NODE_SIZE='"${basenodecount}"'/' \
         -e 's/export HBASE_SETUP=\(.*\)/export HBASE_SETUP=no/' \
         -e 's/export SPARK_SETUP=\(.*\)/export SPARK_SETUP=no/' \
