@@ -3,6 +3,16 @@
 source test-common.sh
 source test-config.sh
 
+SetupZookeeperFromStorm() {
+    local files=$@
+
+    sed -i \
+        -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="zookeeper"/' \
+        -e 's/export STORM_SETUP=yes/export STORM_SETUP=no/' \
+        -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' \
+        ${files}
+}
+
 SetupZookeeperLocal() {
     local files=$@
     

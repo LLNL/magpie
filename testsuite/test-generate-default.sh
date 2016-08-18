@@ -2,6 +2,8 @@
 
 source test-generate-common.sh
 source test-config.sh
+source test-generate-spark-helper.sh
+source test-generate-zookeeper-helper.sh
 
 GenerateDefaultStandardTests() {
 
@@ -51,11 +53,8 @@ GenerateDefaultStandardTests() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-default-run-zookeeperruok
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-default-run-zookeeperruok-no-local-dir
 
-        sed -i \
-            -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="zookeeper"/' \
-            -e 's/export STORM_SETUP=\(.*\)/export STORM_SETUP=no/' \
-            -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' \
-            magpie.${submissiontype}-zookeeper-default-run-zookeeperruok*
+        SetupZookeeperFromStorm `ls \
+            magpie.${submissiontype}-zookeeper-default-run-zookeeperruok*`
     fi
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-default-run-checkzeppelinup
