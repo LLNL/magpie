@@ -48,7 +48,7 @@ __GenerateCornerCaseTests_CatchProjectDependencies() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
 
         sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-wordcountfile\"/' \
+            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-catchprojectdependency-hadoop \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-catchprojectdependency-hadoop
 
@@ -1081,7 +1081,7 @@ __GenerateCornerCaseTests_RequireHDFS() {
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 
         sed -i \
-            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-wordcountfile\"/' \
+            -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-requirehdfs
 
