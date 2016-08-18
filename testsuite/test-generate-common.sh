@@ -71,6 +71,40 @@ SetupSparkWordCountRawNetworkFSGenericNoCopy() {
         ${files}
 }
 
+SetupZookeeperLocal() {
+    local files=$@
+    
+    sed -i \
+        -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="\(.*\)"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' \
+        ${files}
+}
+
+SetupZookeeperNetworkFS() {
+    local files=$@
+    
+    sed -i \
+        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
+        ${files}
+}
+
+SetupZookeeperNotShared() {
+    local files=$@
+    
+    sed -i \
+        -e 's/# export ZOOKEEPER_SHARE_NODES=\(.*\)/export ZOOKEEPER_SHARE_NODES=no/' \
+        ${files}
+}
+
+SetupZookeeperShared() {
+    local files=$@
+    
+    sed -i \
+        's/# export ZOOKEEPER_SHARE_NODES=\(.*\)/export ZOOKEEPER_SHARE_NODES=yes/' \
+        ${files}
+}
+
 CheckForDependency() {
     local project=$1
     local projectcheck=$2

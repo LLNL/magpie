@@ -21,12 +21,11 @@ __GenerateZookeeperStandardTests_RUOK() {
 
     sed -i -e 's/export ZOOKEEPER_MODE="\(.*\)"/export ZOOKEEPER_MODE="zookeeperruok"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*
 
-    sed -i -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="yes"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-local*
+    SetupZookeeperLocal `ls \
+        magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-local*`
 
-    sed -i -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-local* 
-
-    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-networkfs* 
-    sed -i -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-local* 
+    SetupZookeeperNetworkFS `ls \
+        magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-networkfs*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-zookeeper-${zookeeperversion}*`
 }
