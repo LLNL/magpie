@@ -11,9 +11,10 @@ __GenerateZeppelinStandardTests_BasicTests() {
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
-    sed -i -e 's|export SPARK_VERSION="\(.*\)"|export SPARK_VERSION="'"${sparkversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
-
-    sed -i -e 's|export ZEPPELIN_VERSION="\(.*\)"|export ZEPPELIN_VERSION="'"${zeppelinversion}"'"|' magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
+    sed -i \
+        -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' \
+        -e 's/export ZEPPELIN_VERSION="\(.*\)"/export ZEPPELIN_VERSION="'"${zeppelinversion}"'"/' \
+        magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-zeppelin-${zeppelinversion}-spark-${sparkversion}-run-checkzeppelinup`
 }
