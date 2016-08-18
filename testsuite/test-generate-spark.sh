@@ -6,15 +6,6 @@ source test-config.sh
 source ../magpie/lib/magpie-lib-helper
 source ../magpie/lib/magpie-lib-version-helper
 
-__SetupSparkWordCountRawNetworkFSGenericNoCopy() {
-    local files=$@
-
-    sed -i \
-        -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-        -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
-        ${files}
-}
-
 __SetupSparkWordCountRawNetworkFSDependencyNoCopy() {
     local dependencystr=$1
     shift
@@ -144,7 +135,7 @@ __GenerateSparkStandardTests_WordCount() {
     SetupSparkWordCountHDFSGenericCopyIn `ls \
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
-    __SetupSparkWordCountRawNetworkFSGenericNoCopy `ls \
+    SetupSparkWordCountRawNetworkFSGenericNoCopy `ls \
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*run-sparkwordcount*`
 
     sed -i \
@@ -264,7 +255,7 @@ __GenerateSparkStandardTests_YarnWordCount_requireyarn() {
     SetupSparkWordCountHDFSGenericCopyIn `ls \
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
-    __SetupSparkWordCountRawNetworkFSGenericNoCopy `ls \
+    SetupSparkWordCountRawNetworkFSGenericNoCopy `ls \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount*`
 
     sed -i \

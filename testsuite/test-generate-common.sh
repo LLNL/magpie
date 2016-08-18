@@ -62,6 +62,15 @@ SetupSparkWordCountHDFSGenericCopyIn() {
         ${files}
 }
 
+SetupSparkWordCountRawNetworkFSGenericNoCopy() {
+    local files=$@
+    
+    sed -i \
+        -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+        -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
+        ${files}
+}
+
 CheckForDependency() {
     local project=$1
     local projectcheck=$2
