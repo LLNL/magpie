@@ -93,10 +93,3 @@ ZOOKEEPER_CONF_DIR : the directory that Zookeeper configuration files
           	     local to the node are stored.
 
 ZOOKEEPER_LOG_DIR : the directory Zookeeper log files are stored
-
-Zookeeper Testing
------------------
-
-Zookeeper support was added/tested against version 3.4.5.  Please see
-testsuite to see all versions of Zookeeper that Magpie has been
-atleast nominally tested with.
