@@ -83,7 +83,7 @@ __GeneratePigDependencyTests_Dependency1() {
 
     sed -i \
         -e 's/export PIG_MODE="\(.*\)"/export PIG_MODE="script"/' \
-        -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testsuite\/test-pig.pig"/' \
+        -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pig.pig"/' \
         magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*no-copy-run-pigscript*
     
     SetupHDFSoverLustreDependency "Pig1A" ${pigversion} `ls \
