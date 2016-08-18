@@ -138,8 +138,6 @@ Phoenix Patching
   Patches for this can be found in the patches/phoenix/ directory with
   'bin-java-home' in the filename.
 
-  This bug is being tracked in:
+  This bug was being tracked in:
   
   https://issues.apache.org/jira/browse/PHOENIX-2303
-
-  This patch is needed against atleast Phoenix 4.5.X, and 4.6.0.
