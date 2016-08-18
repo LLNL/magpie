@@ -3,6 +3,7 @@
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
+source test-generate-hadoop-helper.sh
 source ../magpie/lib/magpie-lib-helper
 
 __GenerateHadoopStandardTests_StandardTerasort() {

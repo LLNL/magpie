@@ -3,6 +3,7 @@
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
+source test-generate-zookeeper-helper.sh
 
 __GenerateStormStandardTests_StandardWordCount() {
     local stormversion=$1

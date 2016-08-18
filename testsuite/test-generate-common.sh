@@ -43,83 +43,6 @@ JavaCommonSubstitution() {
     fi
 }
 
-SetupSparkWordCountHDFSGenericNoCopy() {
-    local files=$@
-
-    sed -i \
-        -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-        -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
-        ${files}
-}
-
-SetupSparkWordCountHDFSGenericCopyIn() {
-    local files=$@
-
-    SetupSparkWordCountHDFSGenericNoCopy ${files}
-
-    sed -i \
-        -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
-        ${files}
-}
-
-SetupSparkWordCountRawNetworkFSGenericNoCopy() {
-    local files=$@
-    
-    sed -i \
-        -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
-        -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
-        ${files}
-}
-
-SetupZookeeperLocal() {
-    local files=$@
-    
-    sed -i \
-        -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="\(.*\)"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' \
-        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' \
-        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="local"/' \
-        ${files}
-}
-
-SetupZookeeperNetworkFS() {
-    local files=$@
-    
-    sed -i \
-        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
-        ${files}
-}
-
-SetupZookeeperNotShared() {
-    local files=$@
-    
-    sed -i \
-        -e 's/# export ZOOKEEPER_SHARE_NODES=\(.*\)/export ZOOKEEPER_SHARE_NODES=no/' \
-        ${files}
-}
-
-SetupZookeeperShared() {
-    local files=$@
-    
-    sed -i \
-        's/# export ZOOKEEPER_SHARE_NODES=\(.*\)/export ZOOKEEPER_SHARE_NODES=yes/' \
-        ${files}
-}
-
-SetupZookeeperNetworkFSDependency() {
-    local dependencystr=$1
-    shift
-    local projectversion=$1
-    shift
-    local filesystem=$1
-    shift
-    local files=$@
-
-    sed -i \
-        -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
-        -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${zookeeperdatadirpathsubst}"'\/zookeeper\/DEPENDENCYPREFIX\/'"${filesystem}"'\/'"${dependencystr}"'\/'"${projectversion}"'"/' \
-        ${files}
-}
-
 CheckForDependency() {
     local project=$1
     local projectcheck=$2
@@ -133,25 +56,6 @@ CheckForDependency() {
     then
         echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
         break
-    fi
-}
-
-CheckForHadoopDecomissionMinimum() {
-    local testfunction=$1
-    local project=$2
-    local projectcheck=$3
-    local projectversion=$4
-    local projectminimum=$5
-
-    if echo ${testfunction} | grep -q "requiredecommissionhdfs"
-    then
-        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${projectversion} ${projectminimum}
-        if [ $? == "2" ]
-        then
-            #echo "Cannot generate ${project} tests that depend on ${projectcheck} ${projectversion}, minimum needed for tests is ${projectminimum}"
-            continue
-        fi
     fi
 }
 

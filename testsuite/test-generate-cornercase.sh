@@ -2,6 +2,7 @@
 
 source test-generate-common.sh
 source test-config.sh
+source test-generate-spark-helper.sh
 
 __GenerateCornerCaseTests_CatchProjectDependencies() {
     if [ "${pigtests}" == "y" ]; then

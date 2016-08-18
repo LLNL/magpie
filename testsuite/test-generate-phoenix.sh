@@ -3,6 +3,7 @@
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
+source test-generate-zookeeper-helper.sh
 source ../magpie/lib/magpie-lib-helper
 source ../magpie/lib/magpie-lib-version-helper
 

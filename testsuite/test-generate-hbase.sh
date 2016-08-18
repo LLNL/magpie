@@ -3,6 +3,8 @@
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
+source test-generate-hadoop-helper.sh
+source test-generate-zookeeper-helper.sh
 
 __GenerateHbaseStandardTests_StandardPerformanceEval() {
     local hbaseversion=$1

@@ -2,6 +2,7 @@
 
 source test-generate-common.sh
 source test-config.sh
+source test-generate-spark-helper.sh
 
 __GenerateFunctionalityTests_LegacySubmissionType() {
     if [ "${hadooptests}" == "y" ]; then

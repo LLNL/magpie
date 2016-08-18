@@ -1,0 +1,32 @@
+#!/bin/bash
+
+source test-common.sh
+source test-config.sh
+
+SetupSparkWordCountHDFSGenericNoCopy() {
+    local files=$@
+
+    sed -i \
+        -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+        -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"hdfs:\/\/\/user\/\${USER}\/test-wordcountfile\"/' \
+        ${files}
+}
+
+SetupSparkWordCountHDFSGenericCopyIn() {
+    local files=$@
+
+    SetupSparkWordCountHDFSGenericNoCopy ${files}
+
+    sed -i \
+        -e 's/# export SPARK_SPARKWORDCOUNT_COPY_IN_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_COPY_IN_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
+        ${files}
+}
+
+SetupSparkWordCountRawNetworkFSGenericNoCopy() {
+    local files=$@
+    
+    sed -i \
+        -e 's/export SPARK_MODE="\(.*\)"/export SPARK_MODE="sparkwordcount"/' \
+        -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
+        ${files}
+}
