@@ -46,9 +46,19 @@ then
         Magpie_output_internal_error "${HADOOP_CONF_DIR}/masters does not exist"
     fi
 
-    if [ ! -f "${HADOOP_CONF_DIR}/slaves" ]
-    then 
-        Magpie_output_internal_error "${HADOOP_CONF_DIR}/slaves does not exist"
+    if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+    then
+        if [ ! -f "${HADOOP_CONF_DIR}/workers" ]
+        then 
+            Magpie_output_internal_error "${HADOOP_CONF_DIR}/workers does not exist"
+        fi
+        hadoopslavesfile="${HADOOP_CONF_DIR}/workers"
+    else
+        if [ ! -f "${HADOOP_CONF_DIR}/slaves" ]
+        then 
+            Magpie_output_internal_error "${HADOOP_CONF_DIR}/slaves does not exist"
+        fi
+        hadoopslavesfile="${HADOOP_CONF_DIR}/slaves"
     fi
 
     # There are few duplicated exports we do b/c they are needed
@@ -72,9 +82,11 @@ then
         export HADOOP_NAMENODE_PORT="${default_hadoop_hdfs_namenode_address}"
     fi
     
-    export HADOOP_SLAVE_COUNT=`cat ${HADOOP_CONF_DIR}/slaves|wc -l`
-    
+    export HADOOP_SLAVE_COUNT=`cat ${hadoopslavesfile}|wc -l`
     export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
+
+    export HADOOP_WORKER_COUNT=${HADOOP_SLAVE_COUNT}
+    export HADOOP_WORKER_CORE_COUNT=${HADOOP_SLAVE_CORE_COUNT}
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]

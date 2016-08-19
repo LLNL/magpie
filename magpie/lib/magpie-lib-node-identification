@@ -86,7 +86,12 @@ __Magpie_am_I_a_project_node () {
 }
 
 Magpie_am_I_a_hadoop_node () {
-    __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "slaves"
+    if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+    then
+        __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "workers"
+    else
+        __Magpie_am_I_a_project_node ${HADOOP_CONF_DIR} "hadoopnoderank" "masters" "slaves"
+    fi
     return $?
 }
 

@@ -85,13 +85,17 @@ __Magpie_make_hadoop_local_dirs () {
             export HADOOP_PID_DIR=`echo $HADOOP_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
         fi
 
-        export YARN_CONF_DIR=${HADOOP_CONF_DIR}
-        export YARN_LOG_DIR=${HADOOP_LOG_DIR}
-        export YARN_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_SCRATCHSPACE_DIR}
-        export YARN_PID_DIR=${HADOOP_PID_DIR}
-
-        # Hadoop has this completely random other one
-        export HADOOP_MAPRED_PID_DIR=${HADOOP_PID_DIR}
+        # Hadoop 3.0 only wants primary ones, no extra ones
+        if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+        then
+            export YARN_CONF_DIR=${HADOOP_CONF_DIR}
+            export YARN_LOG_DIR=${HADOOP_LOG_DIR}
+            export YARN_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_SCRATCHSPACE_DIR}
+            export YARN_PID_DIR=${HADOOP_PID_DIR}
+            
+            # Hadoop has this completely random other one
+            export HADOOP_MAPRED_PID_DIR=${HADOOP_PID_DIR}
+        fi
     fi
 }
 

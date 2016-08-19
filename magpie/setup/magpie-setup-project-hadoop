@@ -55,7 +55,12 @@ extrahadoopopts=""
 extrayarnopts=""
 extrahadooptaskopts=""
 
-cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
+if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+then
+    cp ${HADOOP_CONF_DIR}/workers ${HADOOP_CONF_DIR}/hosts-include
+else
+    cp ${HADOOP_CONF_DIR}/slaves ${HADOOP_CONF_DIR}/hosts-include
+fi
 hostsincludefile="${HADOOP_CONF_DIR}/hosts-include"
 hostsincludefilesubst=`echo "${hostsincludefile}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -560,12 +565,20 @@ fi
 
 Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "core-site-2.X.xml" "pre_coresitexml"
 Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-site-2.X.xml" "pre_mapredsitexml"
-Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-2.X.sh" "pre_hadoopenvsh"
 Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hdfs-site-2.X.xml" "pre_hdfssitexml"
-Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-2.X.properties" "pre_log4jproperties"
-Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-env-2.X.sh" "pre_mapredenvsh"
 Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-site-2.X.xml" "pre_yarnsitexml"
-Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-env-2.X.sh" "pre_yarnenvsh"
+if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+then
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-2.X.properties" "pre_log4jproperties"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-2.X.sh" "pre_hadoopenvsh"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "mapred-env-2.X.sh" "pre_mapredenvsh"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "yarn-env-2.X.sh" "pre_yarnenvsh"
+elif echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+then
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-env-3.X.sh" "pre_hadoopenvsh"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop.log4j-3.X.properties" "pre_log4jproperties"
+    Magpie_find_conffile "Hadoop" ${HADOOP_CONF_FILES:-""} "hadoop-user-functions-3-X.sh" "pre_hadoopuserfunctions"
+fi
 
 post_coresitexml=${HADOOP_CONF_DIR}/core-site.xml
 post_mapredsitexml=${HADOOP_CONF_DIR}/mapred-site.xml
@@ -575,6 +588,7 @@ post_yarnsitexml=${HADOOP_CONF_DIR}/yarn-site.xml
 post_yarnenvsh=${HADOOP_CONF_DIR}/yarn-env.sh
 post_hdfssitexml=${HADOOP_CONF_DIR}/hdfs-site.xml
 post_log4jproperties=${HADOOP_CONF_DIR}/log4j.properties
+post_hadoopuserfunctions=${HADOOP_CONF_DIR}/hadoop-user-functions.sh
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 extrahadoopoptssubst=`echo "${extrahadoopopts}" | sed "s/\\//\\\\\\\\\//g"`
@@ -627,9 +641,16 @@ if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
     echo "export HADOOP_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hadoopenvsh}
 fi
-if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
+
+# Hadoop 3.0, could use pdsh, need to setup appropriately
+if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
 then
-    echo "export HADOOP_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hadoopenvsh}
+    if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+    then
+        remotecmdbase=`basename ${MAGPIE_REMOTE_CMD}`
+        echo "export PDSH_RCMD_TYPE=\"$remotecmdbase\"" >> ${post_yarnenvsh}
+    fi
 fi
 
 if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
@@ -730,61 +751,66 @@ then
         -e "s/YARNPMEMCHECK/${yarnpmemcheck}/g" \
         ${post_yarnsitexml}
     
-    hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-
-    cp ${pre_mapredenvsh} ${post_mapredenvsh}
-
-    sed -i \
-        -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
-        -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-        -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
-        -e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
-        -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
-        -e "s/HADOOPHOME/${hadoophomesubst}/g" \
-        -e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
-        -e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
-        ${post_mapredenvsh}
-
-    yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    yarnpiddirsubst=`echo "${YARN_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
-    yarncommonhomesubst=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-    hadoopyarnhomesubst=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-
-    extrayarnlibrarypathsubst=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
-    extrayarnoptssubst=`echo "${extrayarnopts}" | sed "s/\\//\\\\\\\\\//g"`
-
-    cp ${pre_yarnenvsh} ${post_yarnenvsh}
-
-    sed -i \
-        -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
-        -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
-        -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
-        -e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
-        -e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
-        -e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \
-        -e "s/YARNPIDDIR/${yarnpiddirsubst}/g" \
-        -e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
-        -e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
-        -e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
-        -e "s/EXTRAYARNOPTS/${extrayarnoptssubst}/g" \
-        ${post_yarnenvsh}
-
-    if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+    # Only hadoop-env.sh for Hadoop 3.0
+    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
     then
-        echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${post_yarnenvsh}
-    fi
-    if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
-    then
+        hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+        hadoopconfdirsubst=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+        hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+        hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+        hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+        
+        cp ${pre_mapredenvsh} ${post_mapredenvsh}
+        
+        sed -i \
+            -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+            -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+            -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
+            -e "s/HADOOPMAPREDLOGDIR/${hadoopmapredlogdirsubst}/g" \
+            -e "s/HADOOPCONFDIR/${hadoopconfdirsubst}/g" \
+            -e "s/HADOOPHOME/${hadoophomesubst}/g" \
+            -e "s/HADOOPCOMMONHOME/${hadoopcommonhomesubst}/g" \
+            -e "s/HADOOPMAPREDHOME/${hadoopmapredhomesubst}/g" \
+            ${post_mapredenvsh}
+
+        cp ${pre_yarnenvsh} ${post_yarnenvsh}
+        
+        yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+        yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+        yarnpiddirsubst=`echo "${YARN_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+        yarncommonhomesubst=`echo "${YARN_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+        hadoopyarnhomesubst=`echo "${HADOOP_YARN_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+        extrayarnlibrarypathsubst=`echo "${extrayarnlibrarypath}" | sed "s/\\//\\\\\\\\\//g"`
+        extrayarnoptssubst=`echo "${extrayarnopts}" | sed "s/\\//\\\\\\\\\//g"`
+
+        sed -i \
+            -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
+            -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
+            -e "s/HADOOPTIMEOUTSECONDS/${magpie_hadoop_stop_timeout}/g" \
+            -e "s/YARNUSERNAME/${HADOOP_YARN_USER}/g" \
+            -e "s/YARNCONFDIR/${yarnconfdirsubst}/g" \
+            -e "s/YARNLOGDIR/${yarnlogdirsubst}/g" \
+            -e "s/YARNPIDDIR/${yarnpiddirsubst}/g" \
+            -e "s/YARNCOMMONHOME/${yarncommonhomesubst}/g" \
+            -e "s/HADOOPYARNHOME/${hadoopyarnhomesubst}/g" \
+            -e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
+            -e "s/EXTRAYARNOPTS/${extrayarnoptssubst}/g" \
+            ${post_yarnenvsh}
+        
+        if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+        then
+            echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${post_yarnenvsh}
+        fi
         echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_yarnenvsh}
-    fi
-
-    if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
-    then
-        cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
-    else
-        echo "ulimit -n ${magpie_openfilescount}" >> ${post_yarnenvsh}
-        echo "ulimit -u ${magpie_userprocessescount}" >> ${post_yarnenvsh}
+        
+        if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
+        then
+            cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
+        else
+            echo "ulimit -n ${magpie_openfilescount}" >> ${post_yarnenvsh}
+            echo "ulimit -u ${magpie_userprocessescount}" >> ${post_yarnenvsh}
+        fi
     fi
 fi
 
@@ -815,6 +841,11 @@ then
         -e "s/DFSBACKUPHTTPADDRESS/${default_hadoop_hdfs_namenode_backup_http_address}/g" \
         -e "s/DFSPERMISSIONSSUPERUSERGROUP/${USER}/g" \
         ${post_hdfssitexml}
+fi
+
+if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+then
+    cp ${pre_hadoopuserfunctions} ${post_hadoopuserfunctions}
 fi
 
 exit 0

@@ -357,6 +357,8 @@ Magpie_run_start_hadoop () {
                     echo "setenv HADOOP_MASTER_NODE \"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "setenv HADOOP_SLAVE_COUNT \"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "setenv HADOOP_SLAVE_CORE_COUNT \"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "setenv HADOOP_WORKER_COUNT \"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "setenv HADOOP_WORKER_CORE_COUNT \"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if Magpie_hadoop_filesystem_mode_is_hdfs_type
                     then
                         echo "setenv HADOOP_NAMENODE \"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -374,6 +376,8 @@ Magpie_run_start_hadoop () {
                     echo "export HADOOP_MASTER_NODE=\"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "export HADOOP_SLAVE_COUNT=\"${HADOOP_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "export HADOOP_SLAVE_CORE_COUNT=\"${HADOOP_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "export HADOOP_WORKER_COUNT=\"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "export HADOOP_WORKER_CORE_COUNT=\"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if Magpie_hadoop_filesystem_mode_is_hdfs_type
                     then
                         echo "export HADOOP_NAMENODE=\"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -422,7 +426,12 @@ Magpie_run_start_hadoop () {
         then
             if Magpie_hadoop_setup_type_enables_yarn
             then
-                ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
+                if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+                then
+                    ${hadoopcmdprefix}/mapred --config "${HADOOP_CONF_DIR}" --daemon start historyserver
+                else
+                    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver
+                fi
             fi
         fi
 
@@ -512,7 +521,12 @@ Magpie_run_stop_hadoop () {
             if Magpie_hadoop_setup_type_enables_yarn
             then
                 ${hadoopsetupscriptprefix}/stop-yarn.sh
-                ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver
+                if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
+                then
+                    ${hadoopcmdprefix}/mapred --config "${HADOOP_CONF_DIR}" --daemon stop historyserver
+                else
+                    ${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver
+                fi
             fi
 
             # Make variables specific now within Magpie

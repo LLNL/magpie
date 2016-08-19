@@ -399,7 +399,7 @@ then
         exit 1
     fi
 
-    if ! echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+    if ! echo ${HADOOP_VERSION} | grep -q -E "[2-3]\.[0-9]\.[0-9]"
     then 
         echo "HADOOP_VERSION = ${HADOOP_VERSION} not supported"
         exit 1
