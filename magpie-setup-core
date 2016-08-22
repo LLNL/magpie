@@ -60,6 +60,7 @@ do
     setupvar="${project}_SETUP"
     confdirvar="${project}_CONF_DIR"
     logdirvar="${project}_LOG_DIR"
+    piddirvar="${project}_PID_DIR"
     localscratchspacedirvar="${project}_LOCAL_SCRATCHSPACE_DIR"
 
     if [ "${!setupvar}" == "yes" ]
@@ -78,6 +79,15 @@ do
             mkdir -p ${!logdirvar}
             if [ $? -ne 0 ] ; then
                 echo "mkdir failed making ${!logdirvar}"
+                exit 1
+            fi
+        fi
+
+        if [ "${!piddirvar}X" != "X" ]
+        then
+            mkdir -p ${!piddirvar}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${!piddirvar}"
                 exit 1
             fi
         fi
