@@ -57,6 +57,7 @@ PROJECT_DIR_PATH="\${HOME}/hadoop"
 
 JAVA16PATH="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
 JAVA17PATH="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+JAVA18PATH="/usr/lib/jvm/jre-1.8.0-oracle.x86_64/"
 DEFAULT_JAVA_HOME=$JAVA17PATH
 
 # Adjust accordingly, most of you probably want ssh instead of mrsh

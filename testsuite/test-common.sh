@@ -2,6 +2,7 @@
 
 java16="1.6"
 java17="1.7"
+java18="1.8"
 
 hadoop_decomissionhdfs_minimum="2.3.0"
 

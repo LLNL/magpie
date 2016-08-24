@@ -37,6 +37,9 @@ JavaCommonSubstitution() {
     elif [ "${javaversion}" == "${java17}" ]
     then
         sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java17pathsubst}"'"/' ${files}
+    elif [ "${javaversion}" == "${java18}" ]
+    then
+        sed -i -e 's/export JAVA_HOME="\(.*\)"/export JAVA_HOME="'"${java18pathsubst}"'"/' ${files}
     else
         echo "Invalid Java Version Specified - ${javaversion}"
         exit 1
