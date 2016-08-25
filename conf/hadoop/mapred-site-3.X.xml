@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<property>
+  <name>mapreduce.task.io.sort.factor</name>
+  <value>IOSORTFACTOR</value>
+  <description>The number of streams to merge at once while sorting
+  files.  This determines the number of open file handles.</description>
+</property>
+
+<property>
+  <name>mapreduce.task.io.sort.mb</name>
+  <value>IOSORTMB</value>
+  <description>The total amount of buffer memory to use while sorting 
+  files, in megabytes.  By default, gives each merge stream 1MB, which
+  should minimize seeks.</description>
+</property>
+
+<property>
+  <name>mapreduce.cluster.local.dir</name>
+  <value>LOCALSTOREDIR</value>
+  <description>The local directory where MapReduce stores intermediate
+  data files.  May be a comma-separated list of
+  directories on different devices in order to spread disk i/o.
+  Directories that do not exist are ignored.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.jobtracker.system.dir</name>
+  <value>${hadoop.tmp.dir}/mapred/system</value>
+  <description>The directory where MapReduce stores control files.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.jobtracker.staging.root.dir</name>
+  <value>${hadoop.tmp.dir}/mapred/staging</value>
+  <description>The root of the staging area for users' job files
+  In practice, this should be the directory where users' home 
+  directories are located (usually /user)
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.cluster.temp.dir</name>
+  <value>${hadoop.tmp.dir}/mapred/temp</value>
+  <description>A shared directory for temporary files.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.reduce.shuffle.parallelcopies</name>
+  <value>MRPARALLELCOPIES</value>
+  <description>The default number of parallel transfers run by reduce
+  during the copy(shuffle) phase.
+  </description>
+</property>
+
+<property>
+  <name>mapred.child.java.opts</name>
+  <value>-XmxALLCHILDHEAPSIZEmHADOOPEXTRATASKJAVAOPTS</value>
+  <description>Java opts for the task tracker child processes.  
+  The following symbol, if present, will be interpolated: @taskid@ is replaced 
+  by current TaskID. Any other occurrences of '@' will go unchanged.
+  For example, to enable verbose gc logging to a file named for the taskid in
+  /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:
+        -Xmx2560m -verbose:gc -Xloggc:/tmp/@taskid@.gc
+  
+  Usage of -Djava.library.path can cause programs to no longer function if
+  hadoop native libraries are used. These values should instead be set as part 
+  of LD_LIBRARY_PATH in the map / reduce JVM env using the mapreduce.map.env and 
+  mapreduce.reduce.env config settings. 
+  </description>
+</property>
+
+<property>
+  <name>mapred.map.child.java.opts</name>
+  <value>-XmxMAPCHILDHEAPSIZEmHADOOPEXTRATASKJAVAOPTS</value>
+</property>
+
+<property>
+  <name>mapreduce.map.memory.mb</name>
+  <value>MAPCONTAINERMB</value>
+</property>
+
+<property>
+  <name>mapred.reduce.child.java.opts</name>
+  <value>-XmxREDUCECHILDHEAPSIZEmHADOOPEXTRATASKJAVAOPTS</value>
+</property>
+
+<property>
+  <name>mapreduce.reduce.memory.mb</name>
+  <value>REDUCECONTAINERMB</value>
+</property>
+
+<property>
+  <name>mapreduce.job.maps</name>
+  <value>DEFAULTMAPTASKS</value>
+  <description>The default number of map tasks per job.
+  Ignored when mapreduce.jobtracker.address is "local".
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.map.cpu.vcores</name>
+  <value>1</value>
+  <description>The number of virtual cores to request from the scheduler for
+  each map task.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.reduce.cpu.vcores</name>
+  <value>1</value>
+  <description>The number of virtual cores to request from the scheduler for
+  each reduce task.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.job.reduces</name>
+  <value>DEFAULTREDUCETASKS</value>
+  <description>The default number of reduce tasks per job. Typically set to 99%
+  of the cluster's reduce capacity, so that if a node fails the reduces can
+  still be executed in a single wave.
+  Ignored when mapreduce.jobtracker.address is "local".
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.job.reduce.slowstart.completedmaps</name>
+  <value>MRSLOWSTART</value>
+  <description>Fraction of the number of maps in the job which should be
+  complete before reduces are scheduled for the job.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.task.tmp.dir</name>
+  <value>${fs.defaultFS}/mapred/temp</value>
+  <description> To set the value of tmp directory for map and reduce tasks.
+  If the value is an absolute path, it is directly assigned. Otherwise, it is
+  prepended with task's working directory. The java tasks are executed with
+  option -Djava.io.tmpdir='the absolute path of the tmp dir'. Pipes and
+  streaming are set with environment variable,
+   TMPDIR='the absolute path of the tmp dir'
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.framework.name</name>
+  <value>yarn</value>
+  <description>The runtime framework for executing MapReduce jobs.
+  Can be one of local, classic or yarn.
+  </description>
+</property>
+
+<!-- Magpie will calculate based on recommendation of Cloudera/Experience -->
+<property>
+  <name>mapreduce.jobtracker.handler.count</name>
+  <value>JOBTRACKERHANDLERCOUNT</value>
+  <description>
+    The number of server threads for the JobTracker. This should be roughly
+    4% of the number of tasktracker nodes.
+  </description>
+</property>
+
+<!-- Set with recommendation of Cloudera -->
+<property>
+  <name>mapreduce.tasktracker.http.threads</name>
+  <value>80</value>
+  <description>The number of worker threads that for the http server. This is
+               used for map output fetching
+  </description>
+</property>
+
+<property>
+  <name>yarn.app.mapreduce.am.staging-dir</name>
+  <value>YARNAPPMAPREDUCEAMSTAGINGDIR</value>
+  <description>The staging dir used while submitting jobs.
+  </description>  
+</property>
+
+<property>
+  <name>yarn.app.mapreduce.am.command-opts</name>
+  <value>-Xmx1024mEXTRAHADOOPOPTS</value>
+  <description>Java opts for the MR App Master processes.
+  The following symbol, if present, will be interpolated: @taskid@ is replaced
+  by current TaskID. Any other occurrences of '@' will go unchanged.
+  For example, to enable verbose gc logging to a file named for the taskid in
+  /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:
+        -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc
+
+  Usage of -Djava.library.path can cause programs to no longer function if
+  hadoop native libraries are used. These values should instead be set as part
+  of LD_LIBRARY_PATH in the map / reduce JVM env using the mapreduce.map.env and
+  mapreduce.reduce.env config settings.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.output.fileoutputformat.compress</name>
+  <value>HADOOPCOMPRESSION</value>
+  <description>Should the job outputs be compressed?
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.map.output.compress</name>
+  <value>HADOOPCOMPRESSION</value>
+  <description>Should the outputs of the maps be compressed before being
+               sent across the network. Uses SequenceFile compression.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.jobtracker.hosts.filename</name>
+  <value>HADOOPHOSTSINCLUDEFILENAME</value>
+  <description>Names a file that contains the list of nodes that may
+  connect to the jobtracker.  If the value is empty, all hosts are
+  permitted.</description>
+</property>
+
+<property>
+  <name>mapreduce.jobtracker.hosts.exclude.filename</name>
+  <value>HADOOPHOSTSEXCLUDEFILENAME</value>
+  <description>Names a file that contains the list of hosts that
+  should be excluded by the jobtracker.  If the value is empty, no
+  hosts are excluded.</description>
+</property>
+
+<property>
+  <name>mapreduce.map.speculative</name>
+  <value>false</value>
+  <description>If true, then multiple instances of some map tasks
+               may be executed in parallel.</description>
+</property>
+
+<property>
+  <name>mapreduce.reduce.speculative</name>
+  <value>false</value>
+  <description>If true, then multiple instances of some reduce tasks
+               may be executed in parallel.</description>
+</property>
+
+<!-- jobhistory properties -->
+
+<property>
+  <name>mapreduce.jobhistory.address</name>
+  <value>HADOOP_MASTER_HOST:HADOOPJOBHISTORYADDRESS</value>
+  <description>MapReduce JobHistory Server IPC host:port</description>
+</property>
+
+<property>
+  <name>mapreduce.jobhistory.webapp.address</name>
+  <value>HADOOP_MASTER_HOST:HADOOPJOBHISTORYWEBAPPADDRESS</value>
+  <description>MapReduce JobHistory Server Web UI host:port</description>
+</property>
+
+<property>
+  <name>mapreduce.client.submit.file.replication</name>
+  <value>SUBMITFILEREPLICATION</value>
+  <description>The replication level for submitted job files.  This
+  should be around the square root of the number of nodes.
+  </description>
+</property>
+
+</configuration>
+
