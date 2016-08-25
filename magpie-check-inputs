@@ -204,6 +204,7 @@ __Magpie_check_must_be_set_and_is_directory "MAGPIE_SCRIPTS_HOME"
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-calculate-values
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
 then
@@ -411,7 +412,9 @@ then
             exit 1
         fi
 
-        if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
+        if [ $? == "2" ]
         then 
             echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.2.0 and more recent versions"
             exit 1
@@ -426,7 +429,9 @@ then
             exit 1
         fi
 
-        if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[3-9]\.[0-9]"
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${HADOOP_VERSION} "2.3.0"
+        if [ $? == "2" ]
         then 
             echo "HADOOP_MODE of ${HADOOP_MODE} only supported in Hadoop 2.3.0 and more recent versions"
             exit 1
@@ -563,7 +568,9 @@ then
             exit 1
         fi
 
-        if ! echo ${HADOOP_VERSION} | grep -q -E "[2-9]\.[2-9]\.[0-9]"
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
+        if [ $? == "2" ]
         then 
             echo "HDFS Fderation only supported in Hadoop 2.2.0 and more recent versions"
             exit 1
@@ -640,7 +647,9 @@ then
         exit 1
     fi
 
-    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+    Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
+    if [ $? == "2" ]
     then 
         echo "HADOOP UDA only supported in Hadoop 2.2.0 and more recent versions"
         exit 1
