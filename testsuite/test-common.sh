@@ -12,9 +12,11 @@ hadoop2Xjava17versions="2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5 2.7.0 2.7.1 2.7.2 2.
 hadoop2Xjava17versions_javaversion=${java17}
 hadoop2Xjava18versions="2.7.4 2.7.5"
 hadoop2Xjava18versions_javaversion=${java18}
+hadoop3Xjava17versions="3.0.0"
+hadoop3Xjava17versions_javaversion=${java18}
 
-hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions hadoop2Xjava18versions"
-hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions} ${hadoop2Xjava18versions}"
+hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions hadoop2Xjava18versions hadoop3Xjava17versions"
+hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions} ${hadoop2Xjava18versions} ${hadoop3Xjava17versions}"
 
 mahouthadoop27java17versions="0.11.0 0.11.1 0.11.2 0.12.0 0.12.1 0.12.2 0.13.0"
 mahouthadoop27java17versions_hadoopversion="2.7.0"

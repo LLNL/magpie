@@ -57,55 +57,86 @@ __get_test_files () {
 
 __test_yarn_shutdown () {
     local file=$1
-    num=`grep -e "stopping yarn daemons" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-        echo "Yarn shutdown error in $file"
-    fi
-
-    num=`grep -e "stopping resourcemanager" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-        echo "Yarn shutdown error in $file"
-    fi
-
-    num=`grep -e "stopping nodemanager" $file | wc -l`
-    if echo ${file} | grep -q "zookeeper-shared"
+    if ! echo ${file} | grep -q "pdshlaunch"
     then
-        numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
-    elif echo ${file} | grep -q "hdfs-more-nodes"
-    then
-        numcompare=`expr ${basenodecount} \* 2`
+        num=`grep -e "stopping yarn daemons" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Yarn shutdown error in $file"
+        fi
+
+        num=`grep -e "stopping resourcemanager" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Yarn shutdown error in $file"
+        fi
+
+        num=`grep -e "stopping nodemanager" $file | wc -l`
+        if echo ${file} | grep -q "zookeeper-shared"
+        then
+            numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
+        elif echo ${file} | grep -q "hdfs-more-nodes"
+        then
+            numcompare=`expr ${basenodecount} \* 2`
+        else
+            numcompare=${basenodecount}
+        fi
+        if [ "${num}" != "$numcompare" ]; then
+            echo "Yarn nodemanager shutdown error in $file"
+        fi
     else
-        numcompare=${basenodecount}
-    fi
-    if [ "${num}" != "$numcompare" ]; then
-        echo "Yarn nodemanager shutdown error in $file"
+        num=`grep -e "Stopping resourcemanager" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Yarn shutdown error in $file"
+        fi
+
+        num=`grep -e "Stopping nodemanagers" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Yarn nodemanager shutdown error in $file"
+        fi
     fi
 }
 
 __test_hdfs_shutdown () {
     local file=$1
-    num=`grep -e "stopping namenode" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-        echo "Namenode shutdown error in $file"
-    fi
+    if ! echo ${file} | grep -q "pdshlaunch"
+    then
+        num=`grep -e "stopping namenode" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Namenode shutdown error in $file"
+        fi
 
-    num=`grep -e "stopping datanode" $file | wc -l`
-    if echo ${file} | grep -q "zookeeper-shared"
-    then
-        numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
-    elif echo ${file} | grep -q "hdfs-more-nodes"
-    then
-        numcompare=`expr ${basenodecount} \* 2`
+        num=`grep -e "stopping datanode" $file | wc -l`
+        if echo ${file} | grep -q "zookeeper-shared"
+        then
+            numcompare=`expr ${basenodecount} + ${zookeepernodecount}`
+        elif echo ${file} | grep -q "hdfs-more-nodes"
+        then
+            numcompare=`expr ${basenodecount} \* 2`
+        else
+            numcompare=${basenodecount}
+        fi
+        if [ "${num}" != "$numcompare" ]; then
+            echo "Datanode shutdown error in $file"
+        fi
+
+        num=`grep -e "stopping secondarynamenode" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "secondary namenode shutdown error in $file"
+        fi
     else
-        numcompare=${basenodecount}
-    fi
-    if [ "${num}" != "$numcompare" ]; then
-        echo "Datanode shutdown error in $file"
-    fi
+        num=`grep -e "Stopping namenodes" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Namenode shutdown error in $file"
+        fi
 
-    num=`grep -e "stopping secondarynamenode" $file | wc -l`
-    if [ "${num}" != "1" ]; then
-        echo "secondary namenode shutdown error in $file"
+        num=`grep -e "Stopping datanodes" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Namenode shutdown error in $file"
+        fi
+
+        num=`grep -e "Stopping secondary namenodes" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "secondary namenode shutdown error in $file"
+        fi
     fi
 }
 
