@@ -103,6 +103,7 @@ hadoop_2_8_3=y
 hadoop_2_8_4=y
 hadoop_2_9_0=y
 hadoop_2_9_1=y
+hadoop_3_0_0=y
 pig_0_13_0=y
 pig_0_14_0=y
 pig_0_15_0=y
@@ -607,6 +608,9 @@ done
 
 # No if checks, may process files created outside of these files
 # e.g. like functionality tests of default tests
+GenerateDefaultStandardPostProcessing
+GenerateFunctionalityPostProcessing
+# GenerateCornerCasePostProcessing
 GenerateHadoopPostProcessing
 GeneratePigPostProcessing
 GenerateMahoutPostProcessing

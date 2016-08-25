@@ -929,3 +929,17 @@ GenerateFunctionalityTests() {
 
     __GenerateFunctionalityTests_ScriptArgs
 }
+
+GenerateFunctionalityPostProcessing() {
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop*functionality*"`
+    if [ -n "${files}" ] && [ -x "/usr/bin/pdsh" ]
+    then
+        for file in ${files}
+        do
+            if grep HADOOP_VERSION ${file} | grep -q -E "3\.[0-9]\.[0-9]"
+            then
+                sed -i -e "s/FILENAMESEARCHREPLACEKEY/pdshlaunch-FILENAMESEARCHREPLACEKEY/" ${file}
+            fi
+        done
+    fi
+}

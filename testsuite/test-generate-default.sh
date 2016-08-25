@@ -65,3 +65,12 @@ GenerateDefaultStandardTests() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-default-run-checkzeppelinup
     fi
 }
+
+GenerateDefaultStandardPostProcessing () {
+    # We know Hadoop 3.X is default now
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop-default-run-hadoopterasort*"`
+    if [ -n "${files}" ] && [ -x "/usr/bin/pdsh" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/pdshlaunch-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}

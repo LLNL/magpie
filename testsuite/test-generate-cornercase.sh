@@ -1476,3 +1476,6 @@ GenerateCornerCaseTests() {
 
     __GenerateCornerCaseTests_NoLongerSupported
 }
+
+# GenerateCornerCasePostProcessing() {
+# }
