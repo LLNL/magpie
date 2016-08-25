@@ -6,6 +6,20 @@ source test-config.sh
 source test-generate-hadoop-helper.sh
 source ../magpie/lib/magpie-lib-helper
 
+__SetJavaVersion () {
+    local hadoopversion=$1
+    shift
+    local files=$@
+
+    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+    Magpie_vercomp ${hadoopversion} "2.6.0"
+    if [ $? == "2" ]; then
+        JavaCommonSubstitution ${java16} ${files}
+    else
+        JavaCommonSubstitution ${java17} ${files}
+    fi
+}
+
 __GenerateHadoopStandardTests_StandardTerasort() {
     local hadoopversion=$1
     local javaversion=$2
@@ -213,13 +227,7 @@ __GenerateHadoopDependencyTests_Dependency5 () {
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${firstversion}"'"/' \
         magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}*run-hadoopterasort
 
-    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-    Magpie_vercomp ${firstversion} "2.6.0"
-    if [ $? == "2" ]; then
-        JavaCommonSubstitution ${java16} `ls magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}*`
-    else
-        JavaCommonSubstitution ${java17} `ls magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}*`
-    fi
+    __SetJavaVersion ${firstversion} `ls magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}*`
 
     for version in ${restofversions}
     do
@@ -249,13 +257,7 @@ __GenerateHadoopDependencyTests_Dependency5 () {
             -e 's/export HADOOP_MODE="\(.*\)"/export HADOOP_MODE="upgradehdfs"/' \
             magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*run-hadoopupgradehdfs*
 
-        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${version} "2.6.0"
-        if [ $? == "2" ]; then
-            JavaCommonSubstitution ${java16} `ls magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*`
-        else
-            JavaCommonSubstitution ${java17} `ls magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*`
-        fi
+        __SetJavaVersion ${version} `ls magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}*`
     done
     
     SetupHDFSoverLustreDependency "Hadoop${dependencynumber}" "multipleversion" `ls \
@@ -268,9 +270,7 @@ __GenerateHadoopDependencyTests_Dependency5 () {
 __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
     local hadoopversionold=$1
     local hadoopversionnew=$2
-    local javaversionold=$3
-    local javaversionnew=$4
-    local dependencynumber=$5
+    local dependencynumber=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
@@ -278,7 +278,7 @@ __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionnew}"'"/' \
         magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
-    JavaCommonSubstitution ${javaversionnew} magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
+    __SetJavaVersion ${hadoopversionnew} magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
 
@@ -286,7 +286,7 @@ __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionold}"'"/' \
         magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
 
-    JavaCommonSubstitution ${javaversionold} magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
+    __SetJavaVersion ${hadoopversionold} magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsoverlustre-hdfs-newer-version-expected-failure
 
     SetupHDFSoverLustreDependency "Hadoop${dependencynumber}" "multipleversion" `ls \
         magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort \
@@ -298,7 +298,7 @@ __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionnew}"'"/' \
         magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
 
-    JavaCommonSubstitution ${javaversionnew} magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
+    __SetJavaVersion ${hadoopversionnew} magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
@@ -306,7 +306,7 @@ __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS() {
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversionold}"'"/' \
         magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
-    JavaCommonSubstitution ${javaversionold} magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
+    __SetJavaVersion ${hadoopversionold} magpie.${submissiontype}-hadoop-${hadoopversionold}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-newer-version-expected-failure
 
     SetupHDFSoverNetworkFSDependency "Hadoop${dependencynumber}" "multipleversion" `ls \
         magpie.${submissiontype}-hadoop-${hadoopversionnew}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort \
@@ -360,24 +360,24 @@ GenerateHadoopDependencyTests() {
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" ${java16} ${java16} "6A"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" ${java16} ${java16} "6B"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" ${java16} ${java16} "6C"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" ${java16} ${java17} "6D"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" ${java17} ${java17} "6E"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" "6A"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" "6B"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" "6C"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" "6D"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" "6E"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" ${java16} ${java16} "6F"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6F"
     
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" ${java16} ${java16} "6G"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" ${java16} ${java16} "6H"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6G"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6H"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" ${java17} ${java17} "6I"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" ${java17} ${java17} "6J"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" ${java17} ${java17} "6K"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" ${java17} ${java17} "6L"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6I"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6J"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6K"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6L"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" ${java17} ${java17} "6M"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" ${java17} ${java17} "6N"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6M"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6N"
 }
 
 GenerateHadoopPostProcessing() {
