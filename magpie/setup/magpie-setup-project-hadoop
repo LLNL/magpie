@@ -38,6 +38,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 
 # hadoopnoderank set if succeed
@@ -907,7 +908,10 @@ then
         #
         # A few settings depend on version
         #
-        if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+
+        # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+        Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
+        if [ $? == "2" ]
         then 
             shuffleproviderservices="uda.shuffle"
         else
@@ -969,7 +973,10 @@ then
     #
     # A few settings depend on version
     #
-    if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-1]\.[0-9]"
+
+    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+    Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
+    if [ $? == "2" ]
     then 
         if [ "${HADOOP_UDA_SETUP}" == "yes" ]
         then
