@@ -291,7 +291,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 
 # Storm Supervisor Slots
 #
-# Specify the number of slots/workers per supervisor/worker/slave shall run.
+# Specify the number of slots/workers per supervisor/worker shall run.
 #
 # If not specified, defaults to half the number of processors on the system.
 #
