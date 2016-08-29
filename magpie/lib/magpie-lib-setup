@@ -309,7 +309,7 @@ Magpie_find_conffile () {
 }
 
 Magpie_calculate_openfiles () {
-    local slavecount=$1
+    local workercount=$1
 
     local openfiles=`ulimit -n`
     if [ "${openfiles}" != "unlimited" ]
@@ -319,8 +319,8 @@ Magpie_calculate_openfiles () {
         # we estimate 4096 per 100 nodes, minimum 8192, max 65536.
         # Obviously depends on many factors such as core count, but it's a
         # reasonble and safe over-estimate calculated based on experience.
-        local openfilesslavecount=`expr ${slavecount} \/ 100`
-        magpie_openfilescount=`expr ${openfilesslavecount} \* 4096`
+        local openfilesworkercount=`expr ${workercount} \/ 100`
+        magpie_openfilescount=`expr ${openfilesworkercount} \* 4096`
         if [ "${magpie_openfilescount}" -lt "8192" ]
         then
             magpie_openfilescount=8192
@@ -349,7 +349,7 @@ Magpie_calculate_openfiles () {
 }
 
 Magpie_calculate_userprocesses () {
-    local slavecount=$1
+    local workercount=$1
 
     local userprocesses=`ulimit -u`
     if [ "${userprocesses}" != "unlimited" ]
@@ -357,8 +357,8 @@ Magpie_calculate_userprocesses () {
         local userprocesseshardlimit=`ulimit -H -u`
 
         # we estimate 2048 per 100 nodes, minimum 4096, max 32768.
-        local userprocessesslavecount=`expr ${slavecount} \/ 100`
-        magpie_userprocessescount=`expr ${userprocessesslavecount} \* 2048`
+        local userprocessesworkercount=`expr ${workercount} \/ 100`
+        magpie_userprocessescount=`expr ${userprocessesworkercount} \* 2048`
         if [ "${magpie_userprocessescount}" -lt "4096" ]
         then
             magpie_userprocessescount=4096
