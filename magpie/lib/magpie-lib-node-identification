@@ -27,7 +27,7 @@
 # This file has common node identification functions. These are used
 # predominantly to determine what node you're presently
 # configuring/setting up/running on.  Should be sourced and used only
-# after magpie-setup-core is run b/c it depends on master/slaves to be
+# after magpie-setup-core is run b/c it depends on master/workers to be
 # setup.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
@@ -59,7 +59,7 @@ __Magpie_am_I_a_project_node () {
     local confdir=$1
     local noderankvar=$2
     local mastersfile=$3
-    local slavesfile=$4
+    local workersfile=$4
      
     Magpie_make_all_local_dirs_node_specific
 
@@ -72,11 +72,11 @@ __Magpie_am_I_a_project_node () {
         fi
     fi
     
-    if [ "${slavesfile}X" != "X" ]
+    if [ "${workersfile}X" != "X" ]
     then
-        if grep -q -E "^${myhostname}$" ${confdir}/${slavesfile}
+        if grep -q -E "^${myhostname}$" ${confdir}/${workersfile}
         then 
-            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile} | awk --field-separator=':' '{print $1}'`
+            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${workersfile} | awk --field-separator=':' '{print $1}'`
             eval ${noderankvar}="${noderank}"
             return 0
         fi

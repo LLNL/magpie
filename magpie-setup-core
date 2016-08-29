@@ -104,7 +104,7 @@ do
 done
 
 #
-# Setup/Calculate Core Master/Slave files
+# Setup/Calculate Core Master/Worker files
 #
 
 hash hostlist 2>/dev/null
@@ -134,24 +134,24 @@ then
 fi
 
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
-${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
+${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
-    tmpslavecount=`cat ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves | wc -l`
-    jobslavecount=`expr ${tmpslavecount} - ${ZOOKEEPER_REPLICATION_COUNT}`
-    zookeeperslavestart=`expr ${jobslavecount} + 1`
+    tmpworkercount=`cat ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers | wc -l`
+    jobworkercount=`expr ${tmpworkercount} - ${ZOOKEEPER_REPLICATION_COUNT}`
+    zookeeperslavestart=`expr ${jobworkercount} + 1`
 
     cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters ${MAGPIE_LOCAL_CONF_DIR}/job_masters
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] 
     then
-        head -${jobslavecount} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
+        head -${jobworkercount} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${MAGPIE_LOCAL_CONF_DIR}/job_workers
     else
-        cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
+        cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers ${MAGPIE_LOCAL_CONF_DIR}/job_workers
     fi
 
-    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves > ${ZOOKEEPER_CONF_DIR}/slaves 
+    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${ZOOKEEPER_CONF_DIR}/slaves 
 
     # The Zookeeper master is not an actual Zookeeper node, this is
     # predominantly to indicate to magpie that Zookeeper should be
@@ -159,7 +159,7 @@ then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${ZOOKEEPER_CONF_DIR}/masters
 else
     cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters ${MAGPIE_LOCAL_CONF_DIR}/job_masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves ${MAGPIE_LOCAL_CONF_DIR}/job_slaves
+    cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers ${MAGPIE_LOCAL_CONF_DIR}/job_workers
 fi
 
 if [ "${HADOOP_SETUP}" == "yes" ]
@@ -167,34 +167,34 @@ then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${HADOOP_CONF_DIR}/masters
     if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
     then
-        cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HADOOP_CONF_DIR}/workers
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${HADOOP_CONF_DIR}/workers
     else
-        cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HADOOP_CONF_DIR}/slaves
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${HADOOP_CONF_DIR}/slaves
     fi
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${HBASE_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${HBASE_CONF_DIR}/regionservers
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${HBASE_CONF_DIR}/regionservers
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${PHOENIX_CONF_DIR}/regionservers
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${PHOENIX_CONF_DIR}/regionservers
 fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
 then
     # Create regardless of using yarn or not, needed for other code
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${SPARK_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${SPARK_CONF_DIR}/slaves
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${SPARK_CONF_DIR}/slaves
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${KAFKA_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${KAFKA_CONF_DIR}/slaves
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${KAFKA_CONF_DIR}/slaves
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
@@ -205,7 +205,7 @@ fi
 if [ "${STORM_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${STORM_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_slaves ${STORM_CONF_DIR}/workers
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${STORM_CONF_DIR}/workers
 fi
 
 exit 0
