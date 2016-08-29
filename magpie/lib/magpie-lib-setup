@@ -105,9 +105,9 @@ Magpie_calculate_stop_timeouts () {
             magpie_hbase_slave_timeout=5
         else
             # Need to give Hbase more time b/c of compaction.  We'll say
-            # Hbase always gets 50% of the time, Half for slave timeout and half for
-            # compaction .  Input checks ensure
-            # shutdowntimeseconds >= 1200 
+            # Hbase always gets 50% of the time, Half for regionserver
+            # timeout and half for compaction .  Input checks ensure
+            # shutdowntimeseconds >= 1200
 
             local hbase_time=`expr ${shutdowntimeseconds} \/ 2`
             magpie_hbase_slave_timeout=`expr ${hbase_time} \/ 2`

@@ -568,7 +568,7 @@ then
 
     if [ ${nodecount} -le "0" ]
     then
-        echo "No remaining nodes for Hadoop slave nodes, increase node count or adjust node allocations"
+        echo "No remaining nodes for Hadoop worker nodes, increase node count or adjust node allocations"
         exit 1
     fi
 fi
@@ -1069,7 +1069,7 @@ then
 
     if [ ${nodecount} -le "0" ]
     then
-        echo "No remaining slave nodes after Zookeeper allocation"
+        echo "No remaining nodes after Zookeeper allocation"
         echo "Please increase node count or adjust node allocations"
         exit 1
     fi
