@@ -41,7 +41,7 @@ __Magpie_run_check_zookeeper_up () {
         echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
         return 0
     else 
-        local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+        local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
         for zookeepernode in ${zookeepernodes}
         do
             local zookeeperresponse=`echo ruok | nc ${zookeepernode} ${default_zookeeper_client_port}`

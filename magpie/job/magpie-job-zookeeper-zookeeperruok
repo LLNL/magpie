@@ -28,7 +28,7 @@
 
 # This is a job, no loading export files or libs except for minimal convenience ones
 
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
 
 if ! type nc >/dev/null 2>&1
 then

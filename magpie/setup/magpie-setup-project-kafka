@@ -65,7 +65,7 @@ fi
 
 KAFKA_DATA_DIR=${KAFKA_LOCAL_SCRATCHSPACE_DIR}/tmp/kafka-logs
 
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
 
 kafkazookeeperconnect=""
 for zookeepernode in ${zookeepernodes}

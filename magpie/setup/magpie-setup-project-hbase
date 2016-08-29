@@ -116,7 +116,7 @@ then
     fi
 fi
 
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
 
 hbasezookeeperquorum=""
 for zookeepernode in ${zookeepernodes}

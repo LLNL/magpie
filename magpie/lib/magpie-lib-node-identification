@@ -135,6 +135,6 @@ Magpie_am_I_a_zeppelin_node() {
 Magpie_am_I_a_zookeeper_node () {
     # Do not consider the 'master' node, it is only for launching
     # Zookeeper, it is not an actual Zookeeper node
-    __Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "slaves"
+    __Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "workers"
     return $?
 }
