@@ -76,7 +76,7 @@ __Magpie_am_I_a_project_node () {
     then
         if grep -q -E "^${myhostname}$" ${confdir}/${slavesfile}
         then 
-            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile:-"slaves"} | awk --field-separator=':' '{print $1}'`
+            local noderank=`grep -n -E "^${myhostname}$" ${confdir}/${slavesfile} | awk --field-separator=':' '{print $1}'`
             eval ${noderankvar}="${noderank}"
             return 0
         fi
