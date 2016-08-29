@@ -71,7 +71,7 @@ then
     fi
 fi
 
-# zookeepernoderank set if succeed and it's a Zookeeper slave
+# zookeepernoderank set if succeed and it's a Zookeeper worker
 if ! Magpie_am_I_a_zookeeper_node
 then
     exit 0
@@ -178,7 +178,7 @@ sed -i \
     -e "s/ZOOKEEPERHOST/${ZOOKEEPER_THIS_HOST}/g" \
     ${post_zookeepercfg}
     
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
 
 servercount=1
 for zookeepernode in ${zookeepernodes}

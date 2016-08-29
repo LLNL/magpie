@@ -163,7 +163,7 @@ sed -i \
 
 echo "storm.zookeeper.servers:" >> ${post_stormyaml}
 
-zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
 servercount=1
 for zookeepernode in ${zookeepernodes}
 do

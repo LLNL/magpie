@@ -58,9 +58,9 @@ orig_zookeeperconfdir=${zookeeperconfdir}
 myhostname=`hostname`
 zookeeperconfdir=`echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
-if [ ! -f ${zookeeperconfdir}/slaves ]
+if [ ! -f ${zookeeperconfdir}/workers ]
 then
-    echo "Cannot find file ${zookeeperconfdir}/slaves"
+    echo "Cannot find file ${zookeeperconfdir}/workers"
     exit 1
 fi
 
@@ -90,7 +90,7 @@ then
     exit 1
 fi
 
-zookeepernodes=`cat ${zookeeperconfdir}/slaves`
+zookeepernodes=`cat ${zookeeperconfdir}/workers`
 
 RSH_CMD=${ZOOKEEPER_SSH_CMD:-ssh}
 

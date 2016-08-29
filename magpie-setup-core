@@ -140,7 +140,7 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     tmpworkercount=`cat ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers | wc -l`
     jobworkercount=`expr ${tmpworkercount} - ${ZOOKEEPER_REPLICATION_COUNT}`
-    zookeeperslavestart=`expr ${jobworkercount} + 1`
+    zookeeperworkerstart=`expr ${jobworkercount} + 1`
 
     cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters ${MAGPIE_LOCAL_CONF_DIR}/job_masters
 
@@ -151,7 +151,7 @@ then
         cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers ${MAGPIE_LOCAL_CONF_DIR}/job_workers
     fi
 
-    tail -n+${zookeeperslavestart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${ZOOKEEPER_CONF_DIR}/slaves 
+    tail -n+${zookeeperworkerstart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${ZOOKEEPER_CONF_DIR}/workers 
 
     # The Zookeeper master is not an actual Zookeeper node, this is
     # predominantly to indicate to magpie that Zookeeper should be

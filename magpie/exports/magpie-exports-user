@@ -181,7 +181,7 @@ then
     
     export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/masters`
 
-    zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/slaves`
+    zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
     zookeepernodesfirst=`echo "${zookeepernodes}" | head -1`
 
     export ZOOKEEPER_NODES_FIRST="${zookeepernodesfirst}"
