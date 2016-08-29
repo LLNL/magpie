@@ -49,7 +49,7 @@ __Magpie_run_check_kafka_up () {
         fi
     done
 
-    for server in `cat ${KAFKA_CONF_DIR}/slaves`
+    for server in `cat ${KAFKA_CONF_DIR}/workers`
     do
         serverschk=`expr ${serverschk} + 1`
         local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
@@ -92,7 +92,7 @@ Magpie_run_start_kafka () {
             Magpie_make_all_local_dirs_node_specific
 
             # My rough estimate for setup time is 30 seconds per 128 nodes
-            local sleepwait=`expr ${KAFKA_SLAVE_COUNT} \/ 128 \* 30`
+            local sleepwait=`expr ${KAFKA_WORKER_COUNT} \/ 128 \* 30`
             if [ ${sleepwait} -lt 30 ]
             then
                 sleepwait=30

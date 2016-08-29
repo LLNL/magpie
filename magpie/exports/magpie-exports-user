@@ -133,14 +133,14 @@ then
         Magpie_output_internal_error "${KAFKA_CONF_DIR}/masters does not exist"
     fi
 
-    if [ ! -f "${KAFKA_CONF_DIR}/slaves" ]
+    if [ ! -f "${KAFKA_CONF_DIR}/workers" ]
     then 
-        Magpie_output_internal_error "${KAFKA_CONF_DIR}/slaves does not exist"
+        Magpie_output_internal_error "${KAFKA_CONF_DIR}/workers does not exist"
     fi
 
     export KAFKA_MASTER_NODE=`head -1 ${KAFKA_CONF_DIR}/masters`
-    export KAFKA_SLAVE_COUNT=`cat ${KAFKA_CONF_DIR}/slaves|wc -l`
-    export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${KAFKA_SLAVE_COUNT}`
+    export KAFKA_WORKER_COUNT=`cat ${KAFKA_CONF_DIR}/workers|wc -l`
+    export KAFKA_WORKER_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${KAFKA_WORKER_COUNT}`
     export KAFKA_PORT=${default_kafka_port}
 fi
 
