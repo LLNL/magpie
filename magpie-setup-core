@@ -194,7 +194,7 @@ fi
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${KAFKA_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${KAFKA_CONF_DIR}/slaves
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${KAFKA_CONF_DIR}/workers
 fi
 
 if [ "${ZEPPELIN_SETUP}" == "yes" ]

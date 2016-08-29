@@ -58,9 +58,9 @@ fi
 
 source ${kafkaconfdir}/kafka-env.sh
 
-if [ ! -f ${kafkaconfdir}/slaves ]
+if [ ! -f ${kafkaconfdir}/workers ]
 then
-    echo "Cannot find file ${kafkaconfdir}/slaves"
+    echo "Cannot find file ${kafkaconfdir}/workers"
     exit 1
 fi
 
@@ -91,8 +91,8 @@ do
     ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-daemon.sh ${kafkaconfdir} ${KAFKA_HOME} $1
 done
 
-# Slaves
-for node in `cat ${kafkaconfdir}/slaves`
+# Workers
+for node in `cat ${kafkaconfdir}/workers`
 do
     kafkaconfdir=`echo ${orig_kafkaconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$node/g"`
     ${RSH_CMD} ${KAFKA_SSH_OPTS} ${node} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-daemon.sh ${kafkaconfdir} ${KAFKA_HOME} $1

@@ -117,7 +117,7 @@ Magpie_am_I_a_spark_node () {
 }
 
 Magpie_am_I_a_kafka_node () {
-    __Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank" "masters" "slaves"
+    __Magpie_am_I_a_project_node ${KAFKA_CONF_DIR} "kafkanoderank" "masters" "workers"
     return $?
 }
 
