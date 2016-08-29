@@ -37,7 +37,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 Magpie_make_all_local_dirs_node_specific
 
 # Assume cores same on each node
-magpie_slave_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
+magpie_worker_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
 
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
@@ -83,7 +83,7 @@ then
     fi
     
     export HADOOP_SLAVE_COUNT=`cat ${hadoopslavesfile}|wc -l`
-    export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${HADOOP_SLAVE_COUNT}`
+    export HADOOP_SLAVE_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${HADOOP_SLAVE_COUNT}`
 
     export HADOOP_WORKER_COUNT=${HADOOP_SLAVE_COUNT}
     export HADOOP_WORKER_CORE_COUNT=${HADOOP_SLAVE_CORE_COUNT}
@@ -123,7 +123,7 @@ then
         export SPARK_MASTER_PORT=${default_spark_master_port}
     fi
     export SPARK_SLAVE_COUNT=`cat ${SPARK_CONF_DIR}/slaves|wc -l`
-    export SPARK_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${SPARK_SLAVE_COUNT}`
+    export SPARK_SLAVE_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${SPARK_SLAVE_COUNT}`
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
@@ -140,7 +140,7 @@ then
 
     export KAFKA_MASTER_NODE=`head -1 ${KAFKA_CONF_DIR}/masters`
     export KAFKA_SLAVE_COUNT=`cat ${KAFKA_CONF_DIR}/slaves|wc -l`
-    export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_slave_core_count} \* ${KAFKA_SLAVE_COUNT}`
+    export KAFKA_SLAVE_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${KAFKA_SLAVE_COUNT}`
     export KAFKA_PORT=${default_kafka_port}
 fi
 
