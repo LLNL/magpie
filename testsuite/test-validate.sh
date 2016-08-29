@@ -574,18 +574,6 @@ __check_exports_hadoop () {
         echo "Error in $file - can't find export HADOOP_MASTER_NODE"
     fi
 
-    num=`grep -E "HADOOP_SLAVE_COUNT=[0-9]+" ${file} | wc -l`
-    if [ "${num}" == 0 ]
-    then
-        echo "Error in $file - can't find export HADOOP_SLAVE_COUNT"
-    fi
-
-    num=`grep -E "HADOOP_SLAVE_CORE_COUNT=[0-9]+" ${file} | wc -l`
-    if [ "${num}" == 0 ]
-    then
-        echo "Error in $file - can't find export HADOOP_SLAVE_CORE_COUNT"
-    fi
-
     num=`grep -E "HADOOP_WORKER_COUNT=[0-9]+" ${file} | wc -l`
     if [ "${num}" == 0 ]
     then
@@ -596,6 +584,18 @@ __check_exports_hadoop () {
     if [ "${num}" == 0 ]
     then
         echo "Error in $file - can't find export HADOOP_WORKER_CORE_COUNT"
+    fi
+
+    num=`grep -E "HADOOP_SLAVE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_SLAVE_COUNT"
+    fi
+
+    num=`grep -E "HADOOP_SLAVE_CORE_COUNT=[0-9]+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HADOOP_SLAVE_CORE_COUNT"
     fi
 
     if echo "${file}" | grep -q "hdfs"

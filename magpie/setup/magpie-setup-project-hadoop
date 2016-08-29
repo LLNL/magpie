@@ -79,7 +79,7 @@ if [ "${HADOOP_PARALLEL_COPIES}X" != "X" ]
 then
     parallelcopies=${HADOOP_PARALLEL_COPIES}
 else 
-    parallelcopies=`echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f"`
+    parallelcopies=`echo "sqrt ( ${HADOOP_WORKER_COUNT} )" | bc -l | xargs printf "%1.0f"`
     if [ "${parallelcopies}" -lt "10" ]
     then
         parallelcopies=10
@@ -88,7 +88,7 @@ fi
 
 # Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200
 # My experience this is low b/c of high core counts, so bump higher to 50% 
-namenodehandlercount=`echo "${HADOOP_SLAVE_COUNT} * .5" | bc -l | xargs printf "%1.0f"`
+namenodehandlercount=`echo "${HADOOP_WORKER_COUNT} * .5" | bc -l | xargs printf "%1.0f"`
 if [ "${namenodehandlercount}" -lt "10" ]
 then
     namenodehandlercount=10
@@ -100,7 +100,7 @@ then
 fi
 
 # General rule of thumb is half namenode handler count, so * .25 instead of * .5
-datanodehandlercount=`echo "${HADOOP_SLAVE_COUNT} * .25" | bc -l | xargs printf "%1.0f"`
+datanodehandlercount=`echo "${HADOOP_WORKER_COUNT} * .25" | bc -l | xargs printf "%1.0f"`
 if [ "${datanodehandlercount}" -lt "10" ]
 then
     datanodehandlercount=10
@@ -112,14 +112,14 @@ then
 fi
 
 # Per description, about 4% of nodes but w/ floor of 10
-jobtrackerhandlercount=`echo "${HADOOP_SLAVE_COUNT} * .04" | bc -l | xargs printf "%1.0f"`
+jobtrackerhandlercount=`echo "${HADOOP_WORKER_COUNT} * .04" | bc -l | xargs printf "%1.0f"`
 if [ "${jobtrackerhandlercount}" -lt "10" ]
 then
     jobtrackerhandlercount=10
 fi
 
 # Per descrption, about square root number of nodes
-submitfilereplication=`echo "sqrt ( ${HADOOP_SLAVE_COUNT} )" | bc -l | xargs printf "%1.0f"`
+submitfilereplication=`echo "sqrt ( ${HADOOP_WORKER_COUNT} )" | bc -l | xargs printf "%1.0f"`
 
 # Optimal depends on file system
 if [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ]
@@ -266,14 +266,14 @@ if [ "${HADOOP_DEFAULT_MAP_TASKS}X" != "X" ]
 then
     defaultmaptasks=${HADOOP_DEFAULT_MAP_TASKS}
 else
-    defaultmaptasks=`expr ${maxtaskspernode} \* ${HADOOP_SLAVE_COUNT}`
+    defaultmaptasks=`expr ${maxtaskspernode} \* ${HADOOP_WORKER_COUNT}`
 fi
 
 if [ "${HADOOP_DEFAULT_REDUCE_TASKS}X" != "X" ]
 then
     defaultreducetasks=${HADOOP_DEFAULT_REDUCE_TASKS}
 else
-    defaultreducetasks=${HADOOP_SLAVE_COUNT}
+    defaultreducetasks=${HADOOP_WORKER_COUNT}
 fi
 
 if [ "${HADOOP_HDFS_BLOCKSIZE}X" != "X" ]
@@ -343,9 +343,9 @@ else
 fi
 
 # Sets magpie_openfilescount
-Magpie_calculate_openfiles ${HADOOP_SLAVE_COUNT}
+Magpie_calculate_openfiles ${HADOOP_WORKER_COUNT}
 # Sets magpie_userprocessescount
-Magpie_calculate_userprocesses ${HADOOP_SLAVE_COUNT}
+Magpie_calculate_userprocesses ${HADOOP_WORKER_COUNT}
 
 #
 # Setup Hadoop file system
@@ -412,7 +412,7 @@ then
     if ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ] && [ "${HADOOP_HDFSOVERLUSTRE_REMOVE_LOCKS}" == "yes" ]) \
         || ([ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ] && [ "${HADOOP_HDFSOVERNETWORKFS_REMOVE_LOCKS}" == "yes" ])
     then
-        for num in `seq 0 ${HADOOP_SLAVE_COUNT}`
+        for num in `seq 0 ${HADOOP_WORKER_COUNT}`
         do
             if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
             then

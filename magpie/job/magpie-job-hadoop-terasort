@@ -140,7 +140,7 @@ then
     echo "*******************************************************"
 
     # I assume no user is concerned with performance here, we just go with this fixed number 
-    sumreducetasks=`expr $HADOOP_SLAVE_COUNT`
+    sumreducetasks=`expr $HADOOP_WORKER_COUNT`
 
     # To my surprise, TeraChecksum isn't in the mapreduce examples
     # driver.  I wrote a patch for this and submitted it in
@@ -178,7 +178,7 @@ if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
 then
     sortreducetasks=$HADOOP_TERASORT_REDUCER_COUNT
 else
-    sortreducetasks=`expr $HADOOP_SLAVE_COUNT \* 2`
+    sortreducetasks=`expr $HADOOP_WORKER_COUNT \* 2`
 fi
 
 if [ "${HADOOP_TERASORT_OUTPUT_REPLICATION}X" != "X" ]
@@ -206,7 +206,7 @@ then
     echo "*******************************************************"
 
     # I assume no user is concerned with performance here, we just go with this fixed number 
-    validatereducetasks=`expr $HADOOP_SLAVE_COUNT`
+    validatereducetasks=`expr $HADOOP_WORKER_COUNT`
 
     mapreducereducetasks="-Dmapreduce.job.reduces=$validatereducetasks"
     

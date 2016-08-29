@@ -478,8 +478,8 @@ then
             exit 1
         fi
 
-        # Few additional checks can only be done later, such as HADOOP_SLAVE_COUNT > replication
-        # and HADOOP_DECOMMISSION_HDFS_NODE_SIZE < current HADOOP_SLAVE_COUNT 
+        # Few additional checks can only be done later, such as HADOOP_WORKER_COUNT > replication
+        # and HADOOP_DECOMMISSION_HDFS_NODE_SIZE < current HADOOP_WORKER_COUNT 
     fi
 
     if [ "${HADOOP_FILESYSTEM_MODE}" != "hdfs" ] \
