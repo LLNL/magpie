@@ -31,7 +31,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 
 # This is a job, no loading export files or libs except for minimal convenience ones
 
-if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -ge "${HADOOP_SLAVE_COUNT}" ]
+if [ "${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}" -ge "${HADOOP_WORKER_COUNT}" ]
 then
     echo "Cannot decommission more nodes than are available"
     exit 1
@@ -47,7 +47,7 @@ then
     exit 1
 fi
 
-nodecounttodecommission=`expr ${HADOOP_SLAVE_COUNT} - ${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}`
+nodecounttodecommission=`expr ${HADOOP_WORKER_COUNT} - ${HADOOP_DECOMMISSION_HDFS_NODE_SIZE}`
 
 echo "Creating ${HADOOP_CONF_DIR}/hosts-exclude"
 tail -n ${nodecounttodecommission} ${HADOOP_CONF_DIR}/hosts-include > ${HADOOP_CONF_DIR}/hosts-exclude
@@ -75,7 +75,7 @@ Magpie_get_networkedhdfspath
 count=0
 while [ "${count}" -lt "${nodecounttodecommission}" ]
 do
-    noderank=`expr ${HADOOP_SLAVE_COUNT} - ${count}`
+    noderank=`expr ${HADOOP_WORKER_COUNT} - ${count}`
     rmpath="${magpie_networkedhdfspath}/node-${noderank}"
     echo "Removing path ${rmpath} ..."
     rm -rf ${rmpath}
