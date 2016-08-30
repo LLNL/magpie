@@ -58,6 +58,21 @@ then
     fi
 fi
 
+if [ "${ZEPPELIN_NOTEBOOK_DIR}X" != "X" ]
+then
+    if [ ! -d ${ZEPPELIN_NOTEBOOK_DIR} ]
+    then
+        mkdir -p ${ZEPPELIN_NOTEBOOK_DIR}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${ZEPPELIN_NOTEBOOK_DIR}"
+            exit 1
+        fi
+    fi
+    zeppelinnotebookdir=${ZEPPELIN_NOTEBOOK_DIR}
+else
+    zeppelinnotebookdir="${zeppelinsharedscratchdirpath}/notebook"
+fi 
+
 # Set the default memory if not set
 if [ "${ZEPPELIN_MEM}X" == "X" ]
 then
@@ -158,7 +173,7 @@ zeppelinsparkmastersubst=`echo "${zeppelin_spark_master}" | sed "s/\\//\\\\\\\\\
 zeppelinsparksubmitoptionssubst=`echo "${ZEPPELIN_SPARK_SUBMIT_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinjavaoptssubst=`echo "${ZEPPELIN_JAVA_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinwebappssubst=`echo "${zeppelinsharedscratchdirpath}/webapps" | sed "s/\\//\\\\\\\\\//g"`
-zeppelinnotebooksubst=`echo "${zeppelinsharedscratchdirpath}/notebook" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinnotebooksubst=`echo "${zeppelinnotebookdir}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelininterpreterdir=`echo "${ZEPPELIN_HOME}/interpreter" | sed "s/\\//\\\\\\\\\//g"`
 
 #

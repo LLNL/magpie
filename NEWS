@@ -4,6 +4,7 @@ Add support for Hadoop 2.7.3.
 - Update default Hadoop to 2.7.3.  
 Add support for Zeppelin 0.6.1.
 - Update default Zeppelin to 0.6.1.  
+Add Zeppelin ZEPPELIN_NOTEBOOK_DIR option.
 Fix corner case in "walltime to minutes" calculation for formats that
   includes a number of days.
 

@@ -1895,6 +1895,14 @@ export ZEPPELIN_MODE="checkzeppelinup"
 #
 # export ZEPPELIN_SPARK_SUBMIT_OPTIONS=""
 
+# Zeppelin Notebook Persisted Directory
+#
+# Specify a location for Zeppelin's notebook to persist.  If not
+# specified, will point to a temporary directory and data will likely
+# not persist between jobs.
+#
+# export ZEPPELIN_NOTEBOOK_DIR="/lustre/${USER}/zeppelin/notebook"
+
 ############################################################################
 # Storm Core Configurations
 ############################################################################
