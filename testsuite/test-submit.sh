@@ -163,3 +163,4 @@ SubmitKafkaDependencyTests
 SubmitZookeeperStandardTests
 
 SubmitZeppelinStandardTests
+SubmitZeppelinDependencyTests

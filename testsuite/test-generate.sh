@@ -445,6 +445,9 @@ if [ "${zeppelintests}" == "y" ] && [ "${zeppelinversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
         GenerateZeppelinStandardTests
     fi
+    if [ "${dependencytests}" == "y" ]; then
+        GenerateZeppelinDependencyTests
+    fi
 fi
 
 # Remove any tests we don't want
