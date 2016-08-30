@@ -32,6 +32,12 @@
 </property>
 
 <property>
+  <name>zeppelin.war.tempdir</name>
+  <value>ZEPPELINWARTEMPDIR</value>
+  <description>Location of jetty temporary directory</description>
+</property>
+
+<property>
   <name>zeppelin.notebook.dir</name>
   <value>ZEPPELINNOTEBOOK</value>
   <description>path or URI for notebook persist</description>

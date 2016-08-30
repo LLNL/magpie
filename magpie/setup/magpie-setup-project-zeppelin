@@ -157,7 +157,8 @@ zeppelinsparkhomesubst=`echo "${SPARK_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinsparkmastersubst=`echo "${zeppelin_spark_master}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinsparksubmitoptionssubst=`echo "${ZEPPELIN_SPARK_SUBMIT_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinjavaoptssubst=`echo "${ZEPPELIN_JAVA_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
-zeppelinnotebook=`echo "${zeppelinsharedscratchdirpath}/notebook" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinwebappssubst=`echo "${zeppelinsharedscratchdirpath}/webapps" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinnotebooksubst=`echo "${zeppelinsharedscratchdirpath}/notebook" | sed "s/\\//\\\\\\\\\//g"`
 zeppelininterpreterdir=`echo "${ZEPPELIN_HOME}/interpreter" | sed "s/\\//\\\\\\\\\//g"`
 
 #
@@ -176,7 +177,7 @@ sed -i \
     -e "s/ZEPPELIN_SPARK_SUBMIT_OPTIONS/${zeppelinsparksubmitoptionssubst}/g" \
     -e "s/ZEPPELINJAVAOPTS/${zeppelinjavaoptssubstr}/g" \
     -e "s/ZEPPELINMEM/${ZEPPELIN_MEM}/g" \
-    -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
+    -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebooksubst}/g" \
     -e "s/ZEPPELINCLASSPATH/${zeppelinclasspathsubstr}/g" \
     ${post_zeppelinenvsh}
 
@@ -199,7 +200,8 @@ cp ${pre_zeppelinsitexml} ${post_zeppelinsitexml}
 
 sed -i \
     -e "s/ZEPPELINPORT/${default_zeppelin_port}/g" \
-    -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebook}/g" \
+    -e "s/ZEPPELINWARTEMPDIR/${zeppelinwebappssubst}/g" \
+    -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebooksubst}/g" \
     -e "s/ZEPPELININTERPRETERDIR/${zeppelininterpreterdir}/g" \
     ${post_zeppelinsitexml}
 
