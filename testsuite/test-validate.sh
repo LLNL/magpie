@@ -771,6 +771,28 @@ then
     done
 fi
 
+__get_test_files run-hadoopfullvalidationterasort
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "completed successfully" $file | wc -l`
+        if [ "${num}" != "4" ]; then
+            echo "Error in $file"
+        fi
+
+        num=`grep -e "TeraSort Checksum Comparison: Input and output checksums match" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Error in $file"
+        fi
+        
+        __test_hadoop_shutdown $file
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __get_test_files run-scriptteragen
 if [ $? -eq 0 ]
 then
