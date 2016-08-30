@@ -1,5 +1,7 @@
 magpie 1.77
 -----------
+Add support for Hadoop 2.7.3.
+- Update default Hadoop to 2.7.3.  
 Fix corner case in "walltime to minutes" calculation for formats that
   includes a number of days.
 

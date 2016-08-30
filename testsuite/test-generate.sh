@@ -92,6 +92,7 @@ hadoop_2_6_4=y
 hadoop_2_7_0=y
 hadoop_2_7_1=y
 hadoop_2_7_2=y
+hadoop_2_7_3=y
 pig_0_13_0=y
 pig_0_14_0=y
 pig_0_15_0=y
