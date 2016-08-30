@@ -7,6 +7,13 @@ support.  Job submission scripts from Magpie 1.X versions will be
 incompatible with Magpie 2.0.  So please read details below for
 highlights.
 
+New Support
+
+o Support Hadoop version 3
+
+  - Support new HADOOP_WORKER_COUNT & HADOOP_WORKER_CORE_COUNT
+    environment variables.
+
 Re-architecture and changes
 
 o Rearchitect MAGPIE_JOB_TYPE to be overarching job configuration
