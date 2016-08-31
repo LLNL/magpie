@@ -250,7 +250,7 @@ export MAGPIE_JOB_TYPE="phoenix"
 ############################################################################
 
 # Necessary for most projects
-export JAVA_HOME="/usr/lib/jvm/jre-1.7.0/"
+export JAVA_HOME="/usr/lib/jvm/jre-1.8.0/"
 
 ############################################################################
 # Hadoop Core Configurations

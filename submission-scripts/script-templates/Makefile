@@ -49,7 +49,7 @@ ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 
 REMOTE_CMD_DEFAULT=ssh
 
-JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0/
+JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
 SPARK_JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
 PYTHON_DEFAULT=/usr/bin/python
 
