@@ -80,6 +80,8 @@ Misc Features & Changes
 
 - Default HDFS namenode port is now 8020 instead of 54310
 
+- Update default Java to 1.8 in submission scripts.
+
 Misc Documentation Changes
 
 - No longer list support for versions that require re-compilation.
