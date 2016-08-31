@@ -14,6 +14,8 @@ o Support Hadoop version 3
   - Support new HADOOP_WORKER_COUNT & HADOOP_WORKER_CORE_COUNT
     environment variables.
 
+  - Update default Hadoop version to 3.0.0.
+
 Re-architecture and changes
 
 o Rearchitect MAGPIE_JOB_TYPE to be overarching job configuration
