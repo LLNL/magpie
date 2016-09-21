@@ -67,9 +67,9 @@ SPARK_PACKAGE="spark/spark-2.0.0/spark-2.0.0-bin-hadoop2.7.tgz"
 SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-2.6.4/hadoop-2.6.4.tar.gz"
 STORM_PACKAGE="storm/apache-storm-1.0.2/apache-storm-1.0.2.tar.gz"
 PHOENIX_PACKAGE="phoenix/apache-phoenix-4.8.0-HBase-1.2/bin/apache-phoenix-4.8.0-HBase-1.2-bin.tar.gz"
-PHOENIX_HBASE_PACKAGE="hbase/1.2.2/hbase-1.2.2-bin.tar.gz"
+PHOENIX_HBASE_PACKAGE="hbase/1.2.3/hbase-1.2.3-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
-ZEPPELIN_PACKAGE="incubator/zeppelin/0.6.0/zeppelin-0.6.0-bin-all.tgz"
+ZEPPELIN_PACKAGE="zeppelin/zeppelin-0.6.1/zeppelin-0.6.1-bin-all.tgz"
 
 # First check some basics
 
