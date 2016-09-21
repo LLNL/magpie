@@ -402,6 +402,9 @@ pysparkpythonsubst=`echo "${MAGPIE_PYTHON}" | sed "s/\\//\\\\\\\\\//g"`
 
 extrasparkdaemonjavaoptssubst=`echo "${extrasparkdaemonjavaopts}" | sed "s/\\//\\\\\\\\\//g"`
 
+# Sets magpie_sparkmajorminorversion
+Magpie_get_spark_major_minor_version ${SPARK_VERSION}
+
 cp ${pre_sparkenvsh} ${post_sparkenvsh}
 
 sed -i \
@@ -473,9 +476,21 @@ then
 
     # Phoenix contains its own version of Jackson and can conflicts with the
     # version of spark running, so we can put sparks jars in front
-    for j in `ls $SPARK_HOME/lib`
+
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 2.0
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        spark_jars_path="$SPARK_HOME/jars"
+    else
+        spark_jars_path="$SPARK_HOME/lib"
+    fi
+
+    for j in `ls $spark_jars_path`
     do 
-        spark_jars="$SPARK_HOME/lib/$j:$spark_jars"
+        spark_jars="$spark_jars_path/$j:$spark_jars"
     done
 
     if [ "${sparkclasspath}X" != "X" ]
@@ -645,9 +660,6 @@ then
         -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
 	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \
         ${post_sparkdefaultsconf}
-    
-    # Sets magpie_sparkmajorminorversion
-    Magpie_get_spark_major_minor_version ${SPARK_VERSION}
     
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
