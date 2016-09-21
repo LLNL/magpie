@@ -110,9 +110,9 @@ then
             sleep 1
         done
 
-        local jobinfo=$(bjobs -l ${LSB_JOBID})
+        jobinfo=$(bjobs -l ${LSB_JOBID})
         # Run State
-        local walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
+        walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
     __Magpie_handle_job_name_corner_cases
