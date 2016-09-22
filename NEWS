@@ -9,6 +9,8 @@ Add support for Hbase 0.98.21, 0.98.22, 1.1.6, 1.2.3
 - Update default Hbase to 1.2.3.
 Fix corner case in "walltime to minutes" calculation for formats that
   includes a number of days.
+Fix corner case in Zeppelin & Phoenix loading jars from Spark 2.0
+  correctly.
 
 magpie 1.76
 -----------
