@@ -2183,7 +2183,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.8"
+export ZOOKEEPER_VERSION="3.4.9"
 
 # Path to your Zookeeper build/binaries
 #

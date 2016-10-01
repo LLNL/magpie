@@ -1,3 +1,8 @@
+magpie 1.78
+-----------
+Add support for Zookeeper 3.4.9.
+- Update default Zookeeper to 3.4.9.
+
 magpie 1.77
 -----------
 Add support for Hadoop 2.7.3.
