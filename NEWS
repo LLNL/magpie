@@ -2,6 +2,8 @@ magpie 1.78
 -----------
 Add support for Zookeeper 3.4.9.
 - Update default Zookeeper to 3.4.9.
+Add support for Spark 2.0.1
+- Update default Spark to 2.0.1-bin-hadoop2.7.
 Add support for Phoenix 4.8.1-Hbase-1.0, 4.8.1-Hbase-1.1,
   4.8.1-Hbase-1.2.
 - Update default Phoenix to 4.8.1-Hbase-1.2.
