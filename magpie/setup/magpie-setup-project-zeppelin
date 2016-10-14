@@ -207,7 +207,7 @@ sed -i \
     -e "s/ZEPPELINJAVAOPTS/${zeppelinjavaoptssubst}/g" \
     -e "s/ZEPPELINMEM/${ZEPPELIN_MEM}/g" \
     -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebooksubst}/g" \
-    -e "s/ZEPPELINCLASSPATH/${zeppelinclasspathsubstr}/g" \
+    -e "s/ZEPPELINCLASSPATH/${zeppelinclasspathsubst}/g" \
     ${post_zeppelinenvsh}
 
 if [ "${ZEPPELIN_SCALA_PATH}X" != "X" ]
