@@ -247,7 +247,14 @@ __Magpie_calculate_canrunjobscount () {
 }
 
 Magpie_calculate_processor_count () {
-    magpie_processor_count=`cat /proc/cpuinfo | grep processor | wc -l`
+    if ([ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ] \
+        || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]) \
+        && [ -n "${SLURM_CPUS_ON_NODE}" ]
+    then
+        magpie_processor_count=${SLURM_CPUS_ON_NODE}
+    else
+        magpie_processor_count=`cat /proc/cpuinfo | grep processor | wc -l`
+    fi
 }
 
 Magpie_calculate_threads_to_use () {
