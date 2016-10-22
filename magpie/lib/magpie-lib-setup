@@ -52,7 +52,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
             magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/node-${noderank}"
         fi
@@ -66,7 +66,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
             magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/node-${noderank}"
         fi
@@ -81,7 +81,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
             magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
         fi
@@ -90,7 +90,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            magpie_hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_ID}/tmp"
+            magpie_hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/tmp"
         else
             magpie_hadooptmpdir="${HADOOP_INTELLUSTRE_PATH}/tmp"
         fi
@@ -99,7 +99,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
         then
-            magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_ID}/node-${noderank}"
+            magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
             magpie_hadooptmpdir="${HADOOP_MAGPIENETWORKFS_PATH}/node-${noderank}"
         fi

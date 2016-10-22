@@ -85,7 +85,7 @@ extrajvmflags=""
 # Setup node directory per node 
 if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" == "yes" ]
 then
-    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
+    zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
 else
     zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/node-${zookeepernoderank}"
 fi
