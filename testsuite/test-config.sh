@@ -12,7 +12,7 @@ submissiontype=sbatch-srun
 msubslurmsrunpartition=mycluster
 msubslurmsrunbatchqueue=pbatch
 
-sbatchsrunpartition=pc6220
+sbatchsrunpartition=pbatch
 
 lsfqueue=standard
 
@@ -24,8 +24,13 @@ lsfqueue=standard
 # additional 1 will be added later for the master.
 #
 # zookeepernodecount will be added when necessary
-basenodecount=8
+#
+# optional tweaks to test defaults to make some run faster
+basenodecount=4
 zookeepernodecount=3
+hadoopterasortsize=10000000
+hbaseperformanceevalrowcount=100000
+phoenixperformanceevalrowcount=20000
 
 # Configure Makefile 
 
@@ -36,15 +41,15 @@ DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 LOCAL_DIR_PATH="/tmp/\${USER}"
 HOME_DIR_PATH="\${HOME}"
-LUSTRE_DIR_PATH="/p/lscratchg/\${USER}/testing"
-NETWORKFS_DIR_PATH="/p/lscratchg/\${USER}/testing"
-RAWNETWORKFS_DIR_PATH="/p/lscratchg/\${USER}/testing"
-ZOOKEEPER_DATA_DIR_PATH="/p/lscratchg/\${USER}/testing"
+LUSTRE_DIR_PATH="/p/lcratery/\${USER}/testing"
+NETWORKFS_DIR_PATH="/p/lcratery/\${USER}/testing"
+RAWNETWORKFS_DIR_PATH="/p/lcratery/\${USER}/testing"
+ZOOKEEPER_DATA_DIR_PATH="/p/lcratery/\${USER}/testing"
 SSD_DIR_PATH="/ssd/tmp1/\${USER}"
 
 # Set just PROJECT_DIR_PATH is it's the prefix for all
 # projects, or set individual ones
-PROJECT_DIR_PATH="\${HOME}/hadoop"
+PROJECT_DIR_PATH="\${HOME}/bigdata"
 # HADOOP_DIR_PATH=""
 # HBASE_DIR_PATH=""
 # KAFKA_DIR_PATH=""

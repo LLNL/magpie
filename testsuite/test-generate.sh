@@ -328,6 +328,10 @@ sed -i -e "s/LOCAL_REQUIREMENTS_FILE=\(.*\)/LOCAL_REQUIREMENTS_FILE=${defaultloc
 sed -i -e "s/HADOOP_FILESYSTEM_MODE=\"\(.*\)\"/HADOOP_FILESYSTEM_MODE=\"${DEFAULT_HADOOP_FILESYSTEM_MODE}\"/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 sed -i -e "s/ZOOKEEPER_REPLICATION_COUNT=\(.*\)/ZOOKEEPER_REPLICATION_COUNT=${zookeepernodecount}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
+sed -i -e "s/HADOOP_DEFAULT_TERASORT_SIZE=\(.*\)/HADOOP_DEFAULT_TERASORT_SIZE=${hadoopterasortsize}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/HBASE_DEFAULT_PERFORMANCEEVAL_ROW_COUNT=\(.*\)/HBASE_DEFAULT_PERFORMANCEEVAL_ROW_COUNT=${hbaseperformanceevalrowcount}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/PHOENIX_DEFAULT_PERFORMANCEEVAL_ROW_COUNT=\(.*\)/PHOENIX_DEFAULT_PERFORMANCEEVAL_ROW_COUNT=${phoenixperformanceevalrowcount}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
 defaultjavahomesubst=`echo ${DEFAULT_JAVA_HOME} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/JAVA_DEFAULT=\(.*\)/JAVA_DEFAULT=${defaultjavahomesubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
