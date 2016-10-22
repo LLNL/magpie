@@ -136,7 +136,7 @@ export HBASE_MODE="performanceeval"
 #
 # Defaults to 1048576 (~1 million)
 #
-# export HBASE_PERFORMANCEEVAL_ROW_COUNT=1048576
+# export HBASE_PERFORMANCEEVAL_ROW_COUNT=HBASEDEFAULTPERFORMANCEEVALROWCOUNT
 
 # Performance Evaluation client count
 #
