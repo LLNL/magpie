@@ -13,7 +13,7 @@
 #
 # Defaults to 50000000.
 #
-# export HADOOP_TERASORT_SIZE=50000000
+# export HADOOP_TERASORT_SIZE=HADOOPDEFAULTTERASORTSIZE
 
 # Terasort map count
 #

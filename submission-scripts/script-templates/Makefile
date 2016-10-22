@@ -65,8 +65,13 @@ REMOTE_CMD_DEFAULT=ssh
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0-oracle.x86_64/
 PYTHON_DEFAULT=/usr/bin/python
 
+#
+# Misc defaults you may wish to set
+#
+
 HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 ZOOKEEPER_REPLICATION_COUNT=3
+HADOOP_DEFAULT_TERASORT_SIZE=50000000
 
 #
 # Adjust for default versions
@@ -176,6 +181,10 @@ define common-substitution
 	sed -i -e 's;PYTHONDEFAULT;$(PYTHON_DEFAULT);g' $(1)
         sed -i -e 's;HADOOPFILESYSTEMMODE;$(HADOOP_FILESYSTEM_MODE);g' $(1)
 	sed -i -e 's;ZOOKEEPERREPLICATIONCOUNT;$(ZOOKEEPER_REPLICATION_COUNT);g' $(1)
+	sed -i -e 's;HADOOPDEFAULTTERASORTSIZE;$(HADOOP_DEFAULT_TERASORT_SIZE);g' $(1)
+	if test "${HADOOP_DEFAULT_TERASORT_SIZE}" != "50000000"; then \
+		sed -i -e "s/^# export HADOOP_TERASORT_SIZE/export HADOOP_TERASORT_SIZE/g" $(1); \
+	fi
 	sed -i -e 's;DEFAULTJOBOUTPUTFILE;$(JOBOUTPUTFILE);g' $(1)
 endef
 
