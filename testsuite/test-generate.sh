@@ -205,6 +205,7 @@ storm_0_9_5=y
 storm_0_9_6=y
 storm_0_10_0=y
 storm_0_10_1=y
+storm_0_10_2=y
 storm_1_0_0=y
 storm_1_0_1=y
 storm_1_0_2=y
