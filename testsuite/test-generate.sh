@@ -223,6 +223,7 @@ zookeeper_3_4_9=y
 zeppelin_0_5_6_incubating=y
 zeppelin_0_6_0=y
 zeppelin_0_6_1=y
+zeppelin_0_6_2=y
 
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
