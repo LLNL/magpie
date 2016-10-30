@@ -29,8 +29,8 @@ lsfqueue=standard
 basenodecount=4
 zookeepernodecount=3
 hadoopterasortsize=10000000
-hbaseperformanceevalrowcount=100000
-phoenixperformanceevalrowcount=20000
+hbaseperformanceevalrowcount=50000
+phoenixperformanceevalrowcount=10000
 
 # Configure Makefile 
 
@@ -72,8 +72,8 @@ DEFAULT_LOCAL_REQUIREMENTS=n
 DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 # Adjust accordingly.  On very busy clusters/machines, SHUTDOWN_TIME may need to be larger.
-STARTUP_TIME=30
-SHUTDOWN_TIME=30
+STARTUP_TIME=5
+SHUTDOWN_TIME=15
 
 # Don't edit these, calculated based on the above
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
