@@ -116,6 +116,25 @@ then
         export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     fi
     __Magpie_handle_job_name_corner_cases
+elif [ "${MAGPIE_SUBMISSION_TYPE}" == "srunfluxwreckrun" ]
+then
+    export MAGPIE_CLUSTER_NODERANK="${FLUX_NODE_ID}"
+    export MAGPIE_NODE_COUNT="${FLUX_JOB_NNODES}"
+    # At time of this writing, this was the legit way to get the hostnames
+    # out of the kvs.  MAGPIE_FLUX_JOBLIST is the current workaround
+    #
+    # MAGPIE_NODELIST=""
+    # for i in `seq 0 $((${FLUX_JOB_NNODES} - 1))`
+    # do
+    #     fluxhostname=`flux kvs get resource.hwloc.xml.${i} | grep "HostName" | sed -e 's/<info name="HostName" value="\(.*\)"\/>/\1/' | tr -d '[[:space:]]'`
+    #     MAGPIE_NODELIST=${MAGPIE_NODELIST}${MAGPIE_NODELIST:+","}${fluxhostname}
+    # done
+    export MAGPIE_NODELIST="${MAGPIE_FLUX_JOBLIST}"
+    export MAGPIE_JOB_NAME=${MAGPIE_FLUX_JOB_NAME}
+    # do not use FLUX_JOB_ID, is the LWJ job id, won't be constant across steps
+    export MAGPIE_JOB_ID=${MAGPIE_FLUX_JOB_ID}
+    __Magpie_calc_slurm_magpie_timelimit
+    __Magpie_handle_job_name_corner_cases
 else
     Magpie_output_internal_error "Invalid MAGPIE_SUBMISSION_TYPE = ${MAGPIE_SUBMISSION_TYPE}"
 fi

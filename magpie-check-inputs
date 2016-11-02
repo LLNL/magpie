@@ -175,10 +175,10 @@ if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ] \
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurmsrun" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorque" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorquepdsh" ]\
-    && [ "${MAGPIE_SUBMISSION_TYPE}" != "lsfmpirun" ]
-
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "lsfmpirun" ] \
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "srunfluxwreckrun" ]
 then
-    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun, msubtorquepdsh, lsfmpirun"
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun, msubtorquepdsh, lsfmpirun, srunfluxwreckrun"
     exit 1
 fi
 
@@ -193,6 +193,16 @@ then
     __Magpie_check_environment_variable_must_be_set "SLURM_JOB_NODELIST"
     __Magpie_check_environment_variable_must_be_set "SLURM_JOB_NAME"
     __Magpie_check_environment_variable_must_be_set "SLURM_JOB_ID"
+fi
+
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "srunfluxwreckrun" ]
+then
+    __Magpie_check_environment_variable_must_be_set "FLUX_NODE_ID"
+    __Magpie_check_environment_variable_must_be_set "FLUX_JOB_NNODES"
+    # Below are added into submission script as workaround
+    __Magpie_check_environment_variable_must_be_set "MAGPIE_FLUX_JOBLIST"
+    __Magpie_check_environment_variable_must_be_set "MAGPIE_FLUX_JOB_NAME"
+    __Magpie_check_environment_variable_must_be_set "MAGPIE_FLUX_JOB_ID"
 fi
 
 #
