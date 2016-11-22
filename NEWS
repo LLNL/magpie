@@ -1,5 +1,11 @@
 magpie 1.78
 -----------
+Add support for Hbase 1.2.4.
+- Update default Hbase to 1.2.4. 
+Add support for Hbase 1.1.7.
+
+magpie 1.78
+-----------
 Add job name into paths for HADOOP_PER_JOB_HDFS_PATH or
   ZOOKEEPER_PER_JOB_DATA_DIR paths.
 Use SLURM_CPUS_ON_NODE for cpu count if using slurm and available

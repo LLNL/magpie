@@ -59,7 +59,7 @@ PRESET_LAUNCH_SCRIPT_CONFIGS="N"
 # have patches for every version.
 
 HADOOP_PACKAGE="hadoop/common/hadoop-2.7.3/hadoop-2.7.3.tar.gz"
-HBASE_PACKAGE="hbase/1.2.3/hbase-1.2.3-bin.tar.gz"
+HBASE_PACKAGE="hbase/1.2.4/hbase-1.2.4-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.16.0/pig-0.16.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.12.2/apache-mahout-distribution-0.12.2.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz"
@@ -67,7 +67,7 @@ SPARK_PACKAGE="spark/spark-2.0.1/spark-2.0.1-bin-hadoop2.7.tgz"
 SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-2.7.3/hadoop-2.7.3.tar.gz"
 STORM_PACKAGE="storm/apache-storm-1.0.2/apache-storm-1.0.2.tar.gz"
 PHOENIX_PACKAGE="phoenix/apache-phoenix-4.8.1-HBase-1.2/bin/apache-phoenix-4.8.1-HBase-1.2-bin.tar.gz"
-PHOENIX_HBASE_PACKAGE="hbase/1.2.3/hbase-1.2.3-bin.tar.gz"
+PHOENIX_HBASE_PACKAGE="hbase/1.2.4/hbase-1.2.4-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
 ZEPPELIN_PACKAGE="zeppelin/zeppelin-0.6.2/zeppelin-0.6.2-bin-all.tgz"
 
