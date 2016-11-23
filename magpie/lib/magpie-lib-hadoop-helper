@@ -69,7 +69,7 @@ Magpie_get_networkedhdfspath () {
     
     if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
     then
-        magpie_networkedhdfspath="$magpie_networkedhdfspath/${MAGPIE_JOB_ID}"
+        magpie_networkedhdfspath="$magpie_networkedhdfspath/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}"
     fi
 }
 
