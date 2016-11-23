@@ -60,9 +60,9 @@ PROJECT_DIR_PATH="\${HOME}/bigdata"
 # STORM_DIR_PATH=""
 # ZOOKEEPER_DIR_PATH=""
 
-JAVA16PATH="/usr/lib/jvm/jre-1.6.0-sun.x86_64/"
-JAVA17PATH="/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
-JAVA18PATH="/usr/lib/jvm/jre-1.8.0-oracle.x86_64/"
+JAVA16PATH="/usr/lib/jvm/jre-1.6.0/"
+JAVA17PATH="/usr/lib/jvm/jre-1.7.0/"
+JAVA18PATH="/usr/lib/jvm/jre-1.8.0/"
 DEFAULT_JAVA_HOME=$JAVA17PATH
 
 # Adjust accordingly, most of you probably want ssh instead of mrsh
@@ -73,7 +73,7 @@ DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 # Adjust accordingly.  On very busy clusters/machines, SHUTDOWN_TIME may need to be larger.
 STARTUP_TIME=5
-SHUTDOWN_TIME=15
+SHUTDOWN_TIME=20
 
 # Don't edit these, calculated based on the above
 basenodeszookeepernodesmorenodescount=`expr ${basenodecount} \* 2 + ${zookeepernodecount} + 1`
