@@ -72,7 +72,7 @@ DEFAULT_LOCAL_REQUIREMENTS=n
 DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 # Adjust accordingly.  On very busy clusters/machines, SHUTDOWN_TIME may need to be larger.
-STARTUP_TIME=5
+STARTUP_TIME=10
 SHUTDOWN_TIME=20
 
 # Don't edit these, calculated based on the above
