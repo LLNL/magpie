@@ -87,7 +87,15 @@ Requirements
    for "local scratch" space was supported, but requires some extra
    work.  See README.no-local-dir for details.
 
-4) A minor set of software dependencies are required depending on your
+4) Magpie and the projects it supports generally assume that all
+   software and the OS environment consistently use short hostnames or
+   fully qualified qualified domain names.  For example, if the
+   "hostname" command returns a short hostname (e.g. 'foo' and not
+   'foo.host.com'), then the scheduler/resource manager should output
+   shortened hostnames in its output environment variables
+   (e.g. SLURM_JOB_NODELIST w/ Slurm, MOAB_NODELIST w/ Moab, etc.)
+
+5) A minor set of software dependencies are required depending on your
    environment.
 
    The Moab+Torque submission scripts use Pdsh
