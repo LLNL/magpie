@@ -1,0 +1,12 @@
+diff -pruN apache-phoenix-4.8.2-HBase-1.0-bin-orig/bin/performance.py apache-phoenix-4.8.2-HBase-1.0-bin/bin/performance.py
+--- apache-phoenix-4.8.2-HBase-1.0-bin-orig/bin/performance.py	2016-11-22 10:15:34.000000000 -0800
++++ apache-phoenix-4.8.2-HBase-1.0-bin/bin/performance.py	2016-12-21 14:57:03.692492000 -0800
+@@ -128,7 +128,7 @@ queryex("4 - Truncate + Group By", "SELE
+ queryex("5 - Filter + Count", "SELECT COUNT(1) FROM %s WHERE CORE<10;" % (table))
+ 
+ print "\nGenerating and upserting data..."
+-exitcode = subprocess.call('java -jar %s %s %s' % (phoenix_utils.testjar, data, rowcount),
++exitcode = subprocess.call('%s -jar %s %s %s' % (java_cmd, phoenix_utils.testjar, data, rowcount),
+                            shell=True)
+ if exitcode != 0:
+     sys.exit(exitcode)

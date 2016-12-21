@@ -9,6 +9,8 @@ Add support for Hbase 1.2.4.
 - Update default Hbase to 1.2.4. 
 Add support for Hbase 1.1.7, 1.1.8.
 Add support for Hbase 0.98.23.
+Add support for Phoenix 4.8.2-Hbase-1.0, 4.8.2-Hbase-1.1,
+  4.8.2-Hbase-1.2.
 
 magpie 1.78
 -----------
