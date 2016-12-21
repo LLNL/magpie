@@ -1,4 +1,4 @@
-magpie 1.78
+magpie 1.79
 -----------
 Fix corner case in job name into paths for HADOOP_PER_JOB_HDFS_PATH or
   ZOOKEEPER_PER_JOB_DATA_DIR from 1.77.
