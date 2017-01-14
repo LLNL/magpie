@@ -132,6 +132,7 @@ hbase_0_98_20_hadoop2=y
 hbase_0_98_21_hadoop2=y
 hbase_0_98_22_hadoop2=y
 hbase_0_98_23_hadoop2=y
+hbase_0_98_24_hadoop2=y
 hbase_0_99_0=y
 hbase_0_99_1=y
 hbase_0_99_2=y

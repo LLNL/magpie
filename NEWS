@@ -1,3 +1,7 @@
+magpie 1.80
+-----------
+Add support for Hbase 0.98.24
+
 magpie 1.79
 -----------
 Fix corner case in job name into paths for HADOOP_PER_JOB_HDFS_PATH or
@@ -8,7 +12,7 @@ Add support for Spark 1.6.3.
 Add support for Hbase 1.2.4.
 - Update default Hbase to 1.2.4. 
 Add support for Hbase 1.1.7, 1.1.8.
-Add support for Hbase 0.98.23.
+Add support for Hbase 0.98.23
 Add support for Phoenix 4.8.2-Hbase-1.0, 4.8.2-Hbase-1.1,
   4.8.2-Hbase-1.2, 4.9.0-Hbase-1.1, 4.9.0-Hbase-1.2.
 - Update default Phoenix to 4.9.0-Hbase-1.2.
