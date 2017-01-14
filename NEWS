@@ -1,5 +1,7 @@
 magpie 1.80
 -----------
+Add support for Spark 2.1.0-hadoop2.6, Spark 2.1.0-hadoop2.7.
+- Update default Spark to 2.1.0-hadoop2.7. 
 Add support for Hbase 0.98.24
 
 magpie 1.79
