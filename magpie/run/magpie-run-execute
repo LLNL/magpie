@@ -86,6 +86,7 @@ then
         exit 1
     fi
     scripttorun=$2
+    scriptargs=${@:3}
 fi
 
 
@@ -103,7 +104,7 @@ then
     typemessage="'${jobtype}' mode"
 elif [ "${jobtype}" == "script" ] || [ "${jobtype}" == "scriptnokill" ]
 then
-    ${scripttorun} &
+    ${scripttorun} ${scriptargs} &
     childpid=$!
     typemessage="job"
 fi
