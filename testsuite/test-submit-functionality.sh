@@ -193,6 +193,16 @@ __SubmitFunctionalityTests_PreRunScriptError() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-prerunscripterror
 }
 
+__SubmitFunctionalityTests_ScriptArgs() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-functionality-scriptargs
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-functionality-scriptargs
+    BasicJobSubmit magpie.${submissiontype}-spark-functionality-scriptargs
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-functionality-scriptargs
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-scriptargs
+    BasicJobSubmit magpie.${submissiontype}-storm-functionality-scriptargs
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-scriptargs
+}
+
 SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_LegacySubmissionType
     __SubmitFunctionalityTests_BadJobNames
@@ -205,4 +215,5 @@ SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_MagpieExports
     __SubmitFunctionalityTests_PrePostRunScripts
     __SubmitFunctionalityTests_PreRunScriptError
+    __SubmitFunctionalityTests_ScriptArgs
 }

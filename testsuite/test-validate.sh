@@ -745,6 +745,22 @@ then
     done
 fi
 
+__get_test_files scriptargs
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "ECHOXXXECHO" $file | wc -l`
+# 2 because of "Executing script ..." line and actual output
+        if [ "${num}" != "2" ]; then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __get_test_files run-hadoopterasort
 if [ $? -eq 0 ]
 then
