@@ -458,7 +458,7 @@ then
         then
             lfscmd=`which lfs`
             if [ $? -eq 0 ] ; then
-                ${lfscmd} setstripe --size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
+                ${lfscmd} setstripe --stripe-size ${hdfsblocksize} --count 1 ${magpie_hadooptmpdir}
             else
                 Magpie_output_internal_warning "Can't find lfs and set stripe size"
             fi

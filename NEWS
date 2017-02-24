@@ -1,3 +1,8 @@
+magpie 1.81
+-----------
+Update lfs usage to use --stripe-size over deprecated --size option.
+  lfs will no longer work with Lustre versions prior to 2.2.51.
+
 magpie 1.80
 -----------
 Fix bug in which all script ARGS variables were not passed to scripts
