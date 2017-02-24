@@ -226,6 +226,7 @@ storm_0_10_2=y
 storm_1_0_0=y
 storm_1_0_1=y
 storm_1_0_2=y
+storm_1_0_3=y
 kafka_2_11_0_9_0_0=y
 zookeeper_3_4_0=y
 zookeeper_3_4_1=y
