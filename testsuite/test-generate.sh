@@ -151,6 +151,7 @@ hbase_1_1_5=y
 hbase_1_1_6=y
 hbase_1_1_7=y
 hbase_1_1_8=y
+hbase_1_1_9=y
 hbase_1_2_0=y
 hbase_1_2_1=y
 hbase_1_2_2=y
