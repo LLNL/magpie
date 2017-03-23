@@ -27,7 +27,7 @@
 #BSUB -q <my queue>
 
 ## LSF Values
-# Generally speaking, don't touch these, just need to configure slurm
+# Generally speaking, don't touch the following, misc other configuration
 
 #BSUB -R "span[ptile=1]"
 #BSUB -x

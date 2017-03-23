@@ -51,7 +51,7 @@
 #SBATCH --partition=<my partition>
 
 ## SLURM Values
-# Generally speaking, don't touch these, just need to configure slurm
+# Generally speaking, don't touch the following, misc other configuration
 
 #SBATCH --ntasks-per-node=1
 #SBATCH --exclusive
