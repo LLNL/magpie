@@ -9,6 +9,9 @@ Add support for Storm 1.0.3.
 Add support for Hbase 1.1.9
 Add support for 4.10.0-Hbase-1.1, 4.10.0-Hbase-1.2.
 - Update default Phoenix to 4.10.0-Hbase-1.2.
+Increase default
+  yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage
+  in Hadoop to 98%.
 
 magpie 1.80
 -----------
