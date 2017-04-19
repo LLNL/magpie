@@ -2,8 +2,8 @@ magpie 1.81
 -----------
 Update lfs usage to use --stripe-size over deprecated --size option.
   lfs will no longer work with Lustre versions prior to 2.2.51.
-Add support for Zeppelin 0.7.0.
-- Update default Zeppelin to 0.7.0.
+Add support for Zeppelin 0.7.0, 0.7.1.
+- Update default Zeppelin to 0.7.1.
 Add support for Storm 1.0.3.
 - Update default Storm to 1.0.3.
 Add support for Hbase 1.1.9
