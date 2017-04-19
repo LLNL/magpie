@@ -89,7 +89,7 @@ spark_all_versions="${spark0Xjava16hadoop2versions} ${spark1Xjava16hadoop23versi
 stormzookeeper34java16versions="0.9.3 0.9.4"
 stormzookeeper34java16versions_zookeeperversion="3.4.6"
 stormzookeeper34java16versions_javaversion=${java16}
-stormzookeeper34java17versions="0.9.5 0.9.6 0.10.0 0.10.1 0.10.2 1.0.0 1.0.1 1.0.2 1.0.3"
+stormzookeeper34java17versions="0.9.5 0.9.6 0.9.7 0.10.0 0.10.1 0.10.2 1.0.0 1.0.1 1.0.2 1.0.3 1.1.0"
 stormzookeeper34java17versions_zookeeperversion="3.4.9"
 stormzookeeper34java17versions_javaversion=${java17}
 
