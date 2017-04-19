@@ -95,7 +95,21 @@ then
     __Magpie_handle_job_name_corner_cases
 elif [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
 then
-    export MAGPIE_CLUSTER_NODERANK="$(echo ${LSB_HOSTS} | fmt -1 | head -1)"
+    # This compress/expand is to properly sort hosts, can't lexicographically do it
+    # i.e. lexicographically node150 < node30
+    compressedhosts=`${MAGPIE_SCRIPTS_HOME}/bin/magpie-compress-nodes ${LSB_HOSTS}`
+    expandedhosts=`${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ${compressedhosts}`
+    myhostname=`hostname`
+    noderank=0
+    for host in $expandedhosts
+    do
+	if [ "${host}" == "${myhostname}" ]
+	then
+	    break
+	fi
+	noderank=`expr ${noderank} + 1`
+    done
+    export MAGPIE_CLUSTER_NODERANK="$noderank"
     export MAGPIE_NODE_COUNT="$(echo ${LSB_HOSTS} | tr " " "\n" | sort -u | wc -w)"
     export MAGPIE_NODELIST=$(echo ${LSB_HOSTS} | sed 's/ /,/g')
     export MAGPIE_JOB_NAME="${LSB_JOBNAME}"
