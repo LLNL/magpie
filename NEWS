@@ -9,7 +9,7 @@ Add support for Zeppelin 0.7.0, 0.7.1.
 Add support for Storm 0.9.7, 1.0.3, 1.1.0.
 - Update default Storm to 1.1.0.
 Add support for Hbase 1.1.9, 1.2.5.
-Add support for 4.10.0-Hbase-1.1, 4.10.0-Hbase-1.2.
+Add support for Phoenix 4.10.0-Hbase-1.1, 4.10.0-Hbase-1.2.
 - Update default Phoenix to 4.10.0-Hbase-1.2.
 Increase default
   yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage
