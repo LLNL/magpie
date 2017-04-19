@@ -14,6 +14,9 @@ Increase default
   in Hadoop to 98%.
 Fix bug in calculation of MAGPIE_CLUSTER_NODERANK for submission type
   'lsfmpirun'.
+When calculating user file descriptor limits and process limits to
+  use, do not decrease the number if the system provides a much higher
+  default.
 
 magpie 1.80
 -----------

@@ -347,6 +347,12 @@ Magpie_calculate_openfiles () {
             magpie_openfilescount=65536
         fi
         
+	# if system places higher default, don't change it 
+        if [ "${magpie_openfilescount}" -lt "${openfiles}" ]
+        then
+            magpie_openfilescount=${openfiles}
+        fi
+
         if [ "${openfileshardlimit}" != "unlimited" ]
         then
             if [ ${magpie_openfilescount} -gt ${openfileshardlimit} ]
@@ -379,6 +385,12 @@ Magpie_calculate_userprocesses () {
             magpie_userprocessescount=32768
         fi
         
+	# if system places higher default, don't change it 
+        if [ "${magpie_userprocessescount}" -lt "${userprocesses}" ]
+        then
+            magpie_userprocessescount=${userprocesses}
+        fi
+
         if [ "${userprocesseshardlimit}" != "unlimited" ]
         then
             if [ ${magpie_userprocessescount} -gt ${userprocesseshardlimit} ]
