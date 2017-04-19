@@ -8,7 +8,7 @@ hadoop_decomissionhdfs_minimum="2.3.0"
 
 hadoop2Xjava16versions="2.2.0 2.3.0 2.4.0 2.4.1 2.5.0 2.5.1 2.5.2"
 hadoop2Xjava16versions_javaversion=${java16}
-hadoop2Xjava17versions="2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5 2.7.0 2.7.1 2.7.2 2.7.3"
+hadoop2Xjava17versions="2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5 2.7.0 2.7.1 2.7.2 2.7.3 2.8.0"
 hadoop2Xjava17versions_javaversion=${java17}
 
 hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions"
