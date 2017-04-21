@@ -167,3 +167,12 @@ Storm Recompilation
 
   should net you a binary package with everything you need in the target
   directory.
+
+- Beginning with Storm 1.1.0, the package no longer includes the storm
+  starter jar file by default.  You will have to compile it by default
+  in order to run stormwordcount.  A simple:
+
+  cd examples/storm-starter/
+  mvn package
+
+  Should suffice
