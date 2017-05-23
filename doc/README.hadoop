@@ -733,6 +733,15 @@ Hadoop Advanced Usage
    The default can be tweaked in the submission scripts via the
    HADOOP_DEFAULT_REDUCE_TASKS environment variable.
 
+3) Similarly Magpie configures the default number of map tasks in a
+   Hadoop job depending on the number of compute nodes in your
+   allocation and the number of cores on nodes.  However, this may not
+   be optimal in many situations, such as nodes that have a low memory
+   to cpu ratio.  Users should play around with the number of map
+   tasks in their mapreduce jobs to improve performance.  The default
+   can be tweaked in the submission scripts via the
+   HADOOP_DEFAULT_MAP_TASKS environment variable.
+
 3) Magpie configures a relatively conservative amount of memory for
    Hadoop, currently 80% of system memory.  While there should always
    be a buffer to allow the operating system, system daemons, and
