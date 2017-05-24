@@ -168,7 +168,8 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
         2.0.0-bin-hadoop2.6+, 2.0.0-bin-hadoop2.7+,
         2.0.1-bin-hadoop2.6+, 2.0.1-bin-hadoop2.7+,
         2.0.2-bin-hadoop2.6+, 2.0.2-bin-hadoop2.7+,
-        2.1.0-bin-hadoop2.6+, 2.1.0-bin-hadoop2.7+
+        2.1.0-bin-hadoop2.6+, 2.1.0-bin-hadoop2.7+,
+        2.1.1-bin-hadoop2.6+, 2.1.1-bin-hadoop2.7+
 
 Hbase - 0.96.1.1-hadoop2+, 0.98.0-hadoop2+, 0.98.1-hadoop2+,
         0.98.2-hadoop2+, 0.98.3-hadoop2+, 0.98.4-hadoop2+,
