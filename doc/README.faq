@@ -105,6 +105,21 @@ FAQ
   of these combinations, but I don't list it because I don't have
   tests for it in the testsuite and it would require more work.
 
+* How did Magpie begin?
+
+  Initially, the primary work goal was to see how Hadoop performed on
+  Lustre.  A Lustre plugin for Hadoop was developed, a Lustre plugin
+  from the folks at Intel was tried out, and some other
+  experimentation was done.  In order to test things, we needed a way
+  launch Hadoop on HPC clusters, so we heavily hacked/modified some
+  bash scripts originally developed by Kevin Regimbal @ PNNL.
+
+  Lo and behold, most people didn't care about the original work.
+  Most were interested in the bash scripts for starting up Hadoop in a
+  Slurm allocation.  So a more polished set of scripts was developed,
+  which is Magpie.  Eventually it was expanded to support Pig, Hbase,
+  Spark, and other projects.
+
 * I have a question, can you help?
 
   Please post questions to Github issue tracker.  I'm glad to answer
