@@ -6,6 +6,8 @@ Add support for Spark 2.1.1-hadoop2.6, Spark 2.1.1-hadoop2.7.
 - Update default Spark to 2.1.1-hadoop2.7.
 Add support for Mahout 0.13.0.
 - Update default Mahout to 0.13.0
+Add support for Pig 0.17.0
+- Update default Pig to 0.17.0
 
 magpie 1.81
 -----------

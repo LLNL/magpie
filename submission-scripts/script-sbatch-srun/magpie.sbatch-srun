@@ -916,7 +916,7 @@ export PIG_SETUP=no
 
 # Pig Version
 #
-export PIG_VERSION="0.16.0"
+export PIG_VERSION="0.17.0"
 
 # Path to your Pig build/binaries
 #

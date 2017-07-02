@@ -99,6 +99,7 @@ pig_0_13_0=y
 pig_0_14_0=y
 pig_0_15_0=y
 pig_0_16_0=y
+pig_0_17_0=y
 mahout_0_11_0=y
 mahout_0_11_1=y
 mahout_0_11_2=y
