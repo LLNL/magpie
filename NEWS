@@ -8,6 +8,8 @@ Add support for Mahout 0.13.0.
 - Update default Mahout to 0.13.0
 Add support for Pig 0.17.0
 - Update default Pig to 0.17.0
+Add support for Zeppelin 0.7.1, 0.7.2.
+- Update default Zeppelin to 0.7.2.
 
 magpie 1.81
 -----------
