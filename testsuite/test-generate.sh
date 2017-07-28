@@ -142,6 +142,7 @@ hbase_0_99_2=y
 hbase_1_0_0=y
 hbase_1_0_0_1=y
 hbase_1_0_1=y
+hbase_1_0_1_1=y
 hbase_1_0_2=y
 hbase_1_0_3=y
 hbase_1_1_0=y
