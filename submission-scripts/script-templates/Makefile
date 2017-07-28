@@ -62,7 +62,7 @@ ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 
 REMOTE_CMD_DEFAULT=ssh
 
-JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0-oracle.x86_64/
+JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0/
 PYTHON_DEFAULT=/usr/bin/python
 
 #
