@@ -16,6 +16,8 @@ Add support for Phoenix 4.11.0-Hbase-1.1, 4.11.0-Hbase-1.2,
 Add support for Zookeeper 3.4.10
 - Update default Zookeeper to 3.4.10
 Add support for Storm 1.0.4
+Add support for Hadoop 2.8.1
+- Update default Hadoop to 2.8.1.
 
 magpie 1.81
 -----------
