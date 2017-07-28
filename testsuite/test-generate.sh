@@ -161,6 +161,7 @@ hbase_1_2_2=y
 hbase_1_2_3=y
 hbase_1_2_4=y
 hbase_1_2_5=y
+hbase_1_2_6=y
 hbase_1_3_0=y
 hbase_1_3_1=y
 phoenix_4_5_0_HBase_1_0=y
