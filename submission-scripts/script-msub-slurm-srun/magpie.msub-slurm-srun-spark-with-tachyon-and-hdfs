@@ -232,7 +232,7 @@ export MAGPIE_JOB_TYPE="spark"
 ############################################################################
 
 # Necessary for most projects
-export JAVA_HOME="/usr/lib/jvm/jre-1.7.0/"
+export JAVA_HOME="/usr/lib/jvm/jre-1.8.0/"
 
 # MAGPIE_PYTHON path used for:
 # - Spark PySpark path
@@ -644,7 +644,7 @@ export SPARK_SETUP=yes
 
 # Version
 #
-export SPARK_VERSION="2.1.1-bin-hadoop2.7"
+export SPARK_VERSION="2.2.0-bin-hadoop2.7"
 
 # Path to your Spark build/binaries
 #
