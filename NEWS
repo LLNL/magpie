@@ -13,6 +13,8 @@ Add support for Zeppelin 0.7.1, 0.7.2.
 Add support for Phoenix 4.11.0-Hbase-1.1, 4.11.0-Hbase-1.2,
  4.11.0-Hbase-1.3
 - Update default Phoenix to 4.11.0-Hbase-1.3.
+Add support for Zookeeper 3.4.10
+- Update default Zookeeper to 3.4.10
 
 magpie 1.81
 -----------
