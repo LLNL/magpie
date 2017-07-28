@@ -72,6 +72,6 @@ RemoveTestsCheck() {
 
     if [ "${!variabletocheck}" == "n" ]
     then
-        rm -f magpie.${submissiontype}*${project}-${version}*
+        rm -f magpie.${submissiontype}*${project}-${version}-*
     fi
 }
