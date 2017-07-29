@@ -6,6 +6,8 @@ Add support for Spark 2.1.1-hadoop2.6, Spark 2.1.1-hadoop2.7,
   2.2.0-hadoop2.6, Spark 2.2.0-hadoop2.7.
 - Update default Spark to 2.2.0-hadoop2.7.
 - Update default Java for Spark to Java 1.8.
+- Note using Yarn w/ rawnetworkfs may not work with Spark 2.2.0, see
+  documentation for details.
 Add support for Mahout 0.13.0.
 - Update default Mahout to 0.13.0
 Add support for Pig 0.17.0
