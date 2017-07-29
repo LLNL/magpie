@@ -417,3 +417,16 @@ Spark Advanced Usage
 
    Note that beginning Spark 1.6.0 memory fractions have been
    deprecated.
+
+Known Issues
+------------
+
+From atleast Spark 2.0.0 to Spark 2.1.1, using Yarn with RawnetworkFS
+worked within Magpie and its testing.  This test broke in Spark 2.2.0.
+
+Upstream issue: https://issues.apache.org/jira/browse/SPARK-21570
+
+Suggestion is Spark w/ Yarn and non-HDFS is not supported.
+
+Using the Spark standalone scheduler, Spark w/ RawnetworkFS still
+works.

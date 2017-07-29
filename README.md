@@ -67,6 +67,7 @@ listed below.
 
 * + - Requires patch against binary distro's scripts, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
+* ! - Some issues may exist, see documentation for details
 
 Hadoop - 1.2.1+, 2.1.0-beta+, 2.2.0+, 2.3.0+, 2.4.0+, 2.4.1+, 2.5.0+,
          2.5.1+, 2.5.2+, 2.6.0+, 2.6.1+, 2.6.2+, 2.6.3+, 2.6.4+,
@@ -92,7 +93,7 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+, 1.0.0-bin-hadoop2^,
         2.0.2-bin-hadoop2.6+, 2.0.2-bin-hadoop2.7+,
         2.1.0-bin-hadoop2.6+, 2.1.0-bin-hadoop2.7+,
         2.1.1-bin-hadoop2.6+, 2.1.1-bin-hadoop2.7+,
-        2.2.0-bin-hadoop2.6+, 2.2.0-bin-hadoop2.7+
+        2.2.0-bin-hadoop2.6+!, 2.2.0-bin-hadoop2.7+!
 
 Hbase - 0.96.1.1-hadoop2+, 0.98.0-hadoop2+, 0.98.1-hadoop2+,
         0.98.2-hadoop2+, 0.98.3-hadoop2+, 0.98.4-hadoop2+,
