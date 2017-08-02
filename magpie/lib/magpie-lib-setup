@@ -85,7 +85,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         else
             magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/node-${noderank}"
         fi
-        magpie_fsdefault="file:///"
+        magpie_fsdefault="file://${HADOOP_RAWNETWORKFS_PATH}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "intellustre" ]
     then
         if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
