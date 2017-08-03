@@ -63,7 +63,7 @@ PROJECT_DIR_PATH="\${HOME}/bigdata"
 JAVA16PATH="/usr/lib/jvm/jre-1.6.0/"
 JAVA17PATH="/usr/lib/jvm/jre-1.7.0/"
 JAVA18PATH="/usr/lib/jvm/jre-1.8.0/"
-DEFAULT_JAVA_HOME=$JAVA17PATH
+DEFAULT_JAVA_HOME=$JAVA18PATH
 
 # Adjust accordingly, most of you probably want ssh instead of mrsh
 REMOTE_CMD=mrsh
