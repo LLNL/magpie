@@ -324,6 +324,12 @@ __SubmitCornerCaseTests_BadDirectories() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-baddirectories
 }
 
+__SubmitCornerCaseTests_NotEnoughNodesForHDFS() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-notenoughnodesforhdfs-hdfsondisk
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-notenoughnodesforhdfs-hdfsoverlustre
+    BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-notenoughnodesforhdfs-hdfsovernetworkfs
+}
+
 SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_CatchProjectDependencies
 
@@ -363,4 +369,6 @@ SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_BadComboSettings
 
     __SubmitCornerCaseTests_BadDirectories
+
+    __SubmitCornerCaseTests_NotEnoughNodesForHDFS
 }

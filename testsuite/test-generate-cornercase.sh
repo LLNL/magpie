@@ -1181,6 +1181,46 @@ __GenerateCornerCaseTests_BadDirectories() {
     fi
 }
 
+__GenerateCornerCaseTests_NotEnoughNodesForHDFS() {
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-notenoughnodesforhdfs-hdfsondisk
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-notenoughnodesforhdfs-hdfsoverlustre
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-notenoughnodesforhdfs-hdfsovernetworkfs
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-notenoughnodesforhdfs-*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/<my node count>/3/" ${files}
+        sed -i -e 's/# export HADOOP_HDFS_REPLICATION="\(.*\)"/export HADOOP_HDFS_REPLICATION="3"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/notenoughnodesforhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-notenoughnodesforhdfs-hdfsondisk"`
+    if [ -n "${files}" ]
+    then
+        sed -i \
+            -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfs"/' \
+            ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-notenoughnodesforhdfs-hdfsoverlustre"`
+    if [ -n "${files}" ]
+    then
+        sed -i \
+            -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"/' \
+            ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-notenoughnodesforhdfs-hdfsovernetworkfs"`
+    if [ -n "${files}" ]
+    then
+        sed -i \
+            -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="hdfsovernetworkfs"/' \
+            ${files}
+    fi
+}
+
 GenerateCornerCaseTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
@@ -1218,4 +1258,6 @@ GenerateCornerCaseTests() {
     __GenerateCornerCaseTests_BadComboSettings
 
     __GenerateCornerCaseTests_BadDirectories
+
+    __GenerateCornerCaseTests_NotEnoughNodesForHDFS
 }
