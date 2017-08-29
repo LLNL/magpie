@@ -316,6 +316,15 @@ else
     hdfsreplication=${default_hdfs_replication}
 fi
 
+if Magpie_hadoop_filesystem_mode_is_hdfs_type
+then
+    if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsreplication}" ]
+    then
+        echo "Number of Hadoop slave nodes (${HADOOP_SLAVE_COUNT}) must be greater than HDFS replication (${hdfsreplication})"
+        exit 1
+    fi
+fi
+
 # If not rawnetworkfs don't want to affect other filesystems, so need
 # to check HADOOP_FILESYSTEM_MODE
 if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ] \
