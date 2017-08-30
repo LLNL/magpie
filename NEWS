@@ -2,6 +2,8 @@ magpie 1.83
 -----------
 Add input check to ensure number of nodes specified by user is enough
  to meet HDFS replication count.
+Add support for Storm 1.1.1.
+- Update default Storm to 1.1.1.
 
 magpie 1.82
 -----------
