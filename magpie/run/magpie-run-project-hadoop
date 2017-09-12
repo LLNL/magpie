@@ -98,6 +98,13 @@ Magpie_run_start_hadoop () {
                     # Sets magpie_networkedhdfspath & magpie_hdfs_stored_nodecount_path
                     Magpie_get_hdfs_stored_nodecount_path
 
+                    # achu: Note that all the file checks on
+                    # magpie_hdfs_stored_version_path and
+                    # magpie_hdfs_stored_nodecount_path should
+                    # technically be locked checks.  But as flock is
+                    # network file system dependent, we choose to do
+                    # this unsafely and hope its good enough.
+
                     # Older versions of Magpie didn't store this variable
                     if [ -f ${magpie_hdfs_stored_version_path} ]
                     then
@@ -180,6 +187,11 @@ Magpie_run_start_hadoop () {
                 if [ "${hdfs_was_setup}" == "1" ] \
                     && Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
                 then
+                    # achu: Note that we should really be doing locked
+                    # checks/creates here.  But as flock is network
+                    # file system dependent, we choose to do this
+                    # unsafely and hope its good enough.
+
                     if [ "${HADOOP_MODE}" != "upgradehdfs" ]
                     then
                         rm -f ${magpie_hdfs_stored_version_path}
