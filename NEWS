@@ -1,5 +1,8 @@
 magpie 1.83
 -----------
+Add check for multiple HDFS instances being run simultaneously out of the
+ same Lustre/NetworkFS path, so that jobs can die more quickly and provide more
+ useful information, instead of just timing out.
 Add input check to ensure number of nodes specified by user is enough
  to meet HDFS replication count.
 Add support for Storm 1.1.1.

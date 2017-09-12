@@ -82,3 +82,8 @@ Magpie_get_hdfs_stored_nodecount_path () {
     Magpie_get_networkedhdfspath
     magpie_hdfs_stored_nodecount_path=${magpie_networkedhdfspath}/magpie.node-count
 }
+
+Magpie_get_hdfs_in_use_path () {
+    Magpie_get_networkedhdfspath
+    magpie_hdfs_in_use_path=${magpie_networkedhdfspath}/magpie.hdfs_in_use
+}

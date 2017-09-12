@@ -97,13 +97,29 @@ Magpie_run_start_hadoop () {
                     Magpie_get_hdfs_stored_version_path
                     # Sets magpie_networkedhdfspath & magpie_hdfs_stored_nodecount_path
                     Magpie_get_hdfs_stored_nodecount_path
+                    # Sets magpie_networkedhdfspath & magpie_hdfs_in_use_path
+                    Magpie_get_hdfs_in_use_path
 
                     # achu: Note that all the file checks on
-                    # magpie_hdfs_stored_version_path and
+                    # magpie_hdfs_in_use_path,
+                    # magpie_hdfs_stored_version_path, and
                     # magpie_hdfs_stored_nodecount_path should
                     # technically be locked checks.  But as flock is
                     # network file system dependent, we choose to do
                     # this unsafely and hope its good enough.
+
+                    # Older versions of Magpie didn't store this variable
+                    if [ -f ${magpie_hdfs_in_use_path} ]
+                    then
+                        echo "**** HDFS Issue ****"
+                        echo "Magpie HDFS lock file ${magpie_hdfs_in_use_path} found, indicating another"
+                        echo "set of Hadoop daemons is running HDFS out of this path."
+                        echo "If you wish to use HDFS in multiple Magpie instances in parallel, you can setup HDFS"
+                        echo "on another path."
+                        echo "If you are sure this is in error, remove this file and re-submit your job."
+                        echo "**** HDFS Issue ****"
+                        hadoop_should_be_setup=0
+                    fi
 
                     # Older versions of Magpie didn't store this variable
                     if [ -f ${magpie_hdfs_stored_version_path} ]
@@ -179,6 +195,20 @@ Magpie_run_start_hadoop () {
 
                     ${hadoopsetupscriptprefix}/start-dfs.sh ${startdfsoptions}
                     hdfs_was_setup=1
+
+                    if Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
+                    then
+                        # Sets magpie_networkedhdfspath & magpie_hdfs_in_use_path
+                        Magpie_get_hdfs_in_use_path
+
+                        # Because we aren't using flock, this is technically potentially
+                        # racy.  One more check to see if the file exists.
+
+                        if [ ! -f ${magpie_hdfs_in_use_path} ]
+                        then
+                            echo "${MAGPIE_JOB_ID}" > ${magpie_hdfs_in_use_path}
+                        fi
+                    fi
 
                     # Make variables specific now within Magpie
                     Magpie_make_all_local_dirs_node_specific
@@ -675,8 +705,22 @@ Magpie_run_stop_hadoop () {
 
                 # Make variables specific now within Magpie
                 Magpie_make_all_local_dirs_node_specific
+
+                # Sets magpie_networkedhdfspath & magpie_hdfs_in_use_path
+                Magpie_get_hdfs_in_use_path
+
+                if [ -f ${magpie_hdfs_in_use_path} ]
+                then
+                    local magpiejobid=`cat ${magpie_hdfs_in_use_path}`
+
+                    if [ "${MAGPIE_JOB_ID}" == "${magpiejobid}" ]
+                    then
+                        rm -f ${magpie_hdfs_in_use_path}
+                    fi
+                fi
             fi
         fi
     fi
+
     magpie_run_hadoop_teardown_complete=1
 }
