@@ -53,7 +53,11 @@ __Magpie_run_check_hadoop_up ()
                 local numline=`expr ${j} - 1`
                 local federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
             fi
-
+            
+            # Ensure namenode isn't in safe mode.
+            #
+            # We do not use "-safemode wait", b/c we want to inform the user
+            # as we're waiting.
             ${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode get 2>&1 | grep -q -i "off"
             if [ $? -ne 0 ]
             then
@@ -476,10 +480,6 @@ Magpie_run_start_hadoop () {
             fi
         fi
 
-        # Ensure namenode isn't in safe mode.
-        #
-        # We do not use "-safemode wait", b/c we want to inform the user
-        # as we're waiting.
         if [ ${HADOOP_MODE} != "setuponly" ] \
             && Magpie_hadoop_filesystem_mode_is_hdfs_type
         then
