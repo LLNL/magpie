@@ -5,6 +5,8 @@ Add check for multiple HDFS instances being run simultaneously out of the
  useful information, instead of just timing out.
 Add input check to ensure number of nodes specified by user is enough
  to meet HDFS replication count.
+Add job id in to spark local scratch dir, to prevent issues with scratch space
+ being used by multiple jobs in parallel.
 Add support for Storm 1.1.1.
 - Update default Storm to 1.1.1.
 
