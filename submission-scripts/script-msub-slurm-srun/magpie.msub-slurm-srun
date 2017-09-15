@@ -36,6 +36,10 @@
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
+#
+# Many of the below can be configured on the msub command line.  If
+# you are more comfortable specifying these on the command line, feel
+# free to delete the customizations below.
 
 #MSUB -l nodes=<my node count>
 
@@ -1919,7 +1923,7 @@ export STORM_SETUP=no
 
 # Version
 #
-export STORM_VERSION="1.1.0"
+export STORM_VERSION="1.1.1"
 
 # Path to your Storm build/binaries
 #

@@ -36,6 +36,10 @@
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
+#
+# Many of the below can be configured on the bsub command line.  If
+# you are more comfortable specifying these on the command line, feel
+# free to delete the customizations below.
 
 #BSUB -n <my node count>
 #BSUB -o "lsf-%J.out"
@@ -239,7 +243,7 @@ export STORM_SETUP=yes
 
 # Version
 #
-export STORM_VERSION="1.1.0"
+export STORM_VERSION="1.1.1"
 
 # Path to your Storm build/binaries
 #

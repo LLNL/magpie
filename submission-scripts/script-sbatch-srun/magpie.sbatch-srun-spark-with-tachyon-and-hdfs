@@ -36,6 +36,10 @@
 #
 # Also take into account additional nodes needed for other services,
 # for example HDFS federation.
+#
+# Many of the below can be configured on the sbatch command line.  If
+# you are more comfortable specifying these on the command line, feel
+# free to delete the customizations below.
 
 #SBATCH --nodes=<my node count>
 #SBATCH --output="slurm-%j.out"
