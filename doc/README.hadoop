@@ -592,14 +592,14 @@ We can give each of these paths to one of the compute nodes, which
 they can treat like a local disk.  HDFS operates on top of these
 directories just as though there were a local disk on the server.
 
-Q: Does that mean I have to constantly rebuild HDFS everytime I start
-  a job?
+Q: Does that mean I have to HDFS starts with a clean slate everytime I
+   start a job?
 
 A: No, using node ranks, "disk-paths" can be consistently assigned to
    nodes so that all your HDFS files from a previous run can exist on
    a later run.  The next time you run your job, it doesn't matter
    what server you're running on, b/c your scheduler/resource manager
-   will assign that node it's appropriate rank.  The node will
+   will assign that node its appropriate rank.  The node will
    subsequently load HDFS from its appropriate directory.
 
 Q: But that'll mean I have to consistently use the same number of
@@ -621,7 +621,7 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    normally used probably will not work.  All of the paths are in
    Lustre/NetworkFS, so the "free space" on each "local" path is identical,
    messing up calculations for balancing (i.e. no "local disk" is
-   more/less utilized than another).  
+   more/less utilized than another).
 
    Decreasing nodes is a bit more dangerous, as data can "disappear"
    just like if it were on a traditional Hadoop cluster.  If you try
@@ -629,6 +629,27 @@ A: Generally speaking no, but you can hit issues if you don't.  Just
    process of "decommissioning" nodes like on a real cluster,
    otherwise you may lose data.  You can decommission nodes through
    the "decommissionhdfsnodes" option in HADOOP_MODE.
+
+Q: Can multiple Magpie instances be run in parallel based on the same
+   lustre/networkfs path?
+
+A: No, only one HDFS namenode can operate out of a specific set of
+   paths.  If you imagine a traditional Hadoop cluster, what you
+   effectively are trying to do is start two HDFS file systems out of
+   the same local disk.
+
+   If you wish to run multiple Magpie instances with HDFS over Lustre
+   or HDFS over a NetworkFS, all you need to do is configure different
+   base directories for those instances, via the
+   HADOOP_HDFSOVERLUSTRE_PATH or HADOOP_HDFSOVERNETWORKFS_PATH
+   settings respectively.
+
+   If you are not concerned about data persisting between jobs, you
+   may also consider using the HADOOP_PER_JOB_HDFS_PATH to always
+   force HDFS paths to be different for each job.  This setting may be
+   particularly useful if you initially running tests/experiments on
+   CPU counts, node counts, settings, etc. and want to run many jobs
+   in parallel.
 
 Q: What should HDFS replication be?
 
