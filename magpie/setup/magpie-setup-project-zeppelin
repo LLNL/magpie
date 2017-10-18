@@ -191,7 +191,7 @@ zeppelinnotebooksubst=`echo "${zeppelinnotebookdir}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelininterpreterdir=`echo "${ZEPPELIN_HOME}/interpreter" | sed "s/\\//\\\\\\\\\//g"`
 
 #
-# Setup Kafka configuration files and environment files
+# Setup Zeppelin configuration files and environment files
 #
 cp ${pre_zeppelinenvsh} ${post_zeppelinenvsh}
 
