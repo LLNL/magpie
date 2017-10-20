@@ -11,6 +11,7 @@ Add support for Storm 1.1.1.
 - Update default Storm to 1.1.1.
 Add support for Zeppelin 0.7.3.
 - Update default Zeppelin to 0.7.3.
+Add support for Spark 2.1.2-hadoop2.6, Spark 2.1.2-hadoop2.7
 
 magpie 1.82
 -----------
