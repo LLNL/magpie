@@ -69,7 +69,7 @@ STORM_PACKAGE="storm/apache-storm-1.1.0/apache-storm-1.1.0.tar.gz"
 PHOENIX_PACKAGE="phoenix/apache-phoenix-4.11.0-HBase-1.2/bin/apache-phoenix-4.11.0-HBase-1.3-bin.tar.gz"
 PHOENIX_HBASE_PACKAGE="hbase/1.2.4/hbase-1.3.1-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
-ZEPPELIN_PACKAGE="zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz"
+ZEPPELIN_PACKAGE="zeppelin/zeppelin-0.7.3/zeppelin-0.7.3-bin-all.tgz"
 
 # First check some basics
 

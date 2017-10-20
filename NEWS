@@ -9,6 +9,8 @@ Add job id in to spark local scratch dir, to prevent issues with scratch space
  being used by multiple jobs in parallel.
 Add support for Storm 1.1.1.
 - Update default Storm to 1.1.1.
+Add support for Zeppelin 0.7.3.
+- Update default Zeppelin to 0.7.3.
 
 magpie 1.82
 -----------
