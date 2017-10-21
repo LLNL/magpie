@@ -129,7 +129,8 @@ Phoenix - 4.5.0-Hbase-1.0+, 4.5.0-Hbase-1.1+, 4.5.1-Hbase-1.0+,
           4.8.1-Hbase-1.2, 4.8.2-Hbase-1.0+, 4.8.2-Hbase-1.1,
           4.8.2-Hbase-1.2, 4.9.0-Hbase-1.1, 4.9.0-Hbase-1.2,
           4.10.0-Hbase-1.1, 4.10.0-Hbase-1.2, 4.11.0-Hbase-1.1,
-          4.11.0-Hbase-1.2, 4.11.0-Hbase-1.3
+          4.11.0-Hbase-1.2, 4.11.0-Hbase-1.3, 4.12.0-Hbase-1.1,
+          4.12.0-Hbase-1.2, 4.12.0-Hbase-1.3
 
 UDA/uda-plugin - 3.3.2-0
 
