@@ -153,8 +153,18 @@ then
     phoenix_jars="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-server.jar,$phoenix_jars"
     phoenix_jars="${PHOENIX_HOME}/phoenix-spark-${PHOENIX_VERSION}.jar,$phoenix_jars"
     phoenix_jars="${PHOENIX_HOME}/phoenix-core-${PHOENIX_VERSION}.jar,$phoenix_jars"
-    phoenix_jars="${PHOENIX_HOME}/phoenix-server-${PHOENIX_VERSION}.jar,$phoenix_jars"
-    phoenix_jars="${PHOENIX_HOME}/phoenix-server-client-${PHOENIX_VERSION}.jar,$phoenix_jars"
+   
+    # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2 
+    Magpie_vercomp ${PHOENIX_VERSION} 4.8.0
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        phoenix_jars="${PHOENIX_HOME}/phoenix-queryserver-${PHOENIX_VERSION}.jar,$phoenix_jars"
+        phoenix_jars="${PHOENIX_HOME}/phoenix-queryserver-client-${PHOENIX_VERSION}.jar,$phoenix_jars"
+    else
+        phoenix_jars="${PHOENIX_HOME}/phoenix-server-${PHOENIX_VERSION}.jar,$phoenix_jars"
+        phoenix_jars="${PHOENIX_HOME}/phoenix-server-client-${PHOENIX_VERSION}.jar,$phoenix_jars"
+    fi
     zeppelin_jars="${zeppelin_jars},${phoenix_jars}"
 fi
 
