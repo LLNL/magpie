@@ -544,6 +544,12 @@ then
     echo "export SPARK_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_sparkenvsh}
 fi
 
+if [ "${HADOOP_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" == "yes" ]
+then
+     sparkclasspath="${HADOOP_HOME}"/share/hadoop/yarn/hadoop-yarn-client-${HADOOP_VERSION}.jar:$sparkclasspath
+     sparkclasspath="${HADOOP_HOME}"/share/hadoop/common/hadoop-common-${HADOOP_VERSION}.jar:$sparkclasspath
+fi
+
 # Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
 # - spark.local.dir for < 1.0.0 set above
 if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
