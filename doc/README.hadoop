@@ -772,9 +772,11 @@ Hadoop Advanced Usage
 
    Users can adjust the amount of memory used on each node through the
    YARN_RESOURCE_MEMORY environment variable in the submission
-   scripts.
+   scripts. (Note, this is only for Hadoop 2.0 and up)
 
-   (Note, this is only for Hadoop 2.0 and up)
+   Users can also turn off memory checking for YARN containers with
+   YARN_VMEM_CHECK and YARN_PMEM_CHECK environment variables in the
+   submission scripts.
 
 4) Depending on whether your job is map heavy or reduce heavy,
    adjusting the memory container sizes of map and reduce tasks may

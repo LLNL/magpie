@@ -62,6 +62,20 @@
 </property>
 
 <property>
+  <description>Whether virtual memory limits will be enforced for
+  containers.</description>
+  <name>yarn.nodemanager.vmem-check-enabled</name>
+  <value>YARNVMEMCHECK</value>
+</property>
+
+<property>
+  <description>Whether physical memory limits will be enforced for
+  containers.</description>
+  <name>yarn.nodemanager.pmem-check-enabled</name>
+  <value>YARNPMEMCHECK</value>
+</property>
+
+<property>
   <description>The minimum allocation for every container request at the RM,
   in terms of virtual CPU cores. Requests lower than this won't take effect,
   and the specified value will get allocated the minimum.</description>
