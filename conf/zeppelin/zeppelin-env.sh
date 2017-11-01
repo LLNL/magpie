@@ -35,6 +35,8 @@ export ZEPPELIN_NOTEBOOK_DIR="ZEPPELINNOTEBOOK"  		# Where notebook saved
 # export ZEPPELIN_IDENT_STRING   		# A string representing this instance of zeppelin. $USER by default.
 # export ZEPPELIN_NICENESS       		# The scheduling priority for daemons. Defaults to 0.
 
+#### Hadoop Yarn Configuration
+export HADOOP_CONF_DIR="ZEPPELIN_HADOOP_CONF_DIR"
 
 #### Spark interpreter configuration ####
 

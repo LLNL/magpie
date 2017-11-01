@@ -101,27 +101,15 @@ fi
 # Get config files for setup
 #
 
-# sets magpie_sparkmajorminorversion
-Magpie_get_spark_major_minor_version ${SPARK_VERSION}
-
-# Handle special settings depending on version
-# 0 is =, 1 is >, 2 is <
-Magpie_vercomp ${magpie_sparkmajorminorversion} 2.0
+# Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
+Magpie_vercomp ${ZEPPELIN_VERSION} 0.7.0
 vercomp_result=$?
 if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
 then
-    spark_jars_path="$SPARK_HOME/jars"
+    zeppelin_jars="${zeppelin_jars}${ZEPPELIN_HOME}/lib/zeppelin-server-${ZEPPELIN_VERSION}.jar"
 else
-    spark_jars_path="$SPARK_HOME/lib"
+    zeppelin_jars="${zeppelin_jars}${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}.jar"
 fi
-
-# Get Jars for Interpreter
-# Put the spark jars first to avoid dependency issues
-for j in `ls $spark_jars_path`
-do
-    zeppelin_jars="$spark_jars_path/$j,$zeppelin_jars"
-done
-zeppelin_jars="${zeppelin_jars},${ZEPPELIN_HOME}/zeppelin-server-${ZEPPELIN_VERSION}.jar"
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
@@ -183,7 +171,12 @@ post_zeppelinsitexml=${ZEPPELIN_CONF_DIR}/zeppelin-site.xml
 post_log4jproperties=${ZEPPELIN_CONF_DIR}/log4j.properties
 post_shiroini=${ZEPPELIN_CONF_DIR}/shiro.ini
 
-zeppelin_spark_master="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+if [ "${SPARK_USE_YARN}" == "yes" ];
+then
+    zeppelin_spark_master="yarn-client"
+else
+    zeppelin_spark_master="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
+fi
 
 javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinclasspathsubst=`echo "${zeppelinclasspath}" | sed "s/\\//\\\\\\\\\//g"`
@@ -199,6 +192,7 @@ zeppelinjavaoptssubst=`echo "${ZEPPELIN_JAVA_OPTS}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinwebappssubst=`echo "${zeppelinsharedscratchdirpath}/webapps" | sed "s/\\//\\\\\\\\\//g"`
 zeppelinnotebooksubst=`echo "${zeppelinnotebookdir}" | sed "s/\\//\\\\\\\\\//g"`
 zeppelininterpreterdir=`echo "${ZEPPELIN_HOME}/interpreter" | sed "s/\\//\\\\\\\\\//g"`
+zeppelinhadoopconfdir=`echo "${HADOOP_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
 
 #
 # Setup Zeppelin configuration files and environment files
@@ -218,6 +212,7 @@ sed -i \
     -e "s/ZEPPELINMEM/${ZEPPELIN_MEM}/g" \
     -e "s/ZEPPELINNOTEBOOK/${zeppelinnotebooksubst}/g" \
     -e "s/ZEPPELINCLASSPATH/${zeppelinclasspathsubst}/g" \
+    -e "s/ZEPPELIN_HADOOP_CONF_DIR/${zeppelinhadoopconfdir}/g" \
     ${post_zeppelinenvsh}
 
 if [ "${ZEPPELIN_SCALA_PATH}X" != "X" ]
