@@ -1006,6 +1006,20 @@ then
         yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce_shuffle.class"
     fi
 
+    if [ "${YARN_VMEM_CHECK}" == "false" ]
+    then
+        yarnvmemcheck='false'
+    else
+        yarnvmemcheck='true'
+    fi
+
+    if [ "${YARN_PMEM_CHECK}" == "false" ]
+    then
+        yarnpmemcheck='false'
+    else
+        yarnpmemcheck='true'
+    fi
+
     cp ${pre_yarnsitexml} ${post_yarnsitexml}
 
     if [ "${pre_yarnsitexml_uda}X" != "X" ]
@@ -1034,6 +1048,8 @@ then
         -e "s/YARNNODEMANAGERWEBAPPADDRESS/${default_yarn_nodemanager_webapp_address}/g" \
         -e "s/YARNDEFAULTUSER/${USER}/g" \
         -e "s/YARNRESROUCECPUVCORES/${magpie_processor_count}/g" \
+        -e "s/YARNVMEMCHECK/${yarnvmemcheck}/g" \
+        -e "s/YARNPMEMCHECK/${yarnpmemcheck}/g" \
         ${post_yarnsitexml}
     
     hadoopmapredlogdirsubst=`echo "${HADOOP_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`

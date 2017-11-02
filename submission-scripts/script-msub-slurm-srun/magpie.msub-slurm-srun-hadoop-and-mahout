@@ -510,6 +510,16 @@ export HADOOP_MODE="launch"
 #
 # export YARN_RESOURCE_MEMORY=32768
 
+# Check Memory Limits
+# 
+# Should physical and virtual memory limits be enforced for containers.
+# This can be helpful in cases where the OS (Centos/Redhat) is aggressive
+# at allocating virtual memory and causes the vmem-to-pmem ratio to be
+# hit. Defaults to true
+#
+# export YARN_VMEM_CHECK="false"
+# export YARN_PMEM_CHECK="false"
+
 # Compression
 #
 # Should compression of outputs and intermediate data be enabled.
