@@ -7,6 +7,9 @@ Add input check to ensure number of nodes specified by user is enough
  to meet HDFS replication count.
 Add job id in to spark local scratch dir, to prevent issues with scratch space
  being used by multiple jobs in parallel.
+Add fixes for Yarn + Spark + Zeppelin functionality.
+Add YARN_PMEM_CHECK and YARN_VMEM_CHECK options, to disable Yarn
+ physical and virtual memory checks.
 Add support for Storm 1.1.1.
 - Update default Storm to 1.1.1.
 Add support for Zeppelin 0.7.3.
