@@ -49,19 +49,19 @@ phoenixhbase10hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
 phoenixhbase10hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
 phoenixhbase10hadoop27zookeeper34java17versions_javaversion=${java17}
 
-phoenixhbase11hadoop27zookeeper34java17versions="4.5.0-HBase-1.1 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1 4.8.0-HBase-1.1 4.8.1-HBase-1.1 4.8.2-HBase-1.1 4.9.0-HBase-1.1 4.10.0-HBase-1.1 4.11.0-HBase-1.1 4.12.0-HBase-1.1"
+phoenixhbase11hadoop27zookeeper34java17versions="4.5.0-HBase-1.1 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1 4.8.0-HBase-1.1 4.8.1-HBase-1.1 4.8.2-HBase-1.1 4.9.0-HBase-1.1 4.10.0-HBase-1.1 4.11.0-HBase-1.1 4.12.0-HBase-1.1 4.13.1-HBase-1.1"
 phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion="1.1.0"
 phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
 phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
 phoenixhbase11hadoop27zookeeper34java17versions_javaversion=${java17}
 
-phoenixhbase12hadoop27zookeeper34java17versions="4.8.0-HBase-1.2 4.8.1-HBase-1.2 4.8.2-HBase-1.2 4.9.0-HBase-1.2 4.10.0-HBase-1.2 4.11.0-HBase-1.2 4.12.0-HBase-1.2"
+phoenixhbase12hadoop27zookeeper34java17versions="4.8.0-HBase-1.2 4.8.1-HBase-1.2 4.8.2-HBase-1.2 4.9.0-HBase-1.2 4.10.0-HBase-1.2 4.11.0-HBase-1.2 4.12.0-HBase-1.2 4.13.1-HBase-1.2"
 phoenixhbase12hadoop27zookeeper34java17versions_hbaseversion="1.2.0"
 phoenixhbase12hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
 phoenixhbase12hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
 phoenixhbase12hadoop27zookeeper34java17versions_javaversion=${java17}
 
-phoenixhbase13hadoop27zookeeper34java17versions="4.11.0-HBase-1.3 4.12.0-HBase-1.3"
+phoenixhbase13hadoop27zookeeper34java17versions="4.11.0-HBase-1.3 4.12.0-HBase-1.3 4.13.0-HBase-1.3 4.13.1-HBase-1.3"
 phoenixhbase13hadoop27zookeeper34java17versions_hbaseversion="1.3.0"
 phoenixhbase13hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
 phoenixhbase13hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
