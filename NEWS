@@ -21,8 +21,8 @@ Add support for Phoenix 4.12.0-Hbase-1.1, 4.12.0-Hbase-1.2,
 Add support for Spark 2.1.2-hadoop2.6, 2.1.2-hadoop2.7,
  2.2.1-hadoop2.6, 2.2.1-hadoop2.7
 - Update default Spark to 2.2.1-hadoop2.7.
-Add support for Hadoop 2.8.3
-- Update default Hadoop to 2.8.3.
+Add support for Hadoop 2.8.2, 2.8.3, 2.9.0
+- Update default Hadoop to 2.9.0.
 
 magpie 1.82
 -----------
