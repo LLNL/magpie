@@ -16,7 +16,13 @@ __SetJavaVersion () {
     if [ $? == "2" ]; then
         JavaCommonSubstitution ${java16} ${files}
     else
-        JavaCommonSubstitution ${java17} ${files}
+        # 2.7.4 is special, Java 1.8
+        Magpie_vercomp ${hadoopversion} "2.7.4"
+        if [ $? == "0" ]; then
+            JavaCommonSubstitution ${java18} ${files}
+        else
+            JavaCommonSubstitution ${java17} ${files}
+        fi
     fi
 }
 
@@ -366,20 +372,24 @@ GenerateHadoopDependencyTests() {
 # - hadoop 2.4.X does not have "Finalize upgrade success" phrase output when complete
 
     # All of the major versions
-    __GenerateHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0 2.8.0 2.9.0
     # Between consecutive major versions
     __GenerateHadoopDependencyTests_Dependency5 "5B" "n" 2.4.0 2.5.0
     __GenerateHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.6.0
     __GenerateHadoopDependencyTests_Dependency5 "5D" "n" 2.6.0 2.7.0
-    # Hops between major versions
-    __GenerateHadoopDependencyTests_Dependency5 "5E" "n" 2.4.0 2.6.0
-    __GenerateHadoopDependencyTests_Dependency5 "5F" "n" 2.4.0 2.7.0
-    __GenerateHadoopDependencyTests_Dependency5 "5G" "n" 2.5.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5E" "n" 2.7.0 2.8.0
+    __GenerateHadoopDependencyTests_Dependency5 "5F" "n" 2.8.0 2.9.0
+    # Hops between major versions, do jumps of two to avoid permutation growth of tests.
+    __GenerateHadoopDependencyTests_Dependency5 "5G" "n" 2.4.0 2.6.0
+    __GenerateHadoopDependencyTests_Dependency5 "5H" "n" 2.5.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5I" "n" 2.6.0 2.8.0
+    __GenerateHadoopDependencyTests_Dependency5 "5J" "n" 2.7.0 2.9.0
     # Between minor versions
-    __GenerateHadoopDependencyTests_Dependency5 "5H" "y" 2.4.0 2.4.1
-    __GenerateHadoopDependencyTests_Dependency5 "5I" "n" 2.5.0 2.5.1 2.5.2
-    __GenerateHadoopDependencyTests_Dependency5 "5J" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    __GenerateHadoopDependencyTests_Dependency5 "5K" "n" 2.7.0 2.7.1 2.7.2
+    __GenerateHadoopDependencyTests_Dependency5 "5K" "y" 2.4.0 2.4.1
+    __GenerateHadoopDependencyTests_Dependency5 "5L" "n" 2.5.0 2.5.1 2.5.2
+    __GenerateHadoopDependencyTests_Dependency5 "5M" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4
+    __GenerateHadoopDependencyTests_Dependency5 "5O" "n" 2.8.0 2.8.1 2.8.2
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
@@ -388,19 +398,27 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" "6C"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" "6D"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" "6E"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.8.0" "6F"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.9.0" "6G"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6F"
-    
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6G"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6H"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6H"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6I"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6J"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6K"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6L"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6I"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6J"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6M"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6N"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6K"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6L"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6M"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6N"
+
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6O"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6P"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.2" "2.7.3" "6Q"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.3" "2.7.4" "6R"
+
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.8.1" "6S"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.2" "6T"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.3" "6U"
 }
 
 GenerateHadoopPostProcessing() {

@@ -179,34 +179,50 @@ SubmitHadoopDependencyTests() {
         done
     done
 
-    __SubmitHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0
+
+    __SubmitHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0 2.8.0 2.9.0
     __SubmitHadoopDependencyTests_Dependency5 "5B" "n" 2.4.0 2.5.0
     __SubmitHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.6.0
     __SubmitHadoopDependencyTests_Dependency5 "5D" "n" 2.6.0 2.7.0
-    __SubmitHadoopDependencyTests_Dependency5 "5E" "n" 2.4.0 2.6.0
-    __SubmitHadoopDependencyTests_Dependency5 "5F" "n" 2.4.0 2.7.0
-    __SubmitHadoopDependencyTests_Dependency5 "5G" "n" 2.5.0 2.7.0
-    __SubmitHadoopDependencyTests_Dependency5 "5H" "y" 2.4.0 2.4.1
-    __SubmitHadoopDependencyTests_Dependency5 "5I" "n" 2.5.0 2.5.1 2.5.2
-    __SubmitHadoopDependencyTests_Dependency5 "5J" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    __SubmitHadoopDependencyTests_Dependency5 "5K" "n" 2.7.0 2.7.1 2.7.2
+    __SubmitHadoopDependencyTests_Dependency5 "5E" "n" 2.7.0 2.8.0
+    __SubmitHadoopDependencyTests_Dependency5 "5F" "n" 2.8.0 2.9.0
+
+    # Hops between major versions, do jumps of two to avoid permutation growth of tests.
+    __SubmitHadoopDependencyTests_Dependency5 "5G" "n" 2.4.0 2.6.0
+    __SubmitHadoopDependencyTests_Dependency5 "5H" "n" 2.5.0 2.7.0
+    __SubmitHadoopDependencyTests_Dependency5 "5I" "n" 2.6.0 2.8.0
+    __SubmitHadoopDependencyTests_Dependency5 "5J" "n" 2.7.0 2.9.0
+
+    __SubmitHadoopDependencyTests_Dependency5 "5K" "y" 2.4.0 2.4.1
+    __SubmitHadoopDependencyTests_Dependency5 "5L" "n" 2.5.0 2.5.1 2.5.2
+    __SubmitHadoopDependencyTests_Dependency5 "5M" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
+    __SubmitHadoopDependencyTests_Dependency5 "5N" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4
+    __SubmitHadoopDependencyTests_Dependency5 "5O" "n" 2.8.0 2.8.1 2.8.2
 
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.2.0" "2.3.0" "6A"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.3.0" "2.4.0" "6B"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.5.0" "6C"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.6.0" "6D"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.7.0" "6E"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.8.0" "6F"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.9.0" "6G"
     
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6F"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6H"
 
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6G"
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6H"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6I"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6J"
     
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6I"
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6J"
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6K"
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6L"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6K"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6L"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6M"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6N"
     
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6M"
-    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6N"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6O"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6P"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.2" "2.7.3" "6Q"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.3" "2.7.4" "6R"
+
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.8.1" "6S"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.2" "6T"
+    __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.3" "6U"
 }
