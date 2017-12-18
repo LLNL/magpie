@@ -14,7 +14,7 @@ hadoop2Xjava18versions="2.7.4 2.7.5"
 hadoop2Xjava18versions_javaversion=${java18}
 
 hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions hadoop2Xjava18versions"
-hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions} ${hadoop2Xjava17versions}"
+hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions} ${hadoop2Xjava18versions}"
 
 mahouthadoop27java17versions="0.11.0 0.11.1 0.11.2 0.12.0 0.12.1 0.12.2 0.13.0"
 mahouthadoop27java17versions_hadoopversion="2.7.0"
