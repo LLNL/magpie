@@ -6,6 +6,46 @@
 <configuration>
 
 <property>
+  <name>yarn.app.mapreduce.am.env</name>
+  <value>HADOOP_MAPRED_HOME=HADOOPHOME</value>
+  <description>User added environment variables for the MR App Master
+  processes. Example :
+  1) A=foo  This will set the env variable A to foo
+  2) B=$B:c This is inherit tasktracker's B env variable.
+  </description>
+</property>
+
+<property>
+  <name>mapred.child.env</name>
+  <value>HADOOP_MAPRED_HOME=HADOOPHOME</value>
+  <description>User added environment variables for the task processes.
+  Example :
+  1) A=foo  This will set the env variable A to foo
+  2) B=$B:c This is inherit nodemanager's B env variable on Unix.
+  3) B=%B%;c This is inherit nodemanager's B env variable on Windows.
+  </description>
+</property>
+
+<!-- This is commented out so that it won't override mapred.child.env.
+<property>
+  <name>mapreduce.map.env</name>
+  <value>HADOOP_MAPRED_HOME=HADOOPHOME</value>
+  <description>User added environment variables for the map task processes.
+  </description>
+</property>
+-->
+
+<!-- This is commented out so that it won't override mapred.child.env.
+<property>
+  <name>mapreduce.reduce.env</name>
+  <value>HADOOP_MAPRED_HOME=HADOOPHOME</value>
+  <description>User added environment variables for the reduce task processes.
+  </description>
+</property>
+-->
+
+
+<property>
   <name>mapreduce.task.io.sort.factor</name>
   <value>IOSORTFACTOR</value>
   <description>The number of streams to merge at once while sorting

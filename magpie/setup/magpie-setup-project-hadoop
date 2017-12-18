@@ -666,6 +666,7 @@ cp ${pre_log4jproperties} ${post_log4jproperties}
 
 if Magpie_hadoop_setup_type_enables_yarn
 then
+    hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
     yardappmapreduceamstagingdirsubst=`echo "${yardappmapreduceamstagingdir}" | sed "s/\\//\\\\\\\\\//g"`
     extrahadooptaskoptssubst=`echo "${extrahadooptaskopts}" | sed "s/\\//\\\\\\\\\//g"`
 
@@ -673,6 +674,7 @@ then
 
     # Space w/ HADOOPEXTRATASKJAVAOPTS & EXTRAHADOOPOPTS substitution is intentional
     sed -i \
+        -e "s/HADOOPHOME/${hadoophomesubst}/g" \
         -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \
         -e "s/MRPARALLELCOPIES/${parallelcopies}/g" \
         -e "s/JOBTRACKERHANDLERCOUNT/${jobtrackerhandlercount}/g" \
