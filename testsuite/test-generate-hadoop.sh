@@ -16,9 +16,12 @@ __SetJavaVersion () {
     if [ $? == "2" ]; then
         JavaCommonSubstitution ${java16} ${files}
     else
-        # 2.7.4 is special, Java 1.8
-        Magpie_vercomp ${hadoopversion} "2.7.4"
-        if [ $? == "0" ]; then
+        # 2.7.X line starting with 2.7.4 is special, Java 1.8
+        Magpie_vercomp ${hadoopversion} "2.7.3"
+        low=$?
+        Magpie_vercomp ${hadoopversion} "2.7.6"
+        high=$?
+        if [ "$low" == "1" ] && [ "$high" == "2" ]; then
             JavaCommonSubstitution ${java18} ${files}
         else
             JavaCommonSubstitution ${java17} ${files}
@@ -388,7 +391,7 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_Dependency5 "5K" "y" 2.4.0 2.4.1
     __GenerateHadoopDependencyTests_Dependency5 "5L" "n" 2.5.0 2.5.1 2.5.2
     __GenerateHadoopDependencyTests_Dependency5 "5M" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4
-    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4
+    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4 2.7.5
     __GenerateHadoopDependencyTests_Dependency5 "5O" "n" 2.8.0 2.8.1 2.8.2
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
@@ -415,10 +418,11 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6P"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.2" "2.7.3" "6Q"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.3" "2.7.4" "6R"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.4" "2.7.5" "6S"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.8.1" "6S"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.2" "6T"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.3" "6U"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.8.1" "6T"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.2" "6U"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.3" "6V"
 }
 
 GenerateHadoopPostProcessing() {
