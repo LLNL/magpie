@@ -59,13 +59,7 @@ then
     export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
     export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
-    # Legacy: Use if user set SBATCH_TIMELIMIT
-    if [ "${SBATCH_TIMELIMIT}X" != "X" ]
-    then
-        export MAGPIE_TIMELIMIT_MINUTES="${SBATCH_TIMELIMIT}"
-    else
-        __Magpie_calc_slurm_magpie_timelimit
-    fi
+    __Magpie_calc_slurm_magpie_timelimit
     __Magpie_handle_job_name_corner_cases
 elif [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
@@ -74,11 +68,7 @@ then
     export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
     export MAGPIE_JOB_NAME="${MOAB_JOBNAME}"
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
-    # Legacy: Use if user set MAGPIE_TIMELIMIT_MINUTES
-    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
-    then
-        __Magpie_calc_slurm_magpie_timelimit
-    fi
+    __Magpie_calc_slurm_magpie_timelimit
     __Magpie_handle_job_name_corner_cases
 elif [ "${MAGPIE_SUBMISSION_TYPE}" == "msubtorquepdsh" ]
 then
@@ -87,10 +77,7 @@ then
     export MAGPIE_NODELIST=$(echo ${MOAB_NODELIST} | sed 's/&/,/g')
     export MAGPIE_JOB_NAME="${MOAB_JOBNAME}"
     export MAGPIE_JOB_ID="${PBS_JOBID}"
-    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
-    then
-        export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
-    fi
+    export MAGPIE_TIMELIMIT_MINUTES=$(expr ${PBS_WALLTIME} / 60)
     __Magpie_handle_job_name_corner_cases
 elif [ "${MAGPIE_SUBMISSION_TYPE}" == "lsfmpirun" ]
 then
@@ -113,21 +100,18 @@ then
     export MAGPIE_NODELIST=$(echo ${LSB_HOSTS} | sed 's/ /,/g')
     export MAGPIE_JOB_NAME="${LSB_JOBNAME}"
     export MAGPIE_JOB_ID="${LSB_JOBID}"
-    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
-    then
-        while [[ $(bjobs -l ${LSB_JOBID}) == *"Status <P"* ]]
-        do
-            # Pending state gives time in hours, mins, or seconds and it
-            # seems that there is no way of know which it is giving. By 
-            # waiting for running status we can get it properly.
-            sleep 1
-        done
+    while [[ $(bjobs -l ${LSB_JOBID}) == *"Status <P"* ]]
+    do
+        # Pending state gives time in hours, mins, or seconds and it
+        # seems that there is no way of know which it is giving. By 
+        # waiting for running status we can get it properly.
+        sleep 1
+    done
 
-        jobinfo=$(bjobs -l ${LSB_JOBID})
-        # Run State
-        walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
-        export MAGPIE_TIMELIMIT_MINUTES=${walltime}
-    fi
+    jobinfo=$(bjobs -l ${LSB_JOBID})
+    # Run State
+    walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
+    export MAGPIE_TIMELIMIT_MINUTES=${walltime}
     __Magpie_handle_job_name_corner_cases
 else
     Magpie_output_internal_error "Invalid MAGPIE_SUBMISSION_TYPE = ${MAGPIE_SUBMISSION_TYPE}"
