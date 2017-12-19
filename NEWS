@@ -77,6 +77,11 @@ o Older legacy MAGPIE_SUBMISSION_TYPE values no longer support
   (slurmsbatch, msubslurm, msubtorque).  Users should convert to the
   newer values of sbatchsrun, msubslurmsrun, msubtorquepdsh.
 
+o Older legacy support of setting SBATCH_TIMELIMIT or
+  MAGPIE_TIMELIMIT_MINUTES in scripts removed.  Users should set job
+  time length using normal submission mechanisms (e.g. --time via
+  sbatch).
+
 Misc Features & Changes
 
 - MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN can have multiple scripts
