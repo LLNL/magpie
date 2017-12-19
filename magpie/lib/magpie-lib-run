@@ -34,10 +34,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 __Magpie_job_time_minutes () {
-    # slurmsbatch & msubslurm legacy
-    if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
-        || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
-        || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
+    if [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
         || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmpdsh" ]
     then
         local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`
