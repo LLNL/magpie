@@ -192,12 +192,8 @@ done
 
 __Magpie_check_must_be_set "MAGPIE_SUBMISSION_TYPE"
 
-# slurmsbatch, msubslurm, msubtorque legacy
-if [ "${MAGPIE_SUBMISSION_TYPE}" != "slurmsbatch" ] \
-    && [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchsrun" ] \
-    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurm" ]\
+if [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchsrun" ] \
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurmsrun" ]\
-    && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorque" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorquepdsh" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "lsfmpirun" ]
 
@@ -206,10 +202,7 @@ then
     exit 1
 fi
 
-# slurmsbatch & msubslurm legacy
-if [ "${MAGPIE_SUBMISSION_TYPE}" == "slurmsbatch" ] \
-    || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
-    || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurm" ] \
+if [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
     || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     __Magpie_check_environment_variable_must_be_set "SLURM_NODEID"

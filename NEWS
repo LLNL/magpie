@@ -73,6 +73,10 @@ o Remove experimental features and experimental/non-heavily used
 o Older "quirky" version numbers in Hadoop (e.g. 0.21.0 in Hadoop) are
   no longer supported.
 
+o Older legacy MAGPIE_SUBMISSION_TYPE values no longer support
+  (slurmsbatch, msubslurm, msubtorque).  Users should convert to the
+  newer values of sbatchsrun, msubslurmsrun, msubtorquepdsh.
+
 Misc Features & Changes
 
 - MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN can have multiple scripts

@@ -4,65 +4,6 @@ source test-generate-common.sh
 source test-config.sh
 source test-generate-spark-helper.sh
 
-__GenerateFunctionalityTests_LegacySubmissionType() {
-    if [ "${hadooptests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-legacysubmissiontype
-    fi
-
-    if [ "${pigtests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-legacysubmissiontype
-    fi
-
-    if [ "${mahouttests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-legacysubmissiontype
-    fi
-
-    if [ "${hbasetests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-legacysubmissiontype
-    fi
-
-    if [ "${phoenixtests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-legacysubmissiontype
-    fi
-
-    if [ "${sparktests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-legacysubmissiontype
-        
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype
-
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-legacysubmissiontype
-
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype
-
-        SetupSparkWordCountHDFSCopyIn `ls \
-            magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-legacysubmissiontype`
-
-        SetupSparkWordCountRawNetworkFSNoCopy `ls \
-            magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-legacysubmissiontype`
-    fi
-    
-    if [ "${stormtests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-legacysubmissiontype
-    fi
-
-    if [ "${zeppelintests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-legacysubmissiontype
-    fi
-   
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-legacysubmissiontype*"`
-    if [ -n "${files}" ]
-    then
-        if [ "${submissiontype}" == "sbatch-srun" ]
-        then
-            sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="slurmsbatch"/' magpie.${submissiontype}*functionality-legacysubmissiontype
-        elif [ "${submissiontype}" == "msub-slurm-srun" ]
-        then
-            sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="msubslurm"/' magpie.${submissiontype}*functionality-legacysubmissiontype
-        fi
-    fi
-}
-
 __GenerateFunctionalityTests_BadJobNames() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-job-name-whitespace
@@ -902,8 +843,6 @@ GenerateFunctionalityTests() {
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
     
     echo "Making Functionality Tests"
-
-    __GenerateFunctionalityTests_LegacySubmissionType
 
     __GenerateFunctionalityTests_BadJobNames
 
