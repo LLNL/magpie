@@ -142,7 +142,7 @@ export MAGPIE_JOB_TYPE="mahout"
 # down.
 #
 # The startup & shutdown window must together be smaller than the
-# SBATCH_TIMELIMIT specified above.
+# timelimit specified for the job.
 #
 # MAGPIE_STARTUP_TIME and MAGPIE_SHUTDOWN_TIME at minimum must be 5
 # minutes.  If MAGPIE_POST_JOB_RUN is specified below,
