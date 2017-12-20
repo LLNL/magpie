@@ -604,6 +604,12 @@ then
     sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' ${files}
 fi
 
+files=`find . -maxdepth 1 -name "magpie.${submissiontype}*" | grep -v Dependency`
+if [ -n "${files}" ]
+then
+    sed -i -e 's/# export MAGPIE_ONE_TIME_RUN=yes/export MAGPIE_ONE_TIME_RUN=yes/' ${files}
+fi
+
 files=`find . -maxdepth 1 -name "magpie.${submissiontype}*"`
 if [ -n "${files}" ]
 then
