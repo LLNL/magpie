@@ -73,7 +73,7 @@ Instructions For Running Hbase
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in
-   your session.  You can do as you please.  For example, you can
+   your session, you can do as you please.  For example, you can
    interact with the Hbase shell to start (bin/hbase shell).  There
    will also be instructions in your job output on how to tear the
    session down cleanly if you wish to end your job early.

@@ -73,7 +73,7 @@ Instructions For Using Pig
    around and figure things out.  See instructions under README.hadoop
    for 'interactive' mode.
 
-   Once in your session.  You can do as you please.  For example, you
+   Once in your session, you can do as you please.  For example, you
    can launch a pig job (bin/pig ...).  There will also be
    instructions in your job output on how to tear the session down
    cleanly if you wish to end your job early.

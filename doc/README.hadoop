@@ -84,7 +84,7 @@ Instructions For Running Hadoop
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in
-   your session.  You can do as you please.  For example, you can
+   your session, you can do as you please.  For example, you can
    interact with the Hadoop filesystem (bin/hadoop fs ...) or run a
    job (bin/hadoop jar ...).  There will also be instructions in your
    job output on how to tear the session down cleanly if you wish to
@@ -763,7 +763,7 @@ Hadoop Advanced Usage
    can be tweaked in the submission scripts via the
    HADOOP_DEFAULT_MAP_TASKS environment variable.
 
-3) Magpie configures a relatively conservative amount of memory for
+4) Magpie configures a relatively conservative amount of memory for
    Hadoop, currently 80% of system memory.  While there should always
    be a buffer to allow the operating system, system daemons, and
    Hadoop daemons to operate, the 80% value may be on the conservative
@@ -778,7 +778,7 @@ Hadoop Advanced Usage
    YARN_VMEM_CHECK and YARN_PMEM_CHECK environment variables in the
    submission scripts.
 
-4) Depending on whether your job is map heavy or reduce heavy,
+5) Depending on whether your job is map heavy or reduce heavy,
    adjusting the memory container sizes of map and reduce tasks may
    also benefit job performance.  These adjustments could lead to
    larger buffer sizes on individual tasks if memory sizes are
@@ -789,7 +789,7 @@ Hadoop Advanced Usage
    HADOOP_CHILD_MAP_HEAPSIZE, and HADOOP_CHILD_REDUCE_HEAPSIZE
    environment variables in the submission scripts.
 
-5) The mapreduce slowstart configuration determines the percentage of
+6) The mapreduce slowstart configuration determines the percentage of
    map tasks that must complete before reducers begin.  It defaults to
    a very conservative value of 0.05 (i.e. 5%).  This will be
    non-optimal for many jobs, including jobs that have relatively
@@ -800,7 +800,7 @@ Hadoop Advanced Usage
    submission scripts via the HADOOP_MAPREDUCE_SLOWSTART environment
    variable.
 
-6) By default Magpie disables compression in Hadoop.  On some jobs, if
+7) By default Magpie disables compression in Hadoop.  On some jobs, if
    the data is particularly large, the time spent
    compressing/decompressing data may be beneficial to job
    performance.  Compression can be enabled through the

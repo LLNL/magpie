@@ -80,9 +80,9 @@ Instructions For Using Phoenix
 
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in
-   your session.  You can do as you please.  For example, you can
-   launch a phoenix sql shell (bin/sqlline.py ...).  There will also be 
-   instructions in your job output on how to tear the session down 
+   your session, you can do as you please.  For example, you can
+   launch a phoenix sql shell (bin/sqlline.py ...).  There will also
+   be instructions in your job output on how to tear the session down
    cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
