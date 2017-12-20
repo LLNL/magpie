@@ -83,7 +83,7 @@ Magpie_make_all_local_dirs_node_specific
 extrajvmflags=""
 
 # Setup node directory per node 
-if [ "${ZOOKEEPER_PER_JOB_DATA_DIR}" == "yes" ]
+if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
 then
     zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
 else

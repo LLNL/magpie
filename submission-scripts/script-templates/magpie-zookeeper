@@ -103,16 +103,6 @@ export ZOOKEEPER_DATA_DIR_TYPE="networkfs"
 #
 export ZOOKEEPER_LOCAL_DIR="LOCALDIRPREFIX/zookeeper"
 
-# Option to have per job data dir
-#
-# For each batch job, if this is set to yes, the location where
-# zookeeper stores its data dir will be unique per job. The data
-# dir will have the job id appended to the path to keep them organized.
-# It will allows for multiple instances of the same script to be run
-# without having collisions due to different nodes being used.
-#
-# export ZOOKEEPER_PER_JOB_DATA_DIR="yes"
-
 # ZooKeeper ticktime, measured in milliseconds.  Used by all of
 # Zookeeper for time measurement.
 #

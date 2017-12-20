@@ -1370,6 +1370,9 @@ __GenerateCornerCaseTests_NoLongerSupported() {
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nolongersupported-3
         sed -i '/# Run Job/a export HDFS_FEDERATION_NAMENODE_COUNT="foobar"' magpie.${submissiontype}-hadoop-cornercase-nolongersupported-3
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nolongersupported-4
+        sed -i '/# Run Job/a export HADOOP_PER_JOB_HDFS_PATH="foobar"' magpie.${submissiontype}-hadoop-cornercase-nolongersupported-4
     fi
 
     if [ "${pigtests}" == "y" ]; then
@@ -1416,8 +1419,11 @@ __GenerateCornerCaseTests_NoLongerSupported() {
     fi
 
     if [ "${zookeepertests}" == "y" ]; then
-        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nolongersupported
-        sed -i '/# Run Job/a export ZOOKEEPER_MODE="foobar"' magpie.${submissiontype}-zookeeper-cornercase-nolongersupported
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nolongersupported-1
+        sed -i '/# Run Job/a export ZOOKEEPER_MODE="foobar"' magpie.${submissiontype}-zookeeper-cornercase-nolongersupported-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-nolongersupported-2
+        sed -i '/# Run Job/a export ZOOKEEPER_PER_JOB_DATA_DIR="foobar"' magpie.${submissiontype}-zookeeper-cornercase-nolongersupported-2
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nolongersupported*"`

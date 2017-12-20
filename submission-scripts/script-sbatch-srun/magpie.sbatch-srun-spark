@@ -147,17 +147,27 @@ export MAGPIE_JOB_TYPE="spark"
 # Magpie One Time Run
 #
 # Normally, Magpie assumes that when a user runs a job, data created
-# and stored within that job may be desired to be accessed again.  For
+# and stored within that job will be desired to be accessed again.  For
 # example, data created and stored within HDFS will be accessed again.
 #
 # Under a number of scenarios, this may not be desired.  For example
-# during testing.  In order to improve job throughout, you can set
-# MAGPIE_ONE_TIME_RUN below to yes.  Magpie will assume that this is a
-# one time run and the user will never care about any data that may
-# have been created.  This will allow Magpie to take shortcuts to
-# improve job throughput.  For example, job teardown may be done more
-# quickly as we do not care about tearing down cleanly for future
-# runs.
+# during testing.
+#
+# To improve useability and performance, setting MAGPIE_ONE_TIME_RUN
+# below to yes will have two effects on the Magpie job.
+#
+# 1) A number of data paths (such as for HDFS) will be put into unique
+#    paths for this job.  Therefore, no other job should be able to
+#    access the data again.  This is particularly useful if you wish
+#    to run performance tests with this job script over and over
+#    again.
+#
+#    Magpie will not remove data that was written, so be sure to clean up
+#    your directories later.
+#
+# 2) In order to improve job throughout, Magpie will take shortcuts by
+#    not properly tearing down the job.  As data corruption should not be
+#    a concern on job teardown, the job can complete more quickly.
 #
 # export MAGPIE_ONE_TIME_RUN=yes
 

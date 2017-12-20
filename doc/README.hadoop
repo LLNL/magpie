@@ -632,7 +632,7 @@ A: No, only one HDFS namenode can operate out of a specific set of
    settings respectively.
 
    If you are not concerned about data persisting between jobs, you
-   may also consider using the HADOOP_PER_JOB_HDFS_PATH to always
+   may also consider using the MAGPIE_ONE_TIME_RUN option to always
    force HDFS paths to be different for each job.  This setting may be
    particularly useful if you initially running tests/experiments on
    CPU counts, node counts, settings, etc. and want to run many jobs

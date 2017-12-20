@@ -60,10 +60,4 @@ GenerateZookeeperPostProcessing () {
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-shared-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
-
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*" | grep -v Dependency`
-    if [ -n "${files}" ]
-    then
-        sed -i -e 's/# export ZOOKEEPER_PER_JOB_DATA_DIR="\(.*\)"/export ZOOKEEPER_PER_JOB_DATA_DIR="yes"/' ${files}
-    fi
 }

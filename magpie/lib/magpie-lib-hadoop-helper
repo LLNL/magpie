@@ -76,7 +76,7 @@ Magpie_get_networkedhdfspath () {
         Magpie_output_internal_error "Magpie_get_networkedhdfspath called without HDFS networked path set used" 
     fi
     
-    if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+    if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
     then
         magpie_networkedhdfspath="$magpie_networkedhdfspath/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}"
     fi

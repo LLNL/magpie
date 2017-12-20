@@ -499,12 +499,6 @@ GenerateHadoopPostProcessing() {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/pdshlaunch-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
-    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*" | grep -v Dependency`
-    if [ -n "${files}" ]
-    then
-        sed -i -e 's/# export HADOOP_PER_JOB_HDFS_PATH="\(.*\)"/export HADOOP_PER_JOB_HDFS_PATH="yes"/' ${files}
-    fi
-
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop*hdfs-more-nodes*"`
     if [ -n "${files}" ]
     then

@@ -126,17 +126,3 @@ export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
 # before the next user uses the node.
 #
 # export HADOOP_LOCALSTORE_CLEAR="yes"
-
-# Option to use unique locations per job to store hdfs data
-#
-# If this is set to yes the nodes will append the job id to the
-# current HDFSOVERLUSTRE and HDFSOVERNETWORKFS path thus keeping the
-# hdfs data isolated per job. This enables the same script to be
-# executed multiple times (usually with different data) without the
-# HDFSOVERXXX instances colliding with each other
-#
-# Be careful to cleanup the HDFSOVERXXX directories from time to time,
-# as Magpie will not clear data from prior jobs.
-#
-# export HADOOP_PER_JOB_HDFS_PATH="yes"
-
