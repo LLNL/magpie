@@ -133,14 +133,21 @@ Magpie_calculate_stop_timeouts () {
 
     if [ "${HBASE_SETUP}" == "yes" ]
     then
-        # Need to give Hbase more time b/c of compaction.  We'll say
-        # Hbase always gets 50% of the time, Half for slave timeout and half for
-        # compaction .  Input checks ensure
-        # shutdowntimeseconds >= 1200 
+        if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
+        then
+            # IF MAGPIE_ONE_TIME_RUN is yes, screw all the calculations below
+            # we set to 5 seconds.
+            magpie_hbase_slave_timeout=5
+        else
+            # Need to give Hbase more time b/c of compaction.  We'll say
+            # Hbase always gets 50% of the time, Half for slave timeout and half for
+            # compaction .  Input checks ensure
+            # shutdowntimeseconds >= 1200 
 
-        local hbase_time=`expr ${shutdowntimeseconds} \/ 2`
-        magpie_hbase_slave_timeout=`expr ${hbase_time} \/ 2`
-        shutdowntimeseconds=${hbase_time}
+            local hbase_time=`expr ${shutdowntimeseconds} \/ 2`
+            magpie_hbase_slave_timeout=`expr ${hbase_time} \/ 2`
+            shutdowntimeseconds=${hbase_time}
+        fi
     fi
 
     local stoptimeoutdivisor=1
@@ -211,7 +218,14 @@ Magpie_calculate_stop_timeouts () {
         stoptimeout=5
     fi
 
-    magpie_hadoop_stop_timeout=${stoptimeout}
+    if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
+    then
+        # IF MAGPIE_ONE_TIME_RUN is yes, screw all the calculations above.
+        # we set to 5 seconds.
+        magpie_hadoop_stop_timeout=5
+    else
+        magpie_hadoop_stop_timeout=${stoptimeout}
+    fi
 }
 
 # Count how many big data systems we're using that can run jobs

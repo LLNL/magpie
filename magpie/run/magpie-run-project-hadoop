@@ -656,45 +656,50 @@ Magpie_run_stop_hadoop () {
             then
                 if [ "${magpie_run_hadoop_setup_successful}" == "1" ]
                 then
-                    echo "Saving namespace before shutting down hdfs ..."
-
-                    if Magpie_hdfs_federation_enabled
+                    # If this is a one time run, don't care about
+                    # shutting down hdfs cleanly.
+                    if [ "${MAGPIE_ONE_TIME_RUN}" != "yes" ]
                     then
-                        for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
-                        do
-                            # First namenode is based on master
-                            if [ "${i}" == "1" ]
-                            then
-                                federationnamenodehost="${HADOOP_MASTER_NODE}"
-                            else
-                                numline=`expr ${i} - 1`
-                                federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
-                            fi
-                            
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode enter"
+                        echo "Saving namespace before shutting down hdfs ..."
+
+                        if Magpie_hdfs_federation_enabled
+                        then
+                            for i in `seq 1 ${HDFS_FEDERATION_NAMENODE_COUNT}`
+                            do
+                                # First namenode is based on master
+                                if [ "${i}" == "1" ]
+                                then
+                                    federationnamenodehost="${HADOOP_MASTER_NODE}"
+                                else
+                                    numline=`expr ${i} - 1`
+                                    federationnamenodehost=`sed -n "${numline}p" ${HADOOP_CONF_DIR}/namenode_hdfs_federation`
+                                fi
+                                
+                                command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode enter"
+                                echo "Running $command" >&2
+                                $command
+                                
+                                command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -saveNamespace"
+                                echo "Running $command" >&2
+                                $command
+                                
+                                command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode leave"
+                                echo "Running $command" >&2
+                                $command
+                            done
+                        else
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
                             echo "Running $command" >&2
                             $command
-                            
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -saveNamespace"
-                            echo "Running $command" >&2
-                            $command
-                            
-                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -fs hdfs://${federationnamenodehost}:${default_hadoop_hdfs_namenode_address} -safemode leave"
-                            echo "Running $command" >&2
-                            $command
-                        done
-                    else
-                        command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
-                        echo "Running $command" >&2
-                        $command
                         
-                        command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
-                        echo "Running $command" >&2
-                        $command
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
+                            echo "Running $command" >&2
+                            $command
                         
-                        command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
-                        echo "Running $command" >&2
-                        $command
+                            command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
+                            echo "Running $command" >&2
+                            $command
+                        fi
                     fi
                 fi
 

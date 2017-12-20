@@ -1,5 +1,6 @@
 magpie 1.84
 -----------
+Add support of MAGPIE_ONE_TIME_RUN option.
 Add support for Hadoop 2.7.4, 2.7.5.
 Documentation updates.
 

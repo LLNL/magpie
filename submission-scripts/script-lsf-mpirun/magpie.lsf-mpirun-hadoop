@@ -146,6 +146,23 @@ export MAGPIE_JOB_TYPE="hadoop"
 # export MAGPIE_STARTUP_TIME=30
 # export MAGPIE_SHUTDOWN_TIME=30
 
+# Magpie One Time Run
+#
+# Normally, Magpie assumes that when a user runs a job, data created
+# and stored within that job may be desired to be accessed again.  For
+# example, data created and stored within HDFS will be accessed again.
+#
+# Under a number of scenarios, this may not be desired.  For example
+# during testing.  In order to improve job throughout, you can set
+# MAGPIE_ONE_TIME_RUN below to yes.  Magpie will assume that this is a
+# one time run and the user will never care about any data that may
+# have been created.  This will allow Magpie to take shortcuts to
+# improve job throughput.  For example, job teardown may be done more
+# quickly as we do not care about tearing down cleanly for future
+# runs.
+#
+# export MAGPIE_ONE_TIME_RUN=yes
+
 # Convenience Scripts
 #
 # Specify script to be executed to before / after your job.  It is run

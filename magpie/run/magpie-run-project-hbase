@@ -249,20 +249,24 @@ Magpie_run_stop_hbase () {
             
             if [ "${magpie_run_hbase_setup_successful}" == "1" ]
             then
-                if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
+                # Hbase compaction meaningless if this is a one time run
+                if [ "${MAGPIE_ONE_TIME_RUN}" != "yes" ]
                 then
-                    echo "Doing major compaction before shutting down ..."
+                    if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
+                    then
+                        echo "Doing major compaction before shutting down ..."
                     
-                    local command="echo list"
-                    echo "Running $command in hbase shell" >&2
-                    local listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
-                    
-                    for table in ${listoutput}
-                    do
-                        command="echo major_compact '${table}'"
+                        local command="echo list"
                         echo "Running $command in hbase shell" >&2
-                        $command | ${hbasecmdprefix}/hbase shell
-                    done
+                        local listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
+                    
+                        for table in ${listoutput}
+                        do
+                            command="echo major_compact '${table}'"
+                            echo "Running $command in hbase shell" >&2
+                            $command | ${hbasecmdprefix}/hbase shell
+                        done
+                    fi
                 fi
             fi
             

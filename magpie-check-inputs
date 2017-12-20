@@ -216,6 +216,8 @@ __Magpie_check_must_be_set "MAGPIE_LOCAL_DIR"
 
 __Magpie_check_if_set_is_yes_or_no "MAGPIE_NO_LOCAL_DIR"
 
+__Magpie_check_if_set_is_yes_or_no "MAGPIE_ONE_TIME_RUN"
+
 __Magpie_check_must_be_set "MAGPIE_JOB_TYPE"
 
 if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
