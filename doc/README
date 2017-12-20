@@ -42,7 +42,7 @@ The basic idea behind these scripts are to:
 
 3) Launch daemons on all nodes.  The rank 0 node will run master
    daemons, such as the Hadoop Namenode.  All remaining nodes will run
-   appropriate slave daemons, such as the Hadoop Datanodes.
+   appropriate worker daemons, such as the Hadoop Datanodes.
 
 4) Now you have a mini big data cluster to do whatever you want.  You
    can log into the master node and interact with your mini big data
@@ -576,12 +576,13 @@ Hopefully it's somewhat obvious.
 5) Update 'magpie-setup-projects' and 'magpie-run' appropriately for
    new calls.
 
-6) If necessary create new directories and setup master/slave files in
-   'magpie-setup-core'
+6) If necessary create new directories and setup master/slave/worker
+   files in 'magpie-setup-core'
 
 7) If necessary, following libraries could warrant updates:
 
-   magpie/lib/magpie-lib-node-identification - to identify master/slave nodes
+   magpie/lib/magpie-lib-node-identification - to identify
+     master/slave/worker nodes
 
    magpie/lib/magpie-lib-paths - set various path defaults
 
