@@ -44,7 +44,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsoverlustre" ]
     then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
         then
             magpie_hadooptmpdir="${HADOOP_HDFSOVERLUSTRE_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
@@ -53,7 +53,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfsovernetworkfs" ]
     then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
         then
             magpie_hadooptmpdir="${HADOOP_HDFSOVERNETWORKFS_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else
@@ -62,7 +62,7 @@ Magpie_calculate_hadoop_filesystem_paths () {
         magpie_fsdefault="hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
     elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
     then
-        if [ "${HADOOP_PER_JOB_HDFS_PATH}" == "yes" ]
+        if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
         then
             magpie_hadooptmpdir="${HADOOP_RAWNETWORKFS_PATH}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${noderank}"
         else

@@ -178,7 +178,7 @@ __Magpie_check_deprecated_configs () {
 
 oldmodes="HADOOP_MODE PIG_MODE MAHOUT_MODE HBASE_MODE PHOENIX_MODE SPARK_MODE KAFKA_MODE ZEPPELIN_MODE STORM_MODE ZOOKEEPER_MODE"
 oldprojects="HADOOP_UDA_SETUP TACHYON_SETUP"
-oldfeatures="HDFS_FEDERATION_NAMENODE_COUNT"
+oldfeatures="HDFS_FEDERATION_NAMENODE_COUNT HADOOP_PER_JOB_HDFS_PATH ZOOKEEPER_PER_JOB_DATA_DIR"
 oldvars="SPARK_USE_YARN"
 
 for var in ${oldmodes} ${oldprojects} ${oldfeatures} ${oldvars}
@@ -553,11 +553,6 @@ then
     fi
 
     __Magpie_check_if_set_is_yes_or_no "HADOOP_COMPRESSION"
-    
-    if Magpie_hadoop_filesystem_mode_is_hdfs_type
-    then
-        __Magpie_check_if_set_is_yes_or_no "HADOOP_PER_JOB_HDFS_PATH"
-    fi
 
     if [ ${nodecount} -le "0" ]
     then
@@ -1052,8 +1047,6 @@ then
         echo "ZOOKEEPER_DATA_DIR_TYPE must be set to networkfs or local"
         exit 1
     fi
-
-    __Magpie_check_if_set_is_yes_or_no "ZOOKEEPER_PER_JOB_DATA_DIR"
 
     if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then

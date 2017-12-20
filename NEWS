@@ -58,6 +58,9 @@ o "MODE" variables (e.g. HADOOP_MODE, SPARK_MODE, etc.) are now named
 o SPARK_USE_YARN has been removed and replaced with SPARK_SETUP_TYPE
   with settings options of "STANDALONE" or "YARN".
 
+o HADOOP_PER_JOB_HDFS_PATH and ZOOKEEPER_PER_JOB_DATA_DIR have been
+  removed, the behavior has been collapsed into MAGPIE_ONE_TIME_RUN.
+
 o Remove experimental features and experimental/non-heavily used
   projects.  If you wish for these features to be brought back beyond
   an 'experimental' nature, please submit an issue request.  Features
