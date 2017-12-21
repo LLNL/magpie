@@ -128,7 +128,7 @@ Magpie_run_start_hadoop () {
                     # Older versions of Magpie didn't store this variable
                     if [ -f ${magpie_hdfs_stored_version_path} ]
                     then
-                        hdfsstoredversion=`cat ${magpie_hdfs_stored_version_path}`
+                        local hdfsstoredversion=`cat ${magpie_hdfs_stored_version_path}`
 
                         # 0 is =, 1 is >, 2 is <
                         Magpie_vercomp ${HADOOP_VERSION} ${hdfsstoredversion}
