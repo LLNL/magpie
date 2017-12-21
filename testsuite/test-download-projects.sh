@@ -137,13 +137,17 @@ then
 
         # achu: Ugh, they jumped around alot with how they formatted their directory names
         # 0.98.0 - 0.98.12 - w/ hbase prefix
-        # 0.98.12.1 - 0.98.20 w/o hbase prefix
-        # 0.99.0 - 1.0.3 - w/ hbase prefix
-        # 1.0.1.1 - present - w/o hbase prefix, except ...
-        # 1.1.0 - with hbase prefix
+        # 0.98.12.1 - 0.98.24 w/o hbase prefix
+        # 0.99.X - w/ hbase prefix
+        # 1.0.X - w/ hbase prefix except ...
+        # 1.0.1.1 - w/o hbase prefix
+        # 1.1.0 - w/ hbase prefix
+        # 1.1.X - w/o hbase prefix (X != 0)
+        # 1.1.0.1 - w/o hbase prefix
+        # 1.2.0 - present - w/o hbase prefix
 
         # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
-        Magpie_vercomp ${hbasetestversion} "1.0.1.1"
+        Magpie_vercomp ${hbasetestversion} "1.0.0"
         if [ $? == "2" ]
         then
             Magpie_vercomp ${hbasetestversion} "0.99.0"
@@ -160,19 +164,37 @@ then
                 HBASE_PACKAGE="hbase-${hbasetestversion}/hbase-${hbaseversion}-bin.tar.gz"
             fi
         else
-            Magpie_vercomp ${hbasetestversion} "1.1.0"
-            if [ $? == "0" ]
+            Magpie_vercomp ${hbasetestversion} "1.2.0"
+            if [ $? == "2" ]
             then
-                HBASE_PACKAGE="hbase-${hbaseversion}/hbase-${hbaseversion}-bin.tar.gz"
+                Magpie_vercomp ${hbasetestversion} "1.1.0"
+                if [ $? == "2" ]
+                then
+                    Magpie_vercomp ${hbasetestversion} "1.0.1.1"
+                    if [ $? == "0" ]
+                    then
+                        HBASE_PACKAGE="${hbasetestversion}/hbase-${hbaseversion}-bin.tar.gz"
+                    else
+                        HBASE_PACKAGE="hbase-${hbaseversion}/hbase-${hbaseversion}-bin.tar.gz"
+                    fi
+                else
+                    Magpie_vercomp ${hbasetestversion} "1.1.0"
+                    if [ $? == "0" ]
+                    then
+                        HBASE_PACKAGE="hbase-${hbaseversion}/hbase-${hbaseversion}-bin.tar.gz"
+                    else
+                        HBASE_PACKAGE="${hbasetestversion}/hbase-${hbaseversion}-bin.tar.gz"
+                    fi
+                fi
             else
-                HBASE_PACKAGE="${hbaseversion}/hbase-${hbaseversion}-bin.tar.gz"
+                HBASE_PACKAGE="${hbasetestversion}/hbase-${hbaseversion}-bin.tar.gz"
             fi
         fi
-   
-     HBASE_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/hbase/${HBASE_PACKAGE}"
-        
+
+        HBASE_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/hbase/${HBASE_PACKAGE}"
+
         __download_package ${HBASE_PACKAGE} ${HBASE_DOWNLOAD_URL}
-        
+
         HBASE_PACKAGE_BASEDIR=$(echo `basename ${HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
         __apply_patches_if_exist ${HBASE_PACKAGE_BASEDIR} \
             ${MAGPIE_SCRIPTS_HOME}/patches/hbase/${HBASE_PACKAGE_BASEDIR}-alternate-ssh.patch \
