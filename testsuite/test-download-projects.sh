@@ -22,6 +22,7 @@ PHOENIX_DOWNLOAD=n
 SPARK_DOWNLOAD=n
 STORM_DOWNLOAD=n
 KAFKA_DOWNLOAD=n
+ZEPPELIN_DOWNLOAD=n
 ZOOKEEPER_DOWNLOAD=n
 
 # Second, indicate where these will be installed into
@@ -259,6 +260,19 @@ then
         __download_package ${STORM_PACKAGE} ${STORM_DOWNLOAD_URL}
 
         # No storm patches at the moment
+    done
+fi
+
+if [ "${ZEPPELIN_DOWNLOAD}" == "y" ]
+then
+    for zeppelinversion in ${zeppelin_all_versions}
+    do
+        ZEPPELIN_PACKAGE="zeppelin-${zeppelinversion}/zeppelin-${zeppelinversion}-bin-all.tgz"
+        ZEPPELIN_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/zeppelin/${ZEPPELIN_PACKAGE}"
+
+        __download_package ${ZEPPELIN_PACKAGE} ${ZEPPELIN_DOWNLOAD_URL}
+
+        # No zeppelin patches at the moment
     done
 fi
 
