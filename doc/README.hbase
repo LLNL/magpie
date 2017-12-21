@@ -169,3 +169,13 @@ Hbase Patching
 - If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/hbase/
   with the "no-local-dir.patch" suffix in the filename can be found
   for support.  See README.no-local-dir for more details.
+
+Known Issues
+------------
+
+Hbase 1.4.0 did not properly backport several patches that broke
+Magpie regression tests.  See:
+https://issues.apache.org/jira/browse/HBASE-19588
+
+It is believed this is isolated to only MapReduce tests distributed by
+Hbase.  Mapreduce tests written by users should still work.
