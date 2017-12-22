@@ -379,12 +379,16 @@ Spark Advanced Usage
    Second, it can be used for quickly storing/caching RDDs to disk
    using MEMORY_AND_DISK and/or DISK_ONLY persistence levels.
 
-2) Magpie configures the default number of reducers (or
-   partitions/parallelism) in a Spark job to the number of compute
-   nodes in your allocation.  This is significantly superior to the
-   original Spark default of 8 (pre-1.0) and likely superior than the
-   current default of all partitions in your data set (post-1.0).
-   However, it may not be optimal for many jobs.
+2) Magpie configures the default parallelism in a Spark job depending
+   on the Spark version.  In versions < 1.3.0, Magpie defaults the
+   parallelism to the number of compute nodes in your allocation.
+   This is significantly superior to the original Spark default of 8
+   (pre-1.0).  However, it may not be optimal for many jobs.
+
+   For versions >= 1.3.0, Magpie defaults to not setting this value.
+   Spark will instead use a default parallelism equal to the number of
+   cores in your allocation.  In some cases, this number will be too
+   high and will cause too much overhead for your job.
 
    Users should play around with the parallelism in their job to
    improve performance.  A number of Spark collectives can take a

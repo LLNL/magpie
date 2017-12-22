@@ -806,9 +806,16 @@ export SPARK_MODE="sparkpi"
 #
 # Default number of tasks to use across the cluster for distributed
 # shuffle operations (groupByKey, reduceByKey, etc) when not set by
-# user. If not specified, defaults to # compute nodes (i.e. 1 per node)
+# user.
 #
-# This is something you (the user) almost definitely want to set.
+# For Spark versions < 1.3.0.  Defaults to number compute nodes
+# (i.e. 1 per node) This is something you (the user) almost definitely
+# want to set as this is non-optimal for most jobs.
+#
+# For Spark versions >= 1.3.0, will not be set by Magpie if the below
+# is commented out.  Internally, Spark defaults this to the largest
+# number of partitions in a parent RDD.  Or for operations without a
+# parent, defaults to nodes X cores.
 #
 # export SPARK_DEFAULT_PARALLELISM=8
 
