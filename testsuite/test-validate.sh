@@ -199,7 +199,7 @@ __test_kafka_shutdown () {
 
 __test_zookeeper_shutdown () {
     local file=$1
-    
+
     num=`grep -e "zkServer.sh" $file | grep -e "No such process" | wc -l`
     if [ "${num}" != "0" ]; then
         echo "Zookeeper shutdown error in $file"
@@ -567,7 +567,7 @@ __check_exports_hadoop () {
     local file=$1
 
     __check_exports_project_base ${file} "HADOOP"
-    
+
     num=`grep -E "HADOOP_MASTER_NODE=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
     then
@@ -625,7 +625,7 @@ __check_exports_hbase () {
     local file=$1
 
     __check_exports_project_base ${file} "HBASE"
-    
+
     num=`grep -E "HBASE_MASTER_NODE=.+" ${file} | wc -l`
     if [ "${num}" == 0 ]
     then
@@ -760,10 +760,10 @@ then
         then
             __check_exports_pig ${file}
         fi
-        
+
         if echo ${file} | grep -q "mahout"
         then
-            # None guaranted to user at moment 
+            # None guaranted to user at moment
             :
         fi
 
@@ -858,12 +858,12 @@ then
     for file in ${test_validate_files}
     do
         __check_prepostrunscripts ${file} "PRE"
-        
+
         num=`grep -e "Magpie General Job Info" $file | wc -l`
         if [ "${num}" != "0" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_generic $file
         __test_output_finalize $file
     done
@@ -903,7 +903,7 @@ then
                 echo "Error in $file"
             fi
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -925,7 +925,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -942,7 +942,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_generic $file
         __test_hadoop_shutdown $file
 
@@ -960,7 +960,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -984,7 +984,7 @@ then
                 echo "Error in $file"
             fi
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -1001,7 +1001,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_no_hdfs_shutdown $file
 
         __test_generic $file
@@ -1018,7 +1018,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_no_hdfs_shutdown $file
 
         __test_generic $file
@@ -1035,7 +1035,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_no_hdfs_shutdown $file
 
         __test_generic $file
@@ -1052,7 +1052,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         # On some jobs, Yarn may run, others maybe not, only test HDFS shutdown proper
         __test_hdfs_shutdown $file
 
@@ -1068,12 +1068,12 @@ then
     do
     # Below only works on 0.14.0 and up
     # num=`grep -e "Pig script completed" $file | wc -l`
-        
+
         num=`grep -e "hdfs:\/\/" $file | grep "<dir>" | wc -l`
         if [ ! "${num}" -gt "0" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -1088,12 +1088,12 @@ then
     do
     # Below only works on 0.14.0 and up
     # num=`grep -e "Pig script completed" $file | wc -l`
-        
+
         num=`grep -e "1,2,3" $file | wc -l`
         if [ "${num}" != "2" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -1110,7 +1110,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hadoop_shutdown $file
 
         __test_generic $file
@@ -1145,7 +1145,7 @@ then
                 fi
             fi
         fi
-        
+
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
@@ -1163,7 +1163,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
@@ -1181,7 +1181,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
@@ -1199,7 +1199,7 @@ then
         if [ "${num}" != "7" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_hdfs_shutdown $file
         __test_zookeeper_shutdown $file
 
@@ -1217,7 +1217,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         if echo ${file} | grep -q "usingyarn"
         then
             __test_yarn_shutdown $file
@@ -1230,7 +1230,7 @@ then
     done
 fi
 
-__get_test_files run-sparkwordcount run-pythonsparkwordcount 
+__get_test_files run-sparkwordcount run-pythonsparkwordcount
 if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
@@ -1239,7 +1239,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         if echo ${file} | grep -q "usingyarn"
         then
             __test_yarn_shutdown $file
@@ -1266,7 +1266,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_kafka_shutdown $file
 
         __test_generic $file
@@ -1327,7 +1327,7 @@ then
         if [ "${num}" != "${zookeepernodecount}" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_zookeeper_shutdown $file
 
         __test_generic $file
@@ -1344,7 +1344,7 @@ then
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
-        
+
         __test_spark_shutdown $file
 
         __test_generic $file

@@ -55,7 +55,7 @@
 </property>
 
 <property>
-  <description>Amount of physical memory, in MB, that can be allocated 
+  <description>Amount of physical memory, in MB, that can be allocated
   for containers.</description>
   <name>yarn.nodemanager.resource.memory-mb</name>
   <value>YARNRESOURCEMEMORY</value>
@@ -183,9 +183,9 @@
 </property>
 
 <property>
-  <description>The maximum percentage of disk space utilization allowed after 
-  which a disk is marked as bad. Values can range from 0.0 to 100.0. 
-  If the value is greater than or equal to 100, the nodemanager will check 
+  <description>The maximum percentage of disk space utilization allowed after
+  which a disk is marked as bad. Values can range from 0.0 to 100.0.
+  If the value is greater than or equal to 100, the nodemanager will check
   for full disk. This applies to yarn.nodemanager.local-dirs and
   yarn.nodemanager.log-dirs.</description>
   <name>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage</name>

@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -78,7 +78,7 @@ hostsexcludefilesubst=`echo "${hostsexcludefile}" | sed "s/\\//\\\\\\\\\//g"`
 if [ "${HADOOP_PARALLEL_COPIES}X" != "X" ]
 then
     parallelcopies=${HADOOP_PARALLEL_COPIES}
-else 
+else
     parallelcopies=`echo "sqrt ( ${HADOOP_WORKER_COUNT} )" | bc -l | xargs printf "%1.0f"`
     if [ "${parallelcopies}" -lt "10" ]
     then
@@ -87,7 +87,7 @@ else
 fi
 
 # Recommendation from Cloudera, 10% of nodes w/ floor of ten, ceiling 200
-# My experience this is low b/c of high core counts, so bump higher to 50% 
+# My experience this is low b/c of high core counts, so bump higher to 50%
 namenodehandlercount=`echo "${HADOOP_WORKER_COUNT} * .5" | bc -l | xargs printf "%1.0f"`
 if [ "${namenodehandlercount}" -lt "10" ]
 then
@@ -321,14 +321,14 @@ then
     hadoopdaemonheapmax="${HADOOP_DAEMON_HEAP_MAX}"
 else
     hadoopdaemonheapmax="1000"
-fi 
+fi
 
 if [ "${HADOOP_NAMENODE_DAEMON_HEAP_MAX}X" != "X" ]
 then
     hadoopnamenodedaemonheapmax="${HADOOP_NAMENODE_DAEMON_HEAP_MAX}"
 else
     hadoopnamenodedaemonheapmax="${hadoopdaemonheapmax}"
-fi 
+fi
 
 if [ "${HADOOP_COMPRESSION}X" != "X" ]
 then
@@ -384,7 +384,7 @@ elif Magpie_hadoop_filesystem_mode_is_hdfs_on_network_type
 then
     magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
-    
+
     if [ ! -d "${magpie_hadooptmpdir}" ]
     then
         mkdir -p ${magpie_hadooptmpdir}
@@ -403,9 +403,9 @@ then
             fi
         fi
     fi
-    
+
     datanodedir="file:\/\/\$\{hadoop.tmp.dir\}\/dfs\/data"
-    
+
     pathcount=1
 
     # Cleanup locks if requested
@@ -423,7 +423,7 @@ elif [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
 then
     magpie_hadooptmpdirsubst=`echo "${magpie_hadooptmpdir}" | sed "s/\\//\\\\\\\\\//g"`
     magpie_fsdefaultsubst=`echo ${magpie_fsdefault} | sed "s/\\//\\\\\\\\\//g"`
-    
+
     if [ ! -d "${HADOOP_RAWNETWORKFS_PATH}" ]
     then
         mkdir -p ${HADOOP_RAWNETWORKFS_PATH}
@@ -432,7 +432,7 @@ then
             exit 1
         fi
     fi
-        
+
     if [ ! -d "${magpie_hadooptmpdir}" ]
     then
         mkdir -p ${magpie_hadooptmpdir}
@@ -441,7 +441,7 @@ then
             exit 1
         fi
     fi
-    
+
     pathcount=1
 else
     Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
@@ -462,7 +462,7 @@ then
         localstoredirtmp=${localstorefile}
         mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
         yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
-        
+
         if [ ! -d "${localstoredirtmp}" ]
         then
             mkdir -p ${localstoredirtmp}
@@ -477,7 +477,7 @@ then
     done
     IFS=${IFSORIG}
 elif [ "${HADOOP_FILESYSTEM_MODE}" == "hdfs" ] \
-    && [ ${pathcount} -gt 1 ] 
+    && [ ${pathcount} -gt 1 ]
 then
     IFSORIG=${IFS}
     IFS=","
@@ -488,7 +488,7 @@ then
         localstoredirtmp=${localstorefile}
         mapredlocalstoredirtmp=`echo "${localstoredirtmp}/mapred/local" | sed "s/\\//\\\\\\\\\//g"`
         yarnlocalstoredirtmp=`echo "${localstoredirtmp}/yarn-nm" | sed "s/\\//\\\\\\\\\//g"`
-        
+
         mapredlocalstoredir="${mapredlocalstoredir}${mapredlocalstoredir:+","}${mapredlocalstoredirtmp}"
         yarnlocalstoredir="${yarnlocalstoredir}${yarnlocalstoredir:+","}${yarnlocalstoredirtmp}"
     done
@@ -549,7 +549,7 @@ fi
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
     extrahadoopopts="${extrahadoopopts}${extrahadoopopts:+" "}-XX:-UsePerfData"
-    
+
     extrayarnopts="${extrayarnopts}${extrayarnopts:+" "}-XX:-UsePerfData"
 fi
 
@@ -703,7 +703,7 @@ then
     # Returns 0 for ==, 1 for $1 > $2, 2 for $1 < $2
     Magpie_vercomp ${HADOOP_VERSION} "2.2.0"
     if [ $? == "2" ]
-    then 
+    then
         yarnauxservices="mapreduce.shuffle"
         yarnauxmapreduceshuffle="yarn.nodemanager.aux-services.mapreduce.shuffle.class"
     else
@@ -749,7 +749,7 @@ then
         -e "s/YARNVMEMCHECK/${yarnvmemcheck}/g" \
         -e "s/YARNPMEMCHECK/${yarnpmemcheck}/g" \
         ${post_yarnsitexml}
-    
+
     # Only hadoop-env.sh for Hadoop 3.0
     if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
     then
@@ -758,9 +758,9 @@ then
         hadoophomesubst=`echo "${HADOOP_HOME}" | sed "s/\\//\\\\\\\\\//g"`
         hadoopcommonhomesubst=`echo "${HADOOP_COMMON_HOME}" | sed "s/\\//\\\\\\\\\//g"`
         hadoopmapredhomesubst=`echo "${HADOOP_MAPRED_HOME}" | sed "s/\\//\\\\\\\\\//g"`
-        
+
         cp ${pre_mapredenvsh} ${post_mapredenvsh}
-        
+
         sed -i \
             -e "s/HADOOP_JAVA_HOME/${javahomesubst}/g" \
             -e "s/HADOOP_DAEMON_HEAP_MAX/${hadoopdaemonheapmax}/g" \
@@ -773,7 +773,7 @@ then
             ${post_mapredenvsh}
 
         cp ${pre_yarnenvsh} ${post_yarnenvsh}
-        
+
         yarnconfdirsubst=`echo "${YARN_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
         yarnlogdirsubst=`echo "${YARN_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
         yarnpiddirsubst=`echo "${YARN_PID_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -796,13 +796,13 @@ then
             -e "s/EXTRAYARNLIBRARYPATH/${extrayarnlibrarypathsubst}/g" \
             -e "s/EXTRAYARNOPTS/${extrayarnoptssubst}/g" \
             ${post_yarnenvsh}
-        
+
         if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
         then
             echo "export YARN_SSH_CMD=\"$MAGPIE_REMOTE_CMD\"" >> ${post_yarnenvsh}
         fi
         echo "export YARN_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_yarnenvsh}
-        
+
         if [ "${HADOOP_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HADOOP_ENVIRONMENT_EXTRA_PATH} ]
         then
             cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}

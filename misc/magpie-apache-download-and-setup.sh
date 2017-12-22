@@ -6,7 +6,7 @@
 
 # First set what packages you'd like to download.  Y or N to each one
 #
-# Note that 
+# Note that
 # HBase requires Zookeeper and HDFS (i.e. Hadoop).
 # Pig requires Hadoop
 # Storm requires Zookeeper
@@ -254,48 +254,48 @@ then
         javadefaultpathsubst=`echo ${JAVA_DEFAULT_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/JAVA_DEFAULT=\(.*\)/JAVA_DEFAULT=${javadefaultpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
     fi
-    
+
     if [ "${LOCAL_DIR_PATH}X" != "X" ]
     then
         localdirpathsubst=`echo ${LOCAL_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/LOCAL_DIR_PREFIX=\(.*\)/LOCAL_DIR_PREFIX=${localdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${HOME_DIR_PATH}X" != "X" ]
     then
         homedirpathsubst=`echo ${HOME_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/HOME_DIR_PREFIX=\(.*\)/HOME_DIR_PREFIX=${homedirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${LUSTRE_DIR_PATH}X" != "X" ]
     then
         lustredirpathsubst=`echo ${LUSTRE_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/LUSTRE_DIR_PREFIX=\(.*\)/LUSTRE_DIR_PREFIX=${lustredirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${NETWORKFS_DIR_PATH}X" != "X" ]
     then
         networkfsdirpathsubst=`echo ${NETWORKFS_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/NETWORKFS_DIR_PREFIX=\(.*\)/NETWORKFS_DIR_PREFIX=${networkfsdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${RAWNETWORKFS_DIR_PATH}X" != "X" ]
     then
         rawnetworkfsdirpathsubst=`echo ${RAWNETWORKFS_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/RAWNETWORKFS_DIR_PREFIX=\(.*\)/RAWNETWORKFS_DIR_PREFIX=${rawnetworkfsdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${ZOOKEEPER_DATA_DIR_PATH}X" != "X" ]
     then
         localdrivepathsubst=`echo ${ZOOKEEPER_DATA_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/ZOOKEEPER_DATA_DIR_PREFIX=\(.*\)/ZOOKEEPER_DATA_DIR_PREFIX=${localdrivepathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${LOCAL_DRIVE_PATH}X" != "X" ]
     then
         localdrivepathsubst=`echo ${LOCAL_DRIVE_PATH} | sed "s/\\//\\\\\\\\\//g"`
         sed -i -e "s/LOCAL_DRIVE_PREFIX=\(.*\)/LOCAL_DRIVE_PREFIX=${localdrivepathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-    fi 
+    fi
 
     if [ "${REMOTE_CMD}X" != "X" ]
     then

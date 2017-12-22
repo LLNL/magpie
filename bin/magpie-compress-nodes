@@ -10,7 +10,7 @@ use strict;
 #
 #   @nodes (IN)         flat list of nodes
 #   RETURN              list of nodes possibly containing ranges
-#                       
+#
 sub compress {
     my %rng = comp2(@_);
     my @list = ();
@@ -28,21 +28,21 @@ sub compress {
 }
 
 # comp2():
-# 
+#
 # takes a list of names and returns a hash of arrays, indexed by name prefix,
 # each containing a list of numerical ranges describing the initial list.
 #
-# e.g.: %hash = comp2(lx01,lx02,lx03,lx05,dev0,dev1,dev21) 
+# e.g.: %hash = comp2(lx01,lx02,lx03,lx05,dev0,dev1,dev21)
 #       will return:
 #       $hash{"lx"}  = ["01-03", "05"]
 #       $hash{"dev"} = ["0-1", "21"]
 #
-sub comp2 
+sub comp2
 {
     my (%i) = ();
     my (%s) = ();
 
-        # turn off warnings here to avoid perl complaints about 
+        # turn off warnings here to avoid perl complaints about
         # uninitialized values for members of %i and %s
     local ($^W) = 0;
     push(@{
@@ -80,10 +80,10 @@ if (@ARGV == 0) {
     print "Usage: $prog <node1> <node2> <node3> ...\n";
     print "  e.g. $prog node8 node152 node24\n";
     exit 1;
-} 
+}
 
 my $compressednodes = compress(@ARGV);
 
 print "$compressednodes\n";
- 
+
 exit 0;

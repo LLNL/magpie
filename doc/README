@@ -254,7 +254,7 @@ Spark 2.X - Builds against Hadoop 2.3, 2.4, 2.6, and 2.7.  Use the
   version it is prebuilt for appropriately.  See above for supported
   versions.
 
-Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X 
+Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X
 
 Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
 
@@ -329,7 +329,7 @@ General information about all of Magpie can be found below.  For
 information on individual projects, please see the following README
 files.
 
-Hadoop - See README.hadoop 
+Hadoop - See README.hadoop
 Pig - See README.pig
 Mahout - See README.mahout
 Hbase - See README.hbase
@@ -367,7 +367,7 @@ MAGPIE_CLUSTER_NODERANK : the rank of the node you are on.  It's often
                           convenient to do something like
 
 if [ $MAGPIE_CLUSTER_NODERANK == 0 ]
-then 
+then
    ....
 fi
 
@@ -456,7 +456,7 @@ The following are additional tips for advanced usage of Magpie.
    identical locations on network filesystems, leading to problems
    between jobs.  For example, if you configure HDFS to operate out of
    /lustre/hdfsoverlustre/ on multiple jobs, only one namenode will be
-   able to operate correctly at a time.  
+   able to operate correctly at a time.
 
    In order to solve this problem, all you need to do is create
    different directories for each service operating out of a network
@@ -510,7 +510,7 @@ site staff before running their job.
 
 4) Some big data software just doesn't really have any security built
 in at all.
- 
+
 A few examples of security issues are listed below:
 
 Hadoop HDFS - The Hadoop Namenode is generally available on an open
@@ -633,7 +633,7 @@ input checks in magpie-check-inputs.
 
 I'd be glad to accept patches back for other schedulers/resource
 managers.  Please send me a pull request.
- 
+
 Author
 ------
 

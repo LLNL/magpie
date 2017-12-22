@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -54,29 +54,29 @@ Magpie_get_spark_major_minor_patch_version() {
 Magpie_get_phoenix_major_minor_version() {
     local phoenixversion=$1
 
-    # Get only the major and minor version, we don't care about the release                                                               
+    # Get only the major and minor version, we don't care about the release
     phoenixmajor=`echo ${phoenixversion} | cut -d. -f1`
     phoenixminor=`echo ${phoenixversion} | cut -d. -f2`
-    
+
     magpie_phoenixmajorminorversion="$phoenixmajor.$phoenixminor"
 }
 
 Magpie_get_storm_major_minor_version() {
     local stormversion=$1
 
-    # Get only the major and minor version, we don't care about the release                                                               
+    # Get only the major and minor version, we don't care about the release
     stormmajor=`echo ${stormversion} | cut -d. -f1`
     stormminor=`echo ${stormversion} | cut -d. -f2`
-    
+
     magpie_stormmajorminorversion="$stormmajor.$stormminor"
 }
 
 Magpie_get_zeppelin_major_minor_version() {
     local zeppelinversion=$1
 
-    # Get only the major and minor version, we don't care about the release                                                               
+    # Get only the major and minor version, we don't care about the release
     zeppelinmajor=`echo ${zeppelinversion} | cut -d. -f1`
     zeppelinminor=`echo ${zeppelinversion} | cut -d. -f2`
-    
+
     magpie_zeppelinmajorminorversion="$zeppelinmajor.$zeppelinminor"
 }

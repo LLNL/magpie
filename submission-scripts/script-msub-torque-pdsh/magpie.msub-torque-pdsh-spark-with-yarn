@@ -119,7 +119,7 @@ export MAGPIE_JOB_TYPE="spark"
 # generated until the job has launched.  You won't be able to use them
 # here.
 #
-# export MAGPIE_SCRIPT_ARGS="" 
+# export MAGPIE_SCRIPT_ARGS=""
 
 # Specify script startup / shutdown time window
 #
@@ -287,10 +287,10 @@ export HADOOP_SETUP=yes
 # It only works with HDFS based HADOOP_FILESYSTEM_MODE, such as
 # "hdfs", "hdfsoverlustre", or "hdfsovernetworkfs".
 #
-# YARN only may be useful when you need Yarn setup for scheduling, but                                                               
-# will not be using HDFS.  For example, you may be reading from a                                                                    
-# networked file system directly.  This option requires                                                                              
-# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.        
+# YARN only may be useful when you need Yarn setup for scheduling, but
+# will not be using HDFS.  For example, you may be reading from a
+# networked file system directly.  This option requires
+# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.
 #
 export HADOOP_SETUP_TYPE="YARN"
 
@@ -500,7 +500,7 @@ export HADOOP_JOB="terasort"
 # export YARN_RESOURCE_MEMORY=32768
 
 # Check Memory Limits
-# 
+#
 # Should physical and virtual memory limits be enforced for containers.
 # This can be helpful in cases where the OS (Centos/Redhat) is aggressive
 # at allocating virtual memory and causes the vmem-to-pmem ratio to be
@@ -722,7 +722,7 @@ export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
 # This is used with HADOOP_FILESYSTEM_MODE="rawnetworkfs"
 #
 # After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
-# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  
+# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.
 #
 # This is particularly useful when doing normal HDFS on local storage.
 # On your next job run, you may not be able to get the nodes you want
@@ -817,7 +817,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_LOCALSTORE="/ssd/${USER}/localstore/"
 
-# HADOOP_LOCALSTORE_CLEAR 
+# HADOOP_LOCALSTORE_CLEAR
 #
 # After your job has completed, if HADOOP_LOCALSTORE_CLEAR is set to
 # yes, Magpie will do a rm -rf on all directories in
@@ -853,16 +853,16 @@ export SPARK_SETUP=yes
 # Spark to work with Yarn instead.  If SPARK_SETUP_TYPE is set to
 # YARN:
 #
-# - The Spark standalone scheduler will not be launched 
+# - The Spark standalone scheduler will not be launched
 # - The default Spark master will be set to 'yarn-client' in all
 #   appropriate locations (e.g. spark-defaults.conf)
 # - All situations that would otherwise use the standalone scheduler
 #   (e.g. SPARK_JOB="sparkpi") will now use Yarn instead.
-# 
+#
 # Make sure that HADOOP_SETUP_TYPE is set to MR or YARN for the
 # SPARK_SETUP_TYPE="YARN".
 #
-export SPARK_SETUP_TYPE="YARN" 
+export SPARK_SETUP_TYPE="YARN"
 
 # Version
 #
@@ -1150,7 +1150,7 @@ export SPARK_JOB="sparkpi"
 #
 # export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
-# SPARK_LOCAL_SCRATCH_DIR_CLEAR 
+# SPARK_LOCAL_SCRATCH_DIR_CLEAR
 #
 # After your job has completed, if SPARK_LOCAL_SCRATCH_DIR_CLEAR is
 # set to yes, Magpie will do a rm -rf on all directories in
@@ -1170,7 +1170,7 @@ export SPARK_JOB="sparkpi"
 # directory is not NFS or network mounted.  Set this value to a
 # network location as your staging directory.  Be sure to prefix this
 # path the appropriate scheme, such as file://.
-# 
+#
 # This option is only available beginning in Spark 2.0.
 #
 # export SPARK_YARN_STAGING_DIR="file:///lustre/${USER}/sparkStaging/"

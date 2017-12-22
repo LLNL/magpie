@@ -69,7 +69,7 @@ Instructions For Using Zeppelin
    output you will see output similar to the following:
 
    * To access Zeppelin's web interface, you'll want to navigate your browser to:
-   *     http://some-node:18080 
+   *     http://some-node:18080
 
    If you point your browser to this node and port you can access the
    Zeppelin Notebook/Interpreter. From here you can create notebooks

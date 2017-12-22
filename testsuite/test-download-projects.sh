@@ -91,7 +91,7 @@ then
     do
         HADOOP_PACKAGE="hadoop-${hadoopversion}/hadoop-${hadoopversion}.tar.gz"
         HADOOP_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/hadoop/common/${HADOOP_PACKAGE}"
-        
+
         __download_package ${HADOOP_PACKAGE} ${HADOOP_DOWNLOAD_URL}
 
         HADOOP_PACKAGE_BASEDIR=$(echo `basename ${HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
@@ -107,7 +107,7 @@ then
     do
         PIG_PACKAGE="pig-${pigversion}/pig-${pigversion}.tar.gz"
         PIG_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/pig/${PIG_PACKAGE}"
-        
+
         __download_package ${PIG_PACKAGE} ${PIG_DOWNLOAD_URL}
 
         # No pig patches at the moment
@@ -120,9 +120,9 @@ then
     do
         MAHOUT_PACKAGE="${mahoutversion}/apache-mahout-distribution-${mahoutversion}.tar.gz"
         MAHOUT_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/mahout/${MAHOUT_PACKAGE}"
-        
+
         __download_package ${MAHOUT_PACKAGE} ${MAHOUT_DOWNLOAD_URL}
-        
+
         MAHOUT_PACKAGE_BASEDIR=$(echo `basename ${MAHOUT_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
         __apply_patches_if_exist ${MAHOUT_PACKAGE_BASEDIR} \
             ${MAGPIE_SCRIPTS_HOME}/patches/mahout/${MAHOUT_PACKAGE_BASEDIR}.patch
@@ -222,9 +222,9 @@ then
         fi
 
         PHOENIX_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/phoenix/${PHOENIX_PACKAGE}"
-        
+
         __download_package ${PHOENIX_PACKAGE} ${PHOENIX_DOWNLOAD_URL}
-        
+
         PHOENIX_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
         echo $PHOENIX_PACKAGE_BASEDIR
         __apply_patches_if_exist ${PHOENIX_PACKAGE_BASEDIR} \
@@ -242,7 +242,7 @@ then
         SPARK_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/spark/${SPARK_PACKAGE}"
 
         __download_package ${SPARK_PACKAGE} ${SPARK_DOWNLOAD_URL}
-        
+
         SPARK_PACKAGE_BASEDIR=$(echo `basename ${SPARK_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1\.\2/g')
         __apply_patches_if_exist ${SPARK_PACKAGE_BASEDIR} \
             ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate.patch \
@@ -256,7 +256,7 @@ then
     do
         STORM_PACKAGE="apache-storm-${stormversion}/apache-storm-${stormversion}.tar.gz"
         STORM_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/storm/${STORM_PACKAGE}"
-        
+
         __download_package ${STORM_PACKAGE} ${STORM_DOWNLOAD_URL}
 
         # No storm patches at the moment
@@ -282,9 +282,9 @@ then
     do
         ZOOKEEPER_PACKAGE="zookeeper-${zookeeperversion}/zookeeper-${zookeeperversion}.tar.gz"
         ZOOKEEPER_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/zookeeper/${ZOOKEEPER_PACKAGE}"
-        
+
         __download_package ${ZOOKEEPER_PACKAGE} ${ZOOKEEPER_DOWNLOAD_URL}
-        
+
         # No zookeeper patches at the moment
     done
 fi
@@ -296,14 +296,14 @@ then
         kafkaonlyversion=`echo ${kafkaversion} | cut -f2 -d"-"`
         KAFKA_PACKAGE="kafka/${kafkaonlyversion}/kafka_${kafkaversion}.tgz"
         KAFKA_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/${KAFKA_PACKAGE}"
-        
+
         __download_package ${KAFKA_PACKAGE} ${KAFKA_DOWNLOAD_URL}
-        
+
         KAFKA_PACKAGE_BASEDIR=$(echo `basename ${KAFKA_PACKAGE}` | sed 's/\(.*\)\.\(.*\)/\1/g')
         __apply_patches_if_exist ${KAFKA_PACKAGE_BASEDIR} \
             ${MAGPIE_SCRIPTS_HOME}/patches/kafka/${KAFKA_PACKAGE_BASEDIR}-no-local-dir.patch
     done
-        
+
 fi
 
 cd ${CURRENT_DIR}

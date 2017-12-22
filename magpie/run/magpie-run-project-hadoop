@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -217,7 +217,7 @@ Magpie_run_start_hadoop () {
                     echo "${nodecount}" > ${magpie_hdfs_stored_nodecount_path}
                 fi
             fi
-            
+
             if [ "${hadoop_should_be_setup}" == "1" ] \
                 && Magpie_hadoop_setup_type_enables_yarn
             then
@@ -228,7 +228,7 @@ Magpie_run_start_hadoop () {
 
                 # Make variables specific now within Magpie
                 Magpie_make_all_local_dirs_node_specific
-                
+
                 # My rough estimate for setup time is 30 seconds per 128 nodes
                 local sleepwait=`expr ${HADOOP_WORKER_COUNT} \/ 128 \* 30`
                 if [ ${sleepwait} -lt 30 ]
@@ -266,8 +266,8 @@ Magpie_run_start_hadoop () {
             then
                 echo "* HDFS can be accessed directly at:"
                 echo "*"
-                echo "*   hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}" 
-                echo "*" 
+                echo "*   hdfs://${HADOOP_MASTER_NODE}:${default_hadoop_hdfs_namenode_address}"
+                echo "*"
             fi
             echo "* To access Hadoop directly, you'll want to:"
             echo "*"
@@ -279,7 +279,7 @@ Magpie_run_start_hadoop () {
                 echo "*   setenv HADOOP_CONF_DIR \"${HADOOP_CONF_DIR}\""
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
-                    echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
+                    echo "*   setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\""
                 fi
             else
                 echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
@@ -287,23 +287,23 @@ Magpie_run_start_hadoop () {
                 echo "*   export HADOOP_CONF_DIR=\"${HADOOP_CONF_DIR}\""
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
-                    echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
+                    echo "*   export HADOOP_CLIENT_OPTS=\"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\""
                 fi
             fi
             echo "*"
             echo "* Then you can do as you please.  For example to interact with the Hadoop filesystem:"
-            echo "*" 
+            echo "*"
             if echo ${HADOOP_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
-            then 
+            then
                 echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hdfs dfs ..."
             else
                 echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop fs ..."
             fi
-            echo "*" 
+            echo "*"
             echo "* To launch jobs you'll want to:"
-            echo "*" 
+            echo "*"
             echo "*   \$HADOOP_HOME/${hadoopcmdprefix}/hadoop jar ..."
-            echo "*" 
+            echo "*"
             if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
             then
                 echo "* To setup, login and set environment variables per the"
@@ -311,17 +311,17 @@ Magpie_run_start_hadoop () {
                 echo "*"
                 if Magpie_hadoop_filesystem_mode_is_hdfs_type
                 then
-                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-dfs.sh" 
+                    echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-dfs.sh"
                 fi
                 if Magpie_hadoop_setup_type_enables_yarn
                 then
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/start-yarn.sh"
                     echo "*   $HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh start historyserver"
                 fi
-                echo "*" 
+                echo "*"
                 echo "* To end/cleanup your session & kill all daemons, login and set"
                 echo "* environment variables per the instructions above, then run:"
-                echo "*" 
+                echo "*"
                 if Magpie_hadoop_setup_type_enables_yarn
                 then
                     echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/stop-yarn.sh"
@@ -334,7 +334,7 @@ Magpie_run_start_hadoop () {
                 then
                     echo "*   \$HADOOP_HOME/${hadoopsetupscriptprefix}/mr-jobhistory-daemon.sh stop historyserver"
                 fi
-                echo "*" 
+                echo "*"
             fi
             if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
             then
@@ -367,7 +367,7 @@ Magpie_run_start_hadoop () {
                     echo "setenv HADOOP_VERSION \"${HADOOP_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                     then
-                        echo "setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+                        echo "setenv HADOOP_CLIENT_OPTS \"-Djava.io.tmpdir=${HADOOP_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     fi
                 else
                     echo "export HADOOP_HOME=\"${HADOOP_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -505,16 +505,16 @@ Magpie_run_hadoop () {
         Magpie_output_internal_error "HADOOP_JOB = ${HADOOP_JOB} not handled"
     fi
 }
- 
+
 Magpie_run_stop_hadoop () {
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${magpie_run_hadoop_should_be_torndown}" == "1" ]
     then
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${HADOOP_HOME}
-            
+
             echo "Stopping hadoop"
-            
+
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified
 
@@ -545,11 +545,11 @@ Magpie_run_stop_hadoop () {
                         command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode enter"
                         echo "Running $command" >&2
                         $command
-                        
+
                         command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -saveNamespace"
                         echo "Running $command" >&2
                         $command
-                        
+
                         command="${hadoopcmdprefix}/${dfsadminscript} dfsadmin -safemode leave"
                         echo "Running $command" >&2
                         $command
@@ -559,7 +559,7 @@ Magpie_run_stop_hadoop () {
                 # Make variables unspecified for shutdown
                 Magpie_make_all_local_dirs_unspecified
 
-                ${hadoopsetupscriptprefix}/stop-dfs.sh 
+                ${hadoopsetupscriptprefix}/stop-dfs.sh
 
                 # Make variables specific now within Magpie
                 Magpie_make_all_local_dirs_node_specific

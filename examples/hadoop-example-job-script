@@ -13,7 +13,7 @@ cd ${HADOOP_HOME}
 command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar teragen 50000000 terasort-example-job-teragen"
 echo "Running $command" >&2
 $command
-    
+
 command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSION.jar terasort -Dmapred.reduce.tasks=1 terasort-example-job-teragen terasort-example-job-sort"
 
 echo "Running $command" >&2

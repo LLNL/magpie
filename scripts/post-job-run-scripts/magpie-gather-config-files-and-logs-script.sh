@@ -24,7 +24,7 @@ Gather_common () {
     local projectlogdir="${projectuppercase}_LOG_DIR"
 
     targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/${project}/nodes/${NODENAME}
-    
+
     if [ "${saveconfdir}" == "y" ]
     then
         if [ "${!projectconfdir}X" != "X" ] && [ -d ${!projectconfdir}/ ] && [ "$(ls -A ${!projectconfdir}/)" ]

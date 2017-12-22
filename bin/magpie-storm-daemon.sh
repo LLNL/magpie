@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -113,7 +113,7 @@ then
     then
         echo "Storm $5 pid file found, it should already be running"
     else
-        echo "Starting Storm $5 on $myhostname - output stored in $2/storm-$5.out" 
+        echo "Starting Storm $5 on $myhostname - output stored in $2/storm-$5.out"
         nohup $3/bin/storm $5 > $2/storm-$5.out 2>&1 < /dev/null &
         scriptpid=$!
         echo $scriptpid > $4/storm-$5.pid

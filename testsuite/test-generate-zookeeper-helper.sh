@@ -15,7 +15,7 @@ SetupZookeeperFromStorm() {
 
 SetupZookeeperLocal() {
     local files=$@
-    
+
     sed -i \
         -e 's/# export ZOOKEEPER_DATA_DIR_CLEAR="\(.*\)"/export ZOOKEEPER_DATA_DIR_CLEAR="yes"/' \
         -e 's/export ZOOKEEPER_DATA_DIR="\(.*\)"/export ZOOKEEPER_DATA_DIR="'"${ssddirpathsubst}"'\/zookeeper\/"/' \
@@ -25,7 +25,7 @@ SetupZookeeperLocal() {
 
 SetupZookeeperNetworkFS() {
     local files=$@
-    
+
     sed -i \
         -e 's/export ZOOKEEPER_DATA_DIR_TYPE="\(.*\)"/export ZOOKEEPER_DATA_DIR_TYPE="networkfs"/' \
         ${files}
@@ -33,7 +33,7 @@ SetupZookeeperNetworkFS() {
 
 SetupZookeeperNotShared() {
     local files=$@
-    
+
     sed -i \
         -e 's/# export ZOOKEEPER_SHARE_NODES=\(.*\)/export ZOOKEEPER_SHARE_NODES=no/' \
         ${files}
@@ -41,7 +41,7 @@ SetupZookeeperNotShared() {
 
 SetupZookeeperShared() {
     local files=$@
-    
+
     sed -i \
         's/# export ZOOKEEPER_SHARE_NODES=\(.*\)/export ZOOKEEPER_SHARE_NODES=yes/' \
         ${files}

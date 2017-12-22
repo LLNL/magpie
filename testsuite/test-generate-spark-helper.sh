@@ -24,7 +24,7 @@ SetupSparkWordCountHDFSCopyIn() {
 
 SetupSparkWordCountRawNetworkFSNoCopy() {
     local files=$@
-    
+
     sed -i \
         -e 's/export SPARK_JOB="\(.*\)"/export SPARK_JOB="sparkwordcount"/' \
         -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \

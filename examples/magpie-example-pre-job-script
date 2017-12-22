@@ -3,7 +3,7 @@
 # This script is an example of something you might like to do before a
 # job is run.  It is set by the MAGPIE_PRE_JOB_RUN environment
 # variable.  See job submission file for details.
- 
+
 # Get some debugging info before I run
 
 # Run only on one node, no need to do it on all nodes

@@ -122,7 +122,7 @@ __SubmitHadoopDependencyTests_Dependency5 () {
     local firstversion=$1
     shift
     local restofversions=$@
-    
+
     BasicJobSubmit magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
 
     for version in ${restofversions}
@@ -134,12 +134,12 @@ __SubmitHadoopDependencyTests_Dependency5 () {
         else
             DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopupgradehdfs
         fi
-        
+
         DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsoverlustre-run-hadoopterasort
     done
-    
+
     BasicJobSubmit magpie.${submissiontype}-hadoop-${firstversion}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-run-hadoopterasort
-    
+
     for version in ${restofversions}
     do
         DependentJobSubmit magpie.${submissiontype}-hadoop-${version}-DependencyHadoop${dependencynumber}-hdfsovernetworkfs-hdfs-older-version-expected-failure
@@ -208,18 +208,18 @@ SubmitHadoopDependencyTests() {
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.8.0" "6F"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.9.0" "6G"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.9.0" "3.0.0" "6H"
-    
+
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6I"
 
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6J"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6K"
-    
+
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6L"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6M"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6N"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6O"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.4" "2.6.5" "6P"
-    
+
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6Q"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6R"
     __SubmitHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.2" "2.7.3" "6S"

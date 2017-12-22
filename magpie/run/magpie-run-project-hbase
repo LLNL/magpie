@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -36,7 +36,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 # Return 0 if service up, 1 if not
 __Magpie_run_check_hbase_up () {
     cd ${HBASE_HOME}
-    
+
     # example output : "9 servers, 0 dead, 4.7778 average load"
     if echo status | ${hbasecmdprefix}/hbase shell | grep -q "servers"
     then
@@ -101,7 +101,7 @@ Magpie_run_start_hbase () {
         echo "*"
         echo "* Hbase Master: http://${HBASE_MASTER_NODE}:${default_hbase_master_info_port}"
         echo "* Hbase RegionServer: http://<REGIONSERVER>:${default_hbase_regionserver_info_port}"
-        echo "*" 
+        echo "*"
         echo "* To access Hbase directly, you'll want to:"
         echo "*"
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${HBASE_MASTER_NODE}"
@@ -117,22 +117,22 @@ Magpie_run_start_hbase () {
         fi
         echo "*"
         echo "* Then you can do as you please.  For example to interact in the Hbase shell :"
-        echo "*" 
+        echo "*"
         echo "*   \$HBASE_HOME/${hbasecmdprefix}/hbase shell"
-        echo "*" 
+        echo "*"
 
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
             echo "*"
-            echo "*   \$HBASE_HOME/${hbasesetupscriptprefix}/start-hbase.sh" 
-            echo "*" 
+            echo "*   \$HBASE_HOME/${hbasesetupscriptprefix}/start-hbase.sh"
+            echo "*"
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
-            echo "*" 
+            echo "*"
             echo "*   \$HBASE_HOME/${hbasesetupscriptprefix}/stop-hbase.sh"
-            echo "*" 
+            echo "*"
         fi
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
@@ -220,9 +220,9 @@ Magpie_run_stop_hbase () {
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${HBASE_HOME}
-            
+
             echo "Stopping hbase"
-            
+
             if [ "${magpie_run_hbase_setup_successful}" == "1" ]
             then
                 # Hbase compaction meaningless if this is a one time run
@@ -231,11 +231,11 @@ Magpie_run_stop_hbase () {
                     if [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}X" == "X" ] || [ "${HBASE_MAJOR_COMPACTION_ON_SHUTDOWN}" == "yes" ]
                     then
                         echo "Doing major compaction before shutting down ..."
-                    
+
                         local command="echo list"
                         echo "Running $command in hbase shell" >&2
                         local listoutput=`$command | ${hbasecmdprefix}/hbase shell | sed -n '/TABLE/,/seconds/p' | tail -n+2 | head -n -1`
-                    
+
                         for table in ${listoutput}
                         do
                             command="echo major_compact '${table}'"
@@ -245,7 +245,7 @@ Magpie_run_stop_hbase () {
                     fi
                 fi
             fi
-            
+
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified
 

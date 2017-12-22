@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -96,7 +96,7 @@ else
     # Want to add +1 mtasks, make each block just below blocksize
     # instead of make each task make blocksize + scratch data.
     terasortfullsize=`expr $terasortsize \* 100`
-        
+
     if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         defaultblocksize=`${hadoopcmdprefix}/hdfs getconf -confKey dfs.blocksize 2> /dev/null`
@@ -107,19 +107,19 @@ else
         Magpie_output_internal_error "Illegal HADOOP_FILESYSTEM_MODE \"${HADOOP_FILESYSTEM_MODE}\" specified"
         exit 1
     fi
-        
+
     mtasks=`expr $terasortfullsize \/ ${defaultblocksize}`
     mtasks=`expr $mtasks + 1`
-    
+
     # But use the default map task count if it is smaller than this max.
-    
+
     defaultmaptasks=`${hadoopcmdprefix}/hdfs getconf -confKey mapreduce.job.maps 2> /dev/null`
-        
+
     if [ "${defaultmaptasks}" -lt "${mtasks}" ]
     then
         mtasks=${defaultmaptasks}
     fi
-        
+
     mapreducemaptasks="-Dmapreduce.job.maps=${mtasks}"
 fi
 
@@ -130,7 +130,7 @@ echo "*******************************************************"
 command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teragen ${extralibjars} ${mapreducemaptasks} ${clearcache} $terasortsize ${pathprefix}terasort-teragen"
 echo "Running $command" >&2
 $command
-            
+
 if [ "${HADOOP_TERASORT_RUN_TERACHECKSUM}" == "yes" ]
 then
     sleep 30
@@ -139,7 +139,7 @@ then
     echo "* Executing TeraChecksum"
     echo "*******************************************************"
 
-    # I assume no user is concerned with performance here, we just go with this fixed number 
+    # I assume no user is concerned with performance here, we just go with this fixed number
     sumreducetasks=`expr $HADOOP_WORKER_COUNT`
 
     # To my surprise, TeraChecksum isn't in the mapreduce examples
@@ -173,7 +173,7 @@ then
 fi
 
 sleep 30
-            
+
 if [ "${HADOOP_TERASORT_REDUCER_COUNT:-0}" -ne "0" ]
 then
     sortreducetasks=$HADOOP_TERASORT_REDUCER_COUNT
@@ -205,11 +205,11 @@ then
     echo "* Executing TeraValidate"
     echo "*******************************************************"
 
-    # I assume no user is concerned with performance here, we just go with this fixed number 
+    # I assume no user is concerned with performance here, we just go with this fixed number
     validatereducetasks=`expr $HADOOP_WORKER_COUNT`
 
     mapreducereducetasks="-Dmapreduce.job.reduces=$validatereducetasks"
-    
+
     command="${hadoopcmdprefix}/hadoop jar ${terasortexamples} teravalidate ${extralibjars} ${mapreducereducetasks} ${pathprefix}terasort-sort ${pathprefix}terasort-validate"
 
     echo "Running $command" >&2

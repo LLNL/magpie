@@ -6,7 +6,7 @@
 
 #submissiontype=lsf-mpirun
 #submissiontype=msub-slurm-srun
-#submissiontype=msub-torque-pdsh 
+#submissiontype=msub-torque-pdsh
 submissiontype=sbatch-srun
 
 msubslurmsrunpartition=mycluster
@@ -32,7 +32,7 @@ hadoopterasortsize=10000000
 hbaseperformanceevalrowcount=50000
 phoenixperformanceevalrowcount=10000
 
-# Configure Makefile 
+# Configure Makefile
 
 # Remember to escape $ w/ \ if you want the environment variables
 # placed into the submission scripts instead of being expanded out

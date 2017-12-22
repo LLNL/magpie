@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -35,12 +35,12 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 # Return 0 if service up, 1 if not
 __Magpie_run_check_zookeeper_up () {
     cd ${ZOOKEEPER_HOME}
-    
+
     if ! type nc >/dev/null 2>&1
     then
         echo "Checking if zookeeper came up failed because netcat ('nc' command) was not found. Assuming success."
         return 0
-    else 
+    else
         local zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
         for zookeepernode in ${zookeepernodes}
         do
@@ -50,10 +50,10 @@ __Magpie_run_check_zookeeper_up () {
                 return 1
             fi
         done
-        
+
         return 0
-    fi  
-    
+    fi
+
     return 1
 }
 
@@ -89,7 +89,7 @@ Magpie_run_start_zookeeper () {
         echo "*"
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
-            echo "* To setup, you probably want to run:" 
+            echo "* To setup, you probably want to run:"
             echo "*"
             echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZOOKEEPER_MASTER_NODE}"
             if echo $MAGPIE_SHELL | grep -q csh
@@ -103,12 +103,12 @@ Magpie_run_start_zookeeper () {
                 echo "*   export ZOOCFGDIR=\"${ZOOKEEPER_CONF_DIR}\""
             fi
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-start-all.sh"
-            echo "*" 
+            echo "*"
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
-            echo "*" 
+            echo "*"
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-zookeeper-stop-all.sh"
-            echo "*" 
+            echo "*"
         fi
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
@@ -141,12 +141,12 @@ Magpie_run_start_zookeeper () {
             fi
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
         fi
-        
+
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Zookeeper" "__Magpie_run_check_zookeeper_up"
-            
+
             if [ $? -eq 0 ]
             then
                 magpie_run_zookeeper_should_be_torndown=1
@@ -187,10 +187,10 @@ Magpie_run_stop_zookeeper () {
         then
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified
-            
+
             echo "Stopping Zookeeper"
             ${MAGPIE_SCRIPTS_HOME}/bin/magpie-zookeeper-stop-all.sh
-            
+
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
         fi

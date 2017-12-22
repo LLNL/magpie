@@ -27,16 +27,16 @@ __GenerateKafkaStandardTests_KafkaPerformance() {
         -e 's/export ZOOKEEPER_SETUP=no/export ZOOKEEPER_SETUP=yes/' \
         -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="'"${zookeeperversion}"'"/' \
         magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*
-    
+
     SetupZookeeperLocal `ls \
         magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*zookeeper-local*`
-    
+
     SetupZookeeperNetworkFS `ls \
         magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*zookeeper-networkfs*`
-    
+
     SetupZookeeperNotShared `ls \
         magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*zookeeper-not-shared*`
-    
+
     SetupZookeeperShared `ls \
         magpie.${submissiontype}-kafka-${kafkaversion}-zookeeper-${zookeeperversion}*zookeeper-shared*`
 

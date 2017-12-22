@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -42,20 +42,20 @@ magpie_worker_core_count=`cat /proc/cpuinfo | grep processor | wc -l`
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
     if [ ! -f "${HADOOP_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${HADOOP_CONF_DIR}/masters does not exist"
     fi
 
     if echo ${HADOOP_VERSION} | grep -q -E "3\.[0-9]\.[0-9]"
     then
         if [ ! -f "${HADOOP_CONF_DIR}/workers" ]
-        then 
+        then
             Magpie_output_internal_error "${HADOOP_CONF_DIR}/workers does not exist"
         fi
         hadoopworkersfile="${HADOOP_CONF_DIR}/workers"
     else
         if [ ! -f "${HADOOP_CONF_DIR}/slaves" ]
-        then 
+        then
             Magpie_output_internal_error "${HADOOP_CONF_DIR}/slaves does not exist"
         fi
         hadoopworkersfile="${HADOOP_CONF_DIR}/slaves"
@@ -72,16 +72,16 @@ then
     export HADOOP_HDFS_HOME=${HADOOP_HOME}
     export HADOOP_COMMON_HOME=${HADOOP_HOME}
     export YARN_COMMON_HOME=${HADOOP_HOME}
-    
+
     # Why check for file existance?  Possible magpie-setup-core didn't create it yet
     export HADOOP_MASTER_NODE=`head -1 ${HADOOP_CONF_DIR}/masters`
-    
+
     if Magpie_hadoop_filesystem_mode_is_hdfs_type
     then
         export HADOOP_NAMENODE=`head -1 ${HADOOP_CONF_DIR}/masters`
         export HADOOP_NAMENODE_PORT="${default_hadoop_hdfs_namenode_address}"
     fi
-    
+
     export HADOOP_WORKER_COUNT=`cat ${hadoopworkersfile}|wc -l`
     export HADOOP_WORKER_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${HADOOP_WORKER_COUNT}`
 
@@ -92,10 +92,10 @@ fi
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     if [ ! -f "${HBASE_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${SPARK_CONF_DIR}/masters does not exist"
     fi
-    
+
     if [ ! -f "${HBASE_CONF_DIR}/regionservers" ]
     then
         Magpie_output_internal_error "${SPARK_CONF_DIR}/regionservers does not exist"
@@ -108,12 +108,12 @@ fi
 if [ "${SPARK_SETUP}" == "yes" ]
 then
     if [ ! -f "${SPARK_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${SPARK_CONF_DIR}/masters does not exist"
     fi
 
     if [ ! -f "${SPARK_CONF_DIR}/slaves" ]
-    then 
+    then
         Magpie_output_internal_error "${SPARK_CONF_DIR}/slaves does not exist"
     fi
 
@@ -129,12 +129,12 @@ fi
 if [ "${KAFKA_SETUP}" == "yes" ]
 then
     if [ ! -f "${KAFKA_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${KAFKA_CONF_DIR}/masters does not exist"
     fi
 
     if [ ! -f "${KAFKA_CONF_DIR}/workers" ]
-    then 
+    then
         Magpie_output_internal_error "${KAFKA_CONF_DIR}/workers does not exist"
     fi
 
@@ -147,7 +147,7 @@ fi
 if [ "${ZEPPELIN_SETUP}" == "yes" ]
 then
     if [ ! -f "${ZEPPELIN_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${ZEPPELIN_CONF_DIR}/masters does not exist"
     fi
 
@@ -158,12 +158,12 @@ fi
 if [ "${STORM_SETUP}" == "yes" ]
 then
     if [ ! -f "${STORM_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${STORM_CONF_DIR}/masters does not exist"
     fi
 
     if [ ! -f "${STORM_CONF_DIR}/workers" ]
-    then 
+    then
         Magpie_output_internal_error "${STORM_CONF_DIR}/workers does not exist"
     fi
 
@@ -175,10 +175,10 @@ fi
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     if [ ! -f "${ZOOKEEPER_CONF_DIR}/masters" ]
-    then 
+    then
         Magpie_output_internal_error "${ZOOKEEPER_CONF_DIR}/masters does not exist"
     fi
-    
+
     export ZOOKEEPER_MASTER_NODE=`head -1 ${ZOOKEEPER_CONF_DIR}/masters`
 
     zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`

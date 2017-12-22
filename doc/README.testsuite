@@ -11,8 +11,8 @@ Generally speaking, to run it:
 
    - In test-config.sh, configure base configuration for the
      testsuite.
- 
-     - The submissiontype to your scheduler type appropriately. 
+
+     - The submissiontype to your scheduler type appropriately.
 
      - Job submission details such as your batch queue, etc.
 

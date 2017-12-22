@@ -33,7 +33,7 @@ __GenerateFunctionalityTests_BadJobNames() {
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-job-name-whitespace
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-job-name-dollarsign
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-job-name-whitespace
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-job-name-dollarsign
 
@@ -69,7 +69,7 @@ __GenerateFunctionalityTests_BadJobNames() {
         # add them.
         sed -i -e 's/\"<my job name>\"/test job/' magpie.${submissiontype}*functionality-job-name-whitespace
         sed -i -e 's/<my job name>/\"test job\"/' magpie.${submissiontype}*functionality-job-name-whitespace
-    
+
         sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
         sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
     fi
@@ -235,7 +235,7 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-altconffilesdir
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-altconffilesdir
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-altconffilesdir
@@ -248,7 +248,7 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
 
         SetupSparkWordCountRawNetworkFSNoCopy `ls \
             magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-altconffilesdir`
-        
+
         sed -i \
             -e 's/# export SPARK_CONF_FILES="\(.*\)"/export SPARK_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' \
             magpie.${submissiontype}-spark-run-sparkpi-functionality-altconffilesdir \
@@ -299,7 +299,7 @@ __GenerateFunctionalityTests_TestAll() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-testall
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkpi-functionality-testall
 
         # terasort w/ rawnetworkfs doesn't work, skip
@@ -428,7 +428,7 @@ __GenerateFunctionalityTests_Setuponlymode() {
 }
 
 __GenerateFunctionalityTests_JobTimeout() {
-    
+
     # timeoutputforjob returned
     GetSecondsJob 30
 
@@ -588,7 +588,7 @@ __GenerateFunctionalityTests_MagpieScript() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-magpiescript
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-magpiescript
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-magpiescript
@@ -615,7 +615,7 @@ __GenerateFunctionalityTests_MagpieScript() {
             -e 's/# export SPARK_SPARKWORDCOUNT_FILE="\(.*\)"/export SPARK_SPARKWORDCOUNT_FILE=\"file:\/\/'"${magpiescriptshomesubst}"'\/testsuite\/testdata\/test-wordcountfile\"/' \
             magpie.${submissiontype}-spark-with-yarn-functionality-magpiescript
     fi
-    
+
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-magpiescript
     fi
@@ -628,7 +628,7 @@ __GenerateFunctionalityTests_MagpieScript() {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/magpiescript-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
- 
+
 __GenerateFunctionalityTests_PrePostRunScripts() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostrunscripts-single
@@ -658,7 +658,7 @@ __GenerateFunctionalityTests_PrePostRunScripts() {
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostrunscripts-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostrunscripts-multi
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-multi
 
@@ -675,7 +675,7 @@ __GenerateFunctionalityTests_PrePostRunScripts() {
         SetupSparkWordCountRawNetworkFSNoCopy `ls \
             magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostrunscripts*`
     fi
-    
+
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts-multi
@@ -738,7 +738,7 @@ __GenerateFunctionalityTests_PreRunScriptError() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-prerunscripterror-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-prerunscripterror-multi1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-prerunscripterror-multi2
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror-multi1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror-multi2
@@ -746,12 +746,12 @@ __GenerateFunctionalityTests_PreRunScriptError() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror-multi1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror-multi2
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror-multi1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-prerunscripterror-multi2
-        
-            
+
+
 
         SetupSparkWordCountHDFSCopyIn `ls \
             magpie.${submissiontype}-spark-with-hdfs-functionality-prerunscripterror* \
@@ -760,7 +760,7 @@ __GenerateFunctionalityTests_PreRunScriptError() {
         SetupSparkWordCountRawNetworkFSNoCopy `ls \
             magpie.${submissiontype}-spark-with-yarn-functionality-prerunscripterror*`
     fi
-    
+
     if [ "${stormtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-prerunscripterror-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-prerunscripterror-multi1
@@ -841,7 +841,7 @@ __GenerateFunctionalityTests_ScriptArgs() {
 GenerateFunctionalityTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-    
+
     echo "Making Functionality Tests"
 
     __GenerateFunctionalityTests_BadJobNames
@@ -851,7 +851,7 @@ GenerateFunctionalityTests() {
     __GenerateFunctionalityTests_AltConfFilesDir
 
     __GenerateFunctionalityTests_TestAll
-    
+
     __GenerateFunctionalityTests_InteractiveMode
 
     __GenerateFunctionalityTests_Setuponlymode

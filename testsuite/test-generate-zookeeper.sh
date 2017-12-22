@@ -18,7 +18,7 @@ __GenerateZookeeperStandardTests_RUOK() {
 
     SetupZookeeperFromStorm `ls \
         magpie.${submissiontype}-zookeeper-${zookeeperversion}*`
-        
+
     SetupZookeeperLocal `ls \
         magpie.${submissiontype}-zookeeper-${zookeeperversion}*zookeeper-local*`
 
@@ -31,7 +31,7 @@ __GenerateZookeeperStandardTests_RUOK() {
 GenerateZookeeperStandardTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-    
+
     echo "Making Zookeeper Standard Tests"
 
     for testfunction in __GenerateZookeeperStandardTests_RUOK

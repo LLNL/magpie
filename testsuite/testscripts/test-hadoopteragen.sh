@@ -6,7 +6,7 @@ terasortexamples="share/hadoop/mapreduce/hadoop-mapreduce-examples-$HADOOP_VERSI
 terasortsize=10000000
 
 cd ${HADOOP_HOME}
-            
+
 # map tasks = HADOOP_SLAVE_COUNT to make it easy & simple
 mapreducemaptasks="-Dmapreduce.job.maps=${HADOOP_SLAVE_COUNT}"
 

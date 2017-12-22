@@ -255,7 +255,7 @@ magpie 1.80
 Fix bug in which all script ARGS variables were not passed to scripts
   that were executed.
 Add support for Spark 2.1.0-hadoop2.6, Spark 2.1.0-hadoop2.7.
-- Update default Spark to 2.1.0-hadoop2.7. 
+- Update default Spark to 2.1.0-hadoop2.7.
 Add support for Hbase 1.3.0
 - Update default Hbase to 1.3.0
 Add support for Hbase 0.98.24
@@ -266,10 +266,10 @@ magpie 1.79
 Fix corner case in job name into paths for HADOOP_PER_JOB_HDFS_PATH or
   ZOOKEEPER_PER_JOB_DATA_DIR from 1.78.
 Add support for Spark 2.0.2-hadoop2.6, Spark 2.0.2-hadoop2.7.
-- Update default Spark to 2.0.2-hadoop2.7. 
+- Update default Spark to 2.0.2-hadoop2.7.
 Add support for Spark 1.6.3.
 Add support for Hbase 1.2.4.
-- Update default Hbase to 1.2.4. 
+- Update default Hbase to 1.2.4.
 Add support for Hbase 1.1.7, 1.1.8.
 Add support for Hbase 0.98.23
 Add support for Phoenix 4.8.2-Hbase-1.0, 4.8.2-Hbase-1.1,
@@ -296,9 +296,9 @@ Add support for Hadoop 2.6.5.
 magpie 1.77
 -----------
 Add support for Hadoop 2.7.3.
-- Update default Hadoop to 2.7.3.  
+- Update default Hadoop to 2.7.3.
 Add support for Zeppelin 0.6.1.
-- Update default Zeppelin to 0.6.1.  
+- Update default Zeppelin to 0.6.1.
 Add Zeppelin ZEPPELIN_NOTEBOOK_DIR option.
 Add support for Hbase 0.98.21, 0.98.22, 1.1.6, 1.2.3
 - Update default Hbase to 1.2.3.
@@ -311,7 +311,7 @@ magpie 1.76
 -----------
 Add new "spark-with-zeppelin" submission scripts.
 Add support for Zeppelin 0.6.0.
-- Update default Zeppelin to 0.6.0.  
+- Update default Zeppelin to 0.6.0.
 - Make default Zeppelin work with Spark 1.6.2-bin-hadoop2.6.
 Add support for Phoenix 4.8.0-Hbase-1.0, 4.8.0-Hbase-1.1,
   4.8.0-Hbase-1.2.
@@ -338,7 +338,7 @@ magpie 1.75
 -----------
 Remove 'classifywikipedia' example with Mahout.
 Support Spark 2.0.0.
-Update default Spark to 2.0.0 w/ Hadoop 2.7. 
+Update default Spark to 2.0.0 w/ Hadoop 2.7.
 Support new SPARK_YARN_STAGING_DIR option.
 Support Pig 0.16.0.
 Update default Pig to 0.16.0
@@ -378,7 +378,7 @@ Highlights:
   number of files in a single dir.
 
 - Attempt to be consistent with use of Bash code style throughout.
-  e.g. using backticks instead of $() for subshells. 
+  e.g. using backticks instead of $() for subshells.
 
   In an attempt to avoid flame wars on style decisions, I simply
   looked at what had been most commonly done thus far and used those
@@ -449,7 +449,7 @@ Support SPARK_USE_YARN option for Spark to default to using Yarn.
 
 magpie 1.71
 -----------
-Adjust Yarn yarn.scheduler.maximum-allocation-mb to be same as yarn.nodemanager.resource.memory-mb. 
+Adjust Yarn yarn.scheduler.maximum-allocation-mb to be same as yarn.nodemanager.resource.memory-mb.
 Support Mahout 0.12.0, 0.12.1
 Update default Mahout to 0.12.1
 Support Phoenix 4.7.0
@@ -482,7 +482,7 @@ Remove convenience
   and
   hbase-hdfs-over-lustre-or-hdfs-over-networkfs-nodes-decommission-script.sh
   script which is now obsoleted by 'decommissionhdfsnodes' option.
-Increase default Kafka Zookeeper timeout from 6000 to 30000  
+Increase default Kafka Zookeeper timeout from 6000 to 30000
 Support Hadoop 2.6.2, 2.6.3, 2.6.4, 2.7.2.
 Update default Hadoop to 2.7.2.
 Support Spark 1.6.1.
@@ -539,7 +539,7 @@ magpie 1.62
 -----------
 Support Spark 1.5.0, update default Spark to 1.5.0-bin-hadoop2.6
 Support No Local Dir in Hadoop 2.4.0
-Support No Local Dir in Spark 1.2.0 
+Support No Local Dir in Spark 1.2.0
 Support No Local Dir in Hbase 0.98.3
 Support various older Spark versions, 0.9.2, 1.2.1, 1.2.2, 1.3.1, 1.4.0.
 Support various older Pig versions, 0.13.0.
@@ -563,7 +563,7 @@ Fix corner case in Storm wordcount test.
 Support ZOOKEEPER_DATA_DIR_TYPE for timeout optimization.
 Increase Zookeeper timeouts on Hbase & Storm if Zookeeper is on a network file system.
 Wait for Hbase Master to come up w/ status checks before running job.
-Fix corner case in Hadoop & Hbase shutdown path. 
+Fix corner case in Hadoop & Hbase shutdown path.
 
 magpie 1.60
 -----------
@@ -587,7 +587,7 @@ Support the ability to run Magpie in environments without /tmp or a
     - Add node rank into all scratch directory paths, ensuring it is
       unique regardless if it is a network or local fs path.
   - By default, set java.io.tmpdir to a local scratch space in all projects
-  - By default, set java.io.tmpdir in PIG_OPTS when running Pig. 
+  - By default, set java.io.tmpdir in PIG_OPTS when running Pig.
   - Disable Java hsperfdata if MAGPIE_NO_LOCAL_DIR set.
 
 magpie 1.59
@@ -696,7 +696,7 @@ Various default submission file template cleanup.
 - Remove Hadoop job info from Hbase & Spark + HDFS files
 - Default MAGPIE_JOB_TYPE is now 'script'
 msub-slurm scripts require MAGPIE_TIMELIMIT_MINUTES now, instead of SBATCH_TIMELIMIT.
-Remove required configuration of SLURM_JOB_NAME in msub-slurm scriptts. 
+Remove required configuration of SLURM_JOB_NAME in msub-slurm scriptts.
 Remove 'intellustre' and 'magpienetworkfs' config options from templates by default.
 
 magpie 1.45
@@ -818,7 +818,7 @@ magpie 1.25
 -----------
 Change default memory from 90% to 80% of system memory.
 Determine default container size based on size of heap instead of fixed value.
-Calculate default io.sort.mb based on mapheapsize instead of fixed value. 
+Calculate default io.sort.mb based on mapheapsize instead of fixed value.
 Default reducer heap size is now 2X the map heap size.
 
 magpie 1.24
@@ -860,7 +860,7 @@ Add support for running Pig scripts.
 
 magpie 1.17
 -----------
-Increase default MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME. 
+Increase default MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME.
 Adjust stop timeout in hadoop stop-xxx.sh scripts.
 
 magpie 1.16
@@ -875,17 +875,17 @@ Add convenience script hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh.
 Do not require ZOOKEEPER_SETUP to be set.
 Enable autopurging in zookeeper by default.
 Add documentation on using Moab.
-Require interactive/setup job length to be a minimum of 30 minutes. 
+Require interactive/setup job length to be a minimum of 30 minutes.
 Before shutting down HDFS, execute dfsadmin -saveNamespace to prevent potential corruption on shutdown .
 Do not start job until after namenode has exited safe mode.
 Do not execute job if pre-run script fails with exit code 0.
 Add various additional templates for easier setup.
-Add msub files for those who use Slurm via Moab job submissions. 
-Various re-org and cleanup. 
+Add msub files for those who use Slurm via Moab job submissions.
+Various re-org and cleanup.
 
 magpie 1.15
 -----------
-Increase file and process limit default calculation. 
+Increase file and process limit default calculation.
 Support HADOOP_SETUP_TYPE HDFS1 or HDFS2.
 
 magpie 1.14

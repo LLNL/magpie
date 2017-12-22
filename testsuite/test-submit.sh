@@ -74,9 +74,9 @@ BasicJobSubmit () {
         jobsubmitoutput=`eval "${jobsubmitcmd} ${jobsubmitcmdoption} ${jobsubmissionscript}"`
         jobidstripfullcommand="echo '${jobsubmitoutput}' | ${jobidstripcmd}"
         jobid=`eval ${jobidstripfullcommand}`
-        
+
         echo "File ${jobsubmissionscript} submitted with ID ${jobid}" >> ${jobsubmissionfile}
-        
+
         previousjobid=${jobid}
         jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
         previousjobsubmitted=y
@@ -99,9 +99,9 @@ DependentJobSubmit () {
             jobsubmitoutput=`eval "${jobsubmitcmd} ${jobsubmitdependencyexpand} ${jobsubmitcmdoption} ${jobsubmissionscript}"`
             jobidstripfullcommand="echo '${jobsubmitoutput}' | ${jobidstripcmd}"
             jobid=`eval ${jobidstripfullcommand}`
-            
+
             echo "File ${jobsubmissionscript} submitted with ID ${jobid}, dependent on previous job ${previousjobid}" >> ${jobsubmissionfile}
-            
+
             previousjobid=${jobid}
             jobsubmitdependencyexpand=`eval echo ${jobsubmitdependency}`
             previousjobsubmitted=y

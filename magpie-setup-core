@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -32,7 +32,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 
 #
 # Setup a whole bunch of environment variables and directories
-# 
+#
 
 # Create conf & log dirs node specific
 Magpie_make_all_local_dirs_node_specific
@@ -144,14 +144,14 @@ then
 
     cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters ${MAGPIE_LOCAL_CONF_DIR}/job_masters
 
-    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ] 
+    if [ "${ZOOKEEPER_SHARE_NODES}" != "yes" ]
     then
         head -${jobworkercount} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${MAGPIE_LOCAL_CONF_DIR}/job_workers
     else
         cp ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers ${MAGPIE_LOCAL_CONF_DIR}/job_workers
     fi
 
-    tail -n+${zookeeperworkerstart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${ZOOKEEPER_CONF_DIR}/workers 
+    tail -n+${zookeeperworkerstart} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers > ${ZOOKEEPER_CONF_DIR}/workers
 
     # The Zookeeper master is not an actual Zookeeper node, this is
     # predominantly to indicate to magpie that Zookeeper should be

@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -92,7 +92,7 @@ __Magpie_make_hadoop_local_dirs () {
             export YARN_LOG_DIR=${HADOOP_LOG_DIR}
             export YARN_LOCAL_SCRATCHSPACE_DIR=${HADOOP_LOCAL_SCRATCHSPACE_DIR}
             export YARN_PID_DIR=${HADOOP_PID_DIR}
-            
+
             # Hadoop has this completely random other one
             export HADOOP_MAPRED_PID_DIR=${HADOOP_PID_DIR}
         fi
@@ -189,7 +189,7 @@ __Magpie_make_hbase_local_dirs () {
         then
             myhostname=`hostname`
             export HBASE_CONF_DIR=`echo $HBASE_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-            export HBASE_LOG_DIR=`echo $HBASE_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`    
+            export HBASE_LOG_DIR=`echo $HBASE_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export HBASE_LOCAL_SCRATCHSPACE_DIR=`echo $HBASE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export HBASE_PID_DIR=`echo $HBASE_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
         fi
@@ -224,7 +224,7 @@ __Magpie_make_phoenix_local_dirs () {
         then
             myhostname=`hostname`
             export PHOENIX_CONF_DIR=`echo $PHOENIX_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-            export PHOENIX_LOG_DIR=`echo $PHOENIX_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`        
+            export PHOENIX_LOG_DIR=`echo $PHOENIX_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export PHOENIX_LOCAL_SCRATCHSPACE_DIR=`echo $PHOENIX_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export PHOENIX_PID_DIR=`echo $PHOENIX_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
         fi
