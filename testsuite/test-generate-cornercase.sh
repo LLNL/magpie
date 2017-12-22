@@ -159,7 +159,7 @@ __GenerateCornerCaseTests_BadSetJava() {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetjava-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
-            
+
 __GenerateCornerCaseTests_NoSetVersion() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nosetversion
@@ -250,7 +250,7 @@ __GenerateCornerCaseTests_BadVersion() {
         sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.2.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-7
 
         # Earliest version of 'upgradehdfs' supported in this testsuite is 2.2.0, so any earlier version will fail because HADOOP_HOME
-        # directory cannot be found.  Skip creation of this test 
+        # directory cannot be found.  Skip creation of this test
         # cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-badversion-8
         # sed -i -e 's/export HADOOP_JOB="\(.*\)"/export HADOOP_JOB="upgradehdfs"/' magpie.${submissiontype}-hadoop-cornercase-badversion-8
         # sed -i -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="2.1.0"/' magpie.${submissiontype}-hadoop-cornercase-badversion-8
@@ -1014,7 +1014,7 @@ __GenerateCornerCaseTests_BadCoreSettings() {
     if [ "${magpietests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badcoresettings-1
         sed -i -e 's/export MAGPIE_SUBMISSION_TYPE="\(.*\)"/export MAGPIE_SUBMISSION_TYPE="foobar"/' magpie.${submissiontype}-magpie-cornercase-badcoresettings-1
-        
+
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badcoresettings-2
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="foobar"/' magpie.${submissiontype}-magpie-cornercase-badcoresettings-2
     fi
@@ -1253,7 +1253,7 @@ __GenerateCornerCaseTests_BadComboSettings() {
         sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
         sed -i -e 's/export HADOOP_RAWNETWORKFS_PATH/# export HADOOP_RAWNETWORKFS_PATH/' magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
     fi
-    
+
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcombosettings
         sed -i -e 's/export SPARK_LOCAL_SCRATCH_DIR/# export SPARK_LOCAL_SCRATCH_DIR/' magpie.${submissiontype}-spark-cornercase-badcombosettings
@@ -1287,7 +1287,7 @@ __GenerateCornerCaseTests_BadDirectories() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-baddirectories-5
         sed -i -e 's/# export HADOOP_LOCALSTORE="\(.*\)"/export HADOOP_LOCALSTORE="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-cornercase-baddirectories-5
     fi
-    
+
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-baddirectories
         sed -i -e 's/export SPARK_LOCAL_SCRATCH_DIR="\(.*\)"/export SPARK_LOCAL_SCRATCH_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-spark-cornercase-baddirectories
@@ -1436,7 +1436,7 @@ __GenerateCornerCaseTests_NoLongerSupported() {
 GenerateCornerCaseTests() {
 
     cd ${MAGPIE_SCRIPTS_HOME}/testsuite/
-    
+
     echo "Making Corner Case Tests"
 
     __GenerateCornerCaseTests_CatchProjectDependencies
@@ -1452,7 +1452,7 @@ GenerateCornerCaseTests() {
 
     __GenerateCornerCaseTests_NoSetLocalDir
     __GenerateCornerCaseTests_BadSetLocalDir
-    
+
     __GenerateCornerCaseTests_NoSetScript
     __GenerateCornerCaseTests_BadSetScript
 

@@ -3,7 +3,7 @@
 # This script is an example of something you might like to do after a
 # job is run.  It is set by the MAGPIE_POST_JOB_RUN environment
 # variable.  See job submission file for details.
- 
+
 # Cleanup some stuff
 # rm -rf /ssd/username/path
 

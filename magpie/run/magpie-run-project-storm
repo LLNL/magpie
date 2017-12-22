@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -42,7 +42,7 @@ __Magpie_run_check_storm_up () {
     then
         return 0
     fi
-    
+
     return 1
 }
 
@@ -64,7 +64,7 @@ Magpie_run_start_storm () {
 
             echo "Starting storm"
             ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-start-all.sh
-            
+
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
 
@@ -86,7 +86,7 @@ Magpie_run_start_storm () {
         echo "* You can view your Storm status by launching a web browser and pointing to ..."
         echo "*"
         echo "* Storm UI: http://${STORM_MASTER_NODE}:${default_storm_ui_port}"
-        echo "*" 
+        echo "*"
         echo "* To access Storm directly, you'll want to:"
         echo "*"
         echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${STORM_MASTER_NODE}"
@@ -97,7 +97,7 @@ Magpie_run_start_storm () {
             echo "*   setenv STORM_CONF_DIR \"${STORM_CONF_DIR}\""
             if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
             then
-                echo "*   setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
+                echo "*   setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\""
             fi
         else
             echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
@@ -105,26 +105,26 @@ Magpie_run_start_storm () {
             echo "*   export STORM_CONF_DIR=\"${STORM_CONF_DIR}\""
             if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
             then
-                echo "*   export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" 
+                echo "*   export STORM_JAR_JVM_OPTS=\"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\""
             fi
         fi
         echo "*"
         echo "* Then you can do as you please.  For example to run a job:"
-        echo "*" 
+        echo "*"
         echo "*   \$STORM_HOME/${stormcmdprefix}/storm jar ..."
-        echo "*" 
+        echo "*"
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
             echo "*"
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-storm-start-all.sh"
-            echo "*" 
+            echo "*"
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
-            echo "*" 
+            echo "*"
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-storm-stop-all.sh"
-            echo "*" 
+            echo "*"
         fi
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
@@ -151,7 +151,7 @@ Magpie_run_start_storm () {
                 echo "setenv STORM_VERSION \"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
-                    echo "setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+                    echo "setenv STORM_JAR_JVM_OPTS \"-Djava.io.tmpdir=${STORM_LOCAL_SCRATCHSPACE_DIR} -XX:-UsePerfData\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
             else
                 echo "export STORM_HOME=\"${STORM_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -220,13 +220,13 @@ Magpie_run_stop_storm () {
         then
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified
-            
+
             echo "Stopping storm"
             ${MAGPIE_SCRIPTS_HOME}/bin/magpie-storm-stop-all.sh
-            
+
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
         fi
     fi
     magpie_run_storm_teardown_complete=1
-}    
+}

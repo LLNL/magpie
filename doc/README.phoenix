@@ -27,8 +27,8 @@ Instructions For Using Phoenix
    using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base hbase with phoenix script
-   (e.g. magpie.sbatch-srun-hbase-with-hdfs-with-phoenix) for your 
-   scheduler/resource manager. If you with to configure more, you can 
+   (e.g. magpie.sbatch-srun-hbase-with-hdfs-with-phoenix) for your
+   scheduler/resource manager. If you with to configure more, you can
    choose to start with the base script (e.g. magpie.sbatch-srun)
    which contains all configuration options.
 
@@ -142,5 +142,5 @@ Phoenix Patching
   'bin-java-home' in the filename.
 
   This bug was being tracked in:
-  
+
   https://issues.apache.org/jira/browse/PHOENIX-2303

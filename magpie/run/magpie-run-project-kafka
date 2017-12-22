@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -44,7 +44,7 @@ __Magpie_run_check_kafka_up () {
         serverschk=`expr ${serverschk} + 1`
         local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
         if [ "${serverisup}" -gt "0" ]
-        then 
+        then
             serversup=`expr ${serversup} + 1`
         fi
     done
@@ -54,17 +54,17 @@ __Magpie_run_check_kafka_up () {
         serverschk=`expr ${serverschk} + 1`
         local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c kafka\.Kafka`
         if [ "${serverisup}" -gt "0" ]
-        then 
+        then
             serversup=`expr ${serversup} + 1`
         fi
     done
-    
+
     echo "$serversup/$serverschk Kafka Servers are up."
     if [ "$serverschk" -eq "$serversup" ]
-    then 
+    then
         return 0
     fi
-    
+
     return 1
 }
 
@@ -87,8 +87,8 @@ Magpie_run_start_kafka () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Starting Kafka"
-            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-start-all.sh 
-            
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-start-all.sh
+
             Magpie_make_all_local_dirs_node_specific
 
             # My rough estimate for setup time is 30 seconds per 128 nodes
@@ -121,21 +121,21 @@ Magpie_run_start_kafka () {
         fi
         echo "*"
         echo "* Then you can do as you please.  To interact with Kafka you can use the applications available in:"
-        echo "*" 
+        echo "*"
         echo "*   \$KAFKA_HOME/${kafkacmdprefix}"
-        echo "*" 
+        echo "*"
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
             echo "*"
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-kafka-start-all.sh"
-            echo "*" 
+            echo "*"
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
-            echo "*" 
+            echo "*"
             echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-kafka-stop-all.sh"
-            echo "*" 
+            echo "*"
         fi
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
@@ -166,7 +166,7 @@ Magpie_run_start_kafka () {
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Kafka" "__Magpie_run_check_kafka_up"
 
-            if [ $? -eq 0 ] 
+            if [ $? -eq 0 ]
             then
                 magpie_run_kafka_should_be_torndown=1
                 magpie_run_kafka_setup_successful=1
@@ -210,13 +210,13 @@ Magpie_run_stop_kafka () {
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${KAFKA_HOME}
-            
+
             # Make variables unspecified for shutdown
             Magpie_make_all_local_dirs_unspecified
-            
+
             echo "Stopping kafka"
             ${MAGPIE_SCRIPTS_HOME}/bin/magpie-kafka-stop-all.sh
-            
+
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
         fi

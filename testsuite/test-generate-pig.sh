@@ -23,13 +23,13 @@ __GeneratePigStandardTests_Common() {
         -e 's/export HADOOP_VERSION="\(.*\)"/export HADOOP_VERSION="'"${hadoopversion}"'"/' \
         -e 's/export PIG_VERSION="\(.*\)"/export PIG_VERSION="'"${pigversion}"'"/' \
         magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*
-    
+
     SetupMagpieTestScript "test-pig.sh" `ls \
         magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*run-pigscript*`
 
     SetupHDFSoverLustreStandard `ls \
         magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*hdfsoverlustre*`
-    
+
     SetupHDFSoverNetworkFSStandard `ls \
         magpie.${submissiontype}-hadoop-and-pig-hadoop-${hadoopversion}-pig-${pigversion}*hdfsovernetworkfs*`
 
@@ -82,10 +82,10 @@ __GeneratePigDependencyTests_Dependency1() {
         -e 's/export PIG_JOB="\(.*\)"/export PIG_JOB="script"/' \
         -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pig.pig"/' \
         magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}*no-copy-run-pigscript*
-    
+
     SetupHDFSoverLustreDependency "Pig1A" ${pigversion} `ls \
         magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsoverlustre*`
-    
+
     SetupHDFSoverNetworkFSDependency "Pig1A" ${pigversion} `ls \
         magpie.${submissiontype}-hadoop-and-pig-DependencyPig1A-hadoop-${hadoopversion}-pig-${pigversion}-hdfsovernetworkfs*`
 

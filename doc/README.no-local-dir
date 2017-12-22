@@ -27,7 +27,7 @@ Hadoop - Support for no local dir begins with Hadoop 2.2.0.
          suffix.
        - Requires 'alternate-ssh.patch' patch to be applied first.
 
-Spark - Support for no local dir begins with Spark 1.1.1. 
+Spark - Support for no local dir begins with Spark 1.1.1.
       - Patches in /patches/spark with 'no-local-dir.patch' filename
         suffix.
       - Requires 'alternate.patch' patch to be applied first.

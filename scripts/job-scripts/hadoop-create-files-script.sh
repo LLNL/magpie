@@ -12,7 +12,7 @@ $command
 command="bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-${HADOOP_VERSION}.jar teragen 50000000 teragen-2"
 echo "Running $command" >&2
 $command
-   
+
 command="bin/hadoop fs -ls"
 echo "Running $command" >&2
 $command

@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -43,11 +43,11 @@ __Magpie_handle_job_name_corner_cases () {
     # Handle special corner cases where user's job name may not
     # play nice, as we use it in file paths and what not
     if [[ $MAGPIE_JOB_NAME =~ "\$" ]]; then
-        echo "Job name contains dollar sign, internally replacing with underscore" 
+        echo "Job name contains dollar sign, internally replacing with underscore"
         export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//\$/_}
     fi
     if [[ $MAGPIE_JOB_NAME =~ [[:space:]] ]]; then
-        echo "Job name contains whitespace, internally replacing with underscore" 
+        echo "Job name contains whitespace, internally replacing with underscore"
         export MAGPIE_JOB_NAME=${MAGPIE_JOB_NAME//[[:space:]]/_}
     fi
 }
@@ -103,7 +103,7 @@ then
     while [[ $(bjobs -l ${LSB_JOBID}) == *"Status <P"* ]]
     do
         # Pending state gives time in hours, mins, or seconds and it
-        # seems that there is no way of know which it is giving. By 
+        # seems that there is no way of know which it is giving. By
         # waiting for running status we can get it properly.
         sleep 1
     done

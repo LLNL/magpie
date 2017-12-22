@@ -13,5 +13,5 @@ cd ${HBASE_HOME}
 command="bin/hbase org.apache.hadoop.hbase.PerformanceEvaluation sequentialWrite 1"
 echo "Running $command" >&2
 $command
-    
+
 exit 0

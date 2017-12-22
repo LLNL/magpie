@@ -2,7 +2,7 @@ Minor feature support
 ---------------------
 Hadoop
 - namenode failover w/ shared dir mechanism
-  - start w/ 2.1.1-beta 
+  - start w/ 2.1.1-beta
 
 Ganglia
 - if user wants aid in monitoring
@@ -18,7 +18,7 @@ Storm + Trident
 
 Tachyon
 - fault tolerance (zookeeper + multiple masters, etc.)
-- multiple layer hierarchy support 
+- multiple layer hierarchy support
 - localfilesystem underfs support
 
 ideas

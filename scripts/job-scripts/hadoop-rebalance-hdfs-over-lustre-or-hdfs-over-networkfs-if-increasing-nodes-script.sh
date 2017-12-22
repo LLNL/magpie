@@ -15,13 +15,13 @@
 # really can't be used.  HDFS over Lustre does not have real local
 # disks, therefore the "local" disk utilization and global "free
 # space" numbers don't make much sense in HDFS over Lustre.
- 
+
 FILES=`${HADOOP_HOME}/bin/hadoop fs -ls 2> /dev/null | grep -v Found | awk '{print $8}'`
 
 for file in $FILES
 do
     echo "Rebalancing $file"
-    echo "Copying $file to $file-backup" 
+    echo "Copying $file to $file-backup"
     ${HADOOP_HOME}/bin/hadoop fs -cp $file $file-backup
     echo "Removing $file"
     ${HADOOP_HOME}/bin/hadoop fs -rm -r $file

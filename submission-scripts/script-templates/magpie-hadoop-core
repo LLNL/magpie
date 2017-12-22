@@ -22,10 +22,10 @@ export HADOOP_SETUP=no
 # It only works with HDFS based HADOOP_FILESYSTEM_MODE, such as
 # "hdfs", "hdfsoverlustre", or "hdfsovernetworkfs".
 #
-# YARN only may be useful when you need Yarn setup for scheduling, but                                                               
-# will not be using HDFS.  For example, you may be reading from a                                                                    
-# networked file system directly.  This option requires                                                                              
-# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.        
+# YARN only may be useful when you need Yarn setup for scheduling, but
+# will not be using HDFS.  For example, you may be reading from a
+# networked file system directly.  This option requires
+# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.
 #
 export HADOOP_SETUP_TYPE="MR"
 

@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -58,7 +58,7 @@ then
     sparkdaemonheapmax="${SPARK_DAEMON_HEAP_MAX}"
 else
     sparkdaemonheapmax="1000"
-fi 
+fi
 
 # Sets magpie_threads_to_use and magpie_processor_count
 Magpie_calculate_threads_to_use
@@ -73,7 +73,7 @@ else
     workercores=${magpie_threads_to_use}
 fi
 
-# Spark is special, can't set > # of cores 
+# Spark is special, can't set > # of cores
 if [ "${workercores}" -gt "${magpie_processor_count}" ]
 then
     workercores=${magpie_processor_count}
@@ -121,7 +121,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="-Dspark.ui.port=${default_spark_application_dashboard_port}"
 else
     SPARK_JAVA_OPTS=""
@@ -168,7 +168,7 @@ fi
 # Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
 # - environment variable for >= 1.0.0 set up spark-env.sh below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparklocalscratchdirpath}"
 fi
 
@@ -194,7 +194,7 @@ then
         sparkshufflebufferkb=1024
         sparkshufflebuffer=1024k
         sparkshuffleconsolidatefiles="true"
-    fi 
+    fi
 else
     # Accessing filesystem directly, assume Lustre
     sparkshufflebufferkb=1024
@@ -205,7 +205,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.file.buffer.kb=${sparkshufflebufferkb} -Dspark.shuffle.consolidateFiles=${sparkshuffleconsolidatefiles}"
 fi
 
@@ -220,7 +220,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${sparkdefaultparallelism}"
 fi
 
@@ -234,7 +234,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.storage.memoryFraction=${sparkstoragememoryfraction}"
 fi
 
@@ -248,7 +248,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.memoryFraction=${sparkshufflememoryfraction}"
 fi
 
@@ -276,7 +276,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.deploy.spreadOut=${sparkdeployspreadout}"
 fi
 
@@ -293,7 +293,7 @@ fi
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
 fi
 
@@ -465,7 +465,7 @@ then
     fi
 
     for j in `ls $spark_jars_path`
-    do 
+    do
         spark_jars="$spark_jars_path/$j:$spark_jars"
     done
 
@@ -493,7 +493,7 @@ fi
 # afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then 
+then
     if [ "${sparkclasspath}X" != "X" ]
     then
         echo "export SPARK_CLASSPATH=\"${sparkclasspath}\"" >> ${post_sparkenvsh}
@@ -507,7 +507,7 @@ fi
 
 # After 1.0.0, everything in spark-defaults.conf
 if [ "${SPARK_JAVA_OPTS}X" != "X" ]
-then 
+then
     echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${post_sparkenvsh}
 fi
 
@@ -530,7 +530,7 @@ fi
 # - spark.local.dir for < 1.0.0 set above
 if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
 then
-    # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs 
+    # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs
     if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
     then
         echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
@@ -628,7 +628,7 @@ then
         -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
 	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \
         ${post_sparkdefaultsconf}
-    
+
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
     Magpie_vercomp ${magpie_sparkmajorminorversion} 1.3
@@ -666,7 +666,7 @@ then
         sed -i -e "s/spark.memory.fraction/# spark.memory.fraction/" ${post_sparkdefaultsconf}
         sed -i -e "s/spark.memory.storageFraction/# spark.memory.storageFraction/" ${post_sparkdefaultsconf}
     fi
-    
+
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
     Magpie_vercomp ${magpie_sparkmajorminorversion} 2.0

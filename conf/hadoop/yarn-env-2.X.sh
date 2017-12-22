@@ -19,7 +19,7 @@ export HADOOP_YARN_USER=${HADOOP_YARN_USER:-YARNUSERNAME}
 # resolve links - $0 may be a softlink
 export YARN_CONF_DIR="${YARN_CONF_DIR:-YARNCONFDIR}"
 
-# extras 
+# extras
 export YARN_LOG_DIR="${YARN_LOG_DIR:-YARNLOGDIR}"
 export YARN_COMMON_HOME="${YARN_COMMON_HOME:-YARNCOMMONHOME}"
 export HADOOP_YARN_HOME="${HADOOP_YARN_HOME:-HADOOPYARNHOME}"
@@ -33,14 +33,14 @@ if [ "$JAVA_HOME" != "" ]; then
   #echo "run java in $JAVA_HOME"
   JAVA_HOME=$JAVA_HOME
 fi
-  
+
 if [ "$JAVA_HOME" = "" ]; then
   echo "Error: JAVA_HOME is not set."
   exit 1
 fi
 
 JAVA=$JAVA_HOME/bin/java
-JAVA_HEAP_MAX=-Xmx1000m 
+JAVA_HEAP_MAX=-Xmx1000m
 
 # For setting YARN specific HEAP sizes please use this
 # Parameter and set appropriately
@@ -129,7 +129,7 @@ else
     then
 	YARN_OPTS="$YARN_OPTS -Djava.library.path=${EXTRA_YARN_LIBRARY_PATH}"
     fi
-fi  
+fi
 YARN_OPTS="$YARN_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
 
 # Wait hopefully for more than default of 5 seconds before giving up

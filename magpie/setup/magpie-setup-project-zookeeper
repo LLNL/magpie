@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -44,7 +44,7 @@ zookeeperhomesubst=`echo "${ZOOKEEPER_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 magpiescriptshomesubst=`echo "${MAGPIE_SCRIPTS_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 
 # Zookeeper master is only for setup/teardown management, not for actual Zookeeper
-# We need this environment file just for the setup/teardown scripts 
+# We need this environment file just for the setup/teardown scripts
 if Magpie_am_I_master
 then
     Magpie_find_conffile "Zookeeper" ${ZOOKEEPER_CONF_FILES:-""} "zookeeper-master-env.sh" "pre_zookeepermasterenvsh"
@@ -60,7 +60,7 @@ then
         -e "s/ZOOKEEPERHOME/${zookeeperhomesubst}/g" \
         -e "s/MAGPIESCRIPTSHOME/${magpiescriptshomesubst}/g" \
         ${post_zookeepermasterenvsh}
-    
+
     if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
     then
         echo "export ZOOKEEPER_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_zookeepermasterenvsh}
@@ -82,7 +82,7 @@ Magpie_make_all_local_dirs_node_specific
 
 extrajvmflags=""
 
-# Setup node directory per node 
+# Setup node directory per node
 if [ "${MAGPIE_ONE_TIME_RUN}" == "yes" ]
 then
     zookeeperdatadirpath="${ZOOKEEPER_DATA_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/node-${zookeepernoderank}"
@@ -177,7 +177,7 @@ sed -i \
     -e "s/ZOOKEEPERCLIENTPORT/${default_zookeeper_client_port}/g" \
     -e "s/ZOOKEEPERHOST/${ZOOKEEPER_THIS_HOST}/g" \
     ${post_zookeepercfg}
-    
+
 zookeepernodes=`cat ${ZOOKEEPER_CONF_DIR}/workers`
 
 servercount=1

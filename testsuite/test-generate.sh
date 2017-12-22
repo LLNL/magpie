@@ -45,7 +45,7 @@ zookeepertests=y
 zeppelintests=y
 
 # Sections to test
-# - version tests, test permutation of versions 
+# - version tests, test permutation of versions
 # These determine if specific sections will generate tests
 defaulttests=y
 cornercasetests=y
@@ -65,7 +65,7 @@ zeppelinversiontests=y
 #
 # local_drive_tests - anything that uses a local drive (HDFS on disk, zookeeper local, etc.)
 # hdfsoverlustre_tests - anything that uses hdfs over lustre
-# hdfsovernetworkfs_tests - anything that uses hdfs over networkfs 
+# hdfsovernetworkfs_tests - anything that uses hdfs over networkfs
 # rawnetworkfs_tests - anything that uses rawnetworkfs
 # zookeepershared_tests - tests in which zookeeper shares nodes w/ compute/data nodes
 # nolocaldirtests - using MAGPIE_NO_LOCAL_DIR

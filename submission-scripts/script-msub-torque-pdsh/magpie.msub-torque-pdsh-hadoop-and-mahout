@@ -119,7 +119,7 @@ export MAGPIE_JOB_TYPE="mahout"
 # generated until the job has launched.  You won't be able to use them
 # here.
 #
-# export MAGPIE_SCRIPT_ARGS="" 
+# export MAGPIE_SCRIPT_ARGS=""
 
 # Specify script startup / shutdown time window
 #
@@ -283,10 +283,10 @@ export HADOOP_SETUP=yes
 # It only works with HDFS based HADOOP_FILESYSTEM_MODE, such as
 # "hdfs", "hdfsoverlustre", or "hdfsovernetworkfs".
 #
-# YARN only may be useful when you need Yarn setup for scheduling, but                                                               
-# will not be using HDFS.  For example, you may be reading from a                                                                    
-# networked file system directly.  This option requires                                                                              
-# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.        
+# YARN only may be useful when you need Yarn setup for scheduling, but
+# will not be using HDFS.  For example, you may be reading from a
+# networked file system directly.  This option requires
+# HADOOP_FILESYSTEM_MODE to 'rawnetworkfs'.
 #
 export HADOOP_SETUP_TYPE="MR"
 
@@ -496,7 +496,7 @@ export HADOOP_JOB="terasort"
 # export YARN_RESOURCE_MEMORY=32768
 
 # Check Memory Limits
-# 
+#
 # Should physical and virtual memory limits be enforced for containers.
 # This can be helpful in cases where the OS (Centos/Redhat) is aggressive
 # at allocating virtual memory and causes the vmem-to-pmem ratio to be
@@ -718,7 +718,7 @@ export HADOOP_HDFS_PATH="/ssd/${USER}/hdfs"
 # This is used with HADOOP_FILESYSTEM_MODE="hdfs"
 #
 # After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
-# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  
+# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.
 #
 # This is particularly useful when doing normal HDFS on local storage.
 # On your next job run, you may not be able to get the nodes you want
@@ -813,7 +813,7 @@ export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
 #
 # export HADOOP_LOCALSTORE="/ssd/${USER}/localstore/"
 
-# HADOOP_LOCALSTORE_CLEAR 
+# HADOOP_LOCALSTORE_CLEAR
 #
 # After your job has completed, if HADOOP_LOCALSTORE_CLEAR is set to
 # yes, Magpie will do a rm -rf on all directories in

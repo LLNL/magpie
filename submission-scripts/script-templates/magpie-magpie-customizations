@@ -50,7 +50,7 @@ export MAGPIE_JOB_TYPE="script"
 # generated until the job has launched.  You won't be able to use them
 # here.
 #
-# export MAGPIE_SCRIPT_ARGS="" 
+# export MAGPIE_SCRIPT_ARGS=""
 
 # Specify script startup / shutdown time window
 #

@@ -7,9 +7,9 @@ use strict;
 
 # expand_quadrics_range
 #
-# expand nodelist in quadrics form 
+# expand nodelist in quadrics form
 #
-sub expand_quadrics_range 
+sub expand_quadrics_range
 {
     my ($list) = @_;
         my ($pfx, $ranges, $suffix) = split(/[\[\]]/, $list, 3);
@@ -41,7 +41,7 @@ sub expand
                 # try to support that here
                 $list =~ s/\s+/,/g;
 
-                # 
+                #
                 # Replace ',' chars internal to "[]" with ':"
                 #
                 while ($list =~ s/(\[[^\]]*),([^\[]*\])/$1:$2/) {}
@@ -65,7 +65,7 @@ if (@ARGV != 1) {
     print "Usage: $prog <noderange>\n";
     print "  e.g. $prog mynodes[0-200]\n";
     exit 1;
-} 
+}
 
 my @nodes = expand($ARGV[0]);
 

@@ -125,7 +125,7 @@ __SubmitHbaseDependencyTests_Dependency2() {
 }
 
 SubmitHbaseDependencyTests() {
-    
+
     for testfunction in __SubmitHbaseDependencyTests_Dependency1 __SubmitHbaseDependencyTests_Dependency2
     do
         for testgroup in ${hbase_test_groups}

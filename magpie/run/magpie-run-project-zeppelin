@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -46,7 +46,7 @@ __Magpie_run_check_zeppelin_up () {
             serversup=`expr ${serversup} + 1`
         fi
     done
-    
+
     echo "$serversup/$serverschk Zeppelin Servers are up."
     if [ "$serverschk" -eq "$serversup" ]
     then
@@ -113,7 +113,7 @@ Magpie_run_start_zeppelin () {
         echo "* Then you can do as you please. To interact with Zeppelin you can use the applications available in:"
         echo "*"
         echo "*   \$ZEPPELIN_HOME/${zeppelincmdprefix}"
-        echo "*" 
+        echo "*"
 
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
@@ -146,7 +146,7 @@ Magpie_run_start_zeppelin () {
             # Return 0 if service up, 1 if not
             Magpie_check_service_up "Zeppelin" "__Magpie_run_check_zeppelin_up"
 
-            if [ $? -eq 0 ] 
+            if [ $? -eq 0 ]
             then
                 magpie_run_zeppelin_should_be_torndown=1
                 magpie_run_zeppelin_setup_successful=1
@@ -190,7 +190,7 @@ Magpie_run_stop_zeppelin () {
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
             cd ${ZEPPELIN_HOME}
-            
+
             # Make variables unspecified for launching
             Magpie_make_all_local_dirs_unspecified
 

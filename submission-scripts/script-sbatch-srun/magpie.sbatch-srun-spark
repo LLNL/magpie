@@ -115,7 +115,7 @@ export MAGPIE_JOB_TYPE="spark"
 # generated until the job has launched.  You won't be able to use them
 # here.
 #
-# export MAGPIE_SCRIPT_ARGS="" 
+# export MAGPIE_SCRIPT_ARGS=""
 
 # Specify script startup / shutdown time window
 #
@@ -286,16 +286,16 @@ export SPARK_SETUP=yes
 # Spark to work with Yarn instead.  If SPARK_SETUP_TYPE is set to
 # YARN:
 #
-# - The Spark standalone scheduler will not be launched 
+# - The Spark standalone scheduler will not be launched
 # - The default Spark master will be set to 'yarn-client' in all
 #   appropriate locations (e.g. spark-defaults.conf)
 # - All situations that would otherwise use the standalone scheduler
 #   (e.g. SPARK_JOB="sparkpi") will now use Yarn instead.
-# 
+#
 # Make sure that HADOOP_SETUP_TYPE is set to MR or YARN for the
 # SPARK_SETUP_TYPE="YARN".
 #
-export SPARK_SETUP_TYPE="STANDALONE" 
+export SPARK_SETUP_TYPE="STANDALONE"
 
 # Version
 #
@@ -583,7 +583,7 @@ export SPARK_JOB="sparkpi"
 #
 export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 
-# SPARK_LOCAL_SCRATCH_DIR_CLEAR 
+# SPARK_LOCAL_SCRATCH_DIR_CLEAR
 #
 # After your job has completed, if SPARK_LOCAL_SCRATCH_DIR_CLEAR is
 # set to yes, Magpie will do a rm -rf on all directories in
@@ -603,7 +603,7 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 # directory is not NFS or network mounted.  Set this value to a
 # network location as your staging directory.  Be sure to prefix this
 # path the appropriate scheme, such as file://.
-# 
+#
 # This option is only available beginning in Spark 2.0.
 #
 # export SPARK_YARN_STAGING_DIR="file:///lustre/${USER}/sparkStaging/"

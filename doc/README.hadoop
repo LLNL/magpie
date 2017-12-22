@@ -108,7 +108,7 @@ Instructions For Running Hadoop
 
 5) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < .magpie.lsffile" for LSF.  
+   Moab, or "bsub < .magpie.lsffile" for LSF.
    Add any other options you see fit.
 
 6) Look at your job output file to see your output.  There will also
@@ -144,14 +144,14 @@ HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
  		  must be specified in a script.
  		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
-                  Exported only if HDFS type file system used. 
+                  Exported only if HDFS type file system used.
 
 HADOOP_NAMENODE_PORT : the port of the namenode.  Often used for
  		  accessing HDFS when the namenode + port must be
  		  specified in a script.
  		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
 
-                  Exported only if HDFS type file system used. 
+                  Exported only if HDFS type file system used.
 
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.
@@ -189,7 +189,7 @@ HDFS Namenode.
      *******************************************************
      * Formatting HDFS Namenode
      *******************************************************
-     16/07/18 23:18:20 INFO namenode.NameNode: STARTUP_MSG: 
+     16/07/18 23:18:20 INFO namenode.NameNode: STARTUP_MSG:
      /************************************************************
      STARTUP_MSG: Starting NameNode
      STARTUP_MSG:   host = apex69.llnl.gov/192.168.123.69
@@ -201,7 +201,7 @@ HDFS Namenode.
      16/07/18 23:18:26 INFO common.Storage: Storage directory /p/lscratchg/achu/testing/hdfsoverlustre/1174570/node-0/dfs/name has been successfully formatted.
      16/07/18 23:18:26 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
      16/07/18 23:18:26 INFO util.ExitUtil: Exiting with status 0
-     16/07/18 23:18:26 INFO namenode.NameNode: SHUTDOWN_MSG: 
+     16/07/18 23:18:26 INFO namenode.NameNode: SHUTDOWN_MSG:
      /************************************************************
      SHUTDOWN_MSG: Shutting down NameNode at apex69.llnl.gov/192.168.123.69
      ************************************************************/
@@ -365,7 +365,7 @@ HDFS Namenode.
                    HDFS: Number of read operations=152
                    HDFS: Number of large read operations=0
                    HDFS: Number of write operations=76
-           Job Counters 
+           Job Counters
                    Launched map tasks=38
                    Other local map tasks=38
                    Total time spent by all maps in occupied slots (ms)=5960619
@@ -387,9 +387,9 @@ HDFS Namenode.
                    Total committed heap usage (bytes)=38351667200
            org.apache.hadoop.examples.terasort.TeraGen$Counters
                    CHECKSUM=107387891658806101
-           File Input Format Counters 
+           File Input Format Counters
                    Bytes Read=0
-           File Output Format Counters 
+           File Output Format Counters
                    Bytes Written=5000000000
 
 6) The job then runs Terasort
@@ -448,7 +448,7 @@ HDFS Namenode.
                    HDFS: Number of read operations=162
                    HDFS: Number of large read operations=0
                    HDFS: Number of write operations=32
-           Job Counters 
+           Job Counters
                    Launched map tasks=38
                    Launched reduce tasks=16
                    Data-local map tasks=26
@@ -489,9 +489,9 @@ HDFS Namenode.
                    WRONG_LENGTH=0
                    WRONG_MAP=0
                    WRONG_REDUCE=0
-           File Input Format Counters 
+           File Input Format Counters
                    Bytes Read=5000000000
-           File Output Format Counters 
+           File Output Format Counters
                    Bytes Written=5000000000
 
 7) With the job complete, Magpie now tears down the session and cleans
@@ -723,7 +723,7 @@ Hadoop Troubleshooting
    In rarer circumstances, it can be due to a bug/error in which the
    HDFS namenode has not come up at all (i.e. the HDFS namenode isn't
    running) or a large number of datanodes have not come up due to
-   errors.  Check the appropriate log files to debug further. 
+   errors.  Check the appropriate log files to debug further.
 
 Hadoop Advanced Usage
 ---------------------

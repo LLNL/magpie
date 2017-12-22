@@ -70,7 +70,7 @@ Instructions For Spark
    mount.
 
    SPARK_LOCAL_DIR : A small place for conf files and log files local
-   to each node.  Typically /tmp directory.  
+   to each node.  Typically /tmp directory.
 
    SPARK_LOCAL_SCRATCH_DIR : A scratch directory for Spark to use.  If
    a local SSD/NVRAM is available, it would be preferable to set this
@@ -122,7 +122,7 @@ Instructions For Spark
 
 6) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.  
+   Moab, or "bsub < ./magpie.lsffile" for LSF.
    Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
@@ -290,7 +290,7 @@ when using Hadoop, Storm, Hbase, etc. is not all that different.
    16/07/18 23:28:53 INFO TaskSetManager: Starting task 4.0 tage 0.0 (TID 1) in 5259 ms on apex219.llnl.gov (7/8)
    16/07/18 23:28:59 INFO TaskSetManager: Finished task 4.0 in stage 0.0 (TID 4) in 5259 ms on apex219.llnl.gov (8/8)
    16/07/18 23:28:59 INFO DAGScheduler: ResultStage 0 (reduce at SparkPi.scala:36) finished in 16.885 s
-   16/07/18 23:28:59 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool 
+   16/07/18 23:28:59 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
    16/07/18 23:28:59 INFO DAGScheduler: Job 0 finished: reduce at SparkPi.scala:36, took 17.096651 s
    Pi is roughly 3.1385
    16/07/18 23:28:59 INFO SparkUI: Stopped Spark web UI at http://192.168.123.217:4040
@@ -339,7 +339,7 @@ Spark Patching
 - For versions < 1.0.0 and versions >= 1.2.0, a patch can be applied
   directly to startup scripts, not needing a recompilation of source.
 
-  You can find patches for these versions in the patches/spark/ directory with 
+  You can find patches for these versions in the patches/spark/ directory with
   the suffice "alternate.patch".
 
   For atleast Spark version 1.0.0 (possibly a few versions newer than
@@ -414,7 +414,7 @@ Spark Advanced Usage
 4) There are two major memory fraction configuration variables
    SPARK_STORAGE_MEMORY_FRACTION and SPARK_SHUFFLE_MEMORY_FRACTION
    which may have major effects on performance depending on your job.
-   
+
    SPARK_STORAGE_MEMORY_FRACTION controls the percentage of memory
    used for the memory cache while SPARK_SHUFFLE_MEMORY_FRACTION
    controls the percentage used for shuffles.

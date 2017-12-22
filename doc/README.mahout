@@ -119,7 +119,7 @@ Mahout Patching
   The Mahout examples assume the user will always use /tmp for scratch
   space.  A patch to support alternate scratch space (such as the one
   Magpie defines) is needed if alternate /tmp or scratch space
-  directories are used.  
+  directories are used.
 
   Patches for all of these issues can be found in the patches/mahout/
   directory.

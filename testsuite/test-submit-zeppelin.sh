@@ -11,13 +11,13 @@ __SubmitZeppelinStandardTests_BasicTests() {
 }
 
 SubmitZeppelinStandardTests() {
-    
+
     for testfunction in __SubmitZeppelinStandardTests_BasicTests
     do
         for testgroup in ${zeppelin_test_groups}
         do
             local sparkversion="${testgroup}_sparkversion"
-            
+
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!sparkversion}
@@ -36,13 +36,13 @@ __SubmitZeppelinDependencyTests_Dependency1() {
 }
 
 SubmitZeppelinDependencyTests() {
-    
+
     for testfunction in __SubmitZeppelinDependencyTests_Dependency1
     do
         for testgroup in ${zeppelin_test_groups}
         do
             local sparkversion="${testgroup}_sparkversion"
-            
+
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!sparkversion}

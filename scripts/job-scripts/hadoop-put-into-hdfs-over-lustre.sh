@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This is a basic script to move from Lustre into HDFS over Lustre.
- 
+
 cd ${HADOOP_HOME}
 
 # bin/hadoop fs -mkdir -p <hdfs-dir>

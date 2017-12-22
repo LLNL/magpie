@@ -18,12 +18,12 @@
 # storm.zookeeper.servers:
 #     - "server1"
 #     - "server2"
-# 
+#
 # nimbus.host: "nimbus"
-# 
-# 
+#
+#
 # ##### These may optionally be filled in:
-#    
+#
 ## List of custom serializations
 # topology.kryo.register:
 #     - org.mycompany.MyType

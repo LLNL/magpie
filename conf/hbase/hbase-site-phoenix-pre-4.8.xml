@@ -29,7 +29,7 @@
       <name>hbase.coprocessor.master.classes</name>
       <value>org.apache.phoenix.hbase.index.master.IndexMasterObserver</value>
   </property>
- 
+
   <property>
       <name>phoenix.queryserver.http.port</name>
       <value>PHOENIXQUERYSERVERPORT</value>

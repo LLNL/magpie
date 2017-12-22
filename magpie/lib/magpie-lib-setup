@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -93,7 +93,7 @@ Magpie_calculate_stop_timeouts () {
             magpiepostrunallocate=300
         fi
 
-        shutdowntimeseconds=`expr ${shutdowntimeseconds} - ${magpiepostrunallocate}` 
+        shutdowntimeseconds=`expr ${shutdowntimeseconds} - ${magpiepostrunallocate}`
     fi
 
     if [ "${HBASE_SETUP}" == "yes" ]
@@ -126,11 +126,11 @@ Magpie_calculate_stop_timeouts () {
             # tasktracker/nodemanagers, jobhistory server, & saveNameSpace
             # time
             stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 7`
-        elif [ ${HADOOP_SETUP_TYPE}  == "YARN" ]                                                                                     
-        then                                                                                                                         
-            # Need to split timeout time between jobtracker/resource                                                                 
-            # manager, tasktracker/nodemanagers, jobhistory server                                                                   
-            stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 3`   
+        elif [ ${HADOOP_SETUP_TYPE}  == "YARN" ]
+        then
+            # Need to split timeout time between jobtracker/resource
+            # manager, tasktracker/nodemanagers, jobhistory server
+            stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 3`
         else
             if Magpie_hadoop_filesystem_mode_is_hdfs_type
             then
@@ -138,8 +138,8 @@ Magpie_calculate_stop_timeouts () {
                 # secondary namenode, & saveNameSpace time
                 stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 4`
             fi
-        fi    
-    
+        fi
+
         # + 2 for scratch extra time in scripts and what not
         stoptimeoutdivisor=`expr ${stoptimeoutdivisor} + 2`
     fi
@@ -181,7 +181,7 @@ Magpie_calculate_stop_timeouts () {
     fi
 
     local stoptimeout=`expr ${shutdowntimeseconds} \/ ${stoptimeoutdivisor}`
-        
+
     if [ "${stoptimeout}" -lt 5 ]
     then
         stoptimeout=5
@@ -211,7 +211,7 @@ __Magpie_calculate_canrunjobscount () {
     then
         __canrunjobscount=`expr ${__canrunjobscount} + 1`
     fi
- 
+
     if [ "${SPARK_SETUP}" == "yes" ] && [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
     then
         __canrunjobscount=`expr ${__canrunjobscount} + 1`
@@ -246,7 +246,7 @@ Magpie_calculate_threads_to_use () {
 
     # Sets __canrunjobscount
     __Magpie_calculate_canrunjobscount
- 
+
     # If only one system to run jobs, estimate 1.5X cores
     # If > 1, split cores evenly amongst job running stuff
 
@@ -266,11 +266,11 @@ Magpie_calculate_threads_to_use () {
 Magpie_calculate_memory_to_use () {
     local memtotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
     local memtotalgig=`echo "(${memtotal} / 1048576)" | bc -l | xargs printf "%1.0f"`
-    
+
     # Sets canrunjobscount
     __Magpie_calculate_canrunjobscount
 
-    # We start w/ 80% of system memory 
+    # We start w/ 80% of system memory
     magpie_memory_to_use=`echo "${memtotalgig} * .8" | bc -l | xargs printf "%1.0f"`
     magpie_memory_to_use=`expr $magpie_memory_to_use \/ ${__canrunjobscount}`
 
@@ -329,8 +329,8 @@ Magpie_calculate_openfiles () {
         then
             magpie_openfilescount=65536
         fi
-        
-	# if system places higher default, don't change it 
+
+	# if system places higher default, don't change it
         if [ "${magpie_openfilescount}" -lt "${openfiles}" ]
         then
             magpie_openfilescount=${openfiles}
@@ -367,8 +367,8 @@ Magpie_calculate_userprocesses () {
         then
             magpie_userprocessescount=32768
         fi
-        
-	# if system places higher default, don't change it 
+
+	# if system places higher default, don't change it
         if [ "${magpie_userprocessescount}" -lt "${userprocesses}" ]
         then
             magpie_userprocessescount=${userprocesses}

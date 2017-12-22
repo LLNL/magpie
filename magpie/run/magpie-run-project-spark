@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -46,10 +46,10 @@ Magpie_run_start_spark () {
 
                 echo "Starting spark"
                 ${sparksetupscriptprefix}/start-all.sh
-                
+
                 # Make variables specific now within Magpie
                 Magpie_make_all_local_dirs_node_specific
-                
+
                 # My rough estimate for setup time is 30 seconds per 128 nodes
                 local sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
                 if [ ${sleepwait} -lt 30 ]
@@ -67,13 +67,13 @@ Magpie_run_start_spark () {
         echo "* Spark Information"
         echo "*"
         if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
-        then 
+        then
             echo "* You can view your Spark status by launching a web browser and pointing to ..."
             echo "*"
             echo "* Spark Master: http://${SPARK_MASTER_NODE}:${default_spark_master_webui_port}"
             echo "* Spark Worker: http://<WORKERNODE>:${default_spark_worker_webui_port}"
             echo "* Spark Application Dashboard: http://${SPARK_MASTER_NODE}:${default_spark_application_dashboard_port}"
-            echo "*" 
+            echo "*"
             echo "* The Spark Master for running jobs is"
             echo "*"
             echo "* spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
@@ -94,27 +94,27 @@ Magpie_run_start_spark () {
         fi
         echo "*"
         echo "* Then you can do as you please.  For example to run a job:"
-        echo "*" 
+        echo "*"
         if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-        then 
+        then
             echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
         else
             echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-submit --class <class> <jar>"
         fi
-        echo "*" 
+        echo "*"
 
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
             echo "* instructions above, then run:"
             echo "*"
-            echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/start-all.sh" 
-            echo "*" 
+            echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/start-all.sh"
+            echo "*"
             echo "* To end/cleanup your session & kill all daemons, login and set"
             echo "* environment variables per the instructions above, then run:"
-            echo "*" 
+            echo "*"
             echo "*   \$SPARK_HOME/${sparksetupscriptprefix}/stop-all.sh"
-            echo "*" 
+            echo "*"
         fi
         if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
         then
@@ -197,10 +197,10 @@ Magpie_run_stop_spark () {
             if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
             then
                 cd ${SPARK_HOME}
-                
+
                 # Make variables unspecified for shutdown
                 Magpie_make_all_local_dirs_unspecified
-                
+
                 echo "Stopping spark"
                 ${sparksetupscriptprefix}/stop-all.sh
 

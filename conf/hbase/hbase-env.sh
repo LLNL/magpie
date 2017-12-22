@@ -103,7 +103,7 @@ export HBASE_OPTS="-XX:+UseConcMarkSweepGC $EXTRA_HBASE_OPTS"
 # Where log files are stored.  $HBASE_HOME/logs by default.
 # export HBASE_LOG_DIR=${HBASE_HOME}/logs
 
-# Enable remote JDWP debugging of major HBase processes. Meant for Core Developers 
+# Enable remote JDWP debugging of major HBase processes. Meant for Core Developers
 # export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8070"
 # export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8071"
 # export HBASE_THRIFT_OPTS="$HBASE_THRIFT_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8072"
@@ -126,11 +126,11 @@ export HBASE_PID_DIR="${HBASE_PID_DIR:-HBASEPIDDIR}"
 # Tell HBase whether it should manage it's own instance of Zookeeper or not.
 export HBASE_MANAGES_ZK=false
 
-# The default log rolling policy is RFA, where the log file is rolled as per the size defined for the 
+# The default log rolling policy is RFA, where the log file is rolled as per the size defined for the
 # RFA appender. Please refer to the log4j.properties file to see more details on this appender.
 # In case one needs to do log rolling on a date change, one should set the environment property
 # HBASE_ROOT_LOGGER to "<DESIRED_LOG LEVEL>,DRFA".
 # For example:
 # HBASE_ROOT_LOGGER=INFO,DRFA
-# The reason for changing default to RFA is to avoid the boundary case of filling out disk space as 
+# The reason for changing default to RFA is to avoid the boundary case of filling out disk space as
 # DRFA doesn't put any cap on the log size. Please refer to HBase-5655 for more context.

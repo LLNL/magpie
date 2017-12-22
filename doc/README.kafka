@@ -20,7 +20,7 @@ Instructions For Using Kafka
    using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base script
-   (e.g. magpie.sbatch-srun) for your scheduler/resource manager 
+   (e.g. magpie.sbatch-srun) for your scheduler/resource manager
    which contains all configuration options.
 
 2) Setup your job essentials at the top of the submission script.  As
@@ -73,8 +73,8 @@ Instructions For Using Kafka
    These instructions will inform you how to login to the master node
    of your allocation and how to initialize your session.  Once in
    your session, you can do as you please.  For example, you can
-   launch a kafka consumer (bin/kafka-console-consumer.sh ...).  There 
-   will also be instructions in your job output on how to tear the 
+   launch a kafka consumer (bin/kafka-console-consumer.sh ...).  There
+   will also be instructions in your job output on how to tear the
    session down cleanly if you wish to end your job early.
 
    See "Exported Environment Variables" in README for information on

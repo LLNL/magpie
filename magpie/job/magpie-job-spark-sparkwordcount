@@ -4,20 +4,20 @@
 #  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
 #  Written by Albert Chu <chu11@llnl.gov>
 #  LLNL-CODE-644248
-#  
+#
 #  This file is part of Magpie, scripts for running Hadoop on
 #  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
-#  
+#
 #  Magpie is free software; you can redistribute it and/or modify it
 #  under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  Magpie is distributed in the hope that it will be useful, but
 #  WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #  General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
@@ -33,7 +33,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 sparkwordcountclass="org.apache.spark.examples.JavaWordCount"
 
 cd ${SPARK_HOME}
-            
+
 # For some reason, the examples jar is named with seemingly random
 # versioning, so we'll have to "find" it for each case
 
@@ -99,7 +99,7 @@ else
     #
     # Because user may have set SPARK_JOB_CLASSPATH, we can't just set
     # it here.  So we'll reput it into spark-env.sh
- 
+
     if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
     then
         echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH};${sparkexamplesjar}\"" >> ${SPARK_CONF_DIR}/spark-env.sh

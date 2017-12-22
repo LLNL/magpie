@@ -426,7 +426,7 @@ define create-hbase-with-hdfs
 	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(HBASE_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_HBASE_WITH_HDFS)
 endef
 
-define create-hbase-with-hdfs-with-phoenix 
+define create-hbase-with-hdfs-with-phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-header \
 		magpie-config-$(SCHED) \

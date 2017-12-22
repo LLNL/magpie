@@ -82,7 +82,7 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 # This is used with HADOOP_FILESYSTEM_MODE="hdfs"
 #
 # After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
-# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  
+# yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.
 #
 # This is particularly useful when doing normal HDFS on local storage.
 # On your next job run, you may not be able to get the nodes you want
@@ -117,7 +117,7 @@ export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
 #
 # export HADOOP_LOCALSTORE="LOCALDRIVEPREFIX/localstore/"
 
-# HADOOP_LOCALSTORE_CLEAR 
+# HADOOP_LOCALSTORE_CLEAR
 #
 # After your job has completed, if HADOOP_LOCALSTORE_CLEAR is set to
 # yes, Magpie will do a rm -rf on all directories in
