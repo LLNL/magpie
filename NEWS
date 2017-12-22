@@ -1,5 +1,8 @@
 magpie 1.84
 -----------
+Adjust setting of spark.default.parallelism.  In versions < 1.3.0, set
+  to number of nodes in allocation.  In versions >= 1.3.0, do not set
+  this setting.  Let Spark decided on parallelism.
 Update lfs usage to use --stripe-count over deprecated --count option.
 Add support of MAGPIE_ONE_TIME_RUN option.
 Add support for HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE option.

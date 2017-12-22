@@ -219,6 +219,7 @@ fi
 if [ "${SPARK_DEFAULT_PARALLELISM}X" == "X" ]
 then
     sparkdefaultparallelism="${SPARK_SLAVE_COUNT}"
+    sparkdefaultparallelismnotset=1
 else
     sparkdefaultparallelism="${SPARK_DEFAULT_PARALLELISM}"
 fi
@@ -676,6 +677,20 @@ then
         sed -i -e "s/spark.shuffle.file.buffer.kb/# spark.shuffle.file.buffer.kb/" ${post_sparkdefaultsconf}
     else
         sed -i -e "s/spark.shuffle.file.buffer\s/# spark.shuffle.file.buffer/" ${post_sparkdefaultsconf}
+    fi
+
+    # Handle special settings depending on version
+    # Versions > 1.3.0, Spark tries to pick the best parallelism.  So
+    # don't set spark.default.parallelism if user doesn't want to.
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 1.3.0
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        if [ "${sparkdefaultparallelismnotset}" == "1" ]
+        then
+            sed -i -e "s/spark.default.parallelism/# spark.default.parallelism/" ${post_sparkdefaultsconf}
+        fi
     fi
 
     # Handle special settings depending on version
