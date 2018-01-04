@@ -316,8 +316,8 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # HADOOP_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/hadoop into HADOOP_CONF_FILES, and modify
 # as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/hadoop if of the files it needs are not
-# found in HADOOP_CONF_FILES.
+# $MAGPIE_SCRIPTS_HOME/conf/hadoop if any of the files it needs are
+# not found in HADOOP_CONF_FILES.
 #
 # export HADOOP_CONF_FILES="${HOME}/myconf"
 
@@ -684,7 +684,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # HBASE_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/hbase into HBASE_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/hbase if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/hbase if any of the files it needs are not
 # found in HBASE_CONF_FILES.
 #
 # export HBASE_CONF_FILES="${HOME}/myconf"
@@ -856,7 +856,7 @@ export PHOENIX_LOCAL_DIR="/tmp/${USER}/phoenix"
 # PHOENIX_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/phoenix into PHOENIX_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/phoenix if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/phoenix if any of the files it needs are not
 # found in PHOENIX_CONF_FILES.
 #
 # export PHOENIX_CONF_FILES="${HOME}/myconf"
@@ -963,7 +963,7 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # ZOOKEEPER_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/zookeeper into ZOOKEEPER_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if any of the files it needs are not
 # found in ZOOKEEPER_CONF_FILES.
 #
 # export ZOOKEEPER_CONF_FILES="${HOME}/myconf"

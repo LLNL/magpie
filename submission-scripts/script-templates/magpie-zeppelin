@@ -32,7 +32,7 @@ export ZEPPELIN_HOME="ZEPPELINDIRPREFIX/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 # ZEPPELIN_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/zeppelin into ZEPPELIN_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/zeppelin if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/zeppelin if any of the files it needs are not
 # found in ZEPPELIN_CONF_FILES.
 #
 # export ZEPPELIN_CONF_FILES="${HOME}/myconf"

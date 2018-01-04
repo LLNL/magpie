@@ -34,7 +34,7 @@ export SPARK_LOCAL_DIR="LOCALDIRPREFIX/spark"
 # SPARK_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/spark into SPARK_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/spark if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/spark if any of the files it needs are not
 # found in SPARK_CONF_FILES.
 #
 # export SPARK_CONF_FILES="${HOME}/myconf"

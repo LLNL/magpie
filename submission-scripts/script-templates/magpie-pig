@@ -35,7 +35,7 @@ export PIG_HOME="PIGDIRPREFIX/pig-${PIG_VERSION}"
 # PIG_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/pig into PIG_CONF_FILES, and modify as you
 # desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/pig if of the files it needs are not found
+# $MAGPIE_SCRIPTS_HOME/conf/pig if any of the files it needs are not found
 # in PIG_CONF_FILES.
 #
 # export PIG_CONF_FILES="${HOME}/myconf"

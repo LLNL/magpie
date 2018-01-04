@@ -60,8 +60,8 @@ export HADOOP_LOCAL_DIR="LOCALDIRPREFIX/hadoop"
 # HADOOP_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/hadoop into HADOOP_CONF_FILES, and modify
 # as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/hadoop if of the files it needs are not
-# found in HADOOP_CONF_FILES.
+# $MAGPIE_SCRIPTS_HOME/conf/hadoop if any of the files it needs are
+# not found in HADOOP_CONF_FILES.
 #
 # export HADOOP_CONF_FILES="${HOME}/myconf"
 

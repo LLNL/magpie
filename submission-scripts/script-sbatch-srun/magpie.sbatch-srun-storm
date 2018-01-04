@@ -286,7 +286,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 # STORM_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/storm into STORM_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/storm if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/storm if any of the files it needs are not
 # found in STORM_CONF_FILES.
 #
 # export STORM_CONF_FILES="${HOME}/myconf"
@@ -427,7 +427,7 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # ZOOKEEPER_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/zookeeper into ZOOKEEPER_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if any of the files it needs are not
 # found in ZOOKEEPER_CONF_FILES.
 #
 # export ZOOKEEPER_CONF_FILES="${HOME}/myconf"

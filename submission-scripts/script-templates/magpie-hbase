@@ -34,7 +34,7 @@ export HBASE_LOCAL_DIR="LOCALDIRPREFIX/hbase"
 # HBASE_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/hbase into HBASE_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/hbase if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/hbase if any of the files it needs are not
 # found in HBASE_CONF_FILES.
 #
 # export HBASE_CONF_FILES="${HOME}/myconf"

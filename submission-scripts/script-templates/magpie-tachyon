@@ -38,7 +38,7 @@ export TACHYON_HOME="TACHYONDIRPREFIX/tachyon-${TACHYON_VERSION}"
 # TACHYON_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/tachyon into TACHYON_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/tachyon if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/tachyon if any of the files it needs are not
 # found in TACHYON_CONF_FILES.
 #
 # export TACHYON_CONF_FILES="${HOME}/myconf"

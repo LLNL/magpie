@@ -39,7 +39,7 @@ export KAFKA_LOCAL_DIR="LOCALDIRPREFIX/kafka"
 # KAFKA_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/kafka into KAFKA_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/kafka if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/kafka if any of the files it needs are not
 # found in KAFKA_CONF_FILES.
 #
 # export KAFKA_CONF_FILES="${HOME}/myconf"

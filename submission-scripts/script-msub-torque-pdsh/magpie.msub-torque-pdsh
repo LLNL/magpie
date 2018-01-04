@@ -344,8 +344,8 @@ export HADOOP_LOCAL_DIR="/tmp/${USER}/hadoop"
 # HADOOP_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/hadoop into HADOOP_CONF_FILES, and modify
 # as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/hadoop if of the files it needs are not
-# found in HADOOP_CONF_FILES.
+# $MAGPIE_SCRIPTS_HOME/conf/hadoop if any of the files it needs are
+# not found in HADOOP_CONF_FILES.
 #
 # export HADOOP_CONF_FILES="${HOME}/myconf"
 
@@ -965,7 +965,7 @@ export PIG_HOME="${HOME}/pig-${PIG_VERSION}"
 # PIG_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/pig into PIG_CONF_FILES, and modify as you
 # desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/pig if of the files it needs are not found
+# $MAGPIE_SCRIPTS_HOME/conf/pig if any of the files it needs are not found
 # in PIG_CONF_FILES.
 #
 # export PIG_CONF_FILES="${HOME}/myconf"
@@ -1122,7 +1122,7 @@ export HBASE_LOCAL_DIR="/tmp/${USER}/hbase"
 # HBASE_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/hbase into HBASE_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/hbase if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/hbase if any of the files it needs are not
 # found in HBASE_CONF_FILES.
 #
 # export HBASE_CONF_FILES="${HOME}/myconf"
@@ -1294,7 +1294,7 @@ export PHOENIX_LOCAL_DIR="/tmp/${USER}/phoenix"
 # PHOENIX_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/phoenix into PHOENIX_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/phoenix if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/phoenix if any of the files it needs are not
 # found in PHOENIX_CONF_FILES.
 #
 # export PHOENIX_CONF_FILES="${HOME}/myconf"
@@ -1377,7 +1377,7 @@ export SPARK_LOCAL_DIR="/tmp/${USER}/spark"
 # SPARK_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/spark into SPARK_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/spark if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/spark if any of the files it needs are not
 # found in SPARK_CONF_FILES.
 #
 # export SPARK_CONF_FILES="${HOME}/myconf"
@@ -1799,7 +1799,7 @@ export KAFKA_LOCAL_DIR="/tmp/${USER}/kafka"
 # KAFKA_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/kafka into KAFKA_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/kafka if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/kafka if any of the files it needs are not
 # found in KAFKA_CONF_FILES.
 #
 # export KAFKA_CONF_FILES="${HOME}/myconf"
@@ -1879,7 +1879,7 @@ export ZEPPELIN_HOME="${HOME}/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 # ZEPPELIN_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/zeppelin into ZEPPELIN_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/zeppelin if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/zeppelin if any of the files it needs are not
 # found in ZEPPELIN_CONF_FILES.
 #
 # export ZEPPELIN_CONF_FILES="${HOME}/myconf"
@@ -1970,7 +1970,7 @@ export STORM_LOCAL_DIR="/tmp/${USER}/storm"
 # STORM_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/storm into STORM_CONF_FILES, and modify as
 # you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/storm if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/storm if any of the files it needs are not
 # found in STORM_CONF_FILES.
 #
 # export STORM_CONF_FILES="${HOME}/myconf"
@@ -2091,7 +2091,7 @@ export TACHYON_HOME="${HOME}/tachyon-${TACHYON_VERSION}"
 # TACHYON_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/tachyon into TACHYON_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/tachyon if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/tachyon if any of the files it needs are not
 # found in TACHYON_CONF_FILES.
 #
 # export TACHYON_CONF_FILES="${HOME}/myconf"
@@ -2230,7 +2230,7 @@ export ZOOKEEPER_HOME="${HOME}/zookeeper-${ZOOKEEPER_VERSION}"
 # ZOOKEEPER_CONF_FILES below, copy configuration templates from
 # $MAGPIE_SCRIPTS_HOME/conf/zookeeper into ZOOKEEPER_CONF_FILES, and
 # modify as you desire.  Magpie will still use configuration files in
-# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if of the files it needs are not
+# $MAGPIE_SCRIPTS_HOME/conf/zookeeper if any of the files it needs are not
 # found in ZOOKEEPER_CONF_FILES.
 #
 # export ZOOKEEPER_CONF_FILES="${HOME}/myconf"
