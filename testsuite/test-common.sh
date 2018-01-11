@@ -39,7 +39,7 @@ hbasehadoop22zookeeper34java16versions_zookeeperversion="3.4.6"
 hbasehadoop22zookeeper34java16versions_javaversion=${java16}
 hbasehadoop27zookeeper34java17versions="0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.0.3 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.1.5 1.1.6 1.1.7 1.1.8 1.1.9 1.1.10 1.1.11 1.1.12 1.1.13 1.2.0 1.2.1 1.2.2 1.2.3 1.2.4 1.2.5 1.2.6 1.3.0 1.3.1 1.4.0"
 hbasehadoop27zookeeper34java17versions_hadoopversion="2.7.0"
-hbasehadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
+hbasehadoop27zookeeper34java17versions_zookeeperversion="3.4.11"
 hbasehadoop27zookeeper34java17versions_javaversion=${java17}
 
 hbase_test_groups="hbasehadoop22zookeeper34java16versions hbasehadoop27zookeeper34java17versions"
@@ -48,25 +48,25 @@ hbase_all_versions="${hbasehadoop22zookeeper34java16versions} ${hbasehadoop27zoo
 phoenixhbase10hadoop27zookeeper34java17versions="4.5.0-HBase-1.0 4.5.1-HBase-1.0 4.5.2-HBase-1.0 4.6.0-HBase-1.0 4.7.0-HBase-1.0 4.8.0-HBase-1.0 4.8.1-HBase-1.0 4.8.2-HBase-1.0"
 phoenixhbase10hadoop27zookeeper34java17versions_hbaseversion="1.0.0"
 phoenixhbase10hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
-phoenixhbase10hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
+phoenixhbase10hadoop27zookeeper34java17versions_zookeeperversion="3.4.11"
 phoenixhbase10hadoop27zookeeper34java17versions_javaversion=${java17}
 
 phoenixhbase11hadoop27zookeeper34java17versions="4.5.0-HBase-1.1 4.5.1-HBase-1.1 4.5.2-HBase-1.1 4.6.0-HBase-1.1 4.7.0-HBase-1.1 4.8.0-HBase-1.1 4.8.1-HBase-1.1 4.8.2-HBase-1.1 4.9.0-HBase-1.1 4.10.0-HBase-1.1 4.11.0-HBase-1.1 4.12.0-HBase-1.1 4.13.1-HBase-1.1"
 phoenixhbase11hadoop27zookeeper34java17versions_hbaseversion="1.1.0"
 phoenixhbase11hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
-phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
+phoenixhbase11hadoop27zookeeper34java17versions_zookeeperversion="3.4.11"
 phoenixhbase11hadoop27zookeeper34java17versions_javaversion=${java17}
 
 phoenixhbase12hadoop27zookeeper34java17versions="4.8.0-HBase-1.2 4.8.1-HBase-1.2 4.8.2-HBase-1.2 4.9.0-HBase-1.2 4.10.0-HBase-1.2 4.11.0-HBase-1.2 4.12.0-HBase-1.2 4.13.1-HBase-1.2"
 phoenixhbase12hadoop27zookeeper34java17versions_hbaseversion="1.2.0"
 phoenixhbase12hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
-phoenixhbase12hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
+phoenixhbase12hadoop27zookeeper34java17versions_zookeeperversion="3.4.11"
 phoenixhbase12hadoop27zookeeper34java17versions_javaversion=${java17}
 
 phoenixhbase13hadoop27zookeeper34java17versions="4.11.0-HBase-1.3 4.12.0-HBase-1.3 4.13.0-HBase-1.3 4.13.1-HBase-1.3"
 phoenixhbase13hadoop27zookeeper34java17versions_hbaseversion="1.3.0"
 phoenixhbase13hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
-phoenixhbase13hadoop27zookeeper34java17versions_zookeeperversion="3.4.10"
+phoenixhbase13hadoop27zookeeper34java17versions_zookeeperversion="3.4.11"
 phoenixhbase13hadoop27zookeeper34java17versions_javaversion=${java17}
 
 phoenix_test_groups="phoenixhbase10hadoop27zookeeper34java17versions phoenixhbase11hadoop27zookeeper34java17versions phoenixhbase12hadoop27zookeeper34java17versions phoenixhbase13hadoop27zookeeper34java17versions"
@@ -104,20 +104,20 @@ stormzookeeper34java16versions="0.9.3 0.9.4"
 stormzookeeper34java16versions_zookeeperversion="3.4.6"
 stormzookeeper34java16versions_javaversion=${java16}
 stormzookeeper34java17versions="0.9.5 0.9.6 0.9.7 0.10.0 0.10.1 0.10.2 1.0.0 1.0.1 1.0.2 1.0.3 1.0.4 1.1.0 1.1.1"
-stormzookeeper34java17versions_zookeeperversion="3.4.10"
+stormzookeeper34java17versions_zookeeperversion="3.4.11"
 stormzookeeper34java17versions_javaversion=${java17}
 
 storm_test_groups="stormzookeeper34java16versions stormzookeeper34java17versions"
 storm_all_versions="${stormzookeeper34java16versions} ${stormzookeeper34java17versions}"
 
 kafkazookeeper34java17versions="2.11-0.9.0.0"
-kafkazookeeper34java17versions_zookeeperversion="3.4.10"
+kafkazookeeper34java17versions_zookeeperversion="3.4.11"
 kafkazookeeper34java17versions_javaversion=${java17}
 
 kafka_test_groups="kafkazookeeper34java17versions"
 kafka_all_versions="${kafkazookeeper34java17versions}"
 
-zookeeperjava17versions="3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7 3.4.8 3.4.9 3.4.10"
+zookeeperjava17versions="3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7 3.4.8 3.4.9 3.4.10 3.4.11"
 zookeeperjava17versions_javaversion=${java17}
 
 zookeeper_test_groups="zookeeperjava17versions"
