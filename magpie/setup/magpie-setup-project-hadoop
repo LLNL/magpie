@@ -300,20 +300,12 @@ then
     fi
 fi
 
-# If not rawnetworkfs don't want to affect other filesystems, so need
-# to check HADOOP_FILESYSTEM_MODE
-if [ "${HADOOP_RAWNETWORKFS_BLOCKSIZE}X" != "X" ] \
-    && [ "${HADOOP_FILESYSTEM_MODE}" == "rawnetworkfs" ]
+# 32M is Hadoop default for local
+if [ "${HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE}X" != "X" ]
 then
-    rawnetworkfsblocksize=${HADOOP_RAWNETWORKFS_BLOCKSIZE}
+    localfilesystemblocksize=${HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE}
 else
-    # 32M is Hadoop default for local
-    if [ "${HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE}X" != "X" ]
-    then
-        rawnetworkfsblocksize=${HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE}
-    else
-        rawnetworkfsblocksize=33554432
-    fi
+    localfilesystemblocksize=33554432
 fi
 
 if [ "${HADOOP_DAEMON_HEAP_MAX}X" != "X" ]
@@ -600,7 +592,7 @@ sed -i \
     -e "s/HADOOPTMPDIR/${magpie_hadooptmpdirsubst}/g" \
     -e "s/FSDEFAULT/${magpie_fsdefaultsubst}/g" \
     -e "s/IOBUFFERSIZE/${iobuffersize}/g" \
-    -e "s/LOCALBLOCKSIZE/${rawnetworkfsblocksize}/g" \
+    -e "s/LOCALBLOCKSIZE/${localfilesystemblocksize}/g" \
     -e "s/HADOOPDEFAULTUSER/${USER}/g" \
     ${post_coresitexml}
 
