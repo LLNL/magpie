@@ -333,7 +333,12 @@ then
     rawnetworkfsblocksize=${HADOOP_RAWNETWORKFS_BLOCKSIZE}
 else
     # 32M is Hadoop default for local
-    rawnetworkfsblocksize=33554432
+    if [ "${HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE}X" != "X" ]
+    then
+        rawnetworkfsblocksize=${HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE}
+    else
+        rawnetworkfsblocksize=33554432
+    fi
 fi
 
 if [ "${HADOOP_INTELLUSTRE_BLOCKSIZE}X" != "X" ]

@@ -592,6 +592,19 @@ export HADOOP_MODE="terasort"
 #
 export HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
+# Local Filesystem BlockSize
+#
+# This configuration is the blocksize hadoop will use when doing I/O
+# to a local filesystem.  It is used by HDFS when reading from the
+# underlying filesystem.  It is also used with
+# HADOOP_FILESYSTEM_MODE="rawnetworkfs".
+#
+# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE=33554432
+
 # HDFS Replication
 #
 # This is used with HADOOP_FILESYSTEM_MODE="hdfs", "hdfsoverlustre",
@@ -711,14 +724,6 @@ export HADOOP_HDFSOVERNETWORKFS_PATH="/networkfs/${USER}/hdfsovernetworkfs/"
 # This is used with HADOOP_FILESYSTEM_MODE="rawnetworkfs"
 #
 export HADOOP_RAWNETWORKFS_PATH="/lustre/${USER}/rawnetworkfs/"
-
-# RawNetworkFS Block Size
-#
-# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
-#
-# If not specified, defaults to 33554432
-#
-# export HADOOP_RAWNETWORKFS_BLOCKSIZE=33554432
 
 # If you have a local SSD or NVRAM, performance may be better to store
 # intermediate data on it rather than Lustre or some other networked

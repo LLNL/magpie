@@ -32,6 +32,19 @@
 
 export HADOOP_FILESYSTEM_MODE=HADOOPFILESYSTEMMODE
 
+# Local Filesystem BlockSize
+#
+# This configuration is the blocksize hadoop will use when doing I/O
+# to a local filesystem.  It is used by HDFS when reading from the
+# underlying filesystem.  It is also used with
+# HADOOP_FILESYSTEM_MODE="rawnetworkfs".
+#
+# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
+#
+# If not specified, defaults to 33554432
+#
+# export HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE=33554432
+
 # HDFS Replication
 #
 # This is used with HADOOP_FILESYSTEM_MODE="hdfs", "hdfsoverlustre",
@@ -91,14 +104,6 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 # This is used with HADOOP_FILESYSTEM_MODE="rawnetworkfs"
 #
 export HADOOP_RAWNETWORKFS_PATH="RAWFSDIRPREFIX/rawnetworkfs/"
-
-# RawNetworkFS Block Size
-#
-# Commonly 33554432, 67108864, 134217728 (i.e. 32m, 64m, 128m)
-#
-# If not specified, defaults to 33554432
-#
-# export HADOOP_RAWNETWORKFS_BLOCKSIZE=33554432
 
 @CONFIG_INTELLUSTRE@
 
