@@ -45,6 +45,17 @@ export HADOOP_FILESYSTEM_MODE=HADOOPFILESYSTEMMODE
 #
 # export HADOOP_HDFS_REPLICATION=3
 
+# HDFS Block Size
+#
+# This is used with HADOOP_FILESYSTEM_MODE="hdfs", "hdfsoverlustre",
+# and "hdfsovernetworkfs"
+#
+# Commonly 134217728, 268435456, 536870912 (i.e. 128m, 256m, 512m)
+#
+# If not specified, defaults to 134217728
+#
+# export HADOOP_HDFS_BLOCKSIZE=134217728
+
 # Path for HDFS when using local disk
 #
 # This is used with HADOOP_FILESYSTEM_MODE="hdfs"
@@ -59,6 +70,8 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 
 # HDFS cleanup
 #
+# This is used with HADOOP_FILESYSTEM_MODE="hdfs"
+#
 # After your job has completed, if HADOOP_HDFS_PATH_CLEAR is set to
 # yes, Magpie will do a rm -rf on HADOOP_HDFS_PATH.  
 #
@@ -68,14 +81,6 @@ export HADOOP_HDFS_PATH="LOCALDRIVEPREFIX/hdfs"
 # next user uses the node.
 #
 # export HADOOP_HDFS_PATH_CLEAR="yes"
-
-# HDFS Block Size
-#
-# Commonly 134217728, 268435456, 536870912 (i.e. 128m, 256m, 512m)
-#
-# If not specified, defaults to 134217728
-#
-# export HADOOP_HDFS_BLOCKSIZE=134217728
 
 @CONFIG_HDFSOVERLUSTRE@
 

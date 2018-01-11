@@ -10,6 +10,8 @@ export HADOOP_HDFSOVERLUSTRE_PATH="LUSTREDIRPREFIX/hdfsoverlustre/"
 
 # HDFS over Lustre ignore lock
 #
+# This is used with HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
+#
 # Cleanup in_use.lock files before launching HDFS
 #
 # On traditional Hadoop clusters, the in_use.lock file protects
