@@ -4,8 +4,9 @@ Add support of MAGPIE_ONE_TIME_RUN option.
 Add support for HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE option.
 - Legacy support HADOOP_RAWNETWORKFS_BLOCKSIZE support.
 Add support for Hadoop 2.7.4, 2.7.5.
-Add support for Hbase 1.1.10, 1.1.11, 1.1.12, 1.1.13, 1.4.0
-- Update default Hbase to 1.4.0
+Add support for Hbase 1.1.10, 1.1.11, 1.1.12, 1.1.13, 1.4.0, 1.4.1,
+ 1.4.2.
+- Update default Hbase to 1.4.2
 Add support for Zookeeper 3.4.11.
 - Update default Zookeeper to 3.4.11.
 Add support for Spark 2.3.0.
