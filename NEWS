@@ -1,5 +1,6 @@
 magpie 1.84
 -----------
+Update lfs usage to use --stripe-count over deprecated --count option.
 Add support of MAGPIE_ONE_TIME_RUN option.
 Add support for HADOOP_LOCAL_FILESYSTEM_BLOCKSIZE option.
 - Legacy support HADOOP_RAWNETWORKFS_BLOCKSIZE support.
