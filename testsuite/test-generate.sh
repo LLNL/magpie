@@ -7,6 +7,7 @@ source test-generate-default.sh
 source test-generate-functionality.sh
 source test-generate-hadoop.sh
 source test-generate-hbase.sh
+source test-generate-hive.sh
 source test-generate-kafka.sh
 source test-generate-mahout.sh
 source test-generate-phoenix.sh
@@ -37,6 +38,7 @@ hadooptests=y
 pigtests=y
 mahouttests=y
 hbasetests=y
+hivetests=y
 phoenixtests=y
 sparktests=y
 stormtests=y
@@ -54,6 +56,7 @@ hadoopversiontests=y
 pigversiontests=y
 mahoutversiontests=y
 hbaseversiontests=y
+hiveversiontests=y
 phoenixversiontests=y
 sparkversiontests=y
 stormversiontests=y
@@ -178,6 +181,7 @@ hbase_1_3_1=y
 hbase_1_4_0=y
 hbase_1_4_1=y
 hbase_1_4_2=y
+hive_2_3_0=y
 phoenix_4_5_0_HBase_1_0=y
 phoenix_4_5_0_HBase_1_1=y
 phoenix_4_5_1_HBase_1_0=y
@@ -352,6 +356,12 @@ then
     sed -i -e "s/HBASE_DIR_PREFIX=\(.*\)/HBASE_DIR_PREFIX=${hbasedirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 fi
 
+if [ "${HIVE_DIR_PATH}X" != "X" ]
+then
+    hivedirpathsubst=`echo ${HIVE_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e "s/HIVE_DIR_PREFIX=\(.*\)/HIVE_DIR_PREFIX=${hivedirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+fi
+
 if [ "${KAFKA_DIR_PATH}X" != "X" ]
 then
     kafkadirpathsubst=`echo ${KAFKA_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
@@ -491,6 +501,14 @@ if [ "${hbasetests}" == "y" ] && [ "${hbaseversiontests}" == "y" ]; then
         GenerateHbaseDependencyTests
     fi
 fi
+if [ "${hivetests}" == "y" ] && [ "${hiveversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+        GenerateHiveStandardTests
+    fi
+    if [ "${dependencytests}" == "y" ]; then
+        GenerateHiveDependencyTests
+    fi
+fi
 if [ "${phoenixtests}" == "y" ] && [ "${phoenixversiontests}" == "y" ]; then
     if [ "${standardtests}" == "y" ]; then
         GeneratePhoenixStandardTests
@@ -574,7 +592,7 @@ then
     rm -f magpie.${submissiontype}*no-local-dir*
 fi
 
-for project in hadoop pig mahout hbase phoenix spark storm kafka zookeeper zeppelin
+for project in hadoop pig mahout hbase hive phoenix spark storm kafka zookeeper zeppelin
 do
     versionsvariable="${project}_all_versions"
     for version in ${!versionsvariable}
@@ -589,6 +607,7 @@ GenerateHadoopPostProcessing
 GeneratePigPostProcessing
 GenerateMahoutPostProcessing
 GenerateHbasePostProcessing
+GenerateHivePostProcessing
 GeneratePhoenixPostProcessing
 GenerateSparkPostProcessing
 GenerateStormPostProcessing

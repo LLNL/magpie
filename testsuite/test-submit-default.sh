@@ -13,6 +13,7 @@ SubmitDefaultStandardTests() {
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-default-run-hbaseperformanceeval-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-default-run-phoenixperformanceeval
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-default-run-phoenixperformanceeval-no-local-dir
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-hive-default
     BasicJobSubmit magpie.${submissiontype}-spark-default-run-sparkpi
     BasicJobSubmit magpie.${submissiontype}-spark-default-run-sparkpi-no-local-dir
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-default-run-sparkwordcount-copy-in

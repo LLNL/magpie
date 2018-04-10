@@ -1267,6 +1267,86 @@ export HBASE_MODE="performanceeval"
 #
 # export HBASE_SCRIPT_ARGS="" 
  
+#############################################################################
+# Hive configurations
+#############################################################################
+#
+# Should Hive be run
+#
+# Specify yes or no.  Defaults to no.
+#
+export HIVE_SETUP=yes
+
+# Version
+
+export HIVE_VERSION="2.3.0"
+
+export HIVE_PORT=10000
+
+# Path to your Hive build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop/HDFS version this will run against.
+#
+export HIVE_HOME="${HOME}/base/apache-hive-${HIVE_VERSION}-bin"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+
+export HIVE_LOCAL_DIR="/tmp/${USER}/hive"
+
+# Hive Clients will make a connection to a metastore server which in turn queries the datastore (PostgreSQL)
+# for metadata. This sets the location of the metastore
+export HIVE_METASTORE_DIR="/lustre/${USER}/hive/database/postgres/data"
+
+# Configurations for Postgres, used as a backend for HiveServer/Hive Metastore
+export POSTGRES_HOME="${HOME}/base/pgsql"
+export PGPORT=11115
+export PGDATA="/lustre/${USER}/hive/database/postgres/data"
+
+# DB name for this project
+export HIVE_DB_NAME=""hive_default_db""
+
+###########################################################################
+# Hive Job/Run Configurations
+############################################################################
+
+# Set hive job for MAGPIE_JOB_TYPE = hive
+# Use 'testbench' to run benchmark testing for Hive via hive-testbench modules
+#
+# export HIVE_MODE="testbench"
+
+# The following are configurations for running the hive-testbench software
+#
+# Path to the hive-testbench software
+#export HIVE_TESTBENCH_DIR="TESTBENCHDIR/base/hive-testbench-hdp3"
+
+# Select the type of benchmark.  Options are 'tpcds' and 'tpch'
+# The TPC Benchmark H (TPC-H) is a decision support benchmark. It
+# consists of a suite of business oriented ad-hoc queries and 
+# concurrent data modifications.
+
+# The TPC Benchmark DS (TPC-DS) is a decision support benchmark that models several 
+# generally applicable aspects of a decision support system, 
+# including queries and data maintenance
+# More information can be found at the Transaction Processing Council website
+
+#export HIVE_TESTBENCH_TYPE="tpch"
+
+# Select the Hive CLI version.  Options are 'hive' and 'beeline'.
+# NOTE: 'beeline' option is only available on Hive versions 2.x and greater.
+#export HIVE_CLI_VERSION="beeline"
+
+## Select the size of the data to generate. Size is in GB
+#export HIVE_TESTBENCH_DATA_SIZE=4
+
+# Select the number of queries to run (max is determined by the number of queries in the 
+# selected sample query directory. See hive-testbench for additional info)
+#export HIVE_TESTBENCH_QUERY_COUNT=24
 ############################################################################
 # Phoenix Configurations
 ############################################################################

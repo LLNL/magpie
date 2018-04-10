@@ -38,6 +38,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-kafka
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-mahout
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-pig
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-phoenix
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-hive
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-spark
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-storm
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-tachyon
@@ -114,6 +115,7 @@ Magpie_run_start_hadoop
 
 # After Hadoop setup, requires Hadoop
 Magpie_run_start_pig
+
 # After Hadoop setup, requires Hadoop
 Magpie_run_start_mahout
 
@@ -124,6 +126,10 @@ Magpie_run_start_hbase
 # After Hbase setup, requires Hbase
 # Will set magpie_run_phoenix_should_be_torndown & magpie_run_phoenix_setup_successful appropriately
 Magpie_run_start_phoenix
+
+# After Hadoop setup, Hive requires Hadoop
+# Will set magpie_run_hive_should_be_torndown & magpie_run_hive_setup_successful appropriately
+Magpie_run_start_hive
 
 # Will set magpie_run_spark_should_be_torndown & magpie_run_spark_setup_successful appropriately
 Magpie_run_start_spark
@@ -151,6 +157,7 @@ if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
     && [ "${magpie_run_spark_setup_successful}" == "1" ] \
     && [ "${magpie_run_kafka_setup_successful}" == "1" ] \
     && [ "${magpie_run_zeppelin_setup_successful}" == "1" ] \
+    && [ "${magpie_run_hive_setup_successful}" == "1" ] \
     && [ "${magpie_run_storm_setup_successful}" == "1" ] \
     && [ "${magpie_run_tachyon_setup_successful}" == "1" ]
 then
@@ -185,6 +192,9 @@ then
     elif [ "${MAGPIE_JOB_TYPE}" == "phoenix" ]
     then
         Magpie_run_phoenix
+    elif [ "${MAGPIE_JOB_TYPE}" == "hive" ]
+    then
+        Magpie_run_hive
     elif [ "${MAGPIE_JOB_TYPE}" == "spark" ]
     then
         Magpie_run_spark
@@ -230,6 +240,9 @@ Magpie_run_stop_kafka
 
 # Sets magpie_run_spark_teardown_complete if teardown done
 Magpie_run_stop_spark
+
+# Sets magpie_run_hive_teardown_complete if teardown done
+Magpie_run_stop_hive
 
 # Before Hbase, depends on Hbase
 # Sets magpie_run_phoenix_teardown_complete if teardown done
