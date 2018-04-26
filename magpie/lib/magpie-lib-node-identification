@@ -37,7 +37,7 @@ Magpie_am_I_master () {
 
     Magpie_make_all_local_dirs_node_specific
 
-    for project in HADOOP HBASE SPARK STORM KAFKA ZEPPELIN TACHYON ZOOKEEPER
+    for project in HADOOP HBASE HIVE SPARK STORM KAFKA ZEPPELIN TACHYON ZOOKEEPER
     do
         local setupvar="${project}_SETUP"
         local confdirvar="${project}_CONF_DIR"
@@ -127,6 +127,12 @@ Magpie_am_I_a_hadoop_namenode () {
 
 Magpie_am_I_a_hbase_node () {
     __Magpie_am_I_a_project_node ${HBASE_CONF_DIR} "hbasenoderank" "masters" "regionservers"
+    return $?
+}
+
+Magpie_am_I_a_hive_node() {
+    # Hive only runs on the master
+    __Magpie_am_I_a_project_node ${HIVE_CONF_DIR} "hivenoderank" "masters" ""
     return $?
 }
 

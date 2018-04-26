@@ -135,6 +135,71 @@ then
     zeppelin_jars="${zeppelin_jars},${kafka_jar}"
 fi
 
+if [ "${HIVE_SETUP}" == "yes" ]
+then
+    hive_jars="${HIVE_HOME}/lib/hive-beeline-${HIVE_VERSION}.jar"
+    hive_jars="${HIVE_HOME}/lib/hive-llap-ext-client-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-cli-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-llap-server-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-common-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-llap-tez-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-contrib-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-metastore-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-serde-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-exec-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-service-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-service-rpc-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-shims-0.23-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-shims-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-hplsql-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-shims-common-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-jdbc-${HIVE_VERSION}.jar,${hive_jars}"
+    hive_jars="${HIVE_HOME}/lib/hive-shims-scheduler-${HIVE_VERSION}.jar,${hive_jars}"
+    zeppelin_jars="${zeppelin_jars},${hive_jars}"
+
+    #  Add Spark's Hive .jars to the Zeppelin jars so it can interact with Hive through the interpreter
+    # sets magpie_sparkmajorminorversion
+    Magpie_get_spark_major_minor_version ${SPARK_VERSION}
+    if [ "${HADOOP_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" == "yes" ]
+    then
+        hadoop_yarn=$(ls "${HADOOP_HOME}"/share/hadoop/yarn/*.jar)
+        for j in $hadoop_yarn
+        do
+            zeppelin_jars="$j,${zeppelin_jars}"
+        done
+
+        hadoop_common=$(ls "${HADOOP_HOME}"/share/hadoop/common/*.jar)
+        for j in $hadoop_common
+        do
+            zeppelin_jars="$j,${zeppelin_jars}"
+        done
+    fi
+
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 2.0
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        spark_jars_path="$SPARK_HOME/jars"
+    else
+        spark_jars_path="$SPARK_HOME/lib"
+    fi
+    
+    # need the just the spark version number for a couple of the jars     
+    sparkjarver="$(cut -d '-' -f 1 <<< "${SPARK_VERSION}" )"
+
+    hive_spark_jars="${spark_jars_path}/hive-beeline-1.2.1.spark2.jar"
+    hive_spark_jars="${spark_jars_path}/hive-cli-1.2.1.spark2.jar,${hive_spark_jars}"
+    hive_spark_jars="${spark_jars_path}/hive-exec-1.2.1.spark2.jar,${hive_spark_jars}"
+    hive_spark_jars="${spark_jars_path}/hive-jdbc-1.2.1.spark2.jar,${hive_spark_jars}"
+    hive_spark_jars="${spark_jars_path}/hive-metastore-1.2.1.spark2.jar,${hive_spark_jars}"
+    hive_spark_jars="${spark_jars_path}/spark-hive_2.11-${sparkjarver}.jar,${hive_spark_jars}"
+    hive_spark_jars="${spark_jars_path}/spark-hive-thriftserver_2.11-${sparkjarver}.jar,${hive_spark_jars}"
+    zeppelin_jars="${hive_spark_jars},${zeppelin_jars}"
+
+fi
+
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     phoenix_jars="${PHOENIX_HOME}/phoenix-${PHOENIX_VERSION}-client.jar"

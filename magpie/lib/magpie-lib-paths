@@ -58,6 +58,11 @@ then
     hbasecmdprefix="bin"
 fi
 
+if [ "${HIVE_SETUP}" == "yes" ]
+then
+    hivecmdprefix="bin"
+fi
+
 if [ "${PHOENIX_SETUP}" == "yes" ]
 then
     phoenixcmdprefix="bin"
