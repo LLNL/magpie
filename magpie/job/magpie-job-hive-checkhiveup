@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Check the metastore.  If its up, this will return the PID.  If not, it won't return anything  
+metaPID=`ps aux | grep '[o]rg.apache.hadoop.hive.metastore.HiveMetaStore' | awk '{print $2}'`
+
+# Check HiveServer.  Again, if its up this returns PID, if not; nothing.
+hivePID=`ps aux | grep '[H]iveServer2' | awk '{print $2}'`
+
+if [ -z "$metaPID" ] || [ -z "$hivePID" ]
+then
+  echo "Failed to find Hive Metastore and HiveServer!"
+  exit 1
+else
+  echo "Metastore PID: ${metaPID}. HiveServer: ${hivePID}"
+fi
+
+exit 0

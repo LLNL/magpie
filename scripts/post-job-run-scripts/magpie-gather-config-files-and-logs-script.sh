@@ -71,5 +71,6 @@ Gather_common "storm" "y" "y"
 Gather_common "tachyon" "y" "y"
 Gather_common "zookeeper" "y" "y"
 Gather_common "zeppelin" "y" "y"
+Gather_common "hive" "y" "y"
 
 exit 0
