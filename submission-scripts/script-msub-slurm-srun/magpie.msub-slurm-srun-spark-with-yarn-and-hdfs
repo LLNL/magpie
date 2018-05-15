@@ -845,9 +845,9 @@ export SPARK_MODE="sparkpi"
 # SPARK_STORAGE_MEMORY_FRACTION and SPARK_SHUFFLE_MEMORY_FRACTION for
 # older versions.
 #
-# Defaults to 0.75
+# Defaults to 0.6
 #
-# export SPARK_MEMORY_FRACTION=0.75
+# export SPARK_MEMORY_FRACTION=0.6
 
 # SPARK_MEMORY_STORAGE_FRACTION
 #
@@ -894,9 +894,9 @@ export SPARK_MODE="sparkpi"
 # with 1.6.0, see SPARK_MEMORY_FRACTION and
 # SPARK_MEMORY_STORAGE_FRACTION.
 #
-# Defaults to 0.3
+# Defaults to 0.2
 #
-# export SPARK_SHUFFLE_MEMORY_FRACTION=0.3
+# export SPARK_SHUFFLE_MEMORY_FRACTION=0.2
 
 # SPARK_DEPLOY_SPREADOUT
 #
