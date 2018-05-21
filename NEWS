@@ -17,6 +17,8 @@ Add support for Zookeeper 3.4.11, 3.4.12.
 - Update default Zookeeper to 3.4.12.
 Add support for Spark 2.3.0.
 - Update default Spark to Spark 2.3.0-hadoop2.7
+Add support for Storm 1.1.2, 1.2.0, 1.2.1.
+- Update default Storm to 1.2.1.
 Documentation updates.
 
 magpie 1.83
