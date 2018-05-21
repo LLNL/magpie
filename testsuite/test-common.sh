@@ -117,7 +117,7 @@ kafkazookeeper34java17versions_javaversion=${java17}
 kafka_test_groups="kafkazookeeper34java17versions"
 kafka_all_versions="${kafkazookeeper34java17versions}"
 
-zookeeperjava17versions="3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7 3.4.8 3.4.9 3.4.10 3.4.11"
+zookeeperjava17versions="3.4.0 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 3.4.6 3.4.7 3.4.8 3.4.9 3.4.10 3.4.11 3.4.12"
 zookeeperjava17versions_javaversion=${java17}
 
 zookeeper_test_groups="zookeeperjava17versions"
