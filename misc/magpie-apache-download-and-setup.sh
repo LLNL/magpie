@@ -58,7 +58,7 @@ PRESET_LAUNCH_SCRIPT_CONFIGS="N"
 # Also, patches are based on the package version number.  I may not
 # have patches for every version.
 
-HADOOP_PACKAGE="hadoop/common/hadoop-2.9.0/hadoop-2.9.0.tar.gz"
+HADOOP_PACKAGE="hadoop/common/hadoop-2.9.1/hadoop-2.9.1.tar.gz"
 HBASE_PACKAGE="hbase/1.4.2/hbase-1.4.2-bin.tar.gz"
 PIG_PACKAGE="pig/pig-0.17.0/pig-0.17.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.13.0/apache-mahout-distribution-0.13.0.tar.gz"
