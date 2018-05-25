@@ -123,6 +123,16 @@ else
     fi
 fi
 
+${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} > ${MAGPIE_LOCAL_CONF_DIR}/tmp_nodes
+
+myhostname=`hostname`
+if ! grep -q ${myhostname} ${MAGPIE_LOCAL_CONF_DIR}/tmp_nodes
+then
+    echo "WARNING: hostname command returned a node not listed in scheduler nodelist."
+    echo "WARNING: Magpie may not function if hostname vs scheduler host configuration"
+    echo "WARNING: differs."
+fi
+
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_slaves
 
