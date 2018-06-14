@@ -30,7 +30,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
 
 # This is a job, no loading export files or libs except for minimal convenience ones
 
-if echo ${STORM_VERSION} | grep -q -E "1\.1\.[0-9]"
+if echo ${STORM_VERSION} | grep -q -E "1\.[1-2]\.[0-9]"
 then
     stormstarterjarpath="${STORM_HOME}/examples/storm-starter/target/storm-starter-${STORM_VERSION}.jar"
 else

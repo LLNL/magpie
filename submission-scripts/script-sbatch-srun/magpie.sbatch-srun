@@ -315,7 +315,7 @@ export HADOOP_SETUP_TYPE="MR2"
 # Make sure the version for Mapreduce version 1 or 2 matches whatever
 # you set in HADOOP_SETUP_TYPE
 #
-export HADOOP_VERSION="2.9.0"
+export HADOOP_VERSION="2.9.1"
 
 # Path to your Hadoop build/binaries
 #
@@ -1111,7 +1111,7 @@ export HBASE_SETUP=no
 
 # Version
 #
-export HBASE_VERSION="1.4.2"
+export HBASE_VERSION="1.4.4"
 
 # Path to your Hbase build/binaries
 #
@@ -1510,9 +1510,16 @@ export SPARK_MODE="sparkpi"
 #
 # Default number of tasks to use across the cluster for distributed
 # shuffle operations (groupByKey, reduceByKey, etc) when not set by
-# user. If not specified, defaults to # compute nodes (i.e. 1 per node)
+# user.
 #
-# This is something you (the user) almost definitely want to set.
+# For Spark versions < 1.3.0.  Defaults to number compute nodes
+# (i.e. 1 per node) This is something you (the user) almost definitely
+# want to set as this is non-optimal for most jobs.
+#
+# For Spark versions >= 1.3.0, will not be set by Magpie if the below
+# is commented out.  Internally, Spark defaults this to the largest
+# number of partitions in a parent RDD.  Or for operations without a
+# parent, defaults to nodes X cores.
 #
 # export SPARK_DEFAULT_PARALLELISM=8
 
@@ -1525,9 +1532,9 @@ export SPARK_MODE="sparkpi"
 # SPARK_STORAGE_MEMORY_FRACTION and SPARK_SHUFFLE_MEMORY_FRACTION for
 # older versions.
 #
-# Defaults to 0.75
+# Defaults to 0.6
 #
-# export SPARK_MEMORY_FRACTION=0.75
+# export SPARK_MEMORY_FRACTION=0.6
 
 # SPARK_MEMORY_STORAGE_FRACTION
 #
@@ -1574,9 +1581,9 @@ export SPARK_MODE="sparkpi"
 # with 1.6.0, see SPARK_MEMORY_FRACTION and
 # SPARK_MEMORY_STORAGE_FRACTION.
 #
-# Defaults to 0.3
+# Defaults to 0.2
 #
-# export SPARK_SHUFFLE_MEMORY_FRACTION=0.3
+# export SPARK_SHUFFLE_MEMORY_FRACTION=0.2
 
 # SPARK_DEPLOY_SPREADOUT
 #
@@ -1959,7 +1966,7 @@ export STORM_SETUP=no
 
 # Version
 #
-export STORM_VERSION="1.1.1"
+export STORM_VERSION="1.2.1"
 
 # Path to your Storm build/binaries
 #
@@ -2228,7 +2235,7 @@ export ZOOKEEPER_MODE="launch"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.11"
+export ZOOKEEPER_VERSION="3.4.12"
 
 # Path to your Zookeeper build/binaries
 #
