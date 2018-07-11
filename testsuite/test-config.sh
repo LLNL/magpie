@@ -40,6 +40,7 @@ phoenixperformanceevalrowcount=10000
 DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 LOCAL_DIR_PATH="/tmp/\${USER}"
+NO_LOCAL_DIR_PATH="/p/lcratery/\${USER}/testing"
 HOME_DIR_PATH="\${HOME}"
 LUSTRE_DIR_PATH="/p/lcratery/\${USER}/testing"
 NETWORKFS_DIR_PATH="/p/lcratery/\${USER}/testing"
