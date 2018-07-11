@@ -621,6 +621,19 @@ files=`find . -maxdepth 1 -name "magpie.${submissiontype}*no-local-dir*"`
 if [ -n "${files}" ]
 then
     sed -i -e 's/# export MAGPIE_NO_LOCAL_DIR="yes"/export MAGPIE_NO_LOCAL_DIR="yes"/' ${files}
+    nolocaldirpathsubst=`echo ${NO_LOCAL_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
+    sed -i -e 's/export MAGPIE_LOCAL_DIR="\(.*\)"/export MAGPIE_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export HADOOP_LOCAL_DIR="\(.*\)"/export HADOOP_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export HBASE_LOCAL_DIR="\(.*\)"/export HBASE_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export KAFKA_LOCAL_DIR="\(.*\)"/export KAFKA_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export MAHOUT_LOCAL_DIR="\(.*\)"/export MAHOUT_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export PHOENIX_LOCAL_DIR="\(.*\)"/export PHOENIX_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export PIG_LOCAL_DIR="\(.*\)"/export PIG_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export SPARK_LOCAL_DIR="\(.*\)"/export SPARK_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export STORM_LOCAL_DIR="\(.*\)"/export STORM_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export TACHYON_LOCAL_DIR="\(.*\)"/export TACHYON_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export ZEPPELIN_LOCAL_DIR="\(.*\)"/export ZEPPELIN_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export ZOOKEEPER_LOCAL_DIR="\(.*\)"/export ZOOKEEPER_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
 fi
 
 files=`find . -maxdepth 1 -name "magpie.${submissiontype}*" | grep -v Dependency`
