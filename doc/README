@@ -267,6 +267,7 @@ Hadoop 2.0 -> 2.5 - Java 1.6
 Hadoop 2.6 -> 2.7.3 - Java 1.7
 Hadoop 2.7.4 -> 2.7.X - Java 1.8
 Hadoop 2.8.0 -> ... - Java 1.7
+Hadoop 3.0.0 -> ... - Java 1.8
 
 Hbase 0.98 - Java 1.6
 Hbase 0.99 -> ... - Java 1.7
