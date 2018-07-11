@@ -12,7 +12,7 @@ hadoop2Xjava17versions="2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5 2.7.0 2.7.1 2.7.2 2.
 hadoop2Xjava17versions_javaversion=${java17}
 hadoop2Xjava18versions="2.7.4 2.7.5"
 hadoop2Xjava18versions_javaversion=${java18}
-hadoop3Xjava17versions="3.0.0"
+hadoop3Xjava17versions="3.0.0 3.0.3"
 hadoop3Xjava17versions_javaversion=${java18}
 
 hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions hadoop2Xjava18versions hadoop3Xjava17versions"
@@ -125,7 +125,7 @@ zookeeperjava17versions_javaversion=${java17}
 zookeeper_test_groups="zookeeperjava17versions"
 zookeeper_all_versions="${zookeeperjava17versions}"
 
-zeppelinspark16java17versions="0.6.0 0.6.1 0.6.2 0.7.0 0.7.1 0.7.2 0.7.3"
+zeppelinspark16java17versions="0.6.0 0.6.1 0.6.2 0.7.0 0.7.1 0.7.2 0.7.3 0.8.0"
 zeppelinspark16java17versions_sparkversion="1.6.0-bin-hadoop2.6"
 zeppelinspark16java17versions_javaversion="${java17}"
 

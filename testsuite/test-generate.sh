@@ -104,6 +104,7 @@ hadoop_2_8_4=y
 hadoop_2_9_0=y
 hadoop_2_9_1=y
 hadoop_3_0_0=y
+hadoop_3_0_3=y
 pig_0_13_0=y
 pig_0_14_0=y
 pig_0_15_0=y
@@ -304,6 +305,7 @@ zeppelin_0_7_0=y
 zeppelin_0_7_1=y
 zeppelin_0_7_2=y
 zeppelin_0_7_3=y
+zeppelin_0_8_0=y
 
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
