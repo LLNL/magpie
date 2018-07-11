@@ -144,7 +144,7 @@ UDA/uda-plugin - 3.3.2-0
 Kafka - 2.11-0.9.0.0
 
 Zeppelin - 0.5.6-incubating, 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2,
-           0.7.3
+           0.7.3, 0.8.0
 
 Tachyon - 0.6.0+, 0.6.1+ [TachyonNote]
 
