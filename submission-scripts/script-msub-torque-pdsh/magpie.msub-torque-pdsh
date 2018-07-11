@@ -1883,7 +1883,7 @@ export ZEPPELIN_SETUP=no
 
 # Zeppelin Version
 #
-export ZEPPELIN_VERSION="0.7.3"
+export ZEPPELIN_VERSION="0.8.0"
 
 # Path to your Zeppelin build/binaries
 #
