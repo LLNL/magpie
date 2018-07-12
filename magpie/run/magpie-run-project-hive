@@ -1,0 +1,238 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2018 Army Research Laboratory (ARL) .
+#  Produced at Army Research Laboratory (cf, DISCLAIMER).
+#  Written by Adam Childs <adam.s.childs.ctr@mail.mil>
+#  LLNL-CODE-644248
+#  
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#  
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# These are functions to be called by magpie-run
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
+
+# Return 0 if service up, 1 if not
+__Magpie_run_check_hive_up () {
+    cd ${HIVE_HOME}
+
+    local serverschk=0
+    local serversup=0
+    for server in `cat ${HIVE_CONF_DIR}/masters`
+    do
+        serverschk=`expr ${serverschk} + 1`
+        local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps aux | grep '[H]iveServer2' | awk '{print $2}'`
+        local metastoreup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps aux | grep '[H]iveMetaStore' | awk '{print $2}'`
+
+        if [ "${serverisup}X" != "X" ] \
+           && [ "${metastoreup}X" != "X" ]
+        then
+            serversup=`expr ${serversup} + 1`
+        fi
+    done
+    
+    echo "$serversup/$serverschk Hive Servers are up."
+    if [ "$serverschk" -eq "$serversup" ]
+    then
+        return 0
+    fi
+
+    return 1
+}
+
+Magpie_run_start_hive () {
+    if [ "${HIVE_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
+    then
+        if [ "${magpie_run_hadoop_setup_successful}" == "0" ]
+        then
+            Magpie_output_internal_error "Attempt to setup Hive without Hadoop being setup"
+            magpie_run_hive_should_be_torndown=0
+            magpie_run_hive_setup_successful=0
+            return 1
+        fi
+
+        cd ${HIVE_HOME}
+
+        if [ ${HIVE_MODE} != "setuponly" ]
+        then
+
+            Magpie_make_all_local_dirs_node_specific
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-postgres-daemon.sh start ${HIVE_CONF_DIR}
+
+            # Check to verify Postgres is up and running
+            $POSTGRES_HOME/bin/pg_isready -h localhost -p $PGPORT &> /dev/null
+            
+            if [ $? -ne 0 ]
+            then
+                Magpie_output_internal_error "Postgres failed to start, cannot continue with Hive startup."
+                magpie_run_hive_should_be_torndown=0
+                magpie_run_hive_setup_successful=0 
+                return 1
+            fi
+
+            echo "Starting Hive daemon"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-hive-daemon.sh ${HIVE_CONF_DIR} ${HIVE_HOME} start
+
+        fi
+
+        echo "*******************************************************"
+        echo "*"
+        echo "* Hive Information"
+        echo "*"
+        echo "* To access Hive directly, you'll want to:"
+        echo "*"
+        echo "*   ${MAGPIE_REMOTE_CMD:-ssh}${MAGPIE_REMOTE_CMD_OPTS:+" "}${MAGPIE_REMOTE_CMD_OPTS} ${ZEPPELIN_MASTER_NODE}"
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv JAVA_HOME \"${JAVA_HOME}\""
+            echo "*   setenv HIVE_HOME \"${HIVE_HOME}\""
+            echo "*   setenv HIVE_CONF_DIR \"${HIVE_CONF_DIR}\""
+        else
+            echo "*   export JAVA_HOME=\"${JAVA_HOME}\""
+            echo "*   export HIVE_HOME=\"${HIVE_HOME}\""
+            echo "*   export HIVE_CONF_DIR=\"${HIVE_CONF_DIR}A\""
+        fi
+        echo "*"
+        echo "* Then you can do as you please. To interact with hive you can use the following:"
+        echo "*"
+        echo "*   \$HIVE_HOME/bin/beeline -u jdbc:hive2://${HIVE_MASTER_NODE}:${HIVE_PORT}"
+        echo "*" 
+
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            echo "* If running interactively, sourcing"
+            echo "*"
+            echo "* ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}"
+            echo "*"
+            echo "* will set most common environment variables for your job."
+            echo "*"
+        fi
+        echo "*******************************************************"
+
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "setenv HIVE_HOME \"${HIVE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv HIVE_CONF_DIR \"${HIVE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv PGPORT \"${PGPORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv PGDATA \"${PGDATA}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT} 
+            else
+                echo "export HIVE_HOME=\"${HIVE_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export HIVE_CONF_DIR=\"${HIVE_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export PGPORT=\"${PGPORT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export PGDATA=\"${PGDATA}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+
+            fi
+            echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        fi
+
+        if [ ${HIVE_MODE} != "setuponly" ]
+        then
+            # Return 0 if service up, 1 if not
+            Magpie_check_service_up "Hive" "__Magpie_run_check_hive_up"
+
+            if [ $? -eq 0 ] 
+            then
+                magpie_run_hive_should_be_torndown=1
+                magpie_run_hive_setup_successful=1
+            else
+                magpie_run_hive_should_be_torndown=1
+                magpie_run_hive_setup_successful=0
+                magpie_run_prior_startup_successful=false
+            fi
+        else
+            magpie_run_hive_should_be_torndown=1
+            magpie_run_hive_setup_successful=1
+        fi
+    else
+        magpie_run_hive_should_be_torndown=0
+        magpie_run_hive_setup_successful=1
+    fi
+}
+
+Magpie_run_hive () {
+    if [ "${HIVE_MODE}" == "testbench" ]
+    then
+        if [ ! -d $HIVE_TESTBENCH_DIR ]
+        then
+            Magpie_output_internal_error "HIVE_MODE set to testbench, but HIVE_TESTBENCH_DIR is not found!"
+        else
+            echo "*******************************************************"
+            echo "* Entering Hive ${HIVE_MODE} mode"
+            echo "*******************************************************"
+            ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hive-testbench &
+            local scriptpid=$!
+            wait $scriptpid
+        fi
+    elif [ "${HIVE_MODE}" == "checkhiveup" ]
+    then
+        echo "*******************************************************"
+        echo "* Running CheckHiveUp"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-hive-checkhiveup &
+        local scriptpid=$!
+        wait $scriptpid
+    elif [ "${HIVE_MODE}" == "interactive" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Hive ${HIVE_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute interactive &
+        local scriptpid=$!
+        wait $scriptpid
+    elif [ "${HIVE_MODE}" == "setuponly" ]
+    then
+        echo "*******************************************************"
+        echo "* Entering Hive ${HIVE_MODE} mode"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-sleep countdown &
+        local scriptpid=$!
+        wait ${scriptpid}
+    else
+        Magpie_output_internal_error "HIVE_MODE = ${HIVE_MODE} not handled"
+    fi
+}
+
+Magpie_run_stop_hive () {
+    
+    if [ "${HIVE_SETUP}" == "yes" ] && [ "${magpie_run_hive_should_be_torndown}" == "1" ]
+    then
+        if [ ${HIVE_MODE} != "setuponly" ]
+        then
+            cd ${HIVE_HOME}
+            
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_node_specific
+
+            echo "Stopping Hive on `hostname`"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-hive-daemon.sh ${HIVE_CONF_DIR} ${HIVE_HOME} stop
+
+            # Send Postgres the stop command
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-postgres-daemon.sh stop ${HIVE_CONF_DIR}
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
+        fi
+    fi
+    magpie_run_hive_teardown_complete=1
+}
