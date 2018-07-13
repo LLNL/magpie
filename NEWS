@@ -14,7 +14,7 @@ o Support Hadoop version 3
   - Support new HADOOP_WORKER_COUNT & HADOOP_WORKER_CORE_COUNT
     environment variables.
 
-  - Update default Hadoop version to 3.0.0.
+  - Update default Hadoop version to 3.1.1.
 
 Re-architecture and changes
 
