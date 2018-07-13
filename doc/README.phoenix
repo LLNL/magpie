@@ -141,3 +141,9 @@ Phoenix Patching
   This bug was being tracked in:
   
   https://issues.apache.org/jira/browse/PHOENIX-2303
+
+- In Phoenix 4.14.0, a bug appears to exist in performance.py, but
+  appears to independent of the rest of Phoenix.  So Magpie was
+  released assuming 4.14.0 would work in the generic case.
+
+  https://issues.apache.org/jira/browse/PHOENIX-4510

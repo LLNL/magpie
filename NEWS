@@ -1,5 +1,7 @@
 magpie 1.85
 -----------
+- Fix corner case, where is user sets identical LOCAL_DIR for all
+  projects and NO_LOCAL_DIR is set, some file conflicts can occur.
 Add support for Zeppelin 0.8.0.
 - Update default Zeppelin to 0.8.0.
 Add support for Storm 1.2.2.

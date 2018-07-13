@@ -50,7 +50,7 @@ SSD_DIR_PATH="/ssd/tmp1/\${USER}"
 
 # Set just PROJECT_DIR_PATH is it's the prefix for all
 # projects, or set individual ones
-PROJECT_DIR_PATH="\${HOME}/bigdata"
+PROJECT_DIR_PATH="/usr/workspace/wsa/achu/bigdata/"
 # HADOOP_DIR_PATH=""
 # HBASE_DIR_PATH=""
 # KAFKA_DIR_PATH=""
