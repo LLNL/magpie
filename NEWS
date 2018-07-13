@@ -7,6 +7,10 @@ Add support for Storm 1.2.2.
 Add support for Phoenix 4.14.0-Hbase-1.1, Phoenix 4.14.0-Hbase-1.2,
   Phoenix 4.14.0-Hbase-1.3, Phoenix 4.14.0-Hbase-1.4,
 - Update default Phoenix to 4.14.0-Hbase-1.4.
+Add support for Spark 2.3.1.
+- Update default Spark to 2.3.0-hadoop2.7
+Add support for Hbase 1.4.5.
+- Update default Hbase to 1.4.5.
 
 magpie 1.84
 -----------
