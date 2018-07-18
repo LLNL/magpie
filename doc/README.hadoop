@@ -805,3 +805,15 @@ Hadoop Advanced Usage
    compressing/decompressing data may be beneficial to job
    performance.  Compression can be enabled through the
    HADOOP_COMPRESSION environment variable in the submission scripts.
+
+8) By default Magpie runs as the user who submitted the job. In the event
+   that other users may need to use the same Yarn cluster you can allow 
+   individual users or groups by manually adding the following to your 
+   Magpie script:
+
+   YARN_QUEUES_EXTRA_USERS : Allows extra system users to be added to 
+   the default yarn queue in order to run jobs.
+
+   YARN_QUEUES_EXTRA_GROUPS : Allows extra system groups to be added to 
+   the default yarn queue in order to run jobs. 
+
