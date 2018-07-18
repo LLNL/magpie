@@ -660,6 +660,19 @@ then
     fi
 fi
 
+# Yarn Queue Users
+yarnqueueusers="${USER}"
+if [ "${YARN_QUEUES_EXTRA_USERS}X" != "X" ]
+then
+    yarnqueueusers="${yarnqueueusers},${YARN_QUEUES_EXTRA_USERS}"
+fi
+
+# Yarn Queue Groups
+if [ "${YARN_QUEUES_EXTRA_GROUPS}X" != "X" ]
+then
+    yarnqueueusers="${yarnqueueusers} ${YARN_QUEUES_EXTRA_GROUPS}"
+fi
+
 # disable hsperfdata if using NO_LOCAL_DIR
 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
 then
@@ -1052,6 +1065,7 @@ then
         -e "s/YARNLOCALIZERADDRESS/${default_yarn_nodemanager_localizer_address}/g" \
         -e "s/YARNNODEMANAGERWEBAPPADDRESS/${default_yarn_nodemanager_webapp_address}/g" \
         -e "s/YARNDEFAULTUSER/${USER}/g" \
+        -e "s/YARNQUEUEUSERS/${yarnqueueusers}/g" \
         -e "s/YARNRESROUCECPUVCORES/${magpie_processor_count}/g" \
         -e "s/YARNVMEMCHECK/${yarnvmemcheck}/g" \
         -e "s/YARNPMEMCHECK/${yarnpmemcheck}/g" \

@@ -156,7 +156,7 @@
 
 <property>
   <name>yarn.scheduler.capacity.root.acl_submit_applications</name>
-  <value>YARNDEFAULTUSER</value>
+  <value>YARNQUEUEUSERS</value>
 </property>
 
 <property>
@@ -176,7 +176,7 @@
 
 <property>
   <name>yarn.scheduler.capacity.root.default.acl_submit_applications</name>
-  <value>YARNDEFAULTUSER</value>
+  <value>YARNQUEUEUSERS</value>
 </property>
 
 <property>
