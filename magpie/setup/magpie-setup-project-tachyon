@@ -168,8 +168,8 @@ if [ "${TACHYON_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${TACHYON_ENVIRONMENT
 then
     cat ${TACHYON_ENVIRONMENT_EXTRA_PATH} >> ${post_tachyonenvsh}
 else
-    echo "ulimit -n ${magpie_openfilescount}" >> ${post_tachyonenvsh}
-    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_tachyonenvsh}
+    echo "ulimit -n ${magpie_openfilescount} &> /dev/null" >> ${post_tachyonenvsh}
+    echo "ulimit -u ${magpie_userprocessescount} &> /dev/null" >> ${post_tachyonenvsh}
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}

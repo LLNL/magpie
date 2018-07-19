@@ -578,8 +578,8 @@ if [ "${SPARK_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${SPARK_ENVIRONMENT_EXT
 then
     cat ${SPARK_ENVIRONMENT_EXTRA_PATH} >> ${post_sparkenvsh}
 else
-    echo "ulimit -n ${magpie_openfilescount}" >> ${post_sparkenvsh}
-    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_sparkenvsh}
+    echo "ulimit -n ${magpie_openfilescount} &> /dev/null" >> ${post_sparkenvsh}
+    echo "ulimit -u ${magpie_userprocessescount} &> /dev/null" >> ${post_sparkenvsh}
 fi
 
 if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
