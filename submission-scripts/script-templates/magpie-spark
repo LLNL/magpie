@@ -315,6 +315,15 @@ export SPARK_MODE="sparkpi"
 #
 # export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
 
+# SPARK_NETWORK_TIMEOUT
+#
+# Special case configuration for "spark.network.timeout" if your job
+# is particularly busy and may be seeing a number of message timeouts.
+#
+# Specified in seconds, by default 120.
+#
+# export SPARK_NETWORK_TIMEOUT=120
+
 # SPARK_USE_YARN
 #
 # By default, Magpie uses the Spark standalone scheduler.  As

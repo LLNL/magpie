@@ -297,6 +297,13 @@ then
     akkathreads=4
 fi
 
+if [ "${SPARK_NETWORK_TIMEOUT}X" == "X" ]
+then
+    sparknetworktimeout="120"
+else
+    sparknetworktimeout="${SPARK_NETWORK_TIMEOUT}"
+fi
+
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
@@ -666,8 +673,9 @@ then
         -e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
         -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
 	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \
+        -e "s/SPARKNETWORKTIMEOUT/${sparknetworktimeout}/g" \
         ${post_sparkdefaultsconf}
-    
+
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
     Magpie_vercomp ${magpie_sparkmajorminorversion} 1.3
