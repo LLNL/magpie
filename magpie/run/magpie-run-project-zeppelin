@@ -219,7 +219,7 @@ Magpie_run_stop_zeppelin () {
             Magpie_make_all_local_dirs_unspecified
 
             echo "Stopping Zeppelin"
-            ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh stop
+            ${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh --config ${ZEPPELIN_CONF_DIR} stop
 
             # Make variables specific now within Magpie
             Magpie_make_all_local_dirs_node_specific
