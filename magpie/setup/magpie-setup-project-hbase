@@ -246,8 +246,8 @@ if [ "${HBASE_ENVIRONMENT_EXTRA_PATH}X" != "X" ] && [ -f ${HBASE_ENVIRONMENT_EXT
 then
     cat ${HBASE_ENVIRONMENT_EXTRA_PATH} >> ${post_hbaseenvsh}
 else
-    echo "ulimit -n ${magpie_openfilescount}" >> ${post_hbaseenvsh}
-    echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hbaseenvsh}
+    echo "ulimit -n ${magpie_openfilescount} &> /dev/null" >> ${post_hbaseenvsh}
+    echo "ulimit -u ${magpie_userprocessescount} &> /dev/null" >> ${post_hbaseenvsh}
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}

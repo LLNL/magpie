@@ -920,8 +920,8 @@ then
     then
         cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_hadoopenvsh}
     else
-        echo "ulimit -n ${magpie_openfilescount}" >> ${post_hadoopenvsh}
-        echo "ulimit -u ${magpie_userprocessescount}" >> ${post_hadoopenvsh}
+        echo "ulimit -n ${magpie_openfilescount} &> /dev/null" >> ${post_hadoopenvsh}
+        echo "ulimit -u ${magpie_userprocessescount} &> /dev/null" >> ${post_hadoopenvsh}
     fi
 
     cp ${pre_log4jproperties} ${post_log4jproperties}
@@ -1128,8 +1128,8 @@ then
     then
         cat ${HADOOP_ENVIRONMENT_EXTRA_PATH} >> ${post_yarnenvsh}
     else
-        echo "ulimit -n ${magpie_openfilescount}" >> ${post_yarnenvsh}
-        echo "ulimit -u ${magpie_userprocessescount}" >> ${post_yarnenvsh}
+        echo "ulimit -n ${magpie_openfilescount} &> /dev/null" >> ${post_yarnenvsh}
+        echo "ulimit -u ${magpie_userprocessescount} &> /dev/null" >> ${post_yarnenvsh}
     fi
 fi
 
