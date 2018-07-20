@@ -40,13 +40,13 @@ secondsleft=$magpie_jobtimeseconds
 
 if [ "$1X" == "X" ]
 then
-    Magpie_output_internal_error "magpie-run-sleep, first argument unset"
+    Magpie_output_internal_error "magpie-job-sleep, first argument unset"
     exit 1
 fi
 
 if [ "$1" != "normal" ] && [ "$1" != "countdown" ]
 then
-    Magpie_output_internal_error "magpie-run-sleep, first argument invalid = $1"
+    Magpie_output_internal_error "magpie-job-sleep, first argument invalid = $1"
     exit 1
 fi
 
