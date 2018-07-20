@@ -57,7 +57,7 @@ __Yarn_job_kill_handler () {
         $command
     done
 
-    kill -s 9 ${childpid}
+    for pid in $(pstree -cp ${childpid} | grep -Po '\(\K\d+' | sed -re 's/$/ /g'); do kill $pid; done
 }
 
 if [ "$1X" == "X" ]
@@ -143,15 +143,15 @@ then
     fi
     echo "*******************************************************"
 
-    trap "echo \"Received interrupt from user, ${typemessage} ending early.\"; kill -s 9 ${childpid}" 10
-fi    
+    trap "echo \"Received interrupt from user, ${typemessage} ending early.\"; for pid in \$(pstree -cp ${childpid} | grep -Po '\(\K\d+' | sed -re 's/$/ /g'); do kill \$pid; done" 10
+fi
 
 # Some systems have SIGUSR2 as USR2 so we hardcode the value of 12
 
 # This trap is used exclusively by Magpie to kill the job if it is
 # running long
 
-trap "echo \"Kill script due to job time limit being reached.\"; kill -s 9 ${childpid}" 12
+trap "echo \"Kill script due to job time limit being reached.\"; for pid in \$(pstree -cp ${childpid} | grep -Po '\(\K\d+' | sed -re 's/$/ /g'); do kill \$pid; done" 12
 
 wait $childpid
 
