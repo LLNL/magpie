@@ -271,7 +271,7 @@ Magpie_run_start_hadoop () {
                 then
                     sleepwait=30
                 fi
-                echo "Waiting ${sleepwait} seconds to allows Hadoop daemons to setup"
+                echo "Waiting ${sleepwait} seconds to allow Hadoop daemons to setup"
                 sleep ${sleepwait}
                 magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
             fi
