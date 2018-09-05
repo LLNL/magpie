@@ -40,12 +40,12 @@ phoenixperformanceevalrowcount=10000
 DEFAULT_HADOOP_FILESYSTEM_MODE="hdfsoverlustre"
 
 LOCAL_DIR_PATH="/tmp/\${USER}"
-NO_LOCAL_DIR_PATH="/p/lcratery/\${USER}/testing"
+NO_LOCAL_DIR_PATH="/p/lquake/\${USER}/testing"
 HOME_DIR_PATH="\${HOME}"
-LUSTRE_DIR_PATH="/p/lcratery/\${USER}/testing"
-NETWORKFS_DIR_PATH="/p/lcratery/\${USER}/testing"
-RAWNETWORKFS_DIR_PATH="/p/lcratery/\${USER}/testing"
-ZOOKEEPER_DATA_DIR_PATH="/p/lcratery/\${USER}/testing"
+LUSTRE_DIR_PATH="/p/lquake/\${USER}/testing"
+NETWORKFS_DIR_PATH="/p/lquake/\${USER}/testing"
+RAWNETWORKFS_DIR_PATH="/p/lquake/\${USER}/testing"
+ZOOKEEPER_DATA_DIR_PATH="/p/lquake/\${USER}/testing"
 SSD_DIR_PATH="/ssd/tmp1/\${USER}"
 
 # Set just PROJECT_DIR_PATH is it's the prefix for all
