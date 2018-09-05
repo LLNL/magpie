@@ -1111,7 +1111,7 @@ export HBASE_SETUP=no
 
 # Version
 #
-export HBASE_VERSION="1.4.5"
+export HBASE_VERSION="1.4.6"
 
 # Path to your Hbase build/binaries
 #
