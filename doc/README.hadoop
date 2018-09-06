@@ -95,7 +95,7 @@ Instructions For Running Hadoop
    Once you have figured out how you wish to run your job, you will
    likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
    Create a script that will run your job/calculation automatically,
-   set it in MAGPIE_SCRIPT_PATH, and then run your job.  You can find
+   set it in MAGPIE_JOB_SCRIPT, and then run your job.  You can find
    an example job script in examples/hadoop-example-job-script.
 
    See "Exported Environment Variables" in README for information on
@@ -162,7 +162,7 @@ Hadoop Convenience Scripts
 --------------------------
 
 The following job scripts may be convenient.  They can be run by
-setting MAGPIE_JOB_TYPE set to 'script' and setting MAGPIE_SCRIPT_PATH
+setting MAGPIE_JOB_TYPE set to 'script' and setting MAGPIE_JOB_SCRIPT
 to the script.
 
 job-scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh

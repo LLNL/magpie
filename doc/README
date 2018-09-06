@@ -393,7 +393,7 @@ directory, both for possible usefulness and as examples.  They are
 organized within the directory as follows:
 
 job-scripts - These are scripts that you would run as a possible job
-in Magpie.  You would set these scripts in the MAGPIE_SCRIPT_PATH
+in Magpie.  You would set these scripts in the MAGPIE_JOB_SCRIPT
 environment variable.
 
 pre-job-run-scripts - These are scripts that you would run before the

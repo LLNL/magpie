@@ -179,7 +179,7 @@ __Magpie_check_deprecated_configs () {
 oldmodes="HADOOP_MODE PIG_MODE MAHOUT_MODE HBASE_MODE PHOENIX_MODE SPARK_MODE KAFKA_MODE ZEPPELIN_MODE STORM_MODE ZOOKEEPER_MODE"
 oldprojects="HADOOP_UDA_SETUP TACHYON_SETUP"
 oldfeatures="HDFS_FEDERATION_NAMENODE_COUNT HADOOP_PER_JOB_HDFS_PATH ZOOKEEPER_PER_JOB_DATA_DIR HADOOP_RAWNETWORKFS_BLOCKSIZE"
-oldvars="SPARK_USE_YARN"
+oldvars="SPARK_USE_YARN MAGPIE_SCRIPT_PATH MAGPIE_SCRIPT_ARGS"
 
 for var in ${oldmodes} ${oldprojects} ${oldfeatures} ${oldvars}
 do
@@ -258,9 +258,11 @@ fi
 
 if [ "${MAGPIE_JOB_TYPE}" == "script" ]
 then
-    __Magpie_check_must_be_set "MAGPIE_SCRIPT_PATH" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
+    __Magpie_check_must_be_set "MAGPIE_JOB_SCRIPT" "for MAGPIE_JOB_TYPE = ${MAGPIE_JOB_TYPE}"
 
-    __Magpie_check_path_is_executable ${MAGPIE_SCRIPT_PATH}
+    # if user has multiple args, check if executable is ok
+    jobargs=($MAGPIE_JOB_SCRIPT)
+    __Magpie_check_path_is_executable ${jobargs[0]}
 fi
 
 magpiestartupshutdowntime=`expr ${magpie_startup_time_value} + ${magpie_shutdown_time_value}`

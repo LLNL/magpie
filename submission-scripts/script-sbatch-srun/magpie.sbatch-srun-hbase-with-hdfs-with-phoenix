@@ -97,7 +97,7 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #             For Phoenix, testall will run performanceeval
 #             For Zookeeper, testall will run zookeeperruok
 #
-# "script" - Run arbitraty script, as specified by MAGPIE_SCRIPT_PATH.
+# "script" - Run arbitraty script, as specified by MAGPIE_JOB_SCRIPT.
 #            You can find example job scripts in examples/.
 #
 # "interactive" - manually interact with job run to submit jobs,
@@ -111,17 +111,10 @@ export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
 #
 export MAGPIE_JOB_TYPE="phoenix"
 
-# Specify script to execute for "script" mode in MAGPIE_JOB_TYPE
+# Specify script and arguments to execute for "script" mode in
+# MAGPIE_JOB_TYPE
 #
-# export MAGPIE_SCRIPT_PATH="${HOME}/my-job-script"
-
-# Specify arguments for script specified in MAGPIE_SCRIPT_PATH
-#
-# Note that many Magpie generated environment variables are not
-# generated until the job has launched.  You won't be able to use them
-# here.
-#
-# export MAGPIE_SCRIPT_ARGS=""
+# export MAGPIE_JOB_SCRIPT="${HOME}/my-job-script"
 
 # Specify script startup / shutdown time window
 #

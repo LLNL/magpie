@@ -78,7 +78,7 @@ Instructions For Using Mahout
    Once you have figured out how you wish to run your job, you will
    likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
    Create a script that will run your job/calculation automatically,
-   set it in MAGPIE_SCRIPT_PATH, and then run your job.
+   set it in MAGPIE_JOB_SCRIPT, and then run your job.
 
    See "Exported Environment Variables" in README for information on
    common exported environment variables that may be useful in

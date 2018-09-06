@@ -93,6 +93,9 @@ Misc Features & Changes
 - MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN can have multiple scripts
   listed by comma.
 
+- MAGPIE_SCRIPT_PATH and MAGPIE_SCRIPT_ARGS have been collapsed into
+  one environment variable MAGPIE_JOB_SCRIPT.
+
 - Default HDFS namenode port is now 8020 instead of 54310
 
 - Update default Java to 1.8 in submission scripts.
@@ -132,6 +135,9 @@ o The following are possible changes users may need to make in older
 
   - HADOOP_FILESYSTEM_MODE no longer takes input of "magpienetworkfs"
     or "intellustre".
+
+  - MAGPIE_SCRIPT_PATH and MAGPIE_SCRIPT_ARGS should be converted to
+    MAGPIE_JOB_SCRIPT.
 
 magpie 1.85
 -----------

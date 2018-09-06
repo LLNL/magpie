@@ -32,7 +32,7 @@ SetupMagpieTestScript () {
 
     sed -i \
         -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-        -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/'"${testscript}"'"/' \
+        -e 's/# export MAGPIE_JOB_SCRIPT="\(.*\)"/export MAGPIE_JOB_SCRIPT="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/'"${testscript}"'"/' \
         ${files}
 }
 

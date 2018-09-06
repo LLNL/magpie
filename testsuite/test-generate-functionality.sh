@@ -472,8 +472,7 @@ __GenerateFunctionalityTests_JobTimeout() {
     then
         sed -i \
             -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-            -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh"/' \
-            -e 's/# export MAGPIE_SCRIPT_ARGS="\(.*\)"/export MAGPIE_SCRIPT_ARGS="\-s '"${timeoutputforjob}"'"/' \
+            -e 's/# export MAGPIE_JOB_SCRIPT="\(.*\)"/export MAGPIE_JOB_SCRIPT="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-sleep.sh \-s '"${timeoutputforjob}"'"/' \
             ${files}
 
         # Guarantee atleast 5 mins for the job that should end quickly
@@ -560,7 +559,7 @@ __GenerateFunctionalityTests_MagpieExports() {
     if [ -n "${files}" ]
     then
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' ${files}
-        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-env.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_JOB_SCRIPT="\(.*\)"/export MAGPIE_JOB_SCRIPT="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-env.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/checkexports-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
@@ -624,7 +623,7 @@ __GenerateFunctionalityTests_MagpieScript() {
     if [ -n "${files}" ]
     then
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' ${files}
-        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-job-run.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_JOB_SCRIPT="\(.*\)"/export MAGPIE_JOB_SCRIPT="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-job-run.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/magpiescript-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
@@ -830,8 +829,7 @@ __GenerateFunctionalityTests_ScriptArgs() {
     then
         sed -i \
             -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' \
-            -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh"/' \
-            -e 's/# export MAGPIE_SCRIPT_ARGS="\(.*\)"/export MAGPIE_SCRIPT_ARGS="ECHOXXXECHO"/' \
+            -e 's/# export MAGPIE_JOB_SCRIPT="\(.*\)"/export MAGPIE_JOB_SCRIPT="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh ECHOXXXECHO"/' \
             ${files}
 
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/scriptargs-FILENAMESEARCHREPLACEKEY/" ${files}

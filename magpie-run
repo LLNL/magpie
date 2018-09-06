@@ -151,9 +151,9 @@ then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
         echo "*******************************************************"
-        echo "* Executing script $MAGPIE_SCRIPT_PATH $MAGPIE_SCRIPT_ARGS"
+        echo "* Executing script $MAGPIE_JOB_SCRIPT"
         echo "*******************************************************"
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_SCRIPT_PATH} ${MAGPIE_SCRIPT_ARGS} &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script ${MAGPIE_JOB_SCRIPT} &
         scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${MAGPIE_JOB_TYPE}" == "interactive" ]

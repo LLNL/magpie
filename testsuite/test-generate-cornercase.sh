@@ -572,7 +572,7 @@ __GenerateCornerCaseTests_BadSetScript() {
     if [ "${magpietests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-1
         sed -i -e 's/export MAGPIE_JOB_TYPE="\(.*\)"/export MAGPIE_JOB_TYPE="script"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-1
-        sed -i -e 's/# export MAGPIE_SCRIPT_PATH="\(.*\)"/export MAGPIE_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-1
+        sed -i -e 's/# export MAGPIE_JOB_SCRIPT="\(.*\)"/export MAGPIE_JOB_SCRIPT="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-1
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-2
         sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-2
@@ -1350,15 +1350,21 @@ __GenerateCornerCaseTests_NoLongerSupported() {
     # We set to "foobar" because the value shouldn't matter
 
     if [ "${magpietests}" == "y" ]; then
-        # We put these under "magpie tests" b/c there's no better place to put them
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-1
-        sed -i '/# Run Job/a export KAFKA_MODE="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-1
+        sed -i '/# Run Job/a export MAGPIE_SCRIPT_PATH="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-1
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-2
-        sed -i '/# Run Job/a export ZEPPELIN_MODE="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-2
+        sed -i '/# Run Job/a export MAGPIE_SCRIPT_ARGS="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-2
 
+        # We put these under "magpie tests" b/c there's no better place to put them
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-3
-        sed -i '/# Run Job/a export TACHYON_SETUP="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-3
+        sed -i '/# Run Job/a export KAFKA_MODE="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-3
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-4
+        sed -i '/# Run Job/a export ZEPPELIN_MODE="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-4
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-nolongersupported-5
+        sed -i '/# Run Job/a export TACHYON_SETUP="foobar"' magpie.${submissiontype}-magpie-cornercase-nolongersupported-5
     fi
 
     if [ "${hadooptests}" == "y" ]; then
