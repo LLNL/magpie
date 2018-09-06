@@ -449,15 +449,15 @@ java18pathsubst=`echo ${JAVA18PATH} | sed "s/\\//\\\\\\\\\//g"`
 
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
-    timestringtoreplace="<my time in minutes>"
+    timestringtoreplace="<my_time_in_minutes>"
     functiontogettimeoutput="GetMinutesJob"
 elif [ "${submissiontype}" == "msub-slurm-srun" ]
 then
-    timestringtoreplace="<my time in seconds or HH:MM:SS>"
+    timestringtoreplace="<my_time_in_seconds_or_HH:MM:SS>"
     functiontogettimeoutput="GetSecondsJob"
 elif [ "${submissiontype}" == "lsf-mpirun" ]
 then
-    timestringtoreplace="<my time in hours:minutes>"
+    timestringtoreplace="<my_time_in_hours:minutes>"
     functiontogettimeoutput="GetHoursMinutesJob"
 fi
 
@@ -665,9 +665,9 @@ fi
 files=`find . -maxdepth 1 -name "magpie.${submissiontype}*"`
 if [ -n "${files}" ]
 then
-    sed -i -e "s/<my node count>/${basenodescount}/" ${files}
+    sed -i -e "s/<my_node_count>/${basenodescount}/" ${files}
 
-    sed -i -e "s/<my job name>/test/" ${files}
+    sed -i -e "s/<my_job_name>/test/" ${files}
 
     sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/scripts\/post-job-run-scripts\/magpie-gather-config-files-and-logs-script.sh"/' ${files}
 
@@ -687,20 +687,20 @@ then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
 
-        sed -i -e "s/<my partition>/${sbatchsrunpartition}/" ${files}
+        sed -i -e "s/<my_partition>/${sbatchsrunpartition}/" ${files}
     elif [ "${submissiontype}" == "msub-slurm-srun" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
 
-        sed -i -e "s/<my partition>/${msubslurmsrunpartition}/" ${files}
-        sed -i -e "s/<my batch queue>/${msubslurmsrunbatchqueue}/" ${files}
+        sed -i -e "s/<my_partition>/${msubslurmsrunpartition}/" ${files}
+        sed -i -e "s/<my_batch_queue>/${msubslurmsrunbatchqueue}/" ${files}
     elif [ "${submissiontype}" == "lsf-mpirun" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/lsf/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" ${files}
 
-        sed -i -e "s/<my queue>/${lsfqueue}/" ${files}
+        sed -i -e "s/<my_queue>/${lsfqueue}/" ${files}
     fi
 fi
 

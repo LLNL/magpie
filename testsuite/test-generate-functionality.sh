@@ -67,11 +67,11 @@ __GenerateFunctionalityTests_BadJobNames() {
         # Some job scripts use environment variable, some use command line
         # options.  So check for quoted situation first.  If no quotes,
         # add them.
-        sed -i -e 's/\"<my job name>\"/test job/' magpie.${submissiontype}*functionality-job-name-whitespace
-        sed -i -e 's/<my job name>/\"test job\"/' magpie.${submissiontype}*functionality-job-name-whitespace
+        sed -i -e 's/\"<my_job_name>\"/test job/' magpie.${submissiontype}*functionality-job-name-whitespace
+        sed -i -e 's/<my_job_name>/\"test job\"/' magpie.${submissiontype}*functionality-job-name-whitespace
 
-        sed -i -e 's/\"<my job name>\"/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
-        sed -i -e 's/<my job name>/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
+        sed -i -e 's/\"<my_job_name>\"/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
+        sed -i -e 's/<my_job_name>/test$job/' magpie.${submissiontype}*functionality-job-name-dollarsign
     fi
 }
 

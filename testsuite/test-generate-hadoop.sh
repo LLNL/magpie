@@ -516,12 +516,12 @@ GenerateHadoopPostProcessing() {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop*hdfs-more-nodes*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/${basenodesmorenodescount}/" ${files}
+        sed -i -e "s/<my_node_count>/${basenodesmorenodescount}/" ${files}
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hadoop*hdfs-fewer-nodes*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/${basenodescount}/" ${files}
+        sed -i -e "s/<my_node_count>/${basenodescount}/" ${files}
     fi
 }

@@ -294,18 +294,18 @@ GenerateHbasePostProcessing () {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*hdfs-more-nodes*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodesmorenodescount}/" ${files}
+        sed -i -e "s/<my_node_count>/${basenodeszookeepernodesmorenodescount}/" ${files}
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*hdfs-fewer-nodes*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" ${files}
+        sed -i -e "s/<my_node_count>/${basenodeszookeepernodescount}/" ${files}
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-hbase-with-hdfs*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" ${files}
+        sed -i -e "s/<my_node_count>/${basenodeszookeepernodescount}/" ${files}
     fi
 }

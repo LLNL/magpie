@@ -40,18 +40,18 @@
 # you are more comfortable specifying these on the command line, feel
 # free to delete the customizations below.
 
-#BSUB -n <my node count>
+#BSUB -n <my_node_count>
 #BSUB -o "lsf-%J.out"
 
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
 # timelimit should be a fair amount larger than them combined.
-#BSUB -W <my time in hours:minutes>
+#BSUB -W <my_time_in_hours:minutes>
 
 # Job name.  This will be used in naming directories for the job.
-#BSUB -J <my job name>
+#BSUB -J <my_job_name>
 
 # Queue to launch job in
-#BSUB -q <my queue>
+#BSUB -q <my_queue>
 
 ## LSF Values
 # Generally speaking, don't touch the following, misc other configuration

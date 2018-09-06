@@ -16,22 +16,22 @@
 # you are more comfortable specifying these on the command line, feel
 # free to delete the customizations below.
 
-#PBS -N <my job name>
+#PBS -N <my_job_name>
 
-#PBS -A <my account string>
+#PBS -A <my_account_string>
 
-#PBS -l nodes=<my node count>
+#PBS -l nodes=<my_node_count>
 
 #PBS -o DEFAULTJOBOUTPUTFILE
 
-#PBS -l partition=<my partition>
+#PBS -l partition=<my_partition>
 
-#PBS -q <my batch queue>
+#PBS -q <my_batch_queue>
 
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
 # walltime should be a fair amount larger than them combined.
 
-#PBS -l walltime=<my time in seconds or HH:MM:SS>
+#PBS -l walltime=<my_time_in_seconds_or_HH:MM:SS>
 
 #PBS -l resfailpolicy=ignore
 

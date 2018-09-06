@@ -907,7 +907,7 @@ __GenerateCornerCaseTests_BadNodeCount() {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badnodecount-small*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/1/" ${files}
+        sed -i -e "s/<my_node_count>/1/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-small-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
@@ -915,7 +915,7 @@ __GenerateCornerCaseTests_BadNodeCount() {
     if [ -n "${files}" ]
     then
         local badnodecountpluszookeeper=`expr ${zookeepernodecount} + 1`
-        sed -i -e "s/<my node count>/${badnodecountpluszookeeper}/" ${files}
+        sed -i -e "s/<my_node_count>/${badnodecountpluszookeeper}/" ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/badnodecount-big-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
@@ -1315,7 +1315,7 @@ __GenerateCornerCaseTests_NotEnoughNodesForHDFS() {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-notenoughnodesforhdfs-*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/3/" ${files}
+        sed -i -e "s/<my_node_count>/3/" ${files}
         sed -i -e 's/# export HADOOP_HDFS_REPLICATION="\(.*\)"/export HADOOP_HDFS_REPLICATION="3"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/notenoughnodesforhdfs-FILENAMESEARCHREPLACEKEY/" ${files}
     fi

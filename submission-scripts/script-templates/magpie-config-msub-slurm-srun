@@ -16,24 +16,24 @@
 # you are more comfortable specifying these on the command line, feel
 # free to delete the customizations below.
 
-#MSUB -l nodes=<my node count>
+#MSUB -l nodes=<my_node_count>
 
 #MSUB -o DEFAULTJOBOUTPUTFILE
 
-#MSUB -l partition=<my partition>
+#MSUB -l partition=<my_partition>
 
-#MSUB -q <my batch queue>
+#MSUB -q <my_batch_queue>
 
 # Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, the
 # walltime should be a fair amount larger than them combined.
 
-#MSUB -l walltime=<my time in seconds or HH:MM:SS>
+#MSUB -l walltime=<my_time_in_seconds_or_HH:MM:SS>
 
 #MSUB -l resfailpolicy=ignore
 
 #MSUB -V
 
-export MOAB_JOBNAME="<my job name>"
+export MOAB_JOBNAME="<my_job_name>"
 
 export SLURM_TASKS_PER_NODE=1
 export SBATCH_EXCLUSIVE="yes"

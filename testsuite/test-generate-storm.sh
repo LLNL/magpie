@@ -112,7 +112,7 @@ GenerateStormPostProcessing () {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}-storm*"`
     if [ -n "${files}" ]
     then
-        sed -i -e "s/<my node count>/${basenodeszookeepernodescount}/" ${files}
+        sed -i -e "s/<my_node_count>/${basenodeszookeepernodescount}/" ${files}
     fi
 }
 
