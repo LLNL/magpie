@@ -126,13 +126,16 @@ __Magpie_check_paths_are_executable () {
     then
         IFSORIG=${IFS}
         IFS=","
-        for script in ${!scriptsvar}
+        for scriptargs in ${!scriptsvar}
         do
-            __Magpie_check_path_is_executable ${script}
+            # can't use IFS here
+            scriptarg0=`echo "$scriptargs" | awk '{print $1;}'`
+            __Magpie_check_path_is_executable ${scriptarg0}
         done
         IFS=${IFSORIG}
     else
-        __Magpie_check_path_is_executable ${!scriptsvar}
+        scriptargsarray=(${!scriptsvar})
+        __Magpie_check_path_is_executable ${scriptargsarray[0]}
     fi
 }
 

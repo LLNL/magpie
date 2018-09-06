@@ -209,6 +209,30 @@ __SubmitFunctionalityTests_PrePostRunScripts() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostrunscripts-multi
     BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostrunscripts-multi
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostrunscripts-multi
+
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostecho-single
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostecho-single
+
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostecho-multi
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostecho-multi
 }
 
 __SubmitFunctionalityTests_PreRunScriptError() {

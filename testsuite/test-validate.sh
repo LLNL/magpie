@@ -852,6 +852,40 @@ then
     done
 fi
 
+__check_prepostecho () {
+    local file=$1
+    local preorpost=$2
+
+    if echo ${file} | grep -q -e "multi"
+    then
+        num1=`grep -e "${preorpost}1" $file | wc -l`
+        num2=`grep -e "${preorpost}2" $file | wc -l`
+        if [ "${num1}" == "0" ] || [ "${num2}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+    else
+        num=`grep -e "${preorpost}${preorpost}" $file | wc -l`
+        if [ "${num}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+    fi
+}
+
+__get_test_files prepostecho
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        __check_prepostecho ${file} "PRE"
+        __check_prepostecho ${file} "POST"
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __get_test_files prerunscripterror
 if [ $? -eq 0 ]
 then

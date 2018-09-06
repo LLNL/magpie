@@ -40,11 +40,13 @@ then
         IFS=","
         for script in ${MAGPIE_POST_JOB_RUN}
         do
+            IFS=${IFSORIG}
             ${script}
             if [ $? -ne 0 ]
             then
                 exit $?
             fi
+            IFS=","
         done
         IFS=${IFSORIG}
     else

@@ -181,7 +181,8 @@ export MAGPIE_JOB_TYPE="hadoop"
 # magpie-example-post-job-script for ideas of what you can do w/ these
 # scripts
 #
-# Multiple scripts can be specified separated by comma.
+# Multiple scripts can be specified separated by comma.  Arguments can
+# be passed to scripts as well.
 #
 # A number of convenient scripts are available in the
 # ${MAGPIE_SCRIPTS_HOME}/scripts directory.
