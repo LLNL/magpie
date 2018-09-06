@@ -1,6 +1,6 @@
 magpie 1.85
 -----------
-- Fix corner case, where is user sets identical LOCAL_DIR for all
+- Fix corner case, where if user sets identical LOCAL_DIR for all
   projects and NO_LOCAL_DIR is set, some file conflicts can occur.
 - Fix corner case, where child process was killed properly, but not
   ancestor processes.
