@@ -99,6 +99,9 @@ Misc Features & Changes
 - MAGPIE_SCRIPT_PATH and MAGPIE_SCRIPT_ARGS have been collapsed into
   one environment variable MAGPIE_JOB_SCRIPT.
 
+- magpie-gather-config-files-and-logs-script.sh: Takes an argument to
+  store log files to an alternate location other than $HOME.
+
 - Default HDFS namenode port is now 8020 instead of 54310
 
 - Update default Java to 1.8 in submission scripts.

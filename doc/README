@@ -413,7 +413,10 @@ debugging.
 post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
 This script will get all of the conf files and log files from Hadoop,
 Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
-for post-analysis of your job.  It's convenient for debugging.
+for post-analysis of your job.  It's convenient for debugging.  By
+default files are stored in ${HOME}/${MAGPIE_JOB_NAME}, but the base
+directory can be altered with the first argument passed into the
+script.
 
 In addition, the misc/magpie-apache-download-and-setup.sh may be
 convenient for initially downloading and patching Apache projects for

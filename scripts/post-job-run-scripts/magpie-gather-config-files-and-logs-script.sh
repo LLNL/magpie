@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This is script collects config and log files after your job is
 # completed.
@@ -17,13 +17,14 @@ Gather_common () {
     local project=$1
     local saveconfdir=$2
     local savelogdir=$3
+    local basedir=$4
 
     local NODENAME=`hostname`
     local projectuppercase=`echo ${project} | tr '[:lower:]' '[:upper:]'`
     local projectconfdir="${projectuppercase}_CONF_DIR"
     local projectlogdir="${projectuppercase}_LOG_DIR"
 
-    targetdir=${HOME}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/${project}/nodes/${NODENAME}
+    targetdir=${basedir}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/${project}/nodes/${NODENAME}
 
     if [ "${saveconfdir}" == "y" ]
     then
@@ -44,11 +45,24 @@ Gather_common () {
     fi
 }
 
-Gather_common "hadoop" "y" "y"
-Gather_common "pig" "y" "n"
-Gather_common "hbase" "y" "y"
-Gather_common "phoenix" "y" "y"
-Gather_common "spark" "y" "y"
+if [ -n "$1" ]
+then
+    basedir=$1
+else
+    basedir=${HOME}
+fi
+
+if [ ! -d "${basedir}" ]
+then
+    echo "${basedir} is not a directory"
+    exit 1
+fi
+
+Gather_common "hadoop" "y" "y" ${basedir}
+Gather_common "pig" "y" "n" ${basedir}
+Gather_common "hbase" "y" "y" ${basedir}
+Gather_common "phoenix" "y" "y" ${basedir}
+Gather_common "spark" "y" "y" ${basedir}
 
 # Special case
 if [ "${SPARK_WORKER_DIRECTORY}X" != "X" ]
@@ -66,9 +80,9 @@ else
     fi
 fi
 
-Gather_common "kafka" "y" "y"
-Gather_common "storm" "y" "y"
-Gather_common "zookeeper" "y" "y"
-Gather_common "zeppelin" "y" "y"
+Gather_common "kafka" "y" "y" ${basedir}
+Gather_common "storm" "y" "y" ${basedir}
+Gather_common "zookeeper" "y" "y" ${basedir}
+Gather_common "zeppelin" "y" "y" ${basedir}
 
 exit 0
