@@ -63,6 +63,7 @@ ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 REMOTE_CMD_DEFAULT=ssh
 
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0/
+PIG_JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0/
 SPARK_JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
 ZEPPELIN_JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
 PYTHON_DEFAULT=/usr/bin/python
@@ -82,6 +83,7 @@ PHOENIX_DEFAULT_PERFORMANCEEVAL_ROW_COUNT=100000
 #
 HADOOP_VERSION_DEFAULT=2.9.1
 PIG_VERSION_DEFAULT=0.17.0
+PIG_HADOOP_VERSION_DEFAULT=2.9.1
 MAHOUT_VERSION_DEFAULT=0.13.0
 HBASE_VERSION_DEFAULT=1.4.6
 HBASE_ZOOKEEPER_VERSION_DEFAULT=3.4.13
@@ -456,12 +458,13 @@ define create-hadoop-and-pig
 		magpie-pig \
 		magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
-	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG},${JAVA_DEFAULT})
+	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG},${PIG_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_SETUP=.*/HADOOP_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/HADOOP_MODE=\"\(.*\)\"/HADOOP_MODE=\"launch\"/" $(MAGPIE_HADOOP_AND_PIG)
 	sed -i -e "s/PIG_SETUP=.*/PIG_SETUP=yes/" $(MAGPIE_HADOOP_AND_PIG)
+	sed -i -e "s/HADOOP_VERSION=\"\(.*\)\"/HADOOP_VERSION=\"$(PIG_HADOOP_VERSION_DEFAULT)\"/" $(MAGPIE_HADOOP_AND_PIG)
 endef
 
 define create-hadoop-and-mahout
