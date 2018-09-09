@@ -465,7 +465,7 @@ then
         then
             num=`grep -e "No remaining nodes for \(.*\), increase node count or adjust node allocations" $file | wc -l`
         else
-            num=`grep -e "No remaining slave nodes after Zookeeper allocation" $file | wc -l`
+            num=`grep -e "No remaining nodes after Zookeeper allocation" $file | wc -l`
         fi
         if [ "${num}" == "0" ]
         then
