@@ -99,7 +99,7 @@ spark2Xjava17hadoop27versions_javaversion=${java17}
 spark2Xjava18hadoop26versions="2.2.0-bin-hadoop2.6 2.2.1-bin-hadoop2.6 2.3.0-bin-hadoop2.6 2.3.1-bin-hadoop2.6"
 spark2Xjava18hadoop26versions_hadoopversion="2.6.0"
 spark2Xjava18hadoop26versions_javaversion=${java18}
-spark2Xjava18hadoop27versions="2.2.0-bin-hadoop2.7 2.2.1-bin-hadoop2.7 2.3.0-bin-hadoop2.7 2.3.0-bin-hadoop2.7"
+spark2Xjava18hadoop27versions="2.2.0-bin-hadoop2.7 2.2.1-bin-hadoop2.7 2.3.0-bin-hadoop2.7 2.3.1-bin-hadoop2.7"
 spark2Xjava18hadoop27versions_hadoopversion="2.7.0"
 spark2Xjava18hadoop27versions_javaversion=${java18}
 
