@@ -86,6 +86,16 @@ then
     compressedhosts=`${MAGPIE_SCRIPTS_HOME}/bin/magpie-compress-nodes ${LSB_HOSTS}`
     expandedhosts=`${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ${compressedhosts}`
     myhostname=`hostname`
+    if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+    then
+        myhostname=`${MAGPIE_HOSTNAME_CMD_MAP} $myhostname`
+        if [ $? -ne 0 ]
+        then
+            echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+            exit 1
+        fi
+    fi
+
     noderank=0
     for host in $expandedhosts
     do

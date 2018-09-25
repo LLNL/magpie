@@ -809,7 +809,8 @@ if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
     cp ${pre_hdfssitexml} ${post_hdfssitexml}
 
-    HADOOP_THIS_HOST=`hostname`
+    Magpie_get_magpie_hostname
+    HADOOP_THIS_HOST=${magpie_hostname}
 
     sed -i \
         -e "s/HADOOP_MASTER_HOST/${HADOOP_MASTER_NODE}/g" \

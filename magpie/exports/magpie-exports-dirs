@@ -28,6 +28,7 @@
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 # Do not ever "use" the LOCAL_JOB_DIR variables.  They should only be
 # referenced when setting SCRATCHSPACE_DIR or CONF_DIR or LOG_DIR variables.
@@ -46,7 +47,8 @@ __Magpie_make_magpie_local_dirs () {
 
     if [ "${which}" == "specific" ]
     then
-        myhostname=`hostname`
+        Magpie_get_magpie_hostname
+        myhostname=${magpie_hostname}
         export MAGPIE_LOCAL_CONF_DIR=`echo $MAGPIE_LOCAL_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
         export MAGPIE_LOCAL_SCRATCHSPACE_DIR=`echo $MAGPIE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
     fi
@@ -78,7 +80,8 @@ __Magpie_make_hadoop_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export HADOOP_CONF_DIR=`echo $HADOOP_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export HADOOP_LOG_DIR=`echo $HADOOP_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export HADOOP_LOCAL_SCRATCHSPACE_DIR=`echo $HADOOP_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -123,7 +126,8 @@ __Magpie_make_pig_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export PIG_CONF_DIR=`echo $PIG_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export PIG_LOCAL_SCRATCHSPACE_DIR=`echo $PIG_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
         fi
@@ -154,7 +158,8 @@ Magpie_make_mahout_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export MAHOUT_CONF_DIR=`echo $MAHOUT_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export MAHOUT_LOCAL_SCRATCHSPACE_DIR=`echo $MAHOUT_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
         fi
@@ -187,7 +192,8 @@ __Magpie_make_hbase_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export HBASE_CONF_DIR=`echo $HBASE_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export HBASE_LOG_DIR=`echo $HBASE_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export HBASE_LOCAL_SCRATCHSPACE_DIR=`echo $HBASE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -222,7 +228,8 @@ __Magpie_make_phoenix_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export PHOENIX_CONF_DIR=`echo $PHOENIX_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export PHOENIX_LOG_DIR=`echo $PHOENIX_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export PHOENIX_LOCAL_SCRATCHSPACE_DIR=`echo $PHOENIX_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -257,7 +264,8 @@ __Magpie_make_spark_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export SPARK_CONF_DIR=`echo $SPARK_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export SPARK_LOG_DIR=`echo $SPARK_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export SPARK_LOCAL_SCRATCHSPACE_DIR=`echo $SPARK_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -292,7 +300,8 @@ __Magpie_make_kafka_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export KAFKA_CONF_DIR=`echo $KAFKA_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export KAFKA_LOG_DIR=`echo $KAFKA_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export KAFKA_LOCAL_SCRATCHSPACE_DIR=`echo $KAFKA_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -327,7 +336,8 @@ Magpie_make_zeppelin_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export ZEPPELIN_CONF_DIR=`echo $ZEPPELIN_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export ZEPPELIN_LOG_DIR=`echo $ZEPPELIN_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export ZEPPELIN_LOCAL_SCRATCHSPACE_DIR=`echo $ZEPPELIN_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -361,7 +371,8 @@ __Magpie_make_storm_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export STORM_CONF_DIR=`echo $STORM_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export STORM_LOG_DIR=`echo $STORM_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export STORM_LOCAL_SCRATCHSPACE_DIR=`echo $STORM_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
@@ -394,7 +405,8 @@ __Magpie_make_zookeeper_local_dirs () {
 
         if [ "${which}" == "specific" ]
         then
-            myhostname=`hostname`
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
             export ZOOKEEPER_CONF_DIR=`echo $ZOOKEEPER_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export ZOOKEEPER_LOG_DIR=`echo $ZOOKEEPER_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
             export ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR=`echo $ZOOKEEPER_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`

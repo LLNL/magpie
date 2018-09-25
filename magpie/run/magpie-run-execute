@@ -29,6 +29,7 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 # For this run, we will use cluster specific paths
 Magpie_make_all_local_dirs_node_specific
@@ -114,7 +115,9 @@ if [ "${jobtype}" != "scriptnokill" ]
 then
 # Some systems have SIGUSR1 as USR1 so we hardcode the value of 10
 
-    myhostname=`hostname`
+    Magpie_get_magpie_hostname
+    myhostname=${magpie_hostname}
+
     echo "*******************************************************"
     echo "* Run"
     echo "*"

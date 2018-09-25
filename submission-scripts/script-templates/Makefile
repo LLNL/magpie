@@ -20,6 +20,7 @@ ZEPPELIN_INCLUDE=y
 ZOOKEEPER_INCLUDE=y
 
 MAGPIE_NO_LOCAL_DIR=n
+MAGPIE_HOSTNAME_MAP=n
 INSERT_HDFSOVERLUSTRE=y
 INSERT_HDFSOVERNETWORKFS=y
 
@@ -228,6 +229,12 @@ define create-templates
 		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/{r magpie-magpie-customizations-no-local-dir" -e "d}" magpie-magpie-customizations-substitution; \
 	else \
 		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/,+1d" magpie-magpie-customizations-substitution; \
+	fi
+
+	if test "${MAGPIE_HOSTNAME_MAP}" = "y"; then \
+		sed -i -e "/@MAGPIE_HOSTNAME_MAP@/{r magpie-magpie-customizations-hostname-map" -e "d}" magpie-magpie-customizations-substitution; \
+	else \
+		sed -i -e "/@MAGPIE_HOSTNAME_MAP@/,+1d" magpie-magpie-customizations-substitution; \
 	fi
 
 	cp magpie-hadoop-filesystem magpie-hadoop-filesystem-substitution

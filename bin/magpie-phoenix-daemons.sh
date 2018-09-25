@@ -47,6 +47,16 @@ then
 fi
 
 myhostname=`hostname`
+if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+then
+    myhostname=`${MAGPIE_HOSTNAME_CMD_MAP} $myhostname`
+    if [ $? -ne 0 ]
+    then
+        echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+        exit 1
+    fi
+fi
+
 phoenixconfdir=`echo ${PHOENIX_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 orig_phoenixconfdir=${PHOENIX_CONF_DIR}
 

@@ -157,8 +157,15 @@ __SubmitCornerCaseTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-5
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-6
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-7
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-8
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-9
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
+}
+
+__SubmitCornerCaseTests_BadHostnameMap() {
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-bad-hostname-map-1
+    BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-bad-hostname-map-2
 }
 
 __SubmitCornerCaseTests_BadJobTime() {
@@ -431,6 +438,7 @@ SubmitCornerCaseTests() {
     __SubmitCornerCaseTests_BadSetLocalDir
     __SubmitCornerCaseTests_NoSetScript
     __SubmitCornerCaseTests_BadSetScript
+    __SubmitCornerCaseTests_BadHostnameMap
 
     __SubmitCornerCaseTests_BadJobTime
     __SubmitCornerCaseTests_BadStartupTime

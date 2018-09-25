@@ -52,6 +52,10 @@ fi
 Magpie_make_all_local_dirs_node_specific
 
 # Output some general info
+
+# Note that if MAGPIE_HOSTNAME_SCHEDULER_MAP set, MAGPIE_NODELIST may
+# have not been converted for this output.
+
 echo "*******************************************************"
 echo "* Magpie General Job Info"
 echo "*"

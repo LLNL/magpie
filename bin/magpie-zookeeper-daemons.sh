@@ -56,6 +56,16 @@ fi
 orig_zookeeperconfdir=${zookeeperconfdir}
 
 myhostname=`hostname`
+if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+then
+    myhostname=`${MAGPIE_HOSTNAME_CMD_MAP} $myhostname`
+    if [ $? -ne 0 ]
+    then
+        echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+        exit 1
+    fi
+fi
+
 zookeeperconfdir=`echo ${orig_zookeeperconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 
 if [ ! -f ${zookeeperconfdir}/workers ]

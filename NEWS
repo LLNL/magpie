@@ -90,6 +90,16 @@ o Older legacy support of HADOOP_RAWNETWORKFS_BLOCKSIZE is no longer
 
 Misc Features & Changes
 
+- Support new MAGPIE_HOSTNAME_CMD_MAP and
+  MAGPIE_HOSTNAME_SCHEDULER_MAP configuration.  These variables allow
+  users to configure a mechanism to "map" the hostname/nodenames that
+  come from the 'hostname' command or scheduler to another value.
+  This can be useful in unique environments where the output of the
+  'hostname' command does not map to the nodenames configured into the
+  scheduler/resource manager and when the scheduler/resource manager
+  does not indicate which host/address/interface Magpie should
+  actually configure.
+
 - MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN can have multiple scripts
   listed by comma.
 

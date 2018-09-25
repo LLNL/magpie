@@ -298,6 +298,16 @@ then
     fi
 fi
 
+if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+then
+    __Magpie_check_paths_are_executable "MAGPIE_HOSTNAME_CMD_MAP"
+fi
+
+if [ "${MAGPIE_HOSTNAME_SCHEDULER_MAP}X" != "X" ]
+then
+    __Magpie_check_paths_are_executable "MAGPIE_HOSTNAME_SCHEDULER_MAP"
+fi
+
 #
 # Check General Inputs
 #

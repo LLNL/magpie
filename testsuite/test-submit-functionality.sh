@@ -283,6 +283,20 @@ __SubmitFunctionalityTests_ScriptArgs() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-functionality-scriptargs
 }
 
+__SubmitFunctionalityTests_HostnameMap() {
+    BasicJobSubmit magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-spark-run-sparkpi-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-storm-run-stormwordcount-functionality-hostname-map
+    BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-hostname-map
+}
+
 SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_BadJobNames
     __SubmitFunctionalityTests_AltJobTimes
@@ -296,4 +310,5 @@ SubmitFunctionalityTests() {
     __SubmitFunctionalityTests_PrePostRunScripts
     __SubmitFunctionalityTests_PreRunScriptError
     __SubmitFunctionalityTests_ScriptArgs
+    __SubmitFunctionalityTests_HostnameMap
 }

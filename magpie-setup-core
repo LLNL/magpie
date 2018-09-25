@@ -29,6 +29,7 @@
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 #
 # Setup a whole bunch of environment variables and directories
@@ -123,18 +124,58 @@ else
     fi
 fi
 
-${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} > ${MAGPIE_LOCAL_CONF_DIR}/tmp_nodes
-
-myhostname=`hostname`
-if ! grep -q ${myhostname} ${MAGPIE_LOCAL_CONF_DIR}/tmp_nodes
-then
-    echo "WARNING: hostname command returned a node not listed in scheduler nodelist."
-    echo "WARNING: Magpie may not function if hostname vs scheduler host configuration"
-    echo "WARNING: differs."
-fi
+Magpie_get_magpie_hostname
+myhostname=${magpie_hostname}
 
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
 ${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
+
+# Convert nodenames if necessary
+
+if [ "${MAGPIE_HOSTNAME_SCHEDULER_MAP}X" != "X" ]
+then
+    masterhosts=`cat ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters`
+    workerhosts=`cat ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers`
+    for host in ${masterhosts}
+    do
+        newhost=`${MAGPIE_HOSTNAME_SCHEDULER_MAP} $host`
+        if [ $? -ne 0 ]
+        then
+            echo "Error in MAGPIE_HOSTNAME_SCHEDULER_MAP = ${MAGPIE_HOSTNAME_SCHEDULER_MAP}"
+            exit 1
+        fi
+        echo $newhost >> ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters_convert
+    done
+
+    for host in ${workerhosts}
+    do
+        newhost=`${MAGPIE_HOSTNAME_SCHEDULER_MAP} $host`
+        if [ $? -ne 0 ]
+        then
+            echo "Error in MAGPIE_HOSTNAME_SCHEDULER_MAP = ${MAGPIE_HOSTNAME_SCHEDULER_MAP}"
+            exit 1
+        fi
+        echo $newhost >> ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers_convert
+    done
+
+    rm -f ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
+    rm -f ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
+    mv ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters_convert ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
+    mv ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers_convert ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
+fi
+
+if ! grep -q ${myhostname} ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters \
+    && ! grep -q ${myhostname} ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
+then
+    if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+    then
+        echo "WARNING: MAGPIE_HOSTNAME_CMD_MAP command returned a node not listed in nodelist."
+        echo "WARNING: ${MAGPIE_HOSTNAME_CMD_MAP} may need tweaking"
+    else
+        echo "WARNING: hostname command returned a node not listed in nodelist."
+        echo "WARNING: Consider configuring MAGPIE_HOSTNAME_CMD_MAP"
+    fi
+fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then

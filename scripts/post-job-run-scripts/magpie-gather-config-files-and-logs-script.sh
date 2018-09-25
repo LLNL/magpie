@@ -24,6 +24,16 @@ Gather_common () {
     local projectconfdir="${projectuppercase}_CONF_DIR"
     local projectlogdir="${projectuppercase}_LOG_DIR"
 
+    if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+    then
+        NODENAME=`${MAGPIE_HOSTNAME_CMD_MAP} $NODENAME`
+        if [ $? -ne 0 ]
+        then
+            echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+            exit 1
+        fi
+    fi
+
     targetdir=${basedir}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/${project}/nodes/${NODENAME}
 
     if [ "${saveconfdir}" == "y" ]

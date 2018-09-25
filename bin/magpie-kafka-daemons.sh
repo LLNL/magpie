@@ -47,6 +47,15 @@ then
 fi
 
 myhostname=`hostname`
+if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+then
+    myhostname=`${MAGPIE_HOSTNAME_CMD_MAP} $myhostname`
+    if [ $? -ne 0 ]
+    then
+        echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+        exit 1
+    fi
+fi
 kafkaconfdir=`echo ${KAFKA_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`
 orig_kafkaconfdir=${KAFKA_CONF_DIR}
 

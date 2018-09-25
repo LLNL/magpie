@@ -36,6 +36,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 zookeeperjavahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
 zookeeperlogdirsubst=`echo "${ZOOKEEPER_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
@@ -167,7 +168,8 @@ post_log4jproperties=${ZOOKEEPER_CONF_DIR}/log4j.properties
 
 cp ${pre_zookeepercfg} ${post_zookeepercfg}
 
-ZOOKEEPER_THIS_HOST=`hostname`
+Magpie_get_magpie_hostname
+ZOOKEEPER_THIS_HOST=${magpie_hostname}
 
 sed -i \
     -e "s/ZOOKEEPERDATADIR/${zookeeperdatadirpathsubst}/g" \

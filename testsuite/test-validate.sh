@@ -408,6 +408,23 @@ then
     done
 fi
 
+__get_test_files bad-hostname-map
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num1=`grep -e "Error in MAGPIE_HOSTNAME_CMD_MAP" $file | wc -l`
+        num2=`grep -e "Error in MAGPIE_HOSTNAME_SCHEDULER_MAP" $file | wc -l`
+        if [ "${num1}" == "0" ] && [ "${num2}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
 __get_test_files badjobtime
 if [ $? -eq 0 ]
 then

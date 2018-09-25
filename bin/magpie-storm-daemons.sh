@@ -59,6 +59,15 @@ then
 fi
 
 myhostname=`hostname`
+if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+then
+    myhostname=`${MAGPIE_HOSTNAME_CMD_MAP} $myhostname`
+    if [ $? -ne 0 ]
+    then
+        echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+        exit 1
+    fi
+fi
 
 orig_stormconfdir=${STORM_CONF_DIR}
 stormconfdir=`echo ${orig_stormconfdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g"`

@@ -581,16 +581,22 @@ __GenerateCornerCaseTests_BadSetScript() {
         sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-3
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-4
-        sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh,\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-4
+        sed -i -e 's/# export MAGPIE_HOSTNAME_CMD_MAP="\(.*\)"/export MAGPIE_HOSTNAME_CMD_MAP="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-4
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-5
-        sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh,\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-5
+        sed -i -e 's/# export MAGPIE_HOSTNAME_SCHEDULER_MAP="\(.*\)"/export MAGPIE_HOSTNAME_SCHEDULER_MAP="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-5
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-6
-        sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="\/FOO\/BAR\/BAZ,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-6
+        sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh,\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-6
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-7
-        sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="\/FOO\/BAR\/BAZ,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-7
+        sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh,\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-7
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-8
+        sed -i -e 's/# export MAGPIE_PRE_JOB_RUN="\(.*\)"/export MAGPIE_PRE_JOB_RUN="\/FOO\/BAR\/BAZ,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-8
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-badsetscript-9
+        sed -i -e 's/# export MAGPIE_POST_JOB_RUN="\(.*\)"/export MAGPIE_POST_JOB_RUN="\/FOO\/BAR\/BAZ,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-job-run.sh"/' magpie.${submissiontype}-magpie-cornercase-badsetscript-9
     fi
 
     if [ "${pigtests}" == "y" ]; then
@@ -609,6 +615,22 @@ __GenerateCornerCaseTests_BadSetScript() {
     if [ -n "${files}" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetscript-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
+__GenerateCornerCaseTests_BadHostnameMap() {
+    if [ "${magpietests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-bad-hostname-map-1
+        sed -i -e 's/# export MAGPIE_HOSTNAME_CMD_MAP="\(.*\)"/export MAGPIE_HOSTNAME_CMD_MAP="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hostname-map-bad.sh"/' magpie.${submissiontype}-magpie-cornercase-bad-hostname-map-1
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-magpie-cornercase-bad-hostname-map-2
+        sed -i -e 's/# export MAGPIE_HOSTNAME_SCHEDULER_MAP="\(.*\)"/export MAGPIE_HOSTNAME_SCHEDULER_MAP="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-hostname-map-bad.sh"/' magpie.${submissiontype}-magpie-cornercase-bad-hostname-map-2
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-bad-hostname-map*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/bad-hostname-map-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
 
@@ -1466,6 +1488,7 @@ GenerateCornerCaseTests() {
 
     __GenerateCornerCaseTests_NoSetScript
     __GenerateCornerCaseTests_BadSetScript
+    __GenerateCornerCaseTests_BadHostnameMap
 
     __GenerateCornerCaseTests_BadJobTime
     __GenerateCornerCaseTests_BadStartupTime

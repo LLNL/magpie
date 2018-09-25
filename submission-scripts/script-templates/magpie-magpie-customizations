@@ -161,6 +161,8 @@ export MAGPIE_JOB_TYPE="script"
 #
 # export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
 
+@MAGPIE_HOSTNAME_MAP@
+
 # Remote Shell
 #
 # Magpie requires a passwordless remote shell command to launch

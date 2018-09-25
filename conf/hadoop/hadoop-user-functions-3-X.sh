@@ -17,6 +17,17 @@ function hadoop_connect_to_hosts
   local worker_file
   local tmpslvnames
   local myhostname=`hostname`
+
+  if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
+  then
+      myhostname=`${MAGPIE_HOSTNAME_CMD_MAP} $myhostname`
+      if [ $? -ne 0 ]
+      then
+          echo "Error in MAGPIE_HOSTNAME_CMD_MAP = ${MAGPIE_HOSTNAME_CMD_MAP}"
+          exit 1
+      fi
+  fi
+
   local hadoopconfdirval=`echo ${HADOOP_CONF_DIR} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/"`
 
   #

@@ -37,6 +37,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-version-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 # hbasenoderank set if succeed
 if ! Magpie_am_I_a_hbase_node
@@ -194,7 +195,8 @@ else
     sed -i -e "/@PHOENIX@/,+1d" ${post_hbasesitexml}
 fi
 
-HBASE_THIS_HOST=`hostname`
+Magpie_get_magpie_hostname
+HBASE_THIS_HOST=${magpie_hostname}
 
 sed -i \
     -e "s/HBASETMPDIR/${hbasetmpdirsubst}/g" \
