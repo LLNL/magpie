@@ -171,7 +171,7 @@ post_zeppelinsitexml=${ZEPPELIN_CONF_DIR}/zeppelin-site.xml
 post_log4jproperties=${ZEPPELIN_CONF_DIR}/log4j.properties
 post_shiroini=${ZEPPELIN_CONF_DIR}/shiro.ini
 
-if [ "${SPARK_SETUP_MODE}" == "YARN" ];
+if [ "${SPARK_SETUP_TYPE}" == "YARN" ];
 then
     zeppelin_spark_master="yarn-client"
 else
