@@ -1,0 +1,165 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Army Research Laboratory (cf, DISCLAIMER).
+#  Written by Adam Childs <adam.s.childs.ctr@mail.mil>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the hive-testbench running script.  For the most part,
+# it shouldn't be edited.  See job submission files for configuration
+# details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
+
+export PATH=${PATH}:${HIVE_HOME}/bin:${HADOOP_HOME}/bin
+
+if [ "${HIVE_MASTER_NODE}X" != "X" ]
+then
+    hiveserver=${HIVE_MASTER_NODE}
+else
+    hiveserver="localhost"
+fi
+
+if [ "${HIVE_PORT}X" != "X" ]
+then
+    hiveport=$HIVE_PORT
+else
+    hiveport=${default_hive_port}
+fi
+
+if [ "${HIVE_TESTBENCH_DIR}X" != "X" ]
+then
+    testbenchdir="${HIVE_TESTBENCH_DIR}"
+fi
+
+if [ ! -d ${HIVE_TESTBENCH_DIR} ]
+then
+    echo "Testbench path is not a directory"
+    exit 1
+fi
+
+if [ "${HIVE_TESTBENCH_TYPE}X" != "X" ]
+then
+    testbenchtype="${HIVE_TESTBENCH_TYPE}"
+else
+    testbenchtype="tpch"
+fi
+
+if [ "${HIVE_TESTBENCH_DATA_SIZE}X" != "X" ]
+then
+    # if not specified for some reason, default to 20GB
+    testbenchsize=$HIVE_TESTBENCH_DATA_SIZE
+else
+    testbenchsize=10
+fi
+
+if [ "${HIVE_TESTBENCH_QUERY_COUNT}X" != "X" ]
+then
+    testbenchquerycount=$HIVE_TESTBENCH_QUERY_COUNT
+else
+    testbenchquerycount=8
+fi
+
+for node in `cat ${HIVE_CONF_DIR}/masters`
+do
+
+    echo "*******************************************************"
+    echo "* Executing Hive Testbench data generation"
+    echo "* Start: `date`"
+    echo "*******************************************************"
+
+    cd $testbenchdir
+    command="${testbenchdir}/${testbenchtype}-setup.sh --scale ${testbenchsize} --cli ${testbenchtype}"
+    if [ "${HIVE_CLI_VERSION}" == "beeline" ]
+    then
+        command="${command} --server ${hiveserver} --port ${hiveport}"
+    fi
+
+    echo "Attempting to execute ${command} on `hostname`"
+    $command
+
+    cmdpid=$!
+    wait $cmdpid
+
+    echo "*******************************************************"
+    echo "* Submitting Hive Testbench queries"
+    echo "*******************************************************"
+
+    # set the database names and query file prefixes based on testbench type
+    if [ "${testbenchtype}" == "tpch" ]
+    then
+        testbenchdb="${testbenchtype}_flat_orc_${testbenchsize}"
+        queryfileprefix="tpch_query"
+    else
+        testbenchdb="${testbenchtype}_bin_partitioned_orc_${testbenchsize}"
+        queryfileprefix="query"
+    fi
+
+    # test DB creation here.  If it doesn't exist, obviously something went wrong
+    dbcheck=`${HIVE_HOME}/bin/beeline -u jdbc:hive2://${HIVE_MASTER_NODE}:${HIVE_PORT} -e 'show databases;' | grep ${testbenchdb}`
+    echo "Check shows: ${dbcheck}"
+    if [ "${dbcheck}X" == "X" ]; then
+        echo "Failed to create Testbench database, job cannot continue!"
+        exit 1
+    fi
+
+    # set the CLI prefix based on the configuration
+    if [ "${HIVE_CLI_VERSION}" == "beeline" ]
+    then
+        cliprefix="${HIVE_HOME}/bin/beeline -u jdbc:hive2://${HIVE_MASTER_NODE}:${HIVE_PORT}/${testbenchdb}"
+    else
+        cliprefix="${HIVE_HOME}/bin/hive --database=${testbenchdb}"
+    fi
+
+    querypath="${testbenchdir}/sample-queries-${testbenchtype}"
+
+    # if using tpch we need to add the testbench.settings file to the prefix
+    if [ "${testbenchtype}" == "tpch" ]
+    then
+        cliprefix="${cliprefix} -i ${querypath}/testbench.settings"
+    fi
+
+    # check to make sure we haven't tried to configure more queries than actually exist.
+    queryfilecount=`ls -1q ${querypath}/*.sql | wc -l`
+
+    if [ "$testbenchquerycount" -gt "$queryfilecount" ]
+    then
+        echo "Testbench query count ( ${testbenchquerycount} ) greater than number of .sql files available.  Submitting maximum available ( ${queryfilecount} ) queries instead."
+        testbenchquerycount=$queryfilecount
+    fi
+    # run queries
+    for ((querynum=1; querynum<=testbenchquerycount; querynum++));
+    do
+        queryfile="${querypath}/${queryfileprefix}${querynum}.sql"
+
+        querycmd="${cliprefix} -f ${queryfile}"
+        queryoutput="${HIVE_LOG_DIR}/${MAGPIE_JOB_ID}_qry${querynum}_results.txt"
+        echo "Running ${querycmd}, logging to ${queryoutput}"
+        $querycmd &> $queryoutput
+    done
+    echo "*******************************************************"
+    echo "* Completed Hive Testbench"
+    echo "* Finish: `date` "
+    echo "*******************************************************"
+done
+
+exit 0

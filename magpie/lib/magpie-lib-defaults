@@ -78,6 +78,13 @@ then
     default_phoenix_queryserver_port="8765"
 fi
 
+if [ "${HIVE_SETUP}" == "yes" ]
+then
+    default_hive_port="10000"
+    default_hive_db_name="hive_default_db"
+    default_postgres_port="11115"
+fi
+
 if [ "${SPARK_SETUP}" == "yes" ]
 then
     default_spark_master_port="7077"

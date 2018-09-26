@@ -47,6 +47,14 @@ hbasehadoop27zookeeper34java17versions_javaversion=${java17}
 hbase_test_groups="hbasehadoop22zookeeper34java16versions hbasehadoop27zookeeper34java17versions"
 hbase_all_versions="${hbasehadoop22zookeeper34java16versions} ${hbasehadoop27zookeeper34java17versions}"
 
+hivehadoop27zookeeper34java17versions="2.3.0"
+hivehadoop27zookeeper34java17versions_hadoopversion="2.7.0"
+hivehadoop27zookeeper34java17versions_zookeeperversion="3.4.11"
+hivehadoop27zookeeper34java17versions_javaversion=${java17}
+
+hive_test_groups="hivehadoop27zookeeper34java17versions"
+hive_all_versions="${hivehadoop27zookeeper34java17versions}"
+
 phoenixhbase10hadoop27zookeeper34java17versions="4.5.0-HBase-1.0 4.5.1-HBase-1.0 4.5.2-HBase-1.0 4.6.0-HBase-1.0 4.7.0-HBase-1.0 4.8.0-HBase-1.0 4.8.1-HBase-1.0 4.8.2-HBase-1.0"
 phoenixhbase10hadoop27zookeeper34java17versions_hbaseversion="1.0.0"
 phoenixhbase10hadoop27zookeeper34java17versions_hadoopversion="2.7.0"
