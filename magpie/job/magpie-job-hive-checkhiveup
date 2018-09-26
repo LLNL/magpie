@@ -1,0 +1,39 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Army Research Laboratory (cf, DISCLAIMER).
+#  Written by Adam Childs <adam.s.childs.ctr@mail.mil>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# Check the metastore.  If its up, this will return the PID.  If not, it won't return anything
+metaPID=`ps aux | grep '[o]rg.apache.hadoop.hive.metastore.HiveMetaStore' | awk '{print $2}'`
+
+# Check HiveServer.  Again, if its up this returns PID, if not; nothing.
+hivePID=`ps aux | grep '[H]iveServer2' | awk '{print $2}'`
+
+if [ -z "$metaPID" ] || [ -z "$hivePID" ]
+then
+  echo "Failed to find Hive Metastore and HiveServer!"
+  exit 1
+else
+  echo "Metastore PID: ${metaPID}. HiveServer: ${hivePID}"
+fi
+
+exit 0

@@ -29,6 +29,9 @@ GenerateDefaultStandardTests() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-default-run-hbaseperformanceeval
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-default-run-hbaseperformanceeval-no-local-dir
     fi
+    if [ "${hivetests}" == "y" ]; then 
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-default-run-testbench
+    fi
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-default-run-phoenixperformanceeval
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-default-run-phoenixperformanceeval-no-local-dir

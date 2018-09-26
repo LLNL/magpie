@@ -2,11 +2,11 @@ Magpie
 ------
 
 Magpie contains a number of scripts for running Big Data software in
-HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig, Mahout,
-Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It currently
-supports running over the parallel file system Lustre and running over
-any generic network filesytem.  There is scheduler/resource manager
-support for Slurm, Moab, Torque, and LSF.
+HPC environments.  Thus far, Hadoop, Spark, Hbase, Hive, Storm, Pig,
+Mahout, Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It
+currently supports running over the parallel file system Lustre and
+running over any generic network filesytem.  There is
+scheduler/resource manager support for Slurm, Moab, Torque, and LSF.
 
 Some of the features presently supported:
 
@@ -199,6 +199,8 @@ Hbase - 0.98.0-hadoop2+, 0.98.1-hadoop2+, 0.98.2-hadoop2+,
         1.3.0+, 1.3.1+, 1.3.2+, 1.3.2.1+, 1.4.0+!, 1.4.1+, 1.4.2+,
         1.4.3+, 1.4.4+, 1.4.5+, 1.4.6+
 
+Hive -  2.3.0 [HiveNote]
+
 Pig - 0.13.0, 0.14.0, 0.15.0, 0.16.0, 0.17.0
 
 Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7,
@@ -227,6 +229,9 @@ Phoenix - 4.5.0-Hbase-1.0+, 4.5.0-Hbase-1.1+, 4.5.1-Hbase-1.0+,
 Kafka - 2.11-0.9.0.0
 
 Zeppelin - 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2, 0.7.3, 0.8.0
+
+[HiveNote] - Hive uses PostgreSQL, the minimum version required is 9.1.13
+      PostgreSQL can be found at: https://www.postgresql.org/download/
 
 Package Version Combinations
 ----------------------------
@@ -325,7 +330,7 @@ considered on the side of experimental.
 
 - Experimental
 
-  Packages: Kafka, Zeppelin, Mahout
+  Packages: Kafka, Zeppelin, Mahout, Hive
 
 Documentation
 -------------
@@ -338,6 +343,7 @@ Hadoop - See README.hadoop
 Pig - See README.pig
 Mahout - See README.mahout
 Hbase - See README.hbase
+Hive - See README.hive
 Spark - See README.spark
 Storm - See README.storm
 Phoenix - See README.phoenix
@@ -670,3 +676,4 @@ Thanks to the following for contributions
 
 Felix-Antoine Fortin (felix-antoine.fortin@calculquebec.ca) - Msub-Torque-Pdsh support & other misc patches
 Brian Panneton (brian.c.panneton.ctr@mail.mil) - LSF support, Phoenix, Kafka and Zeppelin support, & Number of misc patches
+Adam Childs (adam.s.childs.ctr@mail.mil) - Hive/Tez support

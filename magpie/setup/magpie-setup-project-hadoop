@@ -545,6 +545,23 @@ then
     extrayarnopts="${extrayarnopts}${extrayarnopts:+" "}-XX:-UsePerfData"
 fi
 
+# Load the jar files for Hive if using Tez
+if [ "${HIVE_USE_TEZ}" == "yes" ]
+then
+    extratezclasses="${TEZ_HOME}/tez-api-${TEZ_VERSION}.jar"
+    extratezclasses="${TEZ_HOME}/tez-common-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/tez-dag-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/tez-mapreduce-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/tez-runtime-internals-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/tez-runtime-library-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/hadoop-shim-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/hadoop-shim-2.7-${TEZ_VERSION}.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/lib/commons-collections4-4.1.jar:$extratezclasses"
+    extratezclasses="${TEZ_HOME}/lib/commons-collections-3.2.2.jar:$extratezclasses"
+
+    extrahadoopclasses=${extrahadoopclasses}${extrahadoopclasses:+":"}${extratezclasses}
+fi
+
 #
 # Get config files for setup
 #
