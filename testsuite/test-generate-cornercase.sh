@@ -23,6 +23,14 @@ __GenerateCornerCaseTests_CatchProjectDependencies() {
         sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-catchprojectdependency-zookeeper
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-catchprojectdependency-hadoop
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-catchprojectdependency-zookeeper
+
+        sed -i -e 's/export HADOOP_SETUP=\(.*\)/export HADOOP_SETUP=no/' magpie.${submissiontype}-hadoop-and-hive-cornercase-catchprojectdependency-hadoop
+        sed -i -e 's/export ZOOKEEPER_SETUP=\(.*\)/export ZOOKEEPER_SETUP=no/' magpie.${submissiontype}-hadoop-and-hive-cornercase-catchprojectdependency-zookeeper
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-hadoop
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-hbase
@@ -89,6 +97,10 @@ __GenerateCornerCaseTests_NoSetJava() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetjava
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetjava
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetjava
     fi
@@ -131,6 +143,10 @@ __GenerateCornerCaseTests_BadSetJava() {
 
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badsetjava
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badsetjava
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -179,6 +195,11 @@ __GenerateCornerCaseTests_NoSetVersion() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetversion
         sed -i -e 's/export HBASE_VERSION/# export HBASE_VERSION/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetversion
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetversion
+        sed -i -e 's/export HIVE_VERSION/# export HIVE_VERSION/' magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetversion
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -271,6 +292,11 @@ __GenerateCornerCaseTests_BadVersion() {
         sed -i -e 's/export HBASE_VERSION="\(.*\)"/export HBASE_VERSION="2.2"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-badversion
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badversion
+        sed -i -e 's/export HIVE_VERSION="\(.*\)"/export HIVE_VERSION="2.2"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-badversion
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badversion
         sed -i -e 's/export PHOENIX_VERSION="\(.*\)"/export PHOENIX_VERSION="2.2"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badversion
@@ -324,6 +350,11 @@ __GenerateCornerCaseTests_NoSetHome() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosethome
         sed -i -e 's/export HBASE_HOME/# export HBASE_HOME/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosethome
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-nosethome
+        sed -i -e 's/export HIVE_HOME/# export HIVE_HOME/' magpie.${submissiontype}-hadoop-and-hive-cornercase-nosethome
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -386,6 +417,11 @@ __GenerateCornerCaseTests_BadSetHome() {
         sed -i -e 's/export HBASE_HOME="\(.*\)"/export HBASE_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-badsethome
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badsethome
+        sed -i -e 's/export HIVE_HOME="\(.*\)"/export HIVE_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-badsethome
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsethome
         sed -i -e 's/export PHOENIX_HOME="\(.*\)"/export PHOENIX_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsethome
@@ -444,6 +480,11 @@ __GenerateCornerCaseTests_NoSetLocalDir() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetlocaldir
         sed -i -e 's/export HBASE_LOCAL_DIR/# export HBASE_LOCAL_DIR/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetlocaldir
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetlocaldir
+        sed -i -e 's/export HIVE_LOCAL_DIR/# export HIVE_LOCAL_DIR/' magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetlocaldir
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -506,6 +547,11 @@ __GenerateCornerCaseTests_BadSetLocalDir() {
         sed -i -e 's/export HBASE_LOCAL_DIR="\(.*\)"/export HBASE_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-badlocaldir
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badsetlocaldir
+        sed -i -e 's/export HIVE_LOCAL_DIR="\(.*\)"/export HIVE_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-badsetlocaldir
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badlocaldir
         sed -i -e 's/export PHOENIX_LOCAL_DIR="\(.*\)"/export PHOENIX_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badlocaldir
@@ -554,6 +600,11 @@ __GenerateCornerCaseTests_NoSetScript() {
     if [ "${pigtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetscript
         sed -i -e 's/export PIG_JOB="\(.*\)"/export PIG_JOB="script"/' magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetscript
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetscript
+        sed -i -e 's/export HIVE_JOB="\(.*\)"/export HIVE_JOB="script"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-nosetscript
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -605,6 +656,12 @@ __GenerateCornerCaseTests_BadSetScript() {
         sed -i -e 's/# export PIG_SCRIPT_PATH="\(.*\)"/export PIG_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badsetscript
+        sed -i -e 's/export HIVE_JOB="\(.*\)"/export HIVE_JOB="script"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-badsetscript
+        sed -i -e 's/# export HIVE_SCRIPT_PATH="\(.*\)"/export HIVE_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-badsetscript
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
         sed -i -e 's/export PHOENIX_JOB="\(.*\)"/export PHOENIX_JOB="script"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
@@ -649,6 +706,10 @@ __GenerateCornerCaseTests_BadJobTime() {
 
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badjobtime
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -713,6 +774,14 @@ __GenerateCornerCaseTests_BadJobTime() {
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${hivetests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
         fi
 
         if [ "${phoenixtests}" == "y" ]; then
@@ -815,6 +884,10 @@ __GenerateCornerCaseTests_BadStartupTime() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badstartuptime
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badstartuptime
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badstartuptime
     fi
@@ -860,6 +933,10 @@ __GenerateCornerCaseTests_BadShutdownTime() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badshutdowntime
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badshutdowntime
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badshutdowntime
     fi
@@ -903,6 +980,11 @@ __GenerateCornerCaseTests_BadNodeCount() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badnodecount-small
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-badnodecount-big
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badnodecount-small
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badnodecount-big
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -975,6 +1057,11 @@ __GenerateCornerCaseTests_NoCoreSettings() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nocoresettings
         sed -i -e 's/export HBASE_JOB/# export HBASE_JOB/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-nocoresettings
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-nocoresettings
+        sed -i -e 's/export HIVE_JOB/# export HIVE_JOB/' magpie.${submissiontype}-hadoop-and-hive-cornercase-nocoresettings
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -1067,6 +1154,11 @@ __GenerateCornerCaseTests_BadCoreSettings() {
         sed -i -e 's/export HBASE_JOB="\(.*\)"/export HBASE_JOB="foobar"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-badcoresettings
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-badcoresettings
+        sed -i -e 's/export HIVE_JOB="\(.*\)"/export HIVE_JOB="foobar"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-badcoresettings
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badcoresettings
         sed -i -e 's/export PHOENIX_JOB="\(.*\)"/export PHOENIX_JOB="foobar"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badcoresettings
@@ -1145,6 +1237,11 @@ __GenerateCornerCaseTests_RequireHDFS() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-requirehdfs
         sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' magpie.${submissiontype}-hbase-with-hdfs-cornercase-requirehdfs
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-cornercase-requirehdfs
+        sed -i -e 's/export HADOOP_FILESYSTEM_MODE="\(.*\)"/export HADOOP_FILESYSTEM_MODE="rawnetworkfs"/' magpie.${submissiontype}-hadoop-and-hive-cornercase-requirehdfs
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -1416,6 +1513,11 @@ __GenerateCornerCaseTests_NoLongerSupported() {
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-cornercase-nolongersupported
         sed -i '/# Run Job/a export HBASE_MODE="foobar"' magpie.${submissiontype}-hbase-with-hdfs-cornercase-nolongersupported
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadooop-and-hive-cornercase-nolongersupported
+        sed -i '/# Run Job/a export HIVE_MODE="foobar"' magpie.${submissiontype}-hadoop-and-hive-cornercase-nolongersupported
     fi
 
     if [ "${phoenixtests}" == "y" ]; then

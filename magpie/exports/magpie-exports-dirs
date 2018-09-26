@@ -210,6 +210,42 @@ Magpie_make_hbase_local_dirs_node_specific () {
     __Magpie_make_hbase_local_dirs "specific"
 }
 
+__Magpie_make_hive_local_dirs () {
+    local which=$1
+
+    if [ "${HIVE_SETUP}" == "yes" ]
+    then
+        if [ "${HIVE_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "__Magpie_make_hive_local_dirs called without HIVE_LOCAL_JOB_DIR set"
+            exit 1
+        fi
+
+        export HIVE_CONF_DIR=${HIVE_LOCAL_JOB_DIR}/conf
+        export HIVE_LOG_DIR=${HIVE_LOCAL_JOB_DIR}/log
+        export HIVE_PID_DIR=${HIVE_LOCAL_JOB_DIR}/pid
+        export HIVE_LOCAL_SCRATCHSPACE_DIR=${HIVE_LOCAL_JOB_DIR}/scratch
+
+        if [ "${which}" == "specific" ]
+        then
+            myhostname=`hostname`
+            export HIVE_CONF_DIR=`echo $HIVE_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export HIVE_LOG_DIR=`echo $HIVE_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export HIVE_PID_DIR=`echo $HIVE_PID_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export HIVE_LOCAL_SCRATCHSPACE_DIR=`echo $HIVE_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+        fi
+    fi
+}
+
+Magpie_make_hive_local_dirs_unspecified () {
+    __Magpie_make_hive_local_dirs "generic"
+}
+
+Magpie_make_hive_local_dirs_node_specific () {
+    __Magpie_make_hive_local_dirs "specific"
+}
+
+
 __Magpie_make_phoenix_local_dirs () {
     local which=$1
 
@@ -427,6 +463,7 @@ __Magpie_make_all_local_dirs () {
     __Magpie_make_hadoop_local_dirs $1
     __Magpie_make_pig_local_dirs $1
     __Magpie_make_hbase_local_dirs $1
+    __Magpie_make_hive_local_dirs $1
     __Magpie_make_phoenix_local_dirs $1
     __Magpie_make_spark_local_dirs $1
     __Magpie_make_kafka_local_dirs $1
@@ -499,6 +536,18 @@ then
     fi
     # HBASE_LOCAL_SCRATCHSPACE_DIR & HBASE_CONF_DIR & HBASE_LOG_DIR set
     Magpie_make_hbase_local_dirs_node_specific
+fi
+
+if [ "${HIVE_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export HIVE_LOCAL_JOB_DIR=${HIVE_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    else
+        export HIVE_LOCAL_JOB_DIR=${HIVE_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}
+    fi
+    # HIVE_LOCAL_SCRATCHSPACE_DIR & HIVE_CONF_DIR & HIVE_LOG_DIR set
+    Magpie_make_hive_local_dirs_node_specific
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]

@@ -25,6 +25,11 @@ __GenerateFunctionalityTests_BadJobNames() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-job-name-dollarsign
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-job-name-whitespace
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-job-name-dollarsign
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-job-name-whitespace
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-job-name-dollarsign
@@ -112,6 +117,14 @@ __GenerateFunctionalityTests_AltJobTimes() {
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-days-hours
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-days-hours-minutes
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${hivetests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-run-testbench-altjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-run-testbench-altjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-run-testbench-altjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-run-testbench-altjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-run-testbench-altjobtime-sbatchsrun-days-hours-minutes-seconds
         fi
 
         if [ "${phoenixtests}" == "y" ]; then
@@ -225,6 +238,13 @@ __GenerateFunctionalityTests_AltConfFilesDir() {
         sed -i -e 's/# export ZOOKEEPER_CONF_FILES="\(.*\)"/export ZOOKEEPER_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-altconffilesdir
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-altconffilesdir
+        sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-altconffilesdir
+        sed -i -e 's/# export HIVE_CONF_FILES="\(.*\)"/export HIVE_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-altconffilesdir
+        sed -i -e 's/# export ZOOKEEPER_CONF_FILES="\(.*\)"/export ZOOKEEPER_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-altconffilesdir
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altconffilesdir
         sed -i -e 's/# export HADOOP_CONF_FILES="\(.*\)"/export HADOOP_CONF_FILES="'"${magpiescriptshomesubst}"'\/conf\/"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-altconffilesdir
@@ -293,6 +313,10 @@ __GenerateFunctionalityTests_TestAll() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-run-zookeeperruok-functionality-testall
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-testall
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-hbaseperformanceeval-run-phoenixperformanceeval-run-zookeeperruok-functionality-testall
     fi
@@ -344,6 +368,10 @@ __GenerateFunctionalityTests_InteractiveMode() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-interactive-mode
     fi
 
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-interactive-mode
+    fi
+
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-interactive-mode
     fi
@@ -392,6 +420,10 @@ __GenerateFunctionalityTests_Setuponlymode() {
 
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-setuponly-mode
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-setuponly-mode
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -446,6 +478,10 @@ __GenerateFunctionalityTests_JobTimeout() {
 
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-jobtimeout
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-jobtimeout
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -511,6 +547,13 @@ __GenerateFunctionalityTests_MagpieExports() {
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/hadoop-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hbase-with-hdfs-functionality-checkexports
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hbase-with-hdfs-functionality-checkexports
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hbase-with-hdfs-functionality-checkexports
+    fi
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-checkexports
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hive-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop-and-hive-functionality-checkexports
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hadoop-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop-and-hive-functionality-checkexports
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/hdfs-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop-and-hive-functionality-checkexports
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/zookeeper-FILENAMESEARCHREPLACEKEY/" magpie.${submissiontype}-hadoop-and-hive-functionality-checkexports
     fi
     if [ "${phoenixtests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-checkexports
@@ -579,6 +622,10 @@ __GenerateFunctionalityTests_MagpieScript() {
 
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-magpiescript
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-magpiescript
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -655,6 +702,13 @@ __GenerateFunctionalityTests_PrePostRunScripts() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostrunscripts-multi
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostecho-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostecho-multi
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-prepostrunscripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-prepostrunscripts-multi
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-prepostecho-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-prepostecho-multi
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -766,6 +820,12 @@ __GenerateFunctionalityTests_PreRunScriptError() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror-single
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror-multi1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-prerunscripterror-multi2
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-prerunscripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-prerunscripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-prerunscripterror-multi2
     fi
 
     if [ "${phoenixtests}" == "y" ]; then
@@ -892,6 +952,10 @@ __GenerateFunctionalityTests_HostnameMap() {
 
     if [ "${hbasetests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-hostname-map
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-hostname-map
     fi
 
     if [ "${phoenixtests}" == "y" ]; then

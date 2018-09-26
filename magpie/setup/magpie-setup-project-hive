@@ -1,0 +1,237 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Army Research Laboratory, APG MD  (cf, DISCLAIMER).
+#  Written by Adam Childs <adam.s.childs.ctr@mail.mil>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script sets up configuration files for jobs.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+if [ "${HIVE_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+
+if ! Magpie_am_I_a_hive_node
+then
+   exit 0
+fi
+Magpie_calculate_hadoop_filesystem_paths ${hivenoderank}
+
+if [ "${HIVE_LOCAL_SCRATCH_DIR}X" == "X" ]
+then
+    hivelocalscratchdirpath="${magpie_hadooptmpdir}/hive"
+
+    if [ ! -d "${hivelocalscratchdirpath}" ]
+    then
+        mkdir -p ${hivelocalscratchdirpath}
+        if [ $? -ne 0 ] ; then
+            echo "mkdir failed making ${hivelocalscratchdirpath}"
+            exit 1
+        fi
+    fi
+else
+    IFSORIG=${IFS}
+    IFS=","
+    hivelocalscratchdirpath=""
+    for hivelocalpath in ${HIVE_LOCAL_SCRATCH_DIR}
+    do
+        # Setup node directory per node in case not a local drive
+        hivelocalpathtmp="${hivelocalpath}/node-${hivenoderank}"
+
+        if [ ! -d "${hivelocalpathtmp}" ]
+        then
+            mkdir -p ${hivelocalpathtmp}
+            if [ $? -ne 0 ] ; then
+                echo "mkdir failed making ${hivelocalpathtmp}"
+                exit 1
+            fi
+        fi
+
+        hivelocalscratchdirpath="${hivelocalscratchdirpath}${hivelocalscratchdirpath:+","}${hivelocalpathtmp}"
+    done
+    IFS=${IFSORIG}
+fi
+
+if [ "${HIVE_PORT}X" != "X" ]
+then
+    hiveport=${HIVE_PORT}
+else
+    hiveport=${default_hive_port}
+fi
+
+if [ "${HIVE_METASTORE_DIR}X" != "X" ]
+then
+    hivemetastoredir=${HIVE_METASTORE_DIR}
+else
+    hivemetastoredir="${hivelocalscratchdirpath}/metastore"
+fi
+
+if [ "${PGDATA}X" != "X" ]
+then
+    hivepostgresdatapath=${PGDATA}
+else
+    hivepostgresdatapath="${hivelocalscratchdirpath}/database/postgres/data"
+fi
+
+if [ "${PGPORT}X" != "X" ]
+then
+    hivepostgresport=${PGPORT}
+else
+    hivepostgresport=${default_postgres_port}
+fi
+
+if [ "${HIVE_DB_NAME}X" != "X" ]
+then
+    hivedbname=${HIVE_DB_NAME}
+else
+    hivedbname="${default_hive_db_name}"
+fi
+
+javahomesubst=`echo "${JAVA_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hiveconfdirsubst=`echo "${HIVE_CONF_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hivelogdirsubst=`echo "${HIVE_LOG_DIR}" | sed "s/\\//\\\\\\\\\//g"`
+hivemetastoredirsubst=`echo "${hivemetastoredir}" | sed "s/\\//\\\\\\\\\//g"`
+hivepostgreshomesubst=`echo "${POSTGRES_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+hivepostgresdatapathsubst=`echo "${hivepostgresdatapath}" | sed "s/\\//\\\\\\\\\//g"`
+
+# For rest of setup, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+#
+# Get config files for setup
+#
+
+# Magpie_find_conffile will set the 'pre' filenames
+
+Magpie_find_conffile "Hive" ${HIVE_CONF_FILES:-""} "hive-site.xml" "pre_hiveproperties"
+Magpie_find_conffile "Hive" ${HIVE_CONF_FILES:-""} "hive-log4j2.properties" "pre_log4jproperties"
+Magpie_find_conffile "Hive" ${HIVE_CONF_FILES:-""} "hive-env.sh" "pre_hiveenvsh"
+Magpie_find_conffile "Hive" ${HIVE_CONF_FILES:-""} "postgresql.conf" "pre_postgresproperties"
+
+post_hiveproperties=${HIVE_CONF_DIR}/hive-site.xml
+post_log4jproperties=${HIVE_CONF_DIR}/hive-log4j2.properties
+post_hiveenvsh=${HIVE_CONF_DIR}/hive-env.sh
+post_postgresproperties=${HIVE_CONF_DIR}/postgresql.conf
+
+# Setup Hive configuration files and environment files
+cp ${pre_hiveproperties} ${post_hiveproperties}
+
+# Add the zookeeper quorum to hive-site.xml
+zookeeperport=${default_zookeeper_client_port}
+
+#quorumlist=`awk -vORS=, -v port=$zookeeperport '{ print $1 ":" port }' ${ZOOKEEPER_CONF_DIR}/slaves | sed 's/ //g' | sed 's/,$/\n/' `
+quorumlist=`awk -vORS=, -v port=$zookeeperport '{ print $1 ":" port }' ${ZOOKEEPER_CONF_DIR}/workers | sed 's/ //g' | sed 's/,$/\n/' `
+
+hivemasternode=`head -n1 ${HIVE_CONF_DIR}/masters`
+
+# Set MR as the default execution engine, change below as appropriate.
+
+hiveexecutionengine=mr
+
+if [ "${HIVE_USE_TEZ}" == "yes" ]
+then
+    Magpie_find_conffile "Hive" ${HIVE_CONF_FILES:-""} "tez-site.xml" "pre_tezproperties"
+    hiveexecutionengine=tez
+    post_tezproperties=${HADOOP_CONF_DIR}/tez-site.xml
+
+    cp ${pre_tezproperties} ${post_tezproperties}
+    tezuripathsubstr=`echo "file://${TEZ_HOME}/share/tez.tar.gz" | sed "s/\\//\\\\\\\\\//g"`
+    tezuriclasspathsubstr=`echo "${TEZ_HOME}" | sed "s/\\//\\\\\\\\\//g"`
+
+    sed -i \
+        -e "s/TEZURIPATH/${tezuripathsubstr}/g" \
+        -e "s/TEZURICLASSPATH/${tezuriclasspathsubstr}/g" \
+        ${post_tezproperties}
+fi
+
+sed -i \
+    -e "s/HIVEEXECENGINE/${hiveexecutionengine}/g" \
+    -e "s/HIVEPORT/${hiveport}/g" \
+    -e "s/HIVEMETASTOREDIR/${hivemetastoredirsubst}/g" \
+    -e "s/HIVELOGDIR/${hivelogdirsubst}/g" \
+    -e "s/HIVEZOOKEEPERQUORUM/${quorumlist}/g" \
+    -e "s/HIVEDBNAME/${hivedbname}/g" \
+    -e "s/HIVEMASTERNODE/${hivemasternode}/g" \
+    -e "s/POSTGRESPORT/${hivepostgresport}/g" \
+    ${post_hiveproperties}
+
+
+if [ "${SPARK_SETUP}" == "yes" ]
+then
+    # Spark doesn't need the SPARKYARNJARS and other possible spark configs in the hive-site.xml
+    # and they may actually be detrimental if present.  Use the spark-hive-site.xml template 
+    # as it just contains settings relating to spark's connection to the hive server
+    Magpie_find_conffile "Hive" ${HIVE_CONF_FILES:-""} "spark-hive-site.xml" "pre_sparkhiveproperties"
+
+    post_sparkhiveproperties=${SPARK_CONF_DIR}/hive-site.xml
+    cp ${pre_sparkhiveproperties} ${post_sparkhiveproperties}
+    sed -i \
+        -e "s/HIVEPORT/${hiveport}/g" \
+        -e "s/HIVEMETASTOREDIR/${hivemetastoredirsubst}/g" \
+        -e "s/HIVELOGDIR/${hivelogdirsubst}/g" \
+        -e "s/HIVEDBNAME/${hivedbname}/g" \
+        -e "s/HIVEMASTERNODE/${hivemasternode}/g" \
+        -e "s/POSTGRESPORT/${hivepostgresport}/g" \
+        ${post_sparkhiveproperties}
+fi
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+sed -i \
+    -e "s/HIVELOGDIR/${hivelogdirsubst}/g" \
+    ${post_log4jproperties}
+
+cp ${pre_hiveenvsh} ${post_hiveenvsh}
+
+sed -i \
+    -e "s/HIVEJAVAHOME/${javahomesubst}/g" \
+    -e "s/HIVECONFIGDIR/${hiveconfdirsubst}/g" \
+    -e "s/HIVELOGDIR/${hivelogdirsubst}/g" \
+    -e "s/HIVEMASTERNODE/${hivemasternode}/g" \
+    -e "s/HIVEPORT/${hiveport}/g" \
+    -e "s/HIVEMETASTOREDIR/${hivemetastoredirsubst}/g" \
+    -e "s/HIVEDBNAME/${hivedbname}/g" \
+    -e "s/POSTGRESHOME/${hivepostgreshomesubst}/g" \
+    -e "s/POSTGRESPORT/${hivepostgresport}/g" \
+    -e "s/POSTGRESDATA/${hivepostgresdatapathsubst}/g" \
+    ${post_hiveenvsh}
+
+cp ${pre_postgresproperties} ${post_postgresproperties}
+
+sed -i \
+    -e "s/POSTGRESPORT/${hivepostgresport}/g" \
+    -e "s/POSTGRESDATA/${hivepostgresdatapathsubst}/g" \
+    ${post_postgresproperties}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export HIVE_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_hiveenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export HIVE_SSH_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_hiveenvsh}
+fi
+exit 0
