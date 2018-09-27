@@ -98,6 +98,14 @@ then
     fi
 fi
 
+if [ "${HIVE_SETUP}" == "yes" ]
+then
+    (${MAGPIE_SCRIPTS_HOME}/magpie/setup/magpie-setup-project-hive)
+    if [ $? -ne 0 ] ; then
+        exit 1
+    fi
+fi
+
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie/setup/magpie-setup-project-zookeeper)

@@ -656,6 +656,19 @@ __check_exports_hbase () {
     fi
 }
 
+__check_exports_hive () {
+    local file=$1
+    
+    __check_exports_project_base ${file} "HIVE"
+
+    num=`grep -E "HIVE_MASTER_NODE=.+" ${file} | wc -l`
+    if [ "${num}" == 0 ]
+    then
+        echo "Error in $file - can't find export HIVE_MASTER_NODE"
+    fi
+
+}
+
 __check_exports_phoenix () {
     local file=$1
 
@@ -787,6 +800,11 @@ then
         if echo ${file} | grep -q "hbase"
         then
             __check_exports_hbase ${file}
+        fi
+
+        if echo ${file} | grep -q "hive"
+        then
+            __check_exports_hive ${file}
         fi
 
         if echo ${file} | grep -q "phoenix"
@@ -1202,6 +1220,37 @@ then
 
         __test_generic $file
         __test_output_finalize $file
+    done
+fi
+
+__get_test_files run-hivetestbench
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "Hive Servers are up." $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Error in $file"
+        fi
+        
+        startnum=`grep -e "Executing Hive Testbench data generation" $file | wc -l`
+        querynum=`grep -e "Submitting Hive Testbench queries" $file | wc -l`
+        finishnum=`grep -e "Completed Hive Testbench" $file | wc -l`
+        if [ "${startnum}" != "1" ] || [ "${querynum}" != "1" ] || [ "${finishnum}" != "1" ]; then
+            echo "Error in $file"
+        fi
+        
+        errchk=`grep -e "Failed to create Testbench database" $file | wc -l`
+        if [ "${errchk}" -gt "0" ]; then
+            echo "Error in ${file}"
+        fi
+
+        __test_hdfs_shutdown $file
+        __test_zookeeper_shutdown $file
+
+        __test_generic $file
+        __test_output_finalize $file
+
     done
 fi
 

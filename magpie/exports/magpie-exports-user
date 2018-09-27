@@ -105,6 +105,16 @@ then
     export HBASE_REGIONSERVER_COUNT=`cat ${HBASE_CONF_DIR}/regionservers|wc -l`
 fi
 
+if [ "${HIVE_SETUP}" == "yes" ]
+then
+    if [ ! -f "${HIVE_CONF_DIR}/masters" ]
+    then
+        Magpie_output_internal_error "${HIVE_CONF_DIR}/masters does not exist"
+    fi
+
+    export HIVE_MASTER_NODE=`head -1 ${HIVE_CONF_DIR}/masters`
+fi
+
 if [ "${SPARK_SETUP}" == "yes" ]
 then
     if [ ! -f "${SPARK_CONF_DIR}/masters" ]

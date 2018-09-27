@@ -1,0 +1,106 @@
+#############################################################################
+# Hive configurations
+#############################################################################
+#
+# Should Hive be run
+#
+# Specify yes or no.  Defaults to no.
+#
+export HIVE_SETUP=no
+
+# Version of Hive to be run
+export HIVE_VERSION="HIVEVERSIONDEFAULT"
+
+# Port that HiveServer will listen on.  Default is 10000
+export HIVE_PORT=HIVEDEFAULTPORT
+
+# Path to your Hive build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+# Ensure the build matches the Hadoop/HDFS version this will run against.
+#
+export HIVE_HOME="HIVEDIRPREFIX/apache-hive-${HIVE_VERSION}-bin"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+
+export HIVE_LOCAL_DIR="LOCALDIRPREFIX/hive"
+
+# Hive Clients will make a connection to a metastore server which in turn queries the datastore (PostgreSQL)
+# for metadata. This sets the location of the metastore
+export HIVE_METASTORE_DIR="LUSTREDIRPREFIX/hive/database/postgres/data"
+
+# ##########################
+# Configurations for Postgres, used as a backend for HiveServer/Hive Metastore
+# ###########################
+export POSTGRES_HOME="POSTGRESDIRPREFIX/pgsql"
+
+# Port that Postgres will listen on.  Default is 11115
+export PGPORT=POSTGRESDEFAULTPORT
+
+# Path for Postgres to use for database creation
+export PGDATA="LUSTREDIRPREFIX/hive/database/postgres/data"
+
+# DB name for this project
+export HIVE_DB_NAME=HIVEDEFAULTDBNAME
+
+# Hive can be configured to use Tez as an execution engine.
+# Tez enables faster query times, however may not be available.
+# Set to yes for Hive to use Tez as an execution engine, if set
+# to no, Hive will use the default MapReduce engine
+export HIVE_USE_TEZ=no
+export TEZ_VERSION="HIVETEZVERSIONDEFAULT"
+export TEZ_HOME="TEZDIRPREFIX/apache-tez-${TEZ_VERSION}-bin"
+
+###########################################################################
+# Hive Job/Run Configurations
+############################################################################
+
+# Set hive job for MAGPIE_JOB_TYPE = hive
+# "testbench" - to run benchmark testing for Hive via hive-testbench modules
+#
+# "interactive" - manually interact to submit jobs, peruse Hbase, etc.
+#                 In this mode you'll login to the cluster node that
+#                 is your 'master' node and interact with Hbase
+#                 directly (e.g. bin/hbase ...)
+#
+# "setuponly" - Like 'interactive' but only setup conf files. useful
+#               if user wants to setup & teardown daemons themselves.
+#
+# "checkhiveup" - verifies that Hive and Hive Metastore are configured properly
+#
+
+export HIVE_JOB="testbench"
+
+# The following are configurations for running the hive-testbench software
+#
+# Path to the hive-testbench software
+export HIVE_TESTBENCH_DIR="TESTBENCHDIRPREFIX/hive-testbench"
+
+# Select the type of benchmark.  Options are 'tpcds' and 'tpch'
+# The TPC Benchmark H (TPC-H) is a decision support benchmark. It
+# consists of a suite of business oriented ad-hoc queries and 
+# concurrent data modifications.
+
+# The TPC Benchmark DS (TPC-DS) is a decision support benchmark that models several 
+# generally applicable aspects of a decision support system, 
+# including queries and data maintenance
+# More information can be found at the Transaction Processing Council website
+
+export HIVE_TESTBENCH_TYPE="tpch"
+
+# Select the Hive CLI version.  Options are 'hive' and 'beeline'.
+# NOTE: 'beeline' option is only available on Hive versions 2.x and greater.
+export HIVE_CLI_VERSION="beeline"
+
+## Select the size of the data to generate. Size is in GB
+export HIVE_TESTBENCH_DATA_SIZE=2
+
+# Select the number of queries to run (max is determined by the number of queries in the 
+# selected sample query directory. See hive-testbench for additional info)
+export HIVE_TESTBENCH_QUERY_COUNT=4
+

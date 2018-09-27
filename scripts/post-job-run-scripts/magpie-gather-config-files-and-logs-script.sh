@@ -94,5 +94,6 @@ Gather_common "kafka" "y" "y" ${basedir}
 Gather_common "storm" "y" "y" ${basedir}
 Gather_common "zookeeper" "y" "y" ${basedir}
 Gather_common "zeppelin" "y" "y" ${basedir}
+Gather_common "hive" "y" "y" ${basedir}
 
 exit 0

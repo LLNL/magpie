@@ -77,6 +77,21 @@ then
         fi
     fi
 
+    if [ "${HIVE_CONF_DIR}X" != "X" ]
+    then
+        if [ -f "${HIVE_CONF_DIR}/hive-env.sh" ]
+        then
+            echo "**** hive-env.sh ****"
+            cat ${HIVE_CONF_DIR}/hive-env.sh
+        fi
+
+        if [ -f "${HIVE_CONF_DIR}/hive-site.xml" ]
+        then
+            echo "**** hive-site.xml ****"
+            cat ${HIVE_CONF_DIR}/hive-site.xml
+        fi
+    fi
+
     if [ "${SPARK_CONF_DIR}X" != "X" ]
     then
         if [ -f "${SPARK_CONF_DIR}/spark-env.sh" ]
