@@ -354,9 +354,14 @@ fi
 
 # Magpie_find_conffile will set the 'pre' filenames
 
-if echo ${SPARK_VERSION} | grep -q -E "[1-2]\.[0-9]\.[0-9]"
+if echo ${SPARK_VERSION} | grep -q -E "1\.[0-9]\.[0-9]"
 then
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-env-1.X.sh" "pre_sparkenvsh"
+    Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-1.X.properties" "pre_log4jproperties"
+    Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-defaults.conf" "pre_sparkdefaultsconf"
+elif echo ${SPARK_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+then
+    Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-env-2.X.sh" "pre_sparkenvsh"
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-1.X.properties" "pre_log4jproperties"
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-defaults.conf" "pre_sparkdefaultsconf"
 else
@@ -396,6 +401,9 @@ Magpie_get_spark_major_minor_version ${SPARK_VERSION}
 
 cp ${pre_sparkenvsh} ${post_sparkenvsh}
 
+Magpie_get_magpie_hostname
+SPARK_THIS_HOST=${magpie_hostname}
+
 sed -i \
     -e "s/SPARK_JAVA_HOME/${javahomesubst}/g" \
     -e "s/SPARKHOME/${sparkhomesubst}/g" \
@@ -406,6 +414,7 @@ sed -i \
     -e "s/SPARKWORKERDIR/${workerdirectorysubst}/g" \
     -e "s/SPARKMEM/${sparkmem}/g" \
     -e "s/SPARKDRIVERMEMORY/${sparkdrivermemory}/g" \
+    -e "s/SPARKMASTERHOST/${SPARK_THIS_HOST}/g" \
     -e "s/SPARKMASTERPORT/${default_spark_master_port}/g" \
     -e "s/SPARKMASTERWEBUIPORT/${default_spark_master_webui_port}/g" \
     -e "s/SPARKWORKERWEBUIPORT/${default_spark_worker_webui_port}/g" \
