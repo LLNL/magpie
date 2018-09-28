@@ -22,7 +22,7 @@ Instructions For Running Hive
    using mpirun in script-lsf-mpirun.
 
    You'll likely want to start with the base hive w/ hdfs script
-   (e.g. magpie.sbatch-srun-hive-with-hdfs) for your
+   (e.g. magpie.sbatch-srun-hadoop-and-hive) for your
    scheduler/resource manager.  If you wish to configure more, you can
    choose to start with the base script (e.g. magpie.sbatch-srun)
    which contains all configuration options.
