@@ -104,7 +104,7 @@ Instructions For Using Zeppelin
 
 6) Submit your job into the cluster by running "sbatch -k
    ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < .magpie.lsffile" for LSF.
+   Moab, or "bsub < ./magpie.lsffile" for LSF.
    Add any other options you see fit.
 
 7) Look at your job output file to see your output.  There will also
