@@ -1,3 +1,10 @@
+Magpie 2.1
+----------
+Support Hbase 1.4.7 and 1.4.8
+- Update Hbase default to 1.4.8
+Support Spark 2.3.2-bin-hadoop2.6, 2.3.2-bin-hadoop2.7
+- Update Spark default to 2.3.2-bin-hadoop2.7
+
 Magpie 2.0
 ----------
 
