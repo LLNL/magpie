@@ -21,8 +21,6 @@ SubmitHiveStandardTests() {
             local hadoopversion="${testgroup}_hadoopversion"
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Hive" "Hadoop" ${!hadoopversion}
-            CheckForDependency "Hive" "Zookeeper" ${!zookeeperversion}
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
@@ -54,9 +52,6 @@ SubmitHiveDependencyTests() {
             local hadoopversion="${testgroup}_hadoopversion"
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Hive" "Hadoop" ${!hadoopversion}
-            CheckForHadoopDecomissionMinimum ${testfunction} "Hive" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
-            CheckForDependency "Hive" "Zookeeper" ${!zookeeperversion}
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
