@@ -41,7 +41,7 @@ The basic idea behind these scripts are to:
 
 3) Launch daemons on all nodes.  The rank 0 node will run master
    daemons, such as the Hadoop Namenode.  All remaining nodes will run
-   appropriate slave daemons, such as the Hadoop Datanodes.
+   appropriate worker daemons, such as the Hadoop Datanodes.
 
 4) Now you have a mini big data cluster to do whatever you want.  You
    can log into the master node and interact with your mini big data

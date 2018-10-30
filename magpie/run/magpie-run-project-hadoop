@@ -141,12 +141,12 @@ Magpie_run_start_hadoop () {
                         then
                             local ninteypercentnodes=`echo "${hdfsstorednodecount} * .9" | bc -l | xargs printf "%1.0f"`
                             echo "**** HDFS Issue ****"
-                            echo "HDFS was last built using a larger slave node count of ${hdfsstorednodecount}, compared to this job's ${HADOOP_WORKER_COUNT}"
+                            echo "HDFS was last built using a larger worker node count of ${hdfsstorednodecount}, compared to this job's ${HADOOP_WORKER_COUNT}"
                             echo "Because of this, it is very likely the HDFS Namenode will not be able to find all HDFS blocks."
 
                             if [ "${HADOOP_WORKER_COUNT}" -gt "${ninteypercentnodes}" ]
                             then
-                                echo "The current slave count of ${HADOOP_WORKER_COUNT} is atleast 90% of ${hdfsstorednodecount}, so HDFS will attempt to be"
+                                echo "The current worker count of ${HADOOP_WORKER_COUNT} is atleast 90% of ${hdfsstorednodecount}, so HDFS will attempt to be"
                                 echo "started.  However, it is not recommended for future runs and there is still a chance HDFS will not start."
                             else
                                 echo "If you truly desire to use fewer nodes, setup HDFS on another path or consider going through a decommissioning process to"
@@ -357,8 +357,8 @@ Magpie_run_start_hadoop () {
                     echo "setenv HADOOP_MASTER_NODE \"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "setenv HADOOP_WORKER_COUNT \"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "setenv HADOOP_WORKER_CORE_COUNT \"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "setenv HADOOP_SLAVE_COUNT \"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "setenv HADOOP_SLAVE_CORE_COUNT \"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "setenv HADOOP_WORKER_COUNT \"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "setenv HADOOP_WORKER_CORE_COUNT \"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if Magpie_hadoop_filesystem_mode_is_hdfs_type
                     then
                         echo "setenv HADOOP_NAMENODE \"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -376,8 +376,8 @@ Magpie_run_start_hadoop () {
                     echo "export HADOOP_MASTER_NODE=\"${HADOOP_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "export HADOOP_WORKER_COUNT=\"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     echo "export HADOOP_WORKER_CORE_COUNT=\"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "export HADOOP_SLAVE_COUNT=\"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                    echo "export HADOOP_SLAVE_CORE_COUNT=\"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "export HADOOP_WORKER_COUNT=\"${HADOOP_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                    echo "export HADOOP_WORKER_CORE_COUNT=\"${HADOOP_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                     if Magpie_hadoop_filesystem_mode_is_hdfs_type
                     then
                         echo "export HADOOP_NAMENODE=\"${HADOOP_NAMENODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
