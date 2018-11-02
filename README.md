@@ -56,100 +56,31 @@ The basic idea behind these scripts are to:
 Supported Packages & Versions
 -----------------------------
 
-The following packages and their versions have been tested for minimal
-support in this version of Magpie.  Please see full README for
-additional details.  Some older versions than those listed here may
-still work with Magpie but are not included in Magpie testing.
+For a complete list of supported package versions and dependencies,
+please see ```doc/README```.  The following can be considered a
+summary of support.
 
-Versions not listed below should work with Magpie if the
-configuration/setup of those versions is compatible with the versions
-listed below.  However, certain features or options may not work with
-those versions.
+Hadoop - 2.2.0, 2.3.0, 2.4.X, 2.5.X, 2.6.X, 2.7.X, 2.8.X, 2.9.X, 3.0.X, 3.1.X
 
-* + - Requires patch against binary distro's scripts, no re-compilation needed
-* ^ - Requires patch against source, requires re-compilation
-* ! - Some issues may exist, see documentation for details
+Spark - 0.9.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X, 2.0.X, 2.1.X, 2.2.X, 2.3.X
 
-Hadoop - 2.2.0+, 2.3.0+, 2.4.0+, 2.4.1+, 2.5.0+, 2.5.1+, 2.5.2+,
-         2.6.0+, 2.6.1+, 2.6.2+, 2.6.3+, 2.6.4+, 2.6.5+, 2.7.0+,
-         2.7.1+, 2.7.2+, 2.7.3+, 2.7.4+, 2.7.5+, 2.8.0+, 2.8.1+,
-         2.8.2+, 2.8.3+, 2.8.4+, 2.9.0+, 2.9.1+, 3.0.0+, 3.0.1+,
-         3.0.2+, 3.0.3+, 3.1.0+, 3.1.1+
-
-Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+,
-        1.1.0-bin-hadoop2.3+, 1.1.0-bin-hadoop2.4+,
-        1.1.1-bin-hadoop2.3+, 1.1.1-bin-hadoop2.4+,
-        1.2.0-bin-hadoop2.3+, 1.2.0-bin-hadoop2.4+,
-        1.2.1-bin-hadoop2.3+, 1.2.1-bin-hadoop2.4+,
-        1.2.2-bin-hadoop2.3+, 1.2.2-bin-hadoop2.4+,
-        1.3.0-bin-hadoop2.3+, 1.3.0-bin-hadoop2.4+,
-        1.3.1-bin-hadoop2.3+, 1.3.1-bin-hadoop2.4+,
-        1.3.1-bin-hadoop2.6+, 1.4.0-bin-hadoop2.3+,
-        1.4.0-bin-hadoop2.4+, 1.4.0-bin-hadoop2.6+,
-        1.4.1-bin-hadoop2.3+, 1.4.1-bin-hadoop2.4+,
-        1.4.1-bin-hadoop2.6+, 1.5.0-bin-hadoop2.6+,
-        1.5.1-bin-hadoop2.6+, 1.5.2-bin-hadoop2.6+,
-        1.6.0-bin-hadoop2.6+, 1.6.1-bin-hadoop2.6+,
-        1.6.2-bin-hadoop2.6+, 1.6.3-bin-hadoop2.6+,
-        2.0.0-bin-hadoop2.6+, 2.0.0-bin-hadoop2.7+,
-        2.0.1-bin-hadoop2.6+, 2.0.1-bin-hadoop2.7+,
-        2.0.2-bin-hadoop2.6+, 2.0.2-bin-hadoop2.7+,
-        2.1.0-bin-hadoop2.6+, 2.1.0-bin-hadoop2.7+,
-        2.1.1-bin-hadoop2.6+, 2.1.1-bin-hadoop2.7+,
-        2.1.2-bin-hadoop2.6+, 2.1.2-bin-hadoop2.7+,
-        2.2.0-bin-hadoop2.6+!, 2.2.0-bin-hadoop2.7+!,
-        2.2.1-bin-hadoop2.6+!, 2.2.1-bin-hadoop2.7+!,
-        2.3.0-bin-hadoop2.6+!, 2.3.0-bin-hadoop2.7+!,
-        2.3.1-bin-hadoop2.6+!, 2.3.1-bin-hadoop2.7+!,
-        2.3.2-bin-hadoop2.6+!, 2.3.2-bin-hadoop2.7+!
-
-Hbase - 0.98.0-hadoop2+, 0.98.1-hadoop2+, 0.98.2-hadoop2+,
-        0.98.3-hadoop2+, 0.98.4-hadoop2+, 0.98.5-hadoop2+,
-        0.98.6-hadoop2+, 0.98.6.1-hadoop2+, 0.98.7-hadoop2+,
-        0.98.8-hadoop2+, 0.98.9-hadoop2+, 0.98.10-hadoop2+,
-        0.98.10.1-hadoop2+, 0.98.11-hadoop2+, 0.98.12-hadoop2+,
-        0.98.12.1-hadoop2+, 0.98.13-hadoop2+, 0.98.14-hadoop2+,
-        0.98.15-hadoop2+, 0.98.16-hadoop2+, 0.98.16.1-hadoop2+,
-        0.98.17-hadoop2+, 0.98.18-hadoop2+, 0.98.19-hadoop2+,
-        0.98.20-hadoop2+, 0.98.21-hadoop2+, 0.98.22-hadoop2+,
-        0.98.23-hadoop2+, 0.98.24-hadoop2+, 0.99.0+, 0.99.1+, 0.99.2+,
-        1.0.0+, 1.0.1+, 1.0.1.1+, 1.0.2+, 1.0.3+, 1.1.0+, 1.1.0.1+,
-        1.1.1+, 1.1.2+, 1.1.3+, 1.1.4+, 1.1.5+, 1.1.6+, 1.1.7+,
-        1.1.8+, 1.1.9+, 1.1.10+, 1.1.11+, 1.1.12+, 1.1.13+, 1.2.0+,
-        1.2.1+, 1.2.2+, 1.2.3+, 1.2.4+, 1.2.5+, 1.2.6+, 1.2.6.1+,
-        1.3.0+, 1.3.1+, 1.3.2+, 1.3.2.1+, 1.4.0+!, 1.4.1+, 1.4.2+,
-        1.4.3+, 1.4.4+, 1.4.5+, 1.4.6+, 1.4.7+, 1.4.8+
+Hbase - 0.98.X, 0.99.X, 1.0.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X
 
 Hive - 2.3.0
 
 Pig - 0.13.0, 0.14.0, 0.15.0, 0.16.0, 0.17.0
 
-Zookeeper - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.4.5, 3.4.6, 3.4.7,
-            3.4.8, 3.4.9, 3.4.10, 3.4.11, 3.4.12, 3.4.13
+Zookeeper - 3.4.X
 
-Storm - 0.9.3, 0.9.4, 0.9.5, 0.9.6, 0.9.7, 0.10.0, 0.10.1, 0.10.2,
-        1.0.0, 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.1.0, 1.1.1, 1.1.2, 1.2.0,
-        1.2.1, 1.2.2
+Storm - 0.9.X, 0.10.X, 1.0.X, 1.1.X, 1.2.X
 
-Mahout - 0.11.0+, 0.11.1+, 0.11.2+, 0.12.0+, 0.12.1+, 0.12.2, 0.13.0
+Mahout - 0.11.X, 0.12.X, 0.13.0
 
-Phoenix - 4.5.0-Hbase-1.0+, 4.5.0-Hbase-1.1+, 4.5.1-Hbase-1.0+,
-          4.5.1-Hbase-1.1+, 4.5.2-HBase-1.0+, 4.5.2-HBase-1.1+,
-          4.6.0-Hbase-1.0+, 4.6.0-Hbase-1.1, 4.7.0-Hbase-1.0+,
-          4.7.0-Hbase-1.1, 4.8.0-Hbase-1.0+, 4.8.0-Hbase-1.1,
-          4.8.0-Hbase-1.2, 4.8.1-Hbase-1.0+, 4.8.1-Hbase-1.1,
-          4.8.1-Hbase-1.2, 4.8.2-Hbase-1.0+, 4.8.2-Hbase-1.1,
-          4.8.2-Hbase-1.2, 4.9.0-Hbase-1.1, 4.9.0-Hbase-1.2,
-          4.10.0-Hbase-1.1, 4.10.0-Hbase-1.2, 4.11.0-Hbase-1.1,
-          4.11.0-Hbase-1.2, 4.11.0-Hbase-1.3, 4.12.0-Hbase-1.1,
-          4.12.0-Hbase-1.2, 4.12.0-Hbase-1.3, 4.13.0-Hbase-1.3,
-          4.13.1-Hbase-1.1, 4.13.1-Hbase-1.2, 4.13.1-Hbase-1.3,
-          4.14.0-Hbase-1.1, 4.14.0-Hbase-1.2, 4.14.0-Hbase-1.3,
-          4.14.0-Hbase-1.4
+Phoenix - 4.5.X, 4.6.0, 4.7.0, 4.8.X, 4.9.0, 4.10.1, 4.11.0, 4.12.0, 4.13.X, 4.14.0
 
 Kafka - 2.11-0.9.0.0
 
-Zeppelin - 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2, 0.7.3, 0.8.0
+Zeppelin - 0.6.X, 0.7.X, 0.8.0
 
 Older Supported Packages & Features
 -----------------------------------
