@@ -148,7 +148,7 @@ those versions.
 
 * + - Requires patch against binary distro's scripts, no re-compilation needed
 * ^ - Requires patch against source, requires re-compilation
-* ! - Some issues may exist, see documentation for details
+* ! - Some issues may exist, see project readmes (i.e. README.hadoop) for details
 
 Hadoop - 2.2.0+, 2.3.0+, 2.4.0+, 2.4.1+, 2.5.0+, 2.5.1+, 2.5.2+,
          2.6.0+, 2.6.1+, 2.6.2+, 2.6.3+, 2.6.4+, 2.6.5+, 2.7.0+,
