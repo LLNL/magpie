@@ -60,9 +60,11 @@ For a complete list of supported package versions and dependencies,
 please see ```doc/README```.  The following can be considered a
 summary of support.
 
-Hadoop - 2.2.0, 2.3.0, 2.4.X, 2.5.X, 2.6.X, 2.7.X, 2.8.X, 2.9.X, 3.0.X, 3.1.X
+Hadoop - 2.2.0, 2.3.0, 2.4.X, 2.5.X, 2.6.X, 2.7.X, 2.8.X, 2.9.X,
+         3.0.X, 3.1.X
 
-Spark - 0.9.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X, 2.0.X, 2.1.X, 2.2.X, 2.3.X
+Spark - 0.9.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X, 2.0.X, 2.1.X,
+        2.2.X, 2.3.X, 2.4.X
 
 Hbase - 0.98.X, 0.99.X, 1.0.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X
 
@@ -76,7 +78,8 @@ Storm - 0.9.X, 0.10.X, 1.0.X, 1.1.X, 1.2.X
 
 Mahout - 0.11.X, 0.12.X, 0.13.0
 
-Phoenix - 4.5.X, 4.6.0, 4.7.0, 4.8.X, 4.9.0, 4.10.1, 4.11.0, 4.12.0, 4.13.X, 4.14.0
+Phoenix - 4.5.X, 4.6.0, 4.7.0, 4.8.X, 4.9.0, 4.10.1, 4.11.0, 4.12.0,
+          4.13.X, 4.14.0
 
 Kafka - 2.11-0.9.0.0
 
