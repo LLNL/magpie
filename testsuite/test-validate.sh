@@ -1100,7 +1100,7 @@ if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
     do
-        num=`grep -e "HDFS was last built using a larger slave node count" $file | wc -l`
+        num=`grep -e "HDFS was last built using a larger worker node count" $file | wc -l`
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi
