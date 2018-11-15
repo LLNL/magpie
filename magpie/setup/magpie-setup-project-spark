@@ -719,6 +719,19 @@ then
     then
         sed -i -e "s/spark.akka.threads/# spark.akka.threads/" ${post_sparkdefaultsconf}
     fi
+
+    # Handle special settings depending on version
+    # Versions >= 2.3, spark.yarn.executor.memoryOverhead is now
+    # spark.executor.memoryOverhead
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 2.3
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        sed -i -e "s/spark.yarn.executor.memoryOverhead/# spark.yarn.executor.memoryOverhead/" ${post_sparkdefaultsconf}
+    else
+        sed -i -e "s/spark.executor.memoryOverhead/# spark.executor.memoryOverhead/" ${post_sparkdefaultsconf}
+    fi
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}
