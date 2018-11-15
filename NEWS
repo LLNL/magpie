@@ -1,5 +1,6 @@
 Magpie 2.1
 ----------
+Fix various deprecated warnings.
 Support Hbase 1.4.7 and 1.4.8
 - Update Hbase default to 1.4.8
 Support Spark 2.4.0-bin-hadoop2.6, 2.4.0-bin-hadoop2.7, Spark
