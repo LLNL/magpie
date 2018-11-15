@@ -158,8 +158,6 @@ then
     zeppelin_jars="${zeppelin_jars},${hive_jars}"
 
     #  Add Spark's Hive .jars to the Zeppelin jars so it can interact with Hive through the interpreter
-    # sets magpie_sparkmajorminorversion
-    Magpie_get_spark_major_minor_version ${SPARK_VERSION}
     if [ "${HADOOP_SETUP}" == "yes" ] && [ "${SPARK_USE_YARN}" == "yes" ]
     then
         hadoop_yarn=$(ls "${HADOOP_HOME}"/share/hadoop/yarn/*.jar)
@@ -174,6 +172,9 @@ then
             zeppelin_jars="$j,${zeppelin_jars}"
         done
     fi
+
+    # sets magpie_sparkmajorminorversion
+    Magpie_get_spark_major_minor_version ${SPARK_VERSION}
 
     # Handle special settings depending on version
     # 0 is =, 1 is >, 2 is <
