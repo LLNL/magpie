@@ -1066,12 +1066,15 @@ then
         exit 1
     fi
 
-    if [ ! "${HIVE_TESTBENCH_DATA_SIZE}" -gt "1" ]
+    if [ "${HIVE_TESTBENCH_DATA_SIZE}X" != "X" ]
     then
-        echo "HIVE_TESTBENCH_DATA_SIZE must be greater than 1"
-        exit 1
-    fi
 
+        if [ ! "${HIVE_TESTBENCH_DATA_SIZE}" -gt "1" ]
+        then
+            echo "HIVE_TESTBENCH_DATA_SIZE must be greater than 1"
+            exit 1
+        fi
+    fi
     #__Magpie_check_dependencies_not_setuponly "Hadoop" "Hive" "Zookeeper"
 fi
 
