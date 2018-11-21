@@ -198,7 +198,21 @@ then
     hive_spark_jars="${spark_jars_path}/spark-hive_2.11-${sparkjarver}.jar,${hive_spark_jars}"
     hive_spark_jars="${spark_jars_path}/spark-hive-thriftserver_2.11-${sparkjarver}.jar,${hive_spark_jars}"
     zeppelin_jars="${hive_spark_jars},${zeppelin_jars}"
+fi
 
+if [ "${SPARK_SETUP}" == "yes" ]; then
+    sparkjarver="$(cut -d '-' -f 1 <<< "${SPARK_VERSION}" )"
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${magpie_sparkmajorminorversion} 2.3
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        spark_jars_path="$SPARK_HOME/jars"
+
+        spark_jars="${spark_jars_path}/spark-streaming_2.11-${sparkjarver}.jar"
+        zeppelin_jars="${spark_jars},${zeppelin_jars}"
+    fi
 fi
 
 if [ "${PHOENIX_SETUP}" == "yes" ]
@@ -224,7 +238,20 @@ fi
 
 ZEPPELIN_SPARK_SUBMIT_OPTS="${ZEPPELIN_SPARK_SUBMIT_OPTIONS}${ZEPPELIN_SPARK_SUBMIT_OPTIONS:+" "}--jars $zeppelin_jars"
 
-zeppelinclasspath=${spark_jars_path}/*:${CLASSPATH}
+for jar in $(ls ${spark_jars_path}/*.jar)
+do
+    zeppelinclasspath="${spark_jars_path}/${jar}:${zeppelinclasspath}"
+done
+
+for jar in $(ls ${ZEPPELIN_HOME}/lib/*.jar)
+do 
+    zeppelinclasspath="${ZEPPELIN_HOME}/lib/${jar}:${zeppelinclasspath}"
+done
+
+for jar in $(ls ${ZEPPELIN_HOME}/lib/interpreter/*.jar)
+do 
+    zeppelinclasspath="${ZEPPELIN_HOME}/lib/interpreter/${jar}:${zeppelinclasspath}"
+done
 
 # Magpie_find_conffile will set the 'pre' filenames
 Magpie_find_conffile "Zeppelin" ${ZEPPELIN_CONF_FILES:-""} "zeppelin-env.sh" "pre_zeppelinenvsh"
@@ -239,19 +266,7 @@ post_shiroini=${ZEPPELIN_CONF_DIR}/shiro.ini
 
 if [ "${SPARK_SETUP_TYPE}" == "YARN" ];
 then
-    # sets magpie_sparkmajorminorversion
-    Magpie_get_spark_major_minor_version ${SPARK_VERSION}
-
-    # Handle special settings depending on version
-    # 0 is =, 1 is >, 2 is <
-    Magpie_vercomp ${magpie_sparkmajorminorversion} 2.0
-    vercomp_result=$?
-    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
-    then
-        zeppelin_spark_master="yarn"
-    else
-        zeppelin_spark_master="yarn-client"
-    fi
+    zeppelin_spark_master="yarn-client"
 else
     zeppelin_spark_master="spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT}"
 fi
