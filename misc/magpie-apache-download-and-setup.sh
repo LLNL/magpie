@@ -59,7 +59,7 @@ PRESET_LAUNCH_SCRIPT_CONFIGS="N"
 # Also, patches are based on the package version number.  I may not
 # have patches for every version.
 
-HADOOP_PACKAGE="hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz"
+HADOOP_PACKAGE="hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz"
 HBASE_PACKAGE="hbase/1.4.9/hbase-1.4.9-bin.tar.gz"
 HIVE_PACKAGE="hive/2.3.0/apache-hive-2.3.0.tar.gz"
 PIG_PACKAGE="pig/pig-0.17.0/pig-0.17.0.tar.gz"

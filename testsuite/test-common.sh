@@ -12,7 +12,7 @@ hadoop2Xjava17versions="2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5 2.7.0 2.7.1 2.7.2 2.
 hadoop2Xjava17versions_javaversion=${java17}
 hadoop2Xjava18versions="2.7.4 2.7.5 2.7.6 2.7.7 2.8.5 2.9.2"
 hadoop2Xjava18versions_javaversion=${java18}
-hadoop3Xjava18versions="3.0.0 3.0.1 3.0.2 3.0.3 3.1.0 3.1.1"
+hadoop3Xjava18versions="3.0.0 3.0.1 3.0.2 3.0.3 3.1.0 3.1.1 3.2.0"
 hadoop3Xjava18versions_javaversion=${java18}
 
 hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions hadoop2Xjava18versions hadoop3Xjava18versions"
