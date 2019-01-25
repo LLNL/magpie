@@ -381,22 +381,24 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_Dependency5 "5F" "n" 2.8.0 2.9.0
     __GenerateHadoopDependencyTests_Dependency5 "5G" "n" 2.9.0 3.0.0
     __GenerateHadoopDependencyTests_Dependency5 "5H" "n" 3.0.0 3.1.0
+    __GenerateHadoopDependencyTests_Dependency5 "5I" "n" 3.1.0 3.2.0
     # Hops between major versions, do jumps of two to avoid permutation growth of tests.
-    __GenerateHadoopDependencyTests_Dependency5 "5I" "n" 2.4.0 2.6.0
-    __GenerateHadoopDependencyTests_Dependency5 "5J" "n" 2.5.0 2.7.0
-    __GenerateHadoopDependencyTests_Dependency5 "5K" "n" 2.6.0 2.8.0
-    __GenerateHadoopDependencyTests_Dependency5 "5L" "n" 2.7.0 2.9.0
-    __GenerateHadoopDependencyTests_Dependency5 "5M" "n" 2.8.0 3.0.0
-    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.9.0 3.1.0
+    __GenerateHadoopDependencyTests_Dependency5 "5J" "n" 2.4.0 2.6.0
+    __GenerateHadoopDependencyTests_Dependency5 "5K" "n" 2.5.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5L" "n" 2.6.0 2.8.0
+    __GenerateHadoopDependencyTests_Dependency5 "5M" "n" 2.7.0 2.9.0
+    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.8.0 3.0.0
+    __GenerateHadoopDependencyTests_Dependency5 "5O" "n" 2.9.0 3.1.0
+    __GenerateHadoopDependencyTests_Dependency5 "5P" "n" 3.0.0 3.2.0
     # Between minor versions
-    __GenerateHadoopDependencyTests_Dependency5 "5O" "y" 2.4.0 2.4.1
-    __GenerateHadoopDependencyTests_Dependency5 "5P" "n" 2.5.0 2.5.1 2.5.2
-    __GenerateHadoopDependencyTests_Dependency5 "5Q" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5
-    __GenerateHadoopDependencyTests_Dependency5 "5R" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4 2.7.5
-    __GenerateHadoopDependencyTests_Dependency5 "5S" "n" 2.8.0 2.8.1 2.8.2
-    __GenerateHadoopDependencyTests_Dependency5 "5T" "n" 2.9.0 2.9.1
-    __GenerateHadoopDependencyTests_Dependency5 "5U" "n" 3.0.0 3.0.1 3.0.2 3.0.3
-    __GenerateHadoopDependencyTests_Dependency5 "5V" "n" 3.1.0 3.1.1
+    __GenerateHadoopDependencyTests_Dependency5 "5Q" "y" 2.4.0 2.4.1
+    __GenerateHadoopDependencyTests_Dependency5 "5R" "n" 2.5.0 2.5.1 2.5.2
+    __GenerateHadoopDependencyTests_Dependency5 "5S" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5
+    __GenerateHadoopDependencyTests_Dependency5 "5T" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4 2.7.5
+    __GenerateHadoopDependencyTests_Dependency5 "5U" "n" 2.8.0 2.8.1 2.8.2
+    __GenerateHadoopDependencyTests_Dependency5 "5V" "n" 2.9.0 2.9.1
+    __GenerateHadoopDependencyTests_Dependency5 "5W" "n" 3.0.0 3.0.1 3.0.2 3.0.3
+    __GenerateHadoopDependencyTests_Dependency5 "5X" "n" 3.1.0 3.1.1
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
@@ -409,35 +411,41 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.9.0" "6G"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.9.0" "3.0.0" "6H"
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.0" "3.1.0" "6I"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.1.0" "3.2.0" "6J"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6J"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.4.0" "2.4.1" "6K"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6K"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6L"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.0" "2.5.1" "6L"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.5.1" "2.5.2" "6M"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6M"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6N"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6O"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6P"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.4" "2.6.5" "6Q"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.0" "2.6.1" "6N"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.1" "2.6.2" "6O"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.2" "2.6.3" "6P"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.3" "2.6.4" "6Q"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.6.4" "2.6.5" "6R"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6R"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6S"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.2" "2.7.3" "6T"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.3" "2.7.4" "6U"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.4" "2.7.5" "6V"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.0" "2.7.1" "6S"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.1" "2.7.2" "6T"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.2" "2.7.3" "6U"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.3" "2.7.4" "6V"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.4" "2.7.5" "6W"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.5" "2.7.6" "6X"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.7.6" "2.7.7" "6Y"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.8.1" "6W"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.2" "6X"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.3" "6Y"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.0" "2.8.1" "6Z"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.1" "2.8.2" "6AA"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.2" "2.8.3" "6AB"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.3" "2.8.4" "6AC"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.8.4" "2.8.5" "6AD"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.9.0" "2.9.1" "6Z"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.9.0" "2.9.1" "6AE"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "2.9.1" "2.9.2" "6AF"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.0" "3.0.1" "6AA"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.1" "3.0.2" "6AB"
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.1" "3.0.3" "6AC"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.0" "3.0.1" "6AG"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.1" "3.0.2" "6AH"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.0.1" "3.0.3" "6AI"
 
-    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.1.0" "3.1.1" "6AD"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.1.0" "3.1.1" "6AJ"
 }
 
 GenerateHadoopPostProcessing() {
