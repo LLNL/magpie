@@ -1,0 +1,282 @@
+diff -pruN hadoop-2.8.5-alternate-ssh/libexec/hadoop-config.sh hadoop-2.8.5/libexec/hadoop-config.sh
+--- hadoop-2.8.5-alternate-ssh/libexec/hadoop-config.sh	2018-09-09 20:58:15.000000000 -0700
++++ hadoop-2.8.5/libexec/hadoop-config.sh	2019-01-25 10:41:25.978019000 -0800
+@@ -70,6 +70,8 @@ HADOOP_DEFAULT_PREFIX=$(cd -P -- "$commo
+ HADOOP_PREFIX=${HADOOP_PREFIX:-$HADOOP_DEFAULT_PREFIX}
+ export HADOOP_PREFIX
+ 
++myhostname=`hostname`
++
+ #check to see if the conf dir is given as an optional argument
+ if [ $# -gt 1 ]
+ then
+@@ -77,11 +79,20 @@ then
+ 	  then
+ 	      shift
+ 	      confdir=$1
++	      if echo $confdir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++	      then
++	        orig_confdir="$1"
++	        confdir=$(echo "$confdir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++	      fi
+ 	      if [ ! -d "$confdir" ]; then
+                 echo "Error: Cannot find configuration directory: $confdir"
+                 exit 1
+              fi
+ 	      shift
++	      if [ "${orig_confdir}X" != "X" ]
++	      then
++	        orig_hadoopconfdir=$orig_confdir
++	      fi
+ 	      HADOOP_CONF_DIR=$confdir
+     fi
+ fi
+@@ -107,6 +118,24 @@ fi
+ 
+ export HADOOP_CONF_DIR="${HADOOP_CONF_DIR:-$HADOOP_PREFIX/$DEFAULT_CONF_DIR}"
+ 
++if echo $HADOOP_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_hadoopconfdir=$HADOOP_CONF_DIR
++  export HADOOP_CONF_DIR=$(echo "$HADOOP_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
++if echo $HADOOP_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_hadooplogdir=$HADOOP_LOG_DIR
++  export HADOOP_LOG_DIR=$(echo "$HADOOP_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
++if echo $HADOOP_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_hadooppiddir=$HADOOP_PID_DIR
++  export HADOOP_PID_DIR=$(echo "$HADOOP_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
+ # User can specify hostnames or a file where the hostnames are (not both)
+ if [[ ( "$HADOOP_SLAVES" != '' ) && ( "$HADOOP_SLAVE_NAMES" != '' ) ]] ; then
+   echo \
+diff -pruN hadoop-2.8.5-alternate-ssh/libexec/yarn-config.sh hadoop-2.8.5/libexec/yarn-config.sh
+--- hadoop-2.8.5-alternate-ssh/libexec/yarn-config.sh	2018-09-09 20:58:16.000000000 -0700
++++ hadoop-2.8.5/libexec/yarn-config.sh	2019-01-25 10:41:25.985017000 -0800
+@@ -36,6 +36,8 @@ fi
+ # Without this you can see very large vmem settings on containers.
+ export MALLOC_ARENA_MAX=${MALLOC_ARENA_MAX:-4}
+ 
++myhostname=`hostname`
++
+ #check to see if the conf dir is given as an optional argument
+ if [ $# -gt 1 ]
+ then
+@@ -43,14 +45,49 @@ then
+ 	  then
+ 	      shift
+ 	      confdir=$1
++	      if echo $confdir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++	      then
++	        orig_confdir="$1"
++	        confdir=$(echo "$confdir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++	      fi
++	      if [ ! -d "$confdir" ]; then
++	        echo "Error: Cannot find configuration directory: $confdir"
++	      fi
++	      if [ "${orig_confdir}X" != "X" ]
++	      then
++		orig_yarnconfdir=$orig_confdir
++	      fi
+ 	      shift
+ 	      YARN_CONF_DIR=$confdir
+     fi
+ fi
+  
++if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${orig_hadoopconfdir}X" != "X" ]
++then
++  export HADOOP_CONF_DIR=$orig_hadoopconfdir
++fi
++
+ # Allow alternate conf dir location.
+ export YARN_CONF_DIR="${HADOOP_CONF_DIR:-$HADOOP_YARN_HOME/conf}"
+ 
++if echo $YARN_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_yarnconfdir=$YARN_CONF_DIR
++  export YARN_CONF_DIR=$(echo "$YARN_CONF_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
++if echo $YARN_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_yarnlogdir=$YARN_LOG_DIR
++  export YARN_LOG_DIR=$(echo "$YARN_LOG_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
++if echo $YARN_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  orig_yarnpiddir=$YARN_PID_DIR
++  export YARN_PID_DIR=$(echo "$YARN_PID_DIR" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
+ #check to see it is specified whether to use the slaves or the
+ # masters file
+ if [ $# -gt 1 ]
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/hadoop-daemons.sh hadoop-2.8.5/sbin/hadoop-daemons.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/hadoop-daemons.sh	2018-09-09 20:58:15.000000000 -0700
++++ hadoop-2.8.5/sbin/hadoop-daemons.sh	2019-01-25 10:41:25.991021000 -0800
+@@ -33,4 +33,19 @@ DEFAULT_LIBEXEC_DIR="$bin"/../libexec
+ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+ . $HADOOP_LIBEXEC_DIR/hadoop-config.sh
+ 
++if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${orig_hadoopconfdir}X" != "X" ]
++then
++  export HADOOP_CONF_DIR=$orig_hadoopconfdir
++fi
++
++if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${orig_hadooplogdir}X" != "X" ]
++then
++  export HADOOP_LOG_DIR=$orig_hadooplogdir
++fi
++
++if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${orig_hadooppiddir}X" != "X" ]
++then
++  export HADOOP_PID_DIR=$orig_hadooppiddir
++fi
++
+ exec "$bin/slaves.sh" --config $HADOOP_CONF_DIR cd "$HADOOP_PREFIX" \; "$bin/hadoop-daemon.sh" --config $HADOOP_CONF_DIR "$@"
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/mr-jobhistory-daemon.sh hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/mr-jobhistory-daemon.sh	2018-09-09 20:58:16.000000000 -0700
++++ hadoop-2.8.5/sbin/mr-jobhistory-daemon.sh	2019-01-25 10:41:25.997026000 -0800
+@@ -92,6 +92,11 @@ HADOOP_OPTS="$HADOOP_OPTS -Dhadoop.id.st
+ log=$HADOOP_MAPRED_LOG_DIR/mapred-$HADOOP_MAPRED_IDENT_STRING-$command-$HOSTNAME.out
+ pid=$HADOOP_MAPRED_PID_DIR/mapred-$HADOOP_MAPRED_IDENT_STRING-$command.pid
+ 
++if echo $pid | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  pid=$(echo "$pid" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$(hostname)/g")
++fi
++
+ HADOOP_MAPRED_STOP_TIMEOUT=${HADOOP_MAPRED_STOP_TIMEOUT:-5}
+ 
+ # Set default scheduling priority
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/start-dfs.sh hadoop-2.8.5/sbin/start-dfs.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/start-dfs.sh	2018-09-09 20:58:15.000000000 -0700
++++ hadoop-2.8.5/sbin/start-dfs.sh	2019-01-25 10:41:26.005023000 -0800
+@@ -50,6 +50,21 @@ fi
+ #Add other possible options
+ nameStartOpt="$nameStartOpt $@"
+ 
++if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${orig_hadoopconfdir}X" != "X" ]
++then
++  export HADOOP_CONF_DIR=$orig_hadoopconfdir
++fi
++
++if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${orig_hadooplogdir}X" != "X" ]
++then
++  export HADOOP_LOG_DIR=$orig_hadooplogdir
++fi
++
++if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${orig_hadooppiddir}X" != "X" ]
++then
++  export HADOOP_PID_DIR=$orig_hadooppiddir
++fi
++
+ #---------------------------------------------------------
+ # namenodes
+ 
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/start-yarn.sh hadoop-2.8.5/sbin/start-yarn.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/start-yarn.sh	2018-09-09 20:58:16.000000000 -0700
++++ hadoop-2.8.5/sbin/start-yarn.sh	2019-01-25 10:41:26.012028000 -0800
+@@ -27,6 +27,21 @@ DEFAULT_LIBEXEC_DIR="$bin"/../libexec
+ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+ . $HADOOP_LIBEXEC_DIR/yarn-config.sh
+ 
++if [ "${YARN_CONF_DIR}X" != "X" ] && [ "${orig_yarnconfdir}X" != "X" ]
++then
++  export YARN_CONF_DIR=$orig_yarnconfdir
++fi
++
++if [ "${YARN_LOG_DIR}X" != "X" ] && [ "${orig_yarnlogdir}X" != "X" ]
++then
++  export YARN_LOG_DIR=$orig_yarnlogdir
++fi
++
++if [ "${YARN_PID_DIR}X" != "X" ] && [ "${orig_yarnpiddir}X" != "X" ]
++then
++  export YARN_PID_DIR=$orig_yarnpiddir
++fi
++
+ # start resourceManager
+ "$bin"/yarn-daemon.sh --config $YARN_CONF_DIR  start resourcemanager
+ # start nodeManager
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/stop-dfs.sh hadoop-2.8.5/sbin/stop-dfs.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/stop-dfs.sh	2018-09-09 20:58:15.000000000 -0700
++++ hadoop-2.8.5/sbin/stop-dfs.sh	2019-01-25 10:41:26.019021000 -0800
+@@ -22,6 +22,21 @@ DEFAULT_LIBEXEC_DIR="$bin"/../libexec
+ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+ . $HADOOP_LIBEXEC_DIR/hdfs-config.sh
+ 
++if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${orig_hadoopconfdir}X" != "X" ]
++then
++  export HADOOP_CONF_DIR=$orig_hadoopconfdir
++fi
++
++if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${orig_hadooplogdir}X" != "X" ]
++then
++  export HADOOP_LOG_DIR=$orig_hadooplogdir
++fi
++
++if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${orig_hadooppiddir}X" != "X" ]
++then
++  export HADOOP_PID_DIR=$orig_hadooppiddir
++fi
++
+ #---------------------------------------------------------
+ # namenodes
+ 
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/stop-yarn.sh hadoop-2.8.5/sbin/stop-yarn.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/stop-yarn.sh	2018-09-09 20:58:16.000000000 -0700
++++ hadoop-2.8.5/sbin/stop-yarn.sh	2019-01-25 10:41:26.026019000 -0800
+@@ -27,6 +27,21 @@ DEFAULT_LIBEXEC_DIR="$bin"/../libexec
+ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+ . $HADOOP_LIBEXEC_DIR/yarn-config.sh
+ 
++if [ "${YARN_CONF_DIR}X" != "X" ] && [ "${orig_yarnconfdir}X" != "X" ]
++then
++  export YARN_CONF_DIR=$orig_yarnconfdir
++fi
++
++if [ "${YARN_LOG_DIR}X" != "X" ] && [ "${orig_yarnlogdir}X" != "X" ]
++then
++  export YARN_LOG_DIR=$orig_yarnlogdir
++fi
++
++if [ "${YARN_PID_DIR}X" != "X" ] && [ "${orig_yarnpiddir}X" != "X" ]
++then
++  export YARN_PID_DIR=$orig_yarnpiddir
++fi
++
+ # stop resourceManager
+ "$bin"/yarn-daemon.sh --config $YARN_CONF_DIR  stop resourcemanager
+ # stop nodeManager
+diff -pruN hadoop-2.8.5-alternate-ssh/sbin/yarn-daemons.sh hadoop-2.8.5/sbin/yarn-daemons.sh
+--- hadoop-2.8.5-alternate-ssh/sbin/yarn-daemons.sh	2018-09-09 20:58:16.000000000 -0700
++++ hadoop-2.8.5/sbin/yarn-daemons.sh	2019-01-25 10:41:26.033021000 -0800
+@@ -34,5 +34,20 @@ DEFAULT_LIBEXEC_DIR="$bin"/../libexec
+ HADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}
+ . $HADOOP_LIBEXEC_DIR/yarn-config.sh
+ 
++if [ "${YARN_CONF_DIR}X" != "X" ] && [ "${orig_yarnconfdir}X" != "X" ]
++then
++  export YARN_CONF_DIR=$orig_yarnconfdir
++fi
++
++if [ "${YARN_LOG_DIR}X" != "X" ] && [ "${orig_yarnlogdir}X" != "X" ]
++then
++  export YARN_LOG_DIR=$orig_yarnlogdir
++fi
++
++if [ "${YARN_PID_DIR}X" != "X" ] && [ "${orig_yarnpiddir}X" != "X" ]
++then
++  export YARN_PID_DIR=$orig_yarnpiddir
++fi
++
+ exec "$bin/slaves.sh" --config $YARN_CONF_DIR cd "$HADOOP_YARN_HOME" \; "$bin/yarn-daemon.sh" --config $YARN_CONF_DIR "$@"
+ 
