@@ -198,6 +198,7 @@ hbase_1_4_5=y
 hbase_1_4_6=y
 hbase_1_4_7=y
 hbase_1_4_8=y
+hbase_1_4_9=y
 hive_2_3_0=y
 phoenix_4_5_0_HBase_1_0=y
 phoenix_4_5_0_HBase_1_1=y

@@ -828,7 +828,7 @@ export HBASE_SETUP=yes
 
 # Version
 #
-export HBASE_VERSION="1.4.7"
+export HBASE_VERSION="1.4.9"
 
 # Path to your Hbase build/binaries
 #
