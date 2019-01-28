@@ -83,7 +83,7 @@ Phoenix - 4.5.X, 4.6.0, 4.7.0, 4.8.X, 4.9.0, 4.10.1, 4.11.0, 4.12.0,
 
 Kafka - 2.11-0.9.0.0
 
-Zeppelin - 0.6.X, 0.7.X, 0.8.0
+Zeppelin - 0.6.X, 0.7.X, 0.8.X
 
 Older Supported Packages & Features
 -----------------------------------

@@ -230,7 +230,7 @@ Phoenix - 4.5.0-Hbase-1.0+, 4.5.0-Hbase-1.1+, 4.5.1-Hbase-1.0+,
 
 Kafka - 2.11-0.9.0.0
 
-Zeppelin - 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2, 0.7.3, 0.8.0
+Zeppelin - 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2, 0.7.3, 0.8.0, 0.8.1
 
 [HiveNote] - Hive uses PostgreSQL, the minimum version required is 9.1.13
       PostgreSQL can be found at: https://www.postgresql.org/download/
