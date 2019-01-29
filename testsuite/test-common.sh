@@ -142,7 +142,7 @@ zookeeper_all_versions="${zookeeperjava17versions}"
 zeppelinspark16java17versions="0.6.0 0.6.1 0.6.2 0.7.0 0.7.1 0.7.2 0.7.3"
 zeppelinspark16java17versions_sparkversion="1.6.0-bin-hadoop2.6"
 zeppelinspark16java17versions_javaversion="${java17}"
-zeppelinspark16java18versions="0.8.0"
+zeppelinspark16java18versions="0.8.0 0.8.1"
 zeppelinspark16java18versions_sparkversion="1.6.0-bin-hadoop2.6"
 zeppelinspark16java18versions_javaversion="${java18}"
 
