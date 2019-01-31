@@ -58,6 +58,9 @@ Instructions For Using Zeppelin
    ZEPPELIN_LOCAL_DIR : A small place for conf files and log files local to
    each node.  Typically /tmp directory.
 
+   ZEPPELIN_NOTEBOOK_USERS : Users, passwords and roles able to access the
+                             notebook
+
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
    ZEPPELIN_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
    to 'zeppelin' and setting ZEPPELIN_JOB to 'checkzeppelinup'.  This
@@ -134,3 +137,20 @@ for Spark environment variables that may be useful.
 
 See "Zookeeper Exported Environment Variables" in README.zookeeper,
 for Zookeeper environment variables that may be useful.
+
+Notes
+1) If ZEPPELIN_NOTEBOOK_ENCRYPT_PASSWORD is marked as true, do the following
+   to create the password for ZEPPELIN_NOTEBOOK_USERS. Make sure that the
+   shiro-tools-hasher is in the classpath. It can be downloaded where X.X.X 
+   matches shiro-core that is used in the selected zeppelin version. This can
+   be found by looking at the jar file located at:
+       zeppelin-Y.Y.Y-bin-all/lib/shiro-core-X.X.X.jar. 
+   The download path where X.X.X matches shiro-core's X.X.X:
+       http://repo1.maven.org/maven2/org/apache/shiro/tools/
+           shiro-tools-hasher/X.X.X/shiro-tools-hasher-X.X.X-cli.jar
+   To create the password run:
+       $JAVA_HOME/bin/java -jar shiro-tools-hasher-X.X.X-cli.jar -p
+   This will create a hash like such:
+       $shiro1$SHA-256$500000$xwGfyokCGZPdGLrIOfsfkg==$/7jglXzJHINptKRRDd8x1BAnJfAlGlKwFEN4yIwuAI0=
+   Make sure to escape the '$' in the string or use single quotes.
+   This hash should replace the password for a user in ZEPPELIN_NOTEBOOK_USERS.

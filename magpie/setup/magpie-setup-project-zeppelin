@@ -342,6 +342,26 @@ vercomp_result=$?
 if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
 then
     cp ${pre_shiroini} ${post_shiroini}
+
+    IFS=';'; userlist=(${ZEPPELIN_NOTEBOOK_USERS}); unset IFS;
+    for userstring in ${userlist[@]}
+    do
+        IFS=','; userval=(${userstring}); unset IFS;
+        zeppelin_notebook_users="${zeppelin_notebook_users}\\n${userval[0]} = ${userval[1]}, ${userval[2]}"
+    done
+
+    if [ "${ZEPPELIN_NOTEBOOK_ENCRYPT_PASSWORD}" == "true" ]
+    then
+        zeppelin_notebook_encrypted="passwordMatcher = org.apache.shiro.authc.credential.PasswordMatcher\\niniRealm.credentialsMatcher = \$passwordMatcher"
+        zeppelin_notebook_users=`echo "${zeppelin_notebook_users}" | sed "s/\\//\\\\\\\\\\\\//g"`
+    else
+        zeppelin_notebook_encrypted=""
+    fi
+
+    sed -i \
+        -e "s/ZEPPELINNOTEBOOKUSERS/${zeppelin_notebook_users}/g" \
+        -e "s/ZEPPELINNOTEBOOKENCRYPTPASSWORD/${zeppelin_notebook_encrypted}/g" \
+        ${post_shiroini}
 fi
 
 cp ${pre_log4jproperties} ${post_log4jproperties}
