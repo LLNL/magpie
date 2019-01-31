@@ -78,3 +78,18 @@ export ZEPPELIN_JOB="checkzeppelinup"
 #
 # export ZEPPELIN_NOTEBOOK_DIR="LUSTREDIRPREFIX/zeppelin/notebook"
 
+# Zeppelin Notebook Authorization
+#
+# Set username, password, and roles for required shiro login authorization.
+# This setting must be in place prior to starting Zeppelin. The default 
+# shiro.conf file is configured with two roles, admin and role1. 'admin' 
+# allows configuration of the settings and 'role1' does not. Use ';' as a 
+# delimiter for multiple users.
+#export ZEPPELIN_NOTEBOOK_USERS="user1,password1,admin;user2,password2,role2"
+
+# Zeppelin Notebook Authorization Security
+#
+# If this is set to 'true', you must provide the shiro encrypted password.
+# An encrypted password can be created with the shiro-tools-hasher jar.
+# See Note[1] in docs/README.zeppelin for more information
+# export ZEPPELIN_NOTEBOOK_ENCRYPT_PASSWORD=true

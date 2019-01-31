@@ -225,6 +225,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-calculate-values
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-version-helper
 
 if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
 then
@@ -957,6 +958,18 @@ then
     __Magpie_check_must_be_set_and_is_directory "ZEPPELIN_HOME" "to run Zeppelin"
 
     __Magpie_check_must_be_set "ZEPPELIN_LOCAL_DIR" "to run Zeppelin"
+
+    # sets magpie_zeppelinmajorminorversion
+    Magpie_get_zeppelin_major_minor_version ${ZEPPELIN_VERSION}
+    
+    # Handle special settings depending on version
+    # 0 is =, 1 is >, 2 is <
+    Magpie_vercomp ${magpie_zeppelinmajorminorversion} 0.6
+    vercomp_result=$?
+    if [ "${vercomp_result}" == "0" ] || [ "${vercomp_result}" == "1" ]
+    then
+        __Magpie_check_must_be_set "ZEPPELIN_NOTEBOOK_USERS" "to run Zeppelin"
+    fi
 
     __Magpie_check_is_enabled "Spark" "Zeppelin"
 
