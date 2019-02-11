@@ -1,0 +1,187 @@
+Instructions For Running HBase
+------------------------------
+
+0) If necessary, download your favorite version of HBase off of Apache
+   and install it into a location where it's accessible on all cluster
+   nodes. Usually, this is on an NFS home directory.
+
+   See below in 'HBase Patching' about patches that may be necessary
+   for HBase depending on your environment and HBase version.
+
+   See 'Convenience Scripts' in README about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
+   downloading and patching easier.
+
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
+
+   You'll likely want to start with the base HBase w/ HDFS script
+   (e.g. `magpie.sbatch-srun-hbase-with-hdfs`) for your
+   scheduler/resource manager. If you wish to configure more, you can
+   choose to start with the base script (e.g. `magpie.sbatch-srun`)
+   which contains all configuration options.
+
+2) Setup your job essentials at the top of the submission script. As
+   an example, the following are the essentials for running with Moab.
+
+   #MSUB -l nodes : Set how many nodes you want in your job
+
+   #MSUB -l walltime : Set the time for this job to run
+
+   #MSUB -l partition : Set the job partition
+
+   #MSUB -q <my batch queue> : Set to batch queue
+
+   MOAB_JOBNAME : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'hbase' initially
+
+   JAVA_HOME : B/c you need to ...
+
+3) Setup the essentials for HBase.
+
+   HBASE_SETUP : Set to yes
+
+   HBASE_VERSION : Set appropriately.
+
+   HBASE_HOME : Where your HBase code is. Typically in an NFS
+   mount.
+
+   HBASE_LOCAL_DIR : A small place for conf files and log files local
+   to each node. Typically `/tmp` directory.
+
+4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
+   HBASE_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE to
+   'hbase' and setting HBASE_JOB to 'performanceeval'. This will
+   allow you to run a pre-written job to make sure things are setup
+   correctly.
+
+   After this, you may want to run with MAGPIE_JOB_TYPE set to
+   'interactive' to play around and figure things out. In the job
+   output you will see output similar to the following:
+
+   ```
+   ssh node70
+   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+   setenv HBASE_HOME "/home/username/hbase-1.2.1"
+   setenv HBASE_CONF_DIR "/tmp/username/hbase/ajobtime/1174573/conf"
+   ```
+
+   These instructions will inform you how to login to the master node
+   of your allocation and how to initialize your session. Once in
+   your session, you can do as you please. For example, you can
+   interact with the HBase shell to start (`bin/hbase` shell). There
+   will also be instructions in your job output on how to tear the
+   session down cleanly if you wish to end your job early.
+
+   Once you have figured out how you wish to run your job, you will
+   likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
+   Create a script that will run your job/calculation automatically,
+   set it in MAGPIE_JOB_SCRIPT, and then run your job. You can find
+   an example job script in `examples/hbase-example-job-script`.
+
+   See "Exported Environment Variables" in README for information on
+   common exported environment variables that may be useful in
+   scripts.
+
+   See below in "HBase Exported Environment Variables", for
+   information on HBase specific exported environment variables that
+   may be useful in scripts.
+
+5) HBase requires HDFS, so ensure the Hadoop w/ HDFS is configured and
+   also in your submission script. MapReduce is not needed with HBase
+   but can be setup along with it. See README.hadoop for Hadoop setup
+   instructions.
+
+6) HBase requires Zookeeper, so setup the essentials for Zookeeper.
+   See README.zookeeper for Zookeeper setup instructions.
+
+7) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
+   Add any other options you see fit.
+
+8) Look at your job output file to see your output. There will also
+   be some notes/instructions/tips in the output file for viewing the
+   status of your job in a web browser, environment variables you wish
+   to set if interacting with it, etc.
+
+   See "General Advanced Usage" in README.md for additional tips.
+
+HBase Notes
+-----------
+
+If you increase the size of your node allocation when running HBase on
+HDFS over Lustre or HDFS over NetworkFS, data/regions will not be
+balanced over all of the new nodes. Think of this similarly to how
+data would not be distributed evenly if you added new nodes into a
+traditional HBase/Hadoop cluster. Over time HBase will rebalance data
+over the new nodes.
+
+HBase Exported Environment Variables
+------------------------------------
+
+The following environment variables are exported when your job is run
+and may be useful in scripts in your run or in pre/post run scripts.
+
+HBASE_CONF_DIR : the directory that HBase configuration files local
+                 to the node are stored.
+
+HBASE_LOG_DIR : the directory HBase log files are stored
+
+HBASE_MASTER_NODE : the master node of the HBase allocation
+
+HBASE_REGIONSERVER_COUNT : number of region servers in your allocation
+                           for HBase.
+
+See "Hadoop Exported Environment Variables" in README.hadoop, for
+Hadoop environment variables that may be useful.
+
+See "Zookeeper Exported Environment Variables" in README.zookeeper,
+for Zookeeper environment variables that may be useful.
+
+HBase Convenience Scripts
+-------------------------
+
+The following job scripts may be convenient. They can be run by
+setting MAGPIE_JOB_TYPE set to 'script' and setting MAGPIE_JOB_SCRIPT
+to the script.
+
+`job-scripts/hbase-major-compaction.sh` - Perform a major compaction on
+all Hbase tables.
+
+HBase Patching
+--------------
+
+- Patch to support non-ssh remote execution may be needed in some
+  environments. Patch can be applied directly to startup scripts, not
+  needing a recompilation of source.
+
+  Patches for this can be found in the `patches/hbase/` directory with
+  'alternate-ssh' in the filename.
+
+  The alternate remote execution command must be specified in the
+  environment variable MAGPIE_REMOTE_CMD.
+
+- If MAGPIE_NO_LOCAL_DIR support is desired, patches in `patches/hbase/`
+  with the `no-local-dir.patch` suffix in the filename can be found
+  for support. See README.no-local-dir for more details.
+
+Known Issues
+------------
+
+HBase 1.4.0 did not properly backport several patches that broke
+Magpie regression tests. See:
+https://issues.apache.org/jira/browse/HBASE-19588
+
+It is believed this is isolated to only MapReduce tests distributed by
+HBase.  Mapreduce tests written by users should still work.

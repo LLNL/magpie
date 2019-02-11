@@ -1,32 +1,32 @@
 Instructions For Using Zeppelin
-------------------------------
+-------------------------------
 
 0) If necessary, download your favorite version of Zeppelin off of Apache
    and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+   nodes. Usually, this is on an NFS home directory.
 
    See below in 'Zeppelin Patching' about patches that may be necessary
    for Zeppelin depending on your environment and Zeppelin version.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
    You'll likely want to start with the base spark script
-   (e.g. magpie.sbatch-srun-spark) or spark w/ zeppelin
-   (e.g. magpie.sbatch-srun-spark-with-zeppelin) for your
-   scheduler/resource manager.  If you wish to configure more, you can
-   choose to start with the base script (e.g. magpie.sbatch-srun)
+   (e.g. `magpie.sbatch-srun-spark`) or Spark w/ Zeppelin
+   (e.g. `magpie.sbatch-srun-spark-with-zeppelin`) for your
+   scheduler/resource manager. If you wish to configure more, you can
+   choose to start with the base script (e.g. `magpie.sbatch-srun`)
    which contains all configuration options.
 
-2) Setup your job essentials at the top of the submission script.  As
+2) Setup your job essentials at the top of the submission script. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -53,26 +53,25 @@ Instructions For Using Zeppelin
 
    ZEPPELIN_VERSION : Set appropriately.
 
-   ZEPPELIN_HOME : Where your Zeppelin code is.  Typically in an NFS mount.
+   ZEPPELIN_HOME : Where your Zeppelin code is. Typically in an NFS mount.
 
    ZEPPELIN_LOCAL_DIR : A small place for conf files and log files local to
-   each node.  Typically /tmp directory.
+   each node. Typically `/tmp` directory.
 
    ZEPPELIN_NOTEBOOK_USERS : Users, passwords and roles able to access the
                              notebook
 
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
-   ZEPPELIN_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
-   to 'zeppelin' and setting ZEPPELIN_JOB to 'checkzeppelinup'.  This
+   ZEPPELIN_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   to 'zeppelin' and setting ZEPPELIN_JOB to 'checkzeppelinup'. This
    will allow you to run a pre-written job to make sure things are
    setup correctly.
 
    After this, you may want to run with MAGPIE_JOB_TYPE set to
-   'interactive' to play around and figure things out.  In the job
-   output you will see output similar to the following:
+   'interactive' to play around and figure things out.
 
-   * To access Zeppelin's web interface, you'll want to navigate your browser to:
-   *     http://some-node:18080
+   To access Zeppelin's web interface, you'll want to navigate
+   your browser to: http://some-node:18080
 
    If you point your browser to this node and port you can access the
    Zeppelin Notebook/Interpreter. From here you can create notebooks
@@ -82,6 +81,7 @@ Instructions For Using Zeppelin
    - Click the link "Create new note"
    - In the first paragraph add the following:
 
+   ```
     %spark
     val count = sc.parallelize(1 to 1000).map{i =>
       val x = Math.random()
@@ -89,12 +89,13 @@ Instructions For Using Zeppelin
       if (x*x + y*y < 1) 1 else 0
     }.reduce(_ + _)
     println("Pi is roughly " + 4.0 * count / 1000)
-
+   ```
+   
    - Click the 'play' button in the top right corner of the paragraph.
 
    This should display a value around 3.14 if successful.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -103,19 +104,20 @@ Instructions For Using Zeppelin
    may be useful in scripts.
 
 5) Zeppelin requires Spark, so ensure Spark is configured and also in
-   your submission script.  See README.spark for setup instructions.
+   your submission script. See README.spark.md for setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+6) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
 Zeppelin Exported Environment Variables
 ---------------------------------------
@@ -132,10 +134,10 @@ ZEPPELIN_CONF_DIR : the directory that Zeppelin configuration files local
 
 ZEPPELIN_LOG_DIR : the directory Zeppelin log files are stored
 
-See "Spark Exported Environment Variables" in README.spark,
+See "Spark Exported Environment Variables" in README.spark.md,
 for Spark environment variables that may be useful.
 
-See "Zookeeper Exported Environment Variables" in README.zookeeper,
+See "Zookeeper Exported Environment Variables" in README.zookeeper.md,
 for Zookeeper environment variables that may be useful.
 
 Notes
@@ -144,13 +146,21 @@ Notes
    shiro-tools-hasher is in the classpath. It can be downloaded where X.X.X 
    matches shiro-core that is used in the selected zeppelin version. This can
    be found by looking at the jar file located at:
-       zeppelin-Y.Y.Y-bin-all/lib/shiro-core-X.X.X.jar. 
+   `zeppelin-Y.Y.Y-bin-all/lib/shiro-core-X.X.X.jar`. 
+   
    The download path where X.X.X matches shiro-core's X.X.X:
        http://repo1.maven.org/maven2/org/apache/shiro/tools/
            shiro-tools-hasher/X.X.X/shiro-tools-hasher-X.X.X-cli.jar
+   
    To create the password run:
-       $JAVA_HOME/bin/java -jar shiro-tools-hasher-X.X.X-cli.jar -p
+   ```
+   $JAVA_HOME/bin/java -jar shiro-tools-hasher-X.X.X-cli.jar -p
+   ```
+   
    This will create a hash like such:
-       $shiro1$SHA-256$500000$xwGfyokCGZPdGLrIOfsfkg==$/7jglXzJHINptKRRDd8x1BAnJfAlGlKwFEN4yIwuAI0=
+   ```
+   $shiro1$SHA-256$500000$xwGfyokCGZPdGLrIOfsfkg==$/7jglXzJHINptKRRDd8x1BAnJfAlGlKwFEN4yIwuAI0=
+   ````
+   
    Make sure to escape the '$' in the string or use single quotes.
    This hash should replace the password for a user in ZEPPELIN_NOTEBOOK_USERS.

@@ -3,11 +3,11 @@ Instructions For Spark
 
 0) If necessary, download your favorite version of Spark off of Apache
    and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+   nodes. Usually, this is on an NFS home directory.
 
    On older versions of Spark, you may need to set
    SPARK_HADOOP_VERSION and run 'sbt/sbt assembly' to prepare Spark
-   for execution.  If you are not using the default Java
+   for execution. If you are not using the default Java
    implementation installed in your system, you may need to edit
    sbt/sbt to use the proper Java version you desire (this is the case
    with 0.9.1, not the case in future versions).
@@ -15,28 +15,28 @@ Instructions For Spark
    See below in 'Spark Patching' about patches that may be necessary
    for Spark depending on your environment and Spark version.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
    You'll likely want to start with the base spark script
-   (e.g. magpie.sbatch-srun-spark) or spark w/ hdfs
-   (e.g. magpie.sbatch-srun-spark-with-hdfs) for your
-   scheduler/resource manager.  If you wish to configure more, you can
-   choose to start with the base script (e.g. magpie.sbatch-srun)
+   (e.g. `magpie.sbatch-srun-spark`) or spark w/ HDFS
+   (e.g. `magpie.sbatch-srun-spark-with-hdfs`) for your
+   scheduler/resource manager. If you wish to configure more, you can
+   choose to start with the base script (e.g. `magpie.sbatch-srun`)
    which contains all configuration options.
 
-   It should be noted that you can run Spark without HDFS.  You can
+   It should be noted that you can run Spark without HDFS. You can
    access files normally through "file://<path>".
 
-2) Setup your job essentials at the top of the submission script.  As
+2) Setup your job essentials at the top of the submission script. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -66,44 +66,46 @@ Instructions For Spark
 
    SPARK_VERSION : Set appropriately.
 
-   SPARK_HOME : Where your Spark code is.  Typically in an NFS
+   SPARK_HOME : Where your Spark code is. Typically in an NFS
    mount.
 
    SPARK_LOCAL_DIR : A small place for conf files and log files local
-   to each node.  Typically /tmp directory.
+   to each node. Typically `/tmp` directory.
 
-   SPARK_LOCAL_SCRATCH_DIR : A scratch directory for Spark to use.  If
+   SPARK_LOCAL_SCRATCH_DIR : A scratch directory for Spark to use. If
    a local SSD/NVRAM is available, it would be preferable to set this
    to that path.
 
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
-   SPARK_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE to
-   'spark' and setting SPARK_JOB to 'sparkpi'.  This will allow you to
+   SPARK_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE to
+   'spark' and setting SPARK_JOB to 'sparkpi'. This will allow you to
    run a pre-written job to make sure things are setup correctly.
 
    After this, you may want to run with MAGPIE_JOB_TYPE set to
-   'interactive' to play around and figure things out.  In the job
+   'interactive' to play around and figure things out. In the job
    output you will see output similar to the following:
 
-      ssh node70
-      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
-      setenv SPARK_HOME "/home/username/spark-1.6.2-bin-hadoop2.6"
-      setenv SPARK_CONF_DIR "/tmp/username/spark/ajobname/1174962/conf"
+   ```
+   ssh node70
+   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+   setenv SPARK_HOME "/home/username/spark-1.6.2-bin-hadoop2.6"
+   setenv SPARK_CONF_DIR "/tmp/username/spark/ajobname/1174962/conf"
+   ```
 
    These instructions will inform you how to login to the master node
-   of your allocation and how to initialize your session.  Once in
-   your session, you can do as you please.  For example, you can run a
-   job using spark-class (bin/spark-class ...).  There will also be
+   of your allocation and how to initialize your session. Once in
+   your session, you can do as you please. For example, you can run a
+   job using spark-class (`bin/spark-class ...`). There will also be
    instructions in your job output on how to tear the session down
    cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
    likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
    Create a script that will run your job/calculation automatically,
-   set it in MAGPIE_JOB_SCRIPT, and then run your job.  You can find
-   an example job script in examples/spark-example-job-script.
+   set it in MAGPIE_JOB_SCRIPT, and then run your job. You can find
+   an example job script in `examples/spark-example-job-script`.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -111,26 +113,27 @@ Instructions For Spark
    information on Spark specific exported environment variables that
    may be useful in scripts.
 
-5) Spark does not require HDFS, but many choose to use it.  If you do,
-   setup Hadoop w/ HDFS in your submission script.  See README.hadoop
-   for Hadoop setup instructions.  Simply use the prefix "hdfs://" or
+5) Spark does not require HDFS, but many choose to use it. If you do,
+   setup Hadoop w/ HDFS in your submission script. See README.hadoop.md
+   for Hadoop setup instructions. Simply use the prefix "hdfs://" or
    "file://" appropriately for the filesystem you will access files
    from.
 
    You may wish to run with SPARK_MODE set to 'sparkwordcount' to test
    the HDFS setup.
 
-6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+6) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
    See below in "Spark Advanced Usage" for additional Spark tips.
 
@@ -140,44 +143,45 @@ Spark Exported Environment Variables
 The following environment variables are exported when your job is run
 and may be useful in scripts in your run or in pre/post run scripts.
 
-SPARK_MASTER_NODE : the master node of the Spark allocation.  Often
-		    used for launching Spark jobs
-		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
+SPARK_MASTER_NODE : the master node of the Spark allocation. Often
+		                used for launching Spark jobs
+		                (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
 
-SPARK_MASTER_PORT : the master port for running Spark jobs.  Often
-		    used for launching Spark jobs
-		    (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
+SPARK_MASTER_PORT : the master port for running Spark jobs. Often
+		                used for launching Spark jobs
+		                (e.g. spark://${SPARK_MASTER_NODE}:${SPARK_MASTER_PORT})
 
                     Not exported if using Yarn.
 
 SPARK_SLAVE_COUNT : number of compute/data nodes in your allocation
-                    for Spark.  May be useful for adjusting run time
+                    for Spark. May be useful for adjusting run time
                     options such as parallelism count.
 
 SPARK_SLAVE_CORE_COUNT : Total cores on slave nodes in the allocation.
-       		         May be useful for adjusting run time options
-       		         such as parallelism count.
+       		               May be useful for adjusting run time options
+       		               such as parallelism count.
 
 SPARK_CONF_DIR : the directory that Spark configuration files local
                  to the node are stored.
 
 SPARK_LOG_DIR : the directory Spark log files are stored
 
-See "Hadoop Exported Environment Variables" in README.hadoop, for
+See "Hadoop Exported Environment Variables" in README.hadoop.md, for
 Hadoop environment variables that may be useful.
 
 Example Job Output for Spark running SparkPi
 --------------------------------------------
 
 The following is an example job output of Magpie running Spark and
-running SparkPi.  This is run over HDFS over Lustre.  Sections of
+running SparkPi. This is run over HDFS over Lustre. Sections of
 extraneous text have been left out.
 
 While this output is specific to using Magpie with Spark, the output
-when using Hadoop, Storm, Hbase, etc. is not all that different.
+when using Hadoop, Storm, HBase, etc. is not all that different.
 
 1) First we get some details of the job
 
+   ```
    *******************************************************
    * Magpie General Job Info
    *
@@ -188,9 +192,11 @@ when using Hadoop, Storm, Hbase, etc. is not all that different.
    * Job ID: 1174575
    *
    *******************************************************
-
+   ```
+   
 2) Next, Spark begins to launch and startup daemons on all cluster nodes.
 
+   ```
    Starting spark
    starting org.apache.spark.deploy.master.Master, logging to /tmp/achu/spark/test/1174784/log/spark-achu-org.apache.spark.deploy.master.Master-1-apex217.out
    apex224: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1174784/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex224.out
@@ -202,13 +208,15 @@ when using Hadoop, Storm, Hbase, etc. is not all that different.
    apex220: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1174784/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex220.out
    apex221: starting org.apache.spark.deploy.worker.Worker, logging to /tmp/achu/spark/test/1174784/log/spark-achu-org.apache.spark.deploy.worker.Worker-1-apex221.out
       Waiting 30 seconds to allow Spark daemons to setup
-
-3) Next, we see output with details of the Spark setup.  You'll find
+   ```
+   
+3) Next, we see output with details of the Spark setup. You'll find
    addresses indicating web services you can access to get detailed
-   job information.  You'll also find information about how to login
+   job information. You'll also find information about how to login
    to access Spark directly and how to shut down the job early if you
    so desire.
 
+   ```
    *******************************************************
    *
    * Spark Information
@@ -240,9 +248,11 @@ when using Hadoop, Storm, Hbase, etc. is not all that different.
    *   $SPARK_HOME/sbin/stop-all.sh
    *
    *******************************************************
-
+   ```
+   
 4) Then the SparkPi job is run
 
+   ```
    Running bin/run-example org.apache.spark.examples.SparkPi 8
    16/07/18 23:28:32 INFO SparkContext: Running Spark version 1.6.2
    16/07/18 23:28:32 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
@@ -309,11 +319,13 @@ when using Hadoop, Storm, Hbase, etc. is not all that different.
    16/07/18 23:28:59 INFO ShutdownHookManager: Deleting directory /p/lscratchg/achu/testing/sparkscratch/node-0/spark-1456877b-4bf0-4c44-869f-b0a6f96c5546/httpd-9f583943-6701-40ca-8556-5537552a5b33
    16/07/18 23:28:59 INFO ShutdownHookManager: Deleting directory /p/lscratchg/achu/testing/sparkscratch/node-0/spark-1456877b-4bf0-4c44-869f-b0a6f96c5546
 
-The Pi approximation is 3.1385.
-
+   The Pi approximation is 3.1385.
+   ```
+   
 5) With the job complete, Magpie now tears down the session and cleans
    up all daemons.
 
+   ```
    Stopping spark
    apex222: stopping org.apache.spark.deploy.worker.Worker
    apex219: stopping org.apache.spark.deploy.worker.Worker
@@ -324,13 +336,14 @@ The Pi approximation is 3.1385.
    apex220: stopping org.apache.spark.deploy.worker.Worker
    apex224: stopping org.apache.spark.deploy.worker.Worker
    stopping org.apache.spark.deploy.master.Master
+   ```
 
 Spark Patching
 --------------
 - Patch to support alternate config file directories is required.
 
 - Patch to support non-ssh remote execution may be needed in some
-  environments.  Patch can be applied directly to startup scripts, not
+  environments. Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
 
   The alternate remote execution command must be specified in the
@@ -339,18 +352,18 @@ Spark Patching
 - For versions < 1.0.0 and versions >= 1.2.0, a patch can be applied
   directly to startup scripts, not needing a recompilation of source.
 
-  You can find patches for these versions in the patches/spark/ directory with
+  You can find patches for these versions in the `patches/spark/` directory with
   the suffice "alternate.patch".
 
   For atleast Spark version 1.0.0 (possibly a few versions newer than
   it), patch for startup scripts and code is required, a recompilation
   of source is required.
 
-  Patches for these versions can be found in the patches/spark/ directory.
+  Patches for these versions can be found in the `patches/spark/` directory.
 
-- If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/spark/
+- If MAGPIE_NO_LOCAL_DIR support is desired, patches in `patches/spark/`
   with the "no-local-dir.patch" suffix in the filename can be found
-  for support.  See README.no-local-dir for more details.
+  for support. See README.no-local-dir.md for more details.
 
 Spark Troubleshooting
 ---------------------
@@ -360,7 +373,7 @@ Spark Troubleshooting
    sufficient resources" mean?
 
    This means that you are trying to submit a Spark job that desires
-   more resources than you have allocated.  For example, you may be
+   more resources than you have allocated. For example, you may be
    requesting more memory or CPUs than Spark can schedule.
 
    Incorrect settings may occur in several ways, such as the
@@ -375,33 +388,33 @@ Spark Advanced Usage
    it via the SPARK_LOCAL_SCRATCH_DIR environment variable in your
    submission scripts.
 
-   Setting this SSD/NVRAM serves two purposes.  One, this local
+   Setting this SSD/NVRAM serves two purposes. One, this local
    scratch directory can be used for spillover from map outputs to aid
-   in shuffles.  This local scratch directory can greatly improve
+   in shuffles. This local scratch directory can greatly improve
    shuffle performance.
 
    Second, it can be used for quickly storing/caching RDDs to disk
    using MEMORY_AND_DISK and/or DISK_ONLY persistence levels.
 
 2) Magpie configures the default parallelism in a Spark job depending
-   on the Spark version.  In versions < 1.3.0, Magpie defaults the
+   on the Spark version. In versions < 1.3.0, Magpie defaults the
    parallelism to the number of compute nodes in your allocation.
    This is significantly superior to the original Spark default of 8
-   (pre-1.0).  However, it may not be optimal for many jobs.
+   (pre-1.0). However, it may not be optimal for many jobs.
 
    For versions >= 1.3.0, Magpie defaults to not setting this value.
    Spark will instead use a default parallelism equal to the number of
-   cores in your allocation.  In some cases, this number will be too
+   cores in your allocation. In some cases, this number will be too
    high and will cause too much overhead for your job.
 
    Users should play around with the parallelism in their job to
-   improve performance.  A number of Spark collectives can take a
-   partition number as an argument (such as reduceByKey).  The default
+   improve performance. A number of Spark collectives can take a
+   partition number as an argument (such as reduceByKey). The default
    can be tweaked in the submission scripts via the
    SPARK_DEFAULT_PARALLELISM environment variable.
 
 3) Magpie configures a relatively conservative amount of memory for
-   Spark, currently 80% of system memory.  While there should always
+   Spark, currently 80% of system memory. While there should always
    be a buffer to allow the operating system, system daemons, and
    Spark (and potentially Hadoop HDFS) daemons to operate, the 80%
    value may be on the conservative side and users wishing to push it
@@ -420,7 +433,7 @@ Spark Advanced Usage
    controls the percentage used for shuffles.
 
    You may wish to adjust these for your specific job, as they can
-   have a large influence on job performance.  Please see submission
+   have a large influence on job performance. Please see submission
    scripts for more information.
 
    Note that beginning Spark 1.6.0 memory fractions have been
@@ -430,7 +443,7 @@ Known Issues
 ------------
 
 From atleast Spark 2.0.0 to Spark 2.1.1, using Yarn with RawnetworkFS
-worked within Magpie and its testing.  This test broke in Spark 2.2.0.
+worked within Magpie and its testing. This test broke in Spark 2.2.0.
 
 Upstream issue: https://issues.apache.org/jira/browse/SPARK-21570
 

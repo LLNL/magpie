@@ -3,36 +3,36 @@ Instructions For Using Phoenix
 
 0) If necessary, download your favorite version of Phoenix off of Apache
    and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+   nodes. Usually, this is on an NFS home directory.
 
    Make sure that the version of Phoenix you install is compatible with
-   the version of Hbase you are using.
+   the version of HBase you are using.
 
    See below in 'Phoenix Patching' about patches that may be necessary
    for Phoenix depending on your environment and Phoenix version.
 
-   In some cases, a re-compile of Phoenix may be necessary.  For example,
+   In some cases, a re-compile of Phoenix may be necessary. For example,
    by default Phoenix 4.5.2 works against the .98, 1.0 and 1.1 versions
-   of Hbase. You may need to recompile to use other version of Hbase.
+   of HBase. You may need to recompile to use other version of HBase.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
    You'll likely want to start with the base hbase with phoenix script
-   (e.g. magpie.sbatch-srun-hbase-with-hdfs-with-phoenix) for your
+   (e.g. `magpie.sbatch-srun-hbase-with-hdfs-with-phoenix`) for your
    scheduler/resource manager. If you with to configure more, you can
-   choose to start with the base script (e.g. magpie.sbatch-srun)
+   choose to start with the base script (e.g. `magpie.sbatch-srun`)
    which contains all configuration options.
 
-2) Setup your job essentials at the top of the submission script.  As
+2) Setup your job essentials at the top of the submission script. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -59,40 +59,42 @@ Instructions For Using Phoenix
 
    PHOENIX_VERSION : Set appropriately.
 
-   PHOENIX_HOME : Where your phoenix code is.  Typically in an NFS mount.
+   PHOENIX_HOME : Where your phoenix code is. Typically in an NFS mount.
 
    PHOENIX_LOCAL_DIR : A small place for conf files and log files local to
-   each node.  Typically /tmp directory.
+   each node. Typically `/tmp` directory.
 
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
-   PHOENIX_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
-   to 'phoenix' and setting PHOENIX_JOB to 'performanceeval'.  This
+   PHOENIX_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   to 'phoenix' and setting PHOENIX_JOB to 'performanceeval'. This
    will allow you to run a pre-written job to make sure things are
    setup correctly.
 
    After this, you may want to run with MAGPIE_JOB_TYPE set to
-   'interactive' to play around and figure things out.  In the job
+   'interactive' to play around and figure things out. In the job
    output you will see output similar to the following:
 
-      ssh node70
-      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
-      setenv PHOENIX_HOME "/home/username/phoenix-4.7.0-HBase-1.1-bin"
-      setenv PHOENIX_CONF_DIR "/tmp/achu/phoenix/ajobname/1081559/conf"
-      setenv HBASE_CONF_DIR "/tmp/achu/hbase/ajobname/1081559/conf"
+   ```
+   ssh node70
+   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+   setenv PHOENIX_HOME "/home/username/phoenix-4.7.0-HBase-1.1-bin"
+   setenv PHOENIX_CONF_DIR "/tmp/achu/phoenix/ajobname/1081559/conf"
+   setenv HBASE_CONF_DIR "/tmp/achu/hbase/ajobname/1081559/conf"
+   ```
 
    These instructions will inform you how to login to the master node
-   of your allocation and how to initialize your session.  Once in
-   your session, you can do as you please.  For example, you can
-   launch a phoenix sql shell (bin/sqlline.py ...).  There will also
+   of your allocation and how to initialize your session. Once in
+   your session, you can do as you please. For example, you can
+   launch a phoenix sql shell (`bin/sqlline.py ...`). There will also
    be instructions in your job output on how to tear the session down
    cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
-   likely want to run with PHOENIX_JOB set to 'script'.  Create a
+   likely want to run with PHOENIX_JOB set to 'script'. Create a
    Phoenix script and set it in PHOENIX_SCRIPT_PATH, and then run your
    job.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -100,20 +102,21 @@ Instructions For Using Phoenix
    information on Phoenix specific exported environment variables that
    may be useful in scripts.
 
-5) Phoenix requires Hbase, so ensure the Hbase is configured and also in
-   your submission script.  See README.hbase for Hbase setup instructions.
+5) Phoenix requires HBase, so ensure the HBase is configured and also in
+   your submission script. See README.hbase.md for HBase setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+6) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
 Phoenix Exported Environment Variables
 ---------------------------------------
@@ -126,27 +129,27 @@ PHOENIX_CONF_DIR : the directory that Phoenix configuration files local
 
 PHOENIX_LOG_DIR : the directory Phoenix log files are stored
 
-See "Hbase Exported Environment Variables" in README.hbase, for Hbase
+See "HBase Exported Environment Variables" in README.hbase.md, for HBase
 environment variables that may be useful.
 
-See "Zookeeper Exported Environment Variables" in README.zookeeper,
+See "Zookeeper Exported Environment Variables" in README.zookeeper.md,
 for Zookeeper environment variables that may be useful.
 
 Phoenix Patching
 ----------------
-- Patch to allow a number of scripts in bin/ use JAVA_HOME may be
-  needed in your environment.  This patch is not required, but is
+- Patch to allow a number of scripts in `bin/` use JAVA_HOME may be
+  needed in your environment. This patch is not required, but is
   highly recommended.
 
-  Patches for this can be found in the patches/phoenix/ directory with
+  Patches for this can be found in the `patches/phoenix/` directory with
   'bin-java-home' in the filename.
 
   This bug was being tracked in:
 
   https://issues.apache.org/jira/browse/PHOENIX-2303
 
-- In Phoenix 4.14.0, a bug appears to exist in performance.py, but
-  appears to independent of the rest of Phoenix.  So Magpie was
+- In Phoenix 4.14.0, a bug appears to exist in `performance.py`, but
+  appears to independent of the rest of Phoenix. So Magpie was
   released assuming 4.14.0 would work in the generic case.
 
   https://issues.apache.org/jira/browse/PHOENIX-4814

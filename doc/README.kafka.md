@@ -1,29 +1,29 @@
 Instructions For Using Kafka
-------------------------------
+----------------------------
 
 0) If necessary, download your favorite version of Kafka off of Apache
    and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+   nodes. Usually, this is on an NFS home directory.
 
    See below in 'Kafka Patching' about patches that may be necessary
    for Kafka depending on your environment and Kafka version.
 
-   See 'Convenience Scripts' in README about
+   See 'Convenience Scripts' in README.md about
    misc/magpie-apache-download-and-setup.sh, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
    You'll likely want to start with the base script
-   (e.g. magpie.sbatch-srun) for your scheduler/resource manager
+   (e.g. `magpie.sbatch-srun`) for your scheduler/resource manager
    which contains all configuration options.
 
-2) Setup your job essentials at the top of the submission script.  As
+2) Setup your job essentials at the top of the submission script. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -50,34 +50,36 @@ Instructions For Using Kafka
 
    KAFKA_VERSION : Set appropriately.
 
-   KAFKA_HOME : Where your Kafka code is.  Typically in an NFS mount.
+   KAFKA_HOME : Where your Kafka code is. Typically in an NFS mount.
 
    KAFKA_LOCAL_DIR : A small place for conf files and log files local to
-   each node.  Typically /tmp directory.
+   each node. Typically `/tmp` directory.
 
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
-   KAFKA_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE to
-   'kafka' and setting KAFKA_JOB to 'performance'.  This will allow
-   you to run a pre-written job to make sure things are setup
+   KAFKA_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE to
+   'kafka' and setting KAFKA_JOB to 'performance'. This will allow
+   you to run a pre-written job to make sure things are set up
    correctly.
 
    After this, you may want to run with MAGPIE_JOB_TYPE set to
-   'interactive' to play around and figure things out.  In the job
+   'interactive' to play around and figure things out. In the job
    output you will see output similar to the following:
 
-      ssh node70
-      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
-      setenv KAFKA_HOME "/home/username/kafka_2.11-0.9.0.0"
-      setenv KAFKA_CONF_DIR "/tmp/username/kafka/ajobtime/1174573/conf"
+   ```
+   ssh node70
+   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+   setenv KAFKA_HOME "/home/username/kafka_2.11-0.9.0.0"
+   setenv KAFKA_CONF_DIR "/tmp/username/kafka/ajobtime/1174573/conf"
+   ```
 
    These instructions will inform you how to login to the master node
-   of your allocation and how to initialize your session.  Once in
-   your session, you can do as you please.  For example, you can
-   launch a kafka consumer (bin/kafka-console-consumer.sh ...).  There
+   of your allocation and how to initialize your session. Once in
+   your session, you can do as you please. For example, you can
+   launch a kafka consumer (`bin/kafka-console-consumer.sh ...`). There
    will also be instructions in your job output on how to tear the
    session down cleanly if you wish to end your job early.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -86,22 +88,23 @@ Instructions For Using Kafka
    may be useful in scripts.
 
 5) Kafka requires Zookeeper, so ensure Zookeeper is configured and also in
-   your submission script.  See README.zookeeper for setup instructions.
+   your submission script. See README.zookeeper.md for setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+6) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
 Kafka Exported Environment Variables
----------------------------------------
+------------------------------------
 
 The following environment variables are exported when your job is run
 and may be useful in scripts in your run or in pre/post run scripts.
@@ -113,11 +116,11 @@ KAFKA_LOG_DIR : the directory Kafka log files are stored
 
 KAFKA_PORT : kafka port for client connections
 
-See "Zookeeper Exported Environment Variables" in README.zookeeper,
+See "Zookeeper Exported Environment Variables" in README.zookeeper.md,
 for Zookeeper environment variables that may be useful.
 
 Kafka Patching
-----------------
-- If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/kafka/
-  with the "no-local-dir.patch" suffix in the filename can be found
-  for support.  See README.no-local-dir for more details.
+--------------
+- If MAGPIE_NO_LOCAL_DIR support is desired, patches in `patches/kafka/`
+  with the `no-local-dir.patch` suffix in the filename can be found
+  for support. See README.no-local-dir.md for more details.

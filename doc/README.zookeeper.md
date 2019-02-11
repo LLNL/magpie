@@ -3,33 +3,33 @@ Instructions For Running Zookeeper
 
 0) If necessary, download your favorite version of Zookeeper off of
    Apache and install it into a location where it's accessible on all
-   cluster nodes.  Usually this is on a NFS home directory.
+   cluster nodes. Usually, this is on an NFS home directory.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
    As Zookeeper is predominantly a node coordination service used by
-   other services (e.g. Hbase, Storm), it's likely in the main
-   submission scripts for those big data projects.  If the Zookeeper
+   other services (e.g. HBase, Storm), it's likely in the main
+   submission scripts for those big data projects. If the Zookeeper
    section isn't in it, just copy the Zookeeper section from base
-   script (e.g. magpie.sbatch-srun) into it.
+   script (e.g. `magpie.sbatch-srun`) into it.
 
-2) Setup your job essentials at the top of the submission script.  See
-   other projects (e.g. Hbase in README.hbase, Storm in README.storm)
+2) Setup your job essentials at the top of the submission script. See
+   other projects (e.g. HBase in README.hbase.md, Storm in README.storm.md)
    for details on this setup.
 
    Be aware of how you many nodes you allocate for your job when
-   running Zookeeper.  Zookeeper normally runs on cluster nodes
+   running Zookeeper. Zookeeper normally runs on cluster nodes
    separate from the rest (e.g. separate from nodes running HDFS or
-   Hbase Regionservers).  So you may need to increase your node count.
+   HBase Regionservers). So you may need to increase your node count.
 
    For example, if you desire 3 Zookeeper servers and 8 compute nodes,
    your total node count should be 12 (1 master, 8 compute, 3
@@ -41,29 +41,29 @@ Instructions For Running Zookeeper
 
    ZOOKEEPER_VERSION : Set appropriately.
 
-   ZOOKEEPER_HOME : Where your zookeeper code is.  Typically in an NFS
+   ZOOKEEPER_HOME : Where your zookeeper code is. Typically in an NFS
    mount.
 
    ZOOKEEPER_REPLICATION_COUNT : Number of nodes in your Zookeeper
    quorom.
 
    ZOOKEEPER_FILESYSTEM_MODE : most will likely want "networkfs" so
-   data files can be stored to Lustre.  If you have local disks such
+   data files can be stored to Lustre. If you have local disks such
    as SSDs, you can use "local" instead, and set ZOOKEEPER_DATA_DIR to
    the local SSD path.
 
    ZOOKEEPER_DATA_DIR : The base path for where you will store
-   Zookeeper data.  If a local SSD is available, it may be preferable
+   Zookeeper data. If a local SSD is available, it may be preferable
    to set this to a local drive and set ZOOKEEPER_FILESYSTEM_MODE
    above to "local".
 
    ZOOKEEPER_LOCAL_DIR : A small place for conf files and log files
-   local to each node.  Typically /tmp directory.
+   local to each node. Typically `/tmp` directory.
 
 4) Run your job as instructions dictate in other project sections
-   (e.g. Hbase, Storm).
+   (e.g. HBase, Storm).
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -71,7 +71,7 @@ Instructions For Running Zookeeper
    information on Zookeeper specific exported environment variables
    that may be useful in scripts.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
 Zookeeper Exported Environment Variables
 ----------------------------------------
@@ -88,6 +88,6 @@ ZOOKEEPER_NODES_FIRST : first node in the ZOOKEEPER_NODES environment
 ZOOKEEPER_CLIENT_PORT : port to communicate to Zookeeper
 
 ZOOKEEPER_CONF_DIR : the directory that Zookeeper configuration files
-          	     local to the node are stored.
+          	         local to the node are stored.
 
 ZOOKEEPER_LOG_DIR : the directory Zookeeper log files are stored

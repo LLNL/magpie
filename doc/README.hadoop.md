@@ -3,29 +3,29 @@ Instructions For Running Hadoop
 
 0) If necessary, download your favorite version of Hadoop off of
    Apache and install it into a location where it's accessible on all
-   cluster nodes.  Usually this is on a NFS home directory.
+   cluster nodes. Usually, this is on an NFS home directory.
 
    See below in 'Hadoop Patching' about patches that may be necessary
    for Hadoop depending on your environment and Hadoop version.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
-   You'll likely want to start with the base hadoop script
-   (e.g. magpie.sbatch-srun-hadoop) for your scheduler/resource
-   manager.  If you wish to configure more, you can choose to start
-   with the base script (e.g. magpie.sbatch-srun) which contains all
+   You'll likely want to start with the base Hadoop script
+   (e.g. `magpie.sbatch-srun-hadoop`) for your scheduler/resource
+   manager. If you wish to configure more, you can choose to start
+   with the base script (e.g. `magpie.sbatch-srun`) which contains all
    configuration options.
 
-2) Setup your job essentials at the top of the submission script.  As
+2) Setup your job essentials at the top of the submission script. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -46,59 +46,61 @@ Instructions For Running Hadoop
 
    JAVA_HOME : B/c you need to ...
 
-3) Now setup the essentials for Hadoop.
+3) Now set up the essentials for Hadoop.
 
    HADOOP_SETUP : Set to yes
 
    HADOOP_SETUP_TYPE : Set if you want to run both Yarn & HDFS, or
-   just one only.  Most users will want to set to "MR".
+   just one only. Most users will want to set to "MR".
 
    HADOOP_VERSION : Make sure your build matches HADOOP_SETUP_TYPE
    (i.e. don't say you want MapReduce 1 and point to Hadoop 2.0 build)
 
-   HADOOP_HOME : Where your hadoop code is.  Typically in an NFS mount.
+   HADOOP_HOME : Where your Hadoop code is. Typically in an NFS mount.
 
    HADOOP_LOCAL_DIR : A small place for conf files and log files local
-   to each node.  Typically /tmp directory.
+   to each node. Typically /tmp directory.
 
    HADOOP_FILESYSTEM_MODE : Most will likely want "hdfsoverlustre" or
-   "hdfsovernetworkfs".  See below for details on HDFS over Lustre and
+   "hdfsovernetworkfs". See below for details on HDFS over Lustre and
    HDFS over NetworkFS.
 
    HADOOP_HDFSOVERLUSTRE_PATH or equivalent: For HDFS over Lustre, you
-   need to set this.  If not using HDFS over Lustre, set the
+   need to set this. If not using HDFS over Lustre, set the
    appropriate path for your filesystem mode choice.
 
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
-   HADOOP_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
-   to 'hadoop' and setting HADOOP_JOB to 'terasort'.  This will allow
-   you to run a pre-written job to make sure things are setup
+   HADOOP_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   to 'hadoop' and setting HADOOP_JOB to 'terasort'. This will allow
+   you to run a pre-written job to make sure things are set up
    correctly.
 
    After this, you may want to run with MAGPIE_JOB_TYPE set to
-   'interactive' to play around and figure things out.  In the job
+   'interactive' to play around and figure things out. In the job
    output you will see output similar to the following:
 
-      ssh node70
-      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
-      setenv HADOOP_HOME "/home/username/hadoop-2.7.2"
-      setenv HADOOP_CONF_DIR "/tmp/username/hadoop/ajobname/1174570/conf"
+   ```
+   ssh node70
+   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+   setenv HADOOP_HOME "/home/username/hadoop-2.7.2"
+   setenv HADOOP_CONF_DIR "/tmp/username/hadoop/ajobname/1174570/conf"
+   ```
 
    These instructions will inform you how to login to the master node
-   of your allocation and how to initialize your session.  Once in
-   your session, you can do as you please.  For example, you can
+   of your allocation and how to initialize your session. Once in
+   your session, you can do as you please. For example, you can
    interact with the Hadoop filesystem (bin/hadoop fs ...) or run a
-   job (bin/hadoop jar ...).  There will also be instructions in your
+   job (bin/hadoop jar ...). There will also be instructions in your
    job output on how to tear the session down cleanly if you wish to
    end your job early.
 
    Once you have figured out how you wish to run your job, you will
    likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
    Create a script that will run your job/calculation automatically,
-   set it in MAGPIE_JOB_SCRIPT, and then run your job.  You can find
-   an example job script in examples/hadoop-example-job-script.
+   set it in MAGPIE_JOB_SCRIPT, and then run your job. You can find
+   an example job script in `examples/hadoop-example-job-script`.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -106,17 +108,18 @@ Instructions For Running Hadoop
    information on Hadoop specific exported environment variables that
    may be useful in scripts.
 
-5) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+5) Submit your job into the cluster by running
+   `batch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-6) Look at your job output file to see your output.  There will also
+6) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
    See below in "Hadoop Advanced Usage" for additional Hadoop tips.
 
 Hadoop Exported Environment Variables
@@ -128,30 +131,30 @@ and may be useful in scripts in your run or in pre/post run scripts.
 HADOOP_MASTER_NODE : the master node of the Hadoop allocation
 
 HADOOP_WORKER_COUNT : number of compute/data nodes in your allocation
-                      for Hadoop.  May be useful for adjusting run time
+                      for Hadoop. May be useful for adjusting run time
                       options such as reducer count.
 
 HADOOP_WORKER_CORE_COUNT : Total cores on worker nodes in the
-       		           allocation.  May be useful for adjusting run
+       		           allocation. May be useful for adjusting run
        		           time options such as reducer count.
 
 HADOOP_SLAVE_COUNT : Identical to HADOOP_WORKER_COUNT
 
 HADOOP_SLAVE_CORE_COUNT : Identical to HADOOP_WORKER_CORE_COUNT
 
-HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
+HADOOP_NAMENODE : the master namenode of the Hadoop allocation. Often
  		  used for accessing HDFS when the namenode + port
  		  must be specified in a script.
- 		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
+ 		  (e.g. `hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...`)
+        
+        Exported only if HDFS type file system used.
 
-                  Exported only if HDFS type file system used.
-
-HADOOP_NAMENODE_PORT : the port of the namenode.  Often used for
+HADOOP_NAMENODE_PORT : the port of the namenode. Often used for
  		  accessing HDFS when the namenode + port must be
  		  specified in a script.
  		  (e.g. hdfs://${HADOOP_NAMENODE}:${HADOOP_NAMENODE_PORT}/user/...)
-
-                  Exported only if HDFS type file system used.
+        
+        Exported only if HDFS type file system used.
 
 HADOOP_CONF_DIR : the directory that Hadoop configuration files local
                   to the node are stored.
@@ -161,57 +164,60 @@ HADOOP_LOG_DIR : the directory Hadoop log files are stored
 Hadoop Convenience Scripts
 --------------------------
 
-The following job scripts may be convenient.  They can be run by
+The following job scripts may be convenient. They can be run by
 setting MAGPIE_JOB_TYPE set to 'script' and setting MAGPIE_JOB_SCRIPT
 to the script.
 
-job-scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh
+`job-scripts/hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh`
 - See "Basics of HDFS over Lustre/NetworkFS" section for details.
 
-job-scripts/hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh -
-Cleanup/remove corrupted blocks in HDFS.
+`job-scripts/hadoop-hdfs-fsck-cleanup-corrupted-blocks-script.sh`
+- Cleanup/remove corrupted blocks in HDFS.
 
 Example Job Output for Hadoop running Terasort
 ----------------------------------------------
 
 The following is an example job output of Magpie running Hadoop and
-running a Terasort.  This is run over HDFS over Lustre.  Sections of
+running a Terasort. This is run over HDFS over Lustre. Sections of
 extraneous text have been left out.
 
 While this output is specific to using Magpie with Hadoop, the output
-when using Spark, Storm, Hbase, etc. is not all that different.
+when using Spark, Storm, HBase, etc. is not all that different.
 
-1) First we see that HDFS over Lustre is being setup by formatting the
+1) First, we see that HDFS over Lustre is being set up by formatting the
 HDFS Namenode.
 
-     *******************************************************
-     * Performing Post Setup
-     *******************************************************
-     *******************************************************
-     * Formatting HDFS Namenode
-     *******************************************************
-     16/07/18 23:18:20 INFO namenode.NameNode: STARTUP_MSG:
-     /************************************************************
-     STARTUP_MSG: Starting NameNode
-     STARTUP_MSG:   host = apex69.llnl.gov/192.168.123.69
-     STARTUP_MSG:   args = [-format]
-     STARTUP_MSG:   version = 2.7.2
-     <snip>
-     <snip>
-     <snip>
-     16/07/18 23:18:26 INFO common.Storage: Storage directory /p/lscratchg/achu/testing/hdfsoverlustre/1174570/node-0/dfs/name has been successfully formatted.
-     16/07/18 23:18:26 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
-     16/07/18 23:18:26 INFO util.ExitUtil: Exiting with status 0
-     16/07/18 23:18:26 INFO namenode.NameNode: SHUTDOWN_MSG:
-     /************************************************************
-     SHUTDOWN_MSG: Shutting down NameNode at apex69.llnl.gov/192.168.123.69
-     ************************************************************/
-     *******************************************************
-     * Post Setup Complete
-     *******************************************************
+   ```
+   *******************************************************
+   * Performing Post Setup
+   *******************************************************
+   *******************************************************
+   * Formatting HDFS Namenode
+   *******************************************************
+   16/07/18 23:18:20 INFO namenode.NameNode: STARTUP_MSG:
+   /************************************************************
+   STARTUP_MSG: Starting NameNode
+   STARTUP_MSG:   host = apex69.llnl.gov/192.168.123.69
+   STARTUP_MSG:   args = [-format]
+   STARTUP_MSG:   version = 2.7.2
+   <snip>
+   <snip>
+   <snip>
+   16/07/18 23:18:26 INFO common.Storage: Storage directory /p/lscratchg/achu/testing/hdfsoverlustre/1174570/node-0/dfs/name has been successfully formatted.
+   16/07/18 23:18:26 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
+   16/07/18 23:18:26 INFO util.ExitUtil: Exiting with status 0
+   16/07/18 23:18:26 INFO namenode.NameNode: SHUTDOWN_MSG:
+   /************************************************************
+   SHUTDOWN_MSG: Shutting down NameNode at apex69.llnl.gov/192.168.123.69
+   ************************************************************/
+   *******************************************************
+   * Post Setup Complete
+   *******************************************************
+   ```
 
-2) Next we get some details of the job
+2) Next, we get some details of the job
 
+   ```
    *******************************************************
    * Magpie General Job Info
    *
@@ -222,9 +228,11 @@ HDFS Namenode.
    * Job ID: 1174570
    *
    *******************************************************
+   ```
 
 3) Hadoop begins to launch and startup daemons on all cluster nodes.
 
+   ```
    Starting hadoop
    16/07/18 23:18:48 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
    Starting namenodes on [apex69]
@@ -251,13 +259,15 @@ HDFS Namenode.
    apex72: starting nodemanager, logging to /tmp/achu/hadoop/test/1174570/log/yarn-achu-nodemanager-apex72.out
    apex74: starting nodemanager, logging to /tmp/achu/hadoop/test/1174570/log/yarn-achu-nodemanager-apex74.out
    Waiting 30 seconds to allows Hadoop daemons to setup
+   ```
 
-4) Next, we see output with details of the Hadoop setup.  You'll find
+4) Next, we see output with details of the Hadoop setup. You'll find
    addresses indicating web services you can access to get detailed
-   job information.  You'll also find information about how to login
+   job information. You'll also find information about how to login
    to access Hadoop directly and how to shut down the job early if you
    so desire.
-
+   
+   ```
    *******************************************************
    *
    * Hadoop Information
@@ -318,9 +328,11 @@ HDFS Namenode.
    *
    * ssh apex69 kill -s 28 27588
    *******************************************************
+   ```
 
 5) The job then runs Teragen
 
+   ```
    *******************************************************
    * Executing TeraGen
    *******************************************************
@@ -392,9 +404,11 @@ HDFS Namenode.
                    Bytes Read=0
            File Output Format Counters
                    Bytes Written=5000000000
+   ```
 
 6) The job then runs Terasort
 
+   ```
    *******************************************************
    * Executing TeraSort
    *******************************************************
@@ -494,10 +508,12 @@ HDFS Namenode.
                    Bytes Read=5000000000
            File Output Format Counters
                    Bytes Written=5000000000
+   ```
 
 7) With the job complete, Magpie now tears down the session and cleans
    up all daemons.
 
+   ```
    Stopping hadoop
    stopping yarn daemons
    stopping resourcemanager
@@ -534,16 +550,17 @@ HDFS Namenode.
    apex75: stopping datanode
    Stopping secondary namenodes [apex69]
    apex69: stopping secondarynamenode
+   ```
 
 Hadoop Patching
 ---------------
 
 Hadoop
 - Patch to support non-ssh remote execution may be needed in some
-  environments.  Patch can be applied directly to startup scripts, not
+  environments. Patch can be applied directly to startup scripts, not
   needing a recompilation of source.
 
-  Patches for this can be found in the patches/hadoop/ directory with
+  Patches for this can be found in the `patches/hadoop/` directory with
   'alternate-ssh' in the filename.
 
   The alternate remote execution command must be specified in the
@@ -552,7 +569,7 @@ Hadoop
 - Hadoop terasort may require recompilation if running over 'rawnetworkfs'.
 
   There is a bug in the Terasort example, leading to issues with
-  running Terasort against a parallel file system directly.  I submitted
+  running Terasort against a parallel file system directly. I submitted
   a patch in this Jira.
 
   https://issues.apache.org/jira/browse/MAPREDUCE-5528
@@ -560,69 +577,68 @@ Hadoop
   The patch to correct this is included in the patches/hadoop/ directory.
 
 - If MAGPIE_NO_LOCAL_DIR support is desired, patches in
-  patches/hadoop/ with the "no-local-dir.patch" suffix in the filename
-  can be found for support.  See README.no-local-dir for more details.
+  `patches/hadoop/` with the `no-local-dir.patch` suffix in the filename
+  can be found for support. See README.no-local-dir.md for more details.
 
 Basics of HDFS over Lustre/NetworkFS
 ------------------------------------
 
 Instead of using local disk, we designate a Lustre/network file system
-directory to "emulate" local disk for each compute node.  For example,
-lets say you have 4 compute nodes.  If we create the following paths
+directory to "emulate" local disk for each compute node. For example,
+lets say you have 4 compute nodes. If we create the following paths
 in Lustre,
 
+```
 /lustre/myusername/node-0
 /lustre/myusername/node-1
 /lustre/myusername/node-2
 /lustre/myusername/node-3
+```
 
 We can give each of these paths to one of the compute nodes, which
-they can treat like a local disk.  HDFS operates on top of these
-directories just as though there were a local disk on the server.
+they can treat like a local disk. HDFS operates on top of these
+directories just as though there was a local disk on the server.
 
-Q: Does that mean I have to HDFS starts with a clean slate everytime I
-   start a job?
+### Does that mean I have to start HDFS with a clean slate every time I start a job?
 
-A: No, using node ranks, "disk-paths" can be consistently assigned to
+   No, using node ranks, "disk-paths" can be consistently assigned to
    nodes so that all your HDFS files from a previous run can exist on
-   a later run.  The next time you run your job, it doesn't matter
+   a later run. The next time you run your job, it doesn't matter
    what server you're running on, b/c your scheduler/resource manager
-   will assign that node its appropriate rank.  The node will
+   will assign that node its appropriate rank. The node will
    subsequently load HDFS from its appropriate directory.
 
-Q: But that'll mean I have to consistently use the same number of
-   cluster nodes?
+### But that'll mean I have to consistently use the same number of cluster nodes?
 
-A: Generally speaking no, but you can hit issues if you don't.  Just
+   Generally speaking no, but you can hit issues if you don't. Just
    imagine what HDFS issues if you were on a traditional Hadoop
    cluster and added or removed nodes.
 
    Generally speaking, increasing the number of nodes you use for a
-   job is fine.  Data you currently have in HDFS is still there and
+   job is fine. Data you currently have in HDFS is still there and
    readable, but it is not viewed as "local" according to HDFS and
-   more network transfers will have to happen.  You may wish to
-   rebalance the HDFS blocks though.  The convenience script
-   hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh
+   more network transfers will have to happen. You may wish to
+   rebalance the HDFS blocks though. The convenience script
+   `hadoop-rebalance-hdfs-over-lustre-or-hdfs-over-networkfs-if-increasing-nodes-script.sh`
    be used instead.
 
    (Special Note: The start-balancer.sh that is
-   normally used probably will not work.  All of the paths are in
+   normally used probably will not work. All of the paths are in
    Lustre/NetworkFS, so the "free space" on each "local" path is identical,
    messing up calculations for balancing (i.e. no "local disk" is
    more/less utilized than another).
 
    Decreasing nodes is a bit more dangerous, as data can "disappear"
-   just like if it were on a traditional Hadoop cluster.  If you try
+   just like if it were on a traditional Hadoop cluster. If you try
    to scale down the number of nodes, you should go through the
    process of "decommissioning" nodes like on a real cluster,
-   otherwise you may lose data.  You can decommission nodes through
+   otherwise you may lose data. You can decommission nodes through
    the "decommissionhdfsnodes" option in HADOOP_MODE.
 
-Q: Can multiple Magpie instances be run in parallel based on the same
-   lustre/networkfs path?
+### Can multiple Magpie instances be run in parallel based on the same lustre/networkfs path?
 
-A: No, only one HDFS namenode can operate out of a specific set of
-   paths.  If you imagine a traditional Hadoop cluster, what you
+   No, only one HDFS namenode can operate out of a specific set of
+   paths. If you imagine a traditional Hadoop cluster, what you
    effectively are trying to do is start two HDFS file systems out of
    the same local disk.
 
@@ -634,35 +650,35 @@ A: No, only one HDFS namenode can operate out of a specific set of
 
    If you are not concerned about data persisting between jobs, you
    may also consider using the MAGPIE_ONE_TIME_RUN option to always
-   force HDFS paths to be different for each job.  This setting may be
+   force HDFS paths to be different for each job. This setting may be
    particularly useful if you initially running tests/experiments on
    CPU counts, node counts, settings, etc. and want to run many jobs
    in parallel.
 
-Q: What should HDFS replication be?
+### What should HDFS replication be?
 
-A: The scripts in this package default to HDFS replication of 3 when
-   HDFS over Lustre is done.  If HDFS replication is > 1, it can
-   improve performance of your job reading in HDFS input b/c there
+   The scripts in this package default to HDFS replication of 3 when
+   HDFS over Lustre is done. If HDFS replication is > 1, it can
+   improve the performance of your job reading in HDFS input b/c there
    will be fewer network transfer of data (i.e. Hadoop may need to
-   transfer "non-local" data to another node).  In addition, if a
+   transfer "non-local" data to another node). In addition, if a
    datanode were to die (i.e. a node crashes) Hadoop has the ability
    to survive the crash just like in a traditional Hadoop cluster.
 
-   The trade-off is space and HDFS writes vs HDFS reads.  With lower
-   HDFS replication (lowest is 1) you save space and decrease time for
-   writes.  With increased HDFS replication, you perform better on
+   The trade-off is space and HDFS writes vs HDFS reads. With lower
+   HDFS replication (lowest is 1) you save space and decrease the time for
+   writes. With increased HDFS replication, you perform better on
    reads.
 
-Q: What if I need to upgrade the HDFS version I'm using.
+### What if I need to upgrade the HDFS version I'm using.
 
-A: If you want to use a different Hadoop version than what you started
+   If you want to use a different Hadoop version than what you started
    with, you will have to go through the normal upgrade or rollback
    precedures for Hadoop.
 
    With Hadoop versions 2.2.0 and newer, there is a seemless upgrade
    path done by specifying "-upgrade" when running the "start-dfs.sh"
-   script.  This is implemented in the "upgradehdfs" option for
+   script. This is implemented in the "upgradehdfs" option for
    HADOOP_MODE in the launch scripts.
 
 Pro vs Con of HDFS over Lustre/NetworkFS vs. Posix FS (e.g. rawnetworkfs, etc.)
@@ -674,14 +690,14 @@ HDFS over Lustre/NetworkFS.
 HDFS over Lustre/NetworkFS:
 
 Pro: Portability w/ code that runs against a "traditional" Hadoop
-cluster.  If it runs on a "traditional" Hadoop cluster w/ local disk,
+cluster. If it runs on a "traditional" Hadoop cluster w/ local disk,
 it should run fine w/ HDFS over Lustre/NetworkFS.
 
-Con: Must always run job w/ Hadoop & HDFS running as a job.
+Con: Must always run a job w/ Hadoop & HDFS running as a job.
 
 Con: Must "import" and "export" data from HDFS using job runs, cannot
-read/write directly.  On some clusters, this may involve a double copy
-of data. e.g. first need to copy data into the cluster, then run job to
+read/write directly. On some clusters, this may involve a double copy
+of data. e.g. first need to copy data into the cluster, then run a job to
 copy data into HDFS over Lustre/NetworkFS.
 
 Con: Possible difficulty changing job size on clusters.
@@ -696,17 +712,17 @@ Pro: Less space used up.
 
 Pro: Can adjust job size easily.
 
-Con: Portability issues w/ code that usually runs on HDFS.  As an
+Con: Portability issues w/ code that usually runs on HDFS. As an
 example, HDFS has no concept of a working directory while Posix
-filesystems do.  In addition, absolute paths will be different.  Code
+filesystems do. In addition, absolute paths will be different. The code
 will have to be adjusted for this.
 
 Con: User must "manage" and organize their files directly, not gaining
-the block advantages of HDFS.  If not handled well, this can lead to
-performance issues.  For example, a Hadoop job that creates a 1
+the block advantages of HDFS. If not handled well, this can lead to
+performance issues. For example, a Hadoop job that creates a 1
 terabyte file under HDFS is creating a file made up of smaller HDFS
-blocks.  The same job may create a single 1 terabyte file under access
-to the Posix FS directly.  In the case of Lustre, striping of the file
+blocks. The same job may create a single 1 terabyte file under access
+to the Posix FS directly. In the case of Lustre, striping of the file
 must be handled by the user to ensure satisfactory performance.
 
 Hadoop Troubleshooting
@@ -717,42 +733,42 @@ Hadoop Troubleshooting
 
    When HDFS (regardless if it is HDFS over Lustre or otherwise) is
    being brought up, the HDFS namenode must communicate with all
-   datanodes to discover what blocks of data are available.  This
-   process can take awhile if you have a very large amount of data in
+   datanodes to discover what blocks of data are available. This
+   process can take a while if you have a very large amount of data in
    HDFS.
 
    In rarer circumstances, it can be due to a bug/error in which the
    HDFS namenode has not come up at all (i.e. the HDFS namenode isn't
    running) or a large number of datanodes have not come up due to
-   errors.  Check the appropriate log files to debug further.
+   errors. Check the appropriate log files to debug further.
 
 Hadoop Advanced Usage
 ---------------------
 
 1) If your cluster has a local SSD or NVRAM on each node, set a path
    to it via the HADOOP_LOCALSTORE environment variable in your
-   submission scripts.  It will allow Hadoop to store intermediate
-   shuffle data to it.  It should significantly improve performance.
+   submission scripts. It will allow Hadoop to store intermediate
+   shuffle data. It should significantly improve performance.
 
 2) Magpie configures the default number of reducers in a Hadoop job to
-   the number of compute nodes in your allocation.  This is
+   the number of compute nodes in your allocation. This is
    significantly superior to the Hadoop default of 1, however, it may
-   not be optimal for many jobs.  Users should play around with the
-   number of reducers in their mapreduce jobs to improve performance.
+   not be optimal for many jobs. Users should play around with the
+   number of reducers in their MapReduce jobs to improve performance.
    The default can be tweaked in the submission scripts via the
    HADOOP_DEFAULT_REDUCE_TASKS environment variable.
 
 3) Similarly Magpie configures the default number of map tasks in a
    Hadoop job depending on the number of compute nodes in your
-   allocation and the number of cores on nodes.  However, this may not
+   allocation and the number of cores on nodes. However, this may not
    be optimal in many situations, such as nodes that have a low memory
-   to cpu ratio.  Users should play around with the number of map
-   tasks in their mapreduce jobs to improve performance.  The default
+   to cpu ratio. Users should play around with the number of map
+   tasks in their MapReduce jobs to improve performance. The default
    can be tweaked in the submission scripts via the
    HADOOP_DEFAULT_MAP_TASKS environment variable.
 
 4) Magpie configures a relatively conservative amount of memory for
-   Hadoop, currently 80% of system memory.  While there should always
+   Hadoop, currently 80% of system memory. While there should always
    be a buffer to allow the operating system, system daemons, and
    Hadoop daemons to operate, the 80% value may be on the conservative
    side and users wishing to push it higher to 90% or 95% of system
@@ -768,7 +784,7 @@ Hadoop Advanced Usage
 
 5) Depending on whether your job is map heavy or reduce heavy,
    adjusting the memory container sizes of map and reduce tasks may
-   also benefit job performance.  These adjustments could lead to
+   also benefit job performance. These adjustments could lead to
    larger buffer sizes on individual tasks if memory sizes are
    increased or allow more tasks to be run in parallel if memory size
    is decreased.
@@ -777,21 +793,21 @@ Hadoop Advanced Usage
    HADOOP_CHILD_MAP_HEAPSIZE, and HADOOP_CHILD_REDUCE_HEAPSIZE
    environment variables in the submission scripts.
 
-6) The mapreduce slowstart configuration determines the percentage of
-   map tasks that must complete before reducers begin.  It defaults to
-   a very conservative value of 0.05 (i.e. 5%).  This will be
+6) The MapReduce slow start configuration determines the percentage of
+   map tasks that must complete before reducers begin. It defaults to
+   a very conservative value of 0.05 (i.e. 5%). This will be
    non-optimal for many jobs, including jobs that have relatively
-   non-computationally heavy reduce tasks.  The reduce tasks will take
+   non-computationally heavy reduce tasks. The reduce tasks will take
    up job resources (task slots, memory, etc.) that might be otherwise
-   useful for map tasks.  For many users, they may wish to play with
-   this using higher percentages.  The default can be tweaked in the
+   useful for map tasks. For many users, they may wish to play with
+   this using higher percentages. The default can be tweaked in the
    submission scripts via the HADOOP_MAPREDUCE_SLOWSTART environment
    variable.
 
-7) By default Magpie disables compression in Hadoop.  On some jobs, if
+7) By default Magpie disables compression in Hadoop. On some jobs, if
    the data is particularly large, the time spent
    compressing/decompressing data may be beneficial to job
-   performance.  Compression can be enabled through the
+   performance. Compression can be enabled through the
    HADOOP_COMPRESSION environment variable in the submission scripts.
 
 8) By default Magpie runs as the user who submitted the job. In the event
@@ -804,4 +820,3 @@ Hadoop Advanced Usage
 
    YARN_QUEUES_EXTRA_GROUPS : Allows extra system groups to be added to 
    the default yarn queue in order to run jobs. 
-

@@ -3,9 +3,9 @@ Magpie No Local Directory
 
 Magpie requires local scratch space on each node to be available for
 creation of configuration files, log files, and other miscellaneous
-files.  This local scratch space is typically /tmp on most systems.
+files. This local scratch space is typically `/tmp` on most systems.
 
-This local scratch space need not be a local disk.  It could
+This local scratch space need not be a local disk. It could
 hypothetically be memory based tmpfs.
 
 However, some environments may not have such local scratch space or
@@ -15,13 +15,14 @@ additional files.
 Begining with Magpie 1.60, an option called MAGPIE_NO_LOCAL_DIR is
 available that would allow users to specify network mounted locations
 for all the various LOCAL_DIR configuration variables (such as
-HADOOP_LOCAL_DIR, HBASE_LOCAL_DIR, etc.).  Magpie will manipulate all
+HADOOP_LOCAL_DIR, HBASE_LOCAL_DIR, etc.). Magpie will manipulate all
 paths to be unique by adding the node name into the path and
 configuring all projects to use this path.
 
 However, this requires a patch to several projects, which are as
 follows:
 
+```
 Hadoop - Support for no local dir begins with Hadoop 2.2.0.
        - Patches in /patches/hadoop with 'no-local-dir.patch' filename
          suffix.
@@ -40,16 +41,19 @@ Hbase - Support for no local dir begins with 0.98.0.
 Kafka - Support for no local dir begins with 2.11-0.9.0.0.
       - Patches in /patches/kafka with 'no-local-dir.patch' filename
         suffix.
+```
 
 It is believed no local dir works in remaining projects without
 patches.
 
 The submission scripts do not include MAGPIE_NO_LOCAL_DIR
-configuration fields by default.  To include them:
+configuration fields by default. To include them:
 
+```
 cd submission-scripts/script-templates
 edit Makefile and set MAGPIE_NO_LOCAL_DIR to 'y'
 run 'make'
+```
 
 You should also set LOCAL_DIR_PREFIX to something else other than
-/tmp, so the default LOCAL_DIR is the desired network location.
+`/tmp`, so the default LOCAL_DIR is the desired network location.

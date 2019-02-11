@@ -3,29 +3,29 @@ Instructions For Storm
 
 0) If necessary, download your favorite version of Storm off of Apache
    and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+   nodes. Usually, this is on an NFS home directory.
 
    See below in 'Storm Patching' about patches that may be necessary
    for Storm depending on your environment and Storm version.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `cript-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `cript-lsf-mpirun`.
 
    You'll likely want to start with the base storm script
-   (e.g. magpie.sbatch-srun-storm) for your scheduler/resource
-   manager.  If you wish to configure more, you can choose to start
-   with the base script (e.g. magpie.sbatch-srun) which contains all
+   (e.g. `magpie.sbatch-srun-storm`) for your scheduler/resource
+   manager. If you wish to configure more, you can choose to start
+   with the base script (e.g. `magpie.sbatch-srun`) which contains all
    configuration options.
 
-2) Setup your job essentials at the top of the submissionscript.  As
+2) Setup your job essentials at the top of the submissionscript. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -52,39 +52,41 @@ Instructions For Storm
 
    STORM_VERSION : Set appropriately.
 
-   STORM_HOME : Where your Storm code is.  Typically in an NFS
+   STORM_HOME : Where your Storm code is. Typically in an NFS
    mount.
 
    STORM_LOCAL_DIR : A small place for conf files and log files local
-   to each node.  Typically /tmp directory.
+   to each node. Typically `/tmp` directory.
 
-4) Select how your job will run by setting STORM_MODE.  The first time
+4) Select how your job will run by setting STORM_MODE. The first time
    you'll probably want to run w/ 'stormwordcount' mode just to try
    things out and make sure things look setup correctly.
 
    After this, you may want to run with 'interactive' mode to play
-   around and figure things out.  In the job output you will see
+   around and figure things out. In the job output you will see
    output similar to the following:
 
-      ssh node70
-      setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
-      setenv STORM_HOME "/home/username/apache-storm-1.0.1"
-      setenv STORM_CONF_DIR "/tmp/username/storm/ajobname/1175007/conf"
+   ```
+   ssh node70
+   setenv JAVA_HOME "/usr/lib/jvm/jre-1.7.0-oracle.x86_64/"
+   setenv STORM_HOME "/home/username/apache-storm-1.0.1"
+   setenv STORM_CONF_DIR "/tmp/username/storm/ajobname/1175007/conf"
+   ```
 
    These instructions will inform you how to login to the master node
-   of your allocation and how to initialize your session.  Once in
-   your session, you can do as you please.  For example, you can run a
-   job using bin/storm (bin/storm jar ...).  There will also be
+   of your allocation and how to initialize your session. Once in
+   your session, you can do as you please. For example, you can run a
+   job using bin/storm (`bin/storm jar ...`). There will also be
    instructions in your job output on how to tear the session down
    cleanly if you wish to end your job early.
 
    Once you have figured out how you wish to run your job, you will
    likely want to run with MAGPIE_JOB_TYPE set to 'script' mode.
    Create a script that will run your job/calculation automatically,
-   set it in MAGPIE_JOB_SCRIPT, and then run your job.  You can find
-   an example job script in examples/storm-example-job-script.
+   set it in MAGPIE_JOB_SCRIPT, and then run your job. You can find
+   an example job script in `examples/storm-example-job-script`.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -93,19 +95,20 @@ Instructions For Storm
    may be useful in scripts.
 
 5) Storm requires Zookeeper, so setup the essentials for Zookeeper.
-   See README.zookeeper for Zookeeper setup instructions.
+   See README.zookeeper.md for Zookeeper setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+6) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm, 
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
 Storm Exported Environment Variables
 ------------------------------------
@@ -125,16 +128,18 @@ STORM_CONF_DIR : the directory that Storm configuration files local
 
 STORM_LOG_DIR : the directory Storm log files are stored
 
-See "Zookeeper Exported Environment Variables" in README.zookeeper,
+See "Zookeeper Exported Environment Variables" in README.zookeeper.md,
 for Zookeeper environment variables that may be useful.
 
 Storm Recompilation
 -------------------
 - Beginning with Storm 1.1.0, the package no longer includes the storm
-  starter jar file by default.  You will have to compile it by default
-  in order to run stormwordcount.  A simple:
+  starter jar file by default. You will have to compile it by default
+  in order to run stormwordcount. A simple:
 
+  ```
   cd examples/storm-starter/
   mvn package
-
+  ```
+  
   Should suffice

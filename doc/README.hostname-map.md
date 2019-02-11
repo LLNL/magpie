@@ -3,11 +3,11 @@ Magpie Hostname Map
 
 Generally speaking, Magpie assumes that the:
 
-A) the nodenames output from the scheduler/resource manager after a
+1) the nodenames output from the scheduler/resource manager after a
    job is allocated (e.g. foo[0-4]) are the addresses/hostnames that
    should be configured into Hadoop, Spark, etc.
 
-B) the output of the 'hostname' command also maps to the nodenames
+2) the output of the 'hostname' command also maps to the nodenames
    output from the scheduler/resource manager.
 
 However, there are circumstances where this is not the case.
@@ -25,8 +25,10 @@ MAGPIE_HOSTNAME_SCHEDULER_MAP allow users to specify a script to map
 the hostname from the hostname cmd or scheduler to a new value.
 
 The submission scripts do not include these configuration fields by
-default.  To include them:
+default. To include them:
 
+```
 cd submission-scripts/script-templates
 edit Makefile and set MAGPIE_HOSTNAME_MAP to 'y'
 run 'make'
+```

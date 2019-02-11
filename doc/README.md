@@ -2,10 +2,10 @@ Magpie
 ------
 
 Magpie contains a number of scripts for running Big Data software in
-HPC environments.  Thus far, Hadoop, Spark, Hbase, Hive, Storm, Pig,
-Mahout, Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It
+HPC environments. Thus far, Hadoop, Spark, Hbase, Hive, Storm, Pig,
+Mahout, Phoenix, Kafka, Zeppelin, and Zookeeper are supported. It
 currently supports running over the parallel file system Lustre and
-running over any generic network filesytem.  There is
+running over any generic network filesytem. There is
 scheduler/resource manager support for Slurm, Moab, Torque, and LSF.
 
 Some of the features presently supported:
@@ -24,12 +24,12 @@ Basic Idea
 The basic idea behind these scripts are to:
 
 1) Submit a Magpie batch script to allocate nodes on a cluster using
-   your HPC scheduler/resource manager.  Slurm, Moab+Slurm,
+   your HPC scheduler/resource manager. Slurm, Moab+Slurm,
    Moab+Torque and LSF+mpirun are currently supported.
 
 2) The batch script will create configuration files for all
-   appropriate projects (Hadoop, Spark, etc.)  The configuration files
-   will be setup so the rank 0 node is the "master".  All compute
+   appropriate projects (Hadoop, Spark, etc.) The configuration files
+   will be setup so the rank 0 node is the "master". All compute
    nodes will have configuration files created that point to the node
    designated as the master server.
 
@@ -37,20 +37,20 @@ The basic idea behind these scripts are to:
    filesystem choice and the hardware that exists in your cluster.
    Reasonable attempts are made to determine optimal values for your
    system and hardware (they are almost certainly better than the
-   default values).  A number of options exist in the batch scripts to
+   default values). A number of options exist in the batch scripts to
    adjust these values for individual jobs.
 
-3) Launch daemons on all nodes.  The rank 0 node will run master
-   daemons, such as the Hadoop Namenode.  All remaining nodes will run
+3) Launch daemons on all nodes. The rank 0 node will run master
+   daemons, such as the Hadoop Namenode. All remaining nodes will run
    appropriate worker daemons, such as the Hadoop Datanodes.
 
-4) Now you have a mini big data cluster to do whatever you want.  You
+4) Now you have a mini big data cluster to do whatever you want. You
    can log into the master node and interact with your mini big data
-   cluster however you want.  Or you could have Magpie run a script to
+   cluster however you want. Or you could have Magpie run a script to
    execute your big data calculation instead.
 
 5) When your job completes or your allocation time has run out, Magpie
-   will cleanup your job by tearing down daemons.  When appropriate,
+   will cleanup your job by tearing down daemons. When appropriate,
    Magpie may also do some additional cleanup work to hopefully make
    re-execution on later runs cleaner and faster.
 
@@ -58,44 +58,44 @@ Requirements
 ------------
 
 1) Magpie and all big data projects (Hadoop, Spark, etc.) should be
-   installed on all cluster nodes.  It can be in a known location or
-   perhaps via a network file system location.  Many users may simply
+   installed on all cluster nodes. It can be in a known location or
+   perhaps via a network file system location. Many users may simply
    install them into their NFS home directories.
 
    These paths will be specified in job submission scripts.
 
-   Some projects may need patches applied.  You can find patches in
-   Magpie's 'patches' directory.  Most patches are only needed against
+   Some projects may need patches applied. You can find patches in
+   Magpie's 'patches' directory. Most patches are only needed against
    scripts within the projects, but on occassion a recompilation of
    the source may also be necessary.
 
 2) A passwordless remote shell execution mechanism must be available
    for scripts to launch big data daemons (e.g. Hadoop Datanodes) on
-   all appropriate nodes.  The most popular (and default mechanism) is
-   passwordless ssh.  However, other mechanisms are more than
+   all appropriate nodes. The most popular (and default mechanism) is
+   passwordless ssh. However, other mechanisms are more than
    suitable.
 
 3) A temporary local scratch space is needed on each node for Magpie
    to store configuration files, log files, and other miscellaneous
-   files.  A very small amount of scratch space is needed.
+   files. A very small amount of scratch space is needed.
 
-   This local scratch space need not be a local disk.  It could
+   This local scratch space need not be a local disk. It could
    hypothetically be memory based tmpfs.
 
    Beginning with Magpie 1.60 the ability to use network file paths
    for "local scratch" space was supported, but requires some extra
-   work.  See README.no-local-dir for details.
+   work. See README.no-local-dir for details.
 
 4) Magpie and the projects it supports generally assume that all
    software and the OS environment consistently use short hostnames or
-   fully qualified qualified domain names.  For example, if the
+   fully qualified qualified domain names. For example, if the
    "hostname" command returns a short hostname (e.g. 'foo' and not
    'foo.host.com'), then the scheduler/resource manager should output
    shortened hostnames in its output environment variables
    (e.g. SLURM_JOB_NODELIST w/ Slurm, MOAB_NODELIST w/ Moab, etc.)
 
    Starting Magpie 2.0, there are mechanisms in place to work around
-   this.  See README.hostname-map for details.
+   this. See README.hostname-map for details.
 
 5) A minor set of software dependencies are required depending on your
    environment.
@@ -109,13 +109,13 @@ Requirements
 
    The 'hostlist' command from lua-hostlist
    (https://github.com/grondo/lua-hostlist) is preferred for a variety
-   of hostrange parsing needs in Magpie.  If it is not available,
+   of hostrange parsing needs in Magpie. If it is not available,
    Magpie will use its internal tool 'magpie-expand-nodes', which
    should be sufficient for most hostrange parsing, but may not
    function for a number of nuanced corner cases.
 
    Several checks for Zookeeper functionality assume netcat and the
-   'nc' command are available.  If it is not available, the checks
+   'nc' command are available. If it is not available, the checks
    cannot be done.
 
 Local Configuration
@@ -143,13 +143,14 @@ support in this version of Magpie.
 
 Versions not listed below should work with Magpie if the
 configuration/setup of those versions is compatible with the versions
-listed below.  However, certain features or options may not work with
+listed below. However, certain features or options may not work with
 those versions.
 
-* + - Requires patch against binary distro's scripts, no re-compilation needed
-* ^ - Requires patch against source, requires re-compilation
-* ! - Some issues may exist, see project readmes (i.e. README.hadoop) for details
+* `+` - Requires patch against binary distro's scripts, no re-compilation needed
+* `^` - Requires patch against source, requires re-compilation
+* `!` - Some issues may exist, see project readmes (i.e. README.hadoop) for details
 
+```
 Hadoop - 2.2.0+, 2.3.0+, 2.4.0+, 2.4.1+, 2.5.0+, 2.5.1+, 2.5.2+,
          2.6.0+, 2.6.1+, 2.6.2+, 2.6.3+, 2.6.4+, 2.6.5+, 2.7.0+,
          2.7.1+, 2.7.2+, 2.7.3+, 2.7.4+, 2.7.5+, 2.7.6+, 2.7.7+,
@@ -185,7 +186,7 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+,
         2.3.2-bin-hadoop2.6+!, 2.3.2-bin-hadoop2.7+!,
         2.4.0-bin-hadoop2.6+!, 2.4.0-bin-hadoop2.7+!
 
-Hbase - 0.98.0-hadoop2+, 0.98.1-hadoop2+, 0.98.2-hadoop2+,
+HBase - 0.98.0-hadoop2+, 0.98.1-hadoop2+, 0.98.2-hadoop2+,
         0.98.3-hadoop2+, 0.98.4-hadoop2+, 0.98.5-hadoop2+,
         0.98.6-hadoop2+, 0.98.6.1-hadoop2+, 0.98.7-hadoop2+,
         0.98.8-hadoop2+, 0.98.9-hadoop2+, 0.98.10-hadoop2+,
@@ -232,6 +233,7 @@ Phoenix - 4.5.0-Hbase-1.0+, 4.5.0-Hbase-1.1+, 4.5.1-Hbase-1.0+,
 Kafka - 2.11-0.9.0.0
 
 Zeppelin - 0.6.0, 0.6.1, 0.6.2, 0.7.0, 0.7.1, 0.7.2, 0.7.3, 0.8.0, 0.8.1
+```
 
 [HiveNote] - Hive uses PostgreSQL, the minimum version required is 9.1.13
       PostgreSQL can be found at: https://www.postgresql.org/download/
@@ -241,10 +243,11 @@ Package Version Combinations
 
 Many packages function together, for example Pig requires Hadooop,
 Spark may use Hadoop to access HDFS, Hbase and Storm require
-Zookeeper, and Phoenix requires Hbase.  While the range of project
+Zookeeper, and Phoenix requires Hbase. While the range of project
 versions that work together is very large, we've found the following
 to be a good starting point to use in running jobs.
 
+```
 Pig 0.13.X, 0.14.X w/ Hadoop 2.6.X
 Pig 0.15.X -> 0.17.X w/ Hadoop 2.7.X
 
@@ -255,15 +258,15 @@ Hbase 0.98.X w/ Hadoop 2.2.X, Zookeeper 3.4.X
 Hbase 0.99.X -> 1.4.X w/ Hadoop 2.7.X, Zookeeper 3.4.X
 
 Phoenix 4.4.X -> 4.13.X - Beginning w/ Phoenix 4.4.0, versions
-  prebuilt for Hbase 1.0, 1.1, etc. are available.  Use the version it
+  prebuilt for Hbase 1.0, 1.1, etc. are available. Use the version it
   is prebuilt for appropriately.
 
 Spark 0.9.X-bin-hadoop2 w/ Hadoop 2.2.X
 Spark 1.X - Beginning w/ Spark 1.1 versions prebuilt for Hadoop 2.3,
-  2.4, 2.6, etc. are available.  Use the version it is prebuilt for
-  appropriately.  See above for supported versions.
-Spark 2.X - Builds against Hadoop 2.3, 2.4, 2.6, and 2.7.  Use the
-  version it is prebuilt for appropriately.  See above for supported
+  2.4, 2.6, etc. are available. Use the version it is prebuilt for
+  appropriately. See above for supported versions.
+Spark 2.X - Builds against Hadoop 2.3, 2.4, 2.6, and 2.7. Use the
+  version it is prebuilt for appropriately. See above for supported
   versions.
 
 Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X
@@ -271,6 +274,7 @@ Storm 0.9.X, 0.10.0, 1.X.0 w/ Zookeeper 3.4.X
 Kafka 2.11-0.9.0.0 w/ Zookeeper 3.4.X
 
 Zeppelin 0.6.0 w/ Spark 1.6.X
+```
 
 Package Java Versions
 ---------------------
@@ -279,8 +283,9 @@ Some package versions from Apache require minimum Java versions.
 Although the minimums may be lower than those listed here, these are
 our recommendations based on testing & experience.
 
-Hadoop 2.0 -> 2.5 - Java 1.6
-Hadoop 2.6 -> 2.7.3 - Java 1.7
+```
+Hadoop 2.0   -> 2.5 - Java 1.6
+Hadoop 2.6   -> 2.7.3 - Java 1.7
 Hadoop 2.7.4 -> 2.7.X - Java 1.8
 Hadoop 2.8.0 -> ... - Java 1.7
 Hadoop 3.0.0 -> ... - Java 1.8
@@ -298,6 +303,7 @@ Storm 0.9.5 -> ... - Java 1.7
 
 Zeppelin 0.6 -> 0.7 - Java 1.7
 Zeppelin 0.8 -> ... - Java 1.8
+```
 
 Package Attention
 -----------------
@@ -308,16 +314,16 @@ the level of trust you can have in Magpie support for individual
 projects and/or features.
 
 Core packages/features are considered amongst the core supported
-packages in Magpie.  Magpie developers are confident in their
+packages in Magpie. Magpie developers are confident in their
 functionality under a wide range of use cases and scenarios.
 
 Well supported packages/features are not given quite the same
-attention as core ones.  Magpie developers have confidence they
+attention as core ones. Magpie developers have confidence they
 will work with common use case scenarios, but non-common scenarios
 may have not been tested or tried.
 
 Experimental supported packages/features are not maintained with deep
-attention.  They may have been developed against a specific project
+attention. They may have been developed against a specific project
 version or with specific use scenario. Their support should be
 considered on the side of experimental.
 
@@ -338,30 +344,30 @@ considered on the side of experimental.
 Documentation
 -------------
 
-General information about all of Magpie can be found below.  For
+General information about all of Magpie can be found below. For
 information on individual projects, please see the following README
 files.
 
-Hadoop - See README.hadoop
-Pig - See README.pig
-Mahout - See README.mahout
-Hbase - See README.hbase
-Hive - See README.hive
-Spark - See README.spark
-Storm - See README.storm
-Phoenix - See README.phoenix
-Kafka - See README.kafka
-Zeppelin - See README.zeppelin
-Zookeeper - See README.zookeeper
+* Hadoop - See README.hadoop.md
+* Pig - See README.pig.md
+* Mahout - See README.mahout.md
+* Hbase - See README.hbase.md
+* Hive - See README.hive.md
+* Spark - See README.spark.md
+* Storm - See README.storm.md
+* Phoenix - See README.phoenix.md
+* Kafka - See README.kafka.md
+* Zeppelin - See README.zeppelin.md
+* Zookeeper - See README.zookeeper.md
 
 Documentation on some optional features:
 
-- Support HPC systems without (or very small) /tmp filesystems - See README.no-local-dir
+- Support HPC systems without (or very small) `/tmp` filesystems - See README.no-local-dir.md
 
 Some miscellaneous documentation:
 
-- Testsuite information - See README.testsuite
-- FAQ of random common questions - See README.faq
+- Testsuite information - See README.testsuite.md
+- FAQ of random common questions - See README.faq.md
 
 Exported Environment Variables
 ------------------------------
@@ -370,14 +376,14 @@ The following environment variables are exported when your job is run
 and may be useful in scripts in your run or in pre/post run scripts.
 
 Note that they may not be automatically exported if you remote login
-into your master node.  See MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT for a
+into your master node. See MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT for a
 convenient mechanism to export commonly used environment variables
 during a remote login session.
 
 Project specific environment variable exports are also available, see
 those sections for more information.
 
-MAGPIE_CLUSTER_NODERANK : the rank of the node you are on.  It's often
+MAGPIE_CLUSTER_NODERANK : the rank of the node you are on. It's often
                           convenient to do something like
 
 if [ $MAGPIE_CLUSTER_NODERANK == 0 ]
@@ -400,39 +406,39 @@ MAGPIE_TIMELIMIT_MINUTES : Timelimit of job in minutes
 Convenience Scripts
 -------------------
 
-A number of convenience scripts are included in the scripts/
-directory, both for possible usefulness and as examples.  They are
+A number of convenience scripts are included in the `scripts/`
+directory, both for possible usefulness and as examples. They are
 organized within the directory as follows:
 
 job-scripts - These are scripts that you would run as a possible job
-in Magpie.  You would set these scripts in the MAGPIE_JOB_SCRIPT
+in Magpie. You would set these scripts in the MAGPIE_JOB_SCRIPT
 environment variable.
 
 pre-job-run-scripts - These are scripts that you would run before the
-actual calculation is executed.  You would set these scripts in the
+actual calculation is executed. You would set these scripts in the
 MAGPIE_PRE_JOB_RUN environment variable.
 
 post-job-run-scripts - These are scripts that you would run after the
-actual calculation is executed.  You would set these scripts in the
+actual calculation is executed. You would set these scripts in the
 MAGPIE_POST_JOB_RUN environment variable.
 
 Notable scripts worth mentioning:
 
 pre-job-run-scripts/magpie-output-config-files-script.sh - This script
-will output all of the conf files from your job.  It's convenient for
+will output all of the conf files from your job. It's convenient for
 debugging.
 
-post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh -
+`post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh` -
 This script will get all of the conf files and log files from Hadoop,
 Hbase, Pig, Spark, Storm, and/or Zookeeper and store it in a location
-for post-analysis of your job.  It's convenient for debugging.  By
+for post-analysis of your job. It's convenient for debugging. By
 default files are stored in ${HOME}/${MAGPIE_JOB_NAME}, but the base
 directory can be altered with the first argument passed into the
 script.
 
-In addition, the misc/magpie-apache-download-and-setup.sh may be
+In addition, the `misc/magpie-apache-download-and-setup.sh` may be
 convenient for initially downloading and patching Apache projects for
-you so you don't have to manually download them.  It'll also configure
+you so you don't have to manually download them. It'll also configure
 several paths for you in the launch scripts automatically.
 
 General Advanced Usage
@@ -445,44 +451,44 @@ The following are additional tips for advanced usage of Magpie.
    your primary job script executes.
 
    The MAGPIE_POST_JOB_RUN is particularly useful, as it can gather
-   logs and/or other debugging data for you.  The convenience script
-   post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh
+   logs and/or other debugging data for you. The convenience script
+   `post-job-run-scripts/magpie-gather-config-files-and-logs-script.sh`
    gathers most configuration and log data and stores it to your home
    directory.
 
 2) The Magpie environment variable MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT
    is useful for creating a file of popular and useful environment
-   variables.  The file it creates can be used within scripts you
+   variables. The file it creates can be used within scripts you
    write, or it can sourced into your environment when you try to
    interact with your job.
 
-3) All configuration files in conf/ can be modified to be tuned for
-   individual applications.  For the brave and adventurous, various
+3) All configuration files in `conf/` can be modified to be tuned for
+   individual applications. For the brave and adventurous, various
    configurations such as JVM options and other tunables can be
-   adjusted.  If you wish to experiment with different sets of
+   adjusted. If you wish to experiment with different sets of
    configuration files, consider making different directories with
-   different conf files in them.  Then a quick change to project
+   different conf files in them. Then a quick change to project
    CONF_FILE settings (e.g. HADOOP_CONF_FILES, SPARK_CONF_FILES,
    HBASE_CONF_FILES, etc.) can quickly allow different files to be
    experimented with.
 
 4) It is possible to run multiple instances of Hadoop, Hbase,
-   etc. simultaneously on a cluster.  However, it is important to
-   isolate each of those instances.  In particular, if using default
+   etc. simultaneously on a cluster. However, it is important to
+   isolate each of those instances. In particular, if using default
    configurations, multiple instances may attempt to read/write
    identical locations on network filesystems, leading to problems
-   between jobs.  For example, if you configure HDFS to operate out of
-   /lustre/hdfsoverlustre/ on multiple jobs, only one namenode will be
+   between jobs. For example, if you configure HDFS to operate out of
+   `/lustre/hdfsoverlustre/` on multiple jobs, only one namenode will be
    able to operate correctly at a time.
 
    In order to solve this problem, all you need to do is create
    different directories for each service operating out of a network
-   file system.  For example, /lustre/hdfsoverlustre1 and
-   /lustre/hdfsoverlustre2 for two different jobs using HDFS.
+   file system. For example, `/lustre/hdfsoverlustre1` and
+   `/lustre/hdfsoverlustre2` for two different jobs using HDFS.
 
    If you are not concerned about the specific path you are using,
    perhaps because you never intend to reuse those paths, consider
-   using MAGPIE_ONE_TIME_RUN.  This setting may be particularly useful
+   using MAGPIE_ONE_TIME_RUN. This setting may be particularly useful
    if you initially running tests/experiments on different CPU counts,
    node counts, settings, etc. and want to run many jobs in parallel.
    Be careful to cleanup these directories from time to time, as
@@ -492,9 +498,9 @@ Security
 --------
 
 Users should be aware that running Magpie w/ the big data software
-supported here may be insecure in your environment.  While Magpie
+supported here may be insecure in your environment. While Magpie
 makes attempts to configure software with good "sanity"
-configurations, they are not foolproof.  In addition, some software
+configurations, they are not foolproof. In addition, some software
 may not yet have security infrastructure built in.
 
 If you are not running in an environment where your cluster allocation
@@ -506,22 +512,22 @@ These issues are due to a variety of factors, including:
 
 1) In "traditional" big data clusters, system administrators control
 what users are allowed on the cluster and who is not, limiting the
-exposure of data stored there.  In the Magpie model, a "big data
-cluster" is instantiated within a larger multi-user HPC cluster.  The
+exposure of data stored there. In the Magpie model, a "big data
+cluster" is instantiated within a larger multi-user HPC cluster. The
 Magpie user cannot control what other users have access to the HPC
-cluster.  This population of HPC users could access to the data of the
+cluster. This population of HPC users could access to the data of the
 Magpie user without the Magpie user's knowledge.
 
 2) In "traditional" big data clusters, important daemons are
-owned/executed by a special user (e.g. hdfs, yarn, etc.).  This may
+owned/executed by a special user (e.g. hdfs, yarn, etc.). This may
 limit the type of the exposure a nefarious/rogue process can have on
-the system.  When running in an HPC environment with Magpie, the
-processes are run under the user's ownership.  Since users are
+the system. When running in an HPC environment with Magpie, the
+processes are run under the user's ownership. Since users are
 typically not root, they have no way to change the ownership of the
 process to a "special" user.
 
 3) Some big data software have Kerberos or similar security functions
-built into it.  However, it is beyond the scope of most HPC users to
+built into it. However, it is beyond the scope of most HPC users to
 get proper kerberos configuration of Hadoop, HDFS, etc. from their
 site staff before running their job.
 
@@ -531,20 +537,20 @@ in at all.
 A few examples of security issues are listed below:
 
 Hadoop HDFS - The Hadoop Namenode is generally available on an open
-and public port.  While HDFS has been configured with a good
+and public port. While HDFS has been configured with a good
 default umask and ACLs, other users on the system can override this by
 setting HADOOP_USER_NAME environment variable.
 
 Hadoop YARN - Similar to Hadoop HDFS, good default configurations have
-been setup.  However they can be overridden with the HADOOP_USER_NAME
-environment variable.  This allows users to potentially run jobs as
-another user on the cluster.  This in turn can open up all of a user's
+been setup. However they can be overridden with the HADOOP_USER_NAME
+environment variable. This allows users to potentially run jobs as
+another user on the cluster. This in turn can open up all of a user's
 data to others within the system.
 
 Spark - Spark shared secret keys have been configured for sanity
-configuration.  However, since the shared secret may be easy to
+configuration. However, since the shared secret may be easy to
 determine, it will allow user to run jobs as another user on the
-cluster.  This in turn can open up all of a user's data to others
+cluster. This in turn can open up all of a user's data to others
 within the system.
 
 Web UIs - Generally speaking, most web UIs will be viewable by other
@@ -558,103 +564,105 @@ Feel free to send me patches for new environment variables, new
 adjustments, new optimization possibilities, alternate defaults that
 you feel are better, etc.
 
-Any patches you submit to me for fixes will be appreciated.  I am by
+Any patches you submit to me for fixes will be appreciated. I am by
 no means a bash expert ... in fact I'm quite bad at it.
 
 Other Projects
 --------------
 
-We welcome additions of other projects into Magpie.  Here's a somewhat
-general guide to including other projects in Magpie.  This is very
-high level.  Please see internal implementation for details.
+We welcome additions of other projects into Magpie. Here's a somewhat
+general guide to including other projects in Magpie. This is very
+high level. Please see internal implementation for details.
 Hopefully it's somewhat obvious.
 
 1) Add appropriate "templates" into
-   submission-scripts/script-templates/ for the new project so the
-   project can be setup.  You can copy templates from other projects
-   to begin.  Although there can be variations depending on the
+   `submission-scripts/script-templates/` for the new project so the
+   project can be setup. You can copy templates from other projects
+   to begin. Although there can be variations depending on the
    project's purpose, you'll most likely want to add:
-
+   
+   ```
    magpie-XXX
    magpie-magpie-customizations-job-XXX
    magpie-magpie-customizations-testall-XXX
-
+   ```
+   
    files for project XXX.
 
    Then after that, update
-   submission-scripts/script-templates/Makefile to add your project
-   into the primary job submission files.  Generate additional
-   submission scripts for the new project if you desire to.  After
+   `submission-scripts/script-templates/Makefile` to add your project
+   into the primary job submission files. Generate additional
+   submission scripts for the new project if you desire to. After
    this you can run make and ensure your new project has been added
    correctly into the job submission scripts.
 
-2) Add appropriate input checks to 'magpie-check-inputs'
+2) Add appropriate input checks to `magpie-check-inputs`
 
-3) Add an appropriate "setup" file to magpie/setup/
+3) Add an appropriate "setup" file to `magpie/setup`
 
-4) Add an appropriate "run" file to magpie/run/
+4) Add an appropriate "run" file to `magpie/run/`
 
-5) Update 'magpie-setup-projects' and 'magpie-run' appropriately for
+5) Update `magpie-setup-projects` and `magpie-run` appropriately for
    new calls.
 
 6) If necessary create new directories and setup master/worker
-   files in 'magpie-setup-core'
+   files in `magpie-setup-core`
 
 7) If necessary, following libraries could warrant updates:
 
-   magpie/lib/magpie-lib-node-identification - to identify
+   `magpie/lib/magpie-lib-node-identification` - to identify
      master/worker nodes
 
-   magpie/lib/magpie-lib-paths - set various path defaults
+   `magpie/lib/magpie-lib-paths` - set various path defaults
 
-   magpie/lib/magpie-lib-defaults - set various defaults
+   `magpie/lib/magpie-lib-defaults` - set various defaults
 
-8) Add any necessary patches to patches/
+8) Add any necessary patches to `patches/`
 
 9) Add new tests into Magpie's testsuite
 
-   - Add new test-generate-XXX.sh file to generate new tests.
+   - Add new `test-generate-XXX.sh` file to generate new tests.
 
-   - Update test-generate.sh appropriately for new test generation.
+   - Update `test-generate.sh` appropriately for new test generation.
 
-   - Add new test test-submit-XXX file to submit new tests.
+   - Add new test `test-submit-XXX` file to submit new tests.
 
-   - Update test-validate.sh for validate jobs suceeded.
+   - Update `test-validate.sh` for validate jobs suceeded.
 
-   - Update test-download-projects.sh to download & patch projects if
+   - Update `test-download-projects.sh` to download & patch projects if
      necessary.
 
 10) (Optional) Add download options for the project in
-   misc/magpie-apache-download-and-setup.sh
+   `misc/magpie-apache-download-and-setup.sh`
 
 Other Schedulers/Resource Managers
 ----------------------------------
 
 While Slurm, Moab+Slurm, Moab+Torque, and LSF+mpirun are the currently
 supported schedulers/resource managers, there's no reason to believe
-that other schedulers/resource managers couldn't be supported.  I'd
+that other schedulers/resource managers couldn't be supported. I'd
 gladly welcome patches to support them.
 
 To support another scheduler or resource manager, you'll want to make
 your equivalent scheduler/resource manager header, similar to
-submission-scripts/script-templates/magpie-config-sbatch-srun.  You
+`submission-scripts/script-templates/magpie-config-sbatch-srun`. You
 may also need to create a new job running variant, such as
-submission-scripts/script-templates/magpie-run-job-srun.  Then add an
+`submission-scripts/script-templates/magpie-run-job-srun`. Then add an
 appropriate new section to
-submission-scripts/script-templates/Makefile and a new directory for
+`submission-scripts/script-templates/Makefile` and a new directory for
 these new submission scripts in submission-scripts.
 
 If a new MAGPIE_SUBMISSION_TYPE is needed, you'll want to update
-magpie/exports/magpie-exports-submission-type and add appropriate
+`magpie/exports/magpie-exports-submission-type` and add appropriate
 input checks in magpie-check-inputs.
 
 I'd be glad to accept patches back for other schedulers/resource
-managers.  Please send me a pull request.
+managers. Please send me a pull request.
 
 Author
 ------
 
-This is me.  Feel free to contact me about Magpie, however please
+This is me. Feel free to contact me about Magpie, however please
 consider posting support questions to Github's issue tracker so
 everyone can see the questions & solutions to your problem.
 
@@ -664,9 +672,9 @@ chu11@llnl.gov
 Credit
 ------
 
-Credit must be given to Kevin Regimbal @ PNNL.  Initial experiments
+Credit must be given to Kevin Regimbal @ PNNL. Initial experiments
 were done using heavily modified versions of scripts Kevin developed
-for running Hadoop w/ Slurm & Lustre.  A number of the ideas from
+for running Hadoop w/ Slurm & Lustre. A number of the ideas from
 Kevin's scripts continue in spirit in these scripts.
 
 Special thanks to David Buttler who came up with the clever name for

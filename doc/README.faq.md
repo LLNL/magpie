@@ -1,17 +1,15 @@
 FAQ
 ---
 
-* Why was Magpie written so users modify a job submission batch file
-  instead of using a command line tool to automatically allocate nodes
-  and setup daemons for you?
+### Why was Magpie written so users modify a job submission batch file instead of using a command line tool to automatically allocate nodes and setup daemons for you?
 
   This is something I've been asked about a few times because it may
   make Magpie more difficult for some users and some other Magpie-like
   tools out there are command line tools.
 
-  The biggest reason is cultural to Lawrence Livermore.  Historically
+  The biggest reason is cultural to Lawrence Livermore. Historically
   there have been multiple OSes, file systems, hardware, etc. on all
-  of the clusters here.  So our users are taught to use our systems by
+  of the clusters here. So our users are taught to use our systems by
   learning how to write batch files for job submission and not taught
   to use a specific command line tool to automatically do things.
 
@@ -21,27 +19,26 @@ FAQ
   I believe other locations have a much lower permutation of systems
   and/or situations, which make a command line tool more feasible.
 
-* Will you write a command line tool for Magpie someday?
+### Will you write a command line tool for Magpie someday?
 
   Maybe, it's not a high priority.
 
-* Can Magpie work with Big Data distros, such as those from Cloudera
-  and Hortonworks?
+### Can Magpie work with Big Data distros, such as those from Cloudera and Hortonworks?
 
-  I've never tested with them, so I don't know.  It could if all the
+  I've never tested with them, so I don't know. It could if all the
   same files/scripts from the Apache releases are still there.
 
-* Why does Magpie work against Apache releases of Hadoop, Spark,
+### Why does Magpie work against Apache releases of Hadoop, Spark,
   etc. but not necessarily those from Cloudera and Hortonworks?
 
-  The reason is for somewhat legacy reasons.  In the original scripts
-  I wrote to support Hadoop (in a set of house made scripts before
+  The reason is for somewhat legacy reasons. In the original scripts
+  I wrote to support Hadoop (in a set of house-made scripts before
   Magpie), I utilized the Hadoop scripts 'start-all.sh',
   'start-dfs.sh', etc. to start and stop daemons on all nodes of an
-  allocation.  These scripts had to be modified/patched, but the core
+  allocation. These scripts had to be modified/patched, but the core
   of the scripts was unchanged.
 
-  Similar scripts also existed in Hbase, Spark, and other projects.
+### Similar scripts also existed in HBase, Spark, and other projects.
 
   When looking at a Cloudera distribution, I noticed that these
   scripts were removed from their distribution in favor of system
@@ -54,26 +51,26 @@ FAQ
   I don't know if those scripts are distributed in newer versions of
   Cloudera and/or Hortonworks.
 
-* How did Magpie come to be?
+### How did Magpie come to be?
 
-  Truth be told.  Early on in some Hadoop investigations, we were
+  Truth be told. Early on in some Hadoop investigations, we were
   investigating many ideas about how HPC + Hadoop could be integrated.
   Included were how to integrate Lustre into Hadoop, Infiniband into
-  Hadoop, and there were other ideas for down the road.  Various
+  Hadoop, and there were other ideas for down the road. Various
   experimental patches were created and plugins/modules from others
   were experimented with.
 
   When presenting performance numbers and results from various
   experiments, people at the meetings would ask me "How did you run
-  this experiment on cluster FOO?"  I would respond with, "Well I
+  this experiment on cluster FOO?" I would respond with, "Well I
   have these hacked up these bash scripts ...".
 
   After the 4th or 5th person asked if they could try out my "hacked
   up bash scripts", I decided that perhaps they should be put together
-  into something far more formal.  Later Pig, Hbase, Spark,
+  into something far more formal. Later Pig, HBase, Spark,
   etc. support was added.
 
-* Why is the project called Magpie?
+### Why is the project called Magpie?
 
   Based on David Buttler's initial reply to my request for name
   suggestions.
@@ -83,20 +80,18 @@ FAQ
 
   For those unaware, legend has it magpie birds like shiny objects.
 
-* Why aren't all project combinations supported?  For example, Spark
-  1.5.0 has a build against Hadoop 2.4 and Phoenix 4.5.0 has a build
-  against Hbase 0.98 on their official websites.
+### Why aren't all project combinations supported? For example, Spark 1.5.0 has a build against Hadoop 2.4 and Phoenix 4.5.0 has a build against HBase 0.98 on their official websites.
 
   Magpie's primary attempt is to work with the official binary builds
-  distributed by projects on their official websites.  Unfortunately,
+  distributed by projects on their official websites. Unfortunately,
   different projects have build/release differences in their binaries.
 
-  For example, I believe most Hbase 0.98 binary versions distributed
-  via the official Hbase website were compiled for Java 1.6 while
-  newer Phoenix versions were compiled for Java 1.7.  Even though
-  there exists a Phoenix 4.5.0 that is ABI compatible with Hbase 0.98,
-  it may not be binary compatible to Hbase 0.98 versions released by
-  the Hbase website.  A re-compile of Hbase 0.98 would be required by
+  For example, I believe most HBase 0.98 binary versions distributed
+  via the official HBase website were compiled for Java 1.6 while
+  newer Phoenix versions were compiled for Java 1.7. Even though
+  there exists a Phoenix 4.5.0 that is ABI compatible with HBase 0.98,
+  it may not be binary compatible to HBase 0.98 versions released by
+  the HBase website. A re-compile of HBase 0.98 would be required by
   the user.
 
   This issue has been found in several circumstances.
@@ -105,22 +100,22 @@ FAQ
   of these combinations, but I don't list it because I don't have
   tests for it in the testsuite and it would require more work.
 
-* How did Magpie begin?
+### How did Magpie begin?
 
   Initially, the primary work goal was to see how Hadoop performed on
-  Lustre.  A Lustre plugin for Hadoop was developed, a Lustre plugin
+  Lustre. A Lustre plugin for Hadoop was developed, a Lustre plugin
   from the folks at Intel was tried out, and some other
-  experimentation was done.  In order to test things, we needed a way
+  experimentation was done. In order to test things, we needed a way
   launch Hadoop on HPC clusters, so we heavily hacked/modified some
   bash scripts originally developed by Kevin Regimbal @ PNNL.
 
   Lo and behold, most people didn't care about the original work.
   Most were interested in the bash scripts for starting up Hadoop in a
-  Slurm allocation.  So a more polished set of scripts was developed,
-  which is Magpie.  Eventually it was expanded to support Pig, Hbase,
+  Slurm allocation. So a more polished set of scripts was developed,
+  which is Magpie. Eventually it was expanded to support Pig, HBase,
   Spark, and other projects.
 
-* I have a question, can you help?
+### I have a question, can you help?
 
-  Please post questions to Github issue tracker.  I'm glad to answer
+  Please post questions to Github issue tracker. I'm glad to answer
   questions.

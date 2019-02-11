@@ -1,0 +1,57 @@
+A testsuite for Magpie is available in the subdirectory 'testsuite'.
+
+Instructions For Running Testsuite
+----------------------------------
+
+0) Download projects to test
+
+   You can use the test-download-projects.sh script to download all
+   presently supported versions of projects that can be tested. The
+   script will download and patch all appropriate projects.
+
+1) Test config
+
+   - In `test-config.sh`, configure base configuration for the
+     testsuite.
+
+      - The submissiontype to your scheduler type appropriately.
+
+      - Job submission details such as your batch queue, etc.
+
+      - The number of nodes in each job of the tests
+
+      - Paths to your projects
+
+      - Paths to java
+
+      - The REMOTE_CMD
+
+   - (EXPERT) In test-common.sh, configure versions that individual
+     tests require. For example, if you want to test Pig against
+     Hadoop 2.6.2 instead of Hadoop 2.6.0, adjust appropriately.
+
+2) Test generation
+
+   - In `test-generate.sh`, you may need to configure
+
+     - What tests to generate/not generate
+
+   - After configuration, run `test-generate.sh` to generate test
+     submission scripts.
+
+3) Test execution
+
+   - Run test-submit.sh to submit jobs for testing. Test submissions
+     are logged in `magpie-test.log`.
+
+4) Validation
+
+   - After all jobs are complete, run test-validate.sh to see if
+     tests were successful.
+
+Assumptions
+-----------
+
+   Many tests assume that your Magpie repo is in a networked location
+   that all nodes have access to, for example to read test
+   scripts & testfiles.

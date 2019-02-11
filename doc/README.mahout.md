@@ -3,7 +3,7 @@ Instructions For Using Mahout
 
 0) If necessary, download your favorite version of Mahout off of Apache
    and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+   nodes. Usually, this is on an NFS home directory.
 
    Make sure that the version of Mahout you install is compatible with
    the version of Hadoop you are using.
@@ -11,24 +11,24 @@ Instructions For Using Mahout
    See below in 'Mahout Patching' about patches that may be necessary
    for Mahout depending on your environment and Mahout version.
 
-   See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   See 'Convenience Scripts' in README.md about
+   `misc/magpie-apache-download-and-setup.sh`, which may make the
    downloading and patching easier.
 
-1) Select an appropriate submission script for running your job.  You
-   can find them in the directory submission-scripts/, with Slurm
-   Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
-   scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+1) Select an appropriate submission script for running your job. You
+   can find them in the directory `submission-scripts/`, with Slurm
+   Sbatch scripts using srun in `script-sbatch-srun`, Moab Msub+Slurm
+   scripts using srun in `script-msub-slurm-srun`, Moab Msub+Torque
+   scripts using pdsh in `script-msub-torque-pdsh`, and LSF scripts
+   using mpirun in `script-lsf-mpirun`.
 
    You'll likely want to start with the base hadoop+mahout script
-   (e.g. magpie.sbatch-srun-hadoop-and-mahout) for your
-   scheduler/resource manager.  If you wish to configure more, you can
-   choose to start with the base script (e.g. magpie.sbatch-srun)
+   (e.g. `magpie.sbatch-srun-hadoop-and-mahout`) for your
+   scheduler/resource manager. If you wish to configure more, you can
+   choose to start with the base script (e.g. `magpie.sbatch-srun`)
    which contains all configuration options.
 
-2) Setup your job essentials at the top of the submission script.  As
+2) Setup your job essentials at the top of the submission script. As
    an example, the following are the essentials for running with Moab.
 
    #MSUB -l nodes : Set how many nodes you want in your job
@@ -55,23 +55,23 @@ Instructions For Using Mahout
 
    MAHOUT_VERSION : Set appropriately.
 
-   MAHOUT_HOME : Where your mahout code is.  Typically in an NFS mount.
+   MAHOUT_HOME : Where your mahout code is. Typically in an NFS mount.
 
    MAHOUT_LOCAL_DIR : A small place for conf files and log files local to
-   each node.  Typically /tmp directory.
+   each node. Typically `/tmp` directory.
 
 4) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
-   MAHOUT_JOB.  Initially, you'll likely want to set MAGPIE_JOB_TYPE
+   MAHOUT_JOB. Initially, you'll likely want to set MAGPIE_JOB_TYPE
    to 'mahout' and setting MAHOUT_JOB to 'clustersyntheticcontrol'.
    This will allow you to run a pre-written job to make sure things
    are setup correctly.
 
    After this, you may want to run with MAGPIE_JOB_TYPE set to
-   'interactive' to play around and figure things out.  See
-   instructions under README.hadoop for 'interactive' mode.
+   'interactive' to play around and figure things out. See
+   instructions under README.hadoop.md for 'interactive' mode.
 
-   Once in your session, you can do as you please.  For example, you
-   can launch a mahout job (bin/mahout ...).  There will also be
+   Once in your session, you can do as you please. For example, you
+   can launch a mahout job (`bin/mahout ...`). There will also be
    instructions in your job output on how to tear the session down
    cleanly if you wish to end your job early.
 
@@ -80,7 +80,7 @@ Instructions For Using Mahout
    Create a script that will run your job/calculation automatically,
    set it in MAGPIE_JOB_SCRIPT, and then run your job.
 
-   See "Exported Environment Variables" in README for information on
+   See "Exported Environment Variables" in README.md for information on
    common exported environment variables that may be useful in
    scripts.
 
@@ -89,26 +89,27 @@ Instructions For Using Mahout
    in scripts.
 
 5) Mahout requires Hadoop, so ensure the Hadoop is configured and also in
-   your submission script.  See README.hadoop for Hadoop setup instructions.
+   your submission script. See README.hadoop.md for Hadoop setup instructions.
 
-6) Submit your job into the cluster by running "sbatch -k
-   ./magpie.sbatchfile" for Slurm, "msub ./magpie.msubfile" for
-   Moab, or "bsub < ./magpie.lsffile" for LSF.
+6) Submit your job into the cluster by running
+   `sbatch -k ./magpie.sbatchfile` for Slurm,
+   `msub ./magpie.msubfile` for Moab,
+   or `bsub < ./magpie.lsffile` for LSF.
    Add any other options you see fit.
 
-7) Look at your job output file to see your output.  There will also
+7) Look at your job output file to see your output. There will also
    be some notes/instructions/tips in the output file for viewing the
    status of your job in a web browser, environment variables you wish
    to set if interacting with it, etc.
 
-   See "General Advanced Usage" in README for additional tips.
+   See "General Advanced Usage" in README.md for additional tips.
 
 Mahout Exported Environment Variables
 -------------------------------------
 
 There are presently no Mahout specific environment variables.
 
-See "Hadoop Exported Environment Variables" in README.hadoop, for
+See "Hadoop Exported Environment Variables" in README.hadoop.md, for
 Hadoop environment variables that may be useful.
 
 Mahout Patching
@@ -116,10 +117,10 @@ Mahout Patching
 - Patch to support alternate scratch space directories in Mahout
   examples is needed.
 
-  The Mahout examples assume the user will always use /tmp for scratch
-  space.  A patch to support alternate scratch space (such as the one
-  Magpie defines) is needed if alternate /tmp or scratch space
+  The Mahout examples assume the user will always use `/tmp` for scratch
+  space. A patch to support alternate scratch space (such as the one
+  Magpie defines) is needed if alternate `/tmp` or scratch space
   directories are used.
 
-  Patches for all of these issues can be found in the patches/mahout/
+  Patches for all of these issues can be found in the `patches/mahout/`
   directory.
