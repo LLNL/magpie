@@ -1,5 +1,6 @@
 Magpie 2.1
 ----------
+Support SPARK_NETWORK_TIMEOUT configuration option.
 Fix various deprecated warnings.
 Fix broken Zeppelin dependencies.
 Alter default Spark webui ports to avoid conflicts with other web services.

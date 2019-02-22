@@ -290,6 +290,15 @@ then
     akkathreads=4
 fi
 
+if [ "${SPARK_NETWORK_TIMEOUT}X" == "X" ]
+then
+    sparknetworktimeoutsecs="120"
+    sparknetworktimeoutms="120000"
+else
+    sparknetworktimeoutsecs="${SPARK_NETWORK_TIMEOUT}"
+    sparknetworktimeoutms=$((${SPARK_NETWORK_TIMEOUT} * 1000))
+fi
+
 # Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below
 if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
@@ -641,6 +650,8 @@ then
         -e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
         -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
 	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \
+        -e "s/SPARKNETWORKTIMEOUTSECS/${sparknetworktimeoutsecs}/g" \
+        -e "s/SPARKNETWORKTIMEOUTMS/${sparknetworktimeoutms}/g" \
         ${post_sparkdefaultsconf}
 
     # Handle special settings depending on version

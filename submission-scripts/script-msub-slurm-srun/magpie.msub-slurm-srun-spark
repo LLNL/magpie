@@ -592,6 +592,31 @@ export SPARK_LOCAL_SCRATCH_DIR="/lustre/${USER}/sparkscratch/"
 #
 # export SPARK_LOCAL_SCRATCH_DIR_CLEAR="yes"
 
+# SPARK_NETWORK_TIMEOUT
+#
+# This will configure many network timeout configurations within
+# Spark.  If you see that your jobs are regularly failing with timeout
+# issues, try increasing this value.  On large HPC systems, timeouts
+# may occur more often, such as on loaded parallel file systems or
+# busy networks.
+#
+# As of this version, this will configure:
+#
+# spark.network.timeout
+# spark.files.fetchTimeout
+# spark.rpc.askTimeout
+# spark.rpc.lookupTimeout
+# spark.core.connection.ack.wait.timeout
+# spark.shuffle.registration.timeout
+# spark.network.auth.rpcTimeout
+# spark.shuffle.sasl.timeout
+#
+# Note that some of this fields will only effect newer spark versions.
+#
+# Specified in seconds, by default 120.
+#
+# export SPARK_NETWORK_TIMEOUT=120
+
 # SPARK_YARN_STAGING_DIR
 #
 # By default, Spark w/ Yarn will use your home directory for staging
