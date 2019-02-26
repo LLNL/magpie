@@ -66,7 +66,7 @@ FAQ
   When presenting performance numbers and results from various
   experiments, people at the meetings would ask me "How did you run
   this experiment on cluster FOO?"  I would respond with, "Well I
-  have these hacked up these bash scripts ...".
+  have these hacked up bash scripts ...".
 
   After the 4th or 5th person asked if they could try out my "hacked
   up bash scripts", I decided that perhaps they should be put together
