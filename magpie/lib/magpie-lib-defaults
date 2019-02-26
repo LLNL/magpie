@@ -87,10 +87,12 @@ fi
 
 if [ "${SPARK_SETUP}" == "yes" ]
 then
-    default_spark_master_port="7077"
-    default_spark_master_webui_port="8080"
-    default_spark_worker_webui_port="8081"
-    default_spark_application_dashboard_port="4040"
+    # Add 100 to all default ports to avoid any conflicts with common
+    # 8080/8081 usage
+    default_spark_master_port="7177"
+    default_spark_master_webui_port="8180"
+    default_spark_worker_webui_port="8181"
+    default_spark_application_dashboard_port="4140"
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
@@ -105,11 +107,10 @@ fi
 
 if [ "${STORM_SETUP}" == "yes" ]
 then
-    # Default is 8080, but that is same as Spark.  So up by 100
-    default_storm_ui_port="8180"
-
-    # Default is 8000, for consistency to above, up by 100
-    default_storm_logviewer_port="8100"
+    # Add 200 to all default ports to avoid any conflicts with common
+    # 8080/8081 usage
+    default_storm_ui_port="8280"
+    default_storm_logviewer_port="8200"
 
     default_storm_supervisor_slots_starting_port="6700"
 fi

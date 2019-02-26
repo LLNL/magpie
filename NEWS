@@ -2,6 +2,7 @@ Magpie 2.1
 ----------
 Fix various deprecated warnings.
 Fix broken Zeppelin dependencies.
+Alter default Spark webui ports to avoid conflicts with other web services.
 Support Hbase 1.4.7, 1.4.8, 1.4.9
 - Update Hbase default to 1.4.9
 Support Spark 2.4.0-bin-hadoop2.6, 2.4.0-bin-hadoop2.7, Spark
