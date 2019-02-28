@@ -266,6 +266,13 @@ else
     sparkmemorystoragefraction="${SPARK_MEMORY_STORAGE_FRACTION}"
 fi
 
+if [ "${SPARK_RDD_COMPRESS}X" == "X" ]
+then
+    sparkrddcompress="false"
+else
+    sparkrddcompress="${SPARK_RDD_COMPRESS}"
+fi
+
 if [ "${SPARK_DEPLOY_SPREADOUT}X" == "X" ]
 then
     sparkdeployspreadout="true"
@@ -642,6 +649,7 @@ then
         -e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \
         -e "s/SPARKMEMORYFRACTION/${sparkmemoryfraction}/g" \
         -e "s/SPARKMEMORYSTORAGEFRACTION/${sparkmemorystoragefraction}/g" \
+        -e "s/SPARKRDDCOMPRESS/${sparkrddcompress}/g" \
         -e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
         -e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
         -e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
