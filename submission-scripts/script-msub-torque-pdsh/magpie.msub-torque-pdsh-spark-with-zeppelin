@@ -507,12 +507,12 @@ export SPARK_JOB="sparkpi"
 
 # SPARK_RDD_COMPRESS
 #
-# Should RDD's be compressed by default?  Defaults to false.  Note
+# Should RDD's be compressed by default?  Defaults to true.  Note
 # that only serialized RDDs are compressed, such as with storage level
 # MEMORY_ONLY_SER or MEMORY_AND_DISK_SER.  All python RDDs are
 # serialized by default.
 #
-# export SPARK_RDD_COMPRESS=false
+# export SPARK_RDD_COMPRESS=true
 
 # SPARK_DEPLOY_SPREADOUT
 #

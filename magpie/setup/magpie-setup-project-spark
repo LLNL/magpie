@@ -268,7 +268,7 @@ fi
 
 if [ "${SPARK_RDD_COMPRESS}X" == "X" ]
 then
-    sparkrddcompress="false"
+    sparkrddcompress="true"
 else
     sparkrddcompress="${SPARK_RDD_COMPRESS}"
 fi
