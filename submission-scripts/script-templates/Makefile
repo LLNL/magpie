@@ -307,7 +307,6 @@ define create-templates
 	$(eval MAGPIE_SPARK_WITH_YARN_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn-and-hdfs)
 	$(eval MAGPIE_SPARK_WITH_ZEPPELIN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-zeppelin)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
-	cp magpie-header $(MAGPIE)
 
 	$(call create-all)
 	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
@@ -326,7 +325,8 @@ endef
 
 define create-all
 	echo "Creating magpie.$(SCHED)"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -397,7 +397,8 @@ endef
 
 define create-hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -414,7 +415,8 @@ endef
 
 define create-hadoop-and-pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -434,7 +436,8 @@ endef
 
 define create-hadoop-and-hive
 echo "Creating magpie.$(SCHED)-hadoop-and-hive"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -456,7 +459,8 @@ endef
 
 define create-hadoop-and-mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -476,7 +480,8 @@ endef
 
 define create-hbase-with-hdfs
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -500,7 +505,8 @@ endef
 
 define create-hbase-with-hdfs-with-phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -527,7 +533,8 @@ endef
 
 define create-spark
 	echo "Creating magpie.$(SCHED)-spark"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -544,7 +551,8 @@ endef
 
 define create-spark-with-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -566,7 +574,8 @@ endef
 
 define create-spark-with-yarn
 	echo "Creating magpie.$(SCHED)-spark-with-yarn"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -590,7 +599,8 @@ endef
 
 define create-spark-with-yarn-and-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-yarn-and-hdfs"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -612,7 +622,8 @@ endef
 
 define create-spark-with-zeppelin
 	echo "Creating magpie.$(SCHED)-spark-with-zeppelin"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -632,7 +643,8 @@ endef
 
 define create-storm
 	echo "Creating magpie.$(SCHED)-storm"
-	cat 	magpie-header \
+	cat 	magpie-shebang \
+		magpie-header-llnl \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
