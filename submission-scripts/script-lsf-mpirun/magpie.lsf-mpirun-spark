@@ -501,10 +501,18 @@ export SPARK_JOB="sparkpi"
 
 # SPARK_RDD_COMPRESS
 #
-# Should RDD's be compressed by default?  Defaults to true.  Note
-# that only serialized RDDs are compressed, such as with storage level
-# MEMORY_ONLY_SER or MEMORY_AND_DISK_SER.  All python RDDs are
+# Should RDD's be compressed by default?  Defaults to true.  In HPC
+# environments with parallel file systems or local storage, the cost
+# of compressing / decompressing RDDs is likely a be a net win over
+# writing data to a parallel file system or using up the limited
+# amount of local storage space available.  However, for some users
+# this cost may not be worthwhile and should be disabled.
+#
+# Note that only serialized RDDs are compressed, such as with storage
+# level MEMORY_ONLY_SER or MEMORY_AND_DISK_SER.  All python RDDs are
 # serialized by default.
+#
+# Defaults to true.
 #
 # export SPARK_RDD_COMPRESS=true
 
