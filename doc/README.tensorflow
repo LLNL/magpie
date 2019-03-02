@@ -1,0 +1,84 @@
+Instructions For Using Tensorflow
+---------------------------------
+
+0) If necessary, download your favorite version of tensorflow.  Make
+   sure it is in the python path of the python you wish to use and
+   that it is available on all nodes of your allocation (usually this
+   means that it is installed in a NFS mounted path available on all
+   nodes).
+
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/.
+
+   At the moment, tensorflow is only supported on Slurm via sbatch &
+   srun, so please start with the magpie.sbatch-srun-tensorflow sbatch
+   file.
+
+2) Setup your job essentials at the top of the submission script.  As
+   an example, the following are the essentials for running with Slurm.
+
+   #SBATCH --nodes : Set how many nodes you want in your job
+
+   #SBATCH --time : Set the time for this job to run
+
+   #SBATCH --partition : Set the job partition, this is normally
+                         pbatch or pdebug if you are debugging
+
+   #SBATCH --job-name : Set your job name.
+
+   MAGPIE_SCRIPTS_HOME : Set where your scripts are
+
+   MAGPIE_LOCAL_DIR : For scratch space files
+
+   MAGPIE_JOB_TYPE : This should be set to 'tensorflow' initially
+
+   MAGPIE_PYTHON : Set to the python you wish to run your tasks
+
+3) Select how your job will run by setting MAGPIE_JOB_TYPE and/or
+   TENSORFLOW_JOB.  Initially, you'll likely want to set
+   MAGPIE_JOB_TYPE to 'tensorflow' and setting TENSORFLOW_JOB to
+   'tfadd'.  This will allow you to run a pre-written job to make sure
+   things are setup correctly.
+
+   Once you have figured that out, you will likely want to set
+   TENSORFLOW_JOB to 'script' and set TENSORFLOW_SCRIPT_PATH to a
+   script you wish for Magpie to execute on your behalf via the python
+   set by MAGPIE_PYTHON.
+
+   See "Exported Environment Variables" in README for information on
+   common exported environment variables that may be useful in
+   scripts.
+
+   See below in "Tensorflow Exported Environment Variables", for
+   information on Tensorflow specific exported environment variables
+   that are required for functionality.
+
+6) Submit your job into the cluster by running "sbatch
+   ./magpie.sbatchfile" for Slurm.  Add any other options you see fit.
+
+7) Look at your job output file to see your output.
+
+Tensorflow Exported Environment Variables
+-----------------------------------------
+
+The following environment variables are exported when your job is run
+and will be required to be used by your tensorflow job.
+
+MAGPIE_TENSORFLOW_HOSTS
+
+This is a comma separated list of hosts and ports that will be running
+tensorflow tasks.  This should be turned into an array and most likely
+passed to 'tf.train.ClusterSpec'.  This environment variable will be the
+same on every tensorflow task started by Magpie.
+
+MAGPIE_TENSORFLOW_RANK
+
+This is the rank of the tensorflow task currently running.  This
+environment variable will be different on every tensorflow task
+started by Magpie.  You'll most likely want to pass the integer value
+of this environment variable to 'tf.train.Server'.
+
+MAGPIE_TENSORFLOW_MAX_RANK
+
+This is the maximum rank in this tensorflow run.  It may be useful
+for setting up your tensorflow calculation.

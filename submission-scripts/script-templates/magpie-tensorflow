@@ -1,0 +1,35 @@
+############################################################################
+# Tensorflow Core Configurations
+############################################################################
+
+# Should Tensorflow be run
+#
+# Specify yes or no.  Defaults to no.
+#
+export TENSORFLOW_SETUP=yes
+
+############################################################################
+# Tensorflow Job/Run Configurations
+############################################################################
+
+# Set tensorflow job for MAGPIE_JOB_TYPE = tensorflow
+#
+# "tfadd" - run Tensorflow distributed add example.  Useful for making
+#           sure things are setup correctly.
+#
+# "script" - execute the python script indicated by TENSORFLOW_SCRIPT_PATH.
+#            See TENSORFLOW_SCRIPT_PATH below for more information.
+#
+export TENSORFLOW_JOB="tfadd"
+
+# Specify script to execute for "script" mode in TENSORFLOW_JOB.
+#
+# This python script will be executed on all nodes within the
+# allocation and will be run via the default python path or the python
+# specified in MAGPIE_PYTHON if it is set.
+#
+# It is assumed that tensorflow libraries are already in your python
+# path.  If it is not, it should be added.
+#
+# export TENSORFLOW_SCRIPT_PATH="${HOME}/my-tensorflow-script"
+

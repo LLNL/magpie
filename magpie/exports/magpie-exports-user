@@ -29,8 +29,10 @@
 # Unlke magpie/exports/magpie-exports-dirs, these exports are dependent on the magpie
 # setup.  This should be sourced only after magpie-setup-core has run.
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 
 # Initially make variables specific to node
@@ -205,4 +207,28 @@ then
     export ZOOKEEPER_NODES="${zookeepernodeslist}"
 
     export ZOOKEEPER_CLIENT_PORT=${default_zookeeper_client_port}
+fi
+
+if [ "${TENSORFLOW_SETUP}" == "yes" ]
+then
+    # Sets magpie_hostrangescript and magpie_hostrangescriptoptions
+    Magpie_get_hostlist_command
+
+    ${magpie_hostrangescript} ${magpie_hostrangescriptoptions} ${MAGPIE_NODELIST} > ${MAGPIE_LOCAL_CONF_DIR}/tmp_tensorflow_hosts
+
+    # Thanks
+    # https://stackoverflow.com/questions/16136136/read-line-from-file-and-save-them-in-a-comma-separated-string-to-a-variable
+    tlist=""
+    while read host
+    do
+        if [[ -z $tlist ]]; then
+            tlist="$host:2222"
+        else
+            tlist="$tlist,$host:2222"
+        fi
+    done < ${MAGPIE_LOCAL_CONF_DIR}/tmp_tensorflow_hosts
+
+    export MAGPIE_TENSORFLOW_HOSTS=${tlist}
+    export MAGPIE_TENSORFLOW_RANK=${MAGPIE_CLUSTER_NODERANK}
+    export MAGPIE_TENSORFLOW_MAX_RANK=`expr ${MAGPIE_NODE_COUNT} - 1`
 fi

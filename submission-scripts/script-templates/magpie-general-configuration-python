@@ -1,4 +1,5 @@
 # MAGPIE_PYTHON path used for:
 # - Spark PySpark path
+# - Launching tensorflow tasks
 export MAGPIE_PYTHON="PYTHONDEFAULT"
 

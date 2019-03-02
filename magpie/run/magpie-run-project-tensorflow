@@ -1,0 +1,84 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# These are functions to be called by magpie-run
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
+
+Magpie_run_start_tensorflow () {
+    if [ "${TENSORFLOW_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
+    then
+        if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]
+        then
+            echo "*******************************************************"
+            echo "*"
+            echo "* Tensorflow Information"
+            echo "*"
+            echo "* Running with python = ${MAGPIE_PYTHON}"
+            echo "*******************************************************"
+        fi
+
+        magpie_run_tensorflow_should_be_torndown=1
+        magpie_run_tensorflow_setup_successful=1
+    else
+        magpie_run_zookeeper_should_be_torndown=0
+        magpie_run_zookeeper_setup_successful=1
+    fi
+}
+
+Magpie_run_tensorflow () {
+    if [ "${TENSORFLOW_JOB}" == "tfadd" ]
+    then
+        if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]
+        then
+            echo "*******************************************************"
+            echo "* Running Tfadd"
+            echo "*******************************************************"
+        fi
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute-distributed "${MAGPIE_PYTHON} ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tensorflow-tfadd" &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${TENSORFLOW_JOB}" == "script" ]
+    then
+        if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]
+        then
+            echo "*******************************************************"
+            echo "* Executing Tensorflow script $TENSORFLOW_SCRIPT_PATH"
+            echo "*******************************************************"
+        fi
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute-distributed "${MAGPIE_PYTHON} ${TENSORFLOW_SCRIPT_PATH}" &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    else
+        Magpie_output_internal_error "TENSORFLOW_JOB = ${TENSORFLOW_JOB} not handled"
+    fi
+}
+
+Magpie_run_stop_tensorflow () {
+    magpie_run_tensorflow_teardown_complete=1
+}
