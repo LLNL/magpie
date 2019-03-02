@@ -1,0 +1,5 @@
+# "interactive" - manually interact with job run to submit jobs,
+#                 peruse data (e.g. HDFS), move data, etc.  See job
+#                 output for instructions to access your job
+#                 allocation.
+#

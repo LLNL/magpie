@@ -1,0 +1,3 @@
+# "script" - Run arbitraty script, as specified by MAGPIE_JOB_SCRIPT.
+#            You can find example job scripts in examples/.
+#

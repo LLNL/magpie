@@ -26,18 +26,9 @@ export MAGPIE_LOCAL_DIR="LOCALDIRPREFIX/magpie"
 #
 @MAGPIE_TESTALL_TYPES@
 #
-# "script" - Run arbitraty script, as specified by MAGPIE_JOB_SCRIPT.
-#            You can find example job scripts in examples/.
-#
-# "interactive" - manually interact with job run to submit jobs,
-#                 peruse data (e.g. HDFS), move data, etc.  See job
-#                 output for instructions to access your job
-#                 allocation.
-#
-# "setuponly" - do not launch any daemons or services, only setup
-#               configuration files.  Useful for debugging or
-#               development.
-#
+@MAGPIE_SCRIPT@
+@MAGPIE_INTERACTIVE@
+@MAGPIE_SETUPONLY@
 export MAGPIE_JOB_TYPE="script"
 
 # Specify script and arguments to execute for "script" mode in
@@ -127,55 +118,9 @@ export MAGPIE_JOB_TYPE="script"
 # export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
 # export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
 
-# Environment Variable Script
-#
-# When working with Magpie interactively by logging into the master
-# node of your job allocation, many environment variables may need to
-# be set.  For example, environment variables for config file
-# directories (e.g. HADOOP_CONF_DIR, HBASE_CONF_DIR, etc.) and home
-# directories (e.g. HADOOP_HOME, HBASE_HOME, etc.) and more general
-# environment variables (e.g. JAVA_HOME) may need to be set before you
-# begin interacting with your big data setup.
-#
-# The standard job output from Magpie provides instructions on all the
-# environment variables typically needed to interact with your job.
-# However, this can be tedious if done by hand.
-#
-# If the environment variable specified below is set, Magpie will
-# create the file and put into it every environment variable that
-# would be useful when running your job interactively.  That way, it
-# can be sourced easily if you will be running your job interactively.
-# It can also be loaded or used by other job scripts.
-#
-# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
-
-# Environment Variable Shell Type
-#
-# Magpie outputs environment variables in help output and
-# MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT based on your SHELL environment
-# variable.
-#
-# If you would like to output in a different shell type (perhaps you
-# have programmed scripts in a different shell), specify that shell
-# here.
-#
-# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
+@MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT@
 
 @MAGPIE_HOSTNAME_MAP@
 
-# Remote Shell
-#
-# Magpie requires a passwordless remote shell command to launch
-# necessary daemons across your job allocation.  Magpie defaults to
-# ssh, but it may be an alternate command in some environments.  An
-# alternate ssh-equivalent remote command can be specified by setting
-# MAGPIE_REMOTE_CMD below.
-#
-# If using ssh, Magpie requires keys to be setup ahead of time so it
-# can be executed without passwords.
-#
-# Specify options to the remote shell command if necessary.
-#
-# export MAGPIE_REMOTE_CMD="REMOTECMDDEFAULT"
-# export MAGPIE_REMOTE_CMD_OPTS=""
+@MAGPIE_REMOTE_SHELL@
 

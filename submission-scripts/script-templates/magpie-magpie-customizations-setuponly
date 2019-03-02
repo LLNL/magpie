@@ -1,0 +1,4 @@
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#

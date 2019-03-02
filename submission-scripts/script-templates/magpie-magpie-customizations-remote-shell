@@ -1,0 +1,15 @@
+# Remote Shell
+#
+# Magpie requires a passwordless remote shell command to launch
+# necessary daemons across your job allocation.  Magpie defaults to
+# ssh, but it may be an alternate command in some environments.  An
+# alternate ssh-equivalent remote command can be specified by setting
+# MAGPIE_REMOTE_CMD below.
+#
+# If using ssh, Magpie requires keys to be setup ahead of time so it
+# can be executed without passwords.
+#
+# Specify options to the remote shell command if necessary.
+#
+# export MAGPIE_REMOTE_CMD="REMOTECMDDEFAULT"
+# export MAGPIE_REMOTE_CMD_OPTS=""

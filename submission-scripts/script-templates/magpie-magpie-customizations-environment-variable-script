@@ -1,0 +1,33 @@
+# Environment Variable Script
+#
+# When working with Magpie interactively by logging into the master
+# node of your job allocation, many environment variables may need to
+# be set.  For example, environment variables for config file
+# directories (e.g. HADOOP_CONF_DIR, HBASE_CONF_DIR, etc.) and home
+# directories (e.g. HADOOP_HOME, HBASE_HOME, etc.) and more general
+# environment variables (e.g. JAVA_HOME) may need to be set before you
+# begin interacting with your big data setup.
+#
+# The standard job output from Magpie provides instructions on all the
+# environment variables typically needed to interact with your job.
+# However, this can be tedious if done by hand.
+#
+# If the environment variable specified below is set, Magpie will
+# create the file and put into it every environment variable that
+# would be useful when running your job interactively.  That way, it
+# can be sourced easily if you will be running your job interactively.
+# It can also be loaded or used by other job scripts.
+#
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
+
+# Environment Variable Shell Type
+#
+# Magpie outputs environment variables in help output and
+# MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT based on your SHELL environment
+# variable.
+#
+# If you would like to output in a different shell type (perhaps you
+# have programmed scripts in a different shell), specify that shell
+# here.
+#
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
