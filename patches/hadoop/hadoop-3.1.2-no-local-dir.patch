@@ -1,0 +1,653 @@
+diff -pruN hadoop-3.1.2-orig/bin/hadoop hadoop-3.1.2/bin/hadoop
+--- hadoop-3.1.2-orig/bin/hadoop	2019-01-28 17:41:31.000000000 -0800
++++ hadoop-3.1.2/bin/hadoop	2019-02-28 11:48:28.561235000 -0800
+@@ -222,6 +222,21 @@ fi
+ hadoop_add_client_opts
+ 
+ if [[ ${HADOOP_WORKER_MODE} = true ]]; then
++  if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_PID_DIR="${HADOOP_PID_DIR_CONFIG_ORIG}"
++  fi
++
+   hadoop_common_worker_mode_execute "${HADOOP_COMMON_HOME}/bin/hadoop" "${HADOOP_USER_PARAMS[@]}"
+   exit $?
+ fi
+diff -pruN hadoop-3.1.2-orig/bin/hdfs hadoop-3.1.2/bin/hdfs
+--- hadoop-3.1.2-orig/bin/hdfs	2019-01-28 17:52:11.000000000 -0800
++++ hadoop-3.1.2/bin/hdfs	2019-02-28 11:48:28.575219000 -0800
+@@ -267,6 +267,21 @@ fi
+ hadoop_add_client_opts
+ 
+ if [[ ${HADOOP_WORKER_MODE} = true ]]; then
++  if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_PID_DIR="${HADOOP_PID_DIR_CONFIG_ORIG}"
++  fi
++
+   hadoop_common_worker_mode_execute "${HADOOP_HDFS_HOME}/bin/hdfs" "${HADOOP_USER_PARAMS[@]}"
+   exit $?
+ fi
+diff -pruN hadoop-3.1.2-orig/bin/mapred hadoop-3.1.2/bin/mapred
+--- hadoop-3.1.2-orig/bin/mapred	2019-01-28 18:58:38.000000000 -0800
++++ hadoop-3.1.2/bin/mapred	2019-02-28 11:48:28.581221000 -0800
+@@ -167,6 +167,21 @@ fi
+ hadoop_add_client_opts
+ 
+ if [[ ${HADOOP_WORKER_MODE} = true ]]; then
++  if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_PID_DIR="${HADOOP_PID_DIR_CONFIG_ORIG}"
++  fi
++
+   hadoop_common_worker_mode_execute "${HADOOP_MAPRED_HOME}/bin/mapred" "${HADOOP_USER_PARAMS[@]}"
+   exit $?
+ fi
+diff -pruN hadoop-3.1.2-orig/bin/yarn hadoop-3.1.2/bin/yarn
+--- hadoop-3.1.2-orig/bin/yarn	2019-01-28 18:53:19.000000000 -0800
++++ hadoop-3.1.2/bin/yarn	2019-02-28 11:48:28.587222000 -0800
+@@ -297,6 +297,21 @@ fi
+ hadoop_add_client_opts
+ 
+ if [[ ${HADOOP_WORKER_MODE} = true ]]; then
++  if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++  fi
++
++  if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_CONFIG_ORIG}X" != "X" ]
++  then
++    export HADOOP_PID_DIR="${HADOOP_PID_DIR_CONFIG_ORIG}"
++  fi
++
+   hadoop_common_worker_mode_execute "${HADOOP_YARN_HOME}/bin/yarn" "${HADOOP_USER_PARAMS[@]}"
+   exit $?
+ fi
+diff -pruN hadoop-3.1.2-orig/libexec/hadoop-config.sh hadoop-3.1.2/libexec/hadoop-config.sh
+--- hadoop-3.1.2-orig/libexec/hadoop-config.sh	2019-01-28 17:41:31.000000000 -0800
++++ hadoop-3.1.2/libexec/hadoop-config.sh	2019-02-28 11:48:28.599238000 -0800
+@@ -104,6 +104,23 @@ HADOOP_USER_PARAMS=("$@")
+ hadoop_parse_args "$@"
+ shift "${HADOOP_PARSE_COUNTER}"
+ 
++myhostname=`hostname`
++if echo $HADOOP_CONF_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  export HADOOP_CONF_DIR_CONFIG_ORIG="${HADOOP_CONF_DIR}"
++  HADOOP_CONF_DIR=$(echo "$HADOOP_CONF_DIR_CONFIG_ORIG" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++if echo $HADOOP_LOG_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  export HADOOP_LOG_DIR_CONFIG_ORIG="${HADOOP_LOG_DIR}"
++  HADOOP_LOG_DIR=$(echo "$HADOOP_LOG_DIR_CONFIG_ORIG" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++if echo $HADOOP_PID_DIR | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++  export HADOOP_PID_DIR_CONFIG_ORIG="${HADOOP_PID_DIR}"
++  HADOOP_PID_DIR=$(echo "$HADOOP_PID_DIR_CONFIG_ORIG" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++fi
++
+ #
+ # Setup the base-line environment
+ #
+diff -pruN hadoop-3.1.2-orig/libexec/hadoop-functions.sh hadoop-3.1.2/libexec/hadoop-functions.sh
+--- hadoop-3.1.2-orig/libexec/hadoop-functions.sh	2019-01-28 17:41:31.000000000 -0800
++++ hadoop-3.1.2/libexec/hadoop-functions.sh	2019-02-28 11:48:28.607216000 -0800
+@@ -2538,8 +2538,15 @@ function hadoop_parse_args
+         confdir=$1
+         shift
+         ((HADOOP_PARSE_COUNTER=HADOOP_PARSE_COUNTER+2))
++        if echo $confdir | grep -q MAGPIEHOSTNAMESUBSTITUTION
++        then
++            local myhostname=`hostname`
++            orig_confdir="$confdir"
++            confdir=$(echo "$confdir" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++        fi
+         if [[ -d "${confdir}" ]]; then
+-          HADOOP_CONF_DIR="${confdir}"
++          export HADOOP_CONF_DIR_CONFIG_ORIG="${orig_confdir}"
++          export HADOOP_CONF_DIR="${confdir}"
+         elif [[ -z "${confdir}" ]]; then
+           hadoop_error "ERROR: No parameter provided for --config "
+           hadoop_exit_with_usage 1
+diff -pruN hadoop-3.1.2-orig/sbin/start-dfs.sh hadoop-3.1.2/sbin/start-dfs.sh
+--- hadoop-3.1.2-orig/sbin/start-dfs.sh	2019-01-28 17:52:11.000000000 -0800
++++ hadoop-3.1.2/sbin/start-dfs.sh	2019-02-28 11:48:28.612230000 -0800
+@@ -40,6 +40,43 @@ function hadoop_usage
+   echo "Usage: start-dfs.sh [-upgrade|-rollback] [-clusterId]"
+ }
+ 
++function set_magpie_generic_vars
++{
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_ORIG_DFS}"
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_ORIG_DFS}"
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_PID_DIR="${HADOOP_PID_DIR_ORIG_DFS}"
++    fi
++}
++
++function set_magpie_specific_vars
++{
++    myhostname=`hostname`
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR=$(echo "$HADOOP_CONF_DIR_ORIG_DFS" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR=$(echo "$HADOOP_LOG_DIR_ORIG_DFS" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_PID_DIR=$(echo "$HADOOP_PID_DIR_ORIG_DFS" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++}
++
+ this="${BASH_SOURCE-$0}"
+ bin=$(cd -P -- "$(dirname -- "${this}")" >/dev/null && pwd -P)
+ 
+@@ -77,12 +114,27 @@ if [[ $# -ge 1 ]]; then
+   esac
+ fi
+ 
++if echo ${HADOOP_CONF_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_CONF_DIR_ORIG_DFS="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_LOG_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_LOG_DIR_ORIG_DFS="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_PID_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_PID_DIR_ORIG_DFS="${HADOOP_PID_DIR_CONFIG_ORIG}"
++fi
+ 
+ #Add other possible options
+ nameStartOpt="$nameStartOpt $*"
+ 
+ #---------------------------------------------------------
+ # namenodes
++set_magpie_specific_vars
+ 
+ NAMENODES=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -namenodes 2>/dev/null)
+ 
+@@ -91,6 +143,9 @@ if [[ -z "${NAMENODES}" ]]; then
+ fi
+ 
+ echo "Starting namenodes on [${NAMENODES}]"
++
++set_magpie_generic_vars
++
+ hadoop_uservar_su hdfs namenode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+@@ -104,6 +159,9 @@ HADOOP_JUMBO_RETCOUNTER=$?
+ # datanodes (using default workers file)
+ 
+ echo "Starting datanodes"
++
++set_magpie_generic_vars
++
+ hadoop_uservar_su hdfs datanode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+@@ -114,6 +172,8 @@ hadoop_uservar_su hdfs datanode "${HADOO
+ #---------------------------------------------------------
+ # secondary namenodes (if any)
+ 
++set_magpie_specific_vars
++
+ SECONDARY_NAMENODES=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -secondarynamenodes 2>/dev/null)
+ 
+ if [[ -n "${SECONDARY_NAMENODES}" ]]; then
+@@ -131,6 +191,8 @@ if [[ -n "${SECONDARY_NAMENODES}" ]]; th
+ 
+     echo "Starting secondary namenodes [${SECONDARY_NAMENODES}]"
+ 
++    set_magpie_generic_vars
++
+     hadoop_uservar_su hdfs secondarynamenode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+       --workers \
+       --config "${HADOOP_CONF_DIR}" \
+@@ -144,11 +206,15 @@ fi
+ #---------------------------------------------------------
+ # quorumjournal nodes (if any)
+ 
++set_magpie_specific_vars
++
+ JOURNAL_NODES=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -journalNodes 2>&-)
+ 
+ if [[ "${#JOURNAL_NODES}" != 0 ]]; then
+   echo "Starting journal nodes [${JOURNAL_NODES}]"
+ 
++  set_magpie_specific_vars
++
+   hadoop_uservar_su hdfs journalnode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+@@ -160,10 +226,15 @@ fi
+ 
+ #---------------------------------------------------------
+ # ZK Failover controllers, if auto-HA is enabled
++
++set_magpie_specific_vars
++
+ AUTOHA_ENABLED=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey dfs.ha.automatic-failover.enabled | tr '[:upper:]' '[:lower:]')
+ if [[ "${AUTOHA_ENABLED}" = "true" ]]; then
+   echo "Starting ZK Failover Controllers on NN hosts [${NAMENODES}]"
+ 
++  set_magpie_generic_vars
++
+   hadoop_uservar_su hdfs zkfc "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+diff -pruN hadoop-3.1.2-orig/sbin/start-yarn.sh hadoop-3.1.2/sbin/start-yarn.sh
+--- hadoop-3.1.2-orig/sbin/start-yarn.sh	2019-01-28 18:53:19.000000000 -0800
++++ hadoop-3.1.2/sbin/start-yarn.sh	2019-02-28 11:48:28.618226000 -0800
+@@ -26,6 +26,43 @@ function hadoop_usage
+ 
+ MYNAME="${BASH_SOURCE-$0}"
+ 
++function set_magpie_generic_vars
++{
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_ORIG_YARN}"
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_ORIG_YARN}"
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_PID_DIR="${HADOOP_PID_DIR_ORIG_YARN}"
++    fi
++}
++
++function set_magpie_specific_vars
++{
++    myhostname=`hostname`
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR=$(echo "$HADOOP_CONF_DIR_ORIG_YARN" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR=$(echo "$HADOOP_LOG_DIR_ORIG_YARN" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_PID_DIR=$(echo "$HADOOP_PID_DIR_ORIG_YARN" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++}
++
+ bin=$(cd -P -- "$(dirname -- "${MYNAME}")" >/dev/null && pwd -P)
+ 
+ # let's locate libexec...
+@@ -47,16 +84,34 @@ fi
+ 
+ HADOOP_JUMBO_RETCOUNTER=0
+ 
++if echo ${HADOOP_CONF_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_CONF_DIR_ORIG_YARN="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_LOG_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_LOG_DIR_ORIG_YARN="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_PID_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_PID_DIR_ORIG_YARN="${HADOOP_PID_DIR_CONFIG_ORIG}"
++fi
++
+ # start resourceManager
++set_magpie_specific_vars
+ HARM=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey yarn.resourcemanager.ha.enabled 2>&-)
+ if [[ ${HARM} = "false" ]]; then
+   echo "Starting resourcemanager"
++  set_magpie_generic_vars
+   hadoop_uservar_su yarn resourcemanager "${HADOOP_YARN_HOME}/bin/yarn" \
+       --config "${HADOOP_CONF_DIR}" \
+       --daemon start \
+       resourcemanager
+   (( HADOOP_JUMBO_RETCOUNTER=HADOOP_JUMBO_RETCOUNTER + $? ))
+ else
++  set_magpie_specific_vars
+   logicals=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey yarn.resourcemanager.ha.rm-ids 2>&-)
+   logicals=${logicals//,/ }
+   for id in ${logicals}
+@@ -65,6 +120,7 @@ else
+       RMHOSTS="${RMHOSTS} ${rmhost}"
+   done
+   echo "Starting resourcemanagers on [${RMHOSTS}]"
++  set_magpie_generic_vars
+   hadoop_uservar_su yarn resourcemanager "${HADOOP_YARN_HOME}/bin/yarn" \
+       --config "${HADOOP_CONF_DIR}" \
+       --daemon start \
+@@ -76,6 +132,7 @@ fi
+ 
+ # start nodemanager
+ echo "Starting nodemanagers"
++set_magpie_generic_vars
+ hadoop_uservar_su yarn nodemanager "${HADOOP_YARN_HOME}/bin/yarn" \
+     --config "${HADOOP_CONF_DIR}" \
+     --workers \
+@@ -85,8 +142,10 @@ hadoop_uservar_su yarn nodemanager "${HA
+ 
+ 
+ # start proxyserver
++set_magpie_specific_vars
+ PROXYSERVER=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey  yarn.web-proxy.address 2>&- | cut -f1 -d:)
+ if [[ -n ${PROXYSERVER} ]]; then
++ set_magpie_generic_vars
+  hadoop_uservar_su yarn proxyserver "${HADOOP_YARN_HOME}/bin/yarn" \
+       --config "${HADOOP_CONF_DIR}" \
+       --workers \
+diff -pruN hadoop-3.1.2-orig/sbin/stop-dfs.sh hadoop-3.1.2/sbin/stop-dfs.sh
+--- hadoop-3.1.2-orig/sbin/stop-dfs.sh	2019-01-28 17:52:11.000000000 -0800
++++ hadoop-3.1.2/sbin/stop-dfs.sh	2019-02-28 11:48:28.623231000 -0800
+@@ -28,6 +28,43 @@ function hadoop_usage
+   echo "Usage: stop-dfs.sh"
+ }
+ 
++function set_magpie_generic_vars
++{
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_ORIG_DFS}"
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_ORIG_DFS}"
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_PID_DIR="${HADOOP_PID_DIR_ORIG_DFS}"
++    fi
++}
++
++function set_magpie_specific_vars
++{
++    myhostname=`hostname`
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR=$(echo "$HADOOP_CONF_DIR_ORIG_DFS" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR=$(echo "$HADOOP_LOG_DIR_ORIG_DFS" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_DFS}X" != "X" ]
++    then
++        export HADOOP_PID_DIR=$(echo "$HADOOP_PID_DIR_ORIG_DFS" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++}
++
+ this="${BASH_SOURCE-$0}"
+ bin=$(cd -P -- "$(dirname -- "${this}")" >/dev/null && pwd -P)
+ 
+@@ -48,9 +85,26 @@ else
+   exit 1
+ fi
+ 
++if echo ${HADOOP_CONF_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_CONF_DIR_ORIG_DFS="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_LOG_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_LOG_DIR_ORIG_DFS="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_PID_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_PID_DIR_ORIG_DFS="${HADOOP_PID_DIR_CONFIG_ORIG}"
++fi
++
+ #---------------------------------------------------------
+ # namenodes
+ 
++set_magpie_specific_vars
++
+ NAMENODES=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -namenodes 2>/dev/null)
+ 
+ if [[ -z "${NAMENODES}" ]]; then
+@@ -59,6 +113,8 @@ fi
+ 
+ echo "Stopping namenodes on [${NAMENODES}]"
+ 
++  set_magpie_generic_vars
++
+   hadoop_uservar_su hdfs namenode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+@@ -71,6 +127,8 @@ echo "Stopping namenodes on [${NAMENODES
+ 
+ echo "Stopping datanodes"
+ 
++set_magpie_generic_vars
++
+ hadoop_uservar_su hdfs datanode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+   --workers \
+   --config "${HADOOP_CONF_DIR}" \
+@@ -80,6 +138,8 @@ hadoop_uservar_su hdfs datanode "${HADOO
+ #---------------------------------------------------------
+ # secondary namenodes (if any)
+ 
++set_magpie_specific_vars
++
+ SECONDARY_NAMENODES=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -secondarynamenodes 2>/dev/null)
+ 
+ if [[ "${SECONDARY_NAMENODES}" == "0.0.0.0" ]]; then
+@@ -89,6 +149,8 @@ fi
+ if [[ -n "${SECONDARY_NAMENODES}" ]]; then
+   echo "Stopping secondary namenodes [${SECONDARY_NAMENODES}]"
+ 
++  set_magpie_generic_vars
++
+   hadoop_uservar_su hdfs secondarynamenode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+@@ -100,11 +162,15 @@ fi
+ #---------------------------------------------------------
+ # quorumjournal nodes (if any)
+ 
++set_magpie_specific_vars
++
+ JOURNAL_NODES=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -journalNodes 2>&-)
+ 
+ if [[ "${#JOURNAL_NODES}" != 0 ]]; then
+   echo "Stopping journal nodes [${JOURNAL_NODES}]"
+ 
++  set_magpie_specific_vars
++
+   hadoop_uservar_su hdfs journalnode "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+@@ -115,10 +181,15 @@ fi
+ 
+ #---------------------------------------------------------
+ # ZK Failover controllers, if auto-HA is enabled
++
++set_magpie_specific_vars
++
+ AUTOHA_ENABLED=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey dfs.ha.automatic-failover.enabled | tr '[:upper:]' '[:lower:]')
+ if [[ "${AUTOHA_ENABLED}" = "true" ]]; then
+   echo "Stopping ZK Failover Controllers on NN hosts [${NAMENODES}]"
+ 
++  set_magpie_generic_vars
++
+   hadoop_uservar_su hdfs zkfc "${HADOOP_HDFS_HOME}/bin/hdfs" \
+     --workers \
+     --config "${HADOOP_CONF_DIR}" \
+diff -pruN hadoop-3.1.2-orig/sbin/stop-yarn.sh hadoop-3.1.2/sbin/stop-yarn.sh
+--- hadoop-3.1.2-orig/sbin/stop-yarn.sh	2019-01-28 18:53:19.000000000 -0800
++++ hadoop-3.1.2/sbin/stop-yarn.sh	2019-02-28 11:48:28.629222000 -0800
+@@ -26,6 +26,43 @@ function hadoop_usage
+ 
+ MYNAME="${BASH_SOURCE-$0}"
+ 
++function set_magpie_generic_vars
++{
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR="${HADOOP_CONF_DIR_ORIG_YARN}"
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR="${HADOOP_LOG_DIR_ORIG_YARN}"
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_PID_DIR="${HADOOP_PID_DIR_ORIG_YARN}"
++    fi
++}
++
++function set_magpie_specific_vars
++{
++    myhostname=`hostname`
++    if [ "${HADOOP_CONF_DIR}X" != "X" ] && [ "${HADOOP_CONF_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_CONF_DIR=$(echo "$HADOOP_CONF_DIR_ORIG_YARN" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_LOG_DIR}X" != "X" ] && [ "${HADOOP_LOG_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_LOG_DIR=$(echo "$HADOOP_LOG_DIR_ORIG_YARN" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++
++    if [ "${HADOOP_PID_DIR}X" != "X" ] && [ "${HADOOP_PID_DIR_ORIG_YARN}X" != "X" ]
++    then
++        export HADOOP_PID_DIR=$(echo "$HADOOP_PID_DIR_ORIG_YARN" | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$myhostname/g")
++    fi
++}
++
+ bin=$(cd -P -- "$(dirname -- "${MYNAME}")" >/dev/null && pwd -P)
+ 
+ # let's locate libexec...
+@@ -45,8 +82,24 @@ else
+   exit 1
+ fi
+ 
++if echo ${HADOOP_CONF_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_CONF_DIR_ORIG_YARN="${HADOOP_CONF_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_LOG_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_LOG_DIR_ORIG_YARN="${HADOOP_LOG_DIR_CONFIG_ORIG}"
++fi
++
++if echo ${HADOOP_PID_DIR_CONFIG_ORIG} | grep -q MAGPIEHOSTNAMESUBSTITUTION
++then
++    export HADOOP_PID_DIR_ORIG_YARN="${HADOOP_PID_DIR_CONFIG_ORIG}"
++fi
++
+ # stop nodemanager
+ echo "Stopping nodemanagers"
++set_magpie_generic_vars
+ hadoop_uservar_su yarn nodemanager "${HADOOP_YARN_HOME}/bin/yarn" \
+     --config "${HADOOP_CONF_DIR}" \
+     --workers \
+@@ -54,14 +107,17 @@ hadoop_uservar_su yarn nodemanager "${HA
+     nodemanager
+ 
+ # stop resourceManager
++set_magpie_specific_vars
+ HARM=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey yarn.resourcemanager.ha.enabled 2>&-)
+ if [[ ${HARM} = "false" ]]; then
+   echo "Stopping resourcemanager"
++  set_magpie_generic_vars
+   hadoop_uservar_su yarn resourcemanager "${HADOOP_YARN_HOME}/bin/yarn" \
+       --config "${HADOOP_CONF_DIR}" \
+       --daemon stop \
+       resourcemanager
+ else
++  set_magpie_specific_vars
+   logicals=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey yarn.resourcemanager.ha.rm-ids 2>&-)
+   logicals=${logicals//,/ }
+   for id in ${logicals}
+@@ -70,6 +126,7 @@ else
+       RMHOSTS="${RMHOSTS} ${rmhost}"
+   done
+   echo "Stopping resourcemanagers on [${RMHOSTS}]"
++  set_magpie_generic_vars
+   hadoop_uservar_su yarn resourcemanager "${HADOOP_YARN_HOME}/bin/yarn" \
+       --config "${HADOOP_CONF_DIR}" \
+       --daemon stop \
+@@ -79,9 +136,11 @@ else
+ fi
+ 
+ # stop proxyserver
++set_magpie_specific_vars
+ PROXYSERVER=$("${HADOOP_HDFS_HOME}/bin/hdfs" getconf -confKey  yarn.web-proxy.address 2>&- | cut -f1 -d:)
+ if [[ -n ${PROXYSERVER} ]]; then
+   echo "Stopping proxy server [${PROXYSERVER}]"
++  set_magpie_generic_vars
+   hadoop_uservar_su yarn proxyserver "${HADOOP_YARN_HOME}/bin/yarn" \
+       --config "${HADOOP_CONF_DIR}" \
+       --workers \
