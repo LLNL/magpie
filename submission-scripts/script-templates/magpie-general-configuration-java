@@ -1,0 +1,3 @@
+# Necessary for most projects
+export JAVA_HOME="JAVADEFAULT"
+

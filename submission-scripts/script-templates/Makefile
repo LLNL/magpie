@@ -331,7 +331,8 @@ define create-all
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-general-configuration-python > $(MAGPIE)
 
 		if test "${HADOOP_INCLUDE}" = "y"; then \
@@ -405,7 +406,8 @@ define create-hadoop
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -425,7 +427,8 @@ define create-hadoop-and-pig
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -448,7 +451,8 @@ echo "Creating magpie.$(SCHED)-hadoop-and-hive"
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -473,7 +477,8 @@ define create-hadoop-and-mahout
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -496,7 +501,8 @@ define create-hbase-with-hdfs
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -523,7 +529,8 @@ define create-hbase-with-hdfs-with-phoenix
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
@@ -553,7 +560,8 @@ define create-spark
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-general-configuration-python \
 		magpie-spark \
 		magpie-run-job-header-substitution \
@@ -573,7 +581,8 @@ define create-spark-with-hdfs
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-general-configuration-python \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
@@ -598,7 +607,8 @@ define create-spark-with-yarn
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-general-configuration-python \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
@@ -625,7 +635,8 @@ define create-spark-with-yarn-and-hdfs
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-general-configuration-python \
 		magpie-hadoop-core \
 		magpie-hadoop-job \
@@ -650,7 +661,8 @@ define create-spark-with-zeppelin
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-general-configuration-python \
 		magpie-spark \
 		magpie-zeppelin \
@@ -673,7 +685,8 @@ define create-storm
 		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
-		magpie-general-configuration \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
 		magpie-storm \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
