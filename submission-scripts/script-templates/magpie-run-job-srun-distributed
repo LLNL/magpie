@@ -1,0 +1,28 @@
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-check-inputs
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-projects
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-post
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run-distributed
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-cleanup
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-post-run

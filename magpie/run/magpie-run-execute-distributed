@@ -1,0 +1,62 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is for managing scripts that are run.  For the most
+# part, it shouldn't be editted.  See job submission files for
+# configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
+
+# For this run, we will use cluster specific paths
+Magpie_make_all_local_dirs_node_specific
+
+if [ "$1" == "X" ]
+then
+    Magpie_output_internal_error "magpie-run-execute-distributed, first argument unset"
+    exit 1
+fi
+scripttorun=$1
+scriptargs=${@:2}
+
+mypid=$$
+
+${scripttorun} ${scriptargs} &
+childpid=$!
+typemessage="job"
+
+# Some systems have SIGUSR2 as USR2 so we hardcode the value of 12
+
+# This trap is used exclusively by Magpie to kill the job if it is
+# running long
+
+trap "echo \"Kill script due to job time limit being reached.\"; for pid in \$(pstree -cp ${childpid} | grep -Po '\(\K\d+' | sed -re 's/$/ /g'); do kill \$pid; done" 12
+
+wait $childpid
+
+childstatus=$?
+
+exit $childstatus

@@ -1,3 +1,8 @@
+Magpie 2.2
+----------
+With sbatch & srun, add experimental support for distributed
+ tensorflow support.
+
 Magpie 2.1
 ----------
 Support SPARK_NETWORK_TIMEOUT configuration option.

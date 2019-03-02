@@ -1,0 +1,78 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# This script is the core script for running a job across nodes.  For
+# the most part, it shouldn't be editted.  See job submission files
+# for configuration details.
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-run
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-tensorflow
+
+# Output some general info
+
+# Note that if MAGPIE_HOSTNAME_SCHEDULER_MAP set, MAGPIE_NODELIST may
+# have not been converted for this output.
+
+if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]
+then
+    echo "*******************************************************"
+    echo "* Magpie General Job Info"
+    echo "*"
+    echo "* Job Nodelist: ${MAGPIE_NODELIST}"
+    echo "* Job Nodecount: ${MAGPIE_NODE_COUNT}"
+    echo "* Job Timelimit in Minutes: ${MAGPIE_TIMELIMIT_MINUTES}"
+    echo "* Job Name: ${MAGPIE_JOB_NAME}"
+    echo "* Job ID: ${MAGPIE_JOB_ID}"
+    echo "*"
+    echo "*******************************************************"
+fi
+
+# Global flag for setup check, will be set to false if any startup fails
+magpie_run_prior_startup_successful=true
+
+# Global, will be set/adjusted by various start functions
+magpie_run_total_sleep_wait=0
+
+# Will set magpie_run_tensorflow_should_be_torndown & magpie_run_tensorflow_setup_successful appropriately
+Magpie_run_start_tensorflow
+
+# Make sure all setup passed
+if [ "${magpie_run_tensorflow_setup_successful}" == "1" ]
+then
+    if [ "${MAGPIE_JOB_TYPE}" == "tensorflow" ]
+    then
+        Magpie_run_tensorflow
+    fi
+fi
+
+# Sets magpie_run_tensorflow_teardown_complete if teardown done
+Magpie_run_stop_tensorflow
+
+exit 0
+
