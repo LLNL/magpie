@@ -1,0 +1,14 @@
+# Node count.  Node count should include one node for the
+# head/management/master node.  For example, if you want 8 compute
+# nodes to process data, specify 9 nodes below.
+#
+# If including Zookeeper, include expected Zookeeper nodes.  For
+# example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
+#
+# Also take into account additional nodes needed for other services.
+#
+# Many of the below can be configured on the command line.  If you are
+# more comfortable specifying these on the command line, feel free to
+# delete the customizations below.
+

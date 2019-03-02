@@ -36,9 +36,9 @@
 #
 # Also take into account additional nodes needed for other services.
 #
-# Many of the below can be configured on the msub command line.  If
-# you are more comfortable specifying these on the command line, feel
-# free to delete the customizations below.
+# Many of the below can be configured on the command line.  If you are
+# more comfortable specifying these on the command line, feel free to
+# delete the customizations below.
 
 #MSUB -l nodes=<my_node_count>
 

@@ -327,6 +327,8 @@ define create-all
 	echo "Creating magpie.$(SCHED)"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -399,6 +401,8 @@ define create-hadoop
 	echo "Creating magpie.$(SCHED)-hadoop"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -417,6 +421,8 @@ define create-hadoop-and-pig
 	echo "Creating magpie.$(SCHED)-hadoop-and-pig"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -438,6 +444,8 @@ define create-hadoop-and-hive
 echo "Creating magpie.$(SCHED)-hadoop-and-hive"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -461,6 +469,8 @@ define create-hadoop-and-mahout
 	echo "Creating magpie.$(SCHED)-hadoop-and-mahout"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -482,6 +492,8 @@ define create-hbase-with-hdfs
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -507,6 +519,8 @@ define create-hbase-with-hdfs-with-phoenix
 	echo "Creating magpie.$(SCHED)-hbase-with-hdfs-with-phoenix"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -535,6 +549,8 @@ define create-spark
 	echo "Creating magpie.$(SCHED)-spark"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -553,6 +569,8 @@ define create-spark-with-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -576,6 +594,8 @@ define create-spark-with-yarn
 	echo "Creating magpie.$(SCHED)-spark-with-yarn"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -601,6 +621,8 @@ define create-spark-with-yarn-and-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-yarn-and-hdfs"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -624,6 +646,8 @@ define create-spark-with-zeppelin
 	echo "Creating magpie.$(SCHED)-spark-with-zeppelin"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
@@ -645,6 +669,8 @@ define create-storm
 	echo "Creating magpie.$(SCHED)-storm"
 	cat 	magpie-shebang \
 		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
 		magpie-config-$(SCHED) \
 		magpie-magpie-customizations-substitution \
 		magpie-general-configuration \
