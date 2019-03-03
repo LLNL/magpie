@@ -108,27 +108,14 @@ done
 # Setup/Calculate Core Master/Worker files
 #
 
-hash hostlist 2>/dev/null
-if [ $? -eq 0 ]
-then
-    hostrangescript="hostlist"
-    hostrangescriptoptions="-e -d \n"
-else
-    if [ -x ${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ]
-    then
-        hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
-        hostrangescriptoptions=""
-    else
-        echo "Cannot find tool to expand host ranges"
-        exit 1
-    fi
-fi
+# Sets magpie_hostrangescript and magpie_hostrangescriptoptions
+Magpie_get_hostlist_command
 
 Magpie_get_magpie_hostname
 myhostname=${magpie_hostname}
 
-${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
-${hostrangescript} ${hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
+${magpie_hostrangescript} ${magpie_hostrangescriptoptions} ${MAGPIE_NODELIST} | head -1 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_masters
+${magpie_hostrangescript} ${magpie_hostrangescriptoptions} ${MAGPIE_NODELIST} | tail -n+2 > ${MAGPIE_LOCAL_CONF_DIR}/tmp_workers
 
 # Convert nodenames if necessary
 

@@ -102,3 +102,22 @@ Magpie_get_magpie_hostname () {
     fi
     magpie_hostname=$thishostname
 }
+
+Magpie_get_hostlist_command () {
+    hash hostlist 2>/dev/null
+    if [ $? -eq 0 ]
+    then
+        magpie_hostrangescript="hostlist"
+        magpie_hostrangescriptoptions="-e -d \n"
+    else
+        if [ -x ${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes ]
+        then
+            magpie_hostrangescript="${MAGPIE_SCRIPTS_HOME}/bin/magpie-expand-nodes"
+            magpie_hostrangescriptoptions=""
+        else
+            echo "Cannot find tool to expand host ranges"
+            exit 1
+        fi
+    fi
+}
+
