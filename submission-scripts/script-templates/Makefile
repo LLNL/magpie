@@ -388,7 +388,7 @@ define create-all
 		fi
 
 	cat	magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) >> $(MAGPIE)
+		magpie-run-job-$(DIST)-bigdata >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE},${JAVA_DEFAULT})
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${HADOOP_INCLUDE}", "y"), "hadoop"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${HBASE_INCLUDE}", "y"), "hbase"))
@@ -418,7 +418,7 @@ define create-hadoop
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP},${HADOOP_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
@@ -440,7 +440,7 @@ define create-hadoop-and-pig
 		magpie-hadoop-filesystem-substitution \
 		magpie-pig \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_PIG)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG},${PIG_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
@@ -465,7 +465,7 @@ echo "Creating magpie.$(SCHED)-hadoop-and-hive"
 		magpie-hive \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_HIVE)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP_AND_HIVE)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_HIVE},${JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_HIVE}, hadoop hive)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hive\"/" $(MAGPIE_HADOOP_AND_HIVE)
@@ -490,7 +490,7 @@ define create-hadoop-and-mahout
 		magpie-hadoop-filesystem-substitution \
 		magpie-mahout \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HADOOP_AND_MAHOUT)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP_AND_MAHOUT)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_MAHOUT},${MAHOUT_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"mahout\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
@@ -515,7 +515,7 @@ define create-hbase-with-hdfs
 		magpie-hbase \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HBASE_WITH_HDFS)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS},${HBASE_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hbase zookeeper)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hbase\"/" $(MAGPIE_HBASE_WITH_HDFS)
@@ -544,7 +544,7 @@ define create-hbase-with-hdfs-with-phoenix
                 magpie-phoenix \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX},${PHOENIX_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"phoenix\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
@@ -571,7 +571,7 @@ define create-spark
 		magpie-general-configuration-python \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_SPARK)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK)
 	$(call common-substitution, ${MAGPIE_SPARK},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK}, spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
@@ -595,7 +595,7 @@ define create-spark-with-hdfs
 		magpie-hadoop-filesystem-substitution \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_HDFS)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_HDFS)
@@ -621,7 +621,7 @@ define create-spark-with-yarn
 		magpie-hadoop-filesystem-substitution \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_YARN)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_YARN)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_YARN},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_YARN}, hadoop spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_YARN)
@@ -649,7 +649,7 @@ define create-spark-with-yarn-and-hdfs
 		magpie-hadoop-filesystem-substitution \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_YARN_AND_HDFS},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_YARN_AND_HDFS}, hadoop spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
@@ -673,7 +673,7 @@ define create-spark-with-zeppelin
 		magpie-spark \
 		magpie-zeppelin \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_SPARK_WITH_ZEPPELIN)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_ZEPPELIN},${ZEPPELIN_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_ZEPPELIN}, spark zeppelin)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"zeppelin\"/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
@@ -696,7 +696,7 @@ define create-storm
 		magpie-storm \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST) > $(MAGPIE_STORM)
+		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_STORM)
 	$(call common-substitution, ${MAGPIE_STORM},${STORM_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_STORM}, storm zookeeper)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
