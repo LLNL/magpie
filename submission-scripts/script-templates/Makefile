@@ -140,16 +140,16 @@ clean-lsf-mpirun:
 clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun
 
 sbatch-srun: clean-sbatch-srun
-	$(call create-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
+	$(call create-bigdata-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
 
 msub-slurm-srun: clean-msub-slurm-srun
-	$(call create-templates,$@,srun,$(MSUB_SLURM_SRUN_DEFAULT_JOB_FILE))
+	$(call create-bigdata-templates,$@,srun,$(MSUB_SLURM_SRUN_DEFAULT_JOB_FILE))
 
 msub-torque-pdsh: clean-msub-torque-pdsh
-	$(call create-templates,$@,pdsh,$(MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE))
+	$(call create-bigdata-templates,$@,pdsh,$(MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE))
 
 lsf-mpirun: clean-lsf-mpirun
-	$(call create-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
+	$(call create-bigdata-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
 
 define common-substitution
 	sed -i -e 's;MAGPIESCRIPTSDIRPREFIX;$(MAGPIE_SCRIPTS_DIR_PREFIX);g' $(1)
@@ -244,7 +244,7 @@ define common-additions
 	$(call common-addition-end, $(1))
 endef
 
-define create-templates
+define create-bigdata-templates
 	cp magpie-magpie-customizations magpie-magpie-customizations-substitution-daemon
 
 	sed -i -e "/@MAGPIE_SCRIPT@/{r magpie-magpie-customizations-script" -e "d}" magpie-magpie-customizations-substitution-daemon
