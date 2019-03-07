@@ -335,7 +335,7 @@ define create-all
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -410,7 +410,7 @@ define create-hadoop
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -431,7 +431,7 @@ define create-hadoop-and-pig
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -455,7 +455,7 @@ echo "Creating magpie.$(SCHED)-hadoop-and-hive"
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -481,7 +481,7 @@ define create-hadoop-and-mahout
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -505,7 +505,7 @@ define create-hbase-with-hdfs
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -533,7 +533,7 @@ define create-hbase-with-hdfs-with-phoenix
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -564,7 +564,7 @@ define create-spark
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -585,7 +585,7 @@ define create-spark-with-hdfs
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -611,7 +611,7 @@ define create-spark-with-yarn
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -639,7 +639,7 @@ define create-spark-with-yarn-and-hdfs
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -665,7 +665,7 @@ define create-spark-with-zeppelin
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -689,7 +689,7 @@ define create-storm
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED) \
+		magpie-config-$(SCHED)-bigdata \
 		magpie-magpie-customizations-substitution-daemon \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
