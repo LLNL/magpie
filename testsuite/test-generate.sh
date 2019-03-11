@@ -16,6 +16,7 @@ source test-generate-spark.sh
 source test-generate-storm.sh
 source test-generate-zookeeper.sh
 source test-generate-zeppelin.sh
+source test-generate-tensorflow.sh
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
@@ -45,6 +46,7 @@ stormtests=y
 kafkatests=y
 zookeepertests=y
 zeppelintests=y
+tensorflowtests=n
 
 # Sections to test
 # - version tests, test permutation of versions
@@ -473,6 +475,8 @@ sed -i -e "s/LSF_MPIRUN_DEFAULT_JOB_FILE=\(.*\)/LSF_MPIRUN_DEFAULT_JOB_FILE=${de
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
 java18pathsubst=`echo ${JAVA18PATH} | sed "s/\\//\\\\\\\\\//g"`
+magpiepythonpathsubst=`echo ${MAGPIE_PYTHON_PATH} | sed "s/\\//\\\\\\\\\//g"`
+magpiepythontensorflowpathsubst=`echo ${MAGPIE_PYTHON_TENSORFLOW_PATH} | sed "s/\\//\\\\\\\\\//g"`
 
 if [ "${submissiontype}" == "sbatch-srun" ]
 then
@@ -597,6 +601,11 @@ if [ "${zeppelintests}" == "y" ] && [ "${zeppelinversiontests}" == "y" ]; then
         GenerateZeppelinDependencyTests
     fi
 fi
+if [ "${tensorflowtests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+        GenerateTensorflowStandardTests
+    fi
+fi
 
 # Remove any tests we don't want
 
@@ -660,6 +669,7 @@ GenerateStormPostProcessing
 GenerateKafkaPostProcessing
 GenerateZookeeperPostProcessing
 GenerateZeppelinPostProcessing
+GenerateTensorflowPostProcessing
 
 # Seds for all tests
 

@@ -304,7 +304,7 @@ then
     done
 fi
 
-__get_test_files nosetjava nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requirerawnetworkfs requireyarn badcombosettings
+__get_test_files nosetjava nosetpython nosetversion nosethome nosetlocaldir nosetscript nocoresettings badcoresettings requirehdfs requirerawnetworkfs requireyarn badcombosettings
 if [ $? -eq 0 ]
 then
     for file in ${test_validate_files}
@@ -348,6 +348,22 @@ then
     for file in ${test_validate_files}
     do
         num=`grep -e "does not point to a directory" $file | wc -l`
+        if [ "${num}" == "0" ]
+        then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+__get_test_files badsetpython
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "does not point to an executable" $file | wc -l`
         if [ "${num}" == "0" ]
         then
             echo "Error in $file"
@@ -1446,6 +1462,36 @@ then
         fi
 
         __test_spark_shutdown $file
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+__get_test_files run-tfadd
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "Distributed Addition = 200" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+__get_test_files run-tfscript
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "Distributed Addition = 100" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Error in $file"
+        fi
 
         __test_generic $file
         __test_output_finalize $file

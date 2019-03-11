@@ -45,6 +45,14 @@ __SubmitCornerCaseTests_BadSetJava() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsetjava
 }
 
+__SubmitCornerCaseTests_NoSetPython() {
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-nosetpython
+}
+
+__SubmitCornerCaseTests_BadSetPython() {
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badsetpython
+}
+
 __SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetversion
@@ -147,6 +155,7 @@ __SubmitCornerCaseTests_NoSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-nosetscript
 }
 
 __SubmitCornerCaseTests_BadSetScript() {
@@ -161,6 +170,7 @@ __SubmitCornerCaseTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-magpie-cornercase-badsetscript-9
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badsetscript
 }
 
 __SubmitCornerCaseTests_BadHostnameMap() {
@@ -180,6 +190,7 @@ __SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badjobtime
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
@@ -250,6 +261,7 @@ __SubmitCornerCaseTests_BadStartupTime() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badstartuptime
 }
 
 __SubmitCornerCaseTests_BadShutdownTime() {
@@ -264,6 +276,7 @@ __SubmitCornerCaseTests_BadShutdownTime() {
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badshutdowntime
 }
 
 __SubmitCornerCaseTests_BadNodeCount() {
@@ -306,6 +319,7 @@ __SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-2
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-nocoresettings
 }
 
 __SubmitCornerCaseTests_BadCoreSettings() {
@@ -428,7 +442,11 @@ SubmitCornerCaseTests() {
         export JAVA_HOME="${javasave}"
     fi
 
+    __SubmitCornerCaseTests_NoSetPython
+    __SubmitCornerCaseTests_BadSetPython
+
     __SubmitCornerCaseTests_BadSetJava
+
     __SubmitCornerCaseTests_NoSetVersion
     __SubmitCornerCaseTests_BadVersion
 

@@ -176,6 +176,36 @@ __GenerateCornerCaseTests_BadSetJava() {
     fi
 }
 
+__GenerateCornerCaseTests_NoSetPython() {
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-nosetpython
+        fi
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetpython*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/export MAGPIE_PYTHON/# export MAGPIE_PYTHON/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/nosetpython-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
+__GenerateCornerCaseTests_BadSetPython() {
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badsetpython
+        fi
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsetpython*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/export MAGPIE_PYTHON="\(.*\)\"/export MAGPIE_PYTHON="\/FOO\/BAR\/BAZ"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/badsetpython-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 __GenerateCornerCaseTests_NoSetVersion() {
     if [ "${hadooptests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-cornercase-nosetversion
@@ -612,6 +642,13 @@ __GenerateCornerCaseTests_NoSetScript() {
         sed -i -e 's/export PHOENIX_JOB="\(.*\)"/export PHOENIX_JOB="script"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetscript
     fi
 
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-nosetscript
+            sed -i -e 's/export TENSORFLOW_JOB="\(.*\)"/export TENSORFLOW_JOB="script"/' magpie.${submissiontype}-tensorflow-cornercase-nosetscript
+        fi
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetscript*"`
     if [ -n "${files}" ]
     then
@@ -666,6 +703,14 @@ __GenerateCornerCaseTests_BadSetScript() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
         sed -i -e 's/export PHOENIX_JOB="\(.*\)"/export PHOENIX_JOB="script"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
         sed -i -e 's/# export PHOENIX_SCRIPT_PATH="\(.*\)"/export PHOENIX_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
+    fi
+
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badsetscript
+            sed -i -e 's/export TENSORFLOW_JOB="\(.*\)"/export TENSORFLOW_JOB="script"/' magpie.${submissiontype}-tensorflow-cornercase-badsetscript
+            sed -i -e 's/# export TENSORFLOW_SCRIPT_PATH="\(.*\)"/export TENSORFLOW_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-tensorflow-cornercase-badsetscript
+        fi
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsetscript*"`
@@ -729,6 +774,12 @@ __GenerateCornerCaseTests_BadJobTime() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime
+    fi
+
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badjobtime
+        fi
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badjobtime*"`
@@ -907,6 +958,12 @@ __GenerateCornerCaseTests_BadStartupTime() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badstartuptime
     fi
 
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badstartuptime
+        fi
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badstartuptime*"`
     if [ -n "${files}" ]
     then
@@ -954,6 +1011,12 @@ __GenerateCornerCaseTests_BadShutdownTime() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badshutdowntime
+    fi
+
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badshutdowntime
+        fi
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badshutdowntime*"`
@@ -1110,6 +1173,13 @@ __GenerateCornerCaseTests_NoCoreSettings() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
         sed -i -e 's/export ZEPPELIN_JOB/# export ZEPPELIN_JOB/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
+    fi
+
+    if [ "${tensorflowtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-nocoresettings
+        sed -i -e 's/export TENSORFLOW_JOB/# export TENSORFLOW_JOB/' magpie.${submissiontype}-tensorflow-cornercase-nocoresettings
+        fi
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nocoresettings*"`
@@ -1578,6 +1648,9 @@ GenerateCornerCaseTests() {
 
     __GenerateCornerCaseTests_NoSetJava
     __GenerateCornerCaseTests_BadSetJava
+
+    __GenerateCornerCaseTests_NoSetPython
+    __GenerateCornerCaseTests_BadSetPython
 
     __GenerateCornerCaseTests_NoSetVersion
     __GenerateCornerCaseTests_BadVersion

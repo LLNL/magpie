@@ -67,6 +67,9 @@ JAVA17PATH="/usr/lib/jvm/jre-1.7.0/"
 JAVA18PATH="/usr/lib/jvm/jre-1.8.0/"
 DEFAULT_JAVA_HOME=$JAVA18PATH
 
+MAGPIE_PYTHON_PATH="/usr/bin/python"
+MAGPIE_PYTHON_TENSORFLOW_PATH="/g/g0/achu/bigdata/tensorflow-try/venv2-tf-cpu/bin/python"
+
 # Adjust accordingly, most of you probably want ssh instead of mrsh
 REMOTE_CMD=mrsh
 
