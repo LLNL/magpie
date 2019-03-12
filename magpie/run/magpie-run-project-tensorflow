@@ -46,8 +46,8 @@ Magpie_run_start_tensorflow () {
         magpie_run_tensorflow_should_be_torndown=1
         magpie_run_tensorflow_setup_successful=1
     else
-        magpie_run_zookeeper_should_be_torndown=0
-        magpie_run_zookeeper_setup_successful=1
+        magpie_run_tensorflow_should_be_torndown=0
+        magpie_run_tensorflow_setup_successful=1
     fi
 }
 
