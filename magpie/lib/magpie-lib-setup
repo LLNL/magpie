@@ -231,6 +231,7 @@ __Magpie_calculate_canrunjobscount () {
 
 Magpie_calculate_processor_count () {
     if ([ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ] \
+        || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchmpirun" ] \
         || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ]) \
         && [ -n "${SLURM_CPUS_ON_NODE}" ]
     then

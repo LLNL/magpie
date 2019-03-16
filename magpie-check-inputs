@@ -198,14 +198,16 @@ __Magpie_check_must_be_set "MAGPIE_SUBMISSION_TYPE"
 if [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchsrun" ] \
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurmsrun" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorquepdsh" ]\
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchmpirun" ] \
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "lsfmpirun" ]
 
 then
-    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun, msubtorquepdsh, lsfmpirun"
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun, msubtorquepdsh, sbatchmpirun, lsfmpirun"
     exit 1
 fi
 
 if [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
+    || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchmpirun" ] \
     || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     __Magpie_check_environment_variable_must_be_set "SLURM_NODEID"
@@ -253,14 +255,15 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hive" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tensorflow" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "tensorflow-horovod" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "setuponly" ]
 then
     echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, \
-          kafka, zeppelin, storm, hive, zookeeper, tensorflow, testall, script, \
-          interactive, or setuponly"
+          kafka, zeppelin, storm, hive, zookeeper, tensorflow, tensorflow-horovod, \
+          testall, script, interactive, or setuponly"
     exit 1
 fi
 
@@ -331,7 +334,7 @@ nodecount=${MAGPIE_NODE_COUNT}
 # nodecountmaster is a counter to count the master only once
 nodecountmaster=1
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD"
 
 for project in ${magpieprojects}
 do
@@ -352,10 +355,11 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${HIVE_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
-    && [ "${TENSORFLOW_SETUP}" != "yes" ]
+    && [ "${TENSORFLOW_SETUP}" != "yes" ] \
+    && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ]
 then
     echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor KAFKA_SETUP nor ZEPPELIN_SETUP nor \
-          STORM_SETUP nor HIVE_SETUP nor ZOOKEEPER_SETUP nor TENSORFLOW_SETUP \
+          STORM_SETUP nor HIVE_SETUP nor ZOOKEEPER_SETUP nor TENSORFLOW_SETUP nor TENSORFLOW_HOROVOD_SETUP \
           are set to yes, there is nothing to setup"
     exit 1
 fi
@@ -375,7 +379,7 @@ done
 
 # Did user turn on something matching job run type
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD"
 
 for project in ${magpieprojects}
 do
@@ -401,7 +405,8 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${STORM_SETUP}" != "yes" ] \
     && [ "${HIVE_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
-    && [ "${TENSORFLOW_SETUP}" != "yes" ]
+    && [ "${TENSORFLOW_SETUP}" != "yes" ] \
+    && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ]
 then
     echo "Cannot run testall job type, nothing is enabled to be setup"
     exit 1
@@ -1201,6 +1206,41 @@ then
     if [ "${MAGPIE_JOB_TYPE}" == "tensorflow" ] && [ "${TENSORFLOW_JOB}" == "script" ]
     then
         __Magpie_check_must_be_set_and_is_regular_file "TENSORFLOW_SCRIPT_PATH" "for TENSORFLOW_JOB = ${TENSORFLOW_JOB}"
+    fi
+fi
+
+#
+# Check Tensorflow Horovod Inputs
+#
+
+if [ "${TENSORFLOW_HOROVOD_SETUP}" == "yes" ]
+then
+    __Magpie_check_must_be_set "MAGPIE_PYTHON" "for Tensorflow"
+
+    if [[ ${MAGPIE_SUBMISSION_TYPE} != *mpirun ]]
+    then
+        echo "TENSORFLOW_HOROVOD_SETUP can be used only with mpirun command in submission type, current setting ${MAGPIE_SUBMISSION_TYPE} does not meet this requirement"
+        exit 1
+    fi
+
+    if [ "${TENSORFLOW_HOROVOD_JOB}" != "cnn-benchmark" ] \
+        && [ "${TENSORFLOW_HOROVOD_JOB}" != "synthetic-benchmark" ] \
+        && [ "${TENSORFLOW_HOROVOD_JOB}" != "script" ]
+    then
+       echo "TENSORFLOW_HOROVOD_JOB must be set to cnn-benchmark, synthetic-benchmark or script"
+       exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "tensorflow-horovod" ] && [ "${TENSORFLOW_HOROVOD_JOB}" == "script" ]
+    then
+        __Magpie_check_must_be_set_and_is_regular_file "TENSORFLOW_HOROVOD_SCRIPT_PATH" "for TENSORFLOW_HOROVOD_JOB = ${TENSORFLOW_HOROVOD_JOB}"
+    fi
+
+    if [ "${TENSORFLOW_HOROVOD_JOB}" == "cnn-benchmark" ]
+    then
+        __Magpie_check_must_be_set_and_is_regular_file "MAGPIE_TF_CNN_BENCHMARK_PY_FILE" "for tensorflow horovod cnn-benchmark, python executable benchmark files have to be set"
+        __Magpie_check_must_be_set "MAGPIE_TF_CNN_BENCHMARK_PARAMETERS" "for tensorflow horovod some parameters should be passed"
+
     fi
 fi
 

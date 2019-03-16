@@ -24,8 +24,8 @@ Basic Idea
 The basic idea behind these scripts are to:
 
 1) Submit a Magpie batch script to allocate nodes on a cluster using
-   your HPC scheduler/resource manager.  Slurm, Moab+Slurm,
-   Moab+Torque and LSF+mpirun are currently supported.
+   your HPC scheduler/resource manager.  Slurm, Slurm+mpirun,
+   Moab+Slurm, Moab+Torque and LSF+mpirun are currently supported.
 
 2) The batch script will create configuration files for all
    appropriate projects (Hadoop, Spark, etc.)  The configuration files
@@ -185,6 +185,8 @@ Spark - 0.9.1-bin-hadoop2+, 0.9.2-bin-hadoop2+,
         2.3.2-bin-hadoop2.6+!, 2.3.2-bin-hadoop2.7+!,
         2.4.0-bin-hadoop2.6+!, 2.4.0-bin-hadoop2.7+!
 
+TensorFlow - 1.9, 1.12
+
 Hbase - 0.98.0-hadoop2+, 0.98.1-hadoop2+, 0.98.2-hadoop2+,
         0.98.3-hadoop2+, 0.98.4-hadoop2+, 0.98.5-hadoop2+,
         0.98.6-hadoop2+, 0.98.6.1-hadoop2+, 0.98.7-hadoop2+,
@@ -333,7 +335,7 @@ considered on the side of experimental.
 
 - Experimental
 
-  Packages: Kafka, Zeppelin, Mahout, Hive
+  Packages: Kafka, Zeppelin, Mahout, Hive, TensorFlow w/ & w/o Horovod
 
 Documentation
 -------------
@@ -348,6 +350,8 @@ Mahout - See README.mahout
 Hbase - See README.hbase
 Hive - See README.hive
 Spark - See README.spark
+TensorFlow - See README.tensorflow
+TensorFlow Horovod - See README.tensorflow-horovod
 Storm - See README.storm
 Phoenix - See README.phoenix
 Kafka - See README.kafka

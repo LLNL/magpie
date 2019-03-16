@@ -182,6 +182,11 @@ __GenerateCornerCaseTests_NoSetPython() {
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-nosetpython
         fi
     fi
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-nosetpython
+        fi
+    fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetpython*"`
     if [ -n "${files}" ]
@@ -195,6 +200,11 @@ __GenerateCornerCaseTests_BadSetPython() {
     if [ "${tensorflowtests}" == "y" ]; then
         if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badsetpython
+        fi
+    fi
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badsetpython
         fi
     fi
 
@@ -648,6 +658,12 @@ __GenerateCornerCaseTests_NoSetScript() {
             sed -i -e 's/export TENSORFLOW_JOB="\(.*\)"/export TENSORFLOW_JOB="script"/' magpie.${submissiontype}-tensorflow-cornercase-nosetscript
         fi
     fi
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-nosetscript
+            sed -i -e 's/export TENSORFLOW_HOROVOD_JOB=\(.*\)/export TENSORFLOW_HOROVOD_JOB=script/' magpie.${submissiontype}-tensorflow-horovod-cornercase-nosetscript
+        fi
+    fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetscript*"`
     if [ -n "${files}" ]
@@ -710,6 +726,13 @@ __GenerateCornerCaseTests_BadSetScript() {
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badsetscript
             sed -i -e 's/export TENSORFLOW_JOB="\(.*\)"/export TENSORFLOW_JOB="script"/' magpie.${submissiontype}-tensorflow-cornercase-badsetscript
             sed -i -e 's/# export TENSORFLOW_SCRIPT_PATH="\(.*\)"/export TENSORFLOW_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-tensorflow-cornercase-badsetscript
+        fi
+    fi
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badsetscript
+            sed -i -e 's/export TENSORFLOW_HOROVOD_JOB=\(.*\)/export TENSORFLOW_HOROVOD_JOB=script/' magpie.${submissiontype}-tensorflow-horovod-cornercase-badsetscript
+            sed -i -e 's/# export TENSORFLOW_HOROVOD_SCRIPT_PATH="\(.*\)"/export TENSORFLOW_HOROVOD_SCRIPT_PATH="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-tensorflow-horovod-cornercase-badsetscript
         fi
     fi
 
@@ -779,6 +802,12 @@ __GenerateCornerCaseTests_BadJobTime() {
     if [ "${tensorflowtests}" == "y" ]; then
         if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badjobtime
+        fi
+    fi
+
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badjobtime
         fi
     fi
 
@@ -964,6 +993,12 @@ __GenerateCornerCaseTests_BadStartupTime() {
         fi
     fi
 
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badstartuptime
+        fi
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badstartuptime*"`
     if [ -n "${files}" ]
     then
@@ -1016,6 +1051,12 @@ __GenerateCornerCaseTests_BadShutdownTime() {
     if [ "${tensorflowtests}" == "y" ]; then
         if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow ]; then
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow magpie.${submissiontype}-tensorflow-cornercase-badshutdowntime
+        fi
+    fi
+
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badshutdowntime
         fi
     fi
 
@@ -1182,6 +1223,13 @@ __GenerateCornerCaseTests_NoCoreSettings() {
         fi
     fi
 
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-nocoresettings
+        sed -i -e 's/export TENSORFLOW_HOROVOD_JOB/# export TENSORFLOW_HOROVOD_JOB/' magpie.${submissiontype}-tensorflow-horovod-cornercase-nocoresettings
+        fi
+    fi
+
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nocoresettings*"`
     if [ -n "${files}" ]
     then
@@ -1275,6 +1323,13 @@ __GenerateCornerCaseTests_BadCoreSettings() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
         sed -i -e 's/export ZEPPELIN_JOB="\(.*\)"/export ZEPPELIN_JOB="foobar"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
+    fi
+
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badcoresettings
+        sed -i -e 's/export TENSORFLOW_HOROVOD_JOB/export TENSORFLOW_HOROVOD_JOB="foo"/' magpie.${submissiontype}-tensorflow-horovod-cornercase-badcoresettings
+        fi
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcoresettings*"`
@@ -1446,6 +1501,17 @@ __GenerateCornerCaseTests_BadComboSettings() {
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcombosettings
         sed -i -e 's/export SPARK_LOCAL_SCRATCH_DIR/# export SPARK_LOCAL_SCRATCH_DIR/' magpie.${submissiontype}-spark-cornercase-badcombosettings
+    fi
+
+    if [ "${tensorflowhorovodtests}" == "y" ]; then
+        if [ -a ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-no-py-file
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-bad-py-file
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-tensorflow-horovod magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-no-params
+            sed -i -e 's/export TENSORFLOW_HOROVOD_JOB=\(.*\)/export TENSORFLOW_HOROVOD_JOB=cnn-benchmark/' magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn*
+            sed -i -e 's/#export MAGPIE_TF_CNN_BENCHMARK_PY_FILE="\(.*\)"/export MAGPIE_TF_CNN_BENCHMARK_PY_FILE="\/FOO\/BAR"/' magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-bad-py-file
+            sed -i -e 's/#export MAGPIE_TF_CNN_BENCHMARK_PY_FILE="\(.*\)"/export MAGPIE_TF_CNN_BENCHMARK_PY_FILE="\/bin\/bash"/' magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-no-params
+        fi
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badcombosettings*"`

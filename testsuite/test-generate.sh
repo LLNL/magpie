@@ -17,6 +17,7 @@ source test-generate-storm.sh
 source test-generate-zookeeper.sh
 source test-generate-zeppelin.sh
 source test-generate-tensorflow.sh
+source test-generate-tensorflow-horovod.sh
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
@@ -47,6 +48,7 @@ kafkatests=y
 zookeepertests=y
 zeppelintests=y
 tensorflowtests=n
+tensorflowhorovodtests=n
 
 # Sections to test
 # - version tests, test permutation of versions
@@ -478,7 +480,7 @@ java18pathsubst=`echo ${JAVA18PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythonpathsubst=`echo ${MAGPIE_PYTHON_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythontensorflowpathsubst=`echo ${MAGPIE_PYTHON_TENSORFLOW_PATH} | sed "s/\\//\\\\\\\\\//g"`
 
-if [ "${submissiontype}" == "sbatch-srun" ]
+if [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ]
 then
     timestringtoreplace="<my_time_in_minutes>"
     functiontogettimeoutput="GetMinutesJob"
@@ -606,6 +608,11 @@ if [ "${tensorflowtests}" == "y" ]; then
         GenerateTensorflowStandardTests
     fi
 fi
+if [ "${tensorflowhorovodtests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+        GenerateTensorflowHorovodStandardTests
+    fi
+fi
 
 # Remove any tests we don't want
 
@@ -670,6 +677,7 @@ GenerateKafkaPostProcessing
 GenerateZookeeperPostProcessing
 GenerateZeppelinPostProcessing
 GenerateTensorflowPostProcessing
+GenerateTensorflowHorovodPostProcessing
 
 # Seds for all tests
 
@@ -734,6 +742,12 @@ then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
 
         sed -i -e "s/<my_partition>/${sbatchsrunpartition}/" ${files}
+    elif [ "${submissiontype}" == "sbatch-mpirun" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/slurm/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/%j/" ${files}
+
+        sed -i -e "s/<my_partition>/${sbatchmpirunpartition}/" ${files}
     elif [ "${submissiontype}" == "msub-slurm-srun" ]
     then
         sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/moab/" ${files}

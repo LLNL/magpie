@@ -1,0 +1,77 @@
+#!/bin/bash
+########################################################################
+#  Project Magpie. For details, see https://github.com/llnl/magpie.
+#
+#  Copyright (C) 2019 Intel Corporation. All rights reserved.
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License version
+#  2 as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  Aleksander Kantak <aleksander.kantak@intel.com>
+########################################################################
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+
+Magpie_run_start_tensorflow_horovod () {
+
+    if [ "${TENSORFLOW_HOROVOD_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
+    then
+        echo "*******************************************************"
+        echo "*"
+        echo "* Tensorflow Horovod Information"
+        echo "*"
+        echo "* Running with python = ${MAGPIE_PYTHON}"
+        echo "* With mpirun options = ${MPIRUN_OPTIONS}"
+        echo "*******************************************************"
+
+        magpie_run_tensorflow_horovod_should_be_torndown=1
+        magpie_run_tensorflow_horovod_setup_successful=1
+    else
+        magpie_run_tensorflow_horovod_should_be_torndown=0
+        magpie_run_tensorflow_horovod_setup_successful=1
+    fi
+
+}
+
+Magpie_run_tensorflow_horovod () {
+
+    TENSORFLOW_HOROVOD_EXECUTABLE=""
+
+    if [ "${TENSORFLOW_HOROVOD_JOB}" == "cnn-benchmark" ]
+    then
+
+        TENSORFLOW_HOROVOD_EXECUTABLE="${MAGPIE_TF_CNN_BENCHMARK_PY_FILE} ${MAGPIE_TF_CNN_BENCHMARK_PARAMETERS}"
+
+    elif [ "${TENSORFLOW_HOROVOD_JOB}" == "synthetic-benchmark" ]
+    then
+        # source code used for this smoke test was downloaded from
+        # https://github.com/horovod/horovod/blob/f7a24e6860c202c4694a1dded0a5098edd6b4880/examples/tensorflow_synthetic_benchmark.py
+        TENSORFLOW_HOROVOD_EXECUTABLE="${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tensorflow-horovod-synthetic-benchmark.py ${MAGPIE_TF_SYNTHETIC_BENCHMARK_PARAMETERS}"
+
+    elif [ "${TENSORFLOW_HOROVOD_JOB}" == "script" ]
+    then
+
+        TENSORFLOW_HOROVOD_EXECUTABLE=${TENSORFLOW_HOROVOD_SCRIPT_PATH}
+
+    else
+
+        Magpie_output_internal_error "TENSORFLOW_HOROVOD_JOB = ${TENSORFLOW_HOROVOD_JOB} not handled"
+
+    fi
+
+    # run selected executable and wait
+    ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute-distributed "${MAGPIE_PYTHON} ${TENSORFLOW_HOROVOD_EXECUTABLE}" &
+    local scriptpid=$!
+    Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+
+}
+
+Magpie_run_stop_tensorflow_horovod () {
+    magpie_run_tensorflow_horovod_teardown_complete=1
+}
