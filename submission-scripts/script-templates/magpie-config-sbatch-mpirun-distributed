@@ -1,0 +1,23 @@
+#SBATCH --nodes=<my_node_count>
+#SBATCH --output="DEFAULTJOBOUTPUTFILE"
+
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+#SBATCH --time=<my_time_in_minutes>
+
+# Job name.  This will be used in naming directories for the job.
+#SBATCH --job-name=<my_job_name>
+
+# Partition to launch job in
+#SBATCH --partition=<my_partition>
+
+## SLURM Values
+# Generally speaking, don't touch the following, misc other configuration
+
+#SBATCH --ntasks-per-node=1
+#SBATCH --exclusive
+
+# Need to tell Magpie how you are submitting this job
+export MAGPIE_SUBMISSION_TYPE="sbatchmpirun"
+
+

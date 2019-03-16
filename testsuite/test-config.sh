@@ -8,9 +8,12 @@
 #submissiontype=msub-slurm-srun
 #submissiontype=msub-torque-pdsh
 submissiontype=sbatch-srun
+#submissiontype=sbatch-mpirun
 
 msubslurmsrunpartition=mycluster
 msubslurmsrunbatchqueue=pbatch
+
+sbatchmpirunpartition=pbatch
 
 sbatchsrunpartition=pbatch
 

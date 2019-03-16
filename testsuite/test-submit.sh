@@ -15,6 +15,7 @@ source test-submit-storm.sh
 source test-submit-zookeeper.sh
 source test-submit-zeppelin.sh
 source test-submit-tensorflow.sh
+source test-submit-tensorflow-horovod.sh
 source test-config.sh
 
 # How to submit
@@ -41,7 +42,7 @@ done
 
 # Test Setup
 
-if [ "${submissiontype}" == "sbatch-srun" ]
+if [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ]
 then
     jobsubmitcmd="sbatch"
     jobsubmitcmdoption="-k"
@@ -171,3 +172,5 @@ SubmitZeppelinStandardTests
 SubmitZeppelinDependencyTests
 
 SubmitTensorflowStandardTests
+
+SubmitTensorflowHorovodStandardTests

@@ -47,10 +47,12 @@ __SubmitCornerCaseTests_BadSetJava() {
 
 __SubmitCornerCaseTests_NoSetPython() {
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-nosetpython
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-nosetpython
 }
 
 __SubmitCornerCaseTests_BadSetPython() {
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badsetpython
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badsetpython
 }
 
 __SubmitCornerCaseTests_NoSetVersion() {
@@ -156,6 +158,7 @@ __SubmitCornerCaseTests_NoSetScript() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetscript
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-nosetscript
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-nosetscript
 }
 
 __SubmitCornerCaseTests_BadSetScript() {
@@ -171,6 +174,7 @@ __SubmitCornerCaseTests_BadSetScript() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetscript
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badsetscript
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badsetscript
 }
 
 __SubmitCornerCaseTests_BadHostnameMap() {
@@ -191,6 +195,7 @@ __SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badjobtime
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badjobtime
 
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
@@ -262,6 +267,7 @@ __SubmitCornerCaseTests_BadStartupTime() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badstartuptime
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badstartuptime
 }
 
 __SubmitCornerCaseTests_BadShutdownTime() {
@@ -277,6 +283,7 @@ __SubmitCornerCaseTests_BadShutdownTime() {
     BasicJobSubmit magpie.${submissiontype}-storm-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-badshutdowntime
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badshutdowntime
 }
 
 __SubmitCornerCaseTests_BadNodeCount() {
@@ -320,6 +327,7 @@ __SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-nocoresettings-3
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-tensorflow-cornercase-nocoresettings
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-nocoresettings
 }
 
 __SubmitCornerCaseTests_BadCoreSettings() {
@@ -345,6 +353,7 @@ __SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-2
     BasicJobSubmit magpie.${submissiontype}-zookeeper-cornercase-badcoresettings-3
     BasicJobSubmit magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badcoresettings
 }
 
 __SubmitCornerCaseTests_RequireRawnetworkfs() {
@@ -385,6 +394,9 @@ __SubmitCornerCaseTests_BadComboSettings() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-5
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcombosettings-6
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badcombosettings
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-no-py-file
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-bad-py-file
+    BasicJobSubmit magpie.${submissiontype}-tensorflow-horovod-cornercase-badcombosettings-cnn-no-params
 }
 
 __SubmitCornerCaseTests_BadDirectories() {

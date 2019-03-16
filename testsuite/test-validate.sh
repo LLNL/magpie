@@ -29,7 +29,7 @@ then
 elif [ "${submissiontype}" == "msub-slurm-srun" ] || [ "${submissiontype}" == "msub-torque-pdsh" ]
 then
     outputprefix="moab"
-elif [ "${submissiontype}" == "sbatch-srun" ]
+elif [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ]
 then
     outputprefix="slurm"
 fi
@@ -1489,6 +1489,22 @@ then
     for file in ${test_validate_files}
     do
         num=`grep -e "Distributed Addition = 100" $file | wc -l`
+        if [ "${num}" != "1" ]; then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+__get_test_files run-tf-hv-synthetic
+
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "Total img/sec on " $file | wc -l`
         if [ "${num}" != "1" ]; then
             echo "Error in $file"
         fi

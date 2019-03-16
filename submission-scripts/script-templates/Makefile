@@ -20,6 +20,7 @@ STORM_INCLUDE=y
 ZEPPELIN_INCLUDE=y
 ZOOKEEPER_INCLUDE=y
 TENSORFLOW_INCLUDE=y
+TENSORFLOW_HOROVOD_INCLUDE=y
 
 MAGPIE_NO_LOCAL_DIR=n
 MAGPIE_HOSTNAME_MAP=n
@@ -117,6 +118,7 @@ LOCAL_REQUIREMENTS=n
 LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
 
 # Default job files
+SBATCH_MPIRUN_DEFAULT_JOB_FILE=slurm-%j.out
 SBATCH_SRUN_DEFAULT_JOB_FILE=slurm-%j.out
 MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=moab-%j.out
 MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=moab-%j.out
@@ -124,7 +126,7 @@ LSF_MPIRUN_DEFAULT_JOB_FILE=lsf-%J.out
 
 .DEFAULT_GOAL=all
 
-all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun
+all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun sbatch-mpirun
 
 clean-sbatch-srun:
 	rm -f ../script-sbatch-srun/magpie.sbatch-srun*
@@ -138,7 +140,10 @@ clean-msub-torque-pdsh:
 clean-lsf-mpirun:
 	rm -f ../script-lsf-mpirun/magpie.lsf-mpirun*
 
-clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun
+clean-sbatch-mpirun:
+	rm -f ../script-sbatch-mpirun/magpie.sbatch-mpirun*
+
+clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun clean-sbatch-mpirun
 
 sbatch-srun: clean-sbatch-srun
 	$(call create-bigdata-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
@@ -152,6 +157,9 @@ msub-torque-pdsh: clean-msub-torque-pdsh
 
 lsf-mpirun: clean-lsf-mpirun
 	$(call create-bigdata-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
+
+sbatch-mpirun: clean-sbatch-mpirun
+	$(call create-tensorflow-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 
 define common-substitution
 	sed -i -e 's;MAGPIESCRIPTSDIRPREFIX;$(MAGPIE_SCRIPTS_DIR_PREFIX);g' $(1)
@@ -222,7 +230,7 @@ endef
 # Perhaps there is a niftier way to do this in sed than what I'm doing, glad
 # to take suggestions.  I couldn't figure out a way to do it in 1 pass.
 define common-addition
-	for project in hadoop hbase hive phoenix pig mahout spark kafka zeppelin storm zookeeper tensorflow; do \
+	for project in hadoop hbase hive phoenix pig mahout spark kafka zeppelin storm zookeeper tensorflow tensorflow-horovod; do \
 		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/{r magpie-magpie-customizations-job-$$project" -e "}" $(1); \
@@ -370,8 +378,10 @@ define create-tensorflow-templates
 	echo "Creating magpie.$(SCHED)"
 	mkdir -p ../script-$(SCHED)
 	$(eval MAGPIE_TENSORFLOW := ../script-$(SCHED)/magpie.$(SCHED)-tensorflow)
+	$(eval MAGPIE_TENSORFLOW_HOROVOD := ../script-$(SCHED)/magpie.$(SCHED)-tensorflow-horovod)
 
 	$(if $(findstring "${TENSORFLOW_INCLUDE}", "y"), $(call create-tensorflow))
+	$(if $(findstring "${TENSORFLOW_HOROVOD_INCLUDE}", "y"), $(call create-tensorflow-horovod))
 endef
 
 define create-all
@@ -767,3 +777,23 @@ define create-tensorflow
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"tensorflow\"/" $(MAGPIE_TENSORFLOW)
 	sed -i -e "s/TENSORFLOW_SETUP=.*/TENSORFLOW_SETUP=yes/" $(MAGPIE_TENSORFLOW)
 endef
+
+define create-tensorflow-horovod
+	echo "Creating magpie.$(SCHED)-tensorflow-horovod"
+	cat 	magpie-shebang \
+		magpie-header-llnl \
+		magpie-header-intel \
+		magpie-config-$(SCHED)-header \
+		magpie-config-$(SCHED)-distributed \
+		magpie-magpie-customizations-substitution-tensorflow \
+		magpie-general-configuration-header \
+		magpie-general-configuration-python \
+		magpie-tensorflow-horovod \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST)-distributed > $(MAGPIE_TENSORFLOW_HOROVOD)
+	$(call common-substitution, ${MAGPIE_TENSORFLOW_HOROVOD},${JAVA_DEFAULT})
+	$(call common-additions, ${MAGPIE_TENSORFLOW_HOROVOD}, tensorflow-horovod)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"tensorflow-horovod\"/" $(MAGPIE_TENSORFLOW_HOROVOD)
+	sed -i -e "s/TENSORFLOW_HOROVOD_SETUP=.*/TENSORFLOW_HOROVOD_SETUP=yes/" $(MAGPIE_TENSORFLOW_HOROVOD)
+endef
+

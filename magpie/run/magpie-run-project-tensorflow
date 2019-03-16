@@ -60,7 +60,7 @@ Magpie_run_tensorflow () {
             echo "* Running Tfadd"
             echo "*******************************************************"
         fi
-        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute-distributed "${MAGPIE_PYTHON} ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tensorflow-tfadd" &
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute-distributed "${MAGPIE_PYTHON} ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-tensorflow-tfadd.py" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     elif [ "${TENSORFLOW_JOB}" == "script" ]

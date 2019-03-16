@@ -61,6 +61,15 @@ then
     export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
     __Magpie_calc_slurm_magpie_timelimit
     __Magpie_handle_job_name_corner_cases
+elif [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchmpirun" ]
+then
+    export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"
+    export MAGPIE_NODE_COUNT="${SLURM_NNODES}"
+    export MAGPIE_NODELIST="${SLURM_JOB_NODELIST}"
+    export MAGPIE_JOB_NAME="${SLURM_JOB_NAME}"
+    export MAGPIE_JOB_ID="${SLURM_JOB_ID}"
+    __Magpie_calc_slurm_magpie_timelimit
+    __Magpie_handle_job_name_corner_cases
 elif [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmsrun" ]
 then
     export MAGPIE_CLUSTER_NODERANK="${SLURM_NODEID:=0}"

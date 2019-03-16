@@ -35,6 +35,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper
 
 __Magpie_job_time_minutes () {
     if [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchsrun" ] \
+        || [ "${MAGPIE_SUBMISSION_TYPE}" == "sbatchmpirun" ] \
         || [ "${MAGPIE_SUBMISSION_TYPE}" == "msubslurmpdsh" ]
     then
         local timeleftwalltime=`squeue -j ${SLURM_JOB_ID} -h -o %L`

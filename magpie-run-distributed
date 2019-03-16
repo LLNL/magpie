@@ -33,6 +33,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-run
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-tensorflow
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-tensorflow-horovod
 
 # Output some general info
 
@@ -59,20 +60,37 @@ magpie_run_prior_startup_successful=true
 # Global, will be set/adjusted by various start functions
 magpie_run_total_sleep_wait=0
 
-# Will set magpie_run_tensorflow_should_be_torndown & magpie_run_tensorflow_setup_successful appropriately
-Magpie_run_start_tensorflow
-
-# Make sure all setup passed
-if [ "${magpie_run_tensorflow_setup_successful}" == "1" ]
+if [ "${MAGPIE_JOB_TYPE}" == "tensorflow" ]
 then
-    if [ "${MAGPIE_JOB_TYPE}" == "tensorflow" ]
+
+    # Will set magpie_run_tensorflow_should_be_torndown & magpie_run_tensorflow_setup_successful appropriately
+    Magpie_run_start_tensorflow
+
+    # Make sure all setup passed
+    if [ "${magpie_run_tensorflow_setup_successful}" == "1" ]
     then
         Magpie_run_tensorflow
     fi
-fi
 
-# Sets magpie_run_tensorflow_teardown_complete if teardown done
-Magpie_run_stop_tensorflow
+    # Sets magpie_run_tensorflow_teardown_complete if teardown done
+    Magpie_run_stop_tensorflow
+
+elif [ "${MAGPIE_JOB_TYPE}" == "tensorflow-horovod" ]
+then
+
+    # Will set magpie_run_tensorflow_horovod_should_be_torndown & magpie_run_tensorflow_horovod_setup_successful appropriately
+    Magpie_run_start_tensorflow_horovod
+
+    # Make sure all setup passed
+    if [ "${magpie_run_tensorflow_horovod_setup_successful}" == "1" ]
+    then
+        Magpie_run_tensorflow_horovod
+    fi
+
+    # Sets magpie_run_tensorflow_teardown_complete if teardown done
+    Magpie_run_stop_tensorflow_horovod
+
+fi
 
 exit 0
 

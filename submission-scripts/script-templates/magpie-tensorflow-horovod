@@ -1,0 +1,82 @@
+############################################################################
+# Tensorflow Horovod Customizations
+############################################################################
+
+# Should Tensorflow Horovod be run
+#
+# Specify yes or no.  Defaults to no.
+#
+export TENSORFLOW_HOROVOD_SETUP=no
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export TENSORFLOW_HOROVOD_LOCAL_DIR="LOCALDIRPREFIX/tensorflow-horovod"
+
+# Set tensorflow horovod job for MAGPIE_JOB_TYPE = tensorflow-horovod
+#
+# "cnn-benchmark" - run cnn benchmark which is tensorflow benchmark using horovod on MPI.
+#                   This option requires defining variables in section Tensorflow Horovod CNN benchmark settings.
+#
+# "synthetic-benchmark" - run synthetic benchmark which is default option, should work out-of-the-box.
+#                         There is possible customization in section Tensorflow Horovod synthetic benchmark settings.
+#
+# "script" - execute a script set in TENSORFLOW_HOROVOD_SCRIPT_PATH using MPI.
+#            Settings are in section Tensorflow Horovod synthetic benchmark settings.
+#
+export TENSORFLOW_HOROVOD_JOB=synthetic-benchmark
+
+
+############################################################################
+# Tensorflow Horovod synthetic benchmark settings
+############################################################################
+
+# Synthetic Horovod parameters
+
+#export MAGPIE_TF_SYNTHETIC_BENCHMARK_PARAMETERS=" \
+#--no-cuda \
+#--batch-size=32 \
+#"
+
+############################################################################
+# Tensorflow Horovod CNN benchmark settings
+############################################################################
+
+# path to downloaded benchmark source
+# source: https://github.com/tensorflow/benchmarks/blob/master/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py
+# branch in source code repo have to match your tensorflow version
+#export MAGPIE_TF_CNN_BENCHMARK_PY_FILE="/path/to/TF_Benchmark/benchmarks/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py"
+
+
+# CNN benchmark parameters
+
+#export MAGPIE_TF_CNN_BENCHMARK_PARAMETERS=" \
+#--batch_size=<single_batch_size> \
+#--num_batches=<number_of_batches> \
+#--model=resnet50 \
+#--num_inter_threads=<number_of_inter_threads> \
+#--num_intra_threads=<number_of_intra_threads> \
+#--display_every=5 \
+#--optimizer=momentum \
+#--device=cpu \
+#--mkl=TRUE \
+#--variable_update=horovod \
+#--horovod_device=cpu \
+#--local_parameter_device=cpu \
+#--kmp_blocktime=1 \
+#--save_model_secs=3 \
+#--data_format=NCHW \
+#--data_dir=/path/to/imagenet/tfrecords/train \
+#--data_name=imagenet \
+#--train_dir=/path/to/imagenet/model-checkpoint \
+#"
+
+############################################################################
+# Tensorflow Horovod script running settings
+############################################################################
+
+# if TENSORFLOW_HOROVOD_JOB is set to script, TENSORFLOW_HOROVOD_SCRIPT_PATH is necessary
+#export TENSORFLOW_HOROVOD_SCRIPT_PATH=/path/to/executable
+
