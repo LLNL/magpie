@@ -17,6 +17,10 @@ Some of the features presently supported:
 - Take advantage of SSDs/NVRAM for local caching if available
 - Make decent optimizations for your hardware
 
+Experimental support for several distributed machine learning
+frameworks has also been added.  Presently tensorflow and tensorflow
+w/ horovod is supported.
+
 Basic Idea
 ----------
 
