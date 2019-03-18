@@ -1,29 +1,25 @@
 Instructions For Running TensorFlow Horovod
 -------------------------------------------
 
-0) Keep in mind that Magpie currently supports running TensorFlow Horovod
-   (TF) using OpenMPI on Slurm only.
+0) If necessary, download your favorite version of tensorflow and
+   horovod.  Make sure it available on all nodes of your allocation
+   (usually this means that it is installed in a NFS mounted path
+   available on all nodes).
 
-   _Disclaimer: Usually, directories mentioned below are placed on_
-   _a distributed file system (Lustre is recommended) directory,_
-   _so they are immediately and "by default" available from all nodes:_
-
-   Download and install:
-   * TensorFlow
-   * Horovod
-   on all cluster's nodes.
+   Keep in mind that Magpie currently supports running TensorFlow
+   Horovod using only Slurm and OpenMPI.
 
    (Optional) If you are going to run TF CNN benchmarks clone the benchmarks
    repository and place it under common path on all nodes:
    https://github.com/tensorflow/benchmarks/. Checkout onto the branch with
    the proper TF version (e.g. `git checkout cnn_tf_v1.12_compatible`).
 
-1) Select an appropriate submission script for running your job. You
-   can find them in the directory `submission-scripts/script-sbatch-mpirun`.
-   You'll likely want to start with the base TensorFlow + Horovod script
-   `magpie.sbatch-mpirun-tensorflow-horovod`. If you wish to configure more,
-   you can choose to start with the base script (e.g. `magpie.sbatch-srun`)
-   which contains all configuration options.
+1) Select an appropriate submission script for running your job.  You
+   can find them in the directory submission-scripts/.
+
+   At the moment, tensorflow w/ horovod is only supported on Slurm via
+   sbatch & mpirun, so please start with the
+   magpie.sbatch-mpirun-tensorflow-horovod sbatch file.
 
 2) Setup your job essentials at the top of the submission script.
 
