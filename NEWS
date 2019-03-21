@@ -1,5 +1,6 @@
 Magpie 2.2
 ----------
+Support SPARK_IO_COMPRESSION_CODEC in Spark.
 With sbatch & srun, add experimental support for distributed
  tensorflow support.
 Add new submission script type "sbatchmpirun"

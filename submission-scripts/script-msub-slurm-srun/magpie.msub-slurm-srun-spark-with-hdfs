@@ -1087,6 +1087,12 @@ export SPARK_JOB="sparkpi"
 #
 # export SPARK_RDD_COMPRESS=true
 
+# SPARK_IO_COMPRESSION_CODEC
+#
+# Defaults to lz4, can specify snappy, lz4, lzf, snappy, or zstd
+#
+# export SPARK_IO_COMPRESSION_CODEC=lz4
+
 # SPARK_DEPLOY_SPREADOUT
 #
 # Per Spark documentation, "Whether the standalone cluster manager

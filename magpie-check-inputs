@@ -934,6 +934,18 @@ then
 
     __Magpie_check_if_set_is_true_or_false "SPARK_RDD_COMPRESS"
 
+    if [ "${SPARK_IO_COMPRESSION_CODEC}X" != "X" ]
+    then
+        if [ "${SPARK_IO_COMPRESSION_CODEC}" != "lz4" ] \
+            && [ "${SPARK_IO_COMPRESSION_CODEC}" != "lzf" ] \
+            && [ "${SPARK_IO_COMPRESSION_CODEC}" != "snappy" ] \
+            && [ "${SPARK_IO_COMPRESSION_CODEC}" != "zstd" ]
+        then
+            echo "SPARK_IO_COMPRESSION_CODEC must be lz4, lzf, snappy, or zstd"
+            exit 1
+        fi
+    fi
+
     __Magpie_check_if_set_is_true_or_false "SPARK_DEPLOY_SPREADOUT"
 
     if [ ${nodecount} -le "0" ]

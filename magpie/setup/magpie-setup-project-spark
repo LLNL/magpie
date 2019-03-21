@@ -273,6 +273,13 @@ else
     sparkrddcompress="${SPARK_RDD_COMPRESS}"
 fi
 
+if [ "${SPARK_IO_COMPRESSION_CODEC}X" == "X" ]
+then
+    sparkiocompressioncodec="lz4"
+else
+    sparkiocompressioncodec="${SPARK_IO_COMPRESSION_CODEC}"
+fi
+
 if [ "${SPARK_DEPLOY_SPREADOUT}X" == "X" ]
 then
     sparkdeployspreadout="true"
@@ -650,6 +657,7 @@ then
         -e "s/SPARKMEMORYFRACTION/${sparkmemoryfraction}/g" \
         -e "s/SPARKMEMORYSTORAGEFRACTION/${sparkmemorystoragefraction}/g" \
         -e "s/SPARKRDDCOMPRESS/${sparkrddcompress}/g" \
+        -e "s/SPARKIOCOMPRESSIONCODEC/${sparkiocompressioncodec}/g" \
         -e "s/SPARKDEPLOYSPREADOUT/${sparkdeployspreadout}/g" \
         -e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
         -e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
