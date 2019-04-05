@@ -5,6 +5,8 @@ With sbatch & srun, add experimental support for distributed
  tensorflow support.
 Add new submission script type "sbatchmpirun"
 With sbatch & mpirun, add experimental support for Tensorflow with Horovod
+Support Spark 2.4.1-bin-hadoop2.6, 2.4.1-bin-hadoop2.7
+- Update Spark default to 2.4.1-bin-hadoop2.7
 
 Magpie 2.1
 ----------
