@@ -147,6 +147,12 @@ Magpie_run_start_zeppelin
 # Will set magpie_run_storm_should_be_torndown & magpie_run_storm_setup_successful appropriately
 Magpie_run_start_storm
 
+# After all services come up
+echo "*******************************************************"
+echo "* Executing Pre Run Scripts"
+echo "*******************************************************"
+${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-pre-execute
+
 # Make sure all setup passed
 if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
     && [ "${magpie_run_hadoop_setup_successful}" == "1" ] \
@@ -225,6 +231,12 @@ then
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     fi
 fi
+
+# Before all services are shutdown
+echo "*******************************************************"
+echo "* Executing Post Run Scripts"
+echo "*******************************************************"
+${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-post-execute
 
 # Sets magpie_run_storm_teardown_complete if teardown done
 Magpie_run_stop_storm

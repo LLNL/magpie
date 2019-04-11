@@ -44,6 +44,18 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
+mkdir -p $MAGPIE_LOCAL_LOG_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${MAGPIE_LOCAL_LOG_DIR}"
+    exit 1
+fi
+
+mkdir -p $MAGPIE_LOCAL_PID_DIR
+if [ $? -ne 0 ] ; then
+    echo "mkdir failed making ${MAGPIE_LOCAL_PID_DIR}"
+    exit 1
+fi
+
 mkdir -p $MAGPIE_LOCAL_SCRATCHSPACE_DIR
 if [ $? -ne 0 ] ; then
     echo "mkdir failed making ${MAGPIE_LOCAL_SCRATCHSPACE_DIR}"

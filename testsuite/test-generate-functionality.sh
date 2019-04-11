@@ -895,6 +895,199 @@ __GenerateFunctionalityTests_PreRunScriptError() {
     fi
 }
 
+__GenerateFunctionalityTests_PrePostExecuteScripts() {
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-run-hadoopterasort-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-run-testpig-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-run-clustersyntheticcontrol-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-run-hbaseperformanceeval-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-run-testbench-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-run-phoenixperformanceeval-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-run-sparkpi-functionality-prepostexecutescripts-multi
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostexecutescripts-multi
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostexecutescripts-multi
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostexecutescripts-multi
+
+        SetupSparkWordCountHDFSCopyIn `ls \
+            magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-prepostexecutescripts* \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-prepostexecutescripts*`
+
+        SetupSparkWordCountRawNetworkFSNoCopy `ls \
+            magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-prepostexecutescripts*`
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-run-stormwordcount-functionality-prepostexecutescripts-multi
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostexecutescripts-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-run-checkzeppelinup-functionality-prepostexecutescripts-multi
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostexecutescripts-single*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_POST_EXECUTE_RUN="\(.*\)"/export MAGPIE_POST_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-run.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostexecutescripts-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostexecutescripts-multi*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-multi1.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-multi2.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_POST_EXECUTE_RUN="\(.*\)"/export MAGPIE_POST_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-run-multi1.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-run-multi2.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostexecutescripts-multi-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostecho-single*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh PREPRE"/' ${files}
+        sed -i -e 's/# export MAGPIE_POST_EXECUTE_RUN="\(.*\)"/export MAGPIE_POST_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh POSTPOST"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostecho-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostecho-multi*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh PRE1,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh PRE2"/' ${files}
+        sed -i -e 's/# export MAGPIE_POST_EXECUTE_RUN="\(.*\)"/export MAGPIE_POST_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh POST1,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-echo.sh POST2"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostecho-multi-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
+__GenerateFunctionalityTests_PreExecuteScriptError() {
+    if [ "${hadooptests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop magpie.${submissiontype}-hadoop-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${pigtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-pig magpie.${submissiontype}-hadoop-and-pig-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${mahouttests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-mahout magpie.${submissiontype}-hadoop-and-mahout-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${hbasetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs magpie.${submissiontype}-hbase-with-hdfs-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${hivetests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hadoop-and-hive magpie.${submissiontype}-hadoop-and-hive-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${phoenixtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-hbase-with-hdfs-with-phoenix magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${sparktests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-functionality-preexecutescripterror-multi2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-functionality-preexecutescripterror-multi2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-functionality-preexecutescripterror-multi2
+
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-preexecutescripterror-multi2
+
+
+
+        SetupSparkWordCountHDFSCopyIn `ls \
+            magpie.${submissiontype}-spark-with-hdfs-functionality-preexecutescripterror* \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-functionality-preexecutescripterror*`
+
+        SetupSparkWordCountRawNetworkFSNoCopy `ls \
+            magpie.${submissiontype}-spark-with-yarn-functionality-preexecutescripterror*`
+    fi
+
+    if [ "${stormtests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-storm-functionality-preexecutescripterror-multi2
+    fi
+
+    if [ "${zeppelintests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-preexecutescripterror-single
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-preexecutescripterror-multi1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-functionality-preexecutescripterror-multi2
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-preexecutescripterror-single*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-error.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/preexecutescripterror-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-preexecutescripterror-multi1*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-error.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/preexecutescripterror-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-preexecutescripterror-multi2*"`
+    if [ -n "${files}" ]
+    then
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-error.sh"/' ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/preexecutescripterror-FILENAMESEARCHREPLACEKEY/" ${files}
+    fi
+}
+
 __GenerateFunctionalityTests_ScriptArgs() {
 
     if [ "${hadooptests}" == "y" ]; then
@@ -1022,6 +1215,10 @@ GenerateFunctionalityTests() {
     __GenerateFunctionalityTests_PrePostRunScripts
 
     __GenerateFunctionalityTests_PreRunScriptError
+
+    __GenerateFunctionalityTests_PrePostExecuteScripts
+
+    __GenerateFunctionalityTests_PreExecuteScriptError
 
     __GenerateFunctionalityTests_ScriptArgs
 

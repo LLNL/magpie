@@ -95,6 +95,18 @@ Magpie_calculate_stop_timeouts () {
 
         shutdowntimeseconds=`expr ${shutdowntimeseconds} - ${magpiepostrunallocate}`
     fi
+ 
+    if [ "${MAGPIE_POST_EXECUTE_RUN}X" != "X" ]
+    then
+        # Minimum 5 minutes or 1/3rd of time for MAGPIE_POST_EXECUTE_RUN
+        local magpiepostrunallocate=`expr ${shutdowntimeseconds} \/ 3`
+        if [ "${magpiepostrunallocate}" -lt 300 ]
+        then
+            magpiepostrunallocate=300
+        fi
+
+        shutdowntimeseconds=`expr ${shutdowntimeseconds} - ${magpiepostrunallocate}`
+    fi
 
     if [ "${HBASE_SETUP}" == "yes" ]
     then
