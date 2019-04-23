@@ -159,6 +159,7 @@ lsf-mpirun: clean-lsf-mpirun
 	$(call create-bigdata-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
 
 sbatch-mpirun: clean-sbatch-mpirun
+	$(call create-bigdata-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 	$(call create-tensorflow-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 
 define common-substitution
