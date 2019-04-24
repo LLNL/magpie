@@ -625,6 +625,12 @@ then
         sed -i -e "/@YARN@/,+1d" ${post_sparkdefaultsconf}
     fi
 
+    # Sparklyr needs to know the catalogImplementation
+    if [ "${HIVE_SETUP}" == "yes" ]
+    then
+        sed -i -e "s/# spark.sql.catalogImplementation hive/spark.sql.catalogImplementation hive/g" ${post_sparkdefaultsconf}
+    fi
+
     # This is not for legitimate security as it can easily be
     # calculated.  It is for sanity "just in case we screwed up a
     # config" security.
