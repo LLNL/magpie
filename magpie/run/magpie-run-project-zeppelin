@@ -41,7 +41,7 @@ __Magpie_run_check_zeppelin_up () {
     do
         serverschk=`expr ${serverschk} + 1`
         local serverisup=`${MAGPIE_REMOTE_CMD:-ssh} ${MAGPIE_REMOTE_CMD_OPTS} $server ps -ef | grep -c zeppelin`
-        if [ "${serverisup}" -gt "0" ]
+        if [ "${serverisup}" -gt "1" ]
         then
             serversup=`expr ${serversup} + 1`
         fi
