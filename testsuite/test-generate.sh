@@ -337,6 +337,7 @@ zookeeper_3_4_10=y
 zookeeper_3_4_11=y
 zookeeper_3_4_12=y
 zookeeper_3_4_13=y
+zookeeper_3_4_14=y
 zeppelin_0_5_6_incubating=y
 zeppelin_0_6_0=y
 zeppelin_0_6_1=y

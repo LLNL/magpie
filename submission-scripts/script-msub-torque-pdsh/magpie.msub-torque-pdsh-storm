@@ -389,7 +389,7 @@ export ZOOKEEPER_JOB="zookeeperruok"
 
 # Zookeeper Version
 #
-export ZOOKEEPER_VERSION="3.4.13"
+export ZOOKEEPER_VERSION="3.4.14"
 
 # Path to your Zookeeper build/binaries
 #
