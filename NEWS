@@ -1,5 +1,8 @@
 Magpie 2.3
 ----------
+Support Spark 2.4.2-bin-hadoop2.6, 2.4.2-bin-hadoop2.7,
+  2.4.3-bin-hadoop2.6, 2.4.3-bin-hadoop2.7
+- Update Spark default to 2.4.3-bin-hadoop2.7
 Add support for Zookeeper 3.4.14.
 - Update default Zookeeper to 3.4.14.
 
