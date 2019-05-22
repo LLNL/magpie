@@ -28,13 +28,13 @@
 
 # Second argument is path to Storm log dir
 
-# Second argument is path to Storm
+# Third argument is path to Storm
 
-# Third argument is path to Storm scratch dir
+# Fourth argument is path to Storm scratch dir
 
-# Fourth argument is 'nimbus', 'supervisor', 'ui', or 'logviewer'
+# Fifth argument is 'nimbus', 'supervisor', 'ui', or 'logviewer'
 
-# Fifth argument is start or stop
+# Sixth argument is start or stop
 
 if [ "$1X" == "X" ]
 then
