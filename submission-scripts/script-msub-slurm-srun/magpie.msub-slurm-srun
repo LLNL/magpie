@@ -1969,8 +1969,6 @@ export STORM_VERSION="1.2.2"
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-# Ensure the build matches the Hadoop/HDFS version this will run against.
-#
 export STORM_HOME="${HOME}/apache-storm-${STORM_VERSION}"
 
 # Path to store data local to each cluster node, typically something
