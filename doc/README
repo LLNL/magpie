@@ -342,7 +342,8 @@ considered on the side of experimental.
 
 - Experimental
 
-  Packages: Kafka, Zeppelin, Mahout, Hive, TensorFlow w/ & w/o Horovod
+  Packages: Kafka, Zeppelin, Mahout, Hive, TensorFlow w/ & w/o
+  Horovod, Ray
 
 Documentation
 -------------

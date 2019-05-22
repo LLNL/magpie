@@ -27,6 +27,7 @@
 # configuration details.
 
 source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-hadoop-helper
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-helper

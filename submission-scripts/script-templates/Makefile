@@ -21,6 +21,7 @@ ZEPPELIN_INCLUDE=y
 ZOOKEEPER_INCLUDE=y
 TENSORFLOW_INCLUDE=y
 TENSORFLOW_HOROVOD_INCLUDE=y
+RAY_INCLUDE=y
 
 MAGPIE_NO_LOCAL_DIR=n
 MAGPIE_HOSTNAME_MAP=n
@@ -54,6 +55,7 @@ SPARK_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 STORM_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZEPPELIN_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
+RAY_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 
 REMOTE_CMD_DEFAULT=ssh
 
@@ -147,19 +149,24 @@ clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-
 
 sbatch-srun: clean-sbatch-srun
 	$(call create-bigdata-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
+	$(call create-ml-master-worker-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
 	$(call create-tensorflow-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
 
 msub-slurm-srun: clean-msub-slurm-srun
 	$(call create-bigdata-templates,$@,srun,$(MSUB_SLURM_SRUN_DEFAULT_JOB_FILE))
+	$(call create-ml-master-worker-templates,$@,srun,$(MSUB_SLURM_SRUN_DEFAULT_JOB_FILE))
 
 msub-torque-pdsh: clean-msub-torque-pdsh
 	$(call create-bigdata-templates,$@,pdsh,$(MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE))
+	$(call create-ml-master-worker-templates,$@,pdsh,$(MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE))
 
 lsf-mpirun: clean-lsf-mpirun
 	$(call create-bigdata-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
+	$(call create-ml-master-worker-templates,$@,mpirun,$(LSF_MPIRUN_DEFAULT_JOB_FILE))
 
 sbatch-mpirun: clean-sbatch-mpirun
 	$(call create-bigdata-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
+	$(call create-ml-master-worker-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 	$(call create-tensorflow-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 
 define common-substitution
@@ -186,6 +193,7 @@ define common-substitution
 	sed -i -e 's;STORMDIRPREFIX;$(STORM_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZEPPELINDIRPREFIX;$(ZEPPELIN_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZOOKEEPERDIRPREFIX;$(ZOOKEEPER_DIR_PREFIX);g' $(1)
+	sed -i -e 's;RAYDIRPREFIX;$(RAY_DIR_PREFIX);g' $(1)
 
 	sed -i -e 's;HADOOPVERSIONDEFAULT;$(HADOOP_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;PIGVERSIONDEFAULT;$(PIG_VERSION_DEFAULT);g' $(1)
@@ -231,7 +239,7 @@ endef
 # Perhaps there is a niftier way to do this in sed than what I'm doing, glad
 # to take suggestions.  I couldn't figure out a way to do it in 1 pass.
 define common-addition
-	for project in hadoop hbase hive phoenix pig mahout spark kafka zeppelin storm zookeeper tensorflow tensorflow-horovod; do \
+	for project in hadoop hbase hive phoenix pig mahout spark kafka zeppelin storm zookeeper tensorflow tensorflow-horovod ray; do \
 		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/{r magpie-magpie-customizations-job-$$project" -e "}" $(1); \
@@ -340,6 +348,49 @@ define create-bigdata-templates
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
 endef
 
+define create-ml-master-worker-templates
+	cp magpie-magpie-customizations magpie-magpie-customizations-substitution-ml-master-worker
+
+	sed -i -e "/@MAGPIE_SCRIPT@/{r magpie-magpie-customizations-script" -e "d}" magpie-magpie-customizations-substitution-ml-master-worker
+	sed -i -e "/@MAGPIE_INTERACTIVE@/d" magpie-magpie-customizations-substitution-ml-master-worker
+	sed -i -e "/@MAGPIE_SETUPONLY@/{r magpie-magpie-customizations-setuponly" -e "d}" magpie-magpie-customizations-substitution-ml-master-worker
+	sed -i -e "/@MAGPIE_REMOTE_SHELL@/{r magpie-magpie-customizations-remote-shell" -e "d}" magpie-magpie-customizations-substitution-ml-master-worker
+	sed -i -e "/@MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT@/{r magpie-magpie-customizations-environment-variable-script" -e "d}" magpie-magpie-customizations-substitution-ml-master-worker
+
+	if test "${MAGPIE_NO_LOCAL_DIR}" = "y"; then \
+		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/{r magpie-magpie-customizations-no-local-dir" -e "d}" magpie-magpie-customizations-substitution-ml-master-worker; \
+	else \
+		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/,+1d" magpie-magpie-customizations-substitution-ml-master-worker; \
+	fi
+
+	if test "${MAGPIE_HOSTNAME_MAP}" = "y"; then \
+		sed -i -e "/@MAGPIE_HOSTNAME_MAP@/{r magpie-magpie-customizations-hostname-map" -e "d}" magpie-magpie-customizations-substitution-ml-master-worker; \
+	else \
+		sed -i -e "/@MAGPIE_HOSTNAME_MAP@/,+1d" magpie-magpie-customizations-substitution-ml-master-worker; \
+	fi
+
+	cp magpie-run-job-header magpie-run-job-header-substitution
+
+	if test "${LOCAL_REQUIREMENTS}" = "y"; then \
+		if ! test -f "${LOCAL_REQUIREMENTS_FILE}"; then \
+			echo "File ${LOCAL_REQUIREMENTS_FILE} is not a normal file"; \
+			exit 1; \
+		fi; \
+		sed -i -e "/@LOCALREQUIREMENTS@/{r ${LOCAL_REQUIREMENTS_FILE}" -e "d}" magpie-run-job-header-substitution; \
+	else \
+		sed -i -e "/@LOCALREQUIREMENTS@/,+1d" magpie-run-job-header-substitution; \
+	fi
+
+	$(eval SCHED := $(1))
+	$(eval DIST := $(2))
+	$(eval JOBOUTPUTFILE := $(3))
+	echo "Creating magpie.$(SCHED)"
+	mkdir -p ../script-$(SCHED)
+	$(eval MAGPIE_RAY := ../script-$(SCHED)/magpie.$(SCHED)-ray)
+
+	$(if $(findstring "${RAY_INCLUDE}", "y"), $(call create-ray))
+endef
+
 define create-tensorflow-templates
 	cp magpie-magpie-customizations magpie-magpie-customizations-substitution-tensorflow
 
@@ -380,9 +431,11 @@ define create-tensorflow-templates
 	mkdir -p ../script-$(SCHED)
 	$(eval MAGPIE_TENSORFLOW := ../script-$(SCHED)/magpie.$(SCHED)-tensorflow)
 	$(eval MAGPIE_TENSORFLOW_HOROVOD := ../script-$(SCHED)/magpie.$(SCHED)-tensorflow-horovod)
+	$(eval MAGPIE_RAY := ../script-$(SCHED)/magpie.$(SCHED)-ray)
 
 	$(if $(findstring "${TENSORFLOW_INCLUDE}", "y"), $(call create-tensorflow))
 	$(if $(findstring "${TENSORFLOW_HOROVOD_INCLUDE}", "y"), $(call create-tensorflow-horovod))
+	$(if $(findstring "${RAY_INCLUDE}", "y"), $(call create-ray))
 endef
 
 define create-all
@@ -391,7 +444,7 @@ define create-all
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -444,7 +497,7 @@ define create-all
 		fi
 
 	cat	magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata >> $(MAGPIE)
+		magpie-run-job-$(DIST)-master-worker >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE},${JAVA_DEFAULT})
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${HADOOP_INCLUDE}", "y"), "hadoop"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${HBASE_INCLUDE}", "y"), "hbase"))
@@ -466,7 +519,7 @@ define create-hadoop
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -474,7 +527,7 @@ define create-hadoop
 		magpie-hadoop-job \
 		magpie-hadoop-filesystem-substitution \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_HADOOP)
 	$(call common-substitution, ${MAGPIE_HADOOP},${HADOOP_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP}, hadoop)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hadoop\"/" $(MAGPIE_HADOOP)
@@ -487,7 +540,7 @@ define create-hadoop-and-pig
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -496,7 +549,7 @@ define create-hadoop-and-pig
 		magpie-hadoop-filesystem-substitution \
 		magpie-pig \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP_AND_PIG)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_HADOOP_AND_PIG)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_PIG},${PIG_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_PIG}, hadoop pig)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"pig\"/" $(MAGPIE_HADOOP_AND_PIG)
@@ -511,7 +564,7 @@ echo "Creating magpie.$(SCHED)-hadoop-and-hive"
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -521,7 +574,7 @@ echo "Creating magpie.$(SCHED)-hadoop-and-hive"
 		magpie-hive \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP_AND_HIVE)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_HADOOP_AND_HIVE)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_HIVE},${JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_HIVE}, hadoop hive)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hive\"/" $(MAGPIE_HADOOP_AND_HIVE)
@@ -537,7 +590,7 @@ define create-hadoop-and-mahout
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -546,7 +599,7 @@ define create-hadoop-and-mahout
 		magpie-hadoop-filesystem-substitution \
 		magpie-mahout \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HADOOP_AND_MAHOUT)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_HADOOP_AND_MAHOUT)
 	$(call common-substitution, ${MAGPIE_HADOOP_AND_MAHOUT},${MAHOUT_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HADOOP_AND_MAHOUT}, hadoop mahout)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"mahout\"/" $(MAGPIE_HADOOP_AND_MAHOUT)
@@ -561,7 +614,7 @@ define create-hbase-with-hdfs
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -571,7 +624,7 @@ define create-hbase-with-hdfs
 		magpie-hbase \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HBASE_WITH_HDFS)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_HBASE_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS},${HBASE_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS}, hbase zookeeper)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"hbase\"/" $(MAGPIE_HBASE_WITH_HDFS)
@@ -589,7 +642,7 @@ define create-hbase-with-hdfs-with-phoenix
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -600,7 +653,7 @@ define create-hbase-with-hdfs-with-phoenix
                 magpie-phoenix \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
 	$(call common-substitution, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX},${PHOENIX_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX}, hbase phoenix zookeeper)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"phoenix\"/" $(MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX)
@@ -620,14 +673,14 @@ define create-spark
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
 		magpie-general-configuration-python \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_SPARK)
 	$(call common-substitution, ${MAGPIE_SPARK},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK}, spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK)
@@ -641,7 +694,7 @@ define create-spark-with-hdfs
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -651,7 +704,7 @@ define create-spark-with-hdfs
 		magpie-hadoop-filesystem-substitution \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_HDFS)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_SPARK_WITH_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_HDFS},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_HDFS}, spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_HDFS)
@@ -667,7 +720,7 @@ define create-spark-with-yarn
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -677,7 +730,7 @@ define create-spark-with-yarn
 		magpie-hadoop-filesystem-substitution \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_YARN)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_SPARK_WITH_YARN)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_YARN},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_YARN}, hadoop spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_YARN)
@@ -695,7 +748,7 @@ define create-spark-with-yarn-and-hdfs
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -705,7 +758,7 @@ define create-spark-with-yarn-and-hdfs
 		magpie-hadoop-filesystem-substitution \
 		magpie-spark \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_YARN_AND_HDFS},${SPARK_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_YARN_AND_HDFS}, hadoop spark)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_YARN_AND_HDFS)
@@ -721,7 +774,7 @@ define create-spark-with-zeppelin
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
@@ -729,7 +782,7 @@ define create-spark-with-zeppelin
 		magpie-spark \
 		magpie-zeppelin \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_SPARK_WITH_ZEPPELIN)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_SPARK_WITH_ZEPPELIN)
 	$(call common-substitution, ${MAGPIE_SPARK_WITH_ZEPPELIN},${ZEPPELIN_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_SPARK_WITH_ZEPPELIN}, spark zeppelin)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"zeppelin\"/" $(MAGPIE_SPARK_WITH_ZEPPELIN)
@@ -745,20 +798,38 @@ define create-storm
 		magpie-header-llnl \
 		magpie-config-$(SCHED)-header \
 		magpie-config-bigdata-instructions \
-		magpie-config-$(SCHED)-bigdata \
+		magpie-config-$(SCHED)-master-worker \
 		magpie-magpie-customizations-substitution-bigdata \
 		magpie-general-configuration-header \
 		magpie-general-configuration-java \
 		magpie-storm \
 		magpie-zookeeper \
 		magpie-run-job-header-substitution \
-		magpie-run-job-$(DIST)-bigdata > $(MAGPIE_STORM)
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_STORM)
 	$(call common-substitution, ${MAGPIE_STORM},${STORM_JAVA_DEFAULT})
 	$(call common-additions, ${MAGPIE_STORM}, storm zookeeper)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"storm\"/" $(MAGPIE_STORM)
 	sed -i -e "s/STORM_SETUP=.*/STORM_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/ZOOKEEPER_SETUP=.*/ZOOKEEPER_SETUP=yes/" $(MAGPIE_STORM)
 	sed -i -e "s/ZOOKEEPER_VERSION=\"\(.*\)\"/ZOOKEEPER_VERSION=\"$(STORM_ZOOKEEPER_VERSION_DEFAULT)\"/" $(MAGPIE_STORM)
+endef
+
+define create-ray
+	echo "Creating magpie.$(SCHED)-ray"
+	cat 	magpie-shebang \
+		magpie-header-llnl \
+		magpie-config-$(SCHED)-header \
+		magpie-config-$(SCHED)-master-worker \
+		magpie-magpie-customizations-substitution-ml-master-worker \
+		magpie-general-configuration-header \
+		magpie-general-configuration-python \
+		magpie-ray \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_RAY)
+	$(call common-substitution, ${MAGPIE_RAY},${JAVA_DEFAULT})
+	$(call common-additions, ${MAGPIE_RAY}, ray)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"ray\"/" $(MAGPIE_RAY)
+	sed -i -e "s/RAY_SETUP=.*/RAY_SETUP=yes/" $(MAGPIE_RAY)
 endef
 
 define create-tensorflow
@@ -797,4 +868,3 @@ define create-tensorflow-horovod
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"tensorflow-horovod\"/" $(MAGPIE_TENSORFLOW_HOROVOD)
 	sed -i -e "s/TENSORFLOW_HOROVOD_SETUP=.*/TENSORFLOW_HOROVOD_SETUP=yes/" $(MAGPIE_TENSORFLOW_HOROVOD)
 endef
-

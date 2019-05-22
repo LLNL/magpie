@@ -121,3 +121,8 @@ then
     default_zookeeper_peer_port="2888"
     default_zookeeper_leader_port="3888"
 fi
+
+if [ "${RAY_SETUP}" == "yes" ]
+then
+    default_ray_port="6380"
+fi

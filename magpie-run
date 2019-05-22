@@ -43,6 +43,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-spark
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-storm
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-zeppelin
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-zookeeper
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-ray
 
 if ! Magpie_am_I_master
 then
@@ -147,6 +148,8 @@ Magpie_run_start_zeppelin
 # Will set magpie_run_storm_should_be_torndown & magpie_run_storm_setup_successful appropriately
 Magpie_run_start_storm
 
+Magpie_run_start_ray
+
 # After all services come up
 echo "*******************************************************"
 echo "* Executing Pre Run Scripts"
@@ -162,7 +165,8 @@ if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
     && [ "${magpie_run_kafka_setup_successful}" == "1" ] \
     && [ "${magpie_run_zeppelin_setup_successful}" == "1" ] \
     && [ "${magpie_run_hive_setup_successful}" == "1" ] \
-    && [ "${magpie_run_storm_setup_successful}" == "1" ]
+    && [ "${magpie_run_storm_setup_successful}" == "1" ] \
+    && [ "${magpie_run_ray_setup_successful}" == "1" ]
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
@@ -221,6 +225,9 @@ then
     elif [ "${MAGPIE_JOB_TYPE}" == "zookeeper" ]
     then
         Magpie_run_zookeeper
+    elif [ "${MAGPIE_JOB_TYPE}" == "ray" ]
+    then
+        Magpie_run_ray
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
         echo "*******************************************************"
@@ -237,6 +244,9 @@ echo "*******************************************************"
 echo "* Executing Post Run Scripts"
 echo "*******************************************************"
 ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-post-execute
+
+# Sets magpie_run_ray_teardown_complete if teardown done
+Magpie_run_stop_ray
 
 # Sets magpie_run_storm_teardown_complete if teardown done
 Magpie_run_stop_storm

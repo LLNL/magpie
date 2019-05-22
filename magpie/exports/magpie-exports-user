@@ -234,3 +234,21 @@ then
     export MAGPIE_TENSORFLOW_RANK=${MAGPIE_CLUSTER_NODERANK}
     export MAGPIE_TENSORFLOW_MAX_RANK=`expr ${MAGPIE_NODE_COUNT} - 1`
 fi
+
+if [ "${RAY_SETUP}" == "yes" ]
+then
+    if [ ! -f "${RAY_CONF_DIR}/masters" ]
+    then
+        Magpie_output_internal_error "${RAY_CONF_DIR}/masters does not exist"
+    fi
+
+    if [ ! -f "${RAY_CONF_DIR}/workers" ]
+    then
+        Magpie_output_internal_error "${RAY_CONF_DIR}/workers does not exist"
+    fi
+
+    masternode=`head -1 ${RAY_CONF_DIR}/masters`
+    export MAGPIE_RAY_ADDRESS="${masternode}:${default_ray_port}"
+    export RAY_MASTER_NODE=`cat ${RAY_CONF_DIR}/masters`
+    export RAY_WORKER_COUNT=`cat ${RAY_CONF_DIR}/workers|wc -l`
+fi

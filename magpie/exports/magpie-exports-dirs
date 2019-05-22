@@ -462,6 +462,40 @@ Magpie_make_zookeeper_local_dirs_node_specific () {
     __Magpie_make_zookeeper_local_dirs "specific"
 }
 
+__Magpie_make_ray_local_dirs () {
+    local which=$1
+
+    if [ "${RAY_SETUP}" == "yes" ]
+    then
+        if [ "${RAY_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "__Magpie_make_ray_local_dirs called without RAY_LOCAL_JOB_DIR set"
+            exit 1
+        fi
+
+        export RAY_CONF_DIR=${RAY_LOCAL_JOB_DIR}/conf
+        export RAY_LOG_DIR=${RAY_LOCAL_JOB_DIR}/log
+        export RAY_LOCAL_SCRATCHSPACE_DIR=${RAY_LOCAL_JOB_DIR}/scratch
+
+        if [ "${which}" == "specific" ]
+        then
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
+            export RAY_CONF_DIR=`echo $RAY_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export RAY_LOG_DIR=`echo $RAY_LOG_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export RAY_LOCAL_SCRATCHSPACE_DIR=`echo $RAY_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+        fi
+    fi
+}
+
+Magpie_make_ray_local_dirs_unspecified () {
+    __Magpie_make_ray_local_dirs "generic"
+}
+
+Magpie_make_ray_local_dirs_node_specific () {
+    __Magpie_make_ray_local_dirs "specific"
+}
+
 __Magpie_make_all_local_dirs () {
     __Magpie_make_magpie_local_dirs $1
     __Magpie_make_hadoop_local_dirs $1
@@ -473,6 +507,7 @@ __Magpie_make_all_local_dirs () {
     __Magpie_make_kafka_local_dirs $1
     __Magpie_make_storm_local_dirs $1
     __Magpie_make_zookeeper_local_dirs $1
+    __Magpie_make_ray_local_dirs $1
 }
 
 Magpie_make_all_local_dirs_unspecified () {
@@ -626,3 +661,14 @@ then
     Magpie_make_zookeeper_local_dirs_node_specific
 fi
 
+if [ "${RAY_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export RAY_LOCAL_JOB_DIR=${RAY_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/ray
+    else
+        export RAY_LOCAL_JOB_DIR=${RAY_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/ray
+    fi
+    # RAY_LOCAL_SCRATCHSPACE_DIR & RAY_CONF_DIR & RAY_LOG_DIR set
+    Magpie_make_ray_local_dirs_node_specific
+fi

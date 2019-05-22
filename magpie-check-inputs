@@ -256,13 +256,14 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zookeeper" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tensorflow" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tensorflow-horovod" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "ray" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "setuponly" ]
 then
     echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, \
-          kafka, zeppelin, storm, hive, zookeeper, tensorflow, tensorflow-horovod, \
+          kafka, zeppelin, storm, hive, zookeeper, tensorflow, tensorflow-horovod, ray, \
           testall, script, interactive, or setuponly"
     exit 1
 fi
@@ -356,7 +357,7 @@ nodecount=${MAGPIE_NODE_COUNT}
 # nodecountmaster is a counter to count the master only once
 nodecountmaster=1
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY"
 
 for project in ${magpieprojects}
 do
@@ -378,11 +379,12 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HIVE_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${TENSORFLOW_SETUP}" != "yes" ] \
-    && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ]
+    && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ] \
+    && [ "${RAY_SETUP}" != "yes" ]
 then
     echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor KAFKA_SETUP nor ZEPPELIN_SETUP nor \
           STORM_SETUP nor HIVE_SETUP nor ZOOKEEPER_SETUP nor TENSORFLOW_SETUP nor TENSORFLOW_HOROVOD_SETUP \
-          are set to yes, there is nothing to setup"
+          nor RAY_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
@@ -401,7 +403,7 @@ done
 
 # Did user turn on something matching job run type
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY"
 
 for project in ${magpieprojects}
 do
@@ -428,7 +430,8 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${HIVE_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${TENSORFLOW_SETUP}" != "yes" ] \
-    && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ]
+    && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ] \
+    && [ "${RAY_SETUP}" != "yes" ]
 then
     echo "Cannot run testall job type, nothing is enabled to be setup"
     exit 1
@@ -1275,6 +1278,43 @@ then
         __Magpie_check_must_be_set_and_is_regular_file "MAGPIE_TF_CNN_BENCHMARK_PY_FILE" "for tensorflow horovod cnn-benchmark, python executable benchmark files have to be set"
         __Magpie_check_must_be_set "MAGPIE_TF_CNN_BENCHMARK_PARAMETERS" "for tensorflow horovod some parameters should be passed"
 
+    fi
+fi
+
+#
+# Check Ray Inputs
+#
+
+if [ "${RAY_SETUP}" == "yes" ]
+then
+# Subtract 1 for Ray Master
+    nodecount=`expr ${nodecount} - ${nodecountmaster}`
+    nodecountmaster=0
+
+    __Magpie_check_must_be_set "MAGPIE_PYTHON" "for Ray"
+
+    if [ "${RAY_JOB}" != "rayips" ] \
+        && [ "${RAY_JOB}" != "script" ]
+    then
+        echo "RAY_JOB must be set to rayips or script"
+        exit 1
+    fi
+
+    __Magpie_check_must_be_set_and_is_directory "RAY_HOME" "to run Ray"
+
+    __Magpie_check_path_is_executable "${RAY_HOME}/ray"
+
+    __Magpie_check_must_be_set "RAY_LOCAL_DIR" "to run Ray"
+
+    if [ "${MAGPIE_JOB_TYPE}" == "ray" ] && [ "${RAY_JOB}" == "script" ]
+    then
+        __Magpie_check_must_be_set_and_is_regular_file "RAY_SCRIPT_PATH" "for RAY_JOB = ${RAY_JOB}"
+    fi
+
+    if [ ${nodecount} -le "0" ]
+    then
+        echo "No remaining nodes for Ray workers, increase node count or adjust node allocations"
+        exit 1
     fi
 fi
 

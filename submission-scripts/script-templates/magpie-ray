@@ -1,0 +1,49 @@
+############################################################################
+# Ray Core Configurations
+############################################################################
+
+# Should Ray be run
+#
+# Specify yes or no.  Defaults to no.
+#
+export RAY_SETUP=yes
+
+# Path to ray command
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+export RAY_HOME="RAYDIRPREFIX/bin"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export RAY_LOCAL_DIR="LOCALDIRPREFIX/ray"
+
+############################################################################
+# Ray Job/Run Configurations
+############################################################################
+
+# Set ray job for MAGPIE_JOB_TYPE = ray
+#
+# "rayips" - run Ray IP check example.  Useful for making sure things
+#            are setup correctly.
+#
+# "script" - execute the python script indicated by RAY_SCRIPT_PATH.
+#            See RAY_SCRIPT_PATH below for more information.
+#
+export RAY_JOB="rayips"
+
+# Specify script to execute for "script" mode in RAY_JOB.
+#
+# This python script will be executed on the master node via the
+# default python path or the python specified in MAGPIE_PYTHON if it
+# is set.
+#
+# It is assumed that ray libraries are already in your python
+# path.  If it is not, it should be added.
+#
+# export RAY_SCRIPT_PATH="${HOME}/my-ray-script"
+

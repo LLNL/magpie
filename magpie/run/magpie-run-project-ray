@@ -1,0 +1,149 @@
+#!/bin/bash
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# These are functions to be called by magpie-run
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-submission-type
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-dirs
+source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-defaults
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-run
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-log
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-paths
+
+Magpie_set_ray_ssh () {
+    if [ "${MAGPIE_REMOTE_CMD}X" != "X" ]
+    then
+        export RAY_SSH_CMD=${MAGPIE_REMOTE_CMD}
+        export RAY_SSH_CMD_OPTS=${MAGPIE_REMOTE_CMD_OPTS:-}
+    fi
+}
+
+Magpie_run_start_ray () {
+    if [ "${RAY_SETUP}" == "yes" ] && [ "${magpie_run_prior_startup_successful}" == "true" ]
+    then
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
+        then
+            # Make variables unspecified for launching
+            Magpie_make_all_local_dirs_unspecified
+
+            Magpie_set_ray_ssh
+
+            echo "Starting ray"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-ray-start-all.sh
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
+
+            # My rough estimate for setup time is 30 seconds per 128 nodes
+            local sleepwait=`expr ${RAY_WORKER_COUNT} \/ 128 \* 30`
+            if [ ${sleepwait} -lt 30 ]
+            then
+                sleepwait=30
+            fi
+            echo "Waiting ${sleepwait} seconds to allow Ray daemons to setup"
+            sleep ${sleepwait}
+            magpie_run_total_sleep_wait=`expr ${magpie_run_total_sleep_wait} + ${sleepwait}`
+        fi
+
+        echo "*******************************************************"
+        echo "*"
+        echo "* Ray Information"
+        echo "*"
+        echo "* To connect to ray, use the address: ${MAGPIE_RAY_ADDRESS}"
+        echo "*"
+        if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
+        then
+            echo "* To setup, login and set environment variables per the"
+            echo "* instructions above, then run:"
+            echo "*"
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-ray-start-all.sh"
+            echo "*"
+            echo "* To end/cleanup your session & kill all daemons, login and set"
+            echo "* environment variables per the instructions above, then run:"
+            echo "*"
+            echo "*   $MAGPIE_SCRIPTS_HOME/bin/magpie-ray-stop-all.sh"
+            echo "*"
+        fi
+        echo "*******************************************************"
+
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
+        then
+            # Return 0 if service up, 1 if not
+            # XXX TODO
+            # Magpie_check_service_up "Ray" "__Magpie_run_check_ray_up"
+
+            if [ $? -eq 0 ]
+            then
+                magpie_run_ray_should_be_torndown=1
+                magpie_run_ray_setup_successful=1
+            else
+                magpie_run_ray_should_be_torndown=1
+                magpie_run_ray_setup_successful=0
+                magpie_run_prior_startup_successful=false
+            fi
+        else
+            magpie_run_ray_should_be_torndown=1
+            magpie_run_ray_setup_successful=1
+        fi
+    else
+        magpie_run_ray_should_be_torndown=0
+        magpie_run_ray_setup_successful=1
+    fi
+}
+
+Magpie_run_ray () {
+    if [ "${RAY_JOB}" == "rayips" ]
+    then
+        echo "*******************************************************"
+        echo "* Running Ray IPs"
+        echo "*******************************************************"
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${MAGPIE_PYTHON} ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-ray-rayips.py" &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    else
+        Magpie_output_internal_error "RAY_JOB = ${RAY_JOB} not handled"
+    fi
+}
+
+Magpie_run_stop_ray () {
+    if [ "${RAY_SETUP}" == "yes" ] && [ "${magpie_run_ray_should_be_torndown}" == "1" ]
+    then
+        if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
+        then
+            # Make variables unspecified for shutdown
+            Magpie_make_all_local_dirs_unspecified
+
+            Magpie_set_ray_ssh
+
+            echo "Stopping ray"
+            ${MAGPIE_SCRIPTS_HOME}/bin/magpie-ray-stop-all.sh
+
+            # Make variables specific now within Magpie
+            Magpie_make_all_local_dirs_node_specific
+        fi
+    fi
+    magpie_run_ray_teardown_complete=1
+}
