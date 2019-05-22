@@ -1,0 +1,320 @@
+#!/bin/sh
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+########################################################################
+#  Project Magpie. For details, see https://github.com/llnl/magpie.
+#
+#  Copyright (C) 2019 Intel Corporation. All rights reserved.
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License version
+#  2 as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  Aleksander Kantak <aleksander.kantak@intel.com>
+########################################################################
+
+############################################################################
+# SLURM Customizations
+############################################################################
+
+#SBATCH --nodes=<my_node_count>
+#SBATCH --output="slurm-%j.out"
+
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+#SBATCH --time=<my_time_in_minutes>
+
+# Job name.  This will be used in naming directories for the job.
+#SBATCH --job-name=<my_job_name>
+
+# Partition to launch job in
+#SBATCH --partition=<my_partition>
+
+## SLURM Values
+# Generally speaking, don't touch the following, misc other configuration
+
+#SBATCH --ntasks-per-node=1
+#SBATCH --exclusive
+
+# Need to tell Magpie how you are submitting this job
+export MAGPIE_SUBMISSION_TYPE="sbatchsrun"
+
+
+############################################################################
+# Magpie Configurations
+############################################################################
+
+# Directory your launching scripts/files are stored
+#
+# Normally an NFS mount, someplace magpie can be reached on all nodes.
+export MAGPIE_SCRIPTS_HOME="${HOME}/magpie"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
+#
+export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
+
+# Magpie job type
+#
+# "tensorflow" - Run a job according to the settings of TENSORFLOW_JOB.
+#
+# "tensorflow-horovod" - Run a job according to the settings of TENSORFLOW_HOROVOD_JOB.
+#
+# "testall" - Run a job that runs all basic sanity tests for all
+#             software that is configured to be setup.  This is a good
+#             way to sanity check that everything has been setup
+#             correctly and the way you like.
+#
+#             For Tensorflow, testall will run tfadd
+#             For tensorflow horovod, testall will run synthetic-benchmark
+#
+export MAGPIE_JOB_TYPE="tensorflow-horovod"
+
+# Specify script and arguments to execute for "script" mode in
+# MAGPIE_JOB_TYPE
+#
+# export MAGPIE_JOB_SCRIPT="${HOME}/my-job-script"
+
+# Specify script startup / shutdown time window
+#
+# Specifies the amount of time to give startup / shutdown activities a
+# chance to succeed before Magpie will give up (or in the case of
+# shutdown, when the resource manager/scheduler may kill the running
+# job).  Defaults to 30 minutes for startup, 30 minutes for shutdown.
+#
+# The startup time in particular may need to be increased if you have
+# a large amount of data.  As an example, HDFS may need to spend a
+# significant amount of time determine all of the blocks in HDFS
+# before leaving safemode.
+#
+# The stop time in particular may need to be increased if you have a
+# large amount of cleanup to be done.  HDFS will save its NameSpace
+# before shutting down.  Hbase will do a compaction before shutting
+# down.
+#
+# The startup & shutdown window must together be smaller than the
+# timelimit specified for the job.
+#
+# MAGPIE_STARTUP_TIME and MAGPIE_SHUTDOWN_TIME at minimum must be 5
+# minutes.  If MAGPIE_POST_JOB_RUN is specified below,
+# MAGPIE_SHUTDOWN_TIME must be at minimum 10 minutes.
+#
+# export MAGPIE_STARTUP_TIME=30
+# export MAGPIE_SHUTDOWN_TIME=30
+
+# Magpie One Time Run
+#
+# Normally, Magpie assumes that when a user runs a job, data created
+# and stored within that job will be desired to be accessed again.  For
+# example, data created and stored within HDFS will be accessed again.
+#
+# Under a number of scenarios, this may not be desired.  For example
+# during testing.
+#
+# To improve useability and performance, setting MAGPIE_ONE_TIME_RUN
+# below to yes will have two effects on the Magpie job.
+#
+# 1) A number of data paths (such as for HDFS) will be put into unique
+#    paths for this job.  Therefore, no other job should be able to
+#    access the data again.  This is particularly useful if you wish
+#    to run performance tests with this job script over and over
+#    again.
+#
+#    Magpie will not remove data that was written, so be sure to clean up
+#    your directories later.
+#
+# 2) In order to improve job throughout, Magpie will take shortcuts by
+#    not properly tearing down the job.  As data corruption should not be
+#    a concern on job teardown, the job can complete more quickly.
+#
+# export MAGPIE_ONE_TIME_RUN=yes
+
+# Convenience Scripts
+#
+# Specify script to be executed to before / after your job.  It is run
+# on all nodes.
+#
+# Typically the pre-job script is used to set something up or get
+# debugging info.  It can also be used to determine if system
+# conditions meet the expectations of your job.  The primary job
+# running script (magpie-run) will not be executed if the
+# MAGPIE_PRE_JOB_RUN exits with a non-zero exit code.
+#
+# The post-job script is typically used for cleaning up something or
+# gathering info (such as logs) for post-debugging/analysis.  If it is
+# set, MAGPIE_SHUTDOWN_TIME above must be > 5.
+#
+# See example magpie-example-pre-job-script and
+# magpie-example-post-job-script for ideas of what you can do w/ these
+# scripts
+#
+# Multiple scripts can be specified separated by comma.  Arguments can
+# be passed to scripts as well.
+#
+# A number of convenient scripts are available in the
+# ${MAGPIE_SCRIPTS_HOME}/scripts directory.
+#
+# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
+#
+# Similar to the MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN, scripts can be
+# run after the stack is setup but prior to the script or interactive mode 
+# begins. This enables frontends and other processes that depend on the stack
+# to be started up and torn down. In similar fashion the cleanup will be done 
+# immediatly after the script or interactive mode exits before the stack is 
+# shutdown.
+#
+# export MAGPIE_PRE_EXECUTE_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
+# export MAGPIE_POST_EXECUTE_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
+
+############################################################################
+# General Configuration
+############################################################################
+
+# MAGPIE_PYTHON path used for:
+# - Spark PySpark path
+# - Launching tensorflow tasks
+export MAGPIE_PYTHON="/usr/bin/python"
+
+############################################################################
+# Tensorflow Horovod Customizations
+############################################################################
+
+# Should Tensorflow Horovod be run
+#
+# Specify yes or no.  Defaults to no.
+#
+export TENSORFLOW_HOROVOD_SETUP=yes
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+#
+export TENSORFLOW_HOROVOD_LOCAL_DIR="/tmp/${USER}/tensorflow-horovod"
+
+# Set tensorflow horovod job for MAGPIE_JOB_TYPE = tensorflow-horovod
+#
+# "cnn-benchmark" - run cnn benchmark which is tensorflow benchmark using horovod on MPI.
+#                   This option requires defining variables in section Tensorflow Horovod CNN benchmark settings.
+#
+# "synthetic-benchmark" - run synthetic benchmark which is default option, should work out-of-the-box.
+#                         There is possible customization in section Tensorflow Horovod synthetic benchmark settings.
+#
+# "script" - execute a script set in TENSORFLOW_HOROVOD_SCRIPT_PATH using MPI.
+#            Settings are in section Tensorflow Horovod synthetic benchmark settings.
+#
+export TENSORFLOW_HOROVOD_JOB=synthetic-benchmark
+
+
+############################################################################
+# Tensorflow Horovod synthetic benchmark settings
+############################################################################
+
+# Synthetic Horovod parameters
+
+#export MAGPIE_TF_SYNTHETIC_BENCHMARK_PARAMETERS=" \
+#--no-cuda \
+#--batch-size=32 \
+#"
+
+############################################################################
+# Tensorflow Horovod CNN benchmark settings
+############################################################################
+
+# path to downloaded benchmark source
+# source: https://github.com/tensorflow/benchmarks/blob/master/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py
+# branch in source code repo have to match your tensorflow version
+#export MAGPIE_TF_CNN_BENCHMARK_PY_FILE="/path/to/TF_Benchmark/benchmarks/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py"
+
+
+# CNN benchmark parameters
+
+#export MAGPIE_TF_CNN_BENCHMARK_PARAMETERS=" \
+#--batch_size=<single_batch_size> \
+#--num_batches=<number_of_batches> \
+#--model=resnet50 \
+#--num_inter_threads=<number_of_inter_threads> \
+#--num_intra_threads=<number_of_intra_threads> \
+#--display_every=5 \
+#--optimizer=momentum \
+#--device=cpu \
+#--mkl=TRUE \
+#--variable_update=horovod \
+#--horovod_device=cpu \
+#--local_parameter_device=cpu \
+#--kmp_blocktime=1 \
+#--save_model_secs=3 \
+#--data_format=NCHW \
+#--data_dir=/path/to/imagenet/tfrecords/train \
+#--data_name=imagenet \
+#--train_dir=/path/to/imagenet/model-checkpoint \
+#"
+
+############################################################################
+# Tensorflow Horovod script running settings
+############################################################################
+
+# if TENSORFLOW_HOROVOD_JOB is set to script, TENSORFLOW_HOROVOD_SCRIPT_PATH is necessary
+#export TENSORFLOW_HOROVOD_SCRIPT_PATH=/path/to/executable
+
+############################################################################
+# Run Job
+############################################################################
+
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-check-inputs
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-core
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-projects
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-setup-post
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-pre-run
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-run-distributed
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-cleanup
+srun -W 0 $MAGPIE_SCRIPTS_HOME/magpie-post-run
