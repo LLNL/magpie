@@ -1300,9 +1300,9 @@ then
         exit 1
     fi
 
-    __Magpie_check_must_be_set_and_is_directory "RAY_HOME" "to run Ray"
+    __Magpie_check_must_be_set "RAY_PATH"
 
-    __Magpie_check_path_is_executable "${RAY_HOME}/ray"
+    __Magpie_check_path_is_executable "${RAY_PATH}"
 
     __Magpie_check_must_be_set "RAY_LOCAL_DIR" "to run Ray"
 

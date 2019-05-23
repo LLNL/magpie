@@ -40,7 +40,7 @@ Instructions For Using Tensorflow
 
    RAY_SETUP : Set to yes
 
-   RAY_HOME : Where your Ray binary is.  Typically in an NFS mount.
+   RAY_PATH : Path to Ray executable.  Typically in an NFS mount.
 
    RAY_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.

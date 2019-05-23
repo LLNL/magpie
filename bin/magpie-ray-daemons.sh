@@ -69,9 +69,9 @@ then
     exit 1
 fi
 
-if [ "${RAY_HOME}X" == "X" ]
+if [ "${RAY_PATH}X" == "X" ]
 then
-    echo "RAY_HOME not specified"
+    echo "RAY_PATH not specified"
     exit 1
 fi
 
@@ -99,7 +99,7 @@ then
     exit 1
 fi
 
-${MAGPIE_SCRIPTS_HOME}/bin/magpie-ray-daemon.sh ${RAY_HOME} ${raylogdir} ${MAGPIE_RAY_ADDRESS} master $1
+${MAGPIE_SCRIPTS_HOME}/bin/magpie-ray-daemon.sh ${RAY_PATH} ${raylogdir} ${MAGPIE_RAY_ADDRESS} master $1
 
 RSH_CMD=${RAY_SSH_CMD:-ssh}
 
@@ -109,5 +109,5 @@ for raynode in ${raynodes}
 do
     raylogdir=`echo ${orig_raylogdir} | sed "s/MAGPIEHOSTNAMESUBSTITUTION/$raynode/g"`
 
-    ${RSH_CMD} ${RAY_SSH_OPTS} ${raynode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-ray-daemon.sh ${RAY_HOME} ${raylogdir} ${MAGPIE_RAY_ADDRESS} worker $1
+    ${RSH_CMD} ${RAY_SSH_OPTS} ${raynode} ${MAGPIE_SCRIPTS_HOME}/bin/magpie-ray-daemon.sh ${RAY_PATH} ${raylogdir} ${MAGPIE_RAY_ADDRESS} worker $1
 done

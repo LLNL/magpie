@@ -258,7 +258,7 @@ export RAY_SETUP=yes
 # This should be accessible on all nodes in your allocation. Typically
 # this is in an NFS mount.
 #
-export RAY_HOME="${HOME}/bin"
+export RAY_PATH="${HOME}/bin/ray"
 
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
