@@ -360,6 +360,7 @@ Hive - See README.hive
 Spark - See README.spark
 TensorFlow - See README.tensorflow
 TensorFlow Horovod - See README.tensorflow-horovod
+Ray - See README.ray
 Storm - See README.storm
 Phoenix - See README.phoenix
 Kafka - See README.kafka
