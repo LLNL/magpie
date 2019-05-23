@@ -117,8 +117,8 @@ STORM_MASTER_NODE : the master node of the Storm allocation
 
 STORM_NIMBUS_HOST : Identical to STORM_MASTER_NODE
 
-STORM_WORKERS_COUNT : number of compute/data nodes in your allocation
-                      for Storm.
+STORM_WORKER_COUNT : number of compute/data nodes in your allocation
+                     for Storm.
 
 STORM_CONF_DIR : the directory that Storm configuration files local
                  to the node are stored.

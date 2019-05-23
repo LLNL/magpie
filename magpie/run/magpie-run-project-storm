@@ -69,7 +69,7 @@ Magpie_run_start_storm () {
             Magpie_make_all_local_dirs_node_specific
 
             # My rough estimate for setup time is 30 seconds per 128 nodes
-            local sleepwait=`expr ${STORM_WORKERS_COUNT} \/ 128 \* 30`
+            local sleepwait=`expr ${STORM_WORKER_COUNT} \/ 128 \* 30`
             if [ ${sleepwait} -lt 30 ]
             then
                 sleepwait=30
@@ -147,7 +147,7 @@ Magpie_run_start_storm () {
                 echo "setenv STORM_LOG_DIR \"${STORM_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_MASTER_NODE \"${STORM_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_NIMBUS_HOST \"${STORM_NIMBUS_HOST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                echo "setenv STORM_WORKERS_COUNT \"${STORM_WORKERS_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv STORM_WORKER_COUNT \"${STORM_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv STORM_VERSION \"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then
@@ -160,7 +160,7 @@ Magpie_run_start_storm () {
                 echo "export STORM_LOG_DIR=\"${STORM_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_MASTER_NODE=\"${STORM_MASTER_NODE}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_NIMBUS_HOST=\"${STORM_NIMBUS_HOST}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                echo "export STORM_WORKERS_COUNT=\"${STORM_WORKERS_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export STORM_WORKER_COUNT=\"${STORM_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export STORM_VERSION=\"${STORM_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
                 then

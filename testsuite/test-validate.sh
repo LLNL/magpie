@@ -741,10 +741,10 @@ __check_exports_storm () {
         echo "Error in $file - can't find export STORM_NIMBUS_HOST"
     fi
 
-    num=`grep -E "STORM_WORKERS_COUNT=[0-9]+" ${file} | wc -l`
+    num=`grep -E "STORM_WORKER_COUNT=[0-9]+" ${file} | wc -l`
     if [ "${num}" == 0 ]
     then
-        echo "Error in $file - can't find export STORM_WORKERS_COUNT"
+        echo "Error in $file - can't find export STORM_WORKER_COUNT"
     fi
 }
 
