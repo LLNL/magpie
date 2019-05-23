@@ -58,7 +58,7 @@ Instructions For Storm
    STORM_LOCAL_DIR : A small place for conf files and log files local
    to each node.  Typically /tmp directory.
 
-4) Select how your job will run by setting STORM_MODE.  The first time
+4) Select how your job will run by setting STORM_JOB.  The first time
    you'll probably want to run w/ 'stormwordcount' mode just to try
    things out and make sure things look setup correctly.
 
