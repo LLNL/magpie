@@ -18,6 +18,7 @@ source test-generate-zookeeper.sh
 source test-generate-zeppelin.sh
 source test-generate-tensorflow.sh
 source test-generate-tensorflow-horovod.sh
+source test-generate-ray.sh
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
@@ -49,6 +50,7 @@ zookeepertests=y
 zeppelintests=y
 tensorflowtests=n
 tensorflowhorovodtests=n
+raytests=n
 
 # Sections to test
 # - version tests, test permutation of versions
@@ -486,6 +488,8 @@ java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
 java18pathsubst=`echo ${JAVA18PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythonpathsubst=`echo ${MAGPIE_PYTHON_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythontensorflowpathsubst=`echo ${MAGPIE_PYTHON_TENSORFLOW_PATH} | sed "s/\\//\\\\\\\\\//g"`
+magpieraypathsubst=`echo ${MAGPIE_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
+magpiepythonraypathsubst=`echo ${MAGPIE_PYTHON_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
 
 if [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ]
 then
@@ -620,6 +624,11 @@ if [ "${tensorflowhorovodtests}" == "y" ]; then
         GenerateTensorflowHorovodStandardTests
     fi
 fi
+if [ "${raytests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+        GenerateRayStandardTests
+    fi
+fi
 
 # Remove any tests we don't want
 
@@ -685,6 +694,7 @@ GenerateZookeeperPostProcessing
 GenerateZeppelinPostProcessing
 GenerateTensorflowPostProcessing
 GenerateTensorflowHorovodPostProcessing
+GenerateRayPostProcessing
 
 # Seds for all tests
 
@@ -715,6 +725,7 @@ then
     sed -i -e 's/export TACHYON_LOCAL_DIR="\(.*\)"/export TACHYON_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export ZEPPELIN_LOCAL_DIR="\(.*\)"/export ZEPPELIN_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export ZOOKEEPER_LOCAL_DIR="\(.*\)"/export ZOOKEEPER_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
+    sed -i -e 's/export RAY_LOCAL_DIR="\(.*\)"/export RAY_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
 fi
 
 files=`find . -maxdepth 1 -name "magpie.${submissiontype}*" | grep -v Dependency`

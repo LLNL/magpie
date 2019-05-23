@@ -1564,3 +1564,33 @@ then
         __test_output_finalize $file
     done
 fi
+
+__get_test_files run-rayips
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "IP =" $file | wc -l`
+        if [ "${num}" == "0" ]; then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
+
+__get_test_files run-rayscript
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        num=`grep -e "IP =" $file | wc -l`
+        if [ "${num}" == "0" ]; then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi
