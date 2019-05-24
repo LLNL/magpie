@@ -270,8 +270,8 @@ export RAY_LOCAL_DIR="/tmp/${USER}/ray"
 
 # Set ray job for MAGPIE_JOB_TYPE = ray
 #
-# "rayips" - run Ray IP check example.  Useful for making sure things
-#            are setup correctly.
+# "rayips" - run Ray IP example.  Useful for making sure things are
+#            setup correctly.
 #
 # "script" - execute the python script indicated by RAY_SCRIPT_PATH.
 #            See RAY_SCRIPT_PATH below for more information.
