@@ -80,3 +80,14 @@ MAGPIE_RAY_ADDRESS
 
 This environment variable holds the IP and port your script should
 use to connect to the ray via ray.init().
+
+The following environment variables are exported when your job is run
+and may be useful.
+
+MAGPIE_RAY_MASTER_NODE
+MAGPIE_RAY_MASTER_NODE_IP_ADDRESS
+MAGPIE_RAY_MASTER_PORT
+
+These environment variables provide the master node hostname, ip
+addresss, and port respectfully.
+

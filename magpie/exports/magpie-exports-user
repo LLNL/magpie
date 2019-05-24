@@ -248,7 +248,21 @@ then
     fi
 
     masternode=`head -1 ${RAY_CONF_DIR}/masters`
-    export MAGPIE_RAY_ADDRESS="${masternode}:${default_ray_port}"
-    export RAY_MASTER_NODE=`cat ${RAY_CONF_DIR}/masters`
+
+    if [ "${MAGPIE_HOSTNAME_SCHEDULER_MAP}X" != "X" ]
+    then
+        newhost=`${MAGPIE_HOSTNAME_SCHEDULER_MAP} ${masternode}`
+        if [ $? -ne 0 ]
+        then
+            echo "Error in MAGPIE_HOSTNAME_SCHEDULER_MAP = ${MAGPIE_HOSTNAME_SCHEDULER_MAP}"
+            exit 1
+        fi
+        masternode=${newhost}
+    fi
+    masternodeip=`getent hosts ${masternode} | awk '{print $1}'`
+    export MAGPIE_RAY_MASTER_NODE="${masternode}"
+    export MAGPIE_RAY_MASTER_IP_ADDRESS="${masternodeip}"
+    export MAGPIE_RAY_MASTER_PORT="${default_ray_port}"
+    export MAGPIE_RAY_ADDRESS="${MAGPIE_RAY_MASTER_NODE}:${MAGPIE_RAY_MASTER_PORT}"
     export RAY_WORKER_COUNT=`cat ${RAY_CONF_DIR}/workers|wc -l`
 fi

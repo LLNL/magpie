@@ -68,6 +68,8 @@ then
     exit 1
 fi
 
+raynode=`echo $3 | cut -d: -f1`
+rayip=`getent hosts ${raynode} | awk '{print $1}'`
 rayport=`echo $3 | cut -d: -f2`
 
 if [ "$4X" == "X" ]
@@ -100,7 +102,7 @@ then
     echo "Starting Ray $5 on $myhostname - output stored in $2/ray-$4.out"
     if [ "$4" == "master" ]
     then
-        nohup $1 start --head --redis-port=${rayport} > $2/ray-$4.out 2>&1 < /dev/null &
+        nohup $1 start --head --node-ip-address=${rayip} --redis-port=${rayport} > $2/ray-$4.out 2>&1 < /dev/null &
     else
         nohup $1 start --redis-address=$3 > $2/ray-$4.out 2>&1 < /dev/null &
     fi
