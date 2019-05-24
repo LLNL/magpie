@@ -74,6 +74,20 @@ Magpie_run_start_ray () {
         echo "*"
         echo "* To connect to ray, use the address: ${MAGPIE_RAY_ADDRESS}"
         echo "*"
+        echo "* The following may be useful environment variables to"
+        echo "* set if running interactively:"
+        echo "*"
+        if echo $MAGPIE_SHELL | grep -q csh
+        then
+            echo "*   setenv RAY_PATH \"${RAY_PATH}\""
+            echo "*   setenv RAY_CONF_DIR \"${RAY_CONF_DIR}\""
+            echo "*   setenv RAY_LOG_DIR \"${RAY_LOG_DIR}\""
+        else
+            echo "*   export RAY_PATH=\"${RAY_PATH}\""
+            echo "*   export RAY_CONF_DIR=\"${RAY_CONF_DIR}\""
+            echo "*   export RAY_LOG_DIR=\"${RAY_LOG_DIR}\""
+        fi
+        echo "*"
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]
         then
             echo "* To setup, login and set environment variables per the"
@@ -88,6 +102,23 @@ Magpie_run_start_ray () {
             echo "*"
         fi
         echo "*******************************************************"
+
+        if [ "${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}X" != "X" ]
+        then
+            if echo $MAGPIE_SHELL | grep -q csh
+            then
+                echo "setenv RAY_PATH \"${RAY_PATH}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv RAY_CONF_DIR \"${RAY_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv RAY_LOG_DIR \"${RAY_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv MAGPIE_RAY_ADDRESS \"${MAGPIE_RAY_ADDRESS}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            else
+                echo "export RAY_PATH=\"${RAY_PATH}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export RAY_CONF_DIR=\"${RAY_CONF_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export RAY_LOG_DIR=\"${RAY_LOG_DIR}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export MAGPIE_RAY_ADDRESS=\"${MAGPIE_RAY_ADDRESS}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+            fi
+            echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+        fi
 
         if [ ${MAGPIE_JOB_TYPE} != "setuponly" ]
         then
