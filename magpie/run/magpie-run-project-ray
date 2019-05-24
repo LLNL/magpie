@@ -154,6 +154,17 @@ Magpie_run_ray () {
         ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${MAGPIE_PYTHON} ${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-ray-rayips.py" &
         local scriptpid=$!
         Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
+    elif [ "${RAY_JOB}" == "script" ]
+    then
+        if [ "${MAGPIE_CLUSTER_NODERANK}" == "0" ]
+        then
+            echo "*******************************************************"
+            echo "* Executing Ray script $RAY_SCRIPT_PATH"
+            echo "*******************************************************"
+        fi
+        ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-execute script "${MAGPIE_PYTHON} ${RAY_SCRIPT_PATH}" &
+        local scriptpid=$!
+        Magpie_wait_script_sigusr2_on_job_timeout ${scriptpid}
     else
         Magpie_output_internal_error "RAY_JOB = ${RAY_JOB} not handled"
     fi
