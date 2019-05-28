@@ -1,6 +1,6 @@
 # This is a python script to be executed via python
 #
-# This was cut & pasted from the ray documentation
+# This was mostly cut & pasted from the ray documentation
 
 from __future__ import print_function
 
