@@ -122,9 +122,12 @@ stormzookeeper34java16versions_javaversion=${java16}
 stormzookeeper34java17versions="0.9.5 0.9.6 0.9.7 0.10.0 0.10.1 0.10.2 1.0.0 1.0.1 1.0.2 1.0.3 1.0.4 1.1.0 1.1.1 1.1.2 1.2.0 1.2.1 1.2.2"
 stormzookeeper34java17versions_zookeeperversion="3.4.14"
 stormzookeeper34java17versions_javaversion=${java17}
+stormzookeeper34java18versions="1.2.3"
+stormzookeeper34java18versions_zookeeperversion="3.4.14"
+stormzookeeper34java18versions_javaversion=${java18}
 
-storm_test_groups="stormzookeeper34java16versions stormzookeeper34java17versions"
-storm_all_versions="${stormzookeeper34java16versions} ${stormzookeeper34java17versions}"
+storm_test_groups="stormzookeeper34java16versions stormzookeeper34java17versions stormzookeeper34java18versions"
+storm_all_versions="${stormzookeeper34java16versions} ${stormzookeeper34java17versions} ${stormzookeeper34java18versions}"
 
 kafkazookeeper34java17versions="2.11-0.9.0.0"
 kafkazookeeper34java17versions_zookeeperversion="3.4.14"

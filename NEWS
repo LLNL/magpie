@@ -1,3 +1,8 @@
+Magpie 2.4
+----------
+Add support for Storm 1.2.3.
+- Update default Storm to 1.2.3.
+
 Magpie 2.3
 ----------
 Add experimental support Ray.
