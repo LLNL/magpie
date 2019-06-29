@@ -2,6 +2,8 @@ Magpie 2.4
 ----------
 Add support for Storm 1.2.3.
 - Update default Storm to 1.2.3.
+Add support for Hbase 1.4.10.
+- Update default Hbase to 1.4.10.
 
 Magpie 2.3
 ----------
