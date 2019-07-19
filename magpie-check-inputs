@@ -109,6 +109,16 @@ __Magpie_check_if_set_is_regular_file () {
     fi
 }
 
+__Magpie_check_path_is_regular_file () {
+    local pathfile="$1"
+
+    if [ ! -x ${pathfile} ]
+    then
+        echo "${pathfile} does not point to a regular file"
+        exit 1
+    fi
+}
+
 __Magpie_check_path_is_executable () {
     local pathexec="$1"
 
@@ -1308,7 +1318,11 @@ then
 
     if [ "${MAGPIE_JOB_TYPE}" == "ray" ] && [ "${RAY_JOB}" == "script" ]
     then
-        __Magpie_check_must_be_set_and_is_regular_file "RAY_SCRIPT_PATH" "for RAY_JOB = ${RAY_JOB}"
+        __Magpie_check_must_be_set "RAY_SCRIPT_PATH" "for RAY_JOB = ${RAY_JOB}"
+
+        # if user has multiple args, check if executable is ok
+        jobargs=($MAGPIE_JOB_SCRIPT)
+        __Magpie_check_path_is_regular_file ${jobargs[0]}
     fi
 
     if [ ${nodecount} -le "0" ]
