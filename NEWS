@@ -4,6 +4,8 @@ Add support for Storm 1.2.3.
 - Update default Storm to 1.2.3.
 Add support for Hbase 1.4.10.
 - Update default Hbase to 1.4.10.
+Support Spark 2.4.4-bin-hadoop2.6, 2.4.4-bin-hadoop2.7
+- Update Spark default to 2.4.4-bin-hadoop2.7
 
 Magpie 2.3
 ----------
