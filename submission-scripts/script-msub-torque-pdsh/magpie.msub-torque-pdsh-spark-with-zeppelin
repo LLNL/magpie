@@ -724,7 +724,7 @@ export ZEPPELIN_SETUP=yes
 
 # Zeppelin Version
 #
-export ZEPPELIN_VERSION="0.8.1"
+export ZEPPELIN_VERSION="0.8.2"
 
 # Path to your Zeppelin build/binaries
 #

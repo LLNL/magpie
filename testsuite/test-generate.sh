@@ -358,6 +358,7 @@ zeppelin_0_7_2=y
 zeppelin_0_7_3=y
 zeppelin_0_8_0=y
 zeppelin_0_8_1=y
+zeppelin_0_8_2=y
 
 MAGPIE_SCRIPTS_HOME=$(cd "`dirname "$0"`"/..; pwd)
 
