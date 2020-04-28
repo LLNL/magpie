@@ -123,6 +123,7 @@ hadoop_3_0_3=y
 hadoop_3_1_0=y
 hadoop_3_1_1=y
 hadoop_3_1_2=y
+hadoop_3_1_3=y
 hadoop_3_2_0=y
 hadoop_3_2_1=y
 pig_0_13_0=y
