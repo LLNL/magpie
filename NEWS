@@ -4,8 +4,8 @@ Support Hadoop 3.2.1
 - Update Hadoop default to 3.2.1
 Add support for Storm 1.2.3.
 - Update default Storm to 1.2.3.
-Add support for Hbase 1.4.10.
-- Update default Hbase to 1.4.10.
+Add support for Hbase 1.4.10, 1.4.13
+- Update default Hbase to 1.4.10, 1.4.13
 Add support for Zeppelin 0.8.2.
 - Update default Zeppelin to 0.8.2.
 Support Spark 2.4.4-bin-hadoop2.6, 2.4.4-bin-hadoop2.7
