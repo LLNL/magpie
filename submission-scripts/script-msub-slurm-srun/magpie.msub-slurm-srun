@@ -1374,7 +1374,7 @@ export SPARK_SETUP_TYPE="STANDALONE"
 
 # Version
 #
-export SPARK_VERSION="2.4.4-bin-hadoop2.7"
+export SPARK_VERSION="2.4.5-bin-hadoop2.7"
 
 # Path to your Spark build/binaries
 #
