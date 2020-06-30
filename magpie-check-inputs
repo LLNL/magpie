@@ -124,7 +124,7 @@ __Magpie_check_path_is_executable () {
 
     if [ ! -x ${pathexec} ]
     then
-        echo "Path ${patchexec} does not have execute permissions"
+        echo "Path ${pathexec} does not have execute permissions"
         exit 1
     fi
 }
