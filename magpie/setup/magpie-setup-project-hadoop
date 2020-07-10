@@ -293,9 +293,9 @@ fi
 
 if Magpie_hadoop_filesystem_mode_is_hdfs_type
 then
-    if [ "${HADOOP_SLAVE_COUNT}" -lt "${hdfsreplication}" ]
+    if [ "${HADOOP_WORKER_COUNT}" -lt "${hdfsreplication}" ]
     then
-        echo "Number of Hadoop slave nodes (${HADOOP_SLAVE_COUNT}) must be greater than HDFS replication (${hdfsreplication})"
+        echo "Number of Hadoop slave nodes (${HADOOP_WORKER_COUNT}) must be greater than HDFS replication (${hdfsreplication})"
         exit 1
     fi
 fi
