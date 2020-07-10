@@ -2,6 +2,8 @@ Magpie 2.5
 ----------
 Remove legacy support for HADOOP_SLAVE_COUNT and
   HADOOP_SLAVE_CORE_COUNT.  It's time for them to go.
+Support Spark 2.4.6-bin-hadoop2.6, 2.4.6-bin-hadoop2.7
+- Update Spark default to 2.4.6-bin-hadoop2.7
 
 Magpie 2.4
 ----------
