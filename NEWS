@@ -1,3 +1,8 @@
+Magpie 2.5
+----------
+Remove legacy support for HADOOP_SLAVE_COUNT and
+  HADOOP_SLAVE_CORE_COUNT.  It's time for them to go.
+
 Magpie 2.4
 ----------
 Support Hadoop 3.1.3, 3.2.1
