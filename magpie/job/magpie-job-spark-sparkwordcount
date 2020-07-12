@@ -86,7 +86,7 @@ then
     sparkexamplesjar=`find ${SPARK_HOME}/lib | grep jar | grep examples`
 
     command="${sparkcmdprefix}/spark-submit --class ${sparkwordcountclass} ${sparkexamplesjar} ${SPARK_SPARKWORDCOUNT_FILE}"
-elif echo ${SPARK_VERSION} | grep -q -E "2\.[0-9]\.[0-9]"
+elif echo ${SPARK_VERSION} | grep -q -E "[2-3]\.[0-9]\.[0-9]"
 then
     sparkexamplesjar=`find ${SPARK_HOME}/examples/jars/ | grep spark-examples`
 
