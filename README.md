@@ -98,13 +98,15 @@ Ray - 0.7.0
 Older Supported Packages & Features
 -----------------------------------
 
-Some packages and features were dropped in Magpie 2.0 due to lack of
-interest, the software becoming old/deprecated, and/or their initial
-experimental addition into Magpie.  If you are interested in them,
-please look at Magpie 1.X versions for supported versions and
-documentation.  If you are very interested in support in Magpie 2.0
-beyond an experimental nature, please submit a support request and we
-can reconsider adding it back in.
+Some packages and features were dropped due to lack of interest, the
+software becoming old/deprecated, and/or their initial experimental
+addition into Magpie.  If you are interested in them, please look at
+older versions for supported versions and documentation.  If you are
+very interested in support in current versions of Magpie beyond an
+experimental nature, please submit a support request and we can
+reconsider adding it back in.
+
+Removed in Magpie 2.0
 
    - Hadoop 1.X support
    - Tachyon
@@ -112,6 +114,8 @@ can reconsider adding it back in.
    - HDFS Federation in Hadoop
    - IntelLustre option for a Hadoop Filesystem
    - MagpieNetworkFS option for a Hadoop Filesystem
+
+Removed in Magpie 3.0
 
 Documentation
 -------------
