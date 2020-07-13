@@ -28,11 +28,7 @@ pighadoop27java17versions_javaversion=${java17}
 pig_test_groups="pighadoop26java16versions pighadoop27java17versions"
 pig_all_versions="${pighadoop26java16versions} ${pighadoop27java17versions}"
 
-hbasehadoop22zookeeper34java16versions="0.98.0-hadoop2 0.98.1-hadoop2 0.98.2-hadoop2 0.98.3-hadoop2 0.98.4-hadoop2 0.98.5-hadoop2 0.98.6-hadoop2 0.98.6.1-hadoop2 0.98.7-hadoop2 0.98.8-hadoop2 0.98.9-hadoop2 0.98.10-hadoop2 0.98.10.1-hadoop2 0.98.11-hadoop2 0.98.12-hadoop2 0.98.12.1-hadoop2 0.98.13-hadoop2 0.98.14-hadoop2 0.98.15-hadoop2 0.98.16-hadoop2 0.98.16.1-hadoop2 0.98.17-hadoop2 0.98.18-hadoop2 0.98.19-hadoop2 0.98.20-hadoop2 0.98.21-hadoop2 0.98.22-hadoop2 0.98.23-hadoop2 0.98.24-hadoop2"
-hbasehadoop22zookeeper34java16versions_hadoopversion="2.2.0"
-hbasehadoop22zookeeper34java16versions_zookeeperversion="3.4.6"
-hbasehadoop22zookeeper34java16versions_javaversion=${java16}
-hbasehadoop27zookeeper34java17versions="0.99.0 0.99.1 0.99.2 1.0.0 1.0.1 1.0.1.1 1.0.2 1.0.3 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.1.5 1.1.6 1.1.7 1.1.8 1.1.9 1.1.10 1.1.11 1.1.12 1.1.13 1.2.0 1.2.1 1.2.2 1.2.3 1.2.4 1.2.5 1.2.6 1.2.6.1 1.3.0 1.3.1 1.3.2 1.3.2.1 1.4.0 1.4.1 1.4.2 1.4.3 1.4.4 1.4.5 1.4.6 1.4.7 1.4.8 1.4.9"
+hbasehadoop27zookeeper34java17versions="1.0.0 1.0.1 1.0.1.1 1.0.2 1.0.3 1.1.0 1.1.0.1 1.1.1 1.1.2 1.1.3 1.1.4 1.1.5 1.1.6 1.1.7 1.1.8 1.1.9 1.1.10 1.1.11 1.1.12 1.1.13 1.2.0 1.2.1 1.2.2 1.2.3 1.2.4 1.2.5 1.2.6 1.2.6.1 1.3.0 1.3.1 1.3.2 1.3.2.1 1.4.0 1.4.1 1.4.2 1.4.3 1.4.4 1.4.5 1.4.6 1.4.7 1.4.8 1.4.9"
 hbasehadoop27zookeeper34java17versions_hadoopversion="2.7.0"
 hbasehadoop27zookeeper34java17versions_zookeeperversion="3.4.14"
 hbasehadoop27zookeeper34java17versions_javaversion=${java17}
@@ -41,9 +37,8 @@ hbasehadoop27zookeeper34java18versions_hadoopversion="2.7.0"
 hbasehadoop27zookeeper34java18versions_zookeeperversion="3.4.14"
 hbasehadoop27zookeeper34java18versions_javaversion=${java18}
 
-
-hbase_test_groups="hbasehadoop22zookeeper34java16versions hbasehadoop27zookeeper34java17versions hbasehadoop27zookeeper34java18versions"
-hbase_all_versions="${hbasehadoop22zookeeper34java16versions} ${hbasehadoop27zookeeper34java17versions} ${hbasehadoop27zookeeper34java18versions}"
+hbase_test_groups="hbasehadoop27zookeeper34java17versions hbasehadoop27zookeeper34java18versions"
+hbase_all_versions="${hbasehadoop27zookeeper34java17versions} ${hbasehadoop27zookeeper34java18versions}"
 
 hivehadoop27zookeeper34java17versions="2.3.0"
 hivehadoop27zookeeper34java17versions_hadoopversion="2.7.0"
