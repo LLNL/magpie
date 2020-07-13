@@ -3,7 +3,7 @@ Magpie
 
 Magpie contains a number of scripts for running Big Data software in
 HPC environments.  Thus far, Hadoop, Spark, Hbase, Hive, Storm, Pig,
-Mahout, Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It
+Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It
 currently supports running over the parallel file system Lustre and
 running over any generic network filesytem.  There is
 scheduler/resource manager support for Slurm, Moab, Torque, and LSF.
@@ -252,8 +252,6 @@ Storm - 0.9.3, 0.9.4, 0.9.5, 0.9.6, 0.9.7, 0.10.0, 0.10.1, 0.10.2,
         1.0.0, 1.0.1, 1.0.2, 1.0.3, 1.0.4, 1.1.0, 1.1.1, 1.1.2, 1.2.0,
         1.2.1, 1.2.2, 1.2.3
 
-Mahout - 0.11.0+, 0.11.1+, 0.11.2+, 0.12.0+, 0.12.1+, 0.12.2, 0.13.0
-
 Phoenix - 4.5.0-Hbase-1.0+, 4.5.0-Hbase-1.1+, 4.5.1-Hbase-1.0+,
           4.5.1-Hbase-1.1+, 4.5.2-HBase-1.0+, 4.5.2-HBase-1.1+,
           4.6.0-Hbase-1.0+, 4.6.0-Hbase-1.1, 4.7.0-Hbase-1.0+,
@@ -287,9 +285,6 @@ to be a good starting point to use in running jobs.
 
 Pig 0.13.X, 0.14.X w/ Hadoop 2.6.X
 Pig 0.15.X -> 0.17.X w/ Hadoop 2.7.X
-
-Mahout 0.11.X w/ Hadoop 2.7.X
-Mahout 0.12.X w/ Hadoop 2.7.X
 
 Hbase 0.98.X w/ Hadoop 2.2.X, Zookeeper 3.4.X
 Hbase 0.99.X -> 1.6.X w/ Hadoop 2.7.X, Zookeeper 3.4.X
@@ -376,7 +371,7 @@ considered on the side of experimental.
 
 - Experimental
 
-  Packages: Kafka, Zeppelin, Mahout, Hive, TensorFlow w/ & w/o
+  Packages: Kafka, Zeppelin, Hive, TensorFlow w/ & w/o
   Horovod, Ray
 
 Documentation
@@ -388,7 +383,6 @@ files.
 
 Hadoop - See README.hadoop
 Pig - See README.pig
-Mahout - See README.mahout
 Hbase - See README.hbase
 Hive - See README.hive
 Spark - See README.spark

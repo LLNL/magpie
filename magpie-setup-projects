@@ -42,14 +42,6 @@ then
     fi
 fi
 
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    (${MAGPIE_SCRIPTS_HOME}/magpie/setup/magpie-setup-project-mahout)
-    if [ $? -ne 0 ] ; then
-        exit 1
-    fi
-fi
-
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     (${MAGPIE_SCRIPTS_HOME}/magpie/setup/magpie-setup-project-hbase)

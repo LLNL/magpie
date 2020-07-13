@@ -9,7 +9,6 @@ source test-generate-hadoop.sh
 source test-generate-hbase.sh
 source test-generate-hive.sh
 source test-generate-kafka.sh
-source test-generate-mahout.sh
 source test-generate-phoenix.sh
 source test-generate-pig.sh
 source test-generate-spark.sh
@@ -41,7 +40,6 @@ standardtests=n
 dependencytests=n
 hadooptests=n
 pigtests=n
-mahouttests=n
 hbasetests=n
 hivetests=n
 phoenixtests=n
@@ -63,7 +61,6 @@ cornercasetests=y
 functionalitytests=y
 hadoopversiontests=y
 pigversiontests=y
-mahoutversiontests=y
 hbaseversiontests=y
 hiveversiontests=y
 phoenixversiontests=y
@@ -139,13 +136,6 @@ pig_0_14_0=y
 pig_0_15_0=y
 pig_0_16_0=y
 pig_0_17_0=y
-mahout_0_11_0=y
-mahout_0_11_1=y
-mahout_0_11_2=y
-mahout_0_12_0=y
-mahout_0_12_1=y
-mahout_0_12_2=y
-mahout_0_13_0=y
 hbase_0_98_0_hadoop2=y
 hbase_0_98_1_hadoop2=y
 hbase_0_98_2_hadoop2=y
@@ -466,12 +456,6 @@ then
     sed -i -e "s/KAFKA_DIR_PREFIX=\(.*\)/KAFKA_DIR_PREFIX=${kafkadirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 fi
 
-if [ "${MAHOUT_DIR_PATH}X" != "X" ]
-then
-    mahoutdirpathsubst=`echo ${MAHOUT_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
-    sed -i -e "s/MAHOUT_DIR_PREFIX=\(.*\)/MAHOUT_DIR_PREFIX=${mahoutdirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
-fi
-
 if [ "${PHOENIX_DIR_PATH}X" != "X" ]
 then
     phoenixdirpathsubst=`echo ${PHOENIX_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
@@ -587,14 +571,6 @@ if [ "${pigtests}" == "y" ] && [ "${pigversiontests}" == "y" ]; then
     fi
     if [ "${dependencytests}" == "y" ]; then
         GeneratePigDependencyTests
-    fi
-fi
-if [ "${mahouttests}" == "y" ] && [ "${mahoutversiontests}" == "y" ]; then
-    if [ "${standardtests}" == "y" ]; then
-        GenerateMahoutStandardTests
-    fi
-    if [ "${dependencytests}" == "y" ]; then
-        GenerateMahoutDependencyTests
     fi
 fi
 if [ "${hbasetests}" == "y" ] && [ "${hbaseversiontests}" == "y" ]; then
@@ -716,7 +692,7 @@ then
     rm -f magpie.${submissiontype}*no-local-dir*
 fi
 
-for project in hadoop pig mahout hbase hive phoenix spark storm kafka zookeeper zeppelin
+for project in hadoop pig hbase hive phoenix spark storm kafka zookeeper zeppelin
 do
     versionsvariable="${project}_all_versions"
     for version in ${!versionsvariable}
@@ -732,7 +708,6 @@ GenerateFunctionalityPostProcessing
 # GenerateCornerCasePostProcessing
 GenerateHadoopPostProcessing
 GeneratePigPostProcessing
-GenerateMahoutPostProcessing
 GenerateHbasePostProcessing
 GenerateHivePostProcessing
 GeneratePhoenixPostProcessing
@@ -767,7 +742,6 @@ then
     sed -i -e 's/export HADOOP_LOCAL_DIR="\(.*\)"/export HADOOP_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export HBASE_LOCAL_DIR="\(.*\)"/export HBASE_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export KAFKA_LOCAL_DIR="\(.*\)"/export KAFKA_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
-    sed -i -e 's/export MAHOUT_LOCAL_DIR="\(.*\)"/export MAHOUT_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export PHOENIX_LOCAL_DIR="\(.*\)"/export PHOENIX_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export PIG_LOCAL_DIR="\(.*\)"/export PIG_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}
     sed -i -e 's/export SPARK_LOCAL_DIR="\(.*\)"/export SPARK_LOCAL_DIR="'"${nolocaldirpathsubst}"'"/' ${files}

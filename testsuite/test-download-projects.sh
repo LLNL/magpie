@@ -16,7 +16,6 @@ source ../magpie/lib/magpie-lib-helper
 
 HADOOP_DOWNLOAD=n
 PIG_DOWNLOAD=n
-MAHOUT_DOWNLOAD=n
 HBASE_DOWNLOAD=n
 PHOENIX_DOWNLOAD=n
 SPARK_DOWNLOAD=n
@@ -127,21 +126,6 @@ then
         __download_package ${PIG_PACKAGE} ${PIG_DOWNLOAD_URL}
 
         # No pig patches at the moment
-    done
-fi
-
-if [ "${MAHOUT_DOWNLOAD}" == "y" ]
-then
-    for mahoutversion in ${mahout_all_versions}
-    do
-        MAHOUT_PACKAGE="${mahoutversion}/apache-mahout-distribution-${mahoutversion}.tar.gz"
-        MAHOUT_DOWNLOAD_URL="${APACHE_ARCHIVE_URL_BASE}/mahout/${MAHOUT_PACKAGE}"
-
-        __download_package ${MAHOUT_PACKAGE} ${MAHOUT_DOWNLOAD_URL}
-
-        MAHOUT_PACKAGE_BASEDIR=$(echo `basename ${MAHOUT_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
-        __apply_patches_if_exist ${MAHOUT_PACKAGE_BASEDIR} \
-            ${MAGPIE_SCRIPTS_HOME}/patches/mahout/${MAHOUT_PACKAGE_BASEDIR}.patch
     done
 fi
 

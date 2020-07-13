@@ -807,12 +807,6 @@ then
             __check_exports_pig ${file}
         fi
 
-        if echo ${file} | grep -q "mahout"
-        then
-            # None guaranted to user at moment
-            :
-        fi
-
         if echo ${file} | grep -q "hbase"
         then
             __check_exports_hbase ${file}

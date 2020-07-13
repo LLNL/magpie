@@ -4,7 +4,6 @@ source test-config.sh
 
 __SubmitCornerCaseTests_CatchProjectDependencies() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-catchprojectdependency-hadoop
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-catchprojectdependency-hadoop
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-catchprojectdependency-zookeeper
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-catchprojectdependency-hadoop
@@ -20,7 +19,6 @@ __SubmitCornerCaseTests_CatchProjectDependencies() {
 __SubmitCornerCaseTests_NoSetJava() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetjava
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetjava
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetjava
@@ -35,7 +33,6 @@ __SubmitCornerCaseTests_NoSetJava() {
 __SubmitCornerCaseTests_BadSetJava() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsetjava
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsetjava
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badsetjava
@@ -60,7 +57,6 @@ __SubmitCornerCaseTests_BadSetPython() {
 __SubmitCornerCaseTests_NoSetVersion() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetversion
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetversion
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetversion
@@ -77,7 +73,6 @@ __SubmitCornerCaseTests_NoSetVersion() {
 __SubmitCornerCaseTests_BadVersion() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badversion
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badversion
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badversion
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badversion
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badversion
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badversion
@@ -102,7 +97,6 @@ __SubmitCornerCaseTests_BadVersion() {
 __SubmitCornerCaseTests_NoSetHome() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosethome
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosethome
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosethome
@@ -119,7 +113,6 @@ __SubmitCornerCaseTests_NoSetHome() {
 __SubmitCornerCaseTests_BadSetHome() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badsethome
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badsethome
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badsethome
@@ -136,7 +129,6 @@ __SubmitCornerCaseTests_BadSetHome() {
 __SubmitCornerCaseTests_NoSetLocalDir() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nosetlocaldir
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nosetlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nosetlocaldir
@@ -153,7 +145,6 @@ __SubmitCornerCaseTests_NoSetLocalDir() {
 __SubmitCornerCaseTests_BadSetLocalDir() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badlocaldir
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badlocaldir
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badlocaldir
@@ -199,7 +190,6 @@ __SubmitCornerCaseTests_BadHostnameMap() {
 __SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badjobtime
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badjobtime
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badjobtime
@@ -223,11 +213,6 @@ __SubmitCornerCaseTests_BadJobTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badjobtime-sbatchsrun-days-hours
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badjobtime-sbatchsrun-days-hours-minutes
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime-sbatchsrun-minutes-seconds
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime-sbatchsrun-days-hours
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime-sbatchsrun-days-hours-minutes
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime-sbatchsrun-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours
@@ -283,7 +268,6 @@ __SubmitCornerCaseTests_BadJobTime() {
 __SubmitCornerCaseTests_BadStartupTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badstartuptime
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badstartuptime
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badstartuptime
@@ -301,7 +285,6 @@ __SubmitCornerCaseTests_BadStartupTime() {
 __SubmitCornerCaseTests_BadShutdownTime() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badshutdowntime
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badshutdowntime
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badshutdowntime
@@ -319,7 +302,6 @@ __SubmitCornerCaseTests_BadShutdownTime() {
 __SubmitCornerCaseTests_BadNodeCount() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badnodecount-small
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badnodecount-small
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badnodecount-big
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badnodecount-small
@@ -341,7 +323,6 @@ __SubmitCornerCaseTests_NoCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nocoresettings-2
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nocoresettings-3
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nocoresettings
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nocoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nocoresettings-1
@@ -371,7 +352,6 @@ __SubmitCornerCaseTests_BadCoreSettings() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcoresettings-2
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-badcoresettings-3
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-badcoresettings
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-badcoresettings
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-badcoresettings-1
@@ -406,7 +386,6 @@ __SubmitCornerCaseTests_RequireHDFS() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-1
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-2
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requirehdfs-3
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requirehdfs
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requirehdfs
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-requirehdfs
     BasicJobSubmit magpie.${submissiontype}-spark-with-hdfs-cornercase-requirehdfs
@@ -416,7 +395,6 @@ __SubmitCornerCaseTests_RequireHDFS() {
 __SubmitCornerCaseTests_RequireYarn() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-requireyarn
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-requireyarn
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-1
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-requireyarn-2
     BasicJobSubmit magpie.${submissiontype}-spark-with-yarn-cornercase-requireyarn
@@ -461,7 +439,6 @@ __SubmitCornerCaseTests_NoLongerSupported() {
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nolongersupported-3
     BasicJobSubmit magpie.${submissiontype}-hadoop-cornercase-nolongersupported-4
     BasicJobSubmit magpie.${submissiontype}-hadoop-and-pig-cornercase-nolongersupported
-    BasicJobSubmit magpie.${submissiontype}-hadoop-and-mahout-cornercase-nolongersupported
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-cornercase-nolongersupported
     BasicJobSubmit magpie.${submissiontype}-hbase-with-hdfs-with-phoenix-cornercase-nolongersupported
     BasicJobSubmit magpie.${submissiontype}-spark-cornercase-nolongersupported-1

@@ -60,11 +60,6 @@ then
     :
 fi
 
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    :
-fi
-
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     default_hbase_master_port="60000"
