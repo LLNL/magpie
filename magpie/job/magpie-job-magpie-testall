@@ -45,14 +45,6 @@ then
     (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-pig-testpig)
 fi
 
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    echo "*******************************************************"
-    echo "* Running Mahout Clustersyntheticcontrol"
-    echo "*******************************************************"
-    (${MAGPIE_SCRIPTS_HOME}/magpie/job/magpie-job-mahout-clustersyntheticcontrol)
-fi
-
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     echo "*******************************************************"

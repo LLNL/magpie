@@ -38,12 +38,6 @@ then
     pigcmdprefix="bin"
 fi
 
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    mahoutexamplesprefix="examples"
-    mahoutcmdprefix="bin"
-fi
-
 if [ "${HBASE_SETUP}" == "yes" ]
 then
     hbasesetupscriptprefix="bin"

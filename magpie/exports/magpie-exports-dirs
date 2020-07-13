@@ -146,38 +146,6 @@ Magpie_make_pig_local_dirs_node_specific () {
     __Magpie_make_pig_local_dirs "specific"
 }
 
-Magpie_make_mahout_local_dirs () {
-    local which=$1
-
-    if [ "${MAHOUT_SETUP}" == "yes" ]
-    then
-        if [ "${MAHOUT_LOCAL_JOB_DIR}X" == "X" ]
-        then
-            Magpie_output_internal_error "Magpie_make_mahout_local_dirs called without MAHOUT_LOCAL_JOB_DIR set"
-            exit 1
-        fi
-
-        export MAHOUT_CONF_DIR=${MAHOUT_LOCAL_JOB_DIR}/conf
-        export MAHOUT_LOCAL_SCRATCHSPACE_DIR=${MAHOUT_LOCAL_JOB_DIR}/scratch
-
-        if [ "${which}" == "specific" ]
-        then
-            Magpie_get_magpie_hostname
-            myhostname=${magpie_hostname}
-            export MAHOUT_CONF_DIR=`echo $MAHOUT_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-            export MAHOUT_LOCAL_SCRATCHSPACE_DIR=`echo $MAHOUT_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
-        fi
-    fi
-}
-
-Magpie_make_mahout_local_dirs_unspecified () {
-    Magpie_make_mahout_local_dirs "generic"
-}
-
-Magpie_make_mahout_local_dirs_node_specific () {
-    Magpie_make_mahout_local_dirs "specific"
-}
-
 __Magpie_make_hbase_local_dirs () {
     local which=$1
 
@@ -586,18 +554,6 @@ then
     fi
     # PIG_LOCAL_SCRATCHSPACE_DIR & PIG_CONF_DIR set
     Magpie_make_pig_local_dirs_node_specific
-fi
-
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
-    then
-        export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/mahout
-    else
-        export MAHOUT_LOCAL_JOB_DIR=${MAHOUT_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/mahout
-    fi
-    # MAHOUT_LOCAL_SCRATCHSPACE_DIR & MAHOUT_CONF_DIR set
-    Magpie_make_mahout_local_dirs_node_specific
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]

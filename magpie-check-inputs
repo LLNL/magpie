@@ -189,7 +189,7 @@ __Magpie_check_deprecated_configs () {
 # Flag deprecated settings for user
 #
 
-oldmodes="HADOOP_MODE PIG_MODE MAHOUT_MODE HBASE_MODE PHOENIX_MODE SPARK_MODE KAFKA_MODE ZEPPELIN_MODE STORM_MODE ZOOKEEPER_MODE"
+oldmodes="HADOOP_MODE PIG_MODE HBASE_MODE PHOENIX_MODE SPARK_MODE KAFKA_MODE ZEPPELIN_MODE STORM_MODE ZOOKEEPER_MODE"
 oldprojects="HADOOP_UDA_SETUP TACHYON_SETUP"
 oldfeatures="HDFS_FEDERATION_NAMENODE_COUNT HADOOP_PER_JOB_HDFS_PATH ZOOKEEPER_PER_JOB_DATA_DIR HADOOP_RAWNETWORKFS_BLOCKSIZE"
 oldvars="SPARK_USE_YARN MAGPIE_SCRIPT_PATH MAGPIE_SCRIPT_ARGS"
@@ -257,7 +257,6 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "hbase" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "phoenix" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "pig" ] \
-    && [ "${MAGPIE_JOB_TYPE}" != "mahout" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "spark" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "kafka" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "zeppelin" ] \
@@ -273,7 +272,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "setuponly" ]
 then
-    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, \
+    echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, phoenix, spark, \
           kafka, zeppelin, storm, hive, zookeeper, tensorflow, tensorflow-horovod, ray, \
           alluxio, testall, script, interactive, or setuponly"
     exit 1
@@ -368,7 +367,7 @@ nodecount=${MAGPIE_NODE_COUNT}
 # nodecountmaster is a counter to count the master only once
 nodecountmaster=1
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY ALLUXIO"
+magpieprojects="HADOOP PIG HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY ALLUXIO"
 
 for project in ${magpieprojects}
 do
@@ -379,7 +378,6 @@ done
 # Did user turn on SOMETHING to run
 #
 # Pig is not "something", b/c it runs on top of hadoop
-# Mahout is not "something", b/c it runs on top of hadoop
 
 if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
@@ -402,7 +400,7 @@ fi
 
 # If java required, was it set to something reasonable
 
-magpieprojects_java="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER ALLUXIO"
+magpieprojects_java="HADOOP PIG HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER ALLUXIO"
 for project in ${magpieprojects_java}
 do
     setupvar="${project}_SETUP"
@@ -415,7 +413,7 @@ done
 
 # Did user turn on something matching job run type
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY ALLUXIO"
+magpieprojects="HADOOP PIG HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY ALLUXIO"
 
 for project in ${magpieprojects}
 do
@@ -433,7 +431,6 @@ done
 if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${PIG_SETUP}" != "yes" ] \
-    && [ "${MAHOUT_SETUP}" != "yes" ] \
     && [ "${HBASE_SETUP}" != "yes" ] \
     && [ "${SPARK_SETUP}" != "yes" ] \
     && [ "${KAFKA_SETUP}" != "yes" ] \
@@ -677,41 +674,6 @@ then
         || [ "${PIG_JOB}" == "script" ])
     then
         echo "HADOOP_SETUP_TYPE must be set to MR or YARN for PIG_JOB=${PIG_JOB}"
-        exit 1
-    fi
-fi
-
-#
-# Check Mahout Inputs
-#
-
-if [ "${MAHOUT_SETUP}" == "yes" ]
-then
-    __Magpie_check_must_be_set "JAVA_HOME" "for Mahout"
-
-    __Magpie_check_must_be_set "MAHOUT_VERSION" "to run Mahout"
-
-    __Magpie_check_if_version_format_correct "MAHOUT_VERSION"
-
-    __Magpie_check_must_be_set_and_is_directory "MAHOUT_HOME" "to run Mahout"
-
-    __Magpie_check_must_be_set "MAHOUT_LOCAL_DIR" "to run Mahout"
-
-    __Magpie_check_is_enabled "Hadoop" "Mahout"
-
-    if [ "${MAHOUT_JOB}" != "clustersyntheticcontrol" ]
-    then
-        echo "MAHOUT_JOB must be set to clustersyntheticcontrol"
-        exit 1
-    fi
-
-    if (! Magpie_hadoop_setup_type_enables_yarn \
-        || ! Magpie_hadoop_setup_type_enables_hdfs \
-        || ! Magpie_hadoop_filesystem_mode_is_hdfs_type) \
-        && [ "${MAGPIE_JOB_TYPE}" == "mahout" ] \
-        && [ "${MAHOUT_JOB}" == "clustersyntheticcontrol" ]
-    then
-        echo "HADOOP_SETUP_TYPE must be set to MR for MAHOUT_JOB=${MAHOUT_JOB}"
         exit 1
     fi
 fi

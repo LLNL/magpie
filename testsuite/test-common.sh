@@ -18,13 +18,6 @@ hadoop3Xjava18versions_javaversion=${java18}
 hadoop_test_groups="hadoop2Xjava16versions hadoop2Xjava17versions hadoop2Xjava18versions hadoop3Xjava18versions"
 hadoop_all_versions="${hadoop2Xjava16versions} ${hadoop2Xjava17versions} ${hadoop2Xjava18versions} ${hadoop3Xjava18versions}"
 
-mahouthadoop27java17versions="0.11.0 0.11.1 0.11.2 0.12.0 0.12.1 0.12.2 0.13.0"
-mahouthadoop27java17versions_hadoopversion="2.7.0"
-mahouthadoop27java17versions_javaversion=${java17}
-
-mahout_test_groups="mahouthadoop27java17versions"
-mahout_all_versions="${mahouthadoop27java17versions}"
-
 pighadoop26java16versions="0.13.0 0.14.0"
 pighadoop26java16versions_hadoopversion="2.6.0"
 pighadoop26java16versions_javaversion=${java16}
