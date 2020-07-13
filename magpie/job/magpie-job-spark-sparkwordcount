@@ -109,23 +109,6 @@ then
     sparkexamplesjar=`find ${SPARK_HOME}/examples/jars/ | grep spark-examples`
 
     command="${sparkcmdprefix}/spark-submit --class ${sparkwordcountclass} ${sparkexamplesjar} ${SPARK_SPARKWORDCOUNT_FILE}"
-else
-    sparkexamplesjar=`find ${SPARK_HOME}/examples | grep jar | grep examples | grep -v assembly | grep -v sources`
-
-    # Ugh, Spark 0.9.1 doesn't have a way to pass in specific jars
-    # except via the SPARK_CLASSPATH environment variable.
-    #
-    # Because user may have set SPARK_JOB_CLASSPATH, we can't just set
-    # it here.  So we'll reput it into spark-env.sh
-
-    if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
-    then
-        echo "export SPARK_CLASSPATH=\"${SPARK_JOB_CLASSPATH};${sparkexamplesjar}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
-    else
-        echo "export SPARK_CLASSPATH=\"${sparkexamplesjar}\"" >> ${SPARK_CONF_DIR}/spark-env.sh
-    fi
-
-    command="${sparkcmdprefix}/spark-class ${sparkwordcountclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${SPARK_SPARKWORDCOUNT_FILE}"
 fi
 
 echo "Running $command" >&2

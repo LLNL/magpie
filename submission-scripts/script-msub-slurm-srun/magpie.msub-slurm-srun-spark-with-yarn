@@ -1123,46 +1123,6 @@ export SPARK_JOB="sparkpi"
 #
 # export SPARK_DEPLOY_SPREADOUT=true
 
-# SPARK_JOB_CLASSPATH
-#
-# May be necessary to set to get certain code/scripts to work.
-#
-# e.g. to run a Spark example, you may need to set
-#
-# export SPARK_JOB_CLASSPATH="examples/target/spark-examples-assembly-0.9.1.jar"
-#
-# Note that this is primarily for Spark 0.9.1 and earlier versions.
-# You likely want to use the --driver-class-path option in
-# spark-submit now.
-#
-# export SPARK_JOB_CLASSPATH=""
-
-# SPARK_JOB_LIBRARY_PATH
-#
-# May be necessary to set to get certain code/scripts to work.
-#
-# Note that this is primarily for Spark 0.9.1 and earlier versions.
-# You likely want to use the --driver-library-path option in
-# spark-submit now.
-#
-# export SPARK_JOB_LIBRARY_PATH=""
-
-# SPARK_JOB_JAVA_OPTS
-#
-# May be necessary to set options to set Spark options
-#
-# e.g. -Dspark.default.parallelism=16
-#
-# Magpie will set several options on its own, however, these options
-# will be appended last, ensuring they override anything that Magpie
-# will set by default.
-#
-# Note that many of the options that were set in SPARK_JAVA_OPTS in
-# Spark 0.9.1 and earlier have been deprecated.  You likely want to
-# use the --driver-java-options option in spark-submit now.
-#
-# export SPARK_JOB_JAVA_OPTS=""
-
 # SPARK_LOCAL_SCRATCH_DIR
 #
 # By default, if Hadoop is setup with a file system, the Spark local

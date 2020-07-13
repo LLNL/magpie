@@ -67,8 +67,8 @@ summary of support.
 Hadoop - 2.2.0, 2.3.0, 2.4.X, 2.5.X, 2.6.X, 2.7.X, 2.8.X, 2.9.X,
          3.0.X, 3.1.X, 3.2.X, 3.3.X
 
-Spark - 0.9.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X, 2.0.X, 2.1.X,
-        2.2.X, 2.3.X, 2.4.X, 3.0.X
+Spark - 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X, 2.0.X, 2.1.X, 2.2.X,
+        2.3.X, 2.4.X, 3.0.X
 
 Hbase - 1.0.X, 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X
 
@@ -115,6 +115,7 @@ Removed in Magpie 2.0
 
 Removed in Magpie 3.0
 
+   - Spark 0.9.X support
    - Hbase 0.98.X and 0.99.X support
    - Mahout
 

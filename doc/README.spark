@@ -6,13 +6,6 @@ Instructions For Spark
    accessible on all cluster nodes.  Usually this is on a NFS home
    directory.
 
-   On older versions of Spark, you may need to set
-   SPARK_HADOOP_VERSION and run 'sbt/sbt assembly' to prepare Spark
-   for execution.  If you are not using the default Java
-   implementation installed in your system, you may need to edit
-   sbt/sbt to use the proper Java version you desire (this is the case
-   with 0.9.1, not the case in future versions).
-
    See below in 'Spark Patching' about patches that are necessary for
    Spark and patches that may be necessary depending on your
    environment and Spark version.
@@ -339,17 +332,13 @@ Spark Patching
   The alternate remote execution command must be specified in the
   environment variable MAGPIE_REMOTE_CMD.
 
-- For versions < 1.0.0 and versions >= 1.2.0, a patch can be applied
-  directly to startup scripts, not needing a recompilation of source.
+- For versions >= 1.1.0, a patch can be applied directly to startup
+  scripts, not needing a recompilation of source.
 
   You can find patches for the "alternates" listed above in the
   patches/spark/ directory with the suffix "alternate.patch".
 
   This patch should be applied first.
-
-  For atleast Spark version 1.0.0 (possibly a few versions newer than
-  it), patch for startup scripts and code is required, a recompilation
-  of source is required.
 
   Patches for these versions can be found in the patches/spark/ directory.
 
