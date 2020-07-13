@@ -95,12 +95,7 @@ Magpie_run_start_spark () {
         echo "*"
         echo "* Then you can do as you please.  For example to run a job:"
         echo "*"
-        if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-        then
-            echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-class <class> spark://${SPARK_MASTER_NODE}:${default_spark_master_port}"
-        else
-            echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-submit --class <class> <jar>"
-        fi
+        echo "*   \$SPARK_HOME/${sparkcmdprefix}/spark-submit --class <class> <jar>"
         echo "*"
 
         if [ "${MAGPIE_JOB_TYPE}" == "setuponly" ]

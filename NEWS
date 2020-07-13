@@ -5,10 +5,15 @@ Magpie 3.0 includes some new software support, but primarily removes a
 lot of older support.
 
 Legacy support Removed
+- Spark 0.9.X support
 - Hbase 0.98.X and 0.99.X support
 - Mahout
 
 Backwards Compatibility Notes
+- SPARK_JOB_CLASSPATH, SPARK_JOB_LIBRARY_PATH, and SPARK_JOB_JAVA_OPTS
+  environment variables are removed.  Users should use
+  --driver-class-path, --driver-library-path, and
+  --driver-java-options in spark-submit instead.
 
 Magpie 2.6
 ----------

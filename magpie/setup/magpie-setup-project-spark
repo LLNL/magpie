@@ -114,19 +114,6 @@ else
     sparkdrivermemory=${sparkmem}
 fi
 
-#
-# Calculate settings in SPARK_JAVA_OPTS
-#
-
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="-Dspark.ui.port=${default_spark_application_dashboard_port}"
-else
-    SPARK_JAVA_OPTS=""
-fi
-
 if [ "${SPARK_LOCAL_SCRATCH_DIR}X" == "X" ]
 then
     # sets magpie_hadooptmpdir and magpie_fsdefault
@@ -165,13 +152,6 @@ else
     IFS=${IFSORIG}
 fi
 
-# Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
-# - environment variable for >= 1.0.0 set up spark-env.sh below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.local.dir=${sparklocalscratchdirpath}"
-fi
-
 # Optimal depends on file system
 if [ "${HADOOP_SETUP}" == "yes" ]
 then
@@ -202,26 +182,12 @@ else
     sparkshuffleconsolidatefiles="true"
 fi
 
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.file.buffer.kb=${sparkshufflebufferkb} -Dspark.shuffle.consolidateFiles=${sparkshuffleconsolidatefiles}"
-fi
-
 if [ "${SPARK_DEFAULT_PARALLELISM}X" == "X" ]
 then
     sparkdefaultparallelism="${SPARK_SLAVE_COUNT}"
     sparkdefaultparallelismnotset=1
 else
     sparkdefaultparallelism="${SPARK_DEFAULT_PARALLELISM}"
-fi
-
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.default.parallelism=${sparkdefaultparallelism}"
 fi
 
 if [ "${SPARK_STORAGE_MEMORY_FRACTION}X" == "X" ]
@@ -231,25 +197,11 @@ else
     sparkstoragememoryfraction="${SPARK_STORAGE_MEMORY_FRACTION}"
 fi
 
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.storage.memoryFraction=${sparkstoragememoryfraction}"
-fi
-
 if [ "${SPARK_SHUFFLE_MEMORY_FRACTION}X" == "X" ]
 then
     sparkshufflememoryfraction="0.2"
 else
     sparkshufflememoryfraction="${SPARK_SHUFFLE_MEMORY_FRACTION}"
-fi
-
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.shuffle.memoryFraction=${sparkshufflememoryfraction}"
 fi
 
 if [ "${SPARK_MEMORY_FRACTION}X" == "X" ]
@@ -287,13 +239,6 @@ else
     sparkdeployspreadout="${SPARK_DEPLOY_SPREADOUT}"
 fi
 
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.deploy.spreadOut=${sparkdeployspreadout}"
-fi
-
 # Tests show proc count is about the best performing when you have
 # many cores, which is likely the norm in HPC clusters
 
@@ -313,42 +258,10 @@ else
     sparknetworktimeoutms=$((${SPARK_NETWORK_TIMEOUT} * 1000))
 fi
 
-# Before 1.0.0, set in SPARK_JAVA_OPTS, afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Dspark.akka.threads=${akkathreads}"
-fi
-
 # Sets magpie_openfilescount
 Magpie_calculate_openfiles ${SPARK_SLAVE_COUNT}
 # Sets magpie_userprocessescount
 Magpie_calculate_userprocesses ${SPARK_SLAVE_COUNT}
-
-if [ "${SPARK_JOB_JAVA_OPTS}X" != "X" ]
-then
-    if [ "${SPARK_JAVA_OPTS}X" != "X" ]
-    then
-        SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} ${SPARK_JOB_JAVA_OPTS}"
-    else
-        SPARK_JAVA_OPTS="${SPARK_JOB_JAVA_OPTS}"
-    fi
-fi
-
-# set java.io.tmpdir
-
-# After 1.0.0, everything in spark-defaults.conf
-# If coded correctly in this script, SPARK_JAVA_OPTS should be empty
-# unless user set something in it of their own volition.
-#
-# After 1.0.0, other configs below take care setting extra java opts
-if [ "${SPARK_JAVA_OPTS}X" != "X" ]
-then
-    if ! echo ${SPARK_JAVA_OPTS} | grep -q -E "java.io.tmpdir"
-    then
-        export SPARK_JAVA_OPTS="${SPARK_JAVA_OPTS} -Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
-    fi
-fi
 
 extrasparkjavaopts="${extrasparkjavaopts}${extrasparkjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
@@ -387,9 +300,6 @@ then
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-env-2.X.sh" "pre_sparkenvsh"
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-1.X.properties" "pre_log4jproperties"
     Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-defaults.conf" "pre_sparkdefaultsconf"
-else
-    Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark-env-0.X.sh" "pre_sparkenvsh"
-    Magpie_find_conffile "Spark" ${SPARK_CONF_FILES:-""} "spark.log4j-0.X.properties" "pre_log4jproperties"
 fi
 
 if [ "${SPARK_SETUP_TYPE}" == "YARN" ]
@@ -456,11 +366,6 @@ then
 fi
 
 echo "export SPARK_LOG_DIR=\"${SPARK_LOG_DIR}\"" >> ${post_sparkenvsh}
-
-if [ "${SPARK_JOB_CLASSPATH}X" != "X" ]
-then
-    sparkclasspath="${SPARK_JOB_CLASSPATH}"
-fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
 then
@@ -532,28 +437,6 @@ then
     fi
 fi
 
-# Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
-# afterwards set in spark-defaults.conf
-# - spark-defaults.conf for >= 1.0.0 set up below
-if echo ${SPARK_VERSION} | grep -q -E "0\.9\.[0-9]"
-then
-    if [ "${sparkclasspath}X" != "X" ]
-    then
-        echo "export SPARK_CLASSPATH=\"${sparkclasspath}\"" >> ${post_sparkenvsh}
-    fi
-
-    if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
-    then
-        echo "export SPARK_LIBRARY_PATH=\"${SPARK_JOB_LIBRARY_PATH}\"" >> ${post_sparkenvsh}
-    fi
-fi
-
-# After 1.0.0, everything in spark-defaults.conf
-if [ "${SPARK_JAVA_OPTS}X" != "X" ]
-then
-    echo "export SPARK_JAVA_OPTS=\"${SPARK_JAVA_OPTS}\"" >> ${post_sparkenvsh}
-fi
-
 if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
 then
     echo "export SPARK_SSH_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_sparkenvsh}
@@ -569,15 +452,10 @@ then
      sparkclasspath="${HADOOP_HOME}"/share/hadoop/common/hadoop-common-${HADOOP_VERSION}.jar:$sparkclasspath
 fi
 
-# Before 1.0.0, set spark.local.dir in SPARK_JAVA_OPTS, afterwards set environment variable SPARK_LOCAL_DIRS
-# - spark.local.dir for < 1.0.0 set above
-if echo ${SPARK_VERSION} | grep -q -E "[1-3]\.[0-9]\.[0-9]"
+# If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs
+if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
 then
-    # If using Yarn, don't set this, Spark will use configuration of yarn.nodemanager.local-dirs
-    if [ "${SPARK_SETUP_TYPE}" == "STANDALONE" ]
-    then
-        echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
-    fi
+    echo "export SPARK_LOCAL_DIRS=\"${sparklocalscratchdirpath}\"" >> ${post_sparkenvsh}
 fi
 
 # Spark requires HADOOP_CONF_DIR and YARN_CONF_DIR to be set for it to
@@ -621,12 +499,6 @@ then
         sparkdriverclasspathsubst=`echo "${sparkclasspath}" | sed "s/\\//\\\\\\\\\//g"`
     fi
 
-    if [ "${SPARK_JOB_LIBRARY_PATH}X" != "X" ]
-    then
-        sparklibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
-        sparkdriverlibrarypathsubst=`echo "${SPARK_JOB_LIBRARY_PATH}" | sed "s/\\//\\\\\\\\\//g"`
-    fi
-
     cp ${pre_sparkdefaultsconf} ${post_sparkdefaultsconf}
 
     if [ "${pre_sparkdefaultsconf_yarn}X" != "X" ]
@@ -665,9 +537,7 @@ then
         -e "s/SPARKEXECUTORMEMORY/${sparkmem}/g" \
         -e "s/SPARKUIPORT/${default_spark_application_dashboard_port}/g" \
         -e "s/SPARKEXECUTOREXTRACLASSPATH/${sparkclasspathsubst}/g" \
-        -e "s/SPARKEXECUTOREXTRALIBRARYPATH/${sparklibrarypathsubst}/g" \
         -e "s/SPARKDRIVEREXTRACLASSPATH/${sparkdriverclasspathsubst}/g" \
-        -e "s/SPARKDRIVEREXTRALIBRARYPATH/${sparkdriverlibrarypathsubst}/g" \
         -e "s/SPARKAKKATHREADS/${akkathreads}/g" \
         -e "s/SPARKSTORAGEMEMORYFRACTION/${sparkstoragememoryfraction}/g" \
         -e "s/SPARKSHUFFLEMEMORYFRACTION/${sparkshufflememoryfraction}/g" \

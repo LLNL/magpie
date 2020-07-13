@@ -54,8 +54,6 @@ then
 elif echo ${SPARK_VERSION} | grep -q -E "[2-3]\.[0-9]\.[0-9]"
 then
     command="${sparkcmdprefix}/run-example ${sparkpiclass} ${sparkpislices}"
-else
-    command="${sparkcmdprefix}/run-example ${sparkpiclass} spark://$SPARK_MASTER_NODE:$SPARK_MASTER_PORT ${sparkpislices}"
 fi
 
 echo "Running $command" >&2
