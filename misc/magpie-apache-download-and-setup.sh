@@ -60,7 +60,7 @@ PRESET_LAUNCH_SCRIPT_CONFIGS="N"
 # have patches for every version.
 
 HADOOP_PACKAGE="hadoop/common/hadoop-3.2.1/hadoop-3.2.1.tar.gz"
-HBASE_PACKAGE="hbase/1.4.13/hbase-1.4.13-bin.tar.gz"
+HBASE_PACKAGE="hbase/1.6.0/hbase-1.6.0-bin.tar.gz"
 HIVE_PACKAGE="hive/2.3.0/apache-hive-2.3.0.tar.gz"
 PIG_PACKAGE="pig/pig-0.17.0/pig-0.17.0.tar.gz"
 MAHOUT_PACKAGE="mahout/0.13.0/apache-mahout-distribution-0.13.0.tar.gz"

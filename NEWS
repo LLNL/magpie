@@ -5,6 +5,8 @@ Remove legacy support for HADOOP_SLAVE_COUNT and
 Support Spark 3.0.0-bin-hadoop2.7, 3.0.0-bin-hadoop3.2,
   Spark 2.4.6-bin-hadoop2.6, 2.4.6-bin-hadoop2.7
 - Update Spark default to 3.0.0-bin-hadoop3.2
+Support Hbase 1.2.7, 1.3.3, 1.3.4, 1.3.5, 1.5.0, 1.6.0.
+- Update Hbase default to 1.6.0
 
 Magpie 2.4
 ----------

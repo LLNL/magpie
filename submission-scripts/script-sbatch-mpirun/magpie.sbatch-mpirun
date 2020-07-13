@@ -1009,7 +1009,7 @@ export HBASE_SETUP=no
 
 # Version
 #
-export HBASE_VERSION="1.4.13"
+export HBASE_VERSION="1.6.0"
 
 # Path to your Hbase build/binaries
 #
