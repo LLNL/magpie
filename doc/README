@@ -217,7 +217,8 @@ Spark - 1.1.0-bin-hadoop2.3+, 1.1.0-bin-hadoop2.4+,
         3.0.0-bin-hadoop2.7+!, 3.0.0-bin-hadoop3.2+!,
         3.0.1-bin-hadoop2.7+!, 3.0.1-bin-hadoop3.2+!,
         3.0.2-bin-hadoop2.7+!, 3.0.2-bin-hadoop3.2+!,
-        3.0.3-bin-hadoop2.7+!, 3.0.3-bin-hadoop3.2+!
+        3.0.3-bin-hadoop2.7+!, 3.0.3-bin-hadoop3.2+!,
+        3.1.1-bin-hadoop2.7+!, 3.1.1-bin-hadoop3.2+!
 
 TensorFlow - 1.9, 1.12
 

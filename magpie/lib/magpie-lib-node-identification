@@ -124,7 +124,12 @@ Magpie_am_I_a_phoenix_node () {
 }
 
 Magpie_am_I_a_spark_node () {
-    __Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "slaves"
+    if echo ${SPARK_VERSION} | grep -q -E "3\.[1-9]\.[0-9]"
+    then
+        __Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "workers"
+    else
+        __Magpie_am_I_a_project_node ${SPARK_CONF_DIR} "sparknoderank" "masters" "slaves"
+    fi
     return $?
 }
 

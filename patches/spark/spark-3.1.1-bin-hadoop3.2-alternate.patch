@@ -1,0 +1,168 @@
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/spark-daemon.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/spark-daemon.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/spark-daemon.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/spark-daemon.sh	2021-05-02 00:11:54.808643000 -0700
+@@ -174,7 +174,8 @@ run_command() {
+ 
+   if [ "$SPARK_MASTER" != "" ]; then
+     echo rsync from "$SPARK_MASTER"
+-    rsync -a -e ssh --delete --exclude=.svn --exclude='logs/*' --exclude='contrib/hod/logs/*' "$SPARK_MASTER/" "${SPARK_HOME}"
++    RSH_CMD=${SPARK_SSH_CMD:-ssh}
++    rsync -a -e $RSH_CMD --delete --exclude=.svn --exclude='logs/*' --exclude='contrib/hod/logs/*' "$SPARK_MASTER/" "${SPARK_HOME}"
+   fi
+ 
+   spark_rotate_log "$log"
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/spark-daemons.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/spark-daemons.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/spark-daemons.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/spark-daemons.sh	2021-05-02 00:11:54.813646000 -0700
+@@ -31,6 +31,24 @@ if [ -z "${SPARK_HOME}" ]; then
+   export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
+ fi
+ 
++# Check if --config is passed as an argument. It is an optional parameter.
++# Exit if the argument is not a directory.
++
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir=$1
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    echo $usage
++    exit 1
++  else
++    export SPARK_CONF_DIR=$conf_dir
++  fi
++  shift
++fi
++
+ . "${SPARK_HOME}/sbin/spark-config.sh"
+ 
+-exec "${SPARK_HOME}/sbin/workers.sh" cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin/spark-daemon.sh" "$@"
++exec "${SPARK_HOME}/sbin/workers.sh" --config $SPARK_CONF_DIR cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin/spark-daemon.sh" "$@"
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/start-worker.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/start-worker.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/start-worker.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/start-worker.sh	2021-05-02 00:11:54.818643000 -0700
+@@ -50,6 +50,24 @@ if [[ $# -lt 1 ]] || [[ "$@" = *--help ]
+   exit 1
+ fi
+ 
++# Check if --config is passed as an argument. It is an optional parameter.
++# Exit if the argument is not a directory.
++
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir=$1
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    echo $usage
++    exit 1
++  else
++    export SPARK_CONF_DIR=$conf_dir
++  fi
++  shift
++fi
++
+ . "${SPARK_HOME}/sbin/spark-config.sh"
+ 
+ . "${SPARK_HOME}/bin/load-spark-env.sh"
+@@ -79,8 +97,14 @@ function start_instance {
+   fi
+   WEBUI_PORT=$(( $SPARK_WORKER_WEBUI_PORT + $WORKER_NUM - 1 ))
+ 
+-  "${SPARK_HOME}/sbin"/spark-daemon.sh start $CLASS $WORKER_NUM \
+-     --webui-port "$WEBUI_PORT" $PORT_FLAG $PORT_NUM $MASTER "$@"
++  if [ "${SPARK_CONF_DIR}X" != "X" ]
++  then
++    "${SPARK_HOME}/sbin"/spark-daemon.sh --config $SPARK_CONF_DIR start $CLASS $WORKER_NUM \
++	--webui-port "$WEBUI_PORT" $PORT_FLAG $PORT_NUM $MASTER "$@"
++  else
++    "${SPARK_HOME}/sbin"/spark-daemon.sh start $CLASS $WORKER_NUM \
++	--webui-port "$WEBUI_PORT" $PORT_FLAG $PORT_NUM $MASTER "$@"
++  fi
+ }
+ 
+ if [ "$SPARK_WORKER_INSTANCES" = "" ]; then
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/start-workers.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/start-workers.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/start-workers.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/start-workers.sh	2021-05-02 00:11:54.823643000 -0700
+@@ -43,4 +43,4 @@ if [ "$SPARK_MASTER_HOST" = "" ]; then
+ fi
+ 
+ # Launch the workers
+-"${SPARK_HOME}/sbin/workers.sh" cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin/start-worker.sh" "spark://$SPARK_MASTER_HOST:$SPARK_MASTER_PORT"
++"${SPARK_HOME}/sbin/workers.sh" --config $SPARK_CONF_DIR cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin/start-worker.sh" --config $SPARK_CONF_DIR "spark://$SPARK_MASTER_HOST:$SPARK_MASTER_PORT"
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/stop-worker.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/stop-worker.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/stop-worker.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/stop-worker.sh	2021-05-02 00:11:54.828641000 -0700
+@@ -31,6 +31,23 @@ if [ -z "${SPARK_HOME}" ]; then
+   export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
+ fi
+ 
++# Check if --config is passed as an argument. It is an optional parameter.
++# Exit if the argument is not a directory.
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir="$1"
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    echo $usage
++    exit 1
++  else
++    export SPARK_CONF_DIR="$conf_dir"
++  fi
++  shift
++fi
++
+ . "${SPARK_HOME}/sbin/spark-config.sh"
+ 
+ . "${SPARK_HOME}/bin/load-spark-env.sh"
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/stop-workers.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/stop-workers.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/stop-workers.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/stop-workers.sh	2021-05-02 00:11:54.832646000 -0700
+@@ -25,4 +25,4 @@ fi
+ 
+ . "${SPARK_HOME}/bin/load-spark-env.sh"
+ 
+-"${SPARK_HOME}/sbin/workers.sh" cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin"/stop-worker.sh
++"${SPARK_HOME}/sbin/workers.sh" --config $SPARK_CONF_DIR cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin"/stop-worker.sh --config $SPARK_CONF_DIR
+diff -pruN spark-3.1.1-bin-hadoop3.2-orig/sbin/workers.sh spark-3.1.1-bin-hadoop3.2-alternate/sbin/workers.sh
+--- spark-3.1.1-bin-hadoop3.2-orig/sbin/workers.sh	2021-02-21 18:11:42.000000000 -0800
++++ spark-3.1.1-bin-hadoop3.2-alternate/sbin/workers.sh	2021-05-02 00:11:54.837645000 -0700
+@@ -25,6 +25,8 @@
+ #     Default is ${SPARK_CONF_DIR}/workers.
+ #   SPARK_CONF_DIR  Alternate conf dir. Default is ${SPARK_HOME}/conf.
+ #   SPARK_WORKER_SLEEP Seconds to sleep between spawning remote commands.
++#   SPARK_SSH_CMD Specify an alternate remote shell command.
++#     Defaults to ssh if not specified.
+ #   SPARK_SSH_OPTS Options passed to ssh when running remote commands.
+ ##
+ 
+@@ -93,19 +95,19 @@ if [ "$HOSTLIST" = "" ]; then
+   fi
+ fi
+ 
+-
++RSH_CMD=${SPARK_SSH_CMD:-ssh}
+ 
+ # By default disable strict host key checking
+-if [ "$SPARK_SSH_OPTS" = "" ]; then
++if [ "$RSH_CMD" == "ssh" ] && [ "$SPARK_SSH_OPTS" = "" ]; then
+   SPARK_SSH_OPTS="-o StrictHostKeyChecking=no"
+ fi
+ 
+ for host in `echo "$HOSTLIST"|sed  "s/#.*$//;/^$/d"`; do
+   if [ -n "${SPARK_SSH_FOREGROUND}" ]; then
+-    ssh $SPARK_SSH_OPTS "$host" $"${@// /\\ }" \
++    $RSH_CMD $SPARK_SSH_OPTS "$host" $"${@// /\\ }" \
+       2>&1 | sed "s/^/$host: /"
+   else
+-    ssh $SPARK_SSH_OPTS "$host" $"${@// /\\ }" \
++    $RSH_CMD $SPARK_SSH_OPTS "$host" $"${@// /\\ }" \
+       2>&1 | sed "s/^/$host: /" &
+   fi
+   if [ "$SPARK_WORKER_SLEEP" != "" ]; then

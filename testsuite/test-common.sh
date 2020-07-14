@@ -102,10 +102,10 @@ spark2Xjava18hadoop26versions_javaversion=${java18}
 spark2Xjava18hadoop27versions="2.2.0-bin-hadoop2.7 2.2.1-bin-hadoop2.7 2.3.0-bin-hadoop2.7 2.3.1-bin-hadoop2.7 2.3.2-bin-hadoop2.7 2.3.3-bin-hadoop2.7 2.3.4-bin-hadoop2.7 2.4.0-bin-hadoop2.7 2.4.1-bin-hadoop2.7 2.4.2-bin-hadoop2.7 2.4.3-bin-hadoop2.7 2.4.4-bin-hadoop2.7 2.4.5-bin-hadoop2.7 2.4.6-bin-hadoop2.7 2.4.7-bin-hadoop2.7 2.4.8-bin-hadoop2.7"
 spark2Xjava18hadoop27versions_hadoopversion="2.7.0"
 spark2Xjava18hadoop27versions_javaversion=${java18}
-spark3Xjava18hadoop27versions="3.0.0-bin-hadoop2.7 3.0.1-bin-hadoop2.7 3.0.2-bin-hadoop2.7 3.0.3-bin-hadoop2.7"
+spark3Xjava18hadoop27versions="3.0.0-bin-hadoop2.7 3.0.1-bin-hadoop2.7 3.0.2-bin-hadoop2.7 3.0.3-bin-hadoop2.7 3.1.1-bin-hadoop2.7"
 spark3Xjava18hadoop27versions_hadoopversion="2.7.0"
 spark3Xjava18hadoop27versions_javaversion=${java18}
-spark3Xjava18hadoop32versions="3.0.0-bin-hadoop3.2 3.0.1-bin-hadoop3.2 3.0.2-bin-hadoop3.2 3.0.3-bin-hadoop3.2"
+spark3Xjava18hadoop32versions="3.0.0-bin-hadoop3.2 3.0.1-bin-hadoop3.2 3.0.2-bin-hadoop3.2 3.0.3-bin-hadoop3.2 3.1.1-bin-hadoop3.2"
 spark3Xjava18hadoop32versions_hadoopversion="3.2.0"
 spark3Xjava18hadoop32versions_javaversion=${java18}
 

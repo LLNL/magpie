@@ -434,3 +434,8 @@ Suggestion is Spark w/ Yarn and non-HDFS is not supported.
 
 Using the Spark standalone scheduler, Spark w/ RawnetworkFS still
 works.
+
+Notes
+-----
+
+Beginning in Spark 3.1.1, Python 2.7, 3.4, and 3.5 support was removed.
