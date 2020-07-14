@@ -86,9 +86,6 @@ then
 
     export HADOOP_WORKER_COUNT=`cat ${hadoopworkersfile}|wc -l`
     export HADOOP_WORKER_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${HADOOP_WORKER_COUNT}`
-
-    export HADOOP_SLAVE_COUNT=${HADOOP_WORKER_COUNT}
-    export HADOOP_SLAVE_CORE_COUNT=${HADOOP_WORKER_CORE_COUNT}
 fi
 
 if [ "${HBASE_SETUP}" == "yes" ]
