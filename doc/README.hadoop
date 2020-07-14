@@ -136,10 +136,6 @@ HADOOP_WORKER_CORE_COUNT : Total cores on worker nodes in the
        		           allocation.  May be useful for adjusting run
        		           time options such as reducer count.
 
-HADOOP_SLAVE_COUNT : Identical to HADOOP_WORKER_COUNT
-
-HADOOP_SLAVE_CORE_COUNT : Identical to HADOOP_WORKER_CORE_COUNT
-
 HADOOP_NAMENODE : the master namenode of the Hadoop allocation.  Often
  		  used for accessing HDFS when the namenode + port
  		  must be specified in a script.

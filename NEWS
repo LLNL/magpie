@@ -10,6 +10,9 @@ Legacy support Removed
 - Mahout
 
 Backwards Compatibility Notes
+- Remove legacy support for HADOOP_SLAVE_COUNT and
+  HADOOP_SLAVE_CORE_COUNT.  HADOOP_WORKER_COUNT and
+  HADOOP_WORKER_CORE_COUNT should be used.
 - SPARK_JOB_CLASSPATH, SPARK_JOB_LIBRARY_PATH, and SPARK_JOB_JAVA_OPTS
   environment variables are removed.  Users should use
   --driver-class-path, --driver-library-path, and
