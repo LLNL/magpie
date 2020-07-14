@@ -51,7 +51,7 @@ Magpie_run_start_spark () {
                 Magpie_make_all_local_dirs_node_specific
 
                 # My rough estimate for setup time is 30 seconds per 128 nodes
-                local sleepwait=`expr ${SPARK_SLAVE_COUNT} \/ 128 \* 30`
+                local sleepwait=`expr ${SPARK_WORKER_COUNT} \/ 128 \* 30`
                 if [ ${sleepwait} -lt 30 ]
                 then
                     sleepwait=30
@@ -134,8 +134,8 @@ Magpie_run_start_spark () {
                 then
                     echo "setenv SPARK_MASTER_PORT \"${default_spark_master_port}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
-                echo "setenv SPARK_SLAVE_COUNT \"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                echo "setenv SPARK_SLAVE_CORE_COUNT \"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_WORKER_COUNT \"${SPARK_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "setenv SPARK_WORKER_CORE_COUNT \"${SPARK_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "setenv SPARK_VERSION \"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             else
                 echo "export SPARK_HOME=\"${SPARK_HOME}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
@@ -146,8 +146,8 @@ Magpie_run_start_spark () {
                 then
                     echo "export SPARK_MASTER_PORT=\"${default_spark_master_port}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 fi
-                echo "export SPARK_SLAVE_COUNT=\"${SPARK_SLAVE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
-                echo "export SPARK_SLAVE_CORE_COUNT=\"${SPARK_SLAVE_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_WORKER_COUNT=\"${SPARK_WORKER_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
+                echo "export SPARK_WORKER_CORE_COUNT=\"${SPARK_WORKER_CORE_COUNT}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
                 echo "export SPARK_VERSION=\"${SPARK_VERSION}\"" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}
             fi
             echo "" >> ${MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT}

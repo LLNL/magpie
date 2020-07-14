@@ -12,6 +12,8 @@ Legacy support Removed
 - Mahout
 
 Backwards Compatibility Notes
+- Rename SPARK_SLAVE_COUNT to SPARK_WORKER_COUNT
+- Rename SPARK_SLAVE_CORE_COUNT to SPARK_WORKER_CORE_COUNT
 - Remove legacy support for HADOOP_SLAVE_COUNT and
   HADOOP_SLAVE_CORE_COUNT.  HADOOP_WORKER_COUNT and
   HADOOP_WORKER_CORE_COUNT should be used.

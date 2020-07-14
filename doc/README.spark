@@ -146,13 +146,13 @@ SPARK_MASTER_PORT : the master port for running Spark jobs.  Often
 
                     Not exported if using Yarn.
 
-SPARK_SLAVE_COUNT : number of compute/data nodes in your allocation
-                    for Spark.  May be useful for adjusting run time
-                    options such as parallelism count.
+SPARK_WORKER_COUNT : number of compute/data nodes in your allocation
+                     for Spark.  May be useful for adjusting run time
+                     options such as parallelism count.
 
-SPARK_SLAVE_CORE_COUNT : Total cores on slave nodes in the allocation.
-       		         May be useful for adjusting run time options
-       		         such as parallelism count.
+SPARK_WORKER_CORE_COUNT : Total cores on worker nodes in the allocation.
+       		          May be useful for adjusting run time options
+       		          such as parallelism count.
 
 SPARK_CONF_DIR : the directory that Spark configuration files local
                  to the node are stored.

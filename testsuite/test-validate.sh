@@ -699,16 +699,16 @@ __check_exports_spark () {
         fi
     fi
 
-    num=`grep -E "SPARK_SLAVE_COUNT=[0-9]+" ${file} | wc -l`
+    num=`grep -E "SPARK_WORKER_COUNT=[0-9]+" ${file} | wc -l`
     if [ "${num}" == 0 ]
     then
-        echo "Error in $file - can't find export SPARK_SLAVE_COUNT"
+        echo "Error in $file - can't find export SPARK_WORKER_COUNT"
     fi
 
-    num=`grep -E "SPARK_SLAVE_CORE_COUNT=[0-9]+" ${file} | wc -l`
+    num=`grep -E "SPARK_WORKER_CORE_COUNT=[0-9]+" ${file} | wc -l`
     if [ "${num}" == 0 ]
     then
-        echo "Error in $file - can't find export SPARK_SLAVE_CORE_COUNT"
+        echo "Error in $file - can't find export SPARK_WORKER_CORE_COUNT"
     fi
 }
 

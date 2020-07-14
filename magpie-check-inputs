@@ -950,7 +950,7 @@ then
 
     if [ ${nodecount} -le "0" ]
     then
-        echo "No remaining nodes for Spark slaves, increase node count or adjust node allocations"
+        echo "No remaining nodes for Spark workers, increase node count or adjust node allocations"
         exit 1
     fi
 fi
