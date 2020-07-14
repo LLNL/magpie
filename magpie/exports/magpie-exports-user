@@ -179,8 +179,6 @@ then
     export STORM_MASTER_NODE=`head -1 ${STORM_CONF_DIR}/masters`
     export STORM_NIMBUS_HOST=${STORM_MASTER_NODE}
     export STORM_WORKER_COUNT=`cat ${STORM_CONF_DIR}/workers|wc -l`
-    # legacy plural "WORKERS" count, was a mistake
-    export STORM_WORKERS_COUNT=${STORM_WORKER_COUNT}
 fi
 
 if [ "${ZOOKEEPER_SETUP}" == "yes" ]

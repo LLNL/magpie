@@ -17,6 +17,8 @@ Backwards Compatibility Notes
   environment variables are removed.  Users should use
   --driver-class-path, --driver-library-path, and
   --driver-java-options in spark-submit instead.
+- Remove legacy support of STORM_WORKERS_COUNT (plural), users should
+  use STORM_WORKER_COUNT.
 
 Magpie 2.6
 ----------
