@@ -121,9 +121,19 @@ then
         Magpie_output_internal_error "${SPARK_CONF_DIR}/masters does not exist"
     fi
 
-    if [ ! -f "${SPARK_CONF_DIR}/slaves" ]
+    if echo ${SPARK_VERSION} | grep -q -E "3\.[1-9]\.[0-9]"
     then
-        Magpie_output_internal_error "${SPARK_CONF_DIR}/slaves does not exist"
+        if [ ! -f "${SPARK_CONF_DIR}/workers" ]
+        then
+            Magpie_output_internal_error "${SPARK_CONF_DIR}/workers does not exist"
+        fi
+        sparkworkersfile="${SPARK_CONF_DIR}/workers"
+    else
+        if [ ! -f "${SPARK_CONF_DIR}/slaves" ]
+        then
+            Magpie_output_internal_error "${SPARK_CONF_DIR}/slaves does not exist"
+        fi
+        sparkworkersfile="${SPARK_CONF_DIR}/slaves"
     fi
 
     export SPARK_MASTER_NODE=`head -1 ${SPARK_CONF_DIR}/masters`
@@ -131,7 +141,7 @@ then
     then
         export SPARK_MASTER_PORT=${default_spark_master_port}
     fi
-    export SPARK_WORKER_COUNT=`cat ${SPARK_CONF_DIR}/slaves|wc -l`
+    export SPARK_WORKER_COUNT=`cat ${sparkworkersfile}|wc -l`
     export SPARK_WORKER_CORE_COUNT=`expr ${magpie_worker_core_count} \* ${SPARK_WORKER_COUNT}`
 fi
 

@@ -233,7 +233,12 @@ if [ "${SPARK_SETUP}" == "yes" ]
 then
     # Create regardless of using yarn or not, needed for other code
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${SPARK_CONF_DIR}/masters
-    cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${SPARK_CONF_DIR}/slaves
+    if echo ${SPARK_VERSION} | grep -q -E "3\.[1-9]\.[0-9]"
+    then
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${SPARK_CONF_DIR}/workers
+    else
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${SPARK_CONF_DIR}/slaves
+    fi
 fi
 
 if [ "${KAFKA_SETUP}" == "yes" ]
