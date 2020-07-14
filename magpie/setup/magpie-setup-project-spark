@@ -184,7 +184,7 @@ fi
 
 if [ "${SPARK_DEFAULT_PARALLELISM}X" == "X" ]
 then
-    sparkdefaultparallelism="${SPARK_SLAVE_COUNT}"
+    sparkdefaultparallelism="${SPARK_WORKER_COUNT}"
     sparkdefaultparallelismnotset=1
 else
     sparkdefaultparallelism="${SPARK_DEFAULT_PARALLELISM}"
@@ -259,9 +259,9 @@ else
 fi
 
 # Sets magpie_openfilescount
-Magpie_calculate_openfiles ${SPARK_SLAVE_COUNT}
+Magpie_calculate_openfiles ${SPARK_WORKER_COUNT}
 # Sets magpie_userprocessescount
-Magpie_calculate_userprocesses ${SPARK_SLAVE_COUNT}
+Magpie_calculate_userprocesses ${SPARK_WORKER_COUNT}
 
 extrasparkjavaopts="${extrasparkjavaopts}${extrasparkjavaopts:+" "}-Djava.io.tmpdir=${SPARK_LOCAL_SCRATCHSPACE_DIR}/tmp"
 
@@ -549,7 +549,7 @@ then
         -e "s/SPARKAUTHENTICATESECRET/${sparkauthenticatesecret}/g" \
         -e "s/EXTRASPARKJAVAOPTS/${extrasparkjavaoptssubst}/g" \
         -e "s/SPARKYARNEXECUTORCORES/${workercores}/g" \
-        -e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_SLAVE_COUNT}/g" \
+        -e "s/SPARKYARNEXECUTORINSTANCES/${SPARK_WORKER_COUNT}/g" \
         -e "s/SPARKYARNEXECUTOROVERHEAD/${sparkmemoverhead}/g" \
         -e "s/SPARKLOCALDIR/${sparklocalscratchdirpathsubst}/g" \
 	-e "s/SPARKYARNSTAGINGDIR/${sparkyarnstagingdirsubst}/g" \

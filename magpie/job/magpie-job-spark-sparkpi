@@ -36,7 +36,7 @@ if [ "${SPARK_SPARKPI_SLICES}X" != "X" ]
 then
     sparkpislices="${SPARK_SPARKPI_SLICES}"
 else
-    sparkpislices="${SPARK_SLAVE_COUNT}"
+    sparkpislices="${SPARK_WORKER_COUNT}"
 fi
 
 cd ${SPARK_HOME}
