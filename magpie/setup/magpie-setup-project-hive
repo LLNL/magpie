@@ -143,7 +143,6 @@ cp ${pre_hiveproperties} ${post_hiveproperties}
 # Add the zookeeper quorum to hive-site.xml
 zookeeperport=${default_zookeeper_client_port}
 
-#quorumlist=`awk -vORS=, -v port=$zookeeperport '{ print $1 ":" port }' ${ZOOKEEPER_CONF_DIR}/slaves | sed 's/ //g' | sed 's/,$/\n/' `
 quorumlist=`awk -vORS=, -v port=$zookeeperport '{ print $1 ":" port }' ${ZOOKEEPER_CONF_DIR}/workers | sed 's/ //g' | sed 's/,$/\n/' `
 
 hivemasternode=`head -n1 ${HIVE_CONF_DIR}/masters`
