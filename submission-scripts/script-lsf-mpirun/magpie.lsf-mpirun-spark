@@ -191,10 +191,10 @@ export MAGPIE_JOB_TYPE="spark"
 # export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
 #
 # Similar to the MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN, scripts can be
-# run after the stack is setup but prior to the script or interactive mode 
+# run after the stack is setup but prior to the script or interactive mode
 # begins. This enables frontends and other processes that depend on the stack
-# to be started up and torn down. In similar fashion the cleanup will be done 
-# immediatly after the script or interactive mode exits before the stack is 
+# to be started up and torn down. In similar fashion the cleanup will be done
+# immediately after the script or interactive mode exits before the stack is
 # shutdown.
 #
 # export MAGPIE_PRE_EXECUTE_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
