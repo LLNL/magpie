@@ -221,10 +221,10 @@ export MAGPIE_JOB_TYPE="script"
 # export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
 #
 # Similar to the MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN, scripts can be
-# run after the stack is setup but prior to the script or interactive mode 
+# run after the stack is setup but prior to the script or interactive mode
 # begins. This enables frontends and other processes that depend on the stack
-# to be started up and torn down. In similar fashion the cleanup will be done 
-# immediatly after the script or interactive mode exits before the stack is 
+# to be started up and torn down. In similar fashion the cleanup will be done
+# immediately after the script or interactive mode exits before the stack is
 # shutdown.
 #
 # export MAGPIE_PRE_EXECUTE_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
@@ -1220,11 +1220,11 @@ export HIVE_TESTBENCH_DIR="${HOME}/hive-testbench"
 
 # Select the type of benchmark.  Options are 'tpcds' and 'tpch'
 # The TPC Benchmark H (TPC-H) is a decision support benchmark. It
-# consists of a suite of business oriented ad-hoc queries and 
+# consists of a suite of business oriented ad-hoc queries and
 # concurrent data modifications.
 
-# The TPC Benchmark DS (TPC-DS) is a decision support benchmark that models several 
-# generally applicable aspects of a decision support system, 
+# The TPC Benchmark DS (TPC-DS) is a decision support benchmark that models several
+# generally applicable aspects of a decision support system,
 # including queries and data maintenance
 # More information can be found at the Transaction Processing Council website
 
@@ -1237,7 +1237,7 @@ export HIVE_CLI_VERSION="beeline"
 ## Select the size of the data to generate. Size is in GB
 export HIVE_TESTBENCH_DATA_SIZE=2
 
-# Select the number of queries to run (max is determined by the number of queries in the 
+# Select the number of queries to run (max is determined by the number of queries in the
 # selected sample query directory. See hive-testbench for additional info)
 export HIVE_TESTBENCH_QUERY_COUNT=4
 
@@ -1934,9 +1934,9 @@ export ZEPPELIN_JOB="checkzeppelinup"
 # Zeppelin Notebook Authorization
 #
 # Set username, password, and roles for required shiro login authorization.
-# This setting must be in place prior to starting Zeppelin. The default 
-# shiro.conf file is configured with two roles, admin and role1. 'admin' 
-# allows configuration of the settings and 'role1' does not. Use ';' as a 
+# This setting must be in place prior to starting Zeppelin. The default
+# shiro.conf file is configured with two roles, admin and role1. 'admin'
+# allows configuration of the settings and 'role1' does not. Use ';' as a
 # delimiter for multiple users.
 #export ZEPPELIN_NOTEBOOK_USERS="user1,password1,admin;user2,password2,role2"
 

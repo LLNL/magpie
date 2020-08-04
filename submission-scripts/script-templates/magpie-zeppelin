@@ -81,9 +81,9 @@ export ZEPPELIN_JOB="checkzeppelinup"
 # Zeppelin Notebook Authorization
 #
 # Set username, password, and roles for required shiro login authorization.
-# This setting must be in place prior to starting Zeppelin. The default 
-# shiro.conf file is configured with two roles, admin and role1. 'admin' 
-# allows configuration of the settings and 'role1' does not. Use ';' as a 
+# This setting must be in place prior to starting Zeppelin. The default
+# shiro.conf file is configured with two roles, admin and role1. 'admin'
+# allows configuration of the settings and 'role1' does not. Use ';' as a
 # delimiter for multiple users.
 #export ZEPPELIN_NOTEBOOK_USERS="user1,password1,admin;user2,password2,role2"
 
