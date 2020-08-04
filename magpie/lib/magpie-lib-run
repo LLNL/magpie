@@ -68,7 +68,7 @@ __Magpie_wait_script_signal_on_timeout () {
 
     for i in `seq 1 ${scriptsleepiterations}`
     do
-        if kill -0 ${scriptpid} 2&> /dev/null
+        if kill -0 ${scriptpid} &>/dev/null
         then
             sleep 30
         else
