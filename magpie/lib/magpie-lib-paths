@@ -85,3 +85,8 @@ if [ "${ZOOKEEPER_SETUP}" == "yes" ]
 then
     zookeepercmdprefix="bin"
 fi
+
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+    alluxiocmdprefix="bin"
+fi

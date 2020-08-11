@@ -3,7 +3,7 @@ Magpie
 
 Magpie contains a number of scripts for running Big Data software in
 HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig, Mahout,
-Phoenix, Kafka, Zeppelin, and Zookeeper are supported.  It currently
+Phoenix, Kafka, Zeppelin, Zookeeper, and Alluxio are supported. It currently
 supports running over the parallel file system Lustre and running over
 any generic network filesytem.  There is scheduler/resource manager
 support for Slurm, Moab, Torque, and LSF.
@@ -88,6 +88,8 @@ Phoenix - 4.5.X, 4.6.0, 4.7.0, 4.8.X, 4.9.0, 4.10.1, 4.11.0, 4.12.0,
 Kafka - 2.11-0.9.0.0
 
 Zeppelin - 0.6.X, 0.7.X, 0.8.X
+
+Alluxio - 2.3.0
 
 TensorFlow - 1.9, 1.12
 

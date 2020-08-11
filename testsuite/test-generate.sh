@@ -19,6 +19,7 @@ source test-generate-zeppelin.sh
 source test-generate-tensorflow.sh
 source test-generate-tensorflow-horovod.sh
 source test-generate-ray.sh
+source test-generate-alluxio.sh
 source test-generate-common.sh
 source test-common.sh
 source test-config.sh
@@ -51,6 +52,7 @@ zeppelintests=y
 tensorflowtests=n
 tensorflowhorovodtests=n
 raytests=n
+alluxiotests=y
 
 # Sections to test
 # - version tests, test permutation of versions
@@ -69,6 +71,7 @@ stormversiontests=y
 kafkaversiontests=y
 zookeeperversiontests=y
 zeppelinversiontests=y
+alluxioversiontests=y
 
 # Add or eliminate certain types of tests
 #
@@ -653,6 +656,11 @@ if [ "${raytests}" == "y" ]; then
         GenerateRayStandardTests
     fi
 fi
+if [ "${alluxiotests}" == "y" ] && [ "${alluxioversiontests}" == "y" ]; then
+    if [ "${standardtests}" == "y" ]; then
+        GenerateAlluxioStandardTests
+    fi
+fi
 
 # Remove any tests we don't want
 
@@ -719,6 +727,7 @@ GenerateZeppelinPostProcessing
 GenerateTensorflowPostProcessing
 GenerateTensorflowHorovodPostProcessing
 GenerateRayPostProcessing
+GenerateAlluxioPostProcessing
 
 # Seds for all tests
 

@@ -40,7 +40,7 @@ Magpie_am_I_master () {
 
     Magpie_make_all_local_dirs_node_specific
 
-    for project in HADOOP HBASE HIVE SPARK STORM KAFKA ZEPPELIN ZOOKEEPER RAY
+    for project in HADOOP HBASE HIVE SPARK STORM KAFKA ZEPPELIN ZOOKEEPER RAY ALLUXIO
     do
         local setupvar="${project}_SETUP"
         local confdirvar="${project}_CONF_DIR"
@@ -148,5 +148,11 @@ Magpie_am_I_a_zookeeper_node () {
     # Do not consider the 'master' node, it is only for launching
     # Zookeeper, it is not an actual Zookeeper node
     __Magpie_am_I_a_project_node ${ZOOKEEPER_CONF_DIR} "zookeepernoderank" "" "workers"
+    return $?
+}
+
+Magpie_am_I_an_alluxio_node () {
+    # Alluxio only runs on the master
+    __Magpie_am_I_a_project_node ${ALLUXIO_CONF_DIR} "alluxionoderank" "masters" "workers"
     return $?
 }

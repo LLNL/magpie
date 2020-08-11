@@ -1,0 +1,458 @@
+#!/bin/sh
+#############################################################################
+#  Copyright (C) 2013-2015 Lawrence Livermore National Security, LLC.
+#  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+#  Written by Albert Chu <chu11@llnl.gov>
+#  LLNL-CODE-644248
+#
+#  This file is part of Magpie, scripts for running Hadoop on
+#  traditional HPC systems.  For details, see https://github.com/llnl/magpie.
+#
+#  Magpie is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  Magpie is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Magpie.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+########################################################################
+#  Project Magpie. For details, see https://github.com/llnl/magpie.
+#
+#  Copyright (C) 2019-2020 Intel Corporation. All rights reserved.
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License version
+#  2 as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  Aleksander Kantak <aleksander.kantak@intel.com>
+########################################################################
+
+############################################################################
+# LSF Customizations
+############################################################################
+
+# Node count.  Node count should include one node for the
+# head/management/master node.  For example, if you want 8 compute
+# nodes to process data, specify 9 nodes below.
+#
+# If including Zookeeper, include expected Zookeeper nodes.  For
+# example, if you want 8 Hadoop compute nodes and 3 Zookeeper nodes,
+# specify 12 nodes (1 master, 8 Hadoop, 3 Zookeeper)
+#
+# Also take into account additional nodes needed for other services.
+#
+# Many of the below can be configured on the command line.  If you are
+# more comfortable specifying these on the command line, feel free to
+# delete the customizations below.
+
+#BSUB -n <my_node_count>
+#BSUB -o "lsf-%J.out"
+
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+#BSUB -W <my_time_in_hours:minutes>
+
+# Job name.  This will be used in naming directories for the job.
+#BSUB -J <my_job_name>
+
+# Queue to launch job in
+#BSUB -q <my_queue>
+
+## LSF Values
+# Generally speaking, don't touch the following, misc other configuration
+
+#BSUB -R "span[ptile=1]"
+#BSUB -x
+
+# Need to tell Magpie how you are submitting this job
+export MAGPIE_SUBMISSION_TYPE="lsfmpirun"
+
+############################################################################
+# Magpie Configurations
+############################################################################
+
+# Directory your launching scripts/files are stored
+#
+# Normally an NFS mount, someplace magpie can be reached on all nodes.
+export MAGPIE_SCRIPTS_HOME="${HOME}/magpie"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp.  This will store local conf files and log files for your
+# job.  If local scratch space is not available, consider using the
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
+#
+export MAGPIE_LOCAL_DIR="/tmp/${USER}/magpie"
+
+# Magpie job type
+#
+# "alluxio" - Run a job according to the settings of ALLUXIO_JOB.
+#
+# "testall" - Run a job that runs all basic sanity tests for all
+#             software that is configured to be setup.  This is a good
+#             way to sanity check that everything has been setup
+#             correctly and the way you like.
+#
+#             For Alluxio, testall will run testalluxio
+#
+# "script" - Run arbitraty script, as specified by MAGPIE_JOB_SCRIPT.
+#            You can find example job scripts in examples/.
+#
+# "interactive" - manually interact with job run to submit jobs,
+#                 peruse data (e.g. HDFS), move data, etc.  See job
+#                 output for instructions to access your job
+#                 allocation.
+#
+# "setuponly" - do not launch any daemons or services, only setup
+#               configuration files.  Useful for debugging or
+#               development.
+#
+export MAGPIE_JOB_TYPE="alluxio"
+
+# Specify script and arguments to execute for "script" mode in
+# MAGPIE_JOB_TYPE
+#
+# export MAGPIE_JOB_SCRIPT="${HOME}/my-job-script"
+
+# Specify script startup / shutdown time window
+#
+# Specifies the amount of time to give startup / shutdown activities a
+# chance to succeed before Magpie will give up (or in the case of
+# shutdown, when the resource manager/scheduler may kill the running
+# job).  Defaults to 30 minutes for startup, 30 minutes for shutdown.
+#
+# The startup time in particular may need to be increased if you have
+# a large amount of data.  As an example, HDFS may need to spend a
+# significant amount of time determine all of the blocks in HDFS
+# before leaving safemode.
+#
+# The stop time in particular may need to be increased if you have a
+# large amount of cleanup to be done.  HDFS will save its NameSpace
+# before shutting down.  Hbase will do a compaction before shutting
+# down.
+#
+# The startup & shutdown window must together be smaller than the
+# timelimit specified for the job.
+#
+# MAGPIE_STARTUP_TIME and MAGPIE_SHUTDOWN_TIME at minimum must be 5
+# minutes.  If MAGPIE_POST_JOB_RUN is specified below,
+# MAGPIE_SHUTDOWN_TIME must be at minimum 10 minutes.
+#
+# export MAGPIE_STARTUP_TIME=30
+# export MAGPIE_SHUTDOWN_TIME=30
+
+# Magpie One Time Run
+#
+# Normally, Magpie assumes that when a user runs a job, data created
+# and stored within that job will be desired to be accessed again.  For
+# example, data created and stored within HDFS will be accessed again.
+#
+# Under a number of scenarios, this may not be desired.  For example
+# during testing.
+#
+# To improve useability and performance, setting MAGPIE_ONE_TIME_RUN
+# below to yes will have two effects on the Magpie job.
+#
+# 1) A number of data paths (such as for HDFS) will be put into unique
+#    paths for this job.  Therefore, no other job should be able to
+#    access the data again.  This is particularly useful if you wish
+#    to run performance tests with this job script over and over
+#    again.
+#
+#    Magpie will not remove data that was written, so be sure to clean up
+#    your directories later.
+#
+# 2) In order to improve job throughout, Magpie will take shortcuts by
+#    not properly tearing down the job.  As data corruption should not be
+#    a concern on job teardown, the job can complete more quickly.
+#
+# export MAGPIE_ONE_TIME_RUN=yes
+
+# Convenience Scripts
+#
+# Specify script to be executed to before / after your job.  It is run
+# on all nodes.
+#
+# Typically the pre-job script is used to set something up or get
+# debugging info.  It can also be used to determine if system
+# conditions meet the expectations of your job.  The primary job
+# running script (magpie-run) will not be executed if the
+# MAGPIE_PRE_JOB_RUN exits with a non-zero exit code.
+#
+# The post-job script is typically used for cleaning up something or
+# gathering info (such as logs) for post-debugging/analysis.  If it is
+# set, MAGPIE_SHUTDOWN_TIME above must be > 5.
+#
+# See example magpie-example-pre-job-script and
+# magpie-example-post-job-script for ideas of what you can do w/ these
+# scripts
+#
+# Multiple scripts can be specified separated by comma.  Arguments can
+# be passed to scripts as well.
+#
+# A number of convenient scripts are available in the
+# ${MAGPIE_SCRIPTS_HOME}/scripts directory.
+#
+# export MAGPIE_PRE_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
+# export MAGPIE_POST_JOB_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
+#
+# Similar to the MAGPIE_PRE_JOB_RUN and MAGPIE_POST_JOB_RUN, scripts can be
+# run after the stack is setup but prior to the script or interactive mode
+# begins. This enables frontends and other processes that depend on the stack
+# to be started up and torn down. In similar fashion the cleanup will be done
+# immediately after the script or interactive mode exits before the stack is
+# shutdown.
+#
+# export MAGPIE_PRE_EXECUTE_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/pre-job-run-scripts/my-pre-job-script"
+# export MAGPIE_POST_EXECUTE_RUN="${MAGPIE_SCRIPTS_HOME}/scripts/post-job-run-scripts/my-post-job-script"
+
+# Environment Variable Script
+#
+# When working with Magpie interactively by logging into the master
+# node of your job allocation, many environment variables may need to
+# be set.  For example, environment variables for config file
+# directories (e.g. HADOOP_CONF_DIR, HBASE_CONF_DIR, etc.) and home
+# directories (e.g. HADOOP_HOME, HBASE_HOME, etc.) and more general
+# environment variables (e.g. JAVA_HOME) may need to be set before you
+# begin interacting with your big data setup.
+#
+# The standard job output from Magpie provides instructions on all the
+# environment variables typically needed to interact with your job.
+# However, this can be tedious if done by hand.
+#
+# If the environment variable specified below is set, Magpie will
+# create the file and put into it every environment variable that
+# would be useful when running your job interactively.  That way, it
+# can be sourced easily if you will be running your job interactively.
+# It can also be loaded or used by other job scripts.
+#
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT="${HOME}/my-job-env"
+
+# Environment Variable Shell Type
+#
+# Magpie outputs environment variables in help output and
+# MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT based on your SHELL environment
+# variable.
+#
+# If you would like to output in a different shell type (perhaps you
+# have programmed scripts in a different shell), specify that shell
+# here.
+#
+# export MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT_SHELL="/bin/bash"
+
+# Remote Shell
+#
+# Magpie requires a passwordless remote shell command to launch
+# necessary daemons across your job allocation.  Magpie defaults to
+# ssh, but it may be an alternate command in some environments.  An
+# alternate ssh-equivalent remote command can be specified by setting
+# MAGPIE_REMOTE_CMD below.
+#
+# If using ssh, Magpie requires keys to be setup ahead of time so it
+# can be executed without passwords.
+#
+# Specify options to the remote shell command if necessary.
+#
+# export MAGPIE_REMOTE_CMD="ssh"
+# export MAGPIE_REMOTE_CMD_OPTS=""
+
+############################################################################
+# General Configuration
+############################################################################
+
+# Necessary for most projects
+export JAVA_HOME="/usr/lib/jvm/jre-1.8.0/"
+
+# MAGPIE_PYTHON path used for:
+# - Spark PySpark path
+# - Launching tensorflow tasks
+export MAGPIE_PYTHON="/usr/bin/python"
+
+############################################################################
+# Alluxio Core Configurations
+############################################################################
+
+# Should Alluxio be run
+#
+# Specify yes or no. Defaults to no.
+#
+export ALLUXIO_SETUP=yes
+
+# Alluxio Version
+#
+export ALLUXIO_VERSION="2.3.0"
+
+# Path to your Alluxio build/binaries
+#
+# This should be accessible on all nodes in your allocation. Typically
+# this is in an NFS mount.
+#
+export ALLUXIO_HOME="${HOME}/alluxio-${ALLUXIO_VERSION}"
+
+# ALLUXIO_WORKER_ON_MASTER
+#
+# Most big data projects do not have a "worker" that also
+# runs on the master node (such as Hadoop, Hbase, etc.). Alluxio is
+# an exception in which it often likes to have a worker running on the
+# master node for convenience of running tests and such.
+#
+# It is not required to run a worker on the master, but it can be
+# convenient. Specify the below to "yes" to run a worker on the
+# master.
+#
+export ALLUXIO_WORKER_ON_MASTER="yes"
+
+# Path to store data local to each cluster node, typically something
+# in /tmp. This will store local conf files and log files for your job.
+#
+export ALLUXIO_LOCAL_DIR="/tmp/${USER}/alluxio"
+
+# Path to store Alluxio Under File System data
+#
+# This should point to the path where you store your data
+# and have to be accessible on all nodes in your allocation.
+# Most likely it would be placed on Lustre, like "/lustre/${USER}/alluxio"
+# but also it could be NFS mounted on all Alluxio nodes,
+# like "${ALLUXIO_HOME}/underFSStorage",
+# or ex. HDFS, like "hdfs://hdfsmaster:9000/alluxio/".
+# Check Alluxio documentation for more UnderFS storage options.
+#
+export ALLUXIO_UNDER_FS_DIR="/lustre/${USER}/alluxio"
+
+# ALLUXIO_DATA_CLEAR
+#
+# Alluxio has data files that are written to UnderFS and a journal file
+# containing metadata so the state of Alluxio filesystem is saved
+# and can be reused on multiple Alluxio runs.
+#
+# This flag enabled forces that data to be wiped which results
+# in a clean install of Alluxio every time Magpie runs it.
+#
+# Specify yes or no. Defaults to yes.
+export ALLUXIO_DATA_CLEAR="yes"
+
+# Memory capacity of each worker node
+#
+# Set the amount of memory each Alluxio worker will use. Memory would
+# be used as the first tier of storage. The more memory would Alluxio have,
+# the bigger first tier storage would be. Be mindful of the memory
+# requirements of other services (e.g. Spark).
+#
+export ALLUXIO_WORKER_MEMORY_SIZE=16GB
+
+# ALLUXIO_WORKER_TIER0_PATH
+#
+# Alluxio will use RAM File System as caching storage.
+# In this variable, there could be set path for tiered storage level 0.
+# Default settings are /mnt/ramdisk on Linux and /Volumes/ramdisk on OSX.
+#
+# To avoid sudo requirement but using tmpFS in Linux,
+# set here /dev/shm and ALLUXIO_RAMFS_MOUNT_OPTION to NoMount option.
+export ALLUXIO_WORKER_TIER0_PATH="/mnt/ramdisk"
+
+# ALLUXIO_RAMFS_MOUNT_OPTION
+#
+# Select option how RamFS should be mounted in Alluxio.
+#
+# There are 3 mount options for alluxio-start.sh command:
+# Mount     - Mount the configured RamFS if it is not already mounted.
+# SudoMount - Mount the configured RamFS using sudo
+#             if it is not already mounted. This option requires sudo,
+#             it should not be used when user doesn't have sudo rights.
+# NoMount   - Do not mount the configured RamFS. Also, this option should
+#             be used when RamFS is not available.
+#
+# To avoid sudo requirement but using tmpFS in Linux,
+# set ALLUXIO_WORKER_TIER0_PATH to /dev/shm and use here NoMount option.
+#
+# If you have sudo and have doubts, leave the default value.
+export ALLUXIO_RAMFS_MOUNT_OPTION="SudoMount"
+
+# Default read type when creating Alluxio files
+#
+# Valid options are:
+# - CACHE_PROMOTE (move data to highest tier
+#   if already in Alluxio storage, write data into highest
+#   tier of local Alluxio if data needs to be read from under storage),
+# - CACHE (write data into highest tier of local Alluxio
+#   if data needs to be read from under storage),
+# - NO_CACHE (no data interaction with Alluxio, if the read is from
+#   Alluxio data migration or eviction will not occur).
+#
+export ALLUXIO_READ_TYPE="CACHE"
+
+# Default write type when creating Alluxio files
+#
+# Valid options are:
+# - MUST_CACHE (write will only go to Alluxio and must be stored
+#   in Alluxio),
+# - CACHE_THROUGH (try to cache, write to UnderFS synchronously),
+# - THROUGH (no cache, write to UnderFS synchronously),
+# - ASYNC_THROUGH (try to cache, write to UnderFS asynchronously).
+#
+export ALLUXIO_WRITE_TYPE="CACHE_THROUGH"
+
+# Additional tiered storage levels
+#
+# To use more storage levels than the default one in memory,
+# customize it directly in configuration template file,
+# i.e. magpie/conf/alluxio/alluxio-site.properties.
+
+############################################################################
+# Alluxio Job/Run Configurations
+############################################################################
+
+# Set how Alluxio should run
+#
+# "testalluxio" - Run a quick sanity test to see that Alluxio is
+#             setup correctly. Mode testalluxio will do several simple
+#             filesystem commands.
+#
+export ALLUXIO_JOB="testalluxio"
+
+############################################################################
+# Run Job
+############################################################################
+
+# Set alternate mpirun options here
+# MPIRUN_OPTIONS="-genvall -genv MV2_USE_APM 0"
+
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-check-inputs
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-setup-core
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-setup-projects
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-setup-post
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-pre-run
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-run
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-cleanup
+mpirun $MPIRUN_OPTIONS $MAGPIE_SCRIPTS_HOME/magpie-post-run

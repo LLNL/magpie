@@ -54,6 +54,24 @@ then
         then
             command="${HADOOP_HOME}/${hadoopcmdprefix}/hadoop fs -cp ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} ${SPARK_SPARKWORDCOUNT_FILE}"
         fi
+    elif echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "alluxio:\/\/"
+    then
+        # Make directory of destination file
+        filedir=`dirname ${SPARK_SPARKWORDCOUNT_FILE}`
+        command="${ALLUXIO_HOME}/${alluxiocmdprefix}/alluxio fs mkdir ${filedir}"
+        echo "Running $command" >&2
+        $command
+
+        if echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^file:\/\/"
+        then
+            # Get rid of file:// prefix, Alluxio doesn't support it
+            filepath=$(echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | sed "s|file://||g")
+            command="${ALLUXIO_HOME}/${alluxiocmdprefix}/alluxio fs copyFromLocal ${filepath} ${SPARK_SPARKWORDCOUNT_FILE}"
+        elif echo ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} | grep -q -E "^alluxio:\/\/"
+        then
+            command="${ALLUXIO_HOME}/${alluxiocmdprefix}/alluxio fs cp ${SPARK_SPARKWORDCOUNT_COPY_IN_FILE} ${SPARK_SPARKWORDCOUNT_FILE}"
+        fi
+
     elif echo ${SPARK_SPARKWORDCOUNT_FILE} | grep -q -E "file:\/\/"
     then
         # Make directory of destination file

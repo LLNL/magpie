@@ -24,6 +24,7 @@ STORM_DOWNLOAD=n
 KAFKA_DOWNLOAD=n
 ZEPPELIN_DOWNLOAD=n
 ZOOKEEPER_DOWNLOAD=n
+ALLUXIO_DOWNLOAD=n
 
 # Second, indicate where these will be installed into
 
@@ -62,6 +63,21 @@ __download_package () {
     PACKAGE_BASENAME=`basename ${package}`
 
     wget -O ${INSTALL_PATH}/${PACKAGE_BASENAME} ${downloadurl}
+
+    echo "Untarring ${PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${PACKAGE_BASENAME}
+}
+
+__download_from_url () {
+    local url=$1
+
+    echo "Downloading from ${url}"
+
+    PACKAGE_BASENAME=`basename ${url}`
+
+    wget -O ${INSTALL_PATH}/${PACKAGE_BASENAME} ${url}
 
     echo "Untarring ${PACKAGE_BASENAME}"
 
@@ -304,6 +320,19 @@ then
             ${MAGPIE_SCRIPTS_HOME}/patches/kafka/${KAFKA_PACKAGE_BASEDIR}-no-local-dir.patch
     done
 
+fi
+
+if [ "${ALLUXIO_DOWNLOAD}" == "y" ]
+then
+    for alluxioversion in ${alluxio_all_versions}
+    do
+        ALLUXIO_URL="https://downloads.alluxio.io/downloads/files/${alluxioversion}/alluxio-${alluxioversion}-bin.tar.gz"
+        __download_from_url "${ALLUXIO_URL}"
+
+        ALLUXIO_BASEDIR=$(echo `basename ${ALLUXIO_URL}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
+        __apply_patches_if_exist ${ALLUXIO_BASEDIR} \
+            ${MAGPIE_SCRIPTS_HOME}/patches/alluxio/${ALLUXIO_BASEDIR}.patch
+    done
 fi
 
 cd ${CURRENT_DIR}

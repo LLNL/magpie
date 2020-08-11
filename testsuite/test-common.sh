@@ -161,3 +161,9 @@ zeppelinspark16java18versions_javaversion="${java18}"
 
 zeppelin_test_groups="zeppelinspark16java17versions zeppelinspark16java18versions"
 zeppelin_all_versions="${zeppelinspark16java17versions} ${zeppelinspark16java18versions}"
+
+alluxiojava18versions="2.3.0"
+alluxiojava18versions_javaversion=${java18}
+
+alluxio_test_groups="alluxiojava18versions"
+alluxio_all_versions="${alluxiojava18versions}"

@@ -17,6 +17,7 @@ source test-submit-zeppelin.sh
 source test-submit-tensorflow.sh
 source test-submit-tensorflow-horovod.sh
 source test-submit-ray.sh
+source test-submit-alluxio.sh
 source test-config.sh
 
 # How to submit
@@ -177,3 +178,5 @@ SubmitTensorflowStandardTests
 SubmitTensorflowHorovodStandardTests
 
 SubmitRayStandardTests
+
+SubmitAlluxioStandardTests

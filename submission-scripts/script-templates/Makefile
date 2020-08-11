@@ -22,6 +22,7 @@ ZOOKEEPER_INCLUDE=y
 TENSORFLOW_INCLUDE=y
 TENSORFLOW_HOROVOD_INCLUDE=y
 RAY_INCLUDE=y
+ALLUXIO_INCLUDE=y
 
 MAGPIE_NO_LOCAL_DIR=n
 MAGPIE_HOSTNAME_MAP=n
@@ -56,6 +57,7 @@ STORM_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZEPPELIN_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 RAY_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
+ALLUXIO_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 
 REMOTE_CMD_DEFAULT=ssh
 
@@ -110,6 +112,7 @@ STORM_ZOOKEEPER_VERSION_DEFAULT=3.4.14
 ZOOKEEPER_VERSION_DEFAULT=3.4.14
 ZEPPELIN_VERSION_DEFAULT=0.8.2
 ZEPPELIN_SPARK_VERSION_DEFAULT=2.3.0-bin-hadoop2.7
+ALLUXIO_VERSION_DEFAULT=2.3.0
 
 #
 # If LOCAL_REQUIREMENTS is set to 'y', whatever is in the file pointed
@@ -194,6 +197,7 @@ define common-substitution
 	sed -i -e 's;ZEPPELINDIRPREFIX;$(ZEPPELIN_DIR_PREFIX);g' $(1)
 	sed -i -e 's;ZOOKEEPERDIRPREFIX;$(ZOOKEEPER_DIR_PREFIX);g' $(1)
 	sed -i -e 's;RAYDIRPREFIX;$(RAY_DIR_PREFIX);g' $(1)
+	sed -i -e 's;ALLUXIODIRPREFIX;$(ALLUXIO_DIR_PREFIX);g' $(1)
 
 	sed -i -e 's;HADOOPVERSIONDEFAULT;$(HADOOP_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;PIGVERSIONDEFAULT;$(PIG_VERSION_DEFAULT);g' $(1)
@@ -207,6 +211,7 @@ define common-substitution
 	sed -i -e 's;STORMVERSIONDEFAULT;$(STORM_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;ZOOKEEPERVERSIONDEFAULT;$(ZOOKEEPER_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;ZEPPELINVERSIONDEFAULT;$(ZEPPELIN_VERSION_DEFAULT);g' $(1)
+	sed -i -e 's;ALLUXIOVERSIONDEFAULT;$(ALLUXIO_VERSION_DEFAULT);g' $(1)
 
 	sed -i -e 's;REMOTECMDDEFAULT;$(REMOTE_CMD_DEFAULT);g' $(1)
 	if test "${REMOTE_CMD_DEFAULT}" != "ssh"; then \
@@ -239,7 +244,7 @@ endef
 # Perhaps there is a niftier way to do this in sed than what I'm doing, glad
 # to take suggestions.  I couldn't figure out a way to do it in 1 pass.
 define common-addition
-	for project in hadoop hbase hive phoenix pig mahout spark kafka zeppelin storm zookeeper tensorflow tensorflow-horovod ray; do \
+	for project in hadoop hbase hive phoenix pig mahout spark kafka zeppelin storm zookeeper tensorflow tensorflow-horovod ray alluxio; do \
 		if echo $(2) | grep -q $$project; then \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/a @MAGPIE_JOB_TYPES_TEMP@/" $(1); \
 			sed -i -e "/@MAGPIE_JOB_TYPES@/{r magpie-magpie-customizations-job-$$project" -e "}" $(1); \
@@ -327,11 +332,13 @@ define create-bigdata-templates
 	$(eval MAGPIE_HBASE_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs)
 	$(eval MAGPIE_HBASE_WITH_HDFS_WITH_PHOENIX := ../script-$(SCHED)/magpie.$(SCHED)-hbase-with-hdfs-with-phoenix)
 	$(eval MAGPIE_SPARK := ../script-$(SCHED)/magpie.$(SCHED)-spark)
+	$(eval MAGPIE_SPARK_WITH_ALLUXIO := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-alluxio)
 	$(eval MAGPIE_SPARK_WITH_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-hdfs)
 	$(eval MAGPIE_SPARK_WITH_YARN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn)
 	$(eval MAGPIE_SPARK_WITH_YARN_AND_HDFS := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-yarn-and-hdfs)
 	$(eval MAGPIE_SPARK_WITH_ZEPPELIN := ../script-$(SCHED)/magpie.$(SCHED)-spark-with-zeppelin)
 	$(eval MAGPIE_STORM := ../script-$(SCHED)/magpie.$(SCHED)-storm)
+	$(eval MAGPIE_ALLUXIO := ../script-$(SCHED)/magpie.$(SCHED)-alluxio)
 
 	$(call create-all)
 	$(if $(findstring "${HADOOP_INCLUDE}", "y"), $(call create-hadoop))
@@ -341,11 +348,14 @@ define create-bigdata-templates
 	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyy"), $(call create-hbase-with-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${HBASE_INCLUDE}${PHOENIX_INCLUDE}${ZOOKEEPER_INCLUDE}", "yyyy"), $(call create-hbase-with-hdfs-with-phoenix))
 	$(if $(findstring "${SPARK_INCLUDE}", "y"), $(call create-spark))
+	$(if $(findstring "${ALLUXIO_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-alluxio))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-hdfs))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn))
 	$(if $(findstring "${HADOOP_INCLUDE}${SPARK_INCLUDE}", "yy"), $(call create-spark-with-yarn-and-hdfs))
 	$(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), $(call create-spark-with-zeppelin))
 	$(if $(findstring "${STORM_INCLUDE}${ZOOKEEPER_INCLUDE}", "yy"), $(call create-storm))
+	$(if $(findstring "${ALLUXIO_INCLUDE}", "y"), $(call create-alluxio))
+
 endef
 
 define create-ml-master-worker-templates
@@ -496,6 +506,10 @@ define create-all
 			cat magpie-zookeeper >> $(MAGPIE); \
 		fi
 
+		if test "${ALLUXIO_INCLUDE}" = "y"; then \
+			cat magpie-alluxio >> $(MAGPIE); \
+		fi
+
 	cat	magpie-run-job-header-substitution \
 		magpie-run-job-$(DIST)-master-worker >> $(MAGPIE)
 	$(call common-substitution, ${MAGPIE},${JAVA_DEFAULT})
@@ -510,6 +524,7 @@ define create-all
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ZEPPELIN_INCLUDE}", "y"), "zeppelin"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${STORM_INCLUDE}", "y"), "storm"))
 	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ZOOKEEPER_INCLUDE}", "y"), "zookeeper"))
+	$(call common-addition, ${MAGPIE}, $(if $(findstring "${ALLUXIO_INCLUDE}", "y"), "alluxio"))
 	$(call common-addition-end, ${MAGPIE})
 endef
 
@@ -688,6 +703,30 @@ define create-spark
 	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR=/export SPARK_LOCAL_SCRATCH_DIR=/g" $(MAGPIE_SPARK)
 endef
 
+define create-spark-with-alluxio
+	echo "Creating magpie.$(SCHED)-spark-with-alluxio"
+	cat 	magpie-shebang \
+		magpie-header-llnl \
+		magpie-header-intel \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
+		magpie-config-$(SCHED)-master-worker \
+		magpie-magpie-customizations-substitution-bigdata \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
+		magpie-general-configuration-python \
+		magpie-spark \
+		magpie-alluxio \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_SPARK_WITH_ALLUXIO)
+	$(call common-substitution, ${MAGPIE_SPARK_WITH_ALLUXIO},${SPARK_JAVA_DEFAULT})
+	$(call common-additions, ${MAGPIE_SPARK_WITH_ALLUXIO}, spark alluxio)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"spark\"/" $(MAGPIE_SPARK_WITH_ALLUXIO)
+	sed -i -e "s/SPARK_SETUP=.*/SPARK_SETUP=yes/" $(MAGPIE_SPARK_WITH_ALLUXIO)
+	sed -i -e "s/^# export SPARK_LOCAL_SCRATCH_DIR=/export SPARK_LOCAL_SCRATCH_DIR=/g" $(MAGPIE_SPARK_WITH_ALLUXIO)
+	sed -i -e "s/ALLUXIO_SETUP=.*/ALLUXIO_SETUP=yes/" $(MAGPIE_SPARK_WITH_ALLUXIO)
+endef
+
 define create-spark-with-hdfs
 	echo "Creating magpie.$(SCHED)-spark-with-hdfs"
 	cat 	magpie-shebang \
@@ -830,6 +869,27 @@ define create-ray
 	$(call common-additions, ${MAGPIE_RAY}, ray)
 	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"ray\"/" $(MAGPIE_RAY)
 	sed -i -e "s/RAY_SETUP=.*/RAY_SETUP=yes/" $(MAGPIE_RAY)
+endef
+
+define create-alluxio
+	echo "Creating magpie.$(SCHED)-alluxio"
+	cat 	magpie-shebang \
+		magpie-header-llnl \
+		magpie-header-intel \
+		magpie-config-$(SCHED)-header \
+		magpie-config-bigdata-instructions \
+		magpie-config-$(SCHED)-master-worker \
+		magpie-magpie-customizations-substitution-bigdata \
+		magpie-general-configuration-header \
+		magpie-general-configuration-java \
+		magpie-general-configuration-python \
+		magpie-alluxio \
+		magpie-run-job-header-substitution \
+		magpie-run-job-$(DIST)-master-worker > $(MAGPIE_ALLUXIO)
+	$(call common-substitution, ${MAGPIE_ALLUXIO},${JAVA_DEFAULT})
+	$(call common-additions, ${MAGPIE_ALLUXIO}, alluxio)
+	sed -i -e "s/MAGPIE_JOB_TYPE=\"\(.*\)\"/MAGPIE_JOB_TYPE=\"alluxio\"/" $(MAGPIE_ALLUXIO)
+	sed -i -e "s/ALLUXIO_SETUP=.*/ALLUXIO_SETUP=yes/" $(MAGPIE_ALLUXIO)
 endef
 
 define create-tensorflow

@@ -32,6 +32,7 @@ source ${MAGPIE_SCRIPTS_HOME}/magpie/exports/magpie-exports-user
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
 source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-run
 
+source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-alluxio
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-hadoop
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-hbase
 source ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-project-kafka
@@ -117,6 +118,9 @@ Magpie_run_start_zookeeper
 # Will set magpie_run_hadoop_should_be_torndown & magpie_run_hadoop_setup_successful appropriately
 Magpie_run_start_hadoop
 
+# Will set magpie_run_alluxio_should_be_torndown & magpie_run_alluxio_setup_successful appropriately
+Magpie_run_start_alluxio
+
 # After Hadoop setup, requires Hadoop
 Magpie_run_start_pig
 # After Hadoop setup, requires Hadoop
@@ -166,7 +170,8 @@ if [ "${magpie_run_zookeeper_setup_successful}" == "1" ] \
     && [ "${magpie_run_zeppelin_setup_successful}" == "1" ] \
     && [ "${magpie_run_hive_setup_successful}" == "1" ] \
     && [ "${magpie_run_storm_setup_successful}" == "1" ] \
-    && [ "${magpie_run_ray_setup_successful}" == "1" ]
+    && [ "${magpie_run_ray_setup_successful}" == "1" ] \
+    && [ "${magpie_run_alluxio_setup_successful}" == "1" ]
 then
     if [ "${MAGPIE_JOB_TYPE}" == "script" ]
     then
@@ -228,6 +233,9 @@ then
     elif [ "${MAGPIE_JOB_TYPE}" == "ray" ]
     then
         Magpie_run_ray
+    elif [ "${MAGPIE_JOB_TYPE}" == "alluxio" ]
+    then
+        Magpie_run_alluxio
     elif [ "${MAGPIE_JOB_TYPE}" == "testall" ]
     then
         echo "*******************************************************"
@@ -244,6 +252,9 @@ echo "*******************************************************"
 echo "* Executing Post Run Scripts"
 echo "*******************************************************"
 ${MAGPIE_SCRIPTS_HOME}/magpie/run/magpie-run-post-execute
+
+# Sets magpie_run_alluxio_teardown_complete if teardown done
+Magpie_run_stop_alluxio
 
 # Sets magpie_run_ray_teardown_complete if teardown done
 Magpie_run_stop_ray

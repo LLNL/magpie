@@ -496,6 +496,40 @@ Magpie_make_ray_local_dirs_node_specific () {
     __Magpie_make_ray_local_dirs "specific"
 }
 
+__Magpie_make_alluxio_local_dirs () {
+    local which=$1
+
+    if [ "${ALLUXIO_SETUP}" == "yes" ]
+    then
+        if [ "${ALLUXIO_LOCAL_JOB_DIR}X" == "X" ]
+        then
+            Magpie_output_internal_error "__Magpie_make_alluxio_local_dirs called without ALLUXIO_LOCAL_JOB_DIR set"
+            exit 1
+        fi
+
+        export ALLUXIO_CONF_DIR=${ALLUXIO_LOCAL_JOB_DIR}/conf
+        export ALLUXIO_LOGS_DIR=${ALLUXIO_LOCAL_JOB_DIR}/log
+        export ALLUXIO_LOCAL_SCRATCHSPACE_DIR=${ALLUXIO_LOCAL_JOB_DIR}/scratch
+
+        if [ "${which}" == "specific" ]
+        then
+            Magpie_get_magpie_hostname
+            myhostname=${magpie_hostname}
+            export ALLUXIO_CONF_DIR=`echo $ALLUXIO_CONF_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export ALLUXIO_LOGS_DIR=`echo $ALLUXIO_LOGS_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+            export ALLUXIO_LOCAL_SCRATCHSPACE_DIR=`echo $ALLUXIO_LOCAL_SCRATCHSPACE_DIR | sed "s/MAGPIEHOSTNAMESUBSTITUTION/${myhostname}/g"`
+        fi
+    fi
+}
+
+Magpie_make_alluxio_local_dirs_unspecified () {
+    __Magpie_make_alluxio_local_dirs "generic"
+}
+
+Magpie_make_alluxio_local_dirs_node_specific () {
+    __Magpie_make_alluxio_local_dirs "specific"
+}
+
 __Magpie_make_all_local_dirs () {
     __Magpie_make_magpie_local_dirs $1
     __Magpie_make_hadoop_local_dirs $1
@@ -508,6 +542,7 @@ __Magpie_make_all_local_dirs () {
     __Magpie_make_storm_local_dirs $1
     __Magpie_make_zookeeper_local_dirs $1
     __Magpie_make_ray_local_dirs $1
+    __Magpie_make_alluxio_local_dirs $1
 }
 
 Magpie_make_all_local_dirs_unspecified () {
@@ -671,4 +706,16 @@ then
     fi
     # RAY_LOCAL_SCRATCHSPACE_DIR & RAY_CONF_DIR & RAY_LOG_DIR set
     Magpie_make_ray_local_dirs_node_specific
+fi
+
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+    if [ "${MAGPIE_NO_LOCAL_DIR}" == "yes" ]
+    then
+        export ALLUXIO_LOCAL_JOB_DIR=${ALLUXIO_LOCAL_DIR}/MAGPIEHOSTNAMESUBSTITUTION/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/alluxio
+    else
+        export ALLUXIO_LOCAL_JOB_DIR=${ALLUXIO_LOCAL_DIR}/${MAGPIE_JOB_NAME}/${MAGPIE_JOB_ID}/alluxio
+    fi
+    # ALLUXIO_LOCAL_SCRATCHSPACE_DIR & ALLUXIO_CONF_DIR & ALLUXIO_LOGS_DIR set
+    Magpie_make_alluxio_local_dirs_node_specific
 fi
