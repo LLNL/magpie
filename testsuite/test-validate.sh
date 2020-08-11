@@ -1594,3 +1594,19 @@ then
         __test_output_finalize $file
     done
 fi
+
+__get_test_files run-testalluxio
+if [ $? -eq 0 ]
+then
+    for file in ${test_validate_files}
+    do
+        # " PERSISTED" with space to omit "TO_BE_PERSISTED" state
+        num=`grep -e " PERSISTED" $file | wc -l`
+        if [ "${num}" == "0" ]; then
+            echo "Error in $file"
+        fi
+
+        __test_generic $file
+        __test_output_finalize $file
+    done
+fi

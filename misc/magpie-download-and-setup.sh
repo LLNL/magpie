@@ -25,6 +25,7 @@ STORM_DOWNLOAD="N"
 PHOENIX_DOWNLOAD="N"
 KAFKA_DOWNLOAD="N"
 ZEPPELIN_DOWNLOAD="N"
+ALLUXIO_DOWNLOAD="N"
 
 # Second, indicate some paths you'd like everything to be installed into
 
@@ -73,6 +74,8 @@ PHOENIX_HBASE_PACKAGE="hbase/1.4.13/hbase-1.4.13-bin.tar.gz"
 KAFKA_PACKAGE="kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz"
 ZEPPELIN_PACKAGE="zeppelin/zeppelin-0.8.2/zeppelin-0.8.2-bin-all.tgz"
 
+ALLUXIO_URL="https://downloads.alluxio.io/downloads/files/2.3.0/alluxio-2.3.0-bin.tar.gz"
+
 # First check some basics
 
 if [ ! -d "${INSTALL_PATH}" ]
@@ -101,7 +104,7 @@ fi
 
 APACHE_DOWNLOAD_BASE="http://www.apache.org/dyn/closer.cgi"
 
-__download_package () {
+__download_apache_package () {
     local package=$1
 
     APACHE_DOWNLOAD_PACKAGE="${APACHE_DOWNLOAD_BASE}/${package}"
@@ -113,6 +116,21 @@ __download_package () {
     PACKAGE_BASENAME=`basename ${package}`
 
     wget -O ${INSTALL_PATH}/${PACKAGE_BASENAME} ${DOWNLOAD_URL}
+
+    echo "Untarring ${PACKAGE_BASENAME}"
+
+    cd ${INSTALL_PATH}
+    tar -xzf ${PACKAGE_BASENAME}
+}
+
+__download_from_url () {
+    local url=$1
+
+    echo "Downloading from ${url}"
+
+    PACKAGE_BASENAME=`basename ${url}`
+
+    wget -O ${INSTALL_PATH}/${PACKAGE_BASENAME} ${url}
 
     echo "Untarring ${PACKAGE_BASENAME}"
 
@@ -138,7 +156,7 @@ __apply_patches_if_exist () {
 
 if [ "${HADOOP_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${HADOOP_PACKAGE}"
+    __download_apache_package "${HADOOP_PACKAGE}"
 
     HADOOP_PACKAGE_BASEDIR=$(echo `basename ${HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
     __apply_patches_if_exist ${HADOOP_PACKAGE_BASEDIR} \
@@ -148,7 +166,7 @@ fi
 
 if [ "${HBASE_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${HBASE_PACKAGE}"
+    __download_apache_package "${HBASE_PACKAGE}"
 
     HBASE_PACKAGE_BASEDIR=$(echo `basename ${HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
     __apply_patches_if_exist ${HBASE_PACKAGE_BASEDIR} \
@@ -158,7 +176,7 @@ fi
 
 if [ "${HIVE_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${HIVE_PACKAGE}"
+    __download_apache_package "${HIVE_PACKAGE}"
 
     HIVE_PACKAGE_BASEDIR=$(echo `basename ${HIVE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
     __apply_patches_if_exist ${HIVE_PACKAGE_BASEDIR} \
@@ -168,14 +186,14 @@ fi
 
 if [ "${PIG_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${PIG_PACKAGE}"
+    __download_apache_package "${PIG_PACKAGE}"
 
     # No pig patches at the moment
 fi
 
 if [ "${MAHOUT_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${MAHOUT_PACKAGE}"
+    __download_apache_package "${MAHOUT_PACKAGE}"
 
     MAHOUT_PACKAGE_BASEDIR=$(echo `basename ${MAHOUT_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
     __apply_patches_if_exist ${MAHOUT_PACKAGE_BASEDIR} \
@@ -184,23 +202,23 @@ fi
 
 if [ "${ZOOKEEPER_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${ZOOKEEPER_PACKAGE}"
+    __download_apache_package "${ZOOKEEPER_PACKAGE}"
 
     # No zookeeper patches at the moment
 fi
 
 if [ "${SPARK_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${SPARK_PACKAGE}"
+    __download_apache_package "${SPARK_PACKAGE}"
 
     SPARK_PACKAGE_BASEDIR=$(echo `basename ${SPARK_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1\.\2/g')
     __apply_patches_if_exist ${SPARK_PACKAGE_BASEDIR} \
         ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-alternate.patch \
         ${MAGPIE_SCRIPTS_HOME}/patches/spark/${SPARK_PACKAGE_BASEDIR}-no-local-dir.patch
 
-    if [ "${HADOOP_PACKAGE}" != "${SPARK_HADOOP_PACKAGE}" ]
+    if [ "${HADOOP_DOWNLOAD}" == "N" ] || [ "${HADOOP_PACKAGE}" != "${SPARK_HADOOP_PACKAGE}" ]
     then
-        __download_package "${SPARK_HADOOP_PACKAGE}"
+        __download_apache_package "${SPARK_HADOOP_PACKAGE}"
 
         SPARK_HADOOP_PACKAGE_BASEDIR=$(echo `basename ${SPARK_HADOOP_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
         __apply_patches_if_exist ${SPARK_HADOOP_PACKAGE_BASEDIR} \
@@ -211,14 +229,14 @@ fi
 
 if [ "${STORM_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${STORM_PACKAGE}"
+    __download_apache_package "${STORM_PACKAGE}"
 
     # No storm patches at the moment
 fi
 
 if [ "${PHOENIX_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${PHOENIX_PACKAGE}"
+    __download_apache_package "${PHOENIX_PACKAGE}"
 
     PHOENIX_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_PACKAGE}` | sed 's/\(.*\)\.\(.*\)\.\(.*\)/\1/g')
     __apply_patches_if_exist ${PHOENIX_PACKAGE_BASEDIR} \
@@ -226,7 +244,7 @@ then
 
     if [ "${HBASE_PACKAGE}" != "${PHOENIX_HBASE_PACKAGE}" ]
     then
-        __download_package "${PHOENIX_HBASE_PACKAGE}"
+        __download_apache_package "${PHOENIX_HBASE_PACKAGE}"
 
         PHOENIX_HBASE_PACKAGE_BASEDIR=$(echo `basename ${PHOENIX_HBASE_PACKAGE}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
         __apply_patches_if_exist ${PHOENIX_HBASE_PACKAGE_BASEDIR} \
@@ -237,7 +255,7 @@ fi
 
 if [ "${KAFKA_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${KAFKA_PACKAGE}"
+    __download_apache_package "${KAFKA_PACKAGE}"
 
     KAFKA_PACKAGE_BASEDIR=$(echo `basename ${KAFKA_PACKAGE}` | sed 's/\(.*\)\.\(.*\)/\1/g')
     __apply_patches_if_exist ${KAFKA_PACKAGE_BASEDIR} \
@@ -247,9 +265,18 @@ fi
 
 if [ "${ZEPPELIN_DOWNLOAD}" == "Y" ]
 then
-    __download_package "${ZEPPELIN_PACKAGE}"
+    __download_apache_package "${ZEPPELIN_PACKAGE}"
 
     # No zeppelin patches at the moment
+fi
+
+if [ "${ALLUXIO_DOWNLOAD}" == "Y" ]
+then
+    __download_from_url "${ALLUXIO_URL}"
+
+    ALLUXIO_BASEDIR=$(echo `basename ${ALLUXIO_URL}` | sed 's/\(.*\)-bin\.\(.*\)\.\(.*\)/\1/g')
+    __apply_patches_if_exist ${ALLUXIO_BASEDIR} \
+        ${MAGPIE_SCRIPTS_HOME}/patches/alluxio/${ALLUXIO_BASEDIR}.patch
 fi
 
 if [ "${PRESET_LAUNCH_SCRIPT_CONFIGS}" == "Y" ]

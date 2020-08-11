@@ -66,7 +66,7 @@ fi
 # Setup primary conf, log, and local scratchspace directories for projects
 #
 
-magpieprojects="HADOOP PIG MAHOUT HBASE HIVE PHOENIX SPARK KAFKA ZEPPELIN STORM ZOOKEEPER RAY"
+magpieprojects="HADOOP PIG MAHOUT HBASE HIVE PHOENIX SPARK KAFKA ZEPPELIN STORM ZOOKEEPER RAY ALLUXIO"
 
 for project in ${magpieprojects}
 do
@@ -257,6 +257,18 @@ if [ "${RAY_SETUP}" == "yes" ]
 then
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${RAY_CONF_DIR}/masters
     cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${RAY_CONF_DIR}/workers
+fi
+
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+    cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${ALLUXIO_CONF_DIR}/masters
+    if [ "${ALLUXIO_WORKER_ON_MASTER}" == "yes" ]
+    then
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_masters ${ALLUXIO_CONF_DIR}/workers
+        cat ${MAGPIE_LOCAL_CONF_DIR}/job_workers >> ${ALLUXIO_CONF_DIR}/workers
+    else
+        cp ${MAGPIE_LOCAL_CONF_DIR}/job_workers ${ALLUXIO_CONF_DIR}/workers
+    fi
 fi
 
 exit 0

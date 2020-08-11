@@ -455,7 +455,7 @@ default files are stored in ${HOME}/${MAGPIE_JOB_NAME}, but the base
 directory can be altered with the first argument passed into the
 script.
 
-In addition, the misc/magpie-apache-download-and-setup.sh may be
+In addition, the misc/magpie-download-and-setup.sh may be
 convenient for initially downloading and patching Apache projects for
 you so you don't have to manually download them.  It'll also configure
 several paths for you in the launch scripts automatically.
@@ -650,7 +650,7 @@ Hopefully it's somewhat obvious.
      necessary.
 
 10) (Optional) Add download options for the project in
-   misc/magpie-apache-download-and-setup.sh
+   misc/magpie-download-and-setup.sh
 
 Other Schedulers/Resource Managers
 ----------------------------------

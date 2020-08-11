@@ -107,6 +107,7 @@ __GenerateCornerCaseTests_NoSetJava() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nosetjava
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-nosetjava
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetjava
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nosetjava
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetjava
@@ -118,6 +119,10 @@ __GenerateCornerCaseTests_NoSetJava() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetjava
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-nosetjava
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetjava*"`
@@ -155,6 +160,7 @@ __GenerateCornerCaseTests_BadSetJava() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badsetjava
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badsetjava
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badsetjava
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badsetjava
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsetjava
@@ -166,6 +172,10 @@ __GenerateCornerCaseTests_BadSetJava() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsetjava
+    fi
+
+    if [ "${alluxio}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badsetjava
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsetjava*"`
@@ -249,11 +259,13 @@ __GenerateCornerCaseTests_NoSetVersion() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nosetversion
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-nosetversion
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetversion
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nosetversion
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetversion
         sed -i -e 's/export SPARK_VERSION/# export SPARK_VERSION/' \
             magpie.${submissiontype}-spark-cornercase-nosetversion \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-nosetversion \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetversion \
             magpie.${submissiontype}-spark-with-yarn-cornercase-nosetversion \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetversion
@@ -272,6 +284,11 @@ __GenerateCornerCaseTests_NoSetVersion() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetversion
         sed -i -e 's/export ZEPPELIN_VERSION/# export ZEPPELIN_VERSION/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetversion
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-nosetversion
+        sed -i -e 's/export ALLUXIO_VERSION/# export ALLUXIO_VERSION/' magpie.${submissiontype}-alluxio-cornercase-nosetversion
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetversion*"`
@@ -344,11 +361,13 @@ __GenerateCornerCaseTests_BadVersion() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badversion
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badversion
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badversion
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badversion
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badversion
         sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="2.2"/' \
             magpie.${submissiontype}-spark-cornercase-badversion \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-badversion \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-badversion \
             magpie.${submissiontype}-spark-with-yarn-cornercase-badversion \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badversion
@@ -362,6 +381,11 @@ __GenerateCornerCaseTests_BadVersion() {
     if [ "${zookeepertests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-storm magpie.${submissiontype}-zookeeper-cornercase-badversion
         sed -i -e 's/export ZOOKEEPER_VERSION="\(.*\)"/export ZOOKEEPER_VERSION="2.2"/' magpie.${submissiontype}-zookeeper-cornercase-badversion
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badversion
+        sed -i -e 's/export ALLUXIO_VERSION="\(.*\)"/export ALLUXIO_VERSION="2.2"/' magpie.${submissiontype}-alluxio-cornercase-badversion
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badversion*"`
@@ -404,11 +428,13 @@ __GenerateCornerCaseTests_NoSetHome() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nosethome
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-nosethome
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nosethome
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nosethome
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosethome
         sed -i -e 's/export SPARK_HOME/# export SPARK_HOME/' \
             magpie.${submissiontype}-spark-cornercase-nosethome \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-nosethome \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-nosethome \
             magpie.${submissiontype}-spark-with-yarn-cornercase-nosethome \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosethome
@@ -427,6 +453,11 @@ __GenerateCornerCaseTests_NoSetHome() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosethome
         sed -i -e 's/export ZEPPELIN_HOME/# export ZEPPELIN_HOME/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosethome
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-nosethome
+        sed -i -e 's/export ALLUXIO_HOME/# export ALLUXIO_HOME/' magpie.${submissiontype}-alluxio-cornercase-nosethome
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosethome*"`
@@ -469,11 +500,13 @@ __GenerateCornerCaseTests_BadSetHome() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badsethome
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badsethome
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badsethome
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badsethome
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsethome
         sed -i -e 's/export SPARK_HOME="\(.*\)"/export SPARK_HOME="\/FOO\/BAR\/BAZ"/' \
             magpie.${submissiontype}-spark-cornercase-badsethome \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-badsethome \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-badsethome \
             magpie.${submissiontype}-spark-with-yarn-cornercase-badsethome \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badsethome
@@ -492,6 +525,11 @@ __GenerateCornerCaseTests_BadSetHome() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsethome
         sed -i -e 's/export ZEPPELIN_HOME="\(.*\)"/export ZEPPELIN_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badsethome
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badsethome
+        sed -i -e 's/export ALLUXIO_HOME="\(.*\)"/export ALLUXIO_HOME="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-alluxio-cornercase-badsethome
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badsethome*"`
@@ -534,11 +572,13 @@ __GenerateCornerCaseTests_NoSetLocalDir() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nosetlocaldir
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-nosetlocaldir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetlocaldir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nosetlocaldir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetlocaldir
         sed -i -e 's/export SPARK_LOCAL_DIR/# export SPARK_LOCAL_DIR/' \
             magpie.${submissiontype}-spark-cornercase-nosetlocaldir \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-nosetlocaldir \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-nosetlocaldir \
             magpie.${submissiontype}-spark-with-yarn-cornercase-nosetlocaldir \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nosetlocaldir
@@ -557,6 +597,11 @@ __GenerateCornerCaseTests_NoSetLocalDir() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetlocaldir
         sed -i -e 's/export ZEPPELIN_LOCAL_DIR/# export ZEPPELIN_LOCAL_DIR/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nosetlocaldir
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-nosetlocaldir
+        sed -i -e 's/export ALLUXIO_LOCAL_DIR/# export ALLUXIO_LOCAL_DIR/' magpie.${submissiontype}-alluxio-cornercase-nosetlocaldir
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-nosetlocaldir*"`
@@ -599,11 +644,13 @@ __GenerateCornerCaseTests_BadSetLocalDir() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badlocaldir
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badlocaldir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badlocaldir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badlocaldir
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badlocaldir
         sed -i -e 's/export SPARK_LOCAL_DIR="\(.*\)"/export SPARK_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' \
             magpie.${submissiontype}-spark-cornercase-badlocaldir \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-badlocaldir \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-badlocaldir \
             magpie.${submissiontype}-spark-with-yarn-cornercase-badlocaldir \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badlocaldir
@@ -622,6 +669,11 @@ __GenerateCornerCaseTests_BadSetLocalDir() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badlocaldir
         sed -i -e 's/export ZEPPELIN_LOCAL_DIR="\(.*\)"/export ZEPPELIN_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badlocaldir
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badlocaldir
+        sed -i -e 's/export ALLUXIO_LOCAL_DIR="\(.*\)"/export ALLUXIO_LOCAL_DIR="\/FOO\/BAR\/BAZ"/' magpie.${submissiontype}-alluxio-cornercase-badlocaldir
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badlocaldir*"`
@@ -786,6 +838,7 @@ __GenerateCornerCaseTests_BadJobTime() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badjobtime
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badjobtime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime
@@ -797,6 +850,10 @@ __GenerateCornerCaseTests_BadJobTime() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badjobtime
     fi
 
     if [ "${tensorflowtests}" == "y" ]; then
@@ -874,26 +931,31 @@ __GenerateCornerCaseTests_BadJobTime() {
 
         if [ "${sparktests}" == "y" ]; then
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badjobtime-sbatchsrun-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-minutes-seconds
 
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
 
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badjobtime-sbatchsrun-days-hours
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-days-hours
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-days-hours
 
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badjobtime-sbatchsrun-days-hours-minutes
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-days-hours-minutes
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes
 
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
@@ -913,6 +975,14 @@ __GenerateCornerCaseTests_BadJobTime() {
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime-sbatchsrun-days-hours
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime-sbatchsrun-days-hours-minutes
             cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
+        fi
+
+        if [ "${alluxiotests}" == "y" ]; then
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badjobtime-sbatchsrun-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badjobtime-sbatchsrun-hours-minutes-seconds
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badjobtime-sbatchsrun-days-hours
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badjobtime-sbatchsrun-days-hours-minutes
+            cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badjobtime-sbatchsrun-days-hours-minutes-seconds
         fi
 
         files=`find . -maxdepth 1 -name "magpie.${submissiontype}*cornercase-badjobtime-sbatchsrun*"`
@@ -974,6 +1044,7 @@ __GenerateCornerCaseTests_BadStartupTime() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badstartuptime
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badstartuptime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badstartuptime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badstartuptime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badstartuptime
@@ -985,6 +1056,10 @@ __GenerateCornerCaseTests_BadStartupTime() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badstartuptime
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badstartuptime
     fi
 
     if [ "${tensorflowtests}" == "y" ]; then
@@ -1035,6 +1110,7 @@ __GenerateCornerCaseTests_BadShutdownTime() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badshutdowntime
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badshutdowntime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badshutdowntime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badshutdowntime
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badshutdowntime
@@ -1046,6 +1122,10 @@ __GenerateCornerCaseTests_BadShutdownTime() {
 
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badshutdowntime
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badshutdowntime
     fi
 
     if [ "${tensorflowtests}" == "y" ]; then
@@ -1098,6 +1178,7 @@ __GenerateCornerCaseTests_BadNodeCount() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badnodecount-small
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badnodecount-small
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badnodecount-small
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badnodecount-small
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badnodecount-small
@@ -1175,21 +1256,25 @@ __GenerateCornerCaseTests_NoCoreSettings() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nocoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-nocoresettings-1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-1
         sed -i -e 's/export SPARK_JOB/# export SPARK_JOB/' \
             magpie.${submissiontype}-spark-cornercase-nocoresettings-1 \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-nocoresettings-1 \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-1 \
             magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-1 \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-1
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-nocoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-nocoresettings-2
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-2
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-2
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-2
         sed -i -e 's/export SPARK_SETUP_TYPE/# export SPARK_SETUP_TYPE/' \
             magpie.${submissiontype}-spark-cornercase-nocoresettings-2 \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-nocoresettings-2 \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-nocoresettings-2 \
             magpie.${submissiontype}-spark-with-yarn-cornercase-nocoresettings-2 \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-nocoresettings-2
@@ -1214,6 +1299,11 @@ __GenerateCornerCaseTests_NoCoreSettings() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
         sed -i -e 's/export ZEPPELIN_JOB/# export ZEPPELIN_JOB/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-nocoresettings
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-nocoresettings
+        sed -i -e 's/export ALLUXIO_JOB/# export ALLUXIO_JOB/' magpie.${submissiontype}-alluxio-cornercase-nocoresettings
     fi
 
     if [ "${tensorflowtests}" == "y" ]; then
@@ -1284,21 +1374,25 @@ __GenerateCornerCaseTests_BadCoreSettings() {
 
     if [ "${sparktests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcoresettings-1
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badcoresettings-1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-1
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-1
         sed -i -e 's/export SPARK_JOB="\(.*\)"/export SPARK_JOB="foobar"/' \
             magpie.${submissiontype}-spark-cornercase-badcoresettings-1 \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-badcoresettings-1 \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-1 \
             magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-1 \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-1
 
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-cornercase-badcoresettings-2
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-alluxio magpie.${submissiontype}-spark-with-alluxio-cornercase-badcoresettings-2
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-2
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-2
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-2
         sed -i -e 's/export SPARK_SETUP_TYPE="\(.*\)"/export SPARK_SETUP_TYPE="foobar"/' \
             magpie.${submissiontype}-spark-cornercase-badcoresettings-2 \
+            magpie.${submissiontype}-spark-with-alluxio-cornercase-badcoresettings-2 \
             magpie.${submissiontype}-spark-with-hdfs-cornercase-badcoresettings-2 \
             magpie.${submissiontype}-spark-with-yarn-cornercase-badcoresettings-2 \
             magpie.${submissiontype}-spark-with-yarn-and-hdfs-cornercase-badcoresettings-2
@@ -1323,6 +1417,11 @@ __GenerateCornerCaseTests_BadCoreSettings() {
     if [ "${zeppelintests}" == "y" ]; then
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-zeppelin magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
         sed -i -e 's/export ZEPPELIN_JOB="\(.*\)"/export ZEPPELIN_JOB="foobar"/' magpie.${submissiontype}-spark-with-zeppelin-cornercase-badcoresettings
+    fi
+
+    if [ "${alluxiotests}" == "y" ]; then
+        cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-alluxio magpie.${submissiontype}-alluxio-cornercase-badcoresettings
+        sed -i -e 's/export ALLUXIO_JOB="\(.*\)"/export ALLUXIO_JOB="foobar"/' magpie.${submissiontype}-alluxio-cornercase-badcoresettings
     fi
 
     if [ "${tensorflowhorovodtests}" == "y" ]; then

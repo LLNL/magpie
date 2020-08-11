@@ -16,7 +16,7 @@ Instructions For Spark
    for Spark depending on your environment and Spark version.
 
    See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   misc/magpie-download-and-setup.sh, which may make the
    downloading and patching easier.
 
 1) Select an appropriate submission script for running your job.  You

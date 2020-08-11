@@ -17,7 +17,7 @@ Instructions For Using Pig
    with the 0.23.0 branch (i.e. Hadoop 2.0).
 
    See 'Convenience Scripts' in README about
-   misc/magpie-apache-download-and-setup.sh, which may make the
+   misc/magpie-download-and-setup.sh, which may make the
    downloading and patching easier.
 
 1) Select an appropriate submission script for running your job.  You

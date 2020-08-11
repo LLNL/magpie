@@ -521,6 +521,17 @@ then
     fi
 fi
 
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+    alluxio_jars="${ALLUXIO_HOME}/client/alluxio-${ALLUXIO_VERSION}-client.jar"
+    if [ "${sparkclasspath}X" != "X" ]
+    then
+        sparkclasspath="${sparkclasspath}:${alluxio_jars}"
+    else
+        sparkclasspath="${alluxio_jars}"
+    fi
+fi
+
 # Before 1.0.0, set in SPARK_CLASSPATH and SPARK_LIBRARY_PATH,
 # afterwards set in spark-defaults.conf
 # - spark-defaults.conf for >= 1.0.0 set up below

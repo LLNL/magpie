@@ -1,0 +1,503 @@
+diff -ru alluxio-2.3.0-base/bin/alluxio alluxio-2.3.0-new/bin/alluxio
+--- alluxio-2.3.0-base/bin/alluxio	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio	2020-09-10 11:29:32.907876600 +0200
+@@ -126,18 +126,23 @@
+   DIR=$(echo ${DIR}|sed 's@/$@@')
+   DEST=$(dirname ${DIR})
+ 
+-  SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
++  RSH_CMD=${ALLUXIO_REMOTE_CMD:-ssh}
++  if [ "${RSH_CMD}" = "ssh" ] && [ "${ALLUXIO_REMOTE_CMD_OPTS}" = "" ]; then
++    RSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
++  else
++    RSH_OPTS="${ALLUXIO_REMOTE_CMD_OPTS}"
++  fi
+ 
+   echo "RSYNC'ing ${DIR} to masters..."
+   for master in ${MASTERS}; do
+       echo ${master}
+-      rsync -e "ssh ${SSH_OPTS}" -az ${DIR} ${master}:${DEST} & sleep 0.05
++      rsync -e "${RSH_CMD} ${RSH_OPTS}" -az ${DIR} ${master}:${DEST} & sleep 0.05
+   done
+ 
+   echo "RSYNC'ing ${DIR} to workers..."
+   for worker in ${WORKERS}; do
+       echo ${worker}
+-      rsync -e "ssh ${SSH_OPTS}" -az ${DIR} ${worker}:${DEST} & sleep 0.05
++      rsync -e "${RSH_CMD} ${RSH_OPTS}" -az ${DIR} ${worker}:${DEST} & sleep 0.05
+   done
+   wait
+ }
+@@ -171,7 +176,12 @@
+                        alluxio.master.journal.type | awk '{print toupper($0)}')
+   if [[ ${JOURNAL_TYPE} == "EMBEDDED" ]]; then
+     # Embedded journal is stored on-disk, so format needs to be run on each master
+-    ${LAUNCHER} ${BIN}/alluxio-masters.sh ${BIN}/alluxio formatJournal
++    if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++    then
++      ${LAUNCHER} ${BIN}/alluxio-masters.sh ${BIN}/alluxio --config ${ALLUXIO_CONF_DIR} formatJournal
++    else
++      ${LAUNCHER} ${BIN}/alluxio-masters.sh ${BIN}/alluxio formatJournal
++    fi
+   else
+     formatJournal
+   fi
+@@ -190,6 +200,25 @@
+     exit 1
+   fi
+ 
++  if [ "$1" == "--config" ]
++  then
++    shift
++    conf_dir=$1
++    if [ ! -d "$conf_dir" ]
++    then
++      echo "ERROR : $conf_dir is not a directory"
++      exit 1
++    else
++      export ALLUXIO_CONF_DIR=$conf_dir
++    fi
++    shift
++  fi
++
++  if [[ $# == 0 ]]; then
++    printUsage
++    exit 1
++  fi
++
+   COMMAND=$1
+   shift
+ 
+@@ -232,7 +261,12 @@
+       exit 2
+     fi
+ 
+-    ${LAUNCHER} ${BIN}/alluxio-workers.sh ${BIN}/alluxio formatWorker
++   if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++   then
++     ${LAUNCHER} ${BIN}/alluxio-workers.sh ${BIN}/alluxio --config ${ALLUXIO_CONF_DIR} formatWorker
++   else
++     ${LAUNCHER} ${BIN}/alluxio-workers.sh ${BIN}/alluxio formatWorker
++   fi
+ 
+     formatMasters
+   ;;
+diff -ru alluxio-2.3.0-base/bin/alluxio-masters.sh alluxio-2.3.0-new/bin/alluxio-masters.sh
+--- alluxio-2.3.0-base/bin/alluxio-masters.sh	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio-masters.sh	2020-09-10 11:38:57.517178200 +0200
+@@ -37,6 +37,13 @@
+ 
+ echo "Executing the following command on all master nodes and logging to ${ALLUXIO_TASK_LOG}: $@" | tee -a ${ALLUXIO_TASK_LOG}
+ 
++RSH_CMD=${ALLUXIO_REMOTE_CMD:-ssh}
++if [ "${RSH_CMD}" = "ssh" ] && [ "${ALLUXIO_REMOTE_CMD_OPTS}" = "" ]; then
++  RSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5 -tt"
++else
++  RSH_OPTS="${ALLUXIO_REMOTE_CMD_OPTS}"
++fi
++
+ N=0
+ HA_ENABLED=$(${BIN}/alluxio getConf ${ALLUXIO_MASTER_JAVA_OPTS} alluxio.zookeeper.enabled)
+ JOURNAL_TYPE=$(${BIN}/alluxio getConf ${ALLUXIO_MASTER_JAVA_OPTS} alluxio.master.journal.type | awk '{print toupper($0)}')
+@@ -46,10 +53,10 @@
+ for master in ${HOSTLIST[@]}; do
+   echo "[${master}] Connecting as ${USER}..." >> ${ALLUXIO_TASK_LOG}
+   if [[ ${HA_ENABLED} == "true" || ${N} -eq 0 ]]; then
+-    nohup ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -tt ${master} ${LAUNCHER} \
++    nohup ${RSH_CMD} ${RSH_OPTS} ${master} ${LAUNCHER} \
+       $"${@// /\\ }" 2>&1 | while read line; do echo "[$(date '+%F %T')][${master}] ${line}"; done >> ${ALLUXIO_TASK_LOG} &
+   else
+-    nohup ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -tt ${master} ${LAUNCHER} \
++    nohup ${RSH_CMD} ${RSH_OPTS} ${master} ${LAUNCHER} \
+       $"export ALLUXIO_MASTER_SECONDARY=true; ${@// /\\ }" 2>&1 | while read line; do echo "[$(date '+%F %T')][${master}] ${line}"; done >> ${ALLUXIO_TASK_LOG} &
+   fi
+   pids[${#pids[@]}]=$!
+diff -ru alluxio-2.3.0-base/bin/alluxio-monitor.sh alluxio-2.3.0-new/bin/alluxio-monitor.sh
+--- alluxio-2.3.0-base/bin/alluxio-monitor.sh	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio-monitor.sh	2020-09-10 11:39:08.706608400 +0200
+@@ -38,6 +38,20 @@
+ -h  display this help.
+ "
+ 
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir=$1
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    exit 1
++  else
++    export ALLUXIO_CONF_DIR=$conf_dir
++  fi
++  shift
++fi
++
+ RED='\033[1;31m'
+ GREEN='\033[1;32m'
+ PURPLE='\033[0;35m'
+@@ -129,7 +143,14 @@
+   local node=$1
+   # Appends every argument after $1 to the launcher terminal
+ 
+-  ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -tt ${node} ${LAUNCHER} ${@:2} \
++  RSH_CMD=${ALLUXIO_REMOTE_CMD:-ssh}
++  if [ "${RSH_CMD}" = "ssh" ] && [ "${ALLUXIO_REMOTE_CMD_OPTS}" = "" ]; then
++    RSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5 -tt"
++  else
++    RSH_OPTS="${ALLUXIO_REMOTE_CMD_OPTS}"
++  fi
++
++  ${RSH_CMD} ${RSH_OPTS} ${node} ${LAUNCHER} ${@:2} \
+     2> >(while read line; do echo "[$(date '+%F %T')][${node}] ${line}" >> ${ALLUXIO_TASK_LOG}; done)
+ }
+ 
+@@ -170,12 +191,22 @@
+   if [[ "${node_type}" == "master" ]]; then
+     # master check should only run once...
+     local master=$(echo -e "${nodes}" | head -n1)
+-    run_on_node ${master} "${BIN}/alluxio-monitor.sh" ${mode} "${node_type}"
++    if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++    then
++      run_on_node ${master} "${BIN}/alluxio-monitor.sh" --config ${ALLUXIO_CONF_DIR} ${mode} "${node_type}"
++    else
++      run_on_node ${master} "${BIN}/alluxio-monitor.sh" ${mode} "${node_type}"
++    fi
+ 
+     nodes=$(echo -e "${nodes}" | tail -n+2)
+     if [[ $? -ne 0 ]]; then
+       # if there is an error, print the log tail for the remaining master nodes.
+-      batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" -L "${node_type}"
++      if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++      then
++        batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" --config ${ALLUXIO_CONF_DIR} -L "${node_type}"
++      else
++        batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" -L "${node_type}"
++      fi
+     else
+       HA_ENABLED=$(${BIN}/alluxio getConf ${ALLUXIO_MASTER_JAVA_OPTS} alluxio.zookeeper.enabled)
+       JOURNAL_TYPE=$(${BIN}/alluxio getConf ${ALLUXIO_MASTER_JAVA_OPTS} alluxio.master.journal.type | awk '{print toupper($0)}')
+@@ -183,11 +214,21 @@
+         HA_ENABLED="true"
+       fi
+       if [[ ${HA_ENABLED} == "true" ]]; then
+-        batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" "${mode}" "${node_type}"
++        if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++        then
++          batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" --config ${ALLUXIO_CONF_DIR} "${mode}" "${node_type}"
++        else
++          batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" "${mode}" "${node_type}"
++        fi
+       fi
+     fi
+   else
+-    batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" "${mode}" "${node_type}"
++    if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++    then
++      batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" --config ${ALLUXIO_CONF_DIR} "${mode}" "${node_type}"
++    else
++      batch_run_on_nodes "$(echo ${nodes})" "${BIN}/alluxio-monitor.sh" "${mode}" "${node_type}"
++    fi
+   fi
+ }
+ 
+diff -ru alluxio-2.3.0-base/bin/alluxio-mount.sh alluxio-2.3.0-new/bin/alluxio-mount.sh
+--- alluxio-2.3.0-base/bin/alluxio-mount.sh	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio-mount.sh	2020-09-09 16:25:19.772000600 +0200
+@@ -20,6 +20,20 @@
+   local\t\t\tMount local machine\n
+   workers\t\tMount all the workers on worker nodes"
+ 
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir=$1
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    exit 1
++  else
++    export ALLUXIO_CONF_DIR=$conf_dir
++  fi
++  shift
++fi
++
+ function init_env() {
+   local libexec_dir=${ALLUXIO_LIBEXEC_DIR:-"${BIN}"/../libexec}
+   . ${libexec_dir}/alluxio-config.sh
+@@ -248,7 +262,12 @@
+           run_local $1
+           ;;
+         workers)
+-          ${LAUNCHER} ${BIN}/alluxio-workers.sh ${BIN}/alluxio-mount.sh $1
++          if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++          then
++            ${LAUNCHER} ${BIN}/alluxio-workers.sh ${BIN}/alluxio-mount.sh --config ${ALLUXIO_CONF_DIR} $1
++          else
++            ${LAUNCHER} ${BIN}/alluxio-workers.sh ${BIN}/alluxio-mount.sh $1
++          fi
+           ;;
+         *)
+           echo -e ${USAGE} >&2
+diff -ru alluxio-2.3.0-base/bin/alluxio-start.sh alluxio-2.3.0-new/bin/alluxio-start.sh
+--- alluxio-2.3.0-base/bin/alluxio-start.sh	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio-start.sh	2020-09-10 11:39:36.292402600 +0200
+@@ -56,6 +56,20 @@
+ 
+ ALLUXIO_JOB_WORKER_COUNT - identifies how many job workers to start per node (default = 1)"
+ 
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir=$1
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    exit 1
++  else
++    export ALLUXIO_CONF_DIR=$conf_dir
++  fi
++  shift
++fi
++
+ ensure_dirs() {
+   if [[ ! -d "${ALLUXIO_LOGS_DIR}" ]]; then
+     echo "ALLUXIO_LOGS_DIR: ${ALLUXIO_LOGS_DIR}"
+@@ -162,7 +176,12 @@
+ }
+ 
+ stop() {
+-  ${BIN}/alluxio-stop.sh $1
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${BIN}/alluxio-stop.sh --config ${ALLUXIO_CONF_DIR} $1
++  else
++    ${BIN}/alluxio-stop.sh $1
++  fi
+ }
+ 
+ start_job_master() {
+@@ -177,7 +196,12 @@
+ }
+ 
+ start_job_masters() {
+-  ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "-a" "job_master"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" "-a" "job_master"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "-a" "job_master"
++  fi
+ }
+ 
+ start_job_worker() {
+@@ -193,7 +217,12 @@
+ }
+ 
+ start_job_workers() {
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "-a" "job_worker"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" "-a" "job_worker"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "-a" "job_worker"
++  fi
+ }
+ 
+ start_logserver() {
+@@ -240,7 +269,12 @@
+   if [[ -n ${journal_backup} ]]; then
+     start_opts="-i ${journal_backup}"
+   fi
+-  ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" ${start_opts} "-a" "master" $1
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" ${start_opts} "-a" "master" $1
++  else
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" ${start_opts} "-a" "master" $1
++  fi
+ }
+ 
+ start_proxy() {
+@@ -249,8 +283,15 @@
+ }
+ 
+ start_proxies() {
+-  ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "-a" "proxy"
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "-a" "proxy"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" "-a" "proxy"
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" "-a" "proxy"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-start.sh" "-a" "proxy"
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "-a" "proxy"
++  fi
++
+ }
+ 
+ start_worker() {
+@@ -266,7 +307,12 @@
+ }
+ 
+ start_workers() {
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "-a" "worker" $1
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" "-a" "worker" $1
++  else
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "-a" "worker" $1
++  fi
+ }
+ 
+ restart_worker() {
+@@ -282,7 +328,12 @@
+ }
+ 
+ restart_workers() {
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "restart_worker"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "--config" "${ALLUXIO_CONF_DIR}" "restart_worker"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-start.sh" "restart_worker"
++  fi
+ }
+ 
+ get_offline_worker() {
+@@ -300,11 +351,17 @@
+   local run=
+   local i=0
+   local workers=$(cat "${ALLUXIO_CONF_DIR}/workers" | sed  "s/#.*$//;/^$/d")
++  RSH_CMD=${ALLUXIO_REMOTE_CMD:-ssh}
++  if [ "${RSH_CMD}" = "ssh" ] && [ "${ALLUXIO_REMOTE_CMD_OPTS}" = "" ]; then
++    RSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5 -tt"
++  else
++    RSH_OPTS="${ALLUXIO_REMOTE_CMD_OPTS}"
++  fi
+   for worker in $(echo ${workers}); do
+     if [[ ${i} -gt 0 ]]; then
+       result+=","
+     fi
+-    run=$(ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -tt ${worker} \
++    run=$(${RSH_CMD} ${RSH_OPTS} ${worker} \
+         ps -ef | grep "alluxio.worker.AlluxioWorker" | grep "java" | wc | awk '{ print $1; }')
+     if [[ ${run} -eq 0 ]]; then
+       result+="${worker}"
+diff -ru alluxio-2.3.0-base/bin/alluxio-stop.sh alluxio-2.3.0-new/bin/alluxio-stop.sh
+--- alluxio-2.3.0-base/bin/alluxio-stop.sh	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio-stop.sh	2020-09-09 16:25:19.780957100 +0200
+@@ -36,12 +36,32 @@
+ 
+ -h  display this help."
+ 
++
++if [ "$1" == "--config" ]
++then
++  shift
++  conf_dir=$1
++  if [ ! -d "$conf_dir" ]
++  then
++    echo "ERROR : $conf_dir is not a directory"
++    exit 1
++  else
++    export ALLUXIO_CONF_DIR=$conf_dir
++  fi
++  shift
++fi
++
+ stop_job_master() {
+   ${LAUNCHER} "${BIN}/alluxio" "killAll" "alluxio.master.AlluxioJobMaster"
+ }
+ 
+ stop_job_masters() {
+-  ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "job_master"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "--config" "${ALLUXIO_CONF_DIR}" "job_master"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "job_master"
++  fi
+ }
+ 
+ stop_job_worker() {
+@@ -49,7 +69,12 @@
+ }
+ 
+ stop_job_workers() {
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "job_worker"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "--config" "${ALLUXIO_CONF_DIR}" "job_worker"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "job_worker"
++  fi
+ }
+ 
+ stop_master() {
+@@ -61,7 +86,12 @@
+ }
+ 
+ stop_masters() {
+-  ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "master"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "--config" "${ALLUXIO_CONF_DIR}" "master"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "master"
++  fi
+ }
+ 
+ stop_proxy() {
+@@ -69,8 +99,14 @@
+ }
+ 
+ stop_proxies() {
+-  ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "proxy"
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "proxy"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "--config" "${ALLUXIO_CONF_DIR}" "proxy"
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "--config" "${ALLUXIO_CONF_DIR}" "proxy"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-masters.sh" "${BIN}/alluxio-stop.sh" "proxy"
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "proxy"
++  fi
+ }
+ 
+ stop_worker() {
+@@ -78,7 +114,12 @@
+ }
+ 
+ stop_workers() {
+-  ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "worker"
++  if [ "${ALLUXIO_CONF_DIR}X" != "X" ]
++  then
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "--config" "${ALLUXIO_CONF_DIR}" "worker"
++  else
++    ${LAUNCHER} "${BIN}/alluxio-workers.sh" "${BIN}/alluxio-stop.sh" "worker"
++  fi
+ }
+ 
+ stop_logserver() {
+diff -ru alluxio-2.3.0-base/bin/alluxio-workers.sh alluxio-2.3.0-new/bin/alluxio-workers.sh
+--- alluxio-2.3.0-base/bin/alluxio-workers.sh	2020-06-29 20:43:08.000000000 +0200
++++ alluxio-2.3.0-new/bin/alluxio-workers.sh	2020-09-10 11:39:52.390376000 +0200
+@@ -37,9 +37,16 @@
+ 
+ echo "Executing the following command on all worker nodes and logging to ${ALLUXIO_TASK_LOG}: $@" | tee -a ${ALLUXIO_TASK_LOG}
+ 
++RSH_CMD=${ALLUXIO_REMOTE_CMD:-ssh}
++if [ "${RSH_CMD}" = "ssh" ] && [ "${ALLUXIO_REMOTE_CMD_OPTS}" = "" ]; then
++  RSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5 -tt"
++else
++  RSH_OPTS="${ALLUXIO_REMOTE_CMD_OPTS}"
++fi
++
+ for worker in ${HOSTLIST[@]}; do
+   echo "[${worker}] Connecting as ${USER}..." >> ${ALLUXIO_TASK_LOG}
+-  nohup ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -tt ${worker} ${LAUNCHER} \
++  nohup ${RSH_CMD} ${RSH_OPTS} ${worker} ${LAUNCHER} \
+     $"${@// /\\ }" 2>&1 | while read line; do echo "[$(date '+%F %T')][${worker}] ${line}"; done >> ${ALLUXIO_TASK_LOG} &
+   pids[${#pids[@]}]=$!
+ done

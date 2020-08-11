@@ -126,3 +126,11 @@ if [ "${RAY_SETUP}" == "yes" ]
 then
     default_ray_port="6380"
 fi
+
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+    default_alluxio_master_rpc_port="19998"
+    default_alluxio_master_web_port="19999"
+    default_alluxio_worker_rpc_port="29999"
+    default_alluxio_worker_web_port="30000"
+fi

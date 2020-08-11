@@ -267,6 +267,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tensorflow" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "tensorflow-horovod" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "ray" ] \
+    && [ "${MAGPIE_JOB_TYPE}" != "alluxio" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "testall" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "script" ] \
     && [ "${MAGPIE_JOB_TYPE}" != "interactive" ] \
@@ -274,7 +275,7 @@ if [ "${MAGPIE_JOB_TYPE}" != "hadoop" ] \
 then
     echo "MAGPIE_JOB_TYPE must be set to hadoop, hbase, pig, mahout, phoenix, spark, \
           kafka, zeppelin, storm, hive, zookeeper, tensorflow, tensorflow-horovod, ray, \
-          testall, script, interactive, or setuponly"
+          alluxio, testall, script, interactive, or setuponly"
     exit 1
 fi
 
@@ -367,7 +368,7 @@ nodecount=${MAGPIE_NODE_COUNT}
 # nodecountmaster is a counter to count the master only once
 nodecountmaster=1
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY ALLUXIO"
 
 for project in ${magpieprojects}
 do
@@ -390,17 +391,18 @@ if [ "${HADOOP_SETUP}" != "yes" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${TENSORFLOW_SETUP}" != "yes" ] \
     && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ] \
-    && [ "${RAY_SETUP}" != "yes" ]
+    && [ "${RAY_SETUP}" != "yes" ] \
+    && [ "${ALLUXIO_SETUP}" != "yes" ]
 then
     echo "Neither HADOOP_SETUP nor HBASE_SETUP nor SPARK_SETUP nor KAFKA_SETUP nor ZEPPELIN_SETUP nor \
           STORM_SETUP nor HIVE_SETUP nor ZOOKEEPER_SETUP nor TENSORFLOW_SETUP nor TENSORFLOW_HOROVOD_SETUP \
-          nor RAY_SETUP are set to yes, there is nothing to setup"
+          nor RAY_SETUP nor ALLUXIO_SETUP are set to yes, there is nothing to setup"
     exit 1
 fi
 
 # If java required, was it set to something reasonable
 
-magpieprojects_java="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER"
+magpieprojects_java="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER ALLUXIO"
 for project in ${magpieprojects_java}
 do
     setupvar="${project}_SETUP"
@@ -413,7 +415,7 @@ done
 
 # Did user turn on something matching job run type
 
-magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY"
+magpieprojects="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM HIVE ZOOKEEPER TENSORFLOW TENSORFLOW_HOROVOD RAY ALLUXIO"
 
 for project in ${magpieprojects}
 do
@@ -441,7 +443,8 @@ if [ "${MAGPIE_JOB_TYPE}" == "testall" ] \
     && [ "${ZOOKEEPER_SETUP}" != "yes" ] \
     && [ "${TENSORFLOW_SETUP}" != "yes" ] \
     && [ "${TENSORFLOW_HOROVOD_SETUP}" != "yes" ] \
-    && [ "${RAY_SETUP}" != "yes" ]
+    && [ "${RAY_SETUP}" != "yes" ] \
+    && [ "${ALLUXIO_SETUP}" != "yes" ]
 then
     echo "Cannot run testall job type, nothing is enabled to be setup"
     exit 1
@@ -1330,6 +1333,67 @@ then
         echo "No remaining nodes for Ray workers, increase node count or adjust node allocations"
         exit 1
     fi
+fi
+
+#
+# Check Alluxio Inputs
+#
+
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+
+    __Magpie_check_must_be_set "JAVA_HOME" "for Alluxio"
+
+    __Magpie_check_must_be_set "ALLUXIO_VERSION" "to run Alluxio"
+    __Magpie_check_if_version_format_correct "ALLUXIO_VERSION" "to run Alluxio"
+
+    __Magpie_check_must_be_set_and_is_directory "ALLUXIO_HOME" "to run Alluxio"
+
+    __Magpie_check_must_be_set "ALLUXIO_WORKER_ON_MASTER" "for Alluxio"
+    __Magpie_check_if_set_is_yes_or_no "ALLUXIO_WORKER_ON_MASTER"
+
+    __Magpie_check_must_be_set "ALLUXIO_LOCAL_DIR" "to run Alluxio"
+
+    __Magpie_check_must_be_set "ALLUXIO_UNDER_FS_DIR" "to run Alluxio"
+
+    __Magpie_check_must_be_set "ALLUXIO_DATA_CLEAR" "for Alluxio"
+    __Magpie_check_if_set_is_yes_or_no "ALLUXIO_DATA_CLEAR"
+
+    __Magpie_check_must_be_set "ALLUXIO_WORKER_MEMORY_SIZE" "to run Alluxio"
+
+    __Magpie_check_must_be_set "ALLUXIO_WORKER_TIER0_PATH" "to run Alluxio"
+
+    if [ "${ALLUXIO_RAMFS_MOUNT_OPTION}" != "Mount" ] \
+       && [ "${ALLUXIO_RAMFS_MOUNT_OPTION}" != "SudoMount" ] \
+       && [ "${ALLUXIO_RAMFS_MOUNT_OPTION}" != "NoMount" ]
+    then
+       echo "ALLUXIO_RAMFS_MOUNT_OPTION must be set to Mount, SudoMount, or NoMount"
+       exit 1
+    fi
+
+    if [ "${ALLUXIO_READ_TYPE}" != "CACHE_PROMOTE" ] \
+       && [ "${ALLUXIO_READ_TYPE}" != "CACHE" ] \
+       && [ "${ALLUXIO_READ_TYPE}" != "NO_CACHE" ]
+    then
+       echo "ALLUXIO_READ_TYPE must be set to CACHE_PROMOTE, CACHE, or NO_CACHE"
+       exit 1
+    fi
+
+    if [ "${ALLUXIO_WRITE_TYPE}" != "MUST_CACHE" ] \
+       && [ "${ALLUXIO_WRITE_TYPE}" != "CACHE_THROUGH" ] \
+       && [ "${ALLUXIO_WRITE_TYPE}" != "THROUGH" ] \
+       && [ "${ALLUXIO_WRITE_TYPE}" != "ASYNC_THROUGH" ]
+    then
+       echo "ALLUXIO_WRITE_TYPE must be set to MUST_CACHE, CACHE_THROUGH, THROUGH, or ASYNC_THROUGH"
+       exit 1
+    fi
+
+    if [ "${MAGPIE_JOB_TYPE}" == "alluxio" ] && [ "${ALLUXIO_JOB}" != "testalluxio" ]
+    then
+       echo "ALLUXIO_JOB must be set to testalluxio"
+       exit 1
+    fi
+
 fi
 
 exit 0

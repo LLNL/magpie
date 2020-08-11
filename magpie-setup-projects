@@ -114,4 +114,12 @@ then
     fi
 fi
 
+if [ "${ALLUXIO_SETUP}" == "yes" ]
+then
+    (${MAGPIE_SCRIPTS_HOME}/magpie/setup/magpie-setup-project-alluxio)
+    if [ $? -ne 0 ] ; then
+        exit 1
+    fi
+fi
+
 exit 0

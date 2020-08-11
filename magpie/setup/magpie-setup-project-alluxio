@@ -1,0 +1,110 @@
+#!/bin/bash
+########################################################################
+#  Project Magpie. For details, see https://github.com/llnl/magpie.
+#
+#  Copyright (C) 2020 Intel Corporation. All rights reserved.
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License version
+#  2 as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  Aleksander Kantak <aleksander.kantak@intel.com>
+########################################################################
+
+# This script sets up configuration files for jobs. For the most
+# part, it shouldn't be editted. See job submission files for
+# configuration details.
+
+if [ "${ALLUXIO_SETUP}" != "yes" ]
+then
+    exit 0
+fi
+
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-node-identification
+source ${MAGPIE_SCRIPTS_HOME}/magpie/lib/magpie-lib-setup
+
+if ! Magpie_am_I_an_alluxio_node
+then
+    exit 0
+fi
+
+#
+# Get config files for setup
+#
+
+# Magpie_find_conffile will set the 'pre' filenames
+Magpie_find_conffile "Alluxio" ${ALLUXIO_CONF_FILES:-""} "alluxio-env.sh" "pre_alluxioenvsh"
+Magpie_find_conffile "Alluxio" ${ALLUXIO_CONF_FILES:-""} "alluxio-site.properties" "pre_alluxiositeproperties"
+Magpie_find_conffile "Alluxio" ${ALLUXIO_CONF_FILES:-""} "log4j.properties" "pre_log4jproperties"
+
+post_alluxioenvsh=${ALLUXIO_CONF_DIR}/alluxio-env.sh
+post_alluxiositeproperties=${ALLUXIO_CONF_DIR}/alluxio-site.properties
+post_log4jproperties=${ALLUXIO_CONF_DIR}/log4j.properties
+
+#
+# alluxio-env.sh preparation
+#
+
+alluxiologsdir="${ALLUXIO_LOGS_DIR}"
+
+cp ${pre_alluxioenvsh} ${post_alluxioenvsh}
+sed -i \
+    -e "s|MAGPIEJAVAHOME|${JAVA_HOME}|g" \
+    -e "s|MAGPIEALLUXIOHOME|${ALLUXIO_HOME}|g" \
+    -e "s|MAGPIEALLUXIOLOGSDIR|${alluxiologsdir}|g" \
+    ${post_alluxioenvsh}
+
+if [ "${MAGPIE_REMOTE_CMD:-ssh}" != "ssh" ]
+then
+    echo "export ALLUXIO_REMOTE_CMD=\"${MAGPIE_REMOTE_CMD}\"" >> ${post_alluxioenvsh}
+fi
+if [ "${MAGPIE_REMOTE_CMD_OPTS}X" != "X" ]
+then
+    echo "export ALLUXIO_REMOTE_CMD_OPTS=\"${MAGPIE_REMOTE_CMD_OPTS}\"" >> ${post_alluxioenvsh}
+fi
+
+#
+# alluxio-site.properties preparation
+#
+
+if [ ! -d "${ALLUXIO_UNDER_FS_DIR}" ]
+then
+    mkdir -p ${ALLUXIO_UNDER_FS_DIR}
+    if [ $? -ne 0 ] ; then
+        echo "mkdir failed making ${ALLUXIO_UNDER_FS_DIR}"
+        exit 1
+    fi
+fi
+
+alluxiounderfsdir="${ALLUXIO_UNDER_FS_DIR}"
+alluxioreadtype="${ALLUXIO_READ_TYPE}"
+alluxiowritetype="${ALLUXIO_WRITE_TYPE}"
+alluxioworkermemorysize="${ALLUXIO_WORKER_MEMORY_SIZE}"
+alluxioworkertier0path="${ALLUXIO_WORKER_TIER0_PATH}"
+
+cp ${pre_alluxiositeproperties} ${post_alluxiositeproperties}
+sed -i \
+    -e "s|ALLUXIOUNDERFSDIR|${alluxiounderfsdir}|g" \
+    -e "s|ALLUXIOMASTERHOSTNAME|${ALLUXIO_MASTER_NODE}|g" \
+    -e "s|ALLUXIOMASTERRPCPORT|${default_alluxio_master_rpc_port}|g" \
+    -e "s|ALLUXIOMASTERWEBPORT|${default_alluxio_master_web_port}|g" \
+    -e "s|ALLUXIOWORKERRPCPORT|${default_alluxio_worker_rpc_port}|g" \
+    -e "s|ALLUXIOWORKERWEBPORT|${default_alluxio_worker_web_port}|g" \
+    -e "s|ALLUXIOREADTYPE|${alluxioreadtype}|g" \
+    -e "s|ALLUXIOWRITETYPE|${alluxiowritetype}|g" \
+    -e "s|ALLUXIOWORKERMEMORYSIZE|${alluxioworkermemorysize}|g" \
+    -e "s|ALLUXIOWORKERTIER0PATH|${alluxioworkertier0path}|g" \
+    ${post_alluxiositeproperties}
+
+#
+# log4j.properties preparation
+#
+
+cp ${pre_log4jproperties} ${post_log4jproperties}
+
+exit 0
