@@ -1,3 +1,7 @@
+Magpie 2.6
+----------
+Add Alluxio support.
+
 Magpie 2.5
 ----------
 Support Spark 3.0.0-bin-hadoop2.7, 3.0.0-bin-hadoop3.2,
