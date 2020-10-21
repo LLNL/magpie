@@ -1,6 +1,8 @@
 Magpie 2.6
 ----------
-Support Spark 2.4.7-bin-hadoop2.6, 2.4.7-bin-hadoop2.7
+Support Spark 3.0.1-bin-hadoop2.7, 3.0.1-bin-hadoop3.2,
+  Spark 2.4.7-bin-hadoop2.6, 2.4.7-bin-hadoop2.7
+- Update Spark default to 3.0.1-bin-hadoop3.2
 
 Magpie 2.5
 ----------
