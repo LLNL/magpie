@@ -401,7 +401,7 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_Dependency5 "5X" "n" 2.9.0 2.9.1
     __GenerateHadoopDependencyTests_Dependency5 "5Y" "n" 3.0.0 3.0.1 3.0.2 3.0.3
     __GenerateHadoopDependencyTests_Dependency5 "5Z" "n" 3.1.0 3.1.1 3.1.2 3.1.3 3.1.4
-    __GenerateHadoopDependencyTests_Dependency5 "5AA" "n" 3.2.0 3.2.1
+    __GenerateHadoopDependencyTests_Dependency5 "5AA" "n" 3.2.0 3.2.1 3.2.2
     # __GenerateHadoopDependencyTests_Dependency5 "5AB" "n" 3.3.0
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
@@ -455,8 +455,9 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.1.3" "3.1.4" "6AM"
 
     __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.2.0" "3.2.1" "6AN"
+    __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.2.1" "3.2.2" "6AO"
 
-    # __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.3.0" "3.3.1" "6AO"
+    # __GenerateHadoopDependencyTests_DependencyDetectNewerHDFS "3.3.0" "3.3.1" "6AP"
 }
 
 GenerateHadoopPostProcessing() {
