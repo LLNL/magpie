@@ -510,6 +510,9 @@ sed -i -e "s/PHOENIX_DEFAULT_PERFORMANCEEVAL_ROW_COUNT=\(.*\)/PHOENIX_DEFAULT_PE
 defaultjavahomesubst=`echo ${DEFAULT_JAVA_HOME} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/JAVA_DEFAULT=\(.*\)/JAVA_DEFAULT=${defaultjavahomesubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
+magpiepythonpathsubst=`echo ${MAGPIE_PYTHON_PATH} | sed "s/\\//\\\\\\\\\//g"`
+sed -i -e "s/PYTHON_DEFAULT=\(.*\)/PYTHON_DEFAULT=${magpiepythonpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
 # Replace output filename with common strings so we can do the same
 # search & replace later on regardless of the job submission type.
 
@@ -522,7 +525,6 @@ sed -i -e "s/LSF_MPIRUN_DEFAULT_JOB_FILE=\(.*\)/LSF_MPIRUN_DEFAULT_JOB_FILE=${de
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
 java18pathsubst=`echo ${JAVA18PATH} | sed "s/\\//\\\\\\\\\//g"`
-magpiepythonpathsubst=`echo ${MAGPIE_PYTHON_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythontensorflowpathsubst=`echo ${MAGPIE_PYTHON_TENSORFLOW_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpieraypathsubst=`echo ${MAGPIE_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythonraypathsubst=`echo ${MAGPIE_PYTHON_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
