@@ -127,8 +127,14 @@ GenerateHbaseStandardTests() {
             local hadoopversion="${testgroup}_hadoopversion"
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
-            CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
+            if ! CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
@@ -233,9 +239,18 @@ GenerateHbaseDependencyTests() {
             local hadoopversion="${testgroup}_hadoopversion"
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
-            CheckForHadoopDecomissionMinimum ${testfunction} "Hbase" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
-            CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Hbase" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
+            if ! CheckForHadoopDecomissionMinimum ${testfunction} "Hbase" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
+            then
+                continue
+            fi
+            if ! CheckForDependency "Hbase" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}

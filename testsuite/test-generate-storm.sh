@@ -52,7 +52,10 @@ GenerateStormStandardTests() {
         do
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
@@ -93,7 +96,10 @@ GenerateStormDependencyTests() {
         do
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Storm" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}

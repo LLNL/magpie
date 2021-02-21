@@ -18,9 +18,10 @@ CheckForHadoopDecomissionMinimum() {
         if [ $? == "2" ]
         then
             #echo "Cannot generate ${project} tests that depend on ${projectcheck} ${projectversion}, minimum needed for tests is ${projectminimum}"
-            continue
+            return 1
         fi
     fi
+    return 0
 }
 
 __SetupHadoopFileSystemStandard() {

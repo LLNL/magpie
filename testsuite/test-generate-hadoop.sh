@@ -362,8 +362,10 @@ GenerateHadoopDependencyTests() {
             local javaversion="${testgroup}_javaversion"
             for testversion in ${!testgroup}
             do
-                CheckForHadoopDecomissionMinimum ${testfunction} "Hadoop" "Hadoop" ${testversion} ${hadoop_decomissionhdfs_minimum}
-                ${testfunction} ${testversion} ${!javaversion}
+                if CheckForHadoopDecomissionMinimum ${testfunction} "Hadoop" "Hadoop" ${testversion} ${hadoop_decomissionhdfs_minimum}
+                then
+                    ${testfunction} ${testversion} ${!javaversion}
+                fi
             done
         done
     done

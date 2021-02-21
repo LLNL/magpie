@@ -31,7 +31,10 @@ GenerateZeppelinStandardTests() {
         do
             local sparkversion="${testgroup}_sparkversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Zeppelin" "Spark" ${!sparkversion}
+            if ! CheckForDependency "Zeppelin" "Spark" ${!sparkversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!sparkversion} ${!javaversion}
@@ -73,7 +76,10 @@ GenerateZeppelinDependencyTests() {
         do
             local sparkversion="${testgroup}_sparkversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Zeppelin" "Spark" ${!sparkversion}
+            if ! CheckForDependency "Zeppelin" "Spark" ${!sparkversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!sparkversion} ${!javaversion}

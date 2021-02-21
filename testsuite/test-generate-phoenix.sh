@@ -95,9 +95,18 @@ GeneratePhoenixStandardTests() {
             local hadoopversion="${testgroup}_hadoopversion"
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Phoenix" "Hbase" ${!hbaseversion}
-            CheckForDependency "Phoenix" "Hadoop" ${!hadoopversion}
-            CheckForDependency "Phoenix" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Phoenix" "Hbase" ${!hbaseversion}
+            then
+                continue
+            fi
+            if ! CheckForDependency "Phoenix" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
+            if ! CheckForDependency "Phoenix" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}
@@ -198,9 +207,18 @@ GeneratePhoenixDependencyTests() {
             local hadoopversion="${testgroup}_hadoopversion"
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Phoenix" "Hbase" ${!hbaseversion}
-            CheckForDependency "Phoenix" "Hadoop" ${!hadoopversion}
-            CheckForDependency "Phoenix" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Phoenix" "Hbase" ${!hbaseversion}
+            then
+                continue
+            fi
+            if ! CheckForDependency "Phoenix" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
+            if ! CheckForDependency "Phoenix" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hbaseversion} ${!hadoopversion} ${!zookeeperversion} ${!javaversion}

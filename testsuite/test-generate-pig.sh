@@ -48,7 +48,10 @@ GeneratePigStandardTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+            if ! CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
@@ -106,7 +109,10 @@ GeneratePigDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+            if ! CheckForDependency "Pig" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}

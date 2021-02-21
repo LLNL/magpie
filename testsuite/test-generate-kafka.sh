@@ -55,7 +55,10 @@ GenerateKafkaStandardTests() {
         do
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}
@@ -99,7 +102,10 @@ GenerateKafkaDependencyTests() {
         do
             local zookeeperversion="${testgroup}_zookeeperversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+            if ! CheckForDependency "Kafka" "Zookeeper" ${!zookeeperversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!zookeeperversion} ${!javaversion}

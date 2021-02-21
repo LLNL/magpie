@@ -69,8 +69,9 @@ CheckForDependency() {
     if [ "${!variabletocheck}" != "y" ]
     then
         echo "Cannot generate ${project} tests that depend on ${projectcheck} ${checkversion}, it's not enabled"
-        continue
+        return 1
     fi
+    return 0
 }
 
 RemoveTestsCheck() {

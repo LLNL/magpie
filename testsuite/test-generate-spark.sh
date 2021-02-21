@@ -66,9 +66,10 @@ __CheckForSparkYarnMinimum() {
         if [ $? == "2" ]
         then
             #echo "Cannot generate Spark ${projectversion} tests, it depends on Yarn, Spark minimum needed for tests is 1.1.0"
-            continue
+            return 1
         fi
     fi
+    return 0
 }
 
 __GenerateSparkStandardTests_BasicTests() {
@@ -309,11 +310,16 @@ GenerateSparkStandardTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
-                __CheckForSparkYarnMinimum ${testfunction} ${testversion}
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                if __CheckForSparkYarnMinimum ${testfunction} ${testversion}
+                then
+                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                fi
             done
         done
     done
@@ -612,8 +618,14 @@ GenerateSparkDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
-            CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
+            if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
+            if ! CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
                 ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
@@ -630,12 +642,20 @@ GenerateSparkDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
-            CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
+            if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
+            if ! CheckForHadoopDecomissionMinimum ${testfunction} "Spark" "Hadoop" ${!hadoopversion} ${hadoop_decomissionhdfs_minimum}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
-                __CheckForSparkYarnMinimum ${testfunction} ${testversion}
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                if __CheckForSparkYarnMinimum ${testfunction} ${testversion}
+                then
+                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                fi
             done
         done
     done
@@ -664,11 +684,16 @@ GenerateSparkDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
-            CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
+            then
+                continue
+            fi
             for testversion in ${!testgroup}
             do
-                __CheckForSparkYarnMinimum ${testfunction} ${testversion}
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                if __CheckForSparkYarnMinimum ${testfunction} ${testversion}
+                then
+                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                fi
             done
         done
     done
