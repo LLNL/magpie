@@ -4,7 +4,8 @@ Support Hadoop 3.1.4, 3.2.2, 3.3.0, 3.3.1
 - Update Hadoop default to 3.3.1
 Support Spark 3.0.2-bin-hadoop2.7, 3.0.2-bin-hadoop3.2,
   Spark 3.0.1-bin-hadoop2.7, 3.0.1-bin-hadoop3.2,
-  Spark 2.4.7-bin-hadoop2.6, 2.4.7-bin-hadoop2.7
+  Spark 2.4.7-bin-hadoop2.6, 2.4.7-bin-hadoop2.7,
+  Spark 2.4.8-bin-hadoop2.6, 2.4.8-bin-hadoop2.7
 - Update Spark default to 3.0.2-bin-hadoop3.2
 
 Magpie 2.5
