@@ -1,8 +1,10 @@
-from pyspark import SparkContext
-from pyspark import SparkConf
+from __future__ import print_function
 
 import os
 import sys
+
+from pyspark import SparkContext
+from pyspark import SparkConf
 
 conf = SparkConf()
 
@@ -23,4 +25,4 @@ counts = file.flatMap(lambda line: line.split(" ")) \
 output = counts.collect()
 
 for (k, v) in output:
-    print k + ": " + str(v)
+    print(k + ": " + str(v))
