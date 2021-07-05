@@ -4,6 +4,8 @@ Magpie 3.0
 Magpie 3.0 includes some new software support, but primarily removes a
 lot of older support.
 
+Update default MAGPIE_PYTHON to python3.
+
 Legacy support Removed
 - Spark 0.9.X support
 - Hbase 0.98.X and 0.99.X support

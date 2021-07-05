@@ -238,7 +238,7 @@ export MAGPIE_JOB_TYPE="ray"
 # MAGPIE_PYTHON path used for:
 # - Spark PySpark path
 # - Launching tensorflow tasks
-export MAGPIE_PYTHON="/usr/bin/python"
+export MAGPIE_PYTHON="/usr/bin/python3"
 
 ############################################################################
 # Ray Core Configurations

@@ -67,7 +67,7 @@ PHOENIX_JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0/
 SPARK_JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
 STORM_JAVA_DEFAULT=/usr/lib/jvm/jre-1.7.0/
 ZEPPELIN_JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
-PYTHON_DEFAULT=/usr/bin/python
+PYTHON_DEFAULT=/usr/bin/python3
 
 #
 # Misc defaults you may wish to set
