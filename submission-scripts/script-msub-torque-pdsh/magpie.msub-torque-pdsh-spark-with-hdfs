@@ -856,8 +856,9 @@ export SPARK_SETUP=yes
 # YARN:
 #
 # - The Spark standalone scheduler will not be launched
-# - The default Spark master will be set to 'yarn-client' in all
-#   appropriate locations (e.g. spark-defaults.conf)
+# - The default Spark master will be set to 'yarn-client' (Spark 1.X)
+#   or 'yarn' (Spark [2-3].X) in all appropriate locations
+#   (e.g. spark-defaults.conf)
 # - All situations that would otherwise use the standalone scheduler
 #   (e.g. SPARK_JOB="sparkpi") will now use Yarn instead.
 #
