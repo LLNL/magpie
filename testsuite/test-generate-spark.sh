@@ -75,6 +75,7 @@ __CheckForSparkYarnMinimum() {
 __GenerateSparkStandardTests_BasicTests() {
     local sparkversion=$1
     local javaversion=$2
+    local pythonversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-${sparkversion}-run-sparkpi
 
@@ -86,12 +87,14 @@ __GenerateSparkStandardTests_BasicTests() {
     sed -i -e 's/export SPARK_VERSION="\(.*\)"/export SPARK_VERSION="'"${sparkversion}"'"/' magpie.${submissiontype}-spark-${sparkversion}*
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-${sparkversion}*`
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-${sparkversion}*`
 }
 
 __GenerateSparkStandardTests_WordCount() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -170,12 +173,17 @@ __GenerateSparkStandardTests_WordCount() {
     JavaCommonSubstitution ${javaversion} `ls \
         magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}* \
         magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls \
+        magpie.${submissiontype}-spark-with-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}* \
+        magpie.${submissiontype}-spark-with-rawnetworkfs-spark-${sparkversion}*`
 }
 
 __GenerateSparkStandardTests_YarnTests_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkpi
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkpi
@@ -198,12 +206,15 @@ __GenerateSparkStandardTests_YarnTests_requireyarn() {
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs*run-sparkpi*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkpi*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkpi*`
 }
 
 __GenerateSparkStandardTests_YarnWordCount_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}-hdfsovernetworkfs-run-sparkwordcount-copy-in
@@ -284,6 +295,11 @@ __GenerateSparkStandardTests_YarnWordCount_requireyarn() {
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*`
+
+    PythonCommonSubstitution ${pythonversion} `ls \
+        magpie.${submissiontype}-spark-with-yarn-and-hdfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
+        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount* \
+        magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-spark-${sparkversion}-hadoop-${hadoopversion}*run-pythonsparkwordcount*`
 }
 
 GenerateSparkStandardTests() {
@@ -297,9 +313,10 @@ GenerateSparkStandardTests() {
         for testgroup in ${spark_test_groups}
         do
             local javaversion="${testgroup}_javaversion"
+            local pythonversion="${testgroup}_pythonversion"
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} ${!pythonversion}
             done
         done
     done
@@ -310,6 +327,7 @@ GenerateSparkStandardTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
+            local pythonversion="${testgroup}_pythonversion"
             if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
             then
                 continue
@@ -318,7 +336,7 @@ GenerateSparkStandardTests() {
             do
                 if __CheckForSparkYarnMinimum ${testfunction} ${testversion}
                 then
-                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} ${!pythonversion}
                 fi
             done
         done
@@ -329,6 +347,7 @@ __GenerateSparkDependencyTests_Dependency1HDFS_requiredecommissionhdfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -367,12 +386,15 @@ __GenerateSparkDependencyTests_Dependency1HDFS_requiredecommissionhdfs() {
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*decommissionhdfsnodes*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark1A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency2HDFS_requiredecommissionhdfs() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-hdfs magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -411,12 +433,15 @@ __GenerateSparkDependencyTests_Dependency2HDFS_requiredecommissionhdfs() {
         magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*decommissionhdfsnodes*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-hdfs-DependencySpark2A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -455,12 +480,15 @@ __GenerateSparkDependencyTests_Dependency3YarnHDFS_requiredecommissionhdfs_requi
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*decommissionhdfsnodes*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark3A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}-hdfs-more-nodes-hdfsoverlustre-run-sparkwordcount-no-copy
@@ -499,11 +527,14 @@ __GenerateSparkDependencyTests_Dependency4YarnHDFS_requiredecommissionhdfs_requi
         magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*decommissionhdfsnodes*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-yarn-and-hdfs-DependencySpark4A-hadoop-${hadoopversion}-spark-${sparkversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency5rawnetworkfs() {
     local sparkversion=$1
     local javaversion=$2
+    local pythonversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}-run-sparkwordcount-no-copy
@@ -520,11 +551,14 @@ __GenerateSparkDependencyTests_Dependency5rawnetworkfs() {
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*run-sparkwordcount-no-copy*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark5A-spark-${sparkversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
     local sparkversion=$1
     local javaversion=$2
+    local pythonversion=$3
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
@@ -541,12 +575,15 @@ __GenerateSparkDependencyTests_Dependency6rawnetworkfs() {
         magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*run-sparkwordcount-no-copy*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-rawnetworkfs-DependencySpark6A-spark-${sparkversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}-run-sparkwordcount-no-copy
@@ -571,12 +608,15 @@ __GenerateSparkDependencyTests_Dependency7Yarnrawnetworkfs_requireyarn() {
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-no-copy*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark7A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 }
 
 __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn() {
     local sparkversion=$1
     local hadoopversion=$2
     local javaversion=$3
+    local pythonversion=$4
 
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}-rawnetworkfs-more-nodes-run-sparkwordcount-copy-in
     cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}-rawnetworkfs-more-nodes-run-sparkwordcount-no-copy
@@ -601,6 +641,8 @@ __GenerateSparkDependencyTests_Dependency8Yarnrawnetworkfs_requireyarn() {
         magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*run-sparkwordcount-no-copy*`
 
     JavaCommonSubstitution ${javaversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*`
+
+    PythonCommonSubstitution ${pythonversion} `ls magpie.${submissiontype}-spark-with-yarn-and-rawnetworkfs-DependencySpark8A-spark-${sparkversion}-hadoop-${hadoopversion}*`
 }
 
 GenerateSparkDependencyTests() {
@@ -618,6 +660,7 @@ GenerateSparkDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
+            local pythonversion="${testgroup}_pythonversion"
             if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
             then
                 continue
@@ -628,7 +671,7 @@ GenerateSparkDependencyTests() {
             fi
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} ${!pythonversion}
             done
         done
     done
@@ -642,6 +685,7 @@ GenerateSparkDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
+            local pythonversion="${testgroup}_pythonversion"
             if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
             then
                 continue
@@ -654,7 +698,7 @@ GenerateSparkDependencyTests() {
             do
                 if __CheckForSparkYarnMinimum ${testfunction} ${testversion}
                 then
-                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} ${!pythonversion}
                 fi
             done
         done
@@ -668,9 +712,10 @@ GenerateSparkDependencyTests() {
         for testgroup in ${spark_test_groups}
         do
             local javaversion="${testgroup}_javaversion"
+            local pythonversion="${testgroup}_pythonversion"
             for testversion in ${!testgroup}
             do
-                ${testfunction} ${testversion} ${!javaversion}
+                ${testfunction} ${testversion} ${!javaversion} ${!pythonversion}
             done
         done
     done
@@ -684,6 +729,7 @@ GenerateSparkDependencyTests() {
         do
             local hadoopversion="${testgroup}_hadoopversion"
             local javaversion="${testgroup}_javaversion"
+            local pythonversion="${testgroup}_pythonversion"
             if ! CheckForDependency "Spark" "Hadoop" ${!hadoopversion}
             then
                 continue
@@ -692,7 +738,7 @@ GenerateSparkDependencyTests() {
             do
                 if __CheckForSparkYarnMinimum ${testfunction} ${testversion}
                 then
-                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion}
+                    ${testfunction} ${testversion} ${!hadoopversion} ${!javaversion} ${!pythonversion}
                 fi
             done
         done

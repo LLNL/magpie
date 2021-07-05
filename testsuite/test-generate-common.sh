@@ -57,6 +57,24 @@ JavaCommonSubstitution() {
     fi
 }
 
+PythonCommonSubstitution() {
+    local pythonversion=$1
+
+    shift
+    local files=$@
+
+    if [ "${pythonversion}" == "${python2}" ]
+    then
+        sed -i -e 's/export MAGPIE_PYTHON="\(.*\)"/export MAGPIE_PYTHON="'"${magpiepython2pathsubst}"'"/' ${files}
+    elif [ "${pythonversion}" == "${python3}" ]
+    then
+        sed -i -e 's/export MAGPIE_PYTHON="\(.*\)"/export MAGPIE_PYTHON="'"${magpiepython3pathsubst}"'"/' ${files}
+    else
+        echo "Invalid Python Version Specified - ${pythonversion}"
+        exit 1
+    fi
+}
+
 CheckForDependency() {
     local project=$1
     local projectcheck=$2

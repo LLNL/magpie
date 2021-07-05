@@ -70,6 +70,8 @@ JAVA18PATH="/usr/lib/jvm/jre-1.8.0/"
 DEFAULT_JAVA_HOME=$JAVA18PATH
 
 MAGPIE_PYTHON_PATH="/usr/bin/python"
+MAGPIE_PYTHON2_PATH="/usr/bin/python2"
+MAGPIE_PYTHON3_PATH="/usr/bin/python3"
 MAGPIE_PYTHON_TENSORFLOW_PATH="/usr/bin/python"
 
 MAGPIE_RAY_PATH="\${HOME}/bin/ray"
