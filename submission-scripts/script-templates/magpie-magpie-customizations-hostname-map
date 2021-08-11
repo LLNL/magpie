@@ -16,7 +16,7 @@
 # returned from the `hostname` command.  For example, if the scheduler
 # uses the nodename "foobar", but the hostname command returns
 # "foobar.foo.com", the script can simply return the output of
-# `hostname -s`.
+# `hostname -s` (which would be "foobar" in this example).
 #
 # The MAGPIE_HOSTNAME_SCHEDULER_MAP command will be given the hostname
 # returned from the scheduler.  For example, if your job has been
