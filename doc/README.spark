@@ -29,9 +29,10 @@ Instructions For Spark
    You'll likely want to start with the base spark script
    (e.g. magpie.sbatch-srun-spark) or spark w/ hdfs
    (e.g. magpie.sbatch-srun-spark-with-hdfs) for your
-   scheduler/resource manager.  If you wish to configure more, you can
-   choose to start with the base script (e.g. magpie.sbatch-srun)
-   which contains all configuration options.
+   scheduler/resource manager (other script starters include yarn or yarn
+   & hdfs).  If you wish to configure more, you can choose to start
+   with the base script (e.g. magpie.sbatch-srun) which contains all
+   configuration options.
 
    It should be noted that you can run Spark without HDFS.  You can
    access files normally through "file://<path>".
