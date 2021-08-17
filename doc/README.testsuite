@@ -36,6 +36,9 @@ Generally speaking, to run it:
 
    - After configuration, run test-generate.sh to generate test submission scripts.
 
+     WARNING - this will create a lot of files if you did not disable
+     a lot of the test generation.
+
 3) Test execution
 
    - Run test-submit.sh to submit jobs for testing.  Test submissions are logged in magpie-test.log.
