@@ -290,7 +290,7 @@ export SPARK_SETUP=yes
 # STANDALONE - Launch Spark stand alone scheduler
 # YARN - do not setup stand alone scheduler, use Yarn scheduler
 #
-# For most users, the stand alone scheulder is likely preferred.
+# For most users, the stand alone scheduler is likely preferred.
 # Resources do not need to be competed for in a Magpie environment
 # (you the user have all the resources allocated via the
 # scheduler/resource manager of your cluster).
