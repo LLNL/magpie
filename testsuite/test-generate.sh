@@ -32,6 +32,7 @@ source test-config.sh
 # - magpietests covers "core" tests, most notably 'testall' and various corner case checks
 # - standardtests: basic tests, terasort, sparkpi, etc.
 # - dependencytests: check dependencies (e.g. store in hdfs, another job can read it)
+# - hadoop/pig/etc.: project specific tests
 # - specific sections can be configured below
 # - specific versions can be configured below
 
