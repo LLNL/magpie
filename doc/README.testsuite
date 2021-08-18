@@ -30,14 +30,11 @@ Generally speaking, to run it:
 
 2) Test generation
 
-   - In test-generate.sh, you may need to configure
-
-     - What tests to generate/not generate
+   - In test-generate.sh, configure what tests you want to generate/not generate
 
    - After configuration, run test-generate.sh to generate test submission scripts.
 
-     WARNING - this will create a lot of files if you did not disable
-     a lot of the test generation.
+     WARNING - this can create ALOT of files
 
 3) Test execution
 
