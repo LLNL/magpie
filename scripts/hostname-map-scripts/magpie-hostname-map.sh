@@ -3,6 +3,9 @@
 # This script takes the first argument and converts it from nodeX to
 # node-ibX, where X is assumed to be trailing numbers.
 #
+# This is how someone might inform magpie to use the node-ibX network
+# interface instead of nodeX.
+#
 # This could be set in MAGPIE_HOSTNAME_CMD_MAP or
 # MAGPIE_HOSTNAME_SCHEDULER_MAP.
 
