@@ -1,9 +1,9 @@
 Instructions For Using Pig
 --------------------------
 
-0) If necessary, download your favorite version of Pig off of Apache
-   and install it into a location where it's accessible on all cluster
-   nodes.  Usually this is on a NFS home directory.
+0) If necessary, download your favorite version of Pig from the Apache
+   download site and install it into a location where it's accessible
+   on all cluster nodes.  Usually this is on a NFS home directory.
 
    Make sure that the version of Pig you install is compatible with
    the version of Hadoop you are using.
