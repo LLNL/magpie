@@ -29,7 +29,7 @@ source test-config.sh
 # High Level, what tests to generate
 # - these control if tests are created in sub-sections, like in
 #   default, functionailty, and/or cornercase
-# - magpietests covers "core" tests, most notably 'testall' and very corner case checks
+# - magpietests covers "core" tests, most notably 'testall' and various corner case checks
 # - standardtests: basic tests, terasort, sparkpi, etc.
 # - dependencytests: check dependencies (e.g. store in hdfs, another job can read it)
 # - specific sections can be configured below
