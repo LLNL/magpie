@@ -13,8 +13,9 @@ Instructions For Spark
    sbt/sbt to use the proper Java version you desire (this is the case
    with 0.9.1, not the case in future versions).
 
-   See below in 'Spark Patching' about patches that may be necessary
-   for Spark depending on your environment and Spark version.
+   See below in 'Spark Patching' about patches that are necessary for
+   Spark and patches that may be necessary depending on your
+   environment and Spark version.
 
    See 'Convenience Scripts' in README about
    misc/magpie-download-and-setup.sh, which may make the
