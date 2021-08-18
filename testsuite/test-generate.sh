@@ -35,24 +35,24 @@ source test-config.sh
 # - specific sections can be configured below
 # - specific versions can be configured below
 
-magpietests=y
-standardtests=y
-dependencytests=y
-hadooptests=y
-pigtests=y
-mahouttests=y
-hbasetests=y
-hivetests=y
-phoenixtests=y
-sparktests=y
-stormtests=y
-kafkatests=y
-zookeepertests=y
-zeppelintests=y
+magpietests=n
+standardtests=n
+dependencytests=n
+hadooptests=n
+pigtests=n
+mahouttests=n
+hbasetests=n
+hivetests=n
+phoenixtests=n
+sparktests=n
+stormtests=n
+kafkatests=n
+zookeepertests=n
+zeppelintests=n
 tensorflowtests=n
 tensorflowhorovodtests=n
 raytests=n
-alluxiotests=y
+alluxiotests=n
 
 # Sections to test
 # - version tests, test permutation of versions
