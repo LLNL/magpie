@@ -550,6 +550,8 @@ Hadoop
   The alternate remote execution command must be specified in the
   environment variable MAGPIE_REMOTE_CMD.
 
+  This patch should be applied first.
+
 - Hadoop terasort may require recompilation if running over 'rawnetworkfs'.
 
   There is a bug in the Terasort example, leading to issues with
@@ -563,6 +565,9 @@ Hadoop
 - If MAGPIE_NO_LOCAL_DIR support is desired, patches in
   patches/hadoop/ with the "no-local-dir.patch" suffix in the filename
   can be found for support.  See README.no-local-dir for more details.
+
+  This patch should be applied second, after 'alternate-ssh' if one is
+  available.
 
 Basics of HDFS over Lustre/NetworkFS
 ------------------------------------

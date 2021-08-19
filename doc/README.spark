@@ -342,8 +342,10 @@ Spark Patching
 - For versions < 1.0.0 and versions >= 1.2.0, a patch can be applied
   directly to startup scripts, not needing a recompilation of source.
 
-  You can find patches for these versions in the patches/spark/ directory with
-  the suffix "alternate.patch".
+  You can find patches for the "alternates" listed above in the
+  patches/spark/ directory with the suffix "alternate.patch".
+
+  This patch should be applied first.
 
   For atleast Spark version 1.0.0 (possibly a few versions newer than
   it), patch for startup scripts and code is required, a recompilation
@@ -354,6 +356,8 @@ Spark Patching
 - If MAGPIE_NO_LOCAL_DIR support is desired, patches in patches/spark/
   with the "no-local-dir.patch" suffix in the filename can be found
   for support.  See README.no-local-dir for more details.
+
+  This patch should be applied second, after the "alternate" patch.
 
 Spark Troubleshooting
 ---------------------
