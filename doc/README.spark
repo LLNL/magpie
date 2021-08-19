@@ -343,7 +343,7 @@ Spark Patching
   directly to startup scripts, not needing a recompilation of source.
 
   You can find patches for these versions in the patches/spark/ directory with
-  the suffice "alternate.patch".
+  the suffix "alternate.patch".
 
   For atleast Spark version 1.0.0 (possibly a few versions newer than
   it), patch for startup scripts and code is required, a recompilation
