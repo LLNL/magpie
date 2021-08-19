@@ -8,9 +8,6 @@ Instructions For Using Pig
    Make sure that the version of Pig you install is compatible with
    the version of Hadoop you are using.
 
-   See below in 'Pig Patching' about patches that may be necessary
-   for Pig depending on your environment and Pig version.
-
    In some cases, a re-compile of Pig may be necessary.  For example,
    by default Pig 0.12.0 works against the 0.20.0 (i.e. Hadoop 1.0)
    branch of Hadoop.  You may need to modify the Pig build.xml to work

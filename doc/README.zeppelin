@@ -6,9 +6,6 @@ Instructions For Using Zeppelin
    accessible on all cluster nodes.  Usually this is on a NFS home
    directory.
 
-   See below in 'Zeppelin Patching' about patches that may be necessary
-   for Zeppelin depending on your environment and Zeppelin version.
-
    See 'Convenience Scripts' in README about
    misc/magpie-download-and-setup.sh, which may make the
    downloading and patching easier.

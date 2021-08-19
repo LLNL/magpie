@@ -6,9 +6,6 @@ Instructions For Storm
    accessible on all cluster nodes.  Usually this is on a NFS home
    directory.
 
-   See below in 'Storm Patching' about patches that may be necessary
-   for Storm depending on your environment and Storm version.
-
    See 'Convenience Scripts' in README about
    misc/magpie-download-and-setup.sh, which may make the
    downloading and patching easier.
