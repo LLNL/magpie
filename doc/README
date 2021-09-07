@@ -87,7 +87,7 @@ Requirements
    For example, to apply the alternate-ssh patch to hadoop
 
    cd hadoop-2.9.2
-   patch -p1 < ../magpie/patches/hadoop-2.9.2-alternate-ssh.patch
+   patch -p1 < ../magpie/patches/hadoop/hadoop-2.9.2-alternate-ssh.patch
 
 2) A passwordless remote shell execution mechanism must be available
    for scripts to launch big data daemons (e.g. Hadoop Datanodes) on
