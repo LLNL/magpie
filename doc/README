@@ -75,8 +75,19 @@ Requirements
    Some projects may need patches applied.  You can find patches in
    Magpie's 'patches' directory.  Most patches are only needed against
    scripts within the projects, but on occassion a recompilation of
-   the source may also be necessary.  If you are unfamiliar with patches,
-   see documentation for the `patch` command.
+   the source may also be necessary.
+
+   If you are unfamiliar with patches, see documentation for the
+   `patch` command.  Although in most cases you can patch your project
+   via:
+
+   cd PROJECT-VERSION
+   patch -p1 PATH-TO-MAGPIE/patches/PROJECT/PROJECT-VERSION.patch
+
+   For example, to apply the alternate-ssh patch to hadoop
+
+   cd hadoop-2.9.2
+   patch -p1 < ../magpie/patches/hadoop-2.9.2-alternate-ssh.patch
 
 2) A passwordless remote shell execution mechanism must be available
    for scripts to launch big data daemons (e.g. Hadoop Datanodes) on
