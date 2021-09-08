@@ -30,3 +30,6 @@ default.  To include them:
 cd submission-scripts/script-templates
 edit Makefile and set MAGPIE_HOSTNAME_MAP to 'y'
 run 'make'
+
+After doing so you can set MAGPIE_HOSTNAME_CMD_MAP and
+MAGPIE_HOSTNAME_SCHEDULER_MAP in your submission scripts.

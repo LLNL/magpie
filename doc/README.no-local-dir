@@ -53,3 +53,7 @@ run 'make'
 
 You should also set LOCAL_DIR_PREFIX to something else other than
 /tmp, so the default LOCAL_DIR is the desired network location.
+
+After doing so you can enable MAGPIE_NO_LOCAL_DIR in your submission
+scripts.
+
