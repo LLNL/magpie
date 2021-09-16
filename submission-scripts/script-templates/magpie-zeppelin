@@ -40,7 +40,7 @@ export ZEPPELIN_HOME="ZEPPELINDIRPREFIX/zeppelin-${ZEPPELIN_VERSION}-bin-all"
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 export ZEPPELIN_LOCAL_DIR="LOCALDIRPREFIX/zeppelin"
 

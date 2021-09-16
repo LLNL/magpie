@@ -18,7 +18,7 @@ export RAY_PATH="RAYDIRPREFIX/bin/ray"
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 export RAY_LOCAL_DIR="LOCALDIRPREFIX/ray"
 

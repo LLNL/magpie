@@ -859,7 +859,7 @@ export MAHOUT_HOME="${HOME}/apache-mahout-distribution-${MAHOUT_VERSION}"
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 export MAHOUT_LOCAL_DIR="/tmp/${USER}/mahout"
 

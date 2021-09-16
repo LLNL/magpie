@@ -850,7 +850,7 @@ export HIVE_HOME="${HOME}/apache-hive-${HIVE_VERSION}-bin"
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 
 export HIVE_LOCAL_DIR="/tmp/${USER}/hive"
 
@@ -1029,7 +1029,7 @@ export ZOOKEEPER_DATA_DIR_TYPE="networkfs"
 # Path to store data local to each cluster node, typically something
 # in /tmp.  This will store local conf files and log files for your
 # job.  If local scratch space is not available, consider using the
-# MAGPIE_NO_LOCAL_DIR_DIR option.  See README for more details.
+# MAGPIE_NO_LOCAL_DIR option.  See README for more details.
 #
 export ZOOKEEPER_LOCAL_DIR="/tmp/${USER}/zookeeper"
 
