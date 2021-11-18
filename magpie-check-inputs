@@ -406,8 +406,8 @@ magpieprojects_java="HADOOP PIG MAHOUT HBASE PHOENIX SPARK KAFKA ZEPPELIN STORM 
 for project in ${magpieprojects_java}
 do
     setupvar="${project}_SETUP"
-    if [ "${!varname}X" != "X" ] \
-        && [ "${!varname}" == "yes" ]
+    if [ "${!setupvar}X" != "X" ] \
+        && [ "${!setupvar}" == "yes" ]
     then
         __Magpie_check_if_set_is_a_directory "JAVA_HOME"
     fi
