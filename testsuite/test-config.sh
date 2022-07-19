@@ -77,6 +77,10 @@ MAGPIE_PYTHON_TENSORFLOW_PATH="/usr/bin/python"
 MAGPIE_RAY_PATH="\${HOME}/bin/ray"
 MAGPIE_PYTHON_RAY_PATH="/usr/bin/python"
 
+# Adjust accordingly, most environments "hostname" is fine, but maybe
+# needs to be `hostname -s` or `hostname -f` in some.
+HOSTNAME_CMD="hostname"
+
 # Adjust accordingly, most of you probably want ssh instead of mrsh
 REMOTE_CMD=mrsh
 
