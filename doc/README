@@ -114,8 +114,9 @@ Requirements
    shortened hostnames in its output environment variables
    (e.g. SLURM_JOB_NODELIST w/ Slurm, MOAB_NODELIST w/ Moab, etc.)
 
-   Starting Magpie 2.0, there are mechanisms in place to work around
-   this.  See README.hostname-map for details.
+   There are mechanisms in place to work around this if your
+   environment does not match in this way.  See README.hostname for
+   details.
 
 5) A minor set of software dependencies are required depending on your
    environment.

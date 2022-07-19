@@ -1,5 +1,5 @@
-Magpie Hostname Map
--------------------
+Magpie Hostname
+---------------
 
 Generally speaking, Magpie assumes that the:
 
@@ -20,7 +20,18 @@ Or, perhaps the nodes in a scheduler/resource manager are configured
 to the management network and not the high speed interconnect of a
 cluster.
 
-Beginning with Magpie 2.0, two options MAGPIE_HOSTNAME_CMD_MAP and
+Several options can be used to tweak this behavior.
+
+In the simple case, MAGPIE_HOSTNAME_CMD can be set to use an alternate
+command for determine the local host's hostname.  For example:
+
+# use short name
+MAGPIE_HOSTNAME_CMD="hostname -s"
+
+# use FQDN
+MAGPIE_HOSTNAME_CMD="hostname -f"
+
+In more advanced scenarios, two options MAGPIE_HOSTNAME_CMD_MAP and
 MAGPIE_HOSTNAME_SCHEDULER_MAP allow users to specify a script to map
 the hostname from the hostname cmd or scheduler to a new value.
 

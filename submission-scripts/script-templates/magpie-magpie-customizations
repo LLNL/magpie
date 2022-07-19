@@ -130,6 +130,27 @@ export MAGPIE_JOB_TYPE="script"
 
 @MAGPIE_ENVIRONMENT_VARIABLE_SCRIPT@
 
+# Hostname config
+#
+# Magpie internally assumes that the nodenames provided by the
+# scheduler/resource manager are the addresses that should be used for
+# configuration AND they are identical to the output of the `hostname`
+# command, which is used by Magpie to determine what nodes individual
+# services should run on.
+#
+# If this is not true in your environment, you can provide an alternate
+# hostname command below to correct this.  Very often, users may need to
+# set:
+#
+# MAGPIE_HOSTNAME_CMD="hostname -s" // use short hostname
+# or
+# MAGPIE_HOSTNAME_CMD="hostname -f" // use FQDN
+#
+# If you have a more complex situation, see README.hostname for more
+# advanced options.
+#
+# export MAGPIE_HOSTNAME_CMD=HOSTNAMECMDDEFAULT
+
 @MAGPIE_HOSTNAME_MAP@
 
 @MAGPIE_REMOTE_SHELL@

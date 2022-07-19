@@ -57,6 +57,7 @@ ZOOKEEPER_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 RAY_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 ALLUXIO_DIR_PREFIX=$(PROJECT_DIR_PREFIX)
 
+HOSTNAME_CMD_DEFAULT="hostname"
 REMOTE_CMD_DEFAULT=ssh
 
 JAVA_DEFAULT=/usr/lib/jvm/jre-1.8.0/
@@ -206,6 +207,10 @@ define common-substitution
 	sed -i -e 's;ZEPPELINVERSIONDEFAULT;$(ZEPPELIN_VERSION_DEFAULT);g' $(1)
 	sed -i -e 's;ALLUXIOVERSIONDEFAULT;$(ALLUXIO_VERSION_DEFAULT);g' $(1)
 
+	sed -i -e 's;HOSTNAMECMDDEFAULT;$(HOSTNAME_CMD_DEFAULT);g' $(1)
+	if test "${HOSTNAME_CMD_DEFAULT}" != "hostname"; then \
+		sed -i -e "s/^# export MAGPIE_HOSTNAME_CMD=/export MAGPIE_HOSTNAME_CMD=/g" $(1); \
+	fi
 	sed -i -e 's;REMOTECMDDEFAULT;$(REMOTE_CMD_DEFAULT);g' $(1)
 	if test "${REMOTE_CMD_DEFAULT}" != "ssh"; then \
 		sed -i -e "s/^# export MAGPIE_REMOTE_CMD/export MAGPIE_REMOTE_CMD/g" $(1); \
@@ -275,6 +280,8 @@ define create-bigdata-templates
 	else \
 		sed -i -e "/@MAGPIE_NO_LOCAL_DIR@/,+1d" magpie-magpie-customizations-substitution-bigdata; \
 	fi
+
+	sed -i -e "/@MAGPIE_HOSTNAME@/{r magpie-magpie-customizations-hostname" -e "d}" magpie-magpie-customizations-substitution-bigdata
 
 	if test "${MAGPIE_HOSTNAME_MAP}" = "y"; then \
 		sed -i -e "/@MAGPIE_HOSTNAME_MAP@/{r magpie-magpie-customizations-hostname-map" -e "d}" magpie-magpie-customizations-substitution-bigdata; \
