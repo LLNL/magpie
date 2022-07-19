@@ -403,6 +403,8 @@ sed -i -e "s/ZOOKEEPER_DATA_DIR_PREFIX=\(.*\)/ZOOKEEPER_DATA_DIR_PREFIX=${zookee
 ssddirpathsubst=`echo ${SSD_DIR_PATH} | sed "s/\\//\\\\\\\\\//g"`
 sed -i -e "s/SSD_DIR_PREFIX=\(.*\)/SSD_DIR_PREFIX=${ssddirpathsubst}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
+sed -i -e 's/HOSTNAME_CMD_DEFAULT="\(.*\)"/HOSTNAME_CMD_DEFAULT="'"${HOSTNAME_CMD}"'"/' ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+
 sed -i -e "s/REMOTE_CMD_DEFAULT=ssh/REMOTE_CMD_DEFAULT=${REMOTE_CMD}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 sed -i -e "s/MAGPIE_NO_LOCAL_DIR=n/MAGPIE_NO_LOCAL_DIR=y/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
@@ -742,6 +744,8 @@ fi
 files=`find . -maxdepth 1 -name "magpie.${submissiontype}*"`
 if [ -n "${files}" ]
 then
+    sed -i -e 's/# export MAGPIE_HOSTNAME_CMD=/export MAGPIE_HOSTNAME_CMD=/' ${files}
+
     sed -i -e "s/<my_node_count>/${basenodescount}/" ${files}
 
     sed -i -e "s/<my_job_name>/test/" ${files}
