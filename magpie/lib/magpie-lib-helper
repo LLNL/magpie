@@ -90,7 +90,19 @@ Magpie_vercomp () {
 
 # Get the hostname from the `hostname` command or an appropriate wrapper
 Magpie_get_magpie_hostname () {
-    local thishostname=`hostname`
+    local thishostname=
+    
+	if [ "${MAGPIE_HOSTNAME_CMD}X" != "X" ]
+    then
+        thishostname=`${MAGPIE_HOSTNAME_CMD}`
+        if [ $? -ne 0 ]
+        then
+            echo "Error in MAGPIE_HOSTNAME_CMD = ${MAGPIE_HOSTNAME_CMD}"
+            exit 1
+        fi
+    else
+		thishostname=`hostname`
+    fi
     if [ "${MAGPIE_HOSTNAME_CMD_MAP}X" != "X" ]
     then
         thishostname=`${MAGPIE_HOSTNAME_CMD_MAP} $thishostname`
