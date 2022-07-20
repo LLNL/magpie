@@ -1,3 +1,8 @@
+Magpie 3.1
+----------
+- Support new MAGPIE_HOSTNAME_CMD configuration, a simpler version of
+  MAGPIE_HOSTNAME_CMD_MAP.
+
 Magpie 3.0
 ----------
 
