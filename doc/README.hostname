@@ -23,7 +23,7 @@ cluster.
 Several options can be used to tweak this behavior.
 
 In the simple case, MAGPIE_HOSTNAME_CMD can be set to use an alternate
-command for determine the local host's hostname.  For example:
+command to determine the local host's hostname.  For example:
 
 # use short name
 MAGPIE_HOSTNAME_CMD="hostname -s"
