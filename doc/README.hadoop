@@ -17,8 +17,9 @@ Instructions For Running Hadoop
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
    scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh and LSF scripts
-   using mpirun in script-lsf-mpirun.
+   scripts using pdsh in script-msub-torque-pdsh, LSF scripts using
+   mpirun in script-lsf-mpirun, and Flux scripts in
+   script-flux-batch-run.
 
    You'll likely want to start with the base hadoop script
    (e.g. magpie.sbatch-srun-hadoop) for your scheduler/resource

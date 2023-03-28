@@ -61,6 +61,12 @@ then
     jobsubmitcmdoption="<"
     jobsubmitdependency="-w 'exit\(\${previousjobid}\)'"
     jobidstripcmd="sed -n -e 's/Job <\([0-9]*\)>.*/\1/p'"
+elif [ "${submissiontype}" == "flux-batch-run" ]
+then
+    jobsubmitcmd="FLUX_F58_FORCE_ASCII=t flux batch"
+    jobsubmitcmdoption=""
+    jobsubmitdependency="--dependency=afterany:\${previousjobid}"
+    jobidstripcmd="awk '""{print \$1}""'"
 fi
 
 if [ -f "${jobsubmissionfile}" ]

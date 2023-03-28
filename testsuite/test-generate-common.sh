@@ -72,6 +72,9 @@ PythonCommonSubstitution() {
     elif [ "${pythonversion}" == "${python37}" ]
     then
         sed -i -e 's/export MAGPIE_PYTHON="\(.*\)"/export MAGPIE_PYTHON="'"${magpiepython37pathsubst}"'"/' ${files}
+    elif [ "${pythonversion}" == "${python38}" ]
+    then
+        sed -i -e 's/export MAGPIE_PYTHON="\(.*\)"/export MAGPIE_PYTHON="'"${magpiepython38pathsubst}"'"/' ${files}
     else
         echo "Invalid Python Version Specified - ${pythonversion}"
         exit 1

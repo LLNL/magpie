@@ -505,6 +505,7 @@ sed -i -e "s/SBATCH_SRUN_DEFAULT_JOB_FILE=\(.*\)/SBATCH_SRUN_DEFAULT_JOB_FILE=${
 sed -i -e "s/MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=\(.*\)/MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 sed -i -e "s/MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=\(.*\)/MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 sed -i -e "s/LSF_MPIRUN_DEFAULT_JOB_FILE=\(.*\)/LSF_MPIRUN_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
+sed -i -e "s/FLUX_BATCH_RUN_DEFAULT_JOB_FILE=\(.*\)/FLUX_BATCH_RUN_DEFAULT_JOB_FILE=${defaultjoboutputfile}/" ${MAGPIE_SCRIPTS_HOME}/submission-scripts/script-templates/Makefile
 
 java16pathsubst=`echo ${JAVA16PATH} | sed "s/\\//\\\\\\\\\//g"`
 java17pathsubst=`echo ${JAVA17PATH} | sed "s/\\//\\\\\\\\\//g"`
@@ -512,6 +513,7 @@ java18pathsubst=`echo ${JAVA18PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepython2pathsubst=`echo ${MAGPIE_PYTHON2_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepython3pathsubst=`echo ${MAGPIE_PYTHON3_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepython37pathsubst=`echo ${MAGPIE_PYTHON37_PATH} | sed "s/\\//\\\\\\\\\//g"`
+magpiepython38pathsubst=`echo ${MAGPIE_PYTHON38_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythontensorflowpathsubst=`echo ${MAGPIE_PYTHON_TENSORFLOW_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpieraypathsubst=`echo ${MAGPIE_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythonraypathsubst=`echo ${MAGPIE_PYTHON_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
@@ -802,6 +804,12 @@ then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/%J/" ${files}
 
         sed -i -e "s/<my_queue>/${lsfqueue}/" ${files}
+    elif [ "${submissiontype}" == "flux-batch-run" ]
+    then
+        sed -i -e "s/FILENAMESEARCHREPLACEPREFIX/flux/" ${files}
+        sed -i -e "s/FILENAMESEARCHREPLACEKEY/{{id}}/" ${files}
+
+        sed -i -e "s/<my_queue>/${fluxbatchrunqueue}/" ${files}
     fi
 fi
 

@@ -7,6 +7,7 @@ java18="1.8"
 python2="python2"
 python3="python3"
 python37="python3.7"
+python38="python3.8"
 
 hadoop_decomissionhdfs_minimum="2.3.0"
 
@@ -132,11 +133,11 @@ spark31Xjava18hadoop32versions_pythonversion=${python3}
 spark33Xjava18hadoop2versions="3.3.0-bin-hadoop2 3.3.1-bin-hadoop2 3.3.2-bin-hadoop2"
 spark33Xjava18hadoop2versions_hadoopversion="2.7.0"
 spark33Xjava18hadoop2versions_javaversion=${java18}
-spark33Xjava18hadoop2versions_pythonversion=${python37}
+spark33Xjava18hadoop2versions_pythonversion=${python38}
 spark33Xjava18hadoop3versions="3.3.0-bin-hadoop3 3.3.1-bin-hadoop3 3.3.2-bin-hadoop3"
 spark33Xjava18hadoop3versions_hadoopversion="3.3.0"
 spark33Xjava18hadoop3versions_javaversion=${java18}
-spark33Xjava18hadoop3versions_pythonversion=${python37}
+spark33Xjava18hadoop3versions_pythonversion=${python38}
 
 spark_test_groups="spark1Xjava16hadoop23versions spark1Xjava16hadoop24versions spark1Xjava17hadoop26versions spark2Xjava17hadoop26versions spark2Xjava17hadoop27versions spark2Xjava18hadoop26versions spark2Xjava18hadoop27versions spark3Xjava18hadoop27versions spark3Xjava18hadoop32versions spark31Xjava18hadoop27versions spark31Xjava18hadoop32versions spark33Xjava18hadoop2versions spark33Xjava18hadoop3versions"
 spark_all_versions="${spark1Xjava16hadoop23versions} ${spark1Xjava16hadoop24versions} ${spark1Xjava17hadoop26versions} ${spark2Xjava17hadoop26versions} ${spark2Xjava17hadoop27versions} ${spark2Xjava18hadoop26versions} ${spark2Xjava18hadoop27versions} ${spark3Xjava18hadoop27versions} ${spark3Xjava18hadoop32versions} ${spark31Xjava18hadoop27versions} ${spark31Xjava18hadoop32versions} ${spark33Xjava18hadoop2versions} ${spark33Xjava18hadoop3versions}"

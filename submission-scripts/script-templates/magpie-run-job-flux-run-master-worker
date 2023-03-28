@@ -1,0 +1,30 @@
+nnodes=`flux resource list -no "{nnodes}"`
+
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-check-inputs
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-setup-core
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-setup-projects
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-setup-post
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-pre-run
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-run
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-cleanup
+flux run -N${nnodes} --tasks-per-node=1 -o exit-timeout=none $MAGPIE_SCRIPTS_HOME/magpie-post-run

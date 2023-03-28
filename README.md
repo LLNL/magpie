@@ -6,7 +6,8 @@ HPC environments.  Thus far, Hadoop, Spark, Hbase, Storm, Pig,
 Phoenix, Kafka, Zeppelin, Zookeeper, and Alluxio are supported. It
 currently supports running over the parallel file system Lustre and
 running over any generic network filesytem.  There is
-scheduler/resource manager support for Slurm, Moab, Torque, and LSF.
+scheduler/resource manager support for Slurm, Moab, Torque, LSF,
+and Flux.
 
 Some of the features presently supported:
 
@@ -28,7 +29,7 @@ The basic idea behind these scripts are to:
 
 1) Submit a Magpie batch script to allocate nodes on a cluster using
    your HPC scheduler/resource manager.  Slurm, Slurm+mpirun,
-   Moab+Slurm, Moab+Torque and LSF+mpirun are currently supported.
+   Moab+Slurm, Moab+Torque, LSF+mpirun, and Flux are currently supported.
 
 2) The batch script will create configuration files for all
    appropriate projects (Hadoop, Spark, etc.)  The configuration files

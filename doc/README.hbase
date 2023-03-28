@@ -17,8 +17,9 @@ Instructions For Running Hbase
    can find them in the directory submission-scripts/, with Slurm
    Sbatch scripts using srun in script-sbatch-srun, Moab Msub+Slurm
    scripts using srun in script-msub-slurm-srun, Moab Msub+Torque
-   scripts using pdsh in script-msub-torque-pdsh, and LSF scripts
-   using mpirun in script-lsf-mpirun.
+   scripts using pdsh in script-msub-torque-pdsh, LSF scripts using
+   mpirun in script-lsf-mpirun, and Flux scritps in
+   script-flux-batch-run.
 
    You'll likely want to start with the base hbase w/ hdfs script
    (e.g. magpie.sbatch-srun-hbase-with-hdfs) for your

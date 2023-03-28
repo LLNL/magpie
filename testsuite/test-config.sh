@@ -7,8 +7,9 @@
 #submissiontype=lsf-mpirun
 #submissiontype=msub-slurm-srun
 #submissiontype=msub-torque-pdsh
-submissiontype=sbatch-srun
+#submissiontype=sbatch-srun
 #submissiontype=sbatch-mpirun
+submissiontype=flux-batch-run
 
 msubslurmsrunpartition=mycluster
 msubslurmsrunbatchqueue=pbatch
@@ -18,6 +19,8 @@ sbatchmpirunpartition=pbatch
 sbatchsrunpartition=pbatch
 
 lsfqueue=standard
+
+fluxbatchrunqueue=pbatch
 
 # Test config
 #
@@ -73,6 +76,7 @@ MAGPIE_PYTHON_PATH="/usr/bin/python"
 MAGPIE_PYTHON2_PATH="/usr/bin/python2"
 MAGPIE_PYTHON3_PATH="/usr/bin/python3"
 MAGPIE_PYTHON37_PATH="/usr/bin/python3.7"
+MAGPIE_PYTHON38_PATH="/usr/bin/python3.8"
 MAGPIE_PYTHON_TENSORFLOW_PATH="/usr/bin/python"
 
 MAGPIE_RAY_PATH="\${HOME}/bin/ray"

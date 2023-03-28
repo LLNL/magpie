@@ -1,0 +1,26 @@
+# flux: --nodes=<my_node_count>
+# flux: --output="DEFAULTJOBOUTPUTFILE"
+
+# Note defaults of MAGPIE_STARTUP_TIME & MAGPIE_SHUTDOWN_TIME, this
+# timelimit should be a fair amount larger than them combined.
+# flux: --time-limit=<my_time_in_minutes>
+
+# Job name.  This will be used in naming directories for the job.
+# flux: --job-name=<my_job_name>
+
+# Queue to launch job in
+# flux: --queue=<my_queue>
+
+## Flux Values
+# Generally speaking, don't touch the following, misc other configuration
+
+# flux: --exclusive
+
+# flux: --broker-opts=-Sbroker.critical-ranks=0
+# flux: --broker-opts=-Stbon.fanout=0
+# flux: -o exit-timeout=none
+
+# Need to tell Magpie how you are submitting this job
+export MAGPIE_SUBMISSION_TYPE="fluxbatchrun"
+
+

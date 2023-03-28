@@ -32,6 +32,9 @@ then
 elif [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ]
 then
     outputprefix="slurm"
+elif [ "${submissiontype}" == "flux-batch-run" ]
+then
+    outputprefix="flux"
 fi
 
 __get_test_files () {

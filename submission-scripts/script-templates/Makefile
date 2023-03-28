@@ -124,10 +124,11 @@ SBATCH_SRUN_DEFAULT_JOB_FILE=slurm-%j.out
 MSUB_SLURM_SRUN_DEFAULT_JOB_FILE=moab-%j.out
 MSUB_TORQUE_PDSH_DEFAULT_JOB_FILE=moab-%j.out
 LSF_MPIRUN_DEFAULT_JOB_FILE=lsf-%J.out
+FLUX_BATCH_RUN_DEFAULT_JOB_FILE=flux-{{id}}.out
 
 .DEFAULT_GOAL=all
 
-all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun sbatch-mpirun
+all: msub-slurm-srun sbatch-srun msub-torque-pdsh lsf-mpirun sbatch-mpirun flux-batch-run
 
 clean-sbatch-srun:
 	rm -f ../script-sbatch-srun/magpie.sbatch-srun*
@@ -144,7 +145,10 @@ clean-lsf-mpirun:
 clean-sbatch-mpirun:
 	rm -f ../script-sbatch-mpirun/magpie.sbatch-mpirun*
 
-clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun clean-sbatch-mpirun
+clean-flux-batch-run:
+	rm -f ../script-flux-batch-run/magpie.flux-batch-run*
+
+clean: clean-sbatch-srun clean-msub-slurm-srun clean-msub-torque-pdsh clean-lsf-mpirun clean-sbatch-mpirun clean-flux-batch-run
 
 sbatch-srun: clean-sbatch-srun
 	$(call create-bigdata-templates,$@,srun,$(SBATCH_SRUN_DEFAULT_JOB_FILE))
@@ -167,6 +171,11 @@ sbatch-mpirun: clean-sbatch-mpirun
 	$(call create-bigdata-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 	$(call create-ml-master-worker-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
 	$(call create-tensorflow-templates,$@,mpirun,$(SBATCH_MPIRUN_DEFAULT_JOB_FILE))
+
+flux-batch-run: clean-flux-batch-run
+	$(call create-bigdata-templates,$@,flux-run,$(FLUX_BATCH_RUN_DEFAULT_JOB_FILE))
+	$(call create-ml-master-worker-templates,$@,flux-run,$(FLUX_BATCH_RUN_DEFAULT_JOB_FILE))
+	$(call create-tensorflow-templates,$@,flux-run,$(FLUX_BATCH_RUN_DEFAULT_JOB_FILE))
 
 define common-substitution
 	sed -i -e 's;MAGPIESCRIPTSDIRPREFIX;$(MAGPIE_SCRIPTS_DIR_PREFIX);g' $(1)

@@ -209,10 +209,10 @@ if [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchsrun" ] \
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubslurmsrun" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "msubtorquepdsh" ]\
     && [ "${MAGPIE_SUBMISSION_TYPE}" != "sbatchmpirun" ] \
-    && [ "${MAGPIE_SUBMISSION_TYPE}" != "lsfmpirun" ]
-
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "lsfmpirun" ] \
+    && [ "${MAGPIE_SUBMISSION_TYPE}" != "fluxbatchrun" ]
 then
-    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun, msubtorquepdsh, sbatchmpirun, lsfmpirun"
+    echo "MAGPIE_SUBMISSION_TYPE environment variable must be set to sbatchsrun, msubslurmsrun, msubtorquepdsh, sbatchmpirun, lsfmpirun, fluxbatchrun"
     exit 1
 fi
 

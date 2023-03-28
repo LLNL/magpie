@@ -39,6 +39,17 @@ __Magpie_calc_slurm_magpie_timelimit () {
     fi
 }
 
+__Magpie_calc_flux_magpie_timelimit () {
+    # Do not call this multiple times if it can be avoided
+    jobid=$1
+    if [ "${MAGPIE_TIMELIMIT_MINUTES}X" == "X" ]
+    then
+        # duration stored in seconds
+        local duration=`flux --parent jobs -no {duration} ${jobid}`
+        export MAGPIE_TIMELIMIT_MINUTES=$(echo "${duration} / 60" | bc)
+    fi
+}
+
 __Magpie_handle_job_name_corner_cases () {
     # Handle special corner cases where user's job name may not
     # play nice, as we use it in file paths and what not
@@ -131,6 +142,17 @@ then
     # Run State
     walltime=$(echo $jobinfo | awk '{for(i=1;i<=NF;i++){ if($i=="RUNLIMIT"){printf "%.0f\n", $((i+1))} } }')
     export MAGPIE_TIMELIMIT_MINUTES=${walltime}
+    __Magpie_handle_job_name_corner_cases
+elif [ "${MAGPIE_SUBMISSION_TYPE}" == "fluxbatchrun" ]
+then
+    jobid=$(flux getattr jobid)
+    export MAGPIE_CLUSTER_NODERANK=$(flux getattr rank)
+    export MAGPIE_NODE_COUNT=`flux --parent jobs -no {nnodes} ${jobid}`
+    export MAGPIE_NODELIST=`flux --parent jobs -no {nodelist} ${jobid}`
+    export MAGPIE_JOB_NAME=`flux --parent jobs -no {name} ${jobid}`
+    # just in case fancy f is used in flux job id, convert to lower case f
+    export MAGPIE_JOB_ID=`FLUX_F58_FORCE_ASCII=t flux job id --to=f58 ${jobid}`
+    __Magpie_calc_flux_magpie_timelimit ${jobid}
     __Magpie_handle_job_name_corner_cases
 else
     Magpie_output_internal_error "Invalid MAGPIE_SUBMISSION_TYPE = ${MAGPIE_SUBMISSION_TYPE}"
