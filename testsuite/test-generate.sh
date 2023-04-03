@@ -130,6 +130,7 @@ hadoop_3_2_0=y
 hadoop_3_2_1=y
 hadoop_3_2_2=y
 hadoop_3_2_3=y
+hadoop_3_2_4=y
 hadoop_3_3_0=y
 hadoop_3_3_1=y
 hadoop_3_3_2=y
