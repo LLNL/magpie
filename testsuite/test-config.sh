@@ -81,8 +81,8 @@ MAGPIE_PYTHON_RAY_PATH="/usr/bin/python"
 # needs to be `hostname -s` or `hostname -f` in some.
 HOSTNAME_CMD="hostname"
 
-# Adjust accordingly, most of you probably want ssh instead of mrsh
-REMOTE_CMD=mrsh
+# Adjust accordingly if necessary
+REMOTE_CMD=ssh
 
 DEFAULT_LOCAL_REQUIREMENTS=n
 DEFAULT_LOCAL_REQUIREMENTS_FILE=/tmp/mylocal
