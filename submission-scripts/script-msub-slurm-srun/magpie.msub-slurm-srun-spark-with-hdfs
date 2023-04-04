@@ -326,7 +326,7 @@ export HADOOP_SETUP_TYPE="HDFS"
 # Make sure the version for Mapreduce version 1 or 2 matches whatever
 # you set in HADOOP_SETUP_TYPE
 #
-export HADOOP_VERSION="3.2.2"
+export HADOOP_VERSION="3.3.5"
 
 # Path to your Hadoop build/binaries
 #
@@ -894,7 +894,7 @@ export SPARK_SETUP_TYPE="STANDALONE"
 
 # Version
 #
-export SPARK_VERSION="3.2.3-bin-hadoop3.2"
+export SPARK_VERSION="3.3.2-bin-hadoop3"
 
 # Path to your Spark build/binaries
 #
