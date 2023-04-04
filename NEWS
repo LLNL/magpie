@@ -2,7 +2,8 @@ Magpie 3.1
 ----------
 - Support new MAGPIE_HOSTNAME_CMD configuration, a simpler version of
   MAGPIE_HOSTNAME_CMD_MAP.
-- Support Hadoop 3.2.4
+- Support Hadoop 3.2.4, 3.3.4, 3.3.5
+  - Update Hadoop default to 3.3.5
 
 Magpie 3.0
 ----------
