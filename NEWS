@@ -1,3 +1,9 @@
+Magpie 3.2
+----------
+Add support for job submission via Flux.
+- Note that Flux is currently in development and interfaces may vary
+  between Flux versions.  This support tested on flux-core v0.49.0.
+
 Magpie 3.1
 ----------
 - Support new MAGPIE_HOSTNAME_CMD configuration, a simpler version of
