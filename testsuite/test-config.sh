@@ -7,9 +7,9 @@
 #submissiontype=lsf-mpirun
 #submissiontype=msub-slurm-srun
 #submissiontype=msub-torque-pdsh
-#submissiontype=sbatch-srun
+submissiontype=sbatch-srun
 #submissiontype=sbatch-mpirun
-submissiontype=flux-batch-run
+#submissiontype=flux-batch-run
 
 msubslurmsrunpartition=mycluster
 msubslurmsrunbatchqueue=pbatch
