@@ -1,3 +1,8 @@
+Magpie 3.3
+----------
+- Support Hadoop 3.3.6
+  - Update Hadoop default to 3.3.6
+
 Magpie 3.2
 ----------
 Add support for job submission via Flux.
