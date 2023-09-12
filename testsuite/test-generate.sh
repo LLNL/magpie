@@ -519,7 +519,7 @@ magpiepythontensorflowpathsubst=`echo ${MAGPIE_PYTHON_TENSORFLOW_PATH} | sed "s/
 magpieraypathsubst=`echo ${MAGPIE_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
 magpiepythonraypathsubst=`echo ${MAGPIE_PYTHON_RAY_PATH} | sed "s/\\//\\\\\\\\\//g"`
 
-if [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ]
+if [ "${submissiontype}" == "sbatch-srun" ] || [ "${submissiontype}" == "sbatch-mpirun" ] || [ "${submissiontype}" == "flux-batch-run" ]
 then
     timestringtoreplace="<my_time_in_minutes>"
     functiontogettimeoutput="GetMinutesJob"
