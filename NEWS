@@ -2,6 +2,8 @@ Magpie 3.3
 ----------
 - Support Hadoop 3.3.6
   - Update Hadoop default to 3.3.6
+- Support Spark 3.2.4, 3.3.3
+  - Update Spark default to 3.3.3-bin-hadoop3
 
 Magpie 3.2
 ----------
