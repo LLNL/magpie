@@ -337,6 +337,7 @@ spark_3_3_2_bin_hadoop3=y
 spark_3_3_3_bin_hadoop3=y
 spark_3_4_0_bin_hadoop3=y
 spark_3_4_1_bin_hadoop3=y
+spark_3_5_0_bin_hadoop3=y
 storm_0_9_3=y
 storm_0_9_4=y
 storm_0_9_5=y
