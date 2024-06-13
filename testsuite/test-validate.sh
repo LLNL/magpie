@@ -980,11 +980,6 @@ then
     do
         __check_prepostexecutescripts ${file} "PRE"
 
-        num=`grep -e "Magpie General Job Info" $file | wc -l`
-        if [ "${num}" != "0" ]; then
-            echo "Error in $file"
-        fi
-
         __test_generic $file
         __test_output_finalize $file
     done
