@@ -59,13 +59,13 @@ PRESET_LAUNCH_SCRIPT_CONFIGS="N"
 # Also, patches are based on the package version number.  I may not
 # have patches for every version.
 
-HADOOP_PACKAGE="hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
+HADOOP_PACKAGE="hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz"
 HBASE_PACKAGE="hbase/1.6.0/hbase-1.6.0-bin.tar.gz"
 HIVE_PACKAGE="hive/2.3.0/apache-hive-2.3.0.tar.gz"
 PIG_PACKAGE="pig/pig-0.17.0/pig-0.17.0.tar.gz"
 ZOOKEEPER_PACKAGE="zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz"
 SPARK_PACKAGE="spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz"
-SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
+SPARK_HADOOP_PACKAGE="hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz"
 STORM_PACKAGE="storm/apache-storm-1.2.3/apache-storm-1.2.3.tar.gz"
 PHOENIX_PACKAGE="phoenix/apache-phoenix-4.14.0-HBase-1.4/bin/apache-phoenix-4.14.0-HBase-1.4-bin.tar.gz"
 PHOENIX_HBASE_PACKAGE="hbase/1.4.13/hbase-1.4.13-bin.tar.gz"

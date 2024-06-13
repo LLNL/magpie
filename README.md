@@ -66,7 +66,7 @@ please see ```doc/README```.  The following can be considered a
 summary of support.
 
 Hadoop - 2.2.0, 2.3.0, 2.4.X, 2.5.X, 2.6.X, 2.7.X, 2.8.X, 2.9.X,
-         3.0.X, 3.1.X, 3.2.X, 3.3.X
+         3.0.X, 3.1.X, 3.2.X, 3.3.X, 3.4.X
 
 Spark - 1.1.X, 1.2.X, 1.3.X, 1.4.X, 1.5.X, 1.6.X, 2.0.X, 2.1.X, 2.2.X,
         2.3.X, 2.4.X, 3.0.X, 3.1.X, 3.2.X, 3.3.X, 3.4.X, 3.5.X

@@ -374,7 +374,7 @@ GenerateHadoopDependencyTests() {
 # - hadoop 2.4.X does not have "Finalize upgrade success" phrase output when complete
 
     # All of the major versions
-    __GenerateHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0 2.8.0 2.9.0 3.0.0 3.1.0 3.2.0 3.3.0
+    __GenerateHadoopDependencyTests_Dependency5 "5A" "n" 2.4.0 2.5.0 2.6.0 2.7.0 2.8.0 2.9.0 3.0.0 3.1.0 3.2.0 3.3.0 3.4.0
     # Between consecutive major versions
     __GenerateHadoopDependencyTests_Dependency5 "5B" "n" 2.4.0 2.5.0
     __GenerateHadoopDependencyTests_Dependency5 "5C" "n" 2.5.0 2.6.0
@@ -385,26 +385,28 @@ GenerateHadoopDependencyTests() {
     __GenerateHadoopDependencyTests_Dependency5 "5H" "n" 3.0.0 3.1.0
     __GenerateHadoopDependencyTests_Dependency5 "5I" "n" 3.1.0 3.2.0
     __GenerateHadoopDependencyTests_Dependency5 "5J" "n" 3.2.0 3.3.0
+    __GenerateHadoopDependencyTests_Dependency5 "5K" "n" 3.3.0 3.4.0
     # Hops between major versions, do jumps of two to avoid permutation growth of tests.
-    __GenerateHadoopDependencyTests_Dependency5 "5K" "n" 2.4.0 2.6.0
-    __GenerateHadoopDependencyTests_Dependency5 "5L" "n" 2.5.0 2.7.0
-    __GenerateHadoopDependencyTests_Dependency5 "5M" "n" 2.6.0 2.8.0
-    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.7.0 2.9.0
-    __GenerateHadoopDependencyTests_Dependency5 "5O" "n" 2.8.0 3.0.0
-    __GenerateHadoopDependencyTests_Dependency5 "5P" "n" 2.9.0 3.1.0
-    __GenerateHadoopDependencyTests_Dependency5 "5Q" "n" 3.0.0 3.2.0
-    __GenerateHadoopDependencyTests_Dependency5 "5R" "n" 3.1.0 3.3.0
+    __GenerateHadoopDependencyTests_Dependency5 "5L" "n" 2.4.0 2.6.0
+    __GenerateHadoopDependencyTests_Dependency5 "5M" "n" 2.5.0 2.7.0
+    __GenerateHadoopDependencyTests_Dependency5 "5N" "n" 2.6.0 2.8.0
+    __GenerateHadoopDependencyTests_Dependency5 "5O" "n" 2.7.0 2.9.0
+    __GenerateHadoopDependencyTests_Dependency5 "5P" "n" 2.8.0 3.0.0
+    __GenerateHadoopDependencyTests_Dependency5 "5Q" "n" 2.9.0 3.1.0
+    __GenerateHadoopDependencyTests_Dependency5 "5R" "n" 3.0.0 3.2.0
+    __GenerateHadoopDependencyTests_Dependency5 "5S" "n" 3.1.0 3.3.0
+    __GenerateHadoopDependencyTests_Dependency5 "5T" "n" 3.2.0 3.4.0
     # Between minor versions
-    __GenerateHadoopDependencyTests_Dependency5 "5S" "y" 2.4.0 2.4.1
-    __GenerateHadoopDependencyTests_Dependency5 "5T" "n" 2.5.0 2.5.1 2.5.2
-    __GenerateHadoopDependencyTests_Dependency5 "5U" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5
-    __GenerateHadoopDependencyTests_Dependency5 "5V" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4 2.7.5
-    __GenerateHadoopDependencyTests_Dependency5 "5W" "n" 2.8.0 2.8.1 2.8.2
-    __GenerateHadoopDependencyTests_Dependency5 "5X" "n" 2.9.0 2.9.1
-    __GenerateHadoopDependencyTests_Dependency5 "5Y" "n" 3.0.0 3.0.1 3.0.2 3.0.3
-    __GenerateHadoopDependencyTests_Dependency5 "5Z" "n" 3.1.0 3.1.1 3.1.2 3.1.3 3.1.4
-    __GenerateHadoopDependencyTests_Dependency5 "5AA" "n" 3.2.0 3.2.1 3.2.2 3.2.3 3.2.4
-    __GenerateHadoopDependencyTests_Dependency5 "5AB" "n" 3.3.0 3.3.1 3.3.2 3.3.3 3.3.4 3.3.5 3.3.6
+    __GenerateHadoopDependencyTests_Dependency5 "5U" "y" 2.4.0 2.4.1
+    __GenerateHadoopDependencyTests_Dependency5 "5V" "n" 2.5.0 2.5.1 2.5.2
+    __GenerateHadoopDependencyTests_Dependency5 "5W" "n" 2.6.0 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5
+    __GenerateHadoopDependencyTests_Dependency5 "5X" "n" 2.7.0 2.7.1 2.7.2 2.7.3 2.7.4 2.7.5
+    __GenerateHadoopDependencyTests_Dependency5 "5Y" "n" 2.8.0 2.8.1 2.8.2
+    __GenerateHadoopDependencyTests_Dependency5 "5Z" "n" 2.9.0 2.9.1
+    __GenerateHadoopDependencyTests_Dependency5 "5AA" "n" 3.0.0 3.0.1 3.0.2 3.0.3
+    __GenerateHadoopDependencyTests_Dependency5 "5AB" "n" 3.1.0 3.1.1 3.1.2 3.1.3 3.1.4
+    __GenerateHadoopDependencyTests_Dependency5 "5AC" "n" 3.2.0 3.2.1 3.2.2 3.2.3 3.2.4
+    __GenerateHadoopDependencyTests_Dependency5 "5AD" "n" 3.3.0 3.3.1 3.3.2 3.3.3 3.3.4 3.3.5 3.3.6 3.4.0
 
 # Dependency 6 test, detect newer hdfs version X from Y, HDFS over Lustre / NetworkFS
 
