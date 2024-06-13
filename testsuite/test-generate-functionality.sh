@@ -906,8 +906,8 @@ __GenerateFunctionalityTests_PrePostExecuteScripts() {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-prepostexecutescripts-multi*"`
     if [ -n "${files}" ]
     then
-        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-multi1.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-multi2.sh"/' ${files}
-        sed -i -e 's/# export MAGPIE_POST_EXECUTE_RUN="\(.*\)"/export MAGPIE_POST_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-run-multi1.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-run-multi2.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-multi1.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-multi2.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_POST_EXECUTE_RUN="\(.*\)"/export MAGPIE_POST_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-multi1.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-post-execute-multi2.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/prepostexecutescripts-multi-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
@@ -1001,21 +1001,21 @@ __GenerateFunctionalityTests_PreExecuteScriptError() {
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-preexecutescripterror-single*"`
     if [ -n "${files}" ]
     then
-        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-error.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-error.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/preexecutescripterror-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-preexecutescripterror-multi1*"`
     if [ -n "${files}" ]
     then
-        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-error.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-error.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/preexecutescripterror-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 
     files=`find . -maxdepth 1 -name "magpie.${submissiontype}*functionality-preexecutescripterror-multi2*"`
     if [ -n "${files}" ]
     then
-        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run-error.sh"/' ${files}
+        sed -i -e 's/# export MAGPIE_PRE_EXECUTE_RUN="\(.*\)"/export MAGPIE_PRE_EXECUTE_RUN="'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-run.sh,'"${magpiescriptshomesubst}"'\/testsuite\/testscripts\/test-pre-execute-error.sh"/' ${files}
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/preexecutescripterror-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
 }
