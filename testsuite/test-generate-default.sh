@@ -72,4 +72,18 @@ GenerateDefaultStandardPostProcessing () {
     then
         sed -i -e "s/FILENAMESEARCHREPLACEKEY/pdshlaunch-FILENAMESEARCHREPLACEKEY/" ${files}
     fi
+
+    # Starting with Spark 3.4 only Hadoop3+ is supported, so pdshlaunch is assumed if
+    # anything hadoop is done
+    files=`find . -maxdepth 1 -name "magpie.${submissiontype}-spark-with*default*"`
+    if [ -n "${files}" ] && [ -x "/usr/bin/pdsh" ]
+    then
+        for file in ${files}
+        do
+            if grep SPARK_VERSION ${file} | grep -q -E "3\.[4-9]\.[0-9]"
+            then
+                sed -i -e "s/FILENAMESEARCHREPLACEKEY/pdshlaunch-FILENAMESEARCHREPLACEKEY/" ${file}
+            fi
+        done
+    fi
 }
