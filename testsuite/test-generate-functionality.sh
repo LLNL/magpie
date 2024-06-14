@@ -1091,11 +1091,11 @@ __GenerateFunctionalityTests_HostnameMap() {
         cp ../submission-scripts/script-${submissiontype}/magpie.${submissiontype}-spark-with-yarn-and-hdfs magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-hostname-map
 
         SetupSparkWordCountHDFSCopyIn `ls \
-            magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-job-name* \
-            magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-job-name*`
+            magpie.${submissiontype}-spark-with-hdfs-run-sparkwordcount-copy-in-functionality-hostname-map* \
+            magpie.${submissiontype}-spark-with-yarn-and-hdfs-run-sparkwordcount-copy-in-functionality-hostname-map*`
 
         SetupSparkWordCountRawNetworkFSNoCopy `ls \
-            magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-job-name*`
+            magpie.${submissiontype}-spark-with-yarn-run-sparkwordcount-copy-in-functionality-hostname-map*`
     fi
 
     if [ "${stormtests}" == "y" ]; then
