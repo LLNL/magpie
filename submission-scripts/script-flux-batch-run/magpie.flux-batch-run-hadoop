@@ -59,7 +59,7 @@
 # flux: --exclusive
 
 # flux: --broker-opts=-Sbroker.critical-ranks=0
-# flux: --broker-opts=-Stbon.fanout=0
+# flux: --broker-opts=-Stbon.topo=kary:0
 # flux: -o exit-timeout=none
 
 # Need to tell Magpie how you are submitting this job
